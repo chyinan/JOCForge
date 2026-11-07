@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1",
+  "manifest_sha256": "3534886eae140fcc04ef4c37b99da6bef1fe835e3aeeb677ed64cde288368783",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "SENTINEL_AND_2997DF_BRANCHES_BOUND; FIRST_RATE_TIMECODE_HELPER_BOUND; NUMERIC_SEMANTICS_AND_XML_OWNER_UNBOUND; NOT_RUN; IMPLEMENTATION_READY=NO"
+}

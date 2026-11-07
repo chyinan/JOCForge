@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.height_trim_query_input_boundary.v1",
+  "status": "HEIGHT_KEY_TO_QUERY_INPUT_UNBOUND; QUERY_RETURN_TO_HEIGHT_INSTANCE_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package": "custom_trim_height_query_input_owner_boundary_wash_v1",
+  "source_manifest_sha256": "faa9b72b0d5fc35eccb9126ea45a98e693f5ea938e8c11503aebdfa32dcfeaaf",
+  "source_manifest_sidecar_sha256": "7ff6e6efc44bda956f83bbe0411d8eee66b65e6ef272bdf7122ad3286ee3e315",
+  "registered_field": {"key": "custom_trims:height_trim_5_1", "member": "Priv+0x9e8 StringType"},
+  "generic_query": {"function": "FUN_18014f9f0", "name_builder": "FUN_18014a060", "tail_thunk": "FUN_18013e9d0", "thunk_forwards_RDX_unchanged": true, "vtable_slot_rva": "0x640bf8", "code_references_to_slot": 0},
+  "first_unbound_edge": "specific virtual caller/RDX key bytes -> registered height key and returned StringType instance",
+  "unbound": ["actual query bytes equal height key", "returned object identity to Priv+0x9e8", "selected provider/generation", "numeric conversion/units", "BSI/audio effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

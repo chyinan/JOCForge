@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LINE-DRC-SERIALIZER-FIRST-READ-BOUNDARY-V1",
+  "manifest_sha256": "3f00c1ffff8397226e3a638a192be174ea45e783616a77f0855cbe0d18a84c67",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "FIRST_INPUT_POINTER_READ_BOUND; FIELD_SEMANTICS_AND_A0_JOIN_UNBOUND; OUTPUT_WRITE_NOT_REACHED; NOT_RUN; IMPLEMENTATION_READY=NO"
+}

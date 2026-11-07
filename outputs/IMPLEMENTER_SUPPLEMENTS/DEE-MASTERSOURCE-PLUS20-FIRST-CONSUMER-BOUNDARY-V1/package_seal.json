@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1",
+  "manifest_sha256": "b6010cc1304f5f41d2954865b2474b1e54dfb769551c02db7afa73f4cc56c9fa",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "MASTER_SOURCE_PLUS20_DISPATCH_BOUND; VTABLE_TARGET_OWNER_UNBOUND; PLUS28_NOT_ON_EDGE; RANGE_IDENTITY_UNBOUND; IMPLEMENTATION_READY=NO"
+}

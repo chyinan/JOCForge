@@ -4911,7 +4911,8 @@
           "dependencies": [],
           "spec_files": [
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-TIME-CONTROL-READER-BOUNDARY-V1/REPORT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -4940,7 +4941,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "3b52546c362c6db03389328ad317d439f4478ddea8eb8abddc58f4b23226da37",
             "supplement_seal_sha256": "9d9657f7a0cbfddee54982588cdc957c82c483952395f47ec6ad97b6a8c0a576",
@@ -4983,6 +4991,16 @@
               "selected_j_vector_handoff": "FUN_180553a60 -> FUN_180550800 -> FUN_1805506b0 -> FUN_18054a900; 0x58-byte rows",
               "row_5_6_and_master_source_0x20_0x28_to_reader_start_end_owner_join": "UNBOUND",
               "duration_pcm_pts": "UNBOUND/NOT_RUN"
+            },
+            "master_source_first_consumer_addendum": {
+              "package_id": "DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1",
+              "manifest_sha256": "b6010cc1304f5f41d2954865b2474b1e54dfb769551c02db7afa73f4cc56c9fa",
+              "seal_sha256": "98d4a2ebf9eff34b64477482691acf0323dffd96734481e3d1180fb10c8f0f99",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "master_source_plus20_first_consumer": "FUN_1804cba30 reads first qword as vtable and calls slot +0x70; target owner/generation UNBOUND",
+              "master_source_plus28": "not forwarded on this direct edge; first Reader consumer UNBOUND",
+              "start_end_reader_owner_join_and_effect": "UNBOUND/NOT_RUN"
             }
           },
           "vectors": {
@@ -4995,7 +5013,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "R138 lexical values are source-document input-only, not runtime observations."
@@ -5437,7 +5459,8 @@
           "spec_files": [
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-VALUE-BOUNDARY-V1/REPORT.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-STRINGTYPE-GETTER-BOUNDARY-V1/REPORT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-QUERY-INPUT-BOUNDARY-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -5473,7 +5496,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-QUERY-INPUT-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-QUERY-INPUT-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-QUERY-INPUT-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-QUERY-INPUT-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-QUERY-INPUT-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-QUERY-INPUT-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-QUERY-INPUT-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "44b4886b49d3f1f1f6869f7c3a79de51ff94387c5b4d40d5d0d47f4506e4d1d4",
             "supplement_seal_sha256": "67900bbec7462b6925da8889063892abb610c2994282268571abada7dd054aaf",
@@ -5505,6 +5535,19 @@
               "generic_query_mechanism": "FUN_18014f9f0 / FUN_18014a060 exact key equality",
               "key_to_query_and_return_to_field_instance_join": "UNBOUND",
               "units_numeric_conversion_and_effect": "UNBOUND/NOT_RUN"
+            },
+            "height_trim_query_input_first_break": {
+              "package_id": "DEE-HEIGHT-TRIM-QUERY-INPUT-BOUNDARY-V1",
+              "manifest_sha256": "1cd3b06296d39f586662ac4b9ddfc6ed19258f83ed0cd391d332ef35d00ed8f2",
+              "seal_sha256": "3224f76b0e2558e26d60af7c0e43f0b118edfef060753c1b0a410604d70dd564",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "bounded_evidence": "Height key registration and generic RDX-forwarding query thunk are separate; no concrete caller/key bytes establish that this key enters that query.",
+              "remaining": [
+                "Caller/RDX key bytes to height key equality.",
+                "Query return to Priv+0x9e8 instance/provider generation.",
+                "Units, conversion, BSI/audio effect."
+              ]
             }
           },
           "vectors": {
@@ -5521,7 +5564,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-QUERY-INPUT-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-QUERY-INPUT-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-QUERY-INPUT-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-QUERY-INPUT-BOUNDARY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "Reference-only trim boundary: surround +0x968 has a U16 candidate not joined to the keyed StringType owner or selected provider; height +0x9e8 has a bounded query with no identified value reader. Tokens remain strings; units, precision, BSI mapping, and audio effects are unbound."
@@ -5940,7 +5987,8 @@
           "dependencies": [],
           "spec_files": [
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/REPORT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -5969,7 +6017,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "a1026e952f90091b2c11da5f04b59fd6e2ee3b3104d5a99425eb5cfb6e2c8fab",
             "supplement_seal_sha256": "fcddf32a7fa79f970f363ce7dc7e4580e1fd616ea8ce18d23045168c1a959930",
@@ -5995,6 +6050,19 @@
               "slot": "UNDEFINED 0x1402f2760 -> FUN_1401496e0; no references to slot",
               "setter_to_mp4_run_initplugin_same_instance_join": "UNBOUND",
               "muxer_writer_and_output": "UNBOUND/NOT_RUN"
+            },
+            "initplugin_activation_addendum": {
+              "package_id": "DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1",
+              "manifest_sha256": "4032fee4e402b0b7c3cf5ae9f5bf0febc4ca1222b3b6415a582c25da007574fb",
+              "seal_sha256": "9265c062a7cdf58eadbfc101df10016499621da494329905a13c519ab1021acf",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "bounded_evidence": "Mp4::Run forwards the same receiver to InitPlugin; InitPlugin reads output_format property data and passes a local 0x18-stride property-array header to an indirect slot +0x18 activation call.",
+              "remaining": [
+                "Indirect activation target/ABI and selected muxer.",
+                "SetProperty +0x3b to Run/InitPlugin same-owner join.",
+                "Container writer, output and runtime effect."
+              ]
             }
           },
           "vectors": {
@@ -6007,7 +6075,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "Reference-only MP4 container boundary: candidate XSD lists mp4/dash and plugin/base fields; a static setter compares mp4/dash, and Mp4::Run calls InitPlugin which reads output_format. The XSD is not installation-bound, setter and Run/InitPlugin objects are not joined, and no muxer creation/output writer is established."
@@ -6034,7 +6106,8 @@
           "dependencies": [],
           "spec_files": [
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-INTEGER-BOUNDARY-V1/REPORT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-QUERY-OWNER-BOUNDARY-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-QUERY-OWNER-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -6063,7 +6136,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-QUERY-OWNER-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-QUERY-OWNER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-QUERY-OWNER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-QUERY-OWNER-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-QUERY-OWNER-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "1b59ecb4b781516580d223e14d03591330f815f3ab56921e8e0b1d55ff8583d7",
             "supplement_seal_sha256": "b3700eb78adf83bede7789f0b96132bc352d8a9a9bf3bf6c1a268a24f161fc97",
@@ -6085,6 +6165,18 @@
               "reader": "FUN_1801792c0 reads param_1+0x30 U32 via current path FUN_180179d30 -> FUN_180179790",
               "xref_discrepancy": "legacy 0x180178fae receipt vs current call FUN_1801799b0 / current reference FUN_180179790; unresolved",
               "candidate_reader_owner_join_and_effect": "UNBOUND/NOT_RUN"
+            },
+            "post_open_engine_read_first_break": {
+              "package_id": "DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1",
+              "manifest_sha256": "74af7031d288b773ccbeee775507824cf6c6c8ce192ea3668d8daa822bbfa146",
+              "seal_sha256": "cb1299030b8e75fa39556744bcaf1ac774504ce294e27aeff7590155ce0dd53a",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "bounded_evidence": "Config +0x48 is copied to engine +0x48 before fallback; selected bounded helper has no direct engine+0x48 read, and the next unexpanded helper receives no such value/address.",
+              "remaining": [
+                "First algorithmic read of engine+0x48.",
+                "Runtime query owner/generation, final engine state after fallback, and measurement/audio effect."
+              ]
             }
           },
           "vectors": {
@@ -6097,7 +6189,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-QUERY-OWNER-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-QUERY-OWNER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-QUERY-OWNER-BOUNDARY-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-QUERY-OWNER-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-QUERY-OWNER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "Reference-only Integer transfer boundary: schema registers base-10 Integer default 15 and inclusive 0..100 bounds; static setup transfers U32 unchanged to Meter config +0x48. The engine copy precedes a branch that may rewrite config to 15 without writing the engine field; final engine state after fallback, XML query owner, first algorithm read, Meter result, and effects remain unbound/not run."
@@ -6124,7 +6220,8 @@
           "dependencies": [],
           "spec_files": [
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-FIELD-CONSUMER-BOUNDARY-V1/REPORT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-FIRST-READER-BOUNDARY-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-FIRST-READER-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -6153,7 +6250,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-FIRST-READER-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-FIRST-READER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-FIRST-READER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-FIRST-READER-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-FIRST-READER-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "5e74aef07b179668ab263f07642209a223dbaa1bcedeadd5f2fd1929a0a63f90",
             "supplement_seal_sha256": "1100d0026618279ebdd35ecd36c2a132d03b841c7a926965ead4ff1278549ffd",
@@ -6175,6 +6279,18 @@
               "setter_expression": "param_1+0x31 where param_1 is longlong* => byte offset +0x188",
               "reader_candidate": "FUN_1400f09d0 reads its own object +0x188; identity/owner/generation join is UNBOUND",
               "adm_atmosmezz_attribution_and_effect": "UNBOUND/NOT_RUN"
+            },
+            "first_conversion_helper_addendum": {
+              "package_id": "DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1",
+              "manifest_sha256": "3534886eae140fcc04ef4c37b99da6bef1fe835e3aeeb677ed64cde288368783",
+              "seal_sha256": "3de440e816fc5cdb8fab1d10ddb9d5a7f6ed299e5d0969d51f6fe3e92b4f43dd",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "sentinel_branch": "not_indicated property check/insertion path",
+              "special_rate_branch": "29.97df -> 29.97 plus drop_frame property; flag value unresolved",
+              "non_sentinel_first_helper": "FUN_1401359e0 returns value treated as double",
+              "offset_first_helper": "FUN_140054460 result cast to double",
+              "xml_owner_numeric_semantics_and_effect": "UNBOUND/NOT_RUN"
             }
           },
           "vectors": {
@@ -6187,7 +6303,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-FIRST-READER-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-FIRST-READER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-FIRST-READER-BOUNDARY-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-FIRST-READER-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-FIRST-READER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "Reference-only timecode_frame_rate boundary: the host exact-key setter stores a typed value at input object +0x31 without identifying its adm/atmos_mezz owner or first consumer. The DDP plugin has a numeric property-map consumer at +0xa0 in FUN_18014fd90, but XML output-node owner/generation is not joined. Input/output fields may not be merged; template not_indicated does not prove omission defaults."
@@ -6214,7 +6334,8 @@
           "dependencies": [],
           "spec_files": [
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-LIFECYCLE-BOUNDARY-V1/REPORT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-ASSIGN-FILE-DELEGATE-BOUNDARY-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-ASSIGN-FILE-DELEGATE-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -6243,7 +6364,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-ASSIGN-FILE-DELEGATE-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-ASSIGN-FILE-DELEGATE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-ASSIGN-FILE-DELEGATE-BOUNDARY-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-ASSIGN-FILE-DELEGATE-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-ASSIGN-FILE-DELEGATE-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "3ec5385807a5a080bd93d099ab1ee0562c960200cdddc3889d947b2bd5288b54",
             "supplement_seal_sha256": "81762e2c76295df51bed9a26825a9212f2503d9468e71ec7f914f0db31c0ecbe",
@@ -6264,6 +6392,19 @@
               "delegate": "FUN_140067610 -> FUN_140066230 at 0x1400676d5",
               "callee_file_operation": "UNBOUND",
               "clean_temp_and_job_identity": "UNBOUND/NOT_RUN"
+            },
+            "first_vtable_delegate_addendum": {
+              "package_id": "DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1",
+              "manifest_sha256": "c53ef7e00f8c19a793538241f3c90214e6d56df932c7beb2d6de544d2ec7a344",
+              "seal_sha256": "5ffa2dc19a542390f6ae9dd76a77a492f074eb832bd31a5bd75853f2b468e05d",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "bounded_evidence": "On the byte[param_1+0x160]==0 fallthrough, FUN_140066230 reaches an indirect vtable +0x18 call before an identified filesystem API; clean_temp +0x90 is not an explicit call input.",
+              "remaining": [
+                "Vtable target/typed operation and alternate branch.",
+                "clean_temp flag to cleanup consumer and runtime provider/job identity.",
+                "Create/delete/retain behavior."
+              ]
             }
           },
           "vectors": {
@@ -6276,7 +6417,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-ASSIGN-FILE-DELEGATE-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-ASSIGN-FILE-DELEGATE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-ASSIGN-FILE-DELEGATE-BOUNDARY-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-ASSIGN-FILE-DELEGATE-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-ASSIGN-FILE-DELEGATE-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "Reference-only temp_dir lifecycle boundary: StageRunner fields and path/clean_temp writes plus a temp_dir_test write-mode open/close are observed. No probe deletion or job-output cleanup is proven; clean_temp consumer, selected storage-provider instance, and job generation remain unbound."
@@ -66635,6 +66780,146 @@
       "not_run": [
         "Selected Priv instance/generation and value-read/serialization path.",
         "First BSI/DDP sink and rendered downmix effect."
+      ]
+    },
+    {
+      "package_id": "DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1",
+      "manifest_sha256": "b6010cc1304f5f41d2954865b2474b1e54dfb769551c02db7afa73f4cc56c9fa",
+      "supplement_seal_sha256": "98d4a2ebf9eff34b64477482691acf0323dffd96734481e3d1180fb10c8f0f99",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "MASTERSOURCE_PLUS20_DISPATCH_BOUND; PLUS28_NOT_ON_EDGE; READER_RANGE_OWNER_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Indirect vtable target owner/generation and object +0x20 semantics.",
+        "Object +0x28 first Reader consumer and typed startSample/endSample joins.",
+        "Range/duration/PTS/audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-HEIGHT-TRIM-QUERY-INPUT-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-HEIGHT-TRIM-QUERY-INPUT-BOUNDARY-V1",
+      "manifest_sha256": "1cd3b06296d39f586662ac4b9ddfc6ed19258f83ed0cd391d332ef35d00ed8f2",
+      "supplement_seal_sha256": "3224f76b0e2558e26d60af7c0e43f0b118edfef060753c1b0a410604d70dd564",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "HEIGHT_KEY_AND_GENERIC_QUERY_BOUND_SEPARATELY; INPUT_AND_RETURN_OWNER_JOINS_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Specific caller/RDX key bytes to height key equality.",
+        "Query return to Priv+0x9e8 instance/provider generation.",
+        "Units, numeric conversion, BSI/audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1",
+      "manifest_sha256": "74af7031d288b773ccbeee775507824cf6c6c8ce192ea3668d8daa822bbfa146",
+      "supplement_seal_sha256": "cb1299030b8e75fa39556744bcaf1ac774504ce294e27aeff7590155ce0dd53a",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "ENGINE_CONFIG_COPY_AND_PROCESS_PATH_BOUND; FIRST_ALGORITHMIC_READ_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "First algorithmic read of engine +0x48.",
+        "Runtime query owner/generation and final engine value after fallback.",
+        "Meter/control and audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1",
+      "manifest_sha256": "3534886eae140fcc04ef4c37b99da6bef1fe835e3aeeb677ed64cde288368783",
+      "supplement_seal_sha256": "3de440e816fc5cdb8fab1d10ddb9d5a7f6ed299e5d0969d51f6fe3e92b4f43dd",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "SENTINEL_AND_FIRST_HELPER_EDGES_BOUND; UNITS_OWNER_SYNTAX_AND_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Conversion helper bodies, units, accepted syntax, precision/rounding and rejection semantics.",
+        "XML value owner/runtime generation and timecode downstream consumer.",
+        "Frame-rate conversion effect."
+      ]
+    },
+    {
+      "package_id": "DEE-LINE-DRC-SERIALIZER-FIRST-READ-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-DRC-SERIALIZER-FIRST-READ-BOUNDARY-V1",
+      "manifest_sha256": "3f00c1ffff8397226e3a638a192be174ea45e783616a77f0855cbe0d18a84c67",
+      "supplement_seal_sha256": "0992e6ad806950578180854c4386717826318202e7ae3ecf095cb67b9f4f2406",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "FIRST_INPUT_POINTER_READ_BOUND; SEMANTIC_TYPE_A0_OWNER_JOIN_UNBOUND; OUTPUT_WRITE_NOT_REACHED; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "First read pointer semantic type and snapshot +0xa0 same-owner/generation join.",
+        "Serializer output write/width and codec/BSI field.",
+        "Runtime activation and audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1",
+      "manifest_sha256": "4032fee4e402b0b7c3cf5ae9f5bf0febc4ca1222b3b6415a582c25da007574fb",
+      "supplement_seal_sha256": "9265c062a7cdf58eadbfc101df10016499621da494329905a13c519ab1021acf",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "RUN_TO_INITPLUGIN_AND_PROPERTY_ARRAY_ACTIVATION_BOUND; INDIRECT_TARGET_SETTER_JOIN_AND_OUTPUT_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Indirect activation target/ABI and selected muxer.",
+        "SetProperty +0x3b to Run/InitPlugin same-owner join.",
+        "Container writer, output and runtime effect."
+      ]
+    },
+    {
+      "package_id": "DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1",
+      "manifest_sha256": "c53ef7e00f8c19a793538241f3c90214e6d56df932c7beb2d6de544d2ec7a344",
+      "supplement_seal_sha256": "5ffa2dc19a542390f6ae9dd76a77a492f074eb832bd31a5bd75853f2b468e05d",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "FIRST_VTABLE_DELEGATE_BOUND; TARGET_FILE_EFFECT_AND_CLEAN_TEMP_JOIN_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Vtable target/typed operation and alternate branch.",
+        "clean_temp flag to cleanup consumer and runtime provider/job identity.",
+        "Create/delete/retain behavior."
       ]
     }
   ]

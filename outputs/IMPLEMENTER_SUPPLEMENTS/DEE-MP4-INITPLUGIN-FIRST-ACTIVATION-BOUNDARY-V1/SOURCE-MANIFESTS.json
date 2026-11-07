@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "DEE-ADM-MP4-INITPLUGIN-ACTIVATION-FIRST-CONSUMER-WASH-V1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-03\\jocforge-reverse-agent-5\\outputs\\DEE-ADM-MP4-INITPLUGIN-ACTIVATION-FIRST-CONSUMER-WASH-V1",
+    "manifest_sidecar_sha256": "6e32ba983ef1892efda07ea466929b52c439c8e5b5295b2115b4dc8b1247b450",
+    "normal_checker": "PASS",
+    "python_o_checker": "PASS"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SENTINEL_AND_2997DF_BRANCHES_BOUND; FIRST_RATE_TIMECODE_HELPER_BOUND; NUMERIC_SEMANTICS_AND_XML_OWNER_UNBOUND; NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 984,
+      "sha256": "1ef324b1bbacfa7eb35c94ea22572dcf2bf48d73467e1834fafd5cc6a3693604"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1451,
+      "sha256": "c36142d0f43a8add8bdcf515eda333742a96feefb864659f5a70e330ef89b3c4"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 561,
+      "sha256": "260b6c1480389286973d7714a306a944decd5613f01b73e5537b1035725ca522"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 421,
+      "sha256": "4f529491244d07ea28df9fc4cc8c11c71798ce5867ecb2429eed08896d60fe81"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 781,
+      "sha256": "3fd8e60fa737a853a70bb66e84c6e64ce137d290137f78d7c6047cdc9b4aa9b2"
+    }
+  ]
+}

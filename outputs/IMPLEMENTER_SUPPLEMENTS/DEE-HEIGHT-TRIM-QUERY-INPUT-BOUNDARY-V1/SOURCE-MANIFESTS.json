@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "custom_trim_height_query_input_owner_boundary_wash_v1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-6-f05-f13-transaction\\outputs\\custom_trim_height_query_input_owner_boundary_wash_v1",
+    "manifest_sha256": "faa9b72b0d5fc35eccb9126ea45a98e693f5ea938e8c11503aebdfa32dcfeaaf",
+    "manifest_sha256_sidecar_sha256": "7ff6e6efc44bda956f83bbe0411d8eee66b65e6ef272bdf7122ad3286ee3e315",
+    "normal_checker": "PASS",
+    "python_o_checker": "PASS"
+  }
+}

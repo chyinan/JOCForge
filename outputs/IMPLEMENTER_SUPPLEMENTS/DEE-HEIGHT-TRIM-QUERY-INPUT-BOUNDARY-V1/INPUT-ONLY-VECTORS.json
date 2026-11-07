@@ -1,0 +1,5 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [],
+  "note": "Static query-input boundary only; no runtime key or output vectors."
+}

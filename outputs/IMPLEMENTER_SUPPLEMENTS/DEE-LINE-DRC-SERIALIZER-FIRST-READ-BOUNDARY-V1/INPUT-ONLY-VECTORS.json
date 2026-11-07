@@ -1,0 +1,5 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [],
+  "note": "Static first-read boundary only; no runtime or coded-audio vectors."
+}

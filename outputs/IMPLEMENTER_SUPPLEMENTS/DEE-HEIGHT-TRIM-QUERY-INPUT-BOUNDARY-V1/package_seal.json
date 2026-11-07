@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-HEIGHT-TRIM-QUERY-INPUT-BOUNDARY-V1",
+  "manifest_sha256": "1cd3b06296d39f586662ac4b9ddfc6ed19258f83ed0cd391d332ef35d00ed8f2",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "HEIGHT_KEY_TO_QUERY_INPUT_UNBOUND; QUERY_RETURN_TO_HEIGHT_INSTANCE_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

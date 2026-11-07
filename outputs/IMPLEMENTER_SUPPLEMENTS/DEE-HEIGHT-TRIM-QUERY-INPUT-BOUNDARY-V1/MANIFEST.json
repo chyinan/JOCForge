@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-HEIGHT-TRIM-QUERY-INPUT-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "HEIGHT_KEY_TO_QUERY_INPUT_UNBOUND; QUERY_RETURN_TO_HEIGHT_INSTANCE_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 825,
+      "sha256": "b3d1354bbdf151d7bce6f57b8e98aedbf4f0a921d2a9176f8e9a94296a039562"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1387,
+      "sha256": "4c2c9815f9b2062434cb85b943a3b72d9786d076cb3fa33080824bba39f6a466"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 590,
+      "sha256": "9ff3eba6b12dc2b20208f7b31b0e8a0ba5aedfd569b42db3a38d4091870cb5e4"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 146,
+      "sha256": "99fa621b00a586f519d79c7042146c54d5fa4b1dff5310ba1b75bce58fb1eaaf"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 774,
+      "sha256": "ad2cecc6be68697360cc33037c6d02d7d456d82bd5ce78decce453e6a39cd878"
+    }
+  ]
+}

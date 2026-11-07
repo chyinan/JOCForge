@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "MASTER_SOURCE_PLUS20_DISPATCH_BOUND; VTABLE_TARGET_OWNER_UNBOUND; PLUS28_NOT_ON_EDGE; RANGE_IDENTITY_UNBOUND; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 838,
+      "sha256": "bac4d04bb1930e06e41a48ecd14cb59e49da65bef2728068cd85b0f0dd336f0c"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1398,
+      "sha256": "ca1484c477f658f3028d4fb2ba1a96fb24184c7a6cf1b368868fd5c6b339d130"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 552,
+      "sha256": "317c3dbd70c3ef9e2fe7e02d609383456613e4c24edd14d3c82fa40eb4a77976"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 147,
+      "sha256": "29df3acec328efb9a7398abe0fb2ee6cfbb829a46b018e0a4cada69e35793343"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 850,
+      "sha256": "d88f36e4ab823857b981ab1b53bff5165c2fd44371df02a46c398f8846417ab1"
+    }
+  ]
+}

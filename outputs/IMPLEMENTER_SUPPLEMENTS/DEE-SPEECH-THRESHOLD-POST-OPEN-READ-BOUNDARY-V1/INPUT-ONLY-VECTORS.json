@@ -1,0 +1,5 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [],
+  "note": "Static branch/process boundary only; no runtime threshold or audio vectors."
+}

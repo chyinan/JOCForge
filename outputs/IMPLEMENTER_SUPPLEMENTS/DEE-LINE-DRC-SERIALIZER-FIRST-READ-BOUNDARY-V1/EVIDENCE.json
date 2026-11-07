@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.line_drc_serializer_first_read_boundary.v1",
+  "status": "FIRST_INPUT_POINTER_READ_BOUND; FIELD_SEMANTICS_AND_A0_JOIN_UNBOUND; OUTPUT_WRITE_NOT_REACHED; NOT_RUN",
+  "source_package": "LINE-DRC-SERIALIZER-FIRST-READ-BOUNDARY-WASH-V2",
+  "source_manifest_sha256": "cc823ae1403b6b41eaa6caa4775b4b532d6b955c63214a14008a424be66e896e",
+  "source_manifest_sidecar_sha256": "fbaec02eec399f5ca237c4dfece8f8df045740a69d88e8686a884c3a52756ca2",
+  "source_seal_sha256": "1569b221cdfe7ba921bac09cce40bd94bea85a4cc3ed58ff7b857d3f3d5a852f",
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "first_read": {"function": "FUN_1802001a0", "address": "0x1802001be", "instruction": "MOV RCX,qword ptr [RCX+0x42f0]", "width_bits": 64, "semantic_type": "UNBOUND"},
+  "caller": {"function": "FUN_1801feb80", "entry_RCX": "RBX receiver", "RDX": "derived record pointer", "typed_join_to_snapshot_a0": "UNBOUND"},
+  "unbound": ["+0x42f0 pointer semantic identity", "caller object/record to snapshot+0xA0 same-owner/generation join", "serializer output width (NOT_REACHED)", "codec/BSI data", "runtime activation", "audio effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

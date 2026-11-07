@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "DEE-ATMOS-MISC-TEMP-FIRST-DELEGATE-BOUNDARY-WASH-V1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-8-f13c-preferred-source\\outputs\\DEE-ATMOS-MISC-TEMP-FIRST-DELEGATE-BOUNDARY-WASH-V1",
+    "manifest_sha256": "bb2aa400666baee8cec1c4d7d92dc178a45285582f7c9ca745057e4558b7a864",
+    "checksums_file_sha256": "38fcf73da3bb852e16aa636be20604fc9d1cb9eced5d7250fa5056c617cf79dc",
+    "normal_checker": "PASS",
+    "python_o_checker": "PASS"
+  }
+}

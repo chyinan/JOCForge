@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "line_mode_drc_serializer_first_read_boundary_wash_v2",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-10-23\\jocforge-reverse-agent-2\\outputs\\line_mode_drc_serializer_first_read_boundary_wash_v2",
+    "manifest_sha256": "cc823ae1403b6b41eaa6caa4775b4b532d6b955c63214a14008a424be66e896e",
+    "manifest_sidecar_sha256": "fbaec02eec399f5ca237c4dfece8f8df045740a69d88e8686a884c3a52756ca2",
+    "package_seal_sha256": "1569b221cdfe7ba921bac09cce40bd94bea85a4cc3ed58ff7b857d3f3d5a852f",
+    "normal_checker": "PASS",
+    "python_o_checker": "PASS"
+  }
+}

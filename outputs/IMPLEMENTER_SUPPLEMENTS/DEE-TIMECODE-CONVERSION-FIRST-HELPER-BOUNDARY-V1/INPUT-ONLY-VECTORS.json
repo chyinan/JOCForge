@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {"field": "timecode_frame_rate", "token": "not_indicated", "status": "STATIC_BRANCH_ONLY", "expected_runtime_value": null},
+    {"field": "timecode_frame_rate", "token": "29.97df", "status": "STATIC_SPECIAL_CASE_ONLY", "expected_drop_frame_value": null}
+  ],
+  "note": "No helper conversion outputs, units, or runtime acceptance expectations asserted."
+}

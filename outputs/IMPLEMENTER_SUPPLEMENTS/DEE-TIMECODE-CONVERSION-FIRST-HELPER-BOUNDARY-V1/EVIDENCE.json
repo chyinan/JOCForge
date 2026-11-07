@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.timecode_conversion_boundary.v1",
+  "status": "SENTINEL_AND_2997DF_BRANCHES_BOUND; FIRST_RATE_TIMECODE_HELPER_BOUND; NUMERIC_SEMANTICS_AND_XML_OWNER_UNBOUND; NOT_RUN",
+  "source_package": "timecode-frame-rate-conversion-boundary-wash-v1",
+  "source_manifest_sidecar_sha256": "130340adebe95c7a43876898224777129c6ac411bb4c7c1f71b7b138897548fd",
+  "source_package_seal_sha256": "4a21324ed49786009b45001a999c2541718325c90b5c6bb5ca49f2e82f64a521",
+  "branches": {"not_indicated": "checks existing timecode_frame_rate property; missing property uses insertion path", "29.97df": "canonicalizes rate string to 29.97 and writes a drop_frame property; flag value unresolved"},
+  "first_helper_edges": {"offset": "FUN_140054460(value,0) -> double at RVA 0x1305e7", "timecode_rate": "FUN_1401359e0(timecode_string,rate_string,0,0) at RVA 0x1306b3; return treated as double; body not inspected"},
+  "unbound": ["drop_frame flag literal", "offset/timecode units", "accepted numeric syntax and rejection rules", "precision and rounding", "full enumerated-list validation", "input XML owner and runtime value"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

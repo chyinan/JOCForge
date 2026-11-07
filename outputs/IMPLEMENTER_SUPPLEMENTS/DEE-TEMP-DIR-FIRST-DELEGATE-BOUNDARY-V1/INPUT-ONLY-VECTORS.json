@@ -1,0 +1,5 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [],
+  "note": "Static first delegate prefix only; no file operation or cleanup vectors."
+}

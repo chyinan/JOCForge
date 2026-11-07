@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.mp4_initplugin_activation_boundary.v1",
+  "status": "RUN_TO_INITPLUGIN_BOUND; OUTPUT_FORMAT_TO_FIRST_INDIRECT_ACTIVATION_BOUND; TARGET_AND_SETTER_OWNER_UNBOUND; OUTPUT_NOT_RUN",
+  "source_package": "DEE-ADM-MP4-INITPLUGIN-ACTIVATION-FIRST-CONSUMER-WASH-V1",
+  "source_manifest_sidecar_sha256": "6e32ba983ef1892efda07ea466929b52c439c8e5b5295b2115b4dc8b1247b450",
+  "run_initplugin_edge": {"caller": "FUN_140148e90 Mp4::Run", "callsite": "0x140149187", "callee": "FUN_140147140 Mp4::InitPlugin", "param_1_forwarded_unchanged": true},
+  "property_array": {"source": "param_1+0x1d8 output_format property data", "entry_stride_bytes": 24, "layout": ["key pointer", "value pointer", "zero qword"], "header": "local_228 pointer + local_220 count"},
+  "first_activation": {"callsite": "0x140148c7d", "interface_pointer": "param_1+0x260", "virtual_slot": "+0x18", "receiver": "(*(longlong **)(param_1+0x260))[1]", "argument": "&local_228"},
+  "unbound": ["indirect target function and typed ABI", "concrete muxer selected", "SetProperty receiver+0x3b to same Run/InitPlugin object", "runtime output/container result"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "audio_algorithm_change_authorized": false}
+}

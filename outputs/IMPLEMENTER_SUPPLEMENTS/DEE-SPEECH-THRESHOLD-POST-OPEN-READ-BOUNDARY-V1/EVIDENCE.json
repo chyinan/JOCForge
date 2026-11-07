@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.speech_threshold_post_open_read_boundary.v1",
+  "status": "ENGINE_CONFIG_COPY_AND_PROCESS_PATH_BOUND; FIRST_ALGORITHMIC_READ_NOT_IDENTIFIED; EFFECT_UNBOUND_NOT_RUN",
+  "source_package": "speech_threshold_post_open_reader_boundary_wash_v1",
+  "source_manifest_sha256": "64c7005f13f3dd4ba4c896336d7676b301a645c7651f586c35f5b58f8f031a89",
+  "source_seal_sha256": "a1257aaad49d7dacb80501a22a8d07980289f71ff4f8ed11b1dc3f00df41b3bb",
+  "config_flow": {"copy_function": "FUN_1801a9620", "copy": "config+0x48 U32 -> engine+0x48", "copy_order": "before FUN_1801af230 branch", "source_zero_fallback": "source config+0x48 becomes literal 15; subcontext+0x16c not written; no engine update established"},
+  "process_path": {"entry": "FUN_1801aa080", "selected_branch_call": "FUN_1801a8d00(engine,engine+0x2ee0)", "first_helper": "FUN_1801ae5a0(engine+0x08,...) reads +0x00/+0x10 of that pointer", "direct_engine_plus48_load": false, "nested_same_offset_load": "QWORD [nested pointer from engine+0x2eb0 +0x48], distinct base and width"},
+  "first_break": "FUN_1801a8d00 -> FUN_1801ad9d0 at RVA 0x1a8d7a; args do not include engine+0x48 value/address",
+  "unbound": ["first algorithmic read of engine+0x48", "runtime owner/generation", "query-to-selected engine join", "audio/control effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

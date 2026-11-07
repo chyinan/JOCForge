@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "RUN_TO_INITPLUGIN_BOUND; OUTPUT_FORMAT_TO_FIRST_INDIRECT_ACTIVATION_BOUND; TARGET_AND_SETTER_OWNER_UNBOUND; OUTPUT_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 865,
+      "sha256": "73582d37f4be8a325a4c79f4c3eab43932d6864cf0a8bcae7fd4b76a71dab0a1"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1478,
+      "sha256": "f01a7fd06da44e75a07cd89d68e37226bff5428d537b460f9a1096e2a7f47280"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 478,
+      "sha256": "f91bbfe352f1400a287b511ee494e67e44dab9d5c9f3e52d5b4f44b07dc57e25"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 151,
+      "sha256": "671dbc1ccff21bedf9d7e1a6671a6f6bbbf92ca13d5cab3f966f5732a38e6c3b"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 815,
+      "sha256": "ac136ebf74451290809a67a8519e66683a677682fc6614a59a538791a9b5033a"
+    }
+  ]
+}

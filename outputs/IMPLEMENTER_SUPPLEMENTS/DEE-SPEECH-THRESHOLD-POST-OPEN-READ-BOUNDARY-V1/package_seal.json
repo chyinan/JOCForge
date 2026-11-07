@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1",
+  "manifest_sha256": "74af7031d288b773ccbeee775507824cf6c6c8ce192ea3668d8daa822bbfa146",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "ENGINE_CONFIG_COPY_AND_PROCESS_PATH_BOUND; FIRST_ALGORITHMIC_READ_NOT_IDENTIFIED; EFFECT_UNBOUND_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

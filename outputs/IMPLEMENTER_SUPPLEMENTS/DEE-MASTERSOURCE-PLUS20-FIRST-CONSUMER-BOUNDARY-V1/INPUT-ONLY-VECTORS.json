@@ -1,0 +1,5 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [],
+  "note": "Static pointer-dispatch edge only; no sample-range or audio vectors."
+}

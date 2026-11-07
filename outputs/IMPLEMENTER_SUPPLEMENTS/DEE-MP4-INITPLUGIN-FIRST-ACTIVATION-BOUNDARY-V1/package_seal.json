@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1",
+  "manifest_sha256": "4032fee4e402b0b7c3cf5ae9f5bf0febc4ca1222b3b6415a582c25da007574fb",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "RUN_TO_INITPLUGIN_BOUND; OUTPUT_FORMAT_TO_FIRST_INDIRECT_ACTIVATION_BOUND; TARGET_AND_SETTER_OWNER_UNBOUND; OUTPUT_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

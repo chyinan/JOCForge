@@ -1385,7 +1385,7 @@ DLL-local candidate map 静态给出 1770-4→U32 0、1770-3→U32 1；一个处
 
 ## 2026-11-08: Additional washed job_config reference boundaries
 
-The following twenty-nine packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. They are evidence-only and do not enable additional job_config behavior:
+The following thirty-four tabled packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. Registry-only addenda are recorded in `IMPLEMENTATION-MAP.json`; all remain evidence-only and do not enable additional job_config behavior:
 
 | Package | Manifest / seal SHA-256 | Bounded evidence | Still unbound or not run |
 |---|---|---|---|
@@ -1416,7 +1416,13 @@ The following twenty-nine packages were independently hash-checked and passed th
 | DEE-TEMP-DIR-ASSIGN-FILE-DELEGATE-BOUNDARY-V1 | a3c5b4e1816471e3d4459cee1133a291194c1c2f553b1c10051141254066c7b3 / b1285e4d865a1f9595540be1c7615c835e3984a5f77ce5620a9210ebb8243205 | AssignTempFile path arguments delegated to FUN_140066230. | Callee file operation, cleanup consumer and runtime job/provider identity. |
 | DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1 | 10d0ff327ab98b1318a0ca5f9e96bdf6d3c98c5bcf8e5cb2de7912b22836b74c / cb56c20de1499e3939756b17988b17927a18e0d74a90102b3c8f479d31492dc5 | Selected-source J-vector handoff and candidate row/MasterSourceImpl fields. | Typed join to Reader startSample/endSample, duration/PCM/PTS effects. |
 | DEE-HEIGHT-TRIM-KEY-QUERY-BOUNDARY-V1 | b80551101abe6d2ef1cf8efc75be33ff8ad7644fc228c07f9a2db42e27601713 / 497263917403796717b1652f9bc5f8c2c0f6c3e07199730fa7550c655bdeba85 | Height key registration and generic exact-key query mechanism. | Key-to-record and query-result-to-field instance/provider joins, units and effects. |
+| DEE-HEIGHT-TRIM-QUERY-INPUT-BOUNDARY-V1 | 1cd3b06296d39f586662ac4b9ddfc6ed19258f83ed0cd391d332ef35d00ed8f2 / 3224f76b0e2558e26d60af7c0e43f0b118edfef060753c1b0a410604d70dd564 | Generic RDX-forwarding query thunk. | Concrete caller/key bytes, query result to height field instance, units and effects. |
+| DEE-SPEECH-THRESHOLD-POST-OPEN-READ-BOUNDARY-V1 | 74af7031d288b773ccbeee775507824cf6c6c8ce192ea3668d8daa822bbfa146 / cb1299030b8e75fa39556744bcaf1ac774504ce294e27aeff7590155ce0dd53a | Engine config copy order and bounded post-open process path. | First algorithmic read, runtime owner/generation and Meter/audio effect. |
+| DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1 | 3534886eae140fcc04ef4c37b99da6bef1fe835e3aeeb677ed64cde288368783 / 3de440e816fc5cdb8fab1d10ddb9d5a7f6ed299e5d0969d51f6fe3e92b4f43dd | Sentinel/special-rate branches and first non-sentinel helper calls. | Units, syntax, precision, rounding, rejection behavior, XML owner and runtime effect. |
 | DEE-LORO-CENTER-MIXLEVEL-OWNER-FIRST-BREAK-V1 | c8d1c30461625978279c2033b04a737a2542cde61c6371280615e6e3106a2c1f / fd7995bb4ed87328f0a61e50023455242303e702e90e859d150cd1a992f9778e | Static Lo/Ro center MixLevel object/value member at Priv+0x7d0/+0x50. | Selected runtime owner/generation, read/serialization, first BSI sink and render effect. |
+| DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1 | b6010cc1304f5f41d2954865b2474b1e54dfb769551c02db7afa73f4cc56c9fa / 98d4a2ebf9eff34b64477482691acf0323dffd96734481e3d1180fb10c8f0f99 | MasterSourceImpl +0x20 reaches pointer dispatch; +0x28 is not forwarded on that edge. | Target owner/generation and typed Reader start/end range join, duration/PTS/audio effect. |
+| DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1 | 4032fee4e402b0b7c3cf5ae9f5bf0febc4ca1222b3b6415a582c25da007574fb / 9265c062a7cdf58eadbfc101df10016499621da494329905a13c519ab1021acf | output_format property array reaches the first indirect InitPlugin activation call. | Target/ABI, setter receiver join, muxer/writer and runtime output. |
+| DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1 | c53ef7e00f8c19a793538241f3c90214e6d56df932c7beb2d6de544d2ec7a344 / 5ffa2dc19a542390f6ae9dd76a77a492f074eb832bd31a5bd75853f2b468e05d | First vtable +0x18 delegate on one temp-file branch. | Target operation, create/delete/retain behavior, clean_temp join and runtime identity. |
 
 These packages preserve the existing fail-closed CLI selection. None authorizes enabling non-default metering, time-base, trim, DRC, downmix, or silence behavior.
 

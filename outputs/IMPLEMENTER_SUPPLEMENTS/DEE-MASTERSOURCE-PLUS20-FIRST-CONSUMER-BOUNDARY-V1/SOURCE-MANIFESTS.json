@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "dee_atmos_ddp_master_source_first_field_consumer_wash_v1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-01\\jocforge-reverse-agent-5-f09-u5\\outputs\\dee_atmos_ddp_master_source_first_field_consumer_wash_v1",
+    "manifest_sha256": "2174b098896d348f65057148603d6a435ccd28b759ca445d04ce21c8b7b71339",
+    "seal_sha256": "c6a0806b88bea41d6f813f052ba6d4d798fae1b88e44a37966cbd0a31f62fe47",
+    "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+  }
+}

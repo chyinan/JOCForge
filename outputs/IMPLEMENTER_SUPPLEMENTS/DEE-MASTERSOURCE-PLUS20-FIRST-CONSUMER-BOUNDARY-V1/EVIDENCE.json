@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.master_source_field_first_consumer_boundary.v1",
+  "status": "MASTER_SOURCE_PLUS20_DISPATCH_BOUND; VTABLE_TARGET_OWNER_UNBOUND; PLUS28_NOT_ON_EDGE; RANGE_IDENTITY_UNBOUND",
+  "source_package": "dee_atmos_ddp_master_source_first_field_consumer_wash_v1",
+  "source_manifest_sha256": "2174b098896d348f65057148603d6a435ccd28b759ca445d04ce21c8b7b71339",
+  "source_seal_sha256": "c6a0806b88bea41d6f813f052ba6d4d798fae1b88e44a37966cbd0a31f62fe47",
+  "constructor": {"function": "FUN_180536180", "writes": ["object+0x20", "object+0x28"], "plus20_forwarded": true, "plus28_forwarded_on_direct_edge": false},
+  "first_consumer": {"function": "FUN_1804cba30", "callsite": "0x1805361bc", "input": "longlong* from object+0x20", "operation": "read first qword as vtable pointer, indirect call slot +0x70", "explicit_call_arguments": 0},
+  "unbound": ["concrete vtable target owner/generation", "object+0x20 semantic identity", "object+0x28 first reader", "join to typed Reader CompositeMasterItem startSample/endSample", "range/duration/PTS/audio effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

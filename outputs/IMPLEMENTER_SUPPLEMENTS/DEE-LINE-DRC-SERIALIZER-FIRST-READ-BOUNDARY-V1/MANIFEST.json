@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LINE-DRC-SERIALIZER-FIRST-READ-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "FIRST_INPUT_POINTER_READ_BOUND; FIELD_SEMANTICS_AND_A0_JOIN_UNBOUND; OUTPUT_WRITE_NOT_REACHED; NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 815,
+      "sha256": "855524701bc6d221da46e151dba3f756c0d81c770791034cd0eba52f9d495dde"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1504,
+      "sha256": "897009c6b51f1b8e16c6e3f120a9c71ff68450853585a3e72bfb69824fd5293f"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 667,
+      "sha256": "79749f82506283f9dceabd43ebdb8f1780362d7901f1960363c5fa875fdafcaa"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 146,
+      "sha256": "f3607af59fc7770534a3a15cf43e0f6eda18fb32db7abe4220a468880a0e4eb8"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 822,
+      "sha256": "3888cfe1425a8e5750d267cb743ff112b98a640c34a4e1e965c68cd41a8c9ffa"
+    }
+  ]
+}

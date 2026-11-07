@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "timecode_frame_rate_conversion_boundary_wash_v1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-10-25\\jocforge-reverse-agent-4-f06of\\outputs\\timecode_frame_rate_conversion_boundary_wash_v1",
+    "manifest_sidecar_sha256": "130340adebe95c7a43876898224777129c6ac411bb4c7c1f71b7b138897548fd",
+    "package_seal_sha256": "4a21324ed49786009b45001a999c2541718325c90b5c6bb5ca49f2e82f64a521",
+    "normal_checker": "PASS",
+    "python_o_checker": "PASS"
+  }
+}

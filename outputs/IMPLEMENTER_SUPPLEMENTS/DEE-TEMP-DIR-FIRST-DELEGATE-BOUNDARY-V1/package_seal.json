@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1",
+  "manifest_sha256": "c53ef7e00f8c19a793538241f3c90214e6d56df932c7beb2d6de544d2ec7a344",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "FIRST_VTABLE_DELEGATE_BOUND; TARGET_FILE_EFFECT_UNBOUND; CLEAN_TEMP_JOIN_UNBOUND; IMPLEMENTATION_READY=NO"
+}
