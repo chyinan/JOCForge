@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LFE-16POINT-TERMINAL-TRANSFORM-IMPLEMENTER-V1",
+  "status": "SEALED_MANUAL_HASH_AUDIT",
+  "manifest_sha256": "2b7d085bd727c36b489ebc9619090c7b2c7003fc051d7e93197af1ef8fbc07d9",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "upstream_manifest_sha256": "76c82218e9b4c7b0458ee0910b67259eac17dd8b34b1b958f6c1161c5efc80c1",
+  "upstream_source_receipt_audit": "PASS_11_OF_11; COEFFICIENT_HASHES_PASS_8_OF_8",
+  "checker_status": "NOT_RUN_BY_WASH"
+}

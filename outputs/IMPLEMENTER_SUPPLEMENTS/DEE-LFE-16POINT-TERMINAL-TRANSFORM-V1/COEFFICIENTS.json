@@ -1,0 +1,250 @@
+{
+  "schema": "jocforge.dee_lfe_16point_coefficients.v1",
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "tables_and_scalars": {
+    "W0": {
+      "rva": "0x6be1f0",
+      "bytes": 32,
+      "kind": "F32_LE",
+      "sha256": "7ce70d170aa062097ee0a0f0e3f8426492e92869586d42df885d86f3c504da73",
+      "values": [
+        {
+          "index": 0,
+          "value": "0x1.0p0",
+          "raw_bits": "0x3f800000"
+        },
+        {
+          "index": 1,
+          "value": "0x1.ff621ep-1",
+          "raw_bits": "0x3f7fb10f"
+        },
+        {
+          "index": 2,
+          "value": "0x1.fd88dap-1",
+          "raw_bits": "0x3f7ec46d"
+        },
+        {
+          "index": 3,
+          "value": "0x1.fa7558p-1",
+          "raw_bits": "0x3f7d3aac"
+        },
+        {
+          "index": 4,
+          "value": "0x1.f6297cp-1",
+          "raw_bits": "0x3f7b14be"
+        },
+        {
+          "index": 5,
+          "value": "0x1.fa7558p-1",
+          "raw_bits": "0x3f7d3aac"
+        },
+        {
+          "index": 6,
+          "value": "0x1.fd88dap-1",
+          "raw_bits": "0x3f7ec46d"
+        },
+        {
+          "index": 7,
+          "value": "0x1.ff621ep-1",
+          "raw_bits": "0x3f7fb10f"
+        }
+      ]
+    },
+    "W1": {
+      "rva": "0x6be210",
+      "bytes": 32,
+      "kind": "F32_LE",
+      "sha256": "a05e11182771bd5f84f24fd8fa19ea0c08f6f8b7f9c8e75c4f262b78b2f7321c",
+      "values": [
+        {
+          "index": 0,
+          "value": "0x0.0p0",
+          "raw_bits": "0x00000000"
+        },
+        {
+          "index": 1,
+          "value": "0x1.91f66p-5",
+          "raw_bits": "0x3d48fb30"
+        },
+        {
+          "index": 2,
+          "value": "0x1.917a6cp-4",
+          "raw_bits": "0x3dc8bd36"
+        },
+        {
+          "index": 3,
+          "value": "0x1.2c8106p-3",
+          "raw_bits": "0x3e164083"
+        },
+        {
+          "index": 4,
+          "value": "-0x1.8f8b84p-3",
+          "raw_bits": "0xbe47c5c2"
+        },
+        {
+          "index": 5,
+          "value": "-0x1.2c8106p-3",
+          "raw_bits": "0xbe164083"
+        },
+        {
+          "index": 6,
+          "value": "-0x1.917a6cp-4",
+          "raw_bits": "0xbdc8bd36"
+        },
+        {
+          "index": 7,
+          "value": "-0x1.91f66p-5",
+          "raw_bits": "0xbd48fb30"
+        }
+      ]
+    },
+    "C": {
+      "rva": "0x6be230",
+      "bytes": 32,
+      "kind": "F32_LE",
+      "sha256": "2f13fb2ce5ce3b90a27b09b8e1ea543fe2bb5625f699d124cf37edfa8716d007",
+      "values": [
+        {
+          "index": 0,
+          "value": "0x1.0p1",
+          "raw_bits": "0x40000000"
+        },
+        {
+          "index": 1,
+          "value": "0x1.ff621ep0",
+          "raw_bits": "0x3fffb10f"
+        },
+        {
+          "index": 2,
+          "value": "0x1.fd88dap0",
+          "raw_bits": "0x3ffec46d"
+        },
+        {
+          "index": 3,
+          "value": "0x1.fa7558p0",
+          "raw_bits": "0x3ffd3aac"
+        },
+        {
+          "index": 4,
+          "value": "0x1.f6297cp0",
+          "raw_bits": "0x3ffb14be"
+        },
+        {
+          "index": 5,
+          "value": "0x1.fa7558p0",
+          "raw_bits": "0x3ffd3aac"
+        },
+        {
+          "index": 6,
+          "value": "0x1.fd88dap0",
+          "raw_bits": "0x3ffec46d"
+        },
+        {
+          "index": 7,
+          "value": "0x1.ff621ep0",
+          "raw_bits": "0x3fffb10f"
+        }
+      ]
+    },
+    "P": {
+      "rva": "0x6be250",
+      "bytes": 32,
+      "kind": "U32_LE",
+      "sha256": "4866c8cbca474f15e4f34dc44f97411ade60497227c9a68625f1dcec8dabc3d3",
+      "values": [
+        {
+          "index": 0,
+          "value": "0x00000000",
+          "raw_bits": "0x00000000"
+        },
+        {
+          "index": 1,
+          "value": "0x00000004",
+          "raw_bits": "0x00000004"
+        },
+        {
+          "index": 2,
+          "value": "0x00000002",
+          "raw_bits": "0x00000002"
+        },
+        {
+          "index": 3,
+          "value": "0x00000006",
+          "raw_bits": "0x00000006"
+        },
+        {
+          "index": 4,
+          "value": "0x00000001",
+          "raw_bits": "0x00000001"
+        },
+        {
+          "index": 5,
+          "value": "0x00000005",
+          "raw_bits": "0x00000005"
+        },
+        {
+          "index": 6,
+          "value": "0x00000003",
+          "raw_bits": "0x00000003"
+        },
+        {
+          "index": 7,
+          "value": "0x00000007",
+          "raw_bits": "0x00000007"
+        }
+      ]
+    },
+    "S_out": {
+      "rva": "0x8a90cc",
+      "bytes": 4,
+      "kind": "F32_LE",
+      "sha256": "b1801134f2c71f5540537dc8ab78eb44398b15f76af4ab4fdf3a24468d8e50d6",
+      "values": [
+        {
+          "index": 0,
+          "value": "0x1.0p-4",
+          "raw_bits": "0x3d800000"
+        }
+      ]
+    },
+    "S_butterfly": {
+      "rva": "0x8a9104",
+      "bytes": 4,
+      "kind": "F32_LE",
+      "sha256": "31b67dba7cfd6e2d7540f9c96d90a45b8f2d44956620723024d4e1beeacd4602",
+      "values": [
+        {
+          "index": 0,
+          "value": "0x1.0p-3",
+          "raw_bits": "0x3e000000"
+        }
+      ]
+    },
+    "sign_mask": {
+      "rva": "0x8a9670",
+      "bytes": 4,
+      "kind": "U32_LE",
+      "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6",
+      "values": [
+        {
+          "index": 0,
+          "value": "0x80000000",
+          "raw_bits": "0x80000000"
+        }
+      ]
+    },
+    "rotation_q": {
+      "rva": "0x9d1f9c",
+      "bytes": 4,
+      "kind": "F32_LE",
+      "sha256": "723c8fdc213c6caa05324e5d35fed7b7ba12565f07d26abf773735a424004953",
+      "values": [
+        {
+          "index": 0,
+          "value": "0x1.6a09e6p-1",
+          "raw_bits": "0x3f3504f3"
+        }
+      ]
+    }
+  }
+}

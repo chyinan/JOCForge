@@ -1,0 +1,79 @@
+{
+  "schema": "jocforge.wash_evidence.v1",
+  "package_id": "DEE-LFE-16POINT-TERMINAL-TRANSFORM-IMPLEMENTER-V1",
+  "status": "STATIC_16POINT_F32_STAGE_BOUND; MXCSR_MODE_UNBOUND; LFE_WIRE_JOIN_UNBOUND; PCM_PARITY_NOT_RUN",
+  "target_image": {
+    "file_name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "upstream_package": {
+    "package_id": "DEE-LFE-16POINT-TERMINAL-TRANSFORM-WASH-V1",
+    "manifest_sha256": "76c82218e9b4c7b0458ee0910b67259eac17dd8b34b1b958f6c1161c5efc80c1",
+    "package_seal_sha256": "1d21a856288915de2cc2db0c7b6ca256f10ec7b8f245592f3a1334cf14858193",
+    "payloads_verified": "5/5",
+    "source_receipts_verified": "11/11",
+    "coefficient_hashes_recomputed": "8/8",
+    "input_only_vectors": "18_SPECIFIED_NOT_RUN"
+  },
+  "pipeline": {
+    "input": "X=F32[256]",
+    "gather": "V_r[2m+s]=X[32m+2r+s], r=0..15,m=0..7,s=0..1; each X index read once",
+    "row_transform": "16 calls to the hash-bound 16-point butterfly; output T[16][16]",
+    "permutation": "P[k]=[0,4,2,6,1,5,3,7]",
+    "per_bin_passes": 3,
+    "row_groups": [
+      [
+        14,
+        13,
+        12,
+        11,
+        10
+      ],
+      [
+        9,
+        8,
+        7,
+        6,
+        5
+      ],
+      [
+        4,
+        3,
+        2,
+        1,
+        0
+      ]
+    ],
+    "output": "16 F32 values; 64 bytes; main and companion wrappers call it before separate seven-F32 projections"
+  },
+  "numeric": {
+    "precision": "binary32 F32",
+    "fma_mnemonics_in_two_target_functions": 0,
+    "operation_order": "separate multiply/add/sub instructions; butterfly sign changes use U32 sign-bit XOR 0x80000000",
+    "mxcsr_reads_or_writes": 0,
+    "rounding_ftz_daz": "UNBOUND because runtime MXCSR state was not captured"
+  },
+  "related_wash": {
+    "selector_zero_pretransform": {
+      "package_id": "DEE-LFE-SELECTOR-ZERO-PRETRANSFORM-HISTORY-V1",
+      "manifest_sha256": "8fe794aa046defe87c43827300b1068c05d26e84748341371c7dad1c30aac0e4",
+      "package_seal_sha256": "0087ff0f871805596be95bcf1c0505b2157e740958042ac32da6777a8eeeee06"
+    },
+    "terminal_seven_f32_projection": {
+      "package_id": "DEE-LFE-SEVEN-F32-TERMINAL-PROJECTION-V1",
+      "manifest_sha256": "10abc590f847e0c07baef9149e5e47b3faf35d243327da60f3c4d384c8c3285f",
+      "package_seal_sha256": "96d6b4f041b5587d16f3e9c60dd14333d4695023116dc44ad999d78074e7afbf"
+    }
+  },
+  "limits": {
+    "dee_run": "NOT_RUN",
+    "dynamic_capture": "NOT_RUN",
+    "pcm_or_ec3_read": false,
+    "key_or_license_read": false,
+    "lfe_wire_join": "UNBOUND",
+    "matrix_branch": "OUT_OF_SCOPE",
+    "numerical_pcm_parity": "NOT_RUN",
+    "input_only_vectors_execution": "NOT_RUN"
+  },
+  "wash_scope": "Sanitized formulas, coefficient constants, and input-only vectors only. Raw Ghidra listings/decompilation/scripts, binaries, PCM/EC3, keys, and licenses are excluded."
+}

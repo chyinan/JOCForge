@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge.wash_source_manifest.v1",
+  "package_id": "DEE-LFE-16POINT-TERMINAL-TRANSFORM-IMPLEMENTER-V1",
+  "references": [
+    {
+      "package_id": "DEE-LFE-16POINT-TERMINAL-TRANSFORM-WASH-V1",
+      "manifest_sha256": "76c82218e9b4c7b0458ee0910b67259eac17dd8b34b1b958f6c1161c5efc80c1",
+      "package_seal_sha256": "1d21a856288915de2cc2db0c7b6ca256f10ec7b8f245592f3a1334cf14858193",
+      "role": "primary static 16-point F32 transform and exact coefficient tables"
+    },
+    {
+      "package_id": "DEE-LFE-SELECTOR-ZERO-PRETRANSFORM-HISTORY-V1",
+      "manifest_sha256": "8fe794aa046defe87c43827300b1068c05d26e84748341371c7dad1c30aac0e4",
+      "package_seal_sha256": "0087ff0f871805596be95bcf1c0505b2157e740958042ac32da6777a8eeeee06",
+      "role": "selector-zero pre-transform, history, and 64-group recurrence"
+    },
+    {
+      "package_id": "DEE-LFE-SEVEN-F32-TERMINAL-PROJECTION-V1",
+      "manifest_sha256": "10abc590f847e0c07baef9149e5e47b3faf35d243327da60f3c4d384c8c3285f",
+      "package_seal_sha256": "96d6b4f041b5587d16f3e9c60dd14333d4695023116dc44ad999d78074e7afbf",
+      "role": "terminal seven-F32 main/companion projection equations"
+    },
+    {
+      "package_id": "DEE-DDP-RECURRENCE-SELECTOR-SEMANTICS-WASH-V1",
+      "manifest_sha256": "fd5a91138ee433a46574944fead910b9e5bb2aaf0add44f300fc39a9377b5814",
+      "package_seal_sha256": "36ec6d36c409b7d06f106fbc2bbf915f2accf9786621015ff9fca489cd783f95",
+      "role": "selector-zero recurrence A/B constants and gather contract"
+    }
+  ],
+  "no_raw_native_material": true
+}

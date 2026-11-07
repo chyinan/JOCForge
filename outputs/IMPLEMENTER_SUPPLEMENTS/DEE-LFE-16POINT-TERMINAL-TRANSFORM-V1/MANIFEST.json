@@ -1,0 +1,37 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LFE-16POINT-TERMINAL-TRANSFORM-IMPLEMENTER-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "STATIC_16POINT_F32_STAGE_BOUND; MXCSR_MODE_UNBOUND; LFE_WIRE_JOIN_UNBOUND; PCM_PARITY_NOT_RUN",
+  "implementation_disposition": "IMPLEMENT_OR_COMPARE_THIS_HASH_BOUND_16POINT_STAGE_IN_THE_SELECTOR_ZERO_LFE_CHAIN; KEEP_RUNTIME_ROUNDING_AND_WIRE_JOIN_EXPLICITLY_OPEN",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "name": "COEFFICIENTS.json",
+      "bytes": 5815,
+      "sha256": "b883b11c1637dd963f44b56672d268596647f1604a0d1a2c68d09b5be6bb6489"
+    },
+    {
+      "name": "EVIDENCE.json",
+      "bytes": 2915,
+      "sha256": "e959188ca4ba10d9c6feb617a404121a74058ff83fa2bf165dbc80e261c1d577"
+    },
+    {
+      "name": "INPUT-ONLY-VECTORS.json",
+      "bytes": 8410,
+      "sha256": "9e988fd31a98e7e0df8f2aa7c9b41b5d738b3743fee2b795285fb6bbbef9b12b"
+    },
+    {
+      "name": "REPORT.md",
+      "bytes": 6502,
+      "sha256": "9438006b08ed40078e880d78356326c5dc02ae805361dcb2461ebe60d75ad5f4"
+    },
+    {
+      "name": "SOURCE-MANIFESTS.json",
+      "bytes": 1563,
+      "sha256": "75d158764ca3d76f4e50c3b139bf0fb0cd384c4d1fd8d774091b53c1166b60a0"
+    }
+  ]
+}
