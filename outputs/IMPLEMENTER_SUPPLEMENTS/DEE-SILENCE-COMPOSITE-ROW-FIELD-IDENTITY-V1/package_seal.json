@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-SILENCE-COMPOSITE-ROW-FIELD-IDENTITY-V1",
+  "manifest_sha256": "fa0bacf790c97031136f354f9bf2fdcfb41e7c2ac7259b570596e8bd1cd02645",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "DIAGNOSTIC_FIELD_LABELS_BOUND; STORAGE_TYPES_UNITS_AND_AUDIO_EFFECT_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

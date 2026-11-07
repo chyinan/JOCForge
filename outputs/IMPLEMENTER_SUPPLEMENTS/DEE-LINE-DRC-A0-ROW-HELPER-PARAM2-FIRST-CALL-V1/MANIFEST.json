@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-LINE-DRC-A0-ROW-HELPER-PARAM2-FIRST-CALL-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SELECTED_ROW_POINTER_FORWARDED_TO_FIRST_CALLEE; SNAPSHOT_PLUS_A0_OWNER_JOIN_UNBOUND; DEE_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 812,
+      "sha256": "3295c358267e7c9fe942f580712da5964416cc8545fe1b5c850b496b1449648b"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1320,
+      "sha256": "9b0b4e39eecffd4307de9597d08103e9a50257955bd51e533c7221a74453c550"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 668,
+      "sha256": "ef2869508af1f5b2a8b76793b9aa321f7df155637c3c8ce151d0b7c1ab95a777"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 142,
+      "sha256": "5b7a98a1aabae33ad7c23f4a39ae7f4cf46457b68975c2ec9dd635135f2a8aa8"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 892,
+      "sha256": "1bb6f59a96287b5fc5f2a16b74a097db93744f2f0da5cdcd9b86ffc6e2b4b71e"
+    }
+  ]
+}

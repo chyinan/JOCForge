@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-SPEECH-THRESHOLD-INTEGER-BOUNDARY-V1",
+  "manifest_sha256": "1b59ecb4b781516580d223e14d03591330f815f3ab56921e8e0b1d55ff8583d7",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "STATIC_INTEGER_TRANSFER_AND_CONSTRUCTOR_BRANCH_BOUND; QUERY_OWNER_RUNTIME_EFFECT_UNBOUND; NOT_RUN; IMPLEMENTATION_READY=NO"
+}

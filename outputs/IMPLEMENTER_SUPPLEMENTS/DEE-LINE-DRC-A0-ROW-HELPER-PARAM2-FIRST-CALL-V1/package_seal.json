@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-LINE-DRC-A0-ROW-HELPER-PARAM2-FIRST-CALL-V1",
+  "manifest_sha256": "e31e6e2c77f21d3d5e413d3148493bb9b708fdffaa6699e976aaec99bc06b56d",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "SELECTED_ROW_POINTER_FORWARDED_TO_FIRST_CALLEE; SNAPSHOT_PLUS_A0_OWNER_JOIN_UNBOUND; DEE_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

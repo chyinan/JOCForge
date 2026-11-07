@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "measure_only_speech_threshold_first_read_boundary_wash_v1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-10-23\\jocforge-reverse-agent-3\\outputs\\measure_only_speech_threshold_first_read_boundary_wash_v1",
+    "manifest_sha256": "486fbc75f0be201c4d15c19db3b62d407e2f092cf6e0a518097b63f6ccd1b808",
+    "seal_sha256": "ed279903de0b41c5beceea4b1343f6a8badbba6b7563718dd4f5279ed3fa0685",
+    "checker_status": "PASS_NORMAL_AND_PYTHON_O"
+  }
+}

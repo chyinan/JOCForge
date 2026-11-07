@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "status": "STATIC_EXPECTATIONS_ONLY; PROPOSED_NOT_RUN",
+  "vectors": [
+    {"speech_threshold": 0, "static_descriptor": "ACCEPTED", "static_open_predicate": "fallback branch; source config becomes 15; subcontext+0x16c not written", "runtime_or_effect": "NOT_RUN"},
+    {"speech_threshold": 1, "static_descriptor": "ACCEPTED", "static_open_predicate": "copied unchanged to subcontext+0x16c", "runtime_or_effect": "NOT_RUN"},
+    {"speech_threshold": 100, "static_descriptor": "ACCEPTED", "static_open_predicate": "copied unchanged to subcontext+0x16c", "runtime_or_effect": "NOT_RUN"},
+    {"speech_threshold": 101, "static_descriptor": "REJECTED", "static_open_predicate": "not reached", "runtime_or_effect": "NOT_RUN"}
+  ],
+  "note": "Static source-path projections only; not a runtime meter or audio test."
+}

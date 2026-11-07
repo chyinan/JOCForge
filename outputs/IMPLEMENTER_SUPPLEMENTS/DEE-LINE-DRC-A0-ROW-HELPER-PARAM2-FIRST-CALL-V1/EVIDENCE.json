@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.line_drc_row_helper_param2_boundary.v1",
+  "status": "SELECTED_ROW_POINTER_FORWARDED_TO_FIRST_CALLEE; SNAPSHOT_PLUS_A0_OWNER_JOIN_UNBOUND; DEE_NOT_RUN",
+  "source_package": "LINE-DRC-ROW-HELPER-PARAM2-FIRST-CALL-WASH-V2",
+  "source_manifest_sha256": "1bfaa7409fc12e44b3ed66e15fc827dba35c1f6fc2379e60e0bb371bed3830c6",
+  "source_seal_sha256": "2b921ac19e2b875180f0d06af3fbe6f8796ba8fac7403b3b503b5f2a93992a98",
+  "entry_prefix": {"R8_R9": "saved then reset", "RDX": "unchanged before first row-related call", "first_call": {"address": "0x180182882", "callee": "FUN_1801431f0", "second_argument": "selected row pointer from FUN_180182850.param_2"}},
+  "first_unbound_edge": "selected row pointer owner/generation -> snapshot+0xA0 value/record",
+  "not_observed_before_call": ["row field read", "row field copy", "typed alias to snapshot+0xA0"],
+  "unbound": ["selected row owner/generation to snapshot+0xA0", "FUN_1801431f0 body", "codec/BSI input", "audio effect"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

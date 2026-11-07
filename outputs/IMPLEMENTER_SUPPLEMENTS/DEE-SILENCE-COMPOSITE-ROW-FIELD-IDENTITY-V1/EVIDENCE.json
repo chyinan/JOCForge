@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.composite_silence_row_field_identity.v1",
+  "status": "DIAGNOSTIC_FIELD_LABELS_BOUND; STORAGE_TYPES_UNITS_AND_AUDIO_EFFECT_UNBOUND; RUNTIME_NOT_RUN",
+  "source_package": "dee_atmos_ddp_silence_composite_row_formatter_wash_v1",
+  "source_manifest_sha256": "ae9966367574479ba05c022f03b8ad95f57de841d362851beda1218e697912d5",
+  "source_seal_sha256": "eb2f1474d6dee3511a56067b4f795056ecb3e8d02bc10077ff173ef67d041be4",
+  "formatter": "FUN_180184960",
+  "format": "in: %s, prepend: %llu, start: %llu, end: %llu, append %llu",
+  "fields": [
+    {"row_offset": "0x20", "label": "prepend", "observed_format_width": "64-bit unsigned"},
+    {"row_offset": "0x28", "label": "start", "observed_format_width": "64-bit unsigned"},
+    {"row_offset": "0x30", "label": "end", "observed_format_width": "64-bit unsigned"},
+    {"row_offset": "0x38", "label": "append", "observed_format_width": "64-bit unsigned"}
+  ],
+  "limitations": ["format specifier does not establish upstream storage signedness/type", "units and sample/timeline semantics unbound", "Reader/PTS/output-length consumer unbound", "audio/PCM effect NOT_RUN"],
+  "execution": {"dee_run": false, "runtime": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}

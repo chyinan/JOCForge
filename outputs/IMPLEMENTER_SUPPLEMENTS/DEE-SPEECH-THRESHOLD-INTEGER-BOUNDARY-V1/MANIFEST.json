@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-SPEECH-THRESHOLD-INTEGER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "STATIC_INTEGER_TRANSFER_AND_CONSTRUCTOR_BRANCH_BOUND; QUERY_OWNER_RUNTIME_EFFECT_UNBOUND; NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 1213,
+      "sha256": "d9e4275365ca87f365942bb87167a9ec5ebca809825b9d2678be35c8bad16095"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1849,
+      "sha256": "34a25c0c0375cd380831901452eb889f4c2bcbc2645a949f6e4f10f05f57c9c9"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 547,
+      "sha256": "332770246023075fd32a99ed3150c465fd43ee613b40e5fdcbad82b79c006e51"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 860,
+      "sha256": "2cd2f0082d07d2e179a4a3a74d542d91a37b2a1c6f6ce7ee77a8662486a05270"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 896,
+      "sha256": "bc0c6e1b4058a73c5f0429dce14a17c987d011566531c4e2b8154885cb3167da"
+    }
+  ]
+}

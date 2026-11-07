@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-SILENCE-COMPOSITE-ROW-FIELD-IDENTITY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "DIAGNOSTIC_FIELD_LABELS_BOUND; STORAGE_TYPES_UNITS_AND_AUDIO_EFFECT_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 809,
+      "sha256": "a92185ac77d4067630c228e7acd01823ff7e6043e3be4a6f41df43fef7a8e64d"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1466,
+      "sha256": "04889decdc80947f37aeb23be84bc6e3afd36a7075b7393999d2dee51e1ffd2a"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 546,
+      "sha256": "8e36de272edd6b21273c52886849fb535c8116dad237f0eaf8a219e7d7803881"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 150,
+      "sha256": "2c35ebb8d5778536df72e61140786c337e51f83ff5b199ae7d57fed14dd949c5"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 789,
+      "sha256": "135f77c34e529fb22987cc2c91886aed76cf86382fa5bdbd09d896db4a950160"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.speech_threshold_integer_boundary.v1",
+  "status": "STATIC_INTEGER_TRANSFER_AND_CONSTRUCTOR_BRANCH_BOUND; QUERY_OWNER_RUNTIME_EFFECT_UNBOUND; NOT_RUN",
+  "source_package": "measure_only_speech_threshold_first_read_boundary_wash_v1",
+  "source_manifest_sha256": "486fbc75f0be201c4d15c19db3b62d407e2f092cf6e0a518097b63f6ccd1b808",
+  "source_seal_sha256": "ed279903de0b41c5beceea4b1343f6a8badbba6b7563718dd4f5279ed3fa0685",
+  "descriptor": {"xml_key": "loudness:measure_only:speech_threshold", "type": "Integer", "default": 15, "inclusive_min": 0, "inclusive_max": 100, "parse": "base-10 strtoi64; floating-point text rejected"},
+  "static_transfer": {"function": "FUN_1801792c0", "source": "EmpireLoudnessPrv+0x30 U32", "reject_if": "value > 100", "destination": "Meter config+0x48 U32", "transform": "unchanged; no scaling or rounding"},
+  "engine_open": {"copy": "FUN_1801a9620 copies config+0x48 to engine+0x48 before threshold branch", "branch_function": "FUN_1801af230", "source_read": "param_4+0x8 == config+0x48", "predicate": "(value-1U)<100 with U32 arithmetic", "true_values": "1..100 copied unchanged to subcontext+0x16c", "false_value_zero": "fallback writes literal 15 to source config+0x48; branch does not write subcontext+0x16c", "engine_state_after_fallback": "UNBOUND"},
+  "unbound": ["threshold query key/owner selection", "runtime owner/generation", "first post-open read of engine+0x48", "Meter result dependency", "audio/control effect"],
+  "execution": {"dee_run": false, "metering_effect": "NOT_RUN", "audio_effect": "NOT_RUN", "media_read": false, "pcm_read": false, "payload_read": false, "key_read": false, "license_read": false},
+  "policy": {"contains_private_key_or_license": false, "contains_pcm_or_media": false, "contains_native_source_or_decompilation": false, "implementation_ready": false}
+}
