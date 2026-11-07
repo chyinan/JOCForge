@@ -1,0 +1,5 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [],
+  "note": "Static receiver/caller boundary only; no MP4/DASH output vector."
+}

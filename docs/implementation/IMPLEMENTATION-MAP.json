@@ -66575,6 +66575,26 @@
         "Returned query object to selected Priv+0x9e8 instance/provider generation.",
         "Units, numeric conversion, BSI/audio effect."
       ]
+    },
+    {
+      "package_id": "DEE-MP4-RUN-RECEIVER-OWNER-JOIN-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-RUN-RECEIVER-OWNER-JOIN-BOUNDARY-V1",
+      "manifest_sha256": "f2f4ed29c4b344abdc2ff390044ec896bacd3d1e0063dd734f51453a7d34e1a8",
+      "supplement_seal_sha256": "dfeab3f99197f64c1a971c5d6993b317ef6babd114391f184d66c2b444fa5bac",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "RUN_TO_INITPLUGIN_SAME_RECEIVER_BOUND_WITHIN_CALL; CALLER_FACTORY_AND_SETTER_JOIN_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Run caller/factory and constructed receiver owner/generation.",
+        "Setter receiver output_format +0x3b to Run/InitPlugin same-object join.",
+        "Selected muxer, output writer, runtime output, and container effect."
+      ]
     }
   ]
 }

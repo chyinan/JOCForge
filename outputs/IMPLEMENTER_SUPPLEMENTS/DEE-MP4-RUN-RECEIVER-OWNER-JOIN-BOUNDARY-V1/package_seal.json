@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-MP4-RUN-RECEIVER-OWNER-JOIN-BOUNDARY-V1",
+  "manifest_sha256": "f2f4ed29c4b344abdc2ff390044ec896bacd3d1e0063dd734f51453a7d34e1a8",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "RUN_TO_INITPLUGIN_SAME_RECEIVER_BOUND; RUN_CALLER_FACTORY_OWNER_UNBOUND; SETTER_TO_RUN_RECEIVER_JOIN_UNBOUND; IMPLEMENTATION_READY=NO"
+}

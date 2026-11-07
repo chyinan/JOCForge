@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package": "DEE-ADM-MP4-RUN-RECEIVER-OWNER-JOIN-WASH-V1",
+    "root": "C:\\Users\\chyinan\\Documents\\Codex\\2026-11-03\\jocforge-reverse-agent-5\\outputs\\DEE-ADM-MP4-RUN-RECEIVER-OWNER-JOIN-WASH-V1",
+    "manifest_sidecar_sha256": "c2f62b48b806058eab05252dd663684da58cbf6c491e4546cea19b7fd14b790a",
+    "normal_checker": "PASS",
+    "python_o_checker": "PASS"
+  }
+}

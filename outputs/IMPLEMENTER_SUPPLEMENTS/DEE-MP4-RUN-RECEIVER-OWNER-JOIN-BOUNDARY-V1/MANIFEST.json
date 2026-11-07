@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-MP4-RUN-RECEIVER-OWNER-JOIN-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "RUN_TO_INITPLUGIN_SAME_RECEIVER_BOUND; RUN_CALLER_FACTORY_OWNER_UNBOUND; SETTER_TO_RUN_RECEIVER_JOIN_UNBOUND; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 878,
+      "sha256": "e8837bc466135d2d98d2ff37c4fb9db1cf47e84f6a28e114626921534d5898ce"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1444,
+      "sha256": "347ba964bac0ee41be22f5678d83fc8f02d824fa0246381a76be325487364236"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 452,
+      "sha256": "0e7d502844c427db55f5a29efc0f7d3aba75260533ca493bea55b8f9a7338bed"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 143,
+      "sha256": "04d3748c15483730f7a79fcef5ea835b1873167b3cd7692ee44c698be07c05a8"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 826,
+      "sha256": "269c9c5f928cbf72ad91b785737010ce0b282e38ffa3e0c998712d50af79b920"
+    }
+  ]
+}
