@@ -8833,6 +8833,81 @@
           ],
           "validation_boundary": "The five token-to-U32 values remain raw candidates 0..4, not established algorithm identities. A generic consumer conditionally writes four bytes at record +0x90; the scoped downstream validator does not read that offset and the first effective consumer remains UNBOUND. One N36 1770-3 arm exited 10 with no scalar or output; failure cause is UNBOUND and it was not retried. Prior 1770-4/LeqA observations are context only, not new runs, and their measurement unit is unstated. This neither establishes unsupported status nor enables another token.",
           "delivery_scope": "REFERENCE_ONLY_NO_ALTERNATE_METER_MODE_OR_AUDIO_ENABLEMENT"
+        },
+        {
+          "slice_id": "washed-mp4-dash-output-selection-boundary",
+          "mapping_status": "STATIC_SETTER_AND_INITPLUGIN_PROPERTY_FLOW_BOUND__SAME_OBJECT_MUXER_AND_RUNTIME_UNBOUND",
+          "implementation_status": "WASHED_REFERENCE_ONLY__MP4_DASH_REJECTED__RUNTIME_NOT_RUN",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only static boundary: a setter candidate stores mp4/dash at receiver+0x3b; Mp4::Run reaches InitPlugin on its param_1 path, where output_format at +0x1d8 is passed through an indirect slot +0x18. The setter receiver is not joined to the selected Run/InitPlugin instance. The +0x18 target, ABI, registration owner, selected muxer, writer, installed XML schema, and frame-rate consumer remain UNBOUND. DDP FileWriter/fwrite is not evidence of an MP4 muxer. Runtime and vectors remain NOT_RUN; local CLI rejection is unchanged.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-DASH-OUTPUT-SELECTION-BOUNDARY-V1/FINDINGS.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "No frame-rate consumer, output clock, or runtime muxer transition is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_MP4_DASH_OUTPUT_SELECTION_REFERENCE_ONLY",
+            "package_id": "DEE-MP4-DASH-OUTPUT-SELECTION-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-DASH-OUTPUT-SELECTION-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-DASH-OUTPUT-SELECTION-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-DASH-OUTPUT-SELECTION-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-DASH-OUTPUT-SELECTION-BOUNDARY-V1/FINDINGS.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-DASH-OUTPUT-SELECTION-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-DASH-OUTPUT-SELECTION-BOUNDARY-V1/MINIMUM-CLOSURE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-DASH-OUTPUT-SELECTION-BOUNDARY-V1/SOURCE-PACKAGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-DASH-OUTPUT-SELECTION-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "668fc7a64dbcb1a28b5f6f0bbbaec4cdbee087b87bb683c5950eeb0f736cd966",
+            "supplement_seal_sha256": "5ebe06978a934cdaf7f8b86de0aa322544f40936590d804b96ca64743847039b",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_route": {
+              "setter_token_storage": "receiver+0x3b",
+              "run_to_initplugin": "same param_1 path",
+              "initplugin_output_format": "+0x1d8 property array",
+              "indirect_activation_slot": "+0x18",
+              "setter_receiver_to_run_receiver": "UNBOUND",
+              "activation_target_abi_registration_owner": "UNBOUND",
+              "selected_muxer_or_writer": "UNBOUND",
+              "installed_xml_schema": "UNBOUND",
+              "frame_rate_consumer": "UNBOUND",
+              "ddp_filewriter_is_mp4_muxer": false
+            },
+            "validation_boundary": "Reference-only static boundary: a setter candidate stores mp4/dash at receiver+0x3b; Mp4::Run reaches InitPlugin on its param_1 path, where output_format at +0x1d8 is passed through an indirect slot +0x18. The setter receiver is not joined to the selected Run/InitPlugin instance. The +0x18 target, ABI, registration owner, selected muxer, writer, installed XML schema, and frame-rate consumer remain UNBOUND. DDP FileWriter/fwrite is not evidence of an MP4 muxer. Runtime and vectors remain NOT_RUN; local CLI rejection is unchanged."
+          },
+          "vectors": {
+            "kind": "WASHED_MP4_DASH_RUNTIME_INPUTS_NOT_RUN",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Two input-only vectors are marked NOT_RUN; no MP4/DASH output is included."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-DASH-OUTPUT-SELECTION-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-DASH-OUTPUT-SELECTION-BOUNDARY-V1/MINIMUM-CLOSURE.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Installation-bound schema and exact selected job_config XML bytes.",
+            "Setter/run/init-plugin same-object join and indirect target ABI/registration owner.",
+            "Concrete muxer/writer, output format, frame-rate consumer, and runtime MP4/DASH output.",
+            "Both package input-only vectors; no DEE runtime or patcher execution occurred."
+          ],
+          "validation_boundary": "Reference-only static boundary: a setter candidate stores mp4/dash at receiver+0x3b; Mp4::Run reaches InitPlugin on its param_1 path, where output_format at +0x1d8 is passed through an indirect slot +0x18. The setter receiver is not joined to the selected Run/InitPlugin instance. The +0x18 target, ABI, registration owner, selected muxer, writer, installed XML schema, and frame-rate consumer remain UNBOUND. DDP FileWriter/fwrite is not evidence of an MP4 muxer. Runtime and vectors remain NOT_RUN; local CLI rejection is unchanged.",
+          "delivery_scope": "EXTERNAL_REFERENCE_ONLY_NO_MP4_DASH_ENABLEMENT_OR_ALGORITHM_CHANGE"
         }
       ]
     },
@@ -69894,6 +69969,29 @@
         "Threshold effect, selected owner/generation, runtime scalar, and exit cause remain unbound/not captured.",
         "No retry or additional run is authorized by this result.",
         "Original receipt/status payloads are omitted and were not read here."
+      ]
+    },
+    {
+      "package_id": "DEE-MP4-DASH-OUTPUT-SELECTION-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-DASH-OUTPUT-SELECTION-BOUNDARY-V1",
+      "manifest_sha256": "668fc7a64dbcb1a28b5f6f0bbbaec4cdbee087b87bb683c5950eeb0f736cd966",
+      "supplement_seal_sha256": "5ebe06978a934cdaf7f8b86de0aa322544f40936590d804b96ca64743847039b",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS_6_OF_6",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "STATIC_SETTER_AND_INITPLUGIN_FLOW_ONLY; SAME_OBJECT_MUXER_WRITER_AND_RUNTIME_UNBOUND; NOT_RUN; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Installation-bound XML schema, exact authored XML, and selected same-instance join.",
+        "Activation target/ABI, concrete muxer/writer, frame-rate consumer, and runtime output.",
+        "Both package vectors; no MP4/DASH run or patcher execution occurred."
       ]
     }
   ]

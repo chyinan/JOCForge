@@ -1,0 +1,81 @@
+{
+  "exclusions": {
+    "dee_run": false,
+    "implementation_modified": false,
+    "key_license_read": false,
+    "patcher_run": false,
+    "payload_read": false,
+    "pcm_read": false
+  },
+  "implementation_ready": false,
+  "input_vectors": {
+    "candidate_xml_bytes_available": false,
+    "expected_container_output": null,
+    "historical_xml_input_join": "UNBOUND",
+    "historical_xml_sha256": "8d8a11662e663e5245652efa0e0ae87e627d2928bcb8206733decf8a73d8a4d6",
+    "input_authorization_event": "E-275",
+    "input_sha256": "34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5",
+    "input_shape": "N36 ADM, 36ch/48kHz/PCM24 per preflight",
+    "runtime": "NOT_RUN",
+    "tokens": [
+      "mp4",
+      "dash"
+    ]
+  },
+  "minimum_runnable_closure": {
+    "first_missing_edges": [
+      "SetProperty receiver to selected Run/InitPlugin receiver",
+      "InitPlugin interface +0x18 activation target/ABI/registration owner",
+      "selected muxer/writer consumer"
+    ],
+    "runtime_or_patch_run": "NOT_RUN",
+    "status": "BLOCKED_ON_INSTALLATION_BOUND_XML_AND_SAME_OBJECT_SELECTION_JOIN"
+  },
+  "other_fields": {
+    "override_frame_rate": {
+      "consumer": "UNBOUND",
+      "setter_branch": "STATIC_STRING_BRANCH_OBSERVED"
+    },
+    "plugin_base_storage": {
+      "candidate_fields": [
+        "cmd_proc",
+        "cmd_proc_args",
+        "interpreter"
+      ],
+      "installation_binding": "UNBOUND",
+      "run_join": "UNBOUND"
+    }
+  },
+  "schema": "washed-implementer-supplement.v1",
+  "separate_ddp_writer": {
+    "mp4_container_join": "UNBOUND",
+    "scope": "Atmos DDP encoded-frame byte sink",
+    "substitute_for_muxer": false
+  },
+  "static_route": {
+    "activation_target_abi_registration_owner": "UNBOUND",
+    "first_activation": "interface member +0x260, virtual slot +0x18 at RVA 0x140148c7d",
+    "first_mp4_container_writer": "UNBOUND",
+    "initplugin_property_data": "param_1+0x1d8",
+    "run": "FUN_140148e90 calls FUN_140147140 InitPlugin with same param_1",
+    "selected_muxer_or_writer": "UNBOUND",
+    "setter": "FUN_1401496e0; candidate stores accepted mp4/dash string at receiver+0x3b",
+    "setter_receiver_to_run_receiver": "UNBOUND"
+  },
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-MP4-DASH-OUTPUT-SELECTION-BOUNDARY-V1",
+  "target": {
+    "analysis_basis": "reused Ghidra 12.2 read-only/no-analysis receipts",
+    "host_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "plugin_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "xml_candidate": {
+    "field": "/output/mp4/output_format",
+    "runtime_acceptance": "NOT_RUN",
+    "schema_installation_bound": false,
+    "tokens": [
+      "mp4",
+      "dash"
+    ]
+  }
+}

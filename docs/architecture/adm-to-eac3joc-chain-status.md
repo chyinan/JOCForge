@@ -1537,3 +1537,7 @@ Wash package `DEE-METERING-MODE-TOKEN-RUNTIME-BOUNDARY-V1` (manifest SHA-256 `50
 ## 2026-11-08: Speech-threshold receipt closeout V3
 
 Wash package `SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V3` (manifest SHA-256 `0d2327e33662d32e2430c66a94465beb7394c9446403058f967991a80021fa2e`, seal SHA-256 `eecf9acf5515beec594253a2db99ecb36201f7f282ac81859bc5206d38d43135`) is the current self-contained receipt closeout. It hash-binds the two historical E-373 N36 run/status receipts; raw receipt payloads and raw module base values are omitted. Both arms exited naturally with code 10, observed no events, and produced no output. Threshold effect, owner/generation, runtime scalar, and exit cause remain `UNBOUND/NOT_CAPTURED`; no new run occurred and no unsupported-option conclusion is drawn.
+
+## 2026-11-08: MP4/DASH output selection boundary
+
+Wash package `DEE-MP4-DASH-OUTPUT-SELECTION-BOUNDARY-V1` (manifest SHA-256 `668fc7a64dbcb1a28b5f6f0bbbaec4cdbee087b87bb683c5950eeb0f736cd966`, seal SHA-256 `5ebe06978a934cdaf7f8b86de0aa322544f40936590d804b96ca64743847039b`) binds a static setter token path and the Run/InitPlugin property/activation route. Same-object ownership, indirect target/ABI, concrete muxer/writer, frame-rate consumer, and installation-bound XML remain `UNBOUND`; DDP FileWriter is not an MP4 muxer. Runtime and two input vectors are `NOT_RUN`; MP4/DASH remain rejected by the local CLI.

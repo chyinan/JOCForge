@@ -1,0 +1,25 @@
+{
+  "candidate_field": "/output/mp4/output_format",
+  "other_config_held_equal": {
+    "data_rate_kbps": 1024,
+    "line_mode_drc_profile": "none",
+    "override_frame_rate": "UNBOUND",
+    "preferred_downmix_mode": "loro",
+    "rf_mode_drc_profile": "none"
+  },
+  "schema": "washed-mp4-dash-input-only-vectors.v1",
+  "source_sha256": "34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5",
+  "status": "NOT_RUN",
+  "vectors": [
+    {
+      "expected_container_output": null,
+      "token": "mp4",
+      "xml_bytes_available": false
+    },
+    {
+      "expected_container_output": null,
+      "token": "dash",
+      "xml_bytes_available": false
+    }
+  ]
+}

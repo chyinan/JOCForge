@@ -1,0 +1,43 @@
+{
+  "file_count": 7,
+  "files": [
+    {
+      "bytes": 2835,
+      "file": "EVIDENCE.json",
+      "sha256": "e9cda8a42c77590544d5aef8d530d1008c1673a5d18c4f333c1fc690a7013e30"
+    },
+    {
+      "bytes": 694,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "2858d9c5b94395b0512cbe21debd8806f908cd26feb742b109abc7c8a54a4032"
+    },
+    {
+      "bytes": 585,
+      "file": "MINIMUM-CLOSURE.json",
+      "sha256": "c0bd2777928c1a2fef80b7bf18ac5b2d69f2b76c229822b8978452e40ff00e60"
+    },
+    {
+      "bytes": 353,
+      "file": "SOURCE-PACKAGE.json",
+      "sha256": "6329c17c86e6d0bc7e66ae14939272674e233815fb30c9d3cfe13c47d645c7c7"
+    },
+    {
+      "bytes": 833,
+      "file": "FINDINGS.md",
+      "sha256": "e10b7c765f8e46d9c5e146ebf5c7c15543ddede85d86d47480dd9587b3e3a8f7"
+    },
+    {
+      "bytes": 1652,
+      "file": "CHECK.py",
+      "sha256": "a5340efd1d299621e1c1492b6e674727eed840f4ffa05f247433f97e90cf4ea6"
+    },
+    {
+      "bytes": 1340,
+      "file": "MANIFEST.json",
+      "sha256": "668fc7a64dbcb1a28b5f6f0bbbaec4cdbee087b87bb683c5950eeb0f736cd966"
+    }
+  ],
+  "schema": "washed-implementer-supplement-seal.v1",
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-MP4-DASH-OUTPUT-SELECTION-BOUNDARY-V1"
+}

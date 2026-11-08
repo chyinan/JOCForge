@@ -1,0 +1,13 @@
+{
+  "first_static_break": "SetProperty receiver/member +0x3b to selected Run/InitPlugin instance",
+  "never_infer_from": [
+    "candidate XSD alone",
+    "separate DDP FileWriter/fwrite sink",
+    "historical XML hash without input join"
+  ],
+  "next_break": "InitPlugin interface member +0x260, slot +0x18 to target function/ABI/owner",
+  "required_xml": "exact installation-bound /output/mp4 job_config bytes and same-input mp4/dash pair",
+  "schema": "washed-mp4-dash-minimum-closure.v1",
+  "scope_stop": "first selected muxer/writer consumer",
+  "status": "NOT_RUN"
+}

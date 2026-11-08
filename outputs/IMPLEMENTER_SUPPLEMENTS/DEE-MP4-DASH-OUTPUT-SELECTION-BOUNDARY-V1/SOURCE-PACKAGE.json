@@ -1,0 +1,9 @@
+{
+  "checker_normal": "PASS",
+  "checker_python_O": "PASS",
+  "manifest_sha256": "9e1e202eb8198240fdb98ad0ef999954f6c68f8dfe30e62fce198ab03dca94b6",
+  "package_id": "mp4-dash-output-selection-first-break-wash-v1",
+  "parent_checkers_normal_and_optimized": "PASS",
+  "parent_packages_checked": 5,
+  "raw_source_or_decompilation_copied": false
+}
