@@ -1,0 +1,97 @@
+{
+  "conclusion": {
+    "algorithm_per_token": "UNBOUND",
+    "audio_joc_effect": "NOT_INFERRED",
+    "global_absence_claim": false,
+    "metering_effect": "PARTIAL_PRIOR_SAMPLE_OBSERVATION_ONLY"
+  },
+  "experiment": {
+    "attempt_id": "metering-mode-1770-3-20261108-165721",
+    "channels": 36,
+    "exit_code": 10,
+    "failure_cause": "UNBOUND",
+    "input_hash_status": "AUTHORIZED_RECEIPT_REUSED",
+    "input_kind": "ADM BWF via atmos_mezz",
+    "input_sha256": "34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5",
+    "measurement_scalar_captured": false,
+    "natural_exit": true,
+    "output_file_created": false,
+    "retry": "NOT_RUN",
+    "timeline_event": "E-403",
+    "token": "1770-3"
+  },
+  "field_path": "/job_config/filter/audio/encode_to_atmos_ddp/loudness/measure_only/metering_mode",
+  "implementation_ready": false,
+  "mapping_boundary": {
+    "candidate_write": "4-byte raw U32 at record+0x90",
+    "descriptor_to_processing_receiver": "UNBOUND",
+    "first_effective_algorithm_consumer": "UNBOUND",
+    "first_generic_consumer": "FUN_1801535b0",
+    "next_validator": "FUN_180177230",
+    "scoped_validator_reads_record_plus_0x90": false,
+    "selected_meter_provider": "UNBOUND",
+    "unique_raw_values_mean_independent_algorithms": false
+  },
+  "other_tokens": {
+    "1770-1": "NOT_RUN",
+    "1770-2": "NOT_RUN"
+  },
+  "payload_policy": {
+    "compressed_payload_in_package": false,
+    "implementation_contact": false,
+    "key_license_read": false,
+    "pcm_read": false
+  },
+  "prior_measurement_observation": {
+    "human_is_cat": {
+      "integrated_1770_4": -18.605364,
+      "integrated_LeqA": -18.605364,
+      "speech_percentage_1770_4": -1,
+      "speech_percentage_LeqA": 0
+    },
+    "measurement_unit": "NOT_STATED_IN_NATIVE_LOG",
+    "my_jealousy": {
+      "integrated_1770_4": -16.291187,
+      "integrated_LeqA": -24.719242,
+      "speech_percentage_1770_4": -1,
+      "speech_percentage_LeqA": 91.47
+    },
+    "new_run": false,
+    "pair": "1770-4 vs LeqA",
+    "sample_dependent_change_observed": true,
+    "source_receipt_sha256": "5fde217056781608cf43dff97fc4d10baf95e815af98a1cef70bc863694f168d"
+  },
+  "schema": "washed-implementer-supplement.v1",
+  "source_package": {
+    "manifest_sha256": "c6797d7b78c2024ae1ac2ecb265714e1c7e72ae5e4bd15627123765ecfe1ff91",
+    "normal_checker": "PASS",
+    "package_id": "metering-mode-rule-boundary-wash-v1",
+    "package_seal_file_sha256": "12c3b2af0d7ecc2fb378a23ef9018ee5f15e96cf56984ed64d066ea425b5babc",
+    "payload_count": 10,
+    "python_O_checker": "PASS"
+  },
+  "static_candidate_map": [
+    {
+      "raw_u32_candidate": 0,
+      "token": "1770-4"
+    },
+    {
+      "raw_u32_candidate": 1,
+      "token": "1770-3"
+    },
+    {
+      "raw_u32_candidate": 2,
+      "token": "1770-2"
+    },
+    {
+      "raw_u32_candidate": 3,
+      "token": "1770-1"
+    },
+    {
+      "raw_u32_candidate": 4,
+      "token": "LeqA"
+    }
+  ],
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-METERING-MODE-TOKEN-RUNTIME-BOUNDARY-V1"
+}

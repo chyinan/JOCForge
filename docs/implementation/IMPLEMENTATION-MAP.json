@@ -8710,6 +8710,96 @@
           ],
           "validation_boundary": "The washed scoped static trace conditionally writes a Bool candidate to measurement setup +0x94. The scoped first per-record consumer FUN_1801764e0 reads +0x9c and +0x140; this body did not capture a read of +0x94. Earlier measurement-only A/B observations are reused, not new runs, and show sample-dependent diagnostic changes; the measurement unit is unstated. Bool-to-algorithm/result, selected owner/generation, and audio/JOC effect remain UNBOUND/NOT_RUN.",
           "delivery_scope": "MEASUREMENT_ONLY_REFERENCE_NO_BOOL_BEHAVIOR_OR_AUDIO_ENABLEMENT"
+        },
+        {
+          "slice_id": "washed-metering-mode-runtime-boundary",
+          "mapping_status": "FIVE_RAW_U32_CANDIDATES__SCOPED_VALIDATOR_NO_READ_PLUS90__EFFECTIVE_CONSUMER_UNBOUND",
+          "implementation_status": "WASHED_REFERENCE_ONLY_1770_3_EXIT10_UNINFORMATIVE__NO_GATE_CHANGE",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "The five token-to-U32 values remain raw candidates 0..4, not established algorithm identities. A generic consumer conditionally writes four bytes at record +0x90; the scoped downstream validator does not read that offset and the first effective consumer remains UNBOUND. One N36 1770-3 arm exited 10 with no scalar or output; failure cause is UNBOUND and it was not retried. Prior 1770-4/LeqA observations are context only, not new runs, and their measurement unit is unstated. This neither establishes unsupported status nor enables another token.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-TOKEN-RUNTIME-BOUNDARY-V1/FINDINGS.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The evidence combines a scoped static record-field trace with one completed failed run; no callback clock or mode transition is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_METERING_MODE_RAW_U32_AND_FAILED_RUN_BOUNDARY",
+            "package_id": "DEE-METERING-MODE-TOKEN-RUNTIME-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-TOKEN-RUNTIME-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-TOKEN-RUNTIME-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-TOKEN-RUNTIME-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-TOKEN-RUNTIME-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-TOKEN-RUNTIME-BOUNDARY-V1/FINDINGS.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-TOKEN-RUNTIME-BOUNDARY-V1/SOURCE-PACKAGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-TOKEN-RUNTIME-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "5007ae0b8db3276ec45e1e11e800e648d0b466b523c78cee51b58cc6af71f81e",
+            "supplement_seal_sha256": "37edfa73375c4df289bd758ae0d2f4f5c7afa59ff028864b947bf88a49b97fdd",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "raw_u32_candidates": {
+                "1770-4": 0,
+                "1770-3": 1,
+                "1770-2": 2,
+                "1770-1": 3,
+                "LeqA": 4
+              },
+              "semantic_algorithm_per_token": "UNBOUND",
+              "generic_consumer_write": "conditional four-byte value at record +0x90",
+              "scoped_validator_reads_plus90": false,
+              "first_effective_consumer": "UNBOUND"
+            },
+            "observed_run": {
+              "token": "1770-3",
+              "channels": 36,
+              "natural_exit_code": 10,
+              "measurement_scalar": "NOT_CAPTURED",
+              "output": "NOT_CREATED",
+              "failure_cause": "UNBOUND",
+              "retry": "NOT_RUN"
+            },
+            "prior_measurement_context": {
+              "pair": "1770-4 versus LeqA",
+              "sample_dependent_diagnostic_change": "REPORTED_IN_PRIOR_RECEIPT",
+              "new_run": false,
+              "measurement_unit": "NOT_STATED_IN_NATIVE_LOG"
+            },
+            "validation_boundary": "The five token-to-U32 values remain raw candidates 0..4, not established algorithm identities. A generic consumer conditionally writes four bytes at record +0x90; the scoped downstream validator does not read that offset and the first effective consumer remains UNBOUND. One N36 1770-3 arm exited 10 with no scalar or output; failure cause is UNBOUND and it was not retried. Prior 1770-4/LeqA observations are context only, not new runs, and their measurement unit is unstated. This neither establishes unsupported status nor enables another token."
+          },
+          "vectors": {
+            "kind": "WASHED_TOKEN_INPUTS_ONLY_NO_NEW_EXECUTION",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Input-only token rows list static candidates; the 1770-3 failed arm is an observation, not a pass vector."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-TOKEN-RUNTIME-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-TOKEN-RUNTIME-BOUNDARY-V1/EVIDENCE.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "NO_NEW_TOKEN_VECTORS_EXECUTED"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Algorithm identity or effective consumer for any raw U32 candidate.",
+            "Failure cause for the 1770-3 exit-10 arm; it was not retried.",
+            "1770-1 and 1770-2 runtime behavior, and any new token run.",
+            "Measurement unit, selected provider, and audio/JOC effects."
+          ],
+          "validation_boundary": "The five token-to-U32 values remain raw candidates 0..4, not established algorithm identities. A generic consumer conditionally writes four bytes at record +0x90; the scoped downstream validator does not read that offset and the first effective consumer remains UNBOUND. One N36 1770-3 arm exited 10 with no scalar or output; failure cause is UNBOUND and it was not retried. Prior 1770-4/LeqA observations are context only, not new runs, and their measurement unit is unstated. This neither establishes unsupported status nor enables another token.",
+          "delivery_scope": "REFERENCE_ONLY_NO_ALTERNATE_METER_MODE_OR_AUDIO_ENABLEMENT"
         }
       ]
     },
@@ -69726,6 +69816,28 @@
       "not_run": [
         "Actual query selection, setup +0x94 consumer, Bool algorithm/result use, owner/generation, and audio/JOC effect.",
         "Any new measurement or audio run; prior observations were reused only."
+      ]
+    },
+    {
+      "package_id": "DEE-METERING-MODE-TOKEN-RUNTIME-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-TOKEN-RUNTIME-BOUNDARY-V1",
+      "manifest_sha256": "5007ae0b8db3276ec45e1e11e800e648d0b466b523c78cee51b58cc6af71f81e",
+      "supplement_seal_sha256": "37edfa73375c4df289bd758ae0d2f4f5c7afa59ff028864b947bf88a49b97fdd",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS_5_OF_5",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "FIVE_RAW_CANDIDATES_NOT_ALGORITHMS; ONE_N36_1770_3_EXIT10_NO_SCALAR_OR_OUTPUT; CAUSE_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Effective consumer, algorithm mapping, measurement scalar, or audio/JOC effect.",
+        "1770-1/1770-2 runtime behavior and any retry of the 1770-3 attempt."
       ]
     }
   ]

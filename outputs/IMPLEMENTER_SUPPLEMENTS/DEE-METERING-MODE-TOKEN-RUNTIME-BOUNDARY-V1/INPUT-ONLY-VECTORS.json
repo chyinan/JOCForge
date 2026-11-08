@@ -1,0 +1,33 @@
+{
+  "field_path": "/job_config/filter/audio/encode_to_atmos_ddp/loudness/measure_only/metering_mode",
+  "rows": [
+    {
+      "semantic_label": "UNBOUND",
+      "static_raw_u32_candidate": 0,
+      "token": "1770-4"
+    },
+    {
+      "semantic_label": "UNBOUND",
+      "static_raw_u32_candidate": 1,
+      "token": "1770-3"
+    },
+    {
+      "semantic_label": "UNBOUND",
+      "static_raw_u32_candidate": 2,
+      "token": "1770-2"
+    },
+    {
+      "semantic_label": "UNBOUND",
+      "static_raw_u32_candidate": 3,
+      "token": "1770-1"
+    },
+    {
+      "semantic_label": "UNBOUND",
+      "static_raw_u32_candidate": 4,
+      "token": "LeqA"
+    }
+  ],
+  "schema": "wash.metering-mode-input-only-vectors.v1",
+  "status": "INPUT_ONLY_TOKEN_VECTORS; NO NEW EXECUTION",
+  "vector_is_not_a_pass_record": true
+}

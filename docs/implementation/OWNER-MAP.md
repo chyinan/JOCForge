@@ -195,6 +195,7 @@
 | F01E/washed-ddp-sample-range-silence-rule-matrix | F01E | `UNBOUND` |
 | F01E/washed-n38-rf-drc-profile-bsi-observation | F01E | `UNBOUND` |
 | F01E/washed-di-measure-only-bool-boundary | F01E | `UNBOUND` |
+| F01E/washed-metering-mode-runtime-boundary | F01E | `UNBOUND` |
 | F03G/target-slot-install | F03G | `spatial_control` |
 | F03C/candidate-selector | F03C | `spatial_control` |
 | F03C/selector-score-choice | F03C | `spatial_control` |

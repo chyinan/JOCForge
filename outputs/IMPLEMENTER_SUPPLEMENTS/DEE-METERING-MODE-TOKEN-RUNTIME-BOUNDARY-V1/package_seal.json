@@ -1,0 +1,38 @@
+{
+  "file_count": 6,
+  "files": [
+    {
+      "bytes": 3132,
+      "file": "EVIDENCE.json",
+      "sha256": "42597a2e1146d55bf413a20468b5a1a1b71c1e016cd701eb134bd4550d981a8a"
+    },
+    {
+      "bytes": 895,
+      "file": "FINDINGS.md",
+      "sha256": "8d43079a5f1ed48a028147a99dff470ff127f8f83d68d1705b140f215fa3388a"
+    },
+    {
+      "bytes": 848,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "ad8322520af2dfe7ba46a866b7bd8d509845f8c440c11eaa2177657f36f9838c"
+    },
+    {
+      "bytes": 358,
+      "file": "SOURCE-PACKAGE.json",
+      "sha256": "ca59851a0831767536c3edfadb23b2524ea4b9283c03df7159657f02eca52e8e"
+    },
+    {
+      "bytes": 1714,
+      "file": "CHECK.py",
+      "sha256": "f660034d3ee4cd45d8a4fae2ecb2f5c6fe80958dadbfa4d54b8296d3f6a60e6b"
+    },
+    {
+      "bytes": 1312,
+      "file": "MANIFEST.json",
+      "sha256": "5007ae0b8db3276ec45e1e11e800e648d0b466b523c78cee51b58cc6af71f81e"
+    }
+  ],
+  "schema": "washed-implementer-supplement-seal.v1",
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-METERING-MODE-TOKEN-RUNTIME-BOUNDARY-V1"
+}

@@ -1,0 +1,8 @@
+{
+  "manifest_sha256": "c6797d7b78c2024ae1ac2ecb265714e1c7e72ae5e4bd15627123765ecfe1ff91",
+  "normal_checker": "PASS",
+  "package_id": "metering-mode-rule-boundary-wash-v1",
+  "package_seal_file_sha256": "12c3b2af0d7ecc2fb378a23ef9018ee5f15e96cf56984ed64d066ea425b5babc",
+  "python_O_checker": "PASS",
+  "raw_source_or_decompilation_copied": false
+}
