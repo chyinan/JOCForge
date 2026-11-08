@@ -460,7 +460,8 @@ fn complete_job_xml_value_surface_parses_without_enabling_unselected_effects() {
         36,
         descriptor["pcm_bits"].as_u64().unwrap() as u16,
     );
-    let source_samples = descriptor["source_samples"].as_u64().unwrap();
+    // Parser-only input: no reader opens a file or validates a real sample extent.
+    let source_samples = 1;
     let base_xml = case["input_xml"]
         .as_str()
         .unwrap()
