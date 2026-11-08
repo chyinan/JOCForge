@@ -1,0 +1,45 @@
+{
+  "schema": "jocforge-source-manifest-receipts.v1",
+  "source_package": {
+    "package_id": "timecode-frame-rate-ddp-consumer-wash-v1",
+    "manifest_sha256": "4b07da8d6662d0d4d191ea4501aa36608a4018cd0da62b1feff301a65dc45e3f",
+    "manifest_sha256_file_sha256": "792e3613136223211f5715ec5a89aeac7589808b38ddaa33960d88f877e8e567",
+    "package_seal_file_sha256": "aa7a6d67dcf824535a1ca885ea0a6af80173208f11354bec7724f9d06ee2cf27",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "reused_source_packages": [
+    {
+      "package_id": "timecode-job-config-field-consumer-boundary-wash-v1",
+      "manifest_sha256": "fa7b551c497ae92ce9ef49d15347cb237080fe5204fee0dace205c615701d765",
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS",
+      "wash_replayed_this_turn": true
+    },
+    {
+      "package_id": "timecode-frame-rate-validator-boundary-wash-v1",
+      "manifest_sha256": "231e7fe00dd83ed8ea2c5b6882729a54bbb6cd2d18c3af46826f74efeae4329c",
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS",
+      "wash_replayed_this_turn": true
+    },
+    {
+      "package_id": "timecode-ddp-output-field-consumer-boundary-wash-v2",
+      "manifest_sha256": "5a79e08db28d47074c3797dcda53da566b45b0c7075c77a0ebe6c1a29e057165",
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS",
+      "wash_replayed_this_turn": true
+    }
+  ],
+  "wash_review": {
+    "source_manifest_and_seal_hashes_recomputed": true,
+    "original_source_checks_reevaluated": true,
+    "product_source_or_decompilation_in_handoff": false,
+    "implementation_readiness": "NO"
+  },
+  "timeline_snapshot": {
+    "source_reports_through": "E-439",
+    "current_wash_log_subsequently_appended": true,
+    "launch_authority": "NOT_INCLUDED"
+  }
+}

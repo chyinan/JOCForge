@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-implementer-supplement-seal.v1",
+  "package_id": "DEE-ATMOS-DDP-TIMECODE-FRAME-RATE-BOUNDARY-PARTIAL-V1",
+  "manifest_sha256": "2b12dee6d108cd21f4076730b533159f9063aa696ec5ef0c60c5694bc01f0158",
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 4197,
+      "sha256": "845125698c03d8a0bfce166eb67530d6356eceafbd6623f04402edbb7cce60ca"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 2769,
+      "sha256": "e66cbc924f51fef03c61359212b04b8297f2bfd287e9ea601b936325871a4372"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 456,
+      "sha256": "63fe908164854d1c1c1766598ee6d4885e3f22e25e19d1b232282a37c3dc0d06"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 1826,
+      "sha256": "7493ac4f13c5a606f1106cd3add1cd28803db1240993ebe9b2863ee4b2d1cdfc"
+    },
+    {
+      "path": "SOURCE-MANIFESTS.json",
+      "bytes": 1797,
+      "sha256": "bfbabb4211b327febe230fb1493d9190ad1030da3850fa0598e8e3de195fb4ed"
+    }
+  ],
+  "seal_excluded_from_own_hash_list": true
+}

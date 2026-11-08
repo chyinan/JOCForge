@@ -1,0 +1,68 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package_id": "DEE-ATMOS-DDP-TIMECODE-FRAME-RATE-BOUNDARY-PARTIAL-V1",
+  "audience": "IMPLEMENTATION_EVIDENCE_ONLY",
+  "status": "SCHEMA_ENUM_BOUND_HOST_TO_DDP_OWNER_JOIN_UNBOUND_RUNTIME_NOT_RUN",
+  "implementation_ready": "NO",
+  "scope": "encode_to_atmos_ddp timecode_frame_rate schema and static host/DDP candidate edges only",
+  "evidence_tiers": {
+    "static_native_observation": "Ghidra 12.2 read-only/no-analysis",
+    "runtime": "NOT_RUN",
+    "output_effect": "NOT_OBSERVED"
+  },
+  "native_image_identity": {
+    "plugin_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "host_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e"
+  },
+  "ddp_schema": {
+    "field_path": "/job_config/filter/audio/encode_to_atmos_ddp/timecode_frame_rate",
+    "type": "xs:string",
+    "default": "not_indicated",
+    "enum_tokens": ["not_indicated", "23.976", "24", "25", "29.97", "30", "48", "50", "59.94", "60"],
+    "claim_limit": "schema text only; does not prove runtime admission or output selection"
+  },
+  "host_setter_candidate": {
+    "function": "FUN_1400f13e0",
+    "exact_key": "timecode_frame_rate",
+    "parse_helper": "FUN_1400705c0",
+    "store_helper": "FUN_14001d440",
+    "receiver_byte_offset": "+0x188",
+    "receiver_to_selected_ddp_output_node": "UNBOUND",
+    "same_key_on_input_and_output_nodes": true
+  },
+  "ddp_reader_candidate": {
+    "constructor": "FUN_180135d40",
+    "property_setup": "FUN_180136220",
+    "candidate_constructor_value_offset": "+0x3f8",
+    "reader_function": "FUN_18014fd90",
+    "reader_guard": "FUN_180152c70(param_1+0x3f8)",
+    "property_map_offset": "+0xa0",
+    "lookup_key": "timecode_frame_rate",
+    "reader_direct_caller": "FUN_18014a600",
+    "caller_parameter_flow": "FUN_18014a600 passes param_1 unchanged",
+    "reader_caller_owner": "UNBOUND",
+    "same_numeric_offset_identity_or_transfer": "NOT_INFERRED"
+  },
+  "separate_host_validator": {
+    "function": "FUN_140135d90",
+    "compares_same_ten_strings": true,
+    "call_join_to_output_setter": "UNBOUND"
+  },
+  "first_unbound_edge": {
+    "from": "host setter receiver/value at +0x188",
+    "to": "selected encode_to_atmos_ddp owner and its property map read by FUN_18014fd90",
+    "status": "UNBOUND"
+  },
+  "timeline_reference": {
+    "source_snapshot_last_event": "E-439",
+    "source_snapshot_sha256": "19bab2d9620e0d5617d5b2033ec41696e37c581c512ed555b5c4b9134fd821d4",
+    "use": "historical static-research receipt only; not current launch authorization"
+  },
+  "execution": {
+    "dee_started": false,
+    "windbg_started": false,
+    "ab_run": false,
+    "implementation_contact": false,
+    "pcm_payload_key_license_access": false
+  }
+}

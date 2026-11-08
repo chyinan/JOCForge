@@ -10076,6 +10076,110 @@
           ],
           "validation_boundary": "The package statically binds prepend/append sample conversion and composite schedule order. The selected XSD snapshot declares both optional strings with default `0`; an earlier sealed transcription reported `0.0`, and both explicit zero forms convert to zero samples. Omitted-element overlay remains UNBOUND. Separate sample counts are placed around the exclusive source span: composite start is prior length plus prepend; next length is prior length + prepend + (endSample-startSample) + append. The first Reader virtual +0x18 fills a local frame and output virtual +0x08 receives it, but concrete Reader, sample layout, zero-fill, PTS/track length, and channel/bed/object consistency remain UNBOUND/NOT_OBSERVED. Runtime and A/B remain NOT_RUN.",
           "delivery_scope": "STATIC_SCHEDULE_ONLY_NO_PCM_MATERIALIZATION_OR_AUDIBLE_EFFECT"
+        },
+        {
+          "slice_id": "washed-ddp-output-timecode-frame-rate-partial-boundary",
+          "mapping_status": "DDP_SCHEMA_AND_HOST_DDP_CANDIDATE_EDGES_STATICALLY_BOUND__SELECTED_OWNER_TRANSFER_UNBOUND",
+          "implementation_status": "WASHED_REFERENCE_ONLY__RUNTIME_ADMISSION_AND_OUTPUT_EFFECT_NOT_RUN",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "The DDP schema statically declares ten timecode_frame_rate enum tokens and default not_indicated. A host setter candidate parses the same key and stores to receiver+0x188, while a DDP property-map reader candidate checks constructor offset +0x3f8 and queries +0xa0. The host setter receiver is not joined to the selected DDP output node; the reader caller owner is unbound. The same key occurs on input and output nodes, so no transfer, selected value, runtime admission, timecode conversion, or output effect is inferred. E-439 is only a historical static-research receipt, not current launch authorization.",
+          "dependencies": [
+            "F01E/washed-timecode-frame-rate-field-consumer-boundary"
+          ],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-DDP-TIMECODE-FRAME-RATE-BOUNDARY-PARTIAL-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The supplement binds schema and candidate property paths only; no runtime rate conversion or frame clock is selected."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_DDP_TIMECODE_FRAME_RATE_SCHEMA_AND_CANDIDATE_TRANSFER",
+            "package_id": "DEE-ATMOS-DDP-TIMECODE-FRAME-RATE-BOUNDARY-PARTIAL-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-DDP-TIMECODE-FRAME-RATE-BOUNDARY-PARTIAL-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-DDP-TIMECODE-FRAME-RATE-BOUNDARY-PARTIAL-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-DDP-TIMECODE-FRAME-RATE-BOUNDARY-PARTIAL-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-DDP-TIMECODE-FRAME-RATE-BOUNDARY-PARTIAL-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-DDP-TIMECODE-FRAME-RATE-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-DDP-TIMECODE-FRAME-RATE-BOUNDARY-PARTIAL-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-DDP-TIMECODE-FRAME-RATE-BOUNDARY-PARTIAL-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "2b12dee6d108cd21f4076730b533159f9063aa696ec5ef0c60c5694bc01f0158",
+            "supplement_seal_sha256": "610bdcfbb40a28fe5488a1a7b3121e0f88735797193d488614d51d48aa0ed0ac",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "ddp_schema": {
+              "field_path": "/job_config/filter/audio/encode_to_atmos_ddp/timecode_frame_rate",
+              "type": "xs:string",
+              "default": "not_indicated",
+              "tokens": [
+                "not_indicated",
+                "23.976",
+                "24",
+                "25",
+                "29.97",
+                "30",
+                "48",
+                "50",
+                "59.94",
+                "60"
+              ],
+              "claim_limit": "schema text only; runtime admission/output selection NOT_RUN"
+            },
+            "host_setter_candidate": {
+              "function": "FUN_1400f13e0",
+              "exact_key": "timecode_frame_rate",
+              "parse_helper": "FUN_1400705c0",
+              "store_helper": "FUN_14001d440",
+              "receiver_offset": "+0x188",
+              "same_key_on_input_and_output_nodes": true,
+              "receiver_to_selected_ddp_output_node": "UNBOUND"
+            },
+            "ddp_reader_candidate": {
+              "constructor": "FUN_180135d40",
+              "property_setup": "FUN_180136220",
+              "candidate_property_offset": "+0x3f8",
+              "reader": "FUN_18014fd90",
+              "guard": "param_1+0x3f8",
+              "property_map_offset": "+0xa0",
+              "lookup_key": "timecode_frame_rate",
+              "caller": "FUN_18014a600 passes param_1 unchanged",
+              "reader_caller_owner": "UNBOUND"
+            },
+            "first_unbound_edge": "host setter typed receiver/value to selected DDP owner and property map read",
+            "execution": "NOT_RUN",
+            "historical_timeline_reference": "E-439 snapshot is not current launch authority",
+            "validation_boundary": "The DDP schema statically declares ten timecode_frame_rate enum tokens and default not_indicated. A host setter candidate parses the same key and stores to receiver+0x188, while a DDP property-map reader candidate checks constructor offset +0x3f8 and queries +0xa0. The host setter receiver is not joined to the selected DDP output node; the reader caller owner is unbound. The same key occurs on input and output nodes, so no transfer, selected value, runtime admission, timecode conversion, or output effect is inferred. E-439 is only a historical static-research receipt, not current launch authorization."
+          },
+          "vectors": {
+            "kind": "WASHED_SCHEMA_ENUM_INPUTS_NOT_RUNTIME_VECTORS",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Ten schema tokens only; runtime admission is UNBOUND/NOT_RUN."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-DDP-TIMECODE-FRAME-RATE-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Host setter receiver to selected DDP output owner/property map transfer.",
+            "Runtime XML admission, output timecode selection/conversion, and output effect.",
+            "Input and output fields remain distinct; same key does not establish value transfer.",
+            "E-439 is historical status only, not launch authority."
+          ],
+          "validation_boundary": "The DDP schema statically declares ten timecode_frame_rate enum tokens and default not_indicated. A host setter candidate parses the same key and stores to receiver+0x188, while a DDP property-map reader candidate checks constructor offset +0x3f8 and queries +0xa0. The host setter receiver is not joined to the selected DDP output node; the reader caller owner is unbound. The same key occurs on input and output nodes, so no transfer, selected value, runtime admission, timecode conversion, or output effect is inferred. E-439 is only a historical static-research receipt, not current launch authorization.",
+          "delivery_scope": "EXTERNAL_REFERENCE_ONLY_NO_TIMECODE_CONVERSION_OR_OUTPUT_ENABLEMENT"
         }
       ]
     },
@@ -71859,6 +71963,28 @@
       "not_run": [
         "Omission overlay, Reader/sample materialization, PTS/track length, and channel/bed/object consistency.",
         "Proposed A/B; no timeline GO or output/temp assignment."
+      ]
+    },
+    {
+      "package_id": "DEE-ATMOS-DDP-TIMECODE-FRAME-RATE-BOUNDARY-PARTIAL-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-DDP-TIMECODE-FRAME-RATE-BOUNDARY-PARTIAL-V1",
+      "manifest_sha256": "2b12dee6d108cd21f4076730b533159f9063aa696ec5ef0c60c5694bc01f0158",
+      "supplement_seal_sha256": "610bdcfbb40a28fe5488a1a7b3121e0f88735797193d488614d51d48aa0ed0ac",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "SCHEMA_AND_CANDIDATE_SETTER_READER_EDGES_ONLY; SELECTED_OWNER_TRANSFER_AND_RUNTIME_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Host-to-selected-DDP owner/property map join, runtime admission, conversion effect, and output behavior.",
+        "No launch authorization is included; E-439 remains historical only."
       ]
     }
   ]

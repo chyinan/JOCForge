@@ -1605,3 +1605,7 @@ Wash package `DEE-DOWNMIX-MODE-LEVEL-CONSUMER-BOUNDARY-PARTIAL-V1` (manifest SHA
 ## 2026-11-09: DDP silence composite schedule partial
 
 Wash package `DEE-ADM-DDP-SILENCE-COMPOSITE-SCHEDULE-PARTIAL-V1` (manifest SHA-256 `b715d7225fb8562cc1595baf4c0ffb1cb0962761b2341bfa9ff67819d00d131c`, seal SHA-256 `cc3d4599019939ff35509b8d60a0dfbf849b90fdbd6d69fd8f1ce5e3be51adbd`) binds static prepend/source-range/append schedule order. The selected XSD default is `0`, while a prior sealed transcription says `0.0`; explicit zero forms convert equivalently, but omitted-element overlay remains `UNBOUND`. Composite source start/length formulas are static only. First Reader target, zero-fill, PCM, PTS/track length, and channel/bed/object consistency remain `UNBOUND/NOT_OBSERVED`; A/B and runtime are `NOT_RUN`. No zero-PCM or audible-effect claim is made.
+
+## 2026-11-09: DDP output timecode frame-rate partial boundary
+
+Wash package `DEE-ATMOS-DDP-TIMECODE-FRAME-RATE-BOUNDARY-PARTIAL-V1` (manifest SHA-256 `2b12dee6d108cd21f4076730b533159f9063aa696ec5ef0c60c5694bc01f0158`, seal SHA-256 `610bdcfbb40a28fe5488a1a7b3121e0f88735797193d488614d51d48aa0ed0ac`) binds the DDP schema enum/default and static host setter (`+0x188`) / property-reader (`+0x3f8`, map `+0xa0`) candidates. The selected output owner and setter-to-reader transfer remain `UNBOUND`; runtime admission/conversion/output remain `NOT_RUN`. The input field is distinct even though the key string is the same. The E-439 snapshot is historical and grants no launch authority.

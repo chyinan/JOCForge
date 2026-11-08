@@ -208,6 +208,7 @@
 | F01E/washed-rf-drc-profile-consumer-boundary-partial | — | `Static per-block DRC table shape is described, but no selected RF profile/runtime generation or frame-clock join is established.` |
 | F01E/washed-custom-trim-first-effective-consumer-partial | — | `No runtime trim callback or audio-frame timing is established.` |
 | F01E/washed-ddp-silence-composite-schedule-partial | — | `Static sample-count and composite schedule formulas only; no Reader sample layout, zero-fill, PTS, or track-length clock is established.` |
+| F01E/washed-ddp-output-timecode-frame-rate-partial-boundary | — | `The supplement binds schema and candidate property paths only; no runtime rate conversion or frame clock is selected.` |
 | F03G/target-slot-install | — | `Pure per-callback value transition; no clock or committed state is owned.` |
 | F03C/candidate-selector | — | `Each selector call initializes cold scratch; no callback/source/AU counter or cross-call selector state is owned.` |
 | F03C/selector-score-choice | — | `No state or clock is owned.` |
