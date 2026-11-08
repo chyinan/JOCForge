@@ -1433,6 +1433,10 @@ The following forty-one tabled packages were independently hash-checked and pass
 
 These packages preserve the existing fail-closed CLI selection. None authorizes enabling non-default metering, time-base, trim, DRC, downmix, or silence behavior.
 
+## 2026-11-08: Encoder timecode exact-token admission
+
+The encoder-side job XML parser now admits the exact ten `timecode_frame_rate` tokens listed by `DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1` and preserves the authored token in normalized identity. This is lexical admission only: the `adm`/`atmos_mezz` input-side field remains fixed to `not_indicated`; direct `29.97df` is rejected, and no parent canonicalization, numeric conversion, or output timecode effect is implemented by this slice. Runtime effect remains `NOT_RUN`.
+
 ## 2026-11-08: Local test-support clip-gain experiment status
 
 At the first audit snapshot, baseline HEAD was `d78b8c0af4a0b5d1c5ad72777561402347844bc9`; seven Rust files were then modified, including a `test-support` raw ID14 clip-gain X/Y override. That earlier code documented an authorized isolated reference-decoder experiment: vary only the 3-bit X and 5-bit Y header fields after coefficient fitting and observe their behavior. No fixture, expected output, or acceptance threshold was recorded. The override code is no longer present in the current checkout; no such experiment was run here.

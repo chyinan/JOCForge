@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "TEMP-MESSAGE-RETURN-RECEIVER-01",
+      "kind": "static_call_path",
+      "input_only": true,
+      "input": {
+        "constructor": "FUN_14006a820",
+        "caller_local": "local_98",
+        "caller_local_size_bytes": 80,
+        "forwarding_path": "FUN_14007ae60 -> FUN_140067610 argument 3 -> FUN_140066230 entry R8"
+      },
+      "expected_observation": {
+        "returned_object_identity": "same caller-provided object",
+        "receiver_type": "dee::Messages::Message",
+        "first_delegate_slot": "+0x18",
+        "target_function_boundary": "FUN_14006c760",
+        "target_body_inspected": false,
+        "clean_temp_explicit_argument": false
+      },
+      "expected_audio_output": null,
+      "runtime_status": "NOT_RUN"
+    }
+  ]
+}

@@ -1681,9 +1681,9 @@
       "direct_slices": [
         {
           "slice_id": "selected-job-xml-profile-normalization",
-          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F01E_AND_F01_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_11_JOB_XML_CASES_PLUS_SIX_EXPLICIT_RATE_PROFILES_AND_FILM_LIGHT_DRC__DI_SEMANTICS_AND_DEE_RUNTIME_JOIN_OPEN",
-          "scope": "Parses the selected UTF-8 job XML, validates the selected WAVE descriptor/source-sample count, normalizes F01E.1 fields, and resolves the result through the existing selected production-profile gate. File paths are returned as values only; this function performs no file I/O. It does not parse ADM/CHNA, DBMD or events, produce control38, or wire encode. It also accepts a film_light/film_light DRC candidate paired with the existing false/100 meter inputs; DI true/15 remains unsupported by the selected meter model. A Wash follow-up binds only same-receiver continuity inside the SimpleType<bool> wrapper-to-setter edge; the property-map caller, owner/generation, and first measurement/audio consumer remain open. The local parser also admits exactly one explicit decimal data_rate token from 384, 448, 576, 640, 768, or 1024 kbps and carries the typed selected rate through F01E projection. Schema omission/default and multi-token list behavior remain unsupported; this is not evidence of a DEE runtime host-property join.",
+          "mapping_status": "SELECTED_XML_EXACT_ENCODER_TIMECODE_ADMISSION__INPUT_FIELD_AND_EFFECT_REMAIN_SEPARATE",
+          "implementation_status": "LOCALLY_IMPLEMENTED_EXACT_ENCODER_TIMECODE_TOKEN_ADMISSION__NUMERIC_AND_OUTPUT_EFFECT_NOT_RUN",
+          "scope": "Parses the selected UTF-8 job XML, validates the selected WAVE descriptor/source-sample count, normalizes F01E.1 fields, and resolves the result through the existing selected production-profile gate. File paths are returned as values only; this function performs no file I/O. It does not parse ADM/CHNA, DBMD or events, produce control38, or wire encode. It also accepts a film_light/film_light DRC candidate paired with the existing false/100 meter inputs; DI true/15 remains unsupported by the selected meter model. A Wash follow-up binds only same-receiver continuity inside the SimpleType<bool> wrapper-to-setter edge; the property-map caller, owner/generation, and first measurement/audio consumer remain open. The local parser also admits exactly one explicit decimal data_rate token from 384, 448, 576, 640, 768, or 1024 kbps and carries the typed selected rate through F01E projection. Schema omission/default and multi-token list behavior remain unsupported; this is not evidence of a DEE runtime host-property join. The encoder-side timecode_frame_rate field admits the Wash-bound exact ten-token set and preserves the authored token in normalized identity; the input-side timecode field remains fixed to not_indicated. This does not apply rate conversion, normalize 29.97df, or establish output behavior.",
           "owner": "frontend",
           "implementation_files": [
             "crates/jocforge-domain/src/frontend/job_configuration.rs",
@@ -1694,7 +1694,8 @@
           "local_mapping_files": [
             "docs/implementation/job-configuration.md",
             "crates/jocforge-domain/tests/fixtures/job_configuration/PROVENANCE.json",
-            "docs/architecture/PROFILE-DIMENSIONS.md"
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/REPORT.md"
           ],
           "clock": {
             "domains": [],
@@ -1724,7 +1725,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-EC3-SIX-BITRATE-FRAME-HEADER-OBSERVATION-V1/PROVENANCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DATA-RATE-JOB-SCHEMA-TO-PLUGIN-BOUNDARY-V1/MANIFEST.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DATA-RATE-JOB-SCHEMA-TO-PLUGIN-BOUNDARY-V1/package_seal.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DATA-RATE-JOB-SCHEMA-TO-PLUGIN-BOUNDARY-V1/INPUT-ONLY-VECTORS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DATA-RATE-JOB-SCHEMA-TO-PLUGIN-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/CHECK.py"
             ],
             "validation_boundary": "Admits the selected 48 kHz/PCM24 input descriptor and one explicit data_rate token from {384,448,576,640,768,1024}; six typed carrier rows map to the locally selected frame-size table. Other profile dimensions reject without fallback. The 38-channel Human Cat XML remains one baseline fixture, not a channel-count restriction. DEE host-map/runtime selector joins and omitted-default/multi-token semantics remain UNBOUND.",
             "audio_control_profiles": [
@@ -1871,6 +1879,26 @@
               },
               "nonlisted_values": "CONFIG_BIT_RATE reject",
               "multi_token_and_omitted_default": "UNSUPPORTED_LOCAL_INPUT; DEE runtime semantics UNBOUND"
+            },
+            "timecode_frame_rate_admission": {
+              "source_package_id": "DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1",
+              "source_manifest_sha256": "75154594b8a5ef295ae91a9b61de48c0936199052212435235788c3f870fbdb4",
+              "source_seal_sha256": "2cc56bd5c3115d20159b9918f77dbcd45d23de5412ef693583a9b78c577b709b",
+              "accepted_encoder_tokens": [
+                "not_indicated",
+                "23.976",
+                "24",
+                "25",
+                "29.97",
+                "30",
+                "48",
+                "50",
+                "59.94",
+                "60"
+              ],
+              "direct_29_97df": "REJECTED; parent canonicalization is not implemented here",
+              "raw_token_preserved_in_normalized_identity": true,
+              "numeric_conversion_and_output_effect": "NOT_IMPLEMENTED/NOT_RUN"
             }
           },
           "test_modules": [
@@ -1895,7 +1923,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-DATA-RATE-SELECTOR-CONSTRUCTOR-EDGE-V2/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-EC3-SIX-BITRATE-FRAME-HEADER-OBSERVATION-V1/OBSERVED-RATE-FRAMES.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-EC3-SIX-BITRATE-FRAME-HEADER-OBSERVATION-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DATA-RATE-JOB-SCHEMA-TO-PLUGIN-BOUNDARY-V1/INPUT-ONLY-VECTORS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DATA-RATE-JOB-SCHEMA-TO-PLUGIN-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "Eleven complete job XML cases: ADM and atmos_mezz selection/defaults, ADM precedence, duplicate field, malformed XML, DOCTYPE, namespaced root, missing DRC, nonzero start, unregistered 512 kbps rate, and wrong PCM profile.",
@@ -1982,9 +2014,9 @@
             {
               "error_code": "CONFIG_TIME_DOMAIN",
               "category": "selected time and silence fields",
-              "trigger": "An input/encoder timecode, offset/ffoa, start/end, time_base, or silence value is outside the F01E selected rules.",
+              "trigger": "Input-side timecode_frame_rate is not not_indicated, encoder-side token is not an exact member of the ten-token allowlist, or another selected time/silence field violates its rule. Encoder tokens are preserved as authored strings; 29.97df direct input rejects.",
               "programme_state_after": "No normalized job configuration is returned.",
-              "caller_action": "Reject; do not infer nonzero starts, arbitrary timecodes, or resampling."
+              "caller_action": "Reject unsupported tokens; do not infer parent canonicalization, numeric conversion, timebase conversion, or output timecode effect."
             },
             {
               "error_code": "CONFIG_FIELD_VALUE",
@@ -2023,7 +2055,9 @@
             "DI A/B, runtime capture, and audio effect.",
             "Same-run workflowParams map from the selected XML data_rate to the lookup input.",
             "Selected processor+0xFC8 branch and runtime selector value.",
-            "Writer behavior after capacity; rate generalization beyond the observed single input."
+            "Writer behavior after capacity; rate generalization beyond the observed single input.",
+            "Non-sentinel encoder timecode numeric conversion, units, precision/rounding, and output effect are not implemented or run.",
+            "Parent 29.97df canonicalization and drop_frame behavior are not part of this exact-token admission slice."
           ]
         },
         {
@@ -3194,8 +3228,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 59573,
-              "sha256": "083b07f3449146142cd313b6865f4ddcc8cb75a2e3beac714fd9f631a67fc2b9"
+              "bytes": 60394,
+              "sha256": "e2cac119731a574cbdb9dbd7cb1e6f322e61c9e45b0ffb1efa5929e74580787d"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
@@ -4325,8 +4359,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 59573,
-              "sha256": "083b07f3449146142cd313b6865f4ddcc8cb75a2e3beac714fd9f631a67fc2b9"
+              "bytes": 60394,
+              "sha256": "e2cac119731a574cbdb9dbd7cb1e6f322e61c9e45b0ffb1efa5929e74580787d"
             }
           ],
           "test_inventory": [
@@ -4735,8 +4769,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 59573,
-              "sha256": "083b07f3449146142cd313b6865f4ddcc8cb75a2e3beac714fd9f631a67fc2b9"
+              "bytes": 60394,
+              "sha256": "e2cac119731a574cbdb9dbd7cb1e6f322e61c9e45b0ffb1efa5929e74580787d"
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
@@ -10703,8 +10737,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 59573,
-              "sha256": "083b07f3449146142cd313b6865f4ddcc8cb75a2e3beac714fd9f631a67fc2b9"
+              "bytes": 60394,
+              "sha256": "e2cac119731a574cbdb9dbd7cb1e6f322e61c9e45b0ffb1efa5929e74580787d"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/primary_metadata_control.rs",
@@ -40680,8 +40714,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 59573,
-              "sha256": "083b07f3449146142cd313b6865f4ddcc8cb75a2e3beac714fd9f631a67fc2b9"
+              "bytes": 60394,
+              "sha256": "e2cac119731a574cbdb9dbd7cb1e6f322e61c9e45b0ffb1efa5929e74580787d"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/provider.rs",
@@ -67228,6 +67262,26 @@
       "not_run": [
         "XML owner/generation and parent converter unit/precision/rounding semantics.",
         "Runtime acceptance and timecode effect."
+      ]
+    },
+    {
+      "package_id": "DEE-TEMP-DIR-MESSAGE-RECEIVER-FIRST-DELEGATE-VTABLE-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-RECEIVER-FIRST-DELEGATE-VTABLE-BOUNDARY-V1",
+      "manifest_sha256": "6e170271bfbbbee41d72103b8dcd264244dc9a509589eef00c498e45103d5850",
+      "supplement_seal_sha256": "b619f08b5b86e4ede06167776f0a1d5eb5a8c616e93ed4f90d4f5d89292910a8",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "MESSAGE_RECEIVER_AND_RESOLVED_SLOT_TARGET_BOUND; TARGET_BODY_AND_CLEANUP_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Target function body and file-system operation.",
+        "clean_temp flag to delete/retain consumer and owner/generation.",
+        "Runtime job/provider identity and cleanup effect."
       ]
     }
   ]

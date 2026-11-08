@@ -1,0 +1,47 @@
+{
+  "schema": "jocforge.wash_supplement_evidence.v1",
+  "source_package": {
+    "package_id": "DEE-ATMOS-MISC-TEMP-MESSAGE-VTABLE-RESOLUTION-WASH-V1",
+    "manifest_sha256": "50d0af4efbf630a44f80e31a9ed9f1d1926bc9f2ad8c265fa573e835a6bc41de",
+    "sha256sums_txt_sha256": "2885911e0ab8d5396ccbc5f7add26261cd3d78029e84de773cc669d16442c603",
+    "normal_checker": "PASS",
+    "python_o_checker": "PASS"
+  },
+  "scope": {
+    "tool": "Ghidra 12.2 PUBLIC",
+    "mode": "read-only/no-analysis",
+    "claim": "static return-object identity and first-delegate target boundary only"
+  },
+  "return_object": {
+    "function": "FUN_14006a820",
+    "operation": "stores dee::Messages::Message vtable in caller-provided object and returns the same input pointer",
+    "caller": "FUN_14007ae60",
+    "caller_local": "local_98",
+    "storage_size_bytes": 80,
+    "forwarded_as": "FUN_140067610 argument 3, then FUN_140066230 entry R8"
+  },
+  "first_delegate": {
+    "consumer": "FUN_140066230",
+    "receiver_type": "dee::Messages::Message (caller local_98)",
+    "vtable_slot": "+0x18",
+    "resolved_function_boundary": "FUN_14006c760",
+    "target_body_inspected": false
+  },
+  "clean_temp": {
+    "path_object_field": "+0x90",
+    "explicit_argument_to_observed_message_call": false,
+    "cleanup_effect": "UNBOUND"
+  },
+  "runtime": {
+    "dee_run": "NOT_RUN",
+    "windbg_run": "NOT_RUN",
+    "owner_generation": "NOT_CAPTURED",
+    "implementation_ready": false
+  },
+  "exclusions": {
+    "raw_disassembly_or_decompilation_included": false,
+    "binaries_included": false,
+    "media_pcm_payload_key_license_included": false,
+    "implementation_contact_by_research_agent": false
+  }
+}

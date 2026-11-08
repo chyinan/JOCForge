@@ -24,6 +24,18 @@ const SELECTED_FRAME_SAMPLES: u16 = 1_536;
 const SELECTED_SPATIAL_CONFIG_MODE: u8 = 0;
 const SELECTED_DISPATCH_MODE: u8 = 2;
 const SELECTED_ROUTE_VIRTUAL_PREFIX_COUNT: u8 = 11;
+const ADMITTED_TIMECODE_FRAME_RATE_TOKENS: &[&str] = &[
+    "not_indicated",
+    "23.976",
+    "24",
+    "25",
+    "29.97",
+    "30",
+    "48",
+    "50",
+    "59.94",
+    "60",
+];
 
 /// Validated WAVE descriptor supplied by the input provider.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -306,6 +318,7 @@ pub struct SelectedJobConfiguration {
     height_trim_5_1: SelectedHeightTrim,
     input_offset: String,
     input_ffoa: String,
+    encode_timecode_frame_rate: String,
     start: String,
     end: String,
     time_base: String,
@@ -373,6 +386,7 @@ impl SelectedJobConfiguration {
             "height_trim_5_1": self.height_trim_5_1.xml_value(),
             "input_offset": self.input_offset,
             "input_ffoa": self.input_ffoa,
+            "encode_timecode_frame_rate": self.encode_timecode_frame_rate,
             "start": self.start,
             "end": self.end,
             "time_base": self.time_base,
@@ -968,7 +982,6 @@ fn validate_primary_job_fields(
         ("/encode/version", "1"),
         ("/encode/loudness/mode", "measure_only"),
         ("/encode/loudness/metering_mode", "1770-4"),
-        ("/encode/timecode_frame_rate", "not_indicated"),
         ("/encode/time_controls/start", ""),
         ("/encode/time_controls/end", ""),
         ("/encode/time_controls/time_base", "file_position"),
@@ -988,6 +1001,13 @@ fn validate_primary_job_fields(
         if job.pointer(pointer).and_then(Value::as_str) != Some(expected) {
             return Err(PrimaryControlBindingError::SelectedFieldValue);
         }
+    }
+    let encode_timecode_frame_rate = job
+        .pointer("/encode/timecode_frame_rate")
+        .and_then(Value::as_str)
+        .ok_or(PrimaryControlBindingError::SelectedFieldValue)?;
+    if !is_admitted_timecode_frame_rate_token(encode_timecode_frame_rate) {
+        return Err(PrimaryControlBindingError::SelectedFieldValue);
     }
     let _dialogue_intelligence = job
         .pointer("/encode/loudness/dialogue_intelligence")
@@ -1108,7 +1128,8 @@ pub fn parse_selected_job_configuration(
     let bit_rate_enum = codec_rate
         .selector_code()
         .ok_or(JobConfigurationError::BitRate)?;
-    if required_text(encoder, &["timecode_frame_rate"])? != "not_indicated" {
+    let encode_timecode_frame_rate = required_text(encoder, &["timecode_frame_rate"])?;
+    if !is_admitted_timecode_frame_rate_token(&encode_timecode_frame_rate) {
         return Err(JobConfigurationError::TimeDomain);
     }
 
@@ -1223,6 +1244,7 @@ pub fn parse_selected_job_configuration(
         height_trim_5_1,
         input_offset,
         input_ffoa,
+        encode_timecode_frame_rate,
         start,
         end,
         time_base,
@@ -1484,6 +1506,10 @@ fn required_text(root: Node<'_, '_>, path: &[&str]) -> Result<String, JobConfigu
     path_text(root, path)?
         .map(ToOwned::to_owned)
         .ok_or(JobConfigurationError::MissingField)
+}
+
+fn is_admitted_timecode_frame_rate_token(value: &str) -> bool {
+    ADMITTED_TIMECODE_FRAME_RATE_TOKENS.contains(&value)
 }
 
 fn require_exact(

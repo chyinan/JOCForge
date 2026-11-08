@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-TEMP-DIR-MESSAGE-RECEIVER-FIRST-DELEGATE-VTABLE-BOUNDARY-V1",
+  "manifest_sha256": "6e170271bfbbbee41d72103b8dcd264244dc9a509589eef00c498e45103d5850",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "MESSAGE_RECEIVER_AND_SLOT_TARGET_BOUND; CLEAN_TEMP_EFFECT_UNBOUND; RUN_NOT_PERFORMED; IMPLEMENTATION_READY=NO"
+}
