@@ -1,0 +1,49 @@
+{
+  "not_a_pass_record": true,
+  "rows": [
+    {
+      "carrier_output": "NOT_RUN",
+      "core_integer": 384,
+      "data_rate": 384,
+      "enum_code": 0,
+      "field_id": 3
+    },
+    {
+      "carrier_output": "NOT_RUN",
+      "core_integer": 448,
+      "data_rate": 448,
+      "enum_code": 1,
+      "field_id": 3
+    },
+    {
+      "carrier_output": "NOT_RUN",
+      "core_integer": 576,
+      "data_rate": 576,
+      "enum_code": 2,
+      "field_id": 3
+    },
+    {
+      "carrier_output": "NOT_RUN",
+      "core_integer": 640,
+      "data_rate": 640,
+      "enum_code": 3,
+      "field_id": 3
+    },
+    {
+      "carrier_output": "NOT_RUN",
+      "core_integer": 768,
+      "data_rate": 768,
+      "enum_code": 4,
+      "field_id": 3
+    },
+    {
+      "carrier_output": "NOT_RUN",
+      "core_integer": 1024,
+      "data_rate": 1024,
+      "enum_code": 5,
+      "field_id": 3
+    }
+  ],
+  "schema": "washed-data-rate-input-only-vectors.v1",
+  "status": "PROPOSED_NOT_RUN"
+}

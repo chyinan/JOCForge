@@ -1,0 +1,36 @@
+{
+  "implementation_ready": false,
+  "payloads": [
+    {
+      "bytes": 3378,
+      "file": "EVIDENCE.json",
+      "sha256": "b7ef8a840f1bf4f1e1f0e069bcd8bc5ed874434bfc947019ae9f1a8254748b2d"
+    },
+    {
+      "bytes": 1031,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "0a782754a7aa451eb41710a1df1a231f2b1080b74553126c6f1baf89275ec4e7"
+    },
+    {
+      "bytes": 925,
+      "file": "FINDINGS.md",
+      "sha256": "cb8f7e9d568cf0c280a49c06a94a95bfc2391ecc85c584ff05a0bf32488c0bf2"
+    },
+    {
+      "bytes": 395,
+      "file": "SOURCE-PACKAGE.json",
+      "sha256": "248848c0834496c0461fe4cc42ea28af2ef65172d1498b953cb83e9fecdcd1c2"
+    },
+    {
+      "bytes": 1533,
+      "file": "CHECK.py",
+      "sha256": "44a1c186a5c27c1796a7ff7eb6de6b56c0fc653d62bd31ea64120a5685d5f6d4"
+    }
+  ],
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "scope": "Static data_rate token to field-ID-3 generic serializer path; named carrier/frame-size writer and runtime rate remain unbound.",
+  "source_manifest_sha256": "96d859cdc67acfdab9a25267d91086bd7afd941f05637244b4c10b31f0a4075f",
+  "source_package_seal_file_sha256": "0bab1fa9cb7fbb1b5b7d80dc20f9e0b032749e424a592c89babc3b2d228868e1",
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-DATA-RATE-TYPE1-ENCODER-BOUNDARY-V1"
+}

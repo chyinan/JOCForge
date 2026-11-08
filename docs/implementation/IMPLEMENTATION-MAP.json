@@ -9236,6 +9236,147 @@
           ],
           "validation_boundary": "The six Line tokens have static initializer/DDP_COMPR candidates, and the six RF tokens have static workflow/U32 and conditional encoder-parameter-0x0f candidates. Selected Line XML-to-encoder and RF XML-to-handler/runtime owner joins remain UNBOUND; candidates are not six established algorithms. Bounded prior short-window observations cover only N36/N38 Line music_standard versus film_light and one N38 RF pair; no decoded-audio/gain effect or broad generalization is established. The minimum Line film_light/none pair with RF fixed film_light remains PROPOSED_NOT_RUN; no full 6x6 matrix exists.",
           "delivery_scope": "EXTERNAL_REFERENCE_ONLY_NO_DRC_GATE_OR_ALGORITHM_CHANGE"
+        },
+        {
+          "slice_id": "washed-data-rate-type1-encoder-boundary",
+          "mapping_status": "SIX_STATIC_TOKENS_TO_TYPE1_FIELD3_BOUND__CALLBACK_AND_CARRIER_CONSUMER_UNBOUND",
+          "implementation_status": "WASHED_PARTIAL_REFERENCE_ONLY__RATE_CONTRAST_PROPOSED_NOT_RUN",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Six authored data_rate tokens statically map through enum codes 0..5 to core integers 384/448/576/640/768/1024, all at field ID 3 and type-1 generic-table serializer slot +0x28. The callback cell's static zero does not reveal its runtime target. The callback runtime target and field-3 join to a named carrier, frame-size word, or emitted bitrate remain UNBOUND/NOT_RUN. The kbps unit is an inference from a separate 448-kbps diagnostic, not a recovered type annotation. A 1024-versus-768 contrast remains PROPOSED_NOT_RUN; no full-rate support conclusion follows.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DATA-RATE-TYPE1-ENCODER-BOUNDARY-V1/FINDINGS.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Static parameter serialization is described; runtime callback target, frame size, and carrier clock are not established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_DATA_RATE_TYPE1_STATIC_MAPPING",
+            "package_id": "DEE-DATA-RATE-TYPE1-ENCODER-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DATA-RATE-TYPE1-ENCODER-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DATA-RATE-TYPE1-ENCODER-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DATA-RATE-TYPE1-ENCODER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DATA-RATE-TYPE1-ENCODER-BOUNDARY-V1/FINDINGS.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DATA-RATE-TYPE1-ENCODER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DATA-RATE-TYPE1-ENCODER-BOUNDARY-V1/SOURCE-PACKAGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DATA-RATE-TYPE1-ENCODER-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "021f7a641668432b41d81ffaea399c1041bca1b57e4e967674d617a03d0e8527",
+            "supplement_seal_sha256": "e9843891c34b781abf8ff1ebb3e7d602a48ebb0ad0619809a51d4166f8ba7c6c",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "schema": {
+              "type": "xs:list",
+              "tokens": [
+                384,
+                448,
+                576,
+                640,
+                768,
+                1024
+              ],
+              "schema_default": 448,
+              "installed_template_value": 1024,
+              "runtime_acceptance": "NOT_RUN"
+            },
+            "static_mapping": [
+              {
+                "token": 384,
+                "enum_code": 0,
+                "core_integer": 384,
+                "field_id": 3,
+                "serializer": "type-1 generic table slot +0x28",
+                "carrier_output": "NOT_RUN"
+              },
+              {
+                "token": 448,
+                "enum_code": 1,
+                "core_integer": 448,
+                "field_id": 3,
+                "serializer": "type-1 generic table slot +0x28",
+                "carrier_output": "NOT_RUN"
+              },
+              {
+                "token": 576,
+                "enum_code": 2,
+                "core_integer": 576,
+                "field_id": 3,
+                "serializer": "type-1 generic table slot +0x28",
+                "carrier_output": "NOT_RUN"
+              },
+              {
+                "token": 640,
+                "enum_code": 3,
+                "core_integer": 640,
+                "field_id": 3,
+                "serializer": "type-1 generic table slot +0x28",
+                "carrier_output": "NOT_RUN"
+              },
+              {
+                "token": 768,
+                "enum_code": 4,
+                "core_integer": 768,
+                "field_id": 3,
+                "serializer": "type-1 generic table slot +0x28",
+                "carrier_output": "NOT_RUN"
+              },
+              {
+                "token": 1024,
+                "enum_code": 5,
+                "core_integer": 1024,
+                "field_id": 3,
+                "serializer": "type-1 generic table slot +0x28",
+                "carrier_output": "NOT_RUN"
+              }
+            ],
+            "callback": {
+              "cell_rva": "0x652218",
+              "static_value": "ZERO",
+              "runtime_target": "UNBOUND"
+            },
+            "carrier_boundary": {
+              "field_id_3_to_bsi_or_frame_size_writer": "UNBOUND",
+              "runtime_output_rate": "NOT_RUN",
+              "bse_frmsiz_validation_not_a_configured_rate_writer": true,
+              "header_reader_not_a_configured_rate_consumer": true,
+              "type2_drc_writer_is_separate": true
+            },
+            "units": {
+              "kbps_interpretation": "INFERENCE_FROM_SEPARATE_448_KBPS_DIAGNOSTIC",
+              "typed_field_unit_annotation": "NOT_RECOVERED"
+            },
+            "validation_boundary": "Six authored data_rate tokens statically map through enum codes 0..5 to core integers 384/448/576/640/768/1024, all at field ID 3 and type-1 generic-table serializer slot +0x28. The callback cell's static zero does not reveal its runtime target. The callback runtime target and field-3 join to a named carrier, frame-size word, or emitted bitrate remain UNBOUND/NOT_RUN. The kbps unit is an inference from a separate 448-kbps diagnostic, not a recovered type annotation. A 1024-versus-768 contrast remains PROPOSED_NOT_RUN; no full-rate support conclusion follows."
+          },
+          "vectors": {
+            "kind": "WASHED_DATA_RATE_INPUTS_AND_MINIMUM_CONTRAST_NOT_RUN",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Six token rows are input-only; 1024-versus-768 one-field contrast is PROPOSED_NOT_RUN with no expected frame-size output."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DATA-RATE-TYPE1-ENCODER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "PROPOSED_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Runtime callback target and data_rate XML/runtime owner join.",
+            "Field ID 3 to carrier, emitted bitrate, or frame-size word consumer.",
+            "1024-versus-768 contrast, all carrier outputs, and actual rate/frame-size behavior.",
+            "A recovered unit annotation; kbps remains an inference."
+          ],
+          "validation_boundary": "Six authored data_rate tokens statically map through enum codes 0..5 to core integers 384/448/576/640/768/1024, all at field ID 3 and type-1 generic-table serializer slot +0x28. The callback cell's static zero does not reveal its runtime target. The callback runtime target and field-3 join to a named carrier, frame-size word, or emitted bitrate remain UNBOUND/NOT_RUN. The kbps unit is an inference from a separate 448-kbps diagnostic, not a recovered type annotation. A 1024-versus-768 contrast remains PROPOSED_NOT_RUN; no full-rate support conclusion follows.",
+          "delivery_scope": "EXTERNAL_REFERENCE_ONLY_NO_ALL_RATE_SUPPORT_OR_CARRIER_CLAIM"
         }
       ]
     },
@@ -70408,6 +70549,28 @@
         "Typed owner relation from the helper inputs to setup Bool +0x94.",
         "Bool-to-result relation, any new runtime capture, and audio/JOC effect.",
         "New DI A/B run; only prior measurement receipts are referenced."
+      ]
+    },
+    {
+      "package_id": "DEE-DATA-RATE-TYPE1-ENCODER-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DATA-RATE-TYPE1-ENCODER-BOUNDARY-V1",
+      "manifest_sha256": "021f7a641668432b41d81ffaea399c1041bca1b57e4e967674d617a03d0e8527",
+      "supplement_seal_sha256": "e9843891c34b781abf8ff1ebb3e7d602a48ebb0ad0619809a51d4166f8ba7c6c",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "SIX_TOKENS_STATICALLY_TO_TYPE1_FIELD3; UNIT_INFERRED; CALLBACK_AND_CARRIER_WRITER_UNBOUND; RUNTIME_AND_CONTRAST_NOT_RUN; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Runtime output/carrier/frame-size behavior and 1024-versus-768 contrast.",
+        "Recovered unit annotation, actual callback target, and field-3 carrier consumer."
       ]
     }
   ]

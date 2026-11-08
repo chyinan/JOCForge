@@ -1,0 +1,9 @@
+{
+  "checker_normal": "PASS",
+  "checker_python_O": "PASS",
+  "manifest_sha256": "96d859cdc67acfdab9a25267d91086bd7afd941f05637244b4c10b31f0a4075f",
+  "package_id": "data-rate-encoder-parameter-boundary-wash-v1",
+  "package_seal_file_sha256": "0bab1fa9cb7fbb1b5b7d80dc20f9e0b032749e424a592c89babc3b2d228868e1",
+  "payloads_verified": 10,
+  "raw_source_or_decompilation_copied": false
+}

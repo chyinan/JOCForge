@@ -1,0 +1,116 @@
+{
+  "carrier_boundary": {
+    "bse_frmsiz_stuffer_validation": "FUN_1800cff00/FUN_1802273a0; not a configured-rate writer",
+    "eac3_header_reader": "FUN_1800e6d70; reader only",
+    "field_id_3_to_bsi_or_frame_size_writer": "UNBOUND",
+    "output_rate_and_frame_size": "NOT_RUN",
+    "type2_drc_bsi_writer": "separate path; not bitrate proof"
+  },
+  "conclusion": {
+    "carrier_writer": "UNBOUND",
+    "generalization": "NOT_ESTABLISHED",
+    "runtime_output_rate": "NOT_RUN",
+    "token_to_static_core_field": "STATIC_BOUND"
+  },
+  "exclusions": {
+    "dee_run": false,
+    "ffmpeg_or_other_encoder_used": false,
+    "implementation_contact": false,
+    "key_license_read": false,
+    "pcm_or_payload_read": false
+  },
+  "flow": {
+    "callback_cell_rva": "0x652218",
+    "callback_cell_static_value": "ZERO",
+    "encoder_context_table_wrapper": "+0x810",
+    "field_builder": "FUN_1801ab520",
+    "open_record_word": 10,
+    "runtime_callback_target": "UNBOUND",
+    "table_dispatch": "FUN_1801ab800 -> FUN_1801b1590"
+  },
+  "implementation_ready": false,
+  "minimum_contrast": {
+    "arms": [
+      1024,
+      768
+    ],
+    "only_xml_variable": "data_rate",
+    "output_size_or_frame_size_expectation": null,
+    "same_authorized_n36_input": true,
+    "status": "PROPOSED_NOT_RUN"
+  },
+  "schema": "washed-implementer-supplement.v1",
+  "schema_tokens": {
+    "installed_template_value": 1024,
+    "path": "/job_config/filter/audio/encode_to_atmos_ddp/data_rate",
+    "runtime_acceptance": "NOT_RUN",
+    "schema_default": 448,
+    "type": "xs:list",
+    "values": [
+      384,
+      448,
+      576,
+      640,
+      768,
+      1024
+    ]
+  },
+  "source_package": {
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "manifest_sha256": "96d859cdc67acfdab9a25267d91086bd7afd941f05637244b4c10b31f0a4075f",
+    "package_id": "data-rate-encoder-parameter-boundary-wash-v1",
+    "package_seal_file_sha256": "0bab1fa9cb7fbb1b5b7d80dc20f9e0b032749e424a592c89babc3b2d228868e1",
+    "payloads_verified": 10
+  },
+  "static_mapping": [
+    {
+      "core_field_id": 3,
+      "core_integer": 384,
+      "enum_code": 0,
+      "serializer": "type-1 generic table slot +0x28",
+      "token": 384
+    },
+    {
+      "core_field_id": 3,
+      "core_integer": 448,
+      "enum_code": 1,
+      "serializer": "type-1 generic table slot +0x28",
+      "token": 448
+    },
+    {
+      "core_field_id": 3,
+      "core_integer": 576,
+      "enum_code": 2,
+      "serializer": "type-1 generic table slot +0x28",
+      "token": 576
+    },
+    {
+      "core_field_id": 3,
+      "core_integer": 640,
+      "enum_code": 3,
+      "serializer": "type-1 generic table slot +0x28",
+      "token": 640
+    },
+    {
+      "core_field_id": 3,
+      "core_integer": 768,
+      "enum_code": 4,
+      "serializer": "type-1 generic table slot +0x28",
+      "token": 768
+    },
+    {
+      "core_field_id": 3,
+      "core_integer": 1024,
+      "enum_code": 5,
+      "serializer": "type-1 generic table slot +0x28",
+      "token": 1024
+    }
+  ],
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-DATA-RATE-TYPE1-ENCODER-BOUNDARY-V1",
+  "units": {
+    "kbps_interpretation": "INFERENCE_FROM_SEPARATE_448_KBPS_DIAGNOSTIC",
+    "typed_field_unit_annotation": "NOT_RECOVERED"
+  }
+}

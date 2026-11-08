@@ -1557,3 +1557,7 @@ Wash package `DEE-DRC-LINE-RF-SIX-VALUE-BOUNDARY-V1` (manifest SHA-256 `3a817fb0
 ## 2026-11-08: DI measurement-only helper edge V2
 
 Wash package `DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V2` (manifest SHA-256 `c56c0a8fc6a1344bc247625febf395342bb74524a3f93feabeeb69f2f5484277`, seal SHA-256 `0a40463989d3df4ea003fd3e7a427a389857713752cbc0303e9e6573a72e878b`) adds the scoped direct edge `FUN_1801764e0` → `FUN_180182850`. The helper copies inputs from a per-record source pointer and four pointer arguments; no setup pointer or `+0x94` field is passed on that edge. Typed owner/Bool use, Bool-to-result, and audio/JOC effects remain `UNBOUND`; the setup read of `+0x94` remains `NOT_CAPTURED` in the scoped body. Prior DI A/B observations are reused, with no new run; the measurement unit remains unstated.
+
+## 2026-11-08: data_rate type-1 static boundary
+
+Wash package `DEE-DATA-RATE-TYPE1-ENCODER-BOUNDARY-V1` (manifest SHA-256 `021f7a641668432b41d81ffaea399c1041bca1b57e4e967674d617a03d0e8527`, seal SHA-256 `e9843891c34b781abf8ff1ebb3e7d602a48ebb0ad0619809a51d4166f8ba7c6c`) statically maps the six authored tokens through enum codes 0..5 to matching core integers at field ID 3 and a type-1 serializer slot `+0x28`. The callback cell is statically zero but its runtime target is `UNBOUND`; field 3 to a carrier/frmsize writer and emitted bitrate remain `UNBOUND/NOT_RUN`. The kbps unit is an inference, not a recovered type annotation. The 1024-versus-768 contrast is `PROPOSED_NOT_RUN`; no full-rate support conclusion is drawn.
