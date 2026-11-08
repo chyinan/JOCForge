@@ -1480,3 +1480,7 @@ Wash package `PUBLIC-ENABLE-ATMOS71-BINARY-PATCHER-AU0-BOUNDARY-V1` (manifest SH
 ## 2026-11-08: Time-base token admission
 
 The XML parser now admits the exact `file_position` and `embedded_timecode` tokens and preserves the authored value. The selected CLI still rejects `embedded_timecode` before Meter, callbacks, or encoding. This does not bind the selected DDP writer or enable a range/seek effect; the native value remains `NOT_CAPTURED`.
+
+## 2026-11-08: Authored input offset and FFOA strings
+
+The XML parser now preserves explicit `offset` and `ffoa` strings independently; missing or empty fields retain the existing `auto` default. The selected CLI still rejects non-`auto` values before Meter, callbacks, or encoding. No time syntax, units, input owner, Reader join, or runtime effect is inferred from the host normalizer evidence.

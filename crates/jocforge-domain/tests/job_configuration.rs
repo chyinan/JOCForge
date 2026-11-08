@@ -283,6 +283,37 @@ fn authored_time_base_tokens_are_preserved_without_range_effect() {
 }
 
 #[test]
+fn authored_input_offset_and_ffoa_strings_are_preserved_independently() {
+    let vectors = fixture_json("job-configuration-vectors.json");
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["id"] == "accepted_full_adm")
+        .unwrap();
+    let descriptor = &case["pcm_descriptor"];
+    let wave = SelectedWaveDescriptor::new(
+        descriptor["sample_rate"].as_u64().unwrap() as u32,
+        descriptor["channels"].as_u64().unwrap() as u16,
+        descriptor["pcm_bits"].as_u64().unwrap() as u16,
+    );
+    let source_samples = descriptor["source_samples"].as_u64().unwrap();
+    let base_xml = case["input_xml"].as_str().unwrap();
+    let authored_xml = base_xml
+        .replace("<offset>auto</offset>", "<offset>authored-offset</offset>")
+        .replace("<ffoa>auto</ffoa>", "<ffoa>authored-ffoa</ffoa>");
+    let configuration =
+        parse_selected_job_configuration(authored_xml.as_bytes(), wave, source_samples)
+            .expect("explicit xs:string input offset and FFOA are lexically admitted");
+
+    assert_eq!(configuration.input_offset(), "authored-offset");
+    assert_eq!(configuration.input_ffoa(), "authored-ffoa");
+    let identity = configuration.normalized_identity_value();
+    assert_eq!(identity["input_offset"], "authored-offset");
+    assert_eq!(identity["input_ffoa"], "authored-ffoa");
+}
+
+#[test]
 fn authored_silence_seconds_truncate_to_sample_counts_and_keep_append_presence() {
     let vectors = fixture_json("job-configuration-vectors.json");
     let case = vectors["config_cases"]

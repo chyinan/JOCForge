@@ -1124,8 +1124,8 @@ pub fn parse_selected_job_configuration(
     if !is_admitted_timecode_frame_rate_token(&input_timecode_frame_rate) {
         return Err(JobConfigurationError::TimeDomain);
     }
-    let input_offset = optional_auto(input_node, &["offset"])?;
-    let input_ffoa = optional_auto(input_node, &["ffoa"])?;
+    let input_offset = optional_string_default_auto(input_node, &["offset"])?;
+    let input_ffoa = optional_string_default_auto(input_node, &["ffoa"])?;
 
     let encoder = path_node(root, &["filter", "audio", "encode_to_atmos_ddp"])?
         .ok_or(JobConfigurationError::MissingField)?;
@@ -1549,11 +1549,15 @@ fn parse_file_reference(
     })
 }
 
-fn optional_auto(root: Node<'_, '_>, path: &[&str]) -> Result<String, JobConfigurationError> {
+/// Preserves an optional XML string, using the selected `auto` default when absent or empty.
+fn optional_string_default_auto(
+    root: Node<'_, '_>,
+    path: &[&str],
+) -> Result<String, JobConfigurationError> {
     match path_text(root, path)? {
         None | Some("") => Ok("auto".to_owned()),
         Some(value) if value.trim() == "auto" => Ok("auto".to_owned()),
-        Some(_) => Err(JobConfigurationError::TimeDomain),
+        Some(value) => Ok(value.to_owned()),
     }
 }
 
