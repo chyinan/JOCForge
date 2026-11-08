@@ -1,0 +1,67 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package_id": "DEE-ATMOS71-RATE-PAIR-WRITER-BOUNDARY-PARTIAL-V1",
+  "audience": "IMPLEMENTATION_EVIDENCE_ONLY",
+  "status": "TARGET_RATE_PAIR_BOUND_WRITER_AND_D0_AUDIO_UNBOUND_RUNTIME_NOT_RUN",
+  "implementation_ready": "NO",
+  "scope": "Rate-to-typed-setup candidates and separate frame-writer boundary only",
+  "evidence_tiers": {
+    "static_native_observation": "Ghidra 12.2 sealed receipts reused",
+    "target_rate_allocation": "user-authorized target contract",
+    "dynamic_runtime": "NOT_RUN"
+  },
+  "existing_native_rate_pair": {
+    "rate_384": {"token": "384", "selector_code": 0, "typed_setup_u32": 6},
+    "rate_1024": {
+      "token": "1024",
+      "selector_code": 5,
+      "typed_setup_u32": 8,
+      "condition": "only if the lookup is reached"
+    },
+    "setup_candidate": "piVar17+0x206",
+    "setup_candidate_to_writer_state": "UNBOUND"
+  },
+  "writer_boundary": {
+    "writer_state_candidate": "param_1+0x810",
+    "dynamic_writer_global": "DAT_1806521e8",
+    "dynamic_writer_slot": "+0x28",
+    "typed_owner_join": "UNBOUND",
+    "bsi_bitrate_field": "UNBOUND",
+    "frame_size_writer": "UNBOUND",
+    "actual_output_rate": "NOT_RUN",
+    "separate_carrier_writer_receipt": {
+      "callback_cell": "zero",
+      "callback_target": "UNBOUND",
+      "frame_size_writer": "UNBOUND",
+      "output_rate": "NOT_RUN"
+    }
+  },
+  "approved_7_1_rate_row": {
+    "sample_rate_hz": 48000,
+    "blocks_per_frame": 6,
+    "samples_per_frame": 1536,
+    "i0_kbps": 640,
+    "i0_frame_bytes": 2560,
+    "d0_kbps": 1024,
+    "d0_frame_bytes": 4096,
+    "aggregate_access_unit_kbps": 1664,
+    "aggregate_access_unit_bytes": 6656,
+    "access_unit_duration_ms": 32,
+    "single_1664_kbps_eac3_frame": false,
+    "rate_source": "user target plus washed profile contract; the mode21 failed carrier is excluded"
+  },
+  "production_gates": {
+    "gtc_source_role_projection": "UNBOUND",
+    "native_d0_audio_algorithm": "UNBOUND",
+    "native_d0_rate_writer_and_bsi": "UNBOUND",
+    "all_au_emdf_fit": "NOT_RUN",
+    "new_7_1_output": "NOT_RUN",
+    "production_allowed": false
+  },
+  "execution": {
+    "dee_run": false,
+    "mode21_payload_read_or_forwarded": false,
+    "pcm_read": false,
+    "implementation_contact": false
+  }
+}

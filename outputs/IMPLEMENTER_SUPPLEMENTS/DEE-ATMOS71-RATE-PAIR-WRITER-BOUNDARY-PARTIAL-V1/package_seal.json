@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-implementer-supplement-seal.v1",
+  "package_id": "DEE-ATMOS71-RATE-PAIR-WRITER-BOUNDARY-PARTIAL-V1",
+  "manifest_sha256": "13e48af39e59bd1487a32a24895f950b909e3351ceb2ad842f8430795172f506",
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 4461,
+      "sha256": "723556c61618d758b099dbe15ea840a0cbb449af8912bb61da8e7cb21e47753f"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 2295,
+      "sha256": "124a20ce152f01a4817579484fcba6e13a4b576ba6cabd2f79f54d00151bbb0a"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 727,
+      "sha256": "4205bbf5c0c823e4b4dacc5974577af3e6333ec528e9b819cd82e938acd38a19"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 1749,
+      "sha256": "8990d9752d4ff93964809faeaec42fa6d71af2f44e304646cef6cd4fb96026f3"
+    },
+    {
+      "path": "SOURCE-MANIFESTS.json",
+      "bytes": 1868,
+      "sha256": "39d908445c5458068b84368d83ae58d2448fba11ceaf2ac662149aabbdcce70d"
+    }
+  ],
+  "seal_excluded_from_own_hash_list": true
+}

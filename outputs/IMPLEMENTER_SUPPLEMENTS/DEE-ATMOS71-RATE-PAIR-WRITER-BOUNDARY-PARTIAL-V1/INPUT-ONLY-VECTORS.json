@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "execution": "NOT_RUN",
+  "target_rate_row": {
+    "sample_rate_hz": 48000,
+    "blocks_per_frame": 6,
+    "samples_per_frame": 1536,
+    "frame_duration_seconds": 0.032,
+    "i0": {"kbps": 640, "bytes_per_frame": 2560},
+    "d0": {"kbps": 1024, "bytes_per_frame": 4096},
+    "au_aggregate_kbps": 1664,
+    "au_total_bytes": 6656,
+    "not_one_1664_kbps_frame": true
+  },
+  "conditional_native_mapping": [
+    {"token": "384", "selector_code": 0, "typed_setup_u32": 6, "writer_join": "UNBOUND"},
+    {"token": "1024", "selector_code": 5, "typed_setup_u32": 8, "writer_join": "UNBOUND", "condition": "only if lookup is reached"}
+  ],
+  "frame_writer_or_bsi_output": "NOT_RUN"
+}

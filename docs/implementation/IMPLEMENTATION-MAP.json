@@ -44909,6 +44909,116 @@
             "controlled_same_rate_benchmark": false,
             "interpretation": "Strong evidence that release optimization reduces runtime; rates differ, so the ratio is indicative, not a controlled same-input same-rate comparison."
           }
+        },
+        {
+          "slice_id": "washed-atmos71-rate-pair-writer-boundary-partial",
+          "mapping_status": "TARGET_I0_D0_RATE_ALLOCATION_AND_CONDITIONAL_SETUP_CANDIDATES_BOUND__WRITER_UNBOUND",
+          "implementation_status": "APPROVED_RATE_PAIR_CONTRACT_ONLY__PRODUCTION_D0_RATE_OUTPUT_NOT_READY",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "The target profile requires I0=640 kbps plus D0=1024 kbps for an aggregate 1664 kbps / 6656-byte / 32-ms AU; this is not one 1664-kbps E-AC-3 frame. Reused static receipts give conditional typed-setup candidates for tokens 384 and 1024 only if lookup is reached. The setup candidate is not joined to the writer-state owner; the native D0 rate writer, BSI bitrate field, and actual output rate remain UNBOUND/NOT_RUN. Production remains disabled by the GTC, D0 algorithm/writer, and all-AU EMDF-fit gates.",
+          "dependencies": [
+            "F01E/selected-job-xml-profile-normalization",
+            "F01E/approved-atmos71-flat7x-1664-profile-contract"
+          ],
+          "spec_files": [
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/ARCHITECTURE-DECISIONS.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-RATE-PAIR-WRITER-BOUNDARY-PARTIAL-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [
+              "48 kHz",
+              "six E-AC-3 blocks",
+              "32 ms AU"
+            ],
+            "covered_clauses": [
+              "The package specifies target frame/AU dimensions; no runtime frame writer or output clock is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_ATMOS71_PER_SUBSTREAM_RATE_PAIR_WRITER_BOUNDARY",
+            "package_id": "DEE-ATMOS71-RATE-PAIR-WRITER-BOUNDARY-PARTIAL-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-RATE-PAIR-WRITER-BOUNDARY-PARTIAL-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-RATE-PAIR-WRITER-BOUNDARY-PARTIAL-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-RATE-PAIR-WRITER-BOUNDARY-PARTIAL-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-RATE-PAIR-WRITER-BOUNDARY-PARTIAL-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-RATE-PAIR-WRITER-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-RATE-PAIR-WRITER-BOUNDARY-PARTIAL-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-RATE-PAIR-WRITER-BOUNDARY-PARTIAL-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "13e48af39e59bd1487a32a24895f950b909e3351ceb2ad842f8430795172f506",
+            "supplement_seal_sha256": "52dbbc079cee9d9715b49b91b5ee7b109e01fd67f142d416b651f4c83a83c5bd",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "target_rate_pair": {
+              "sample_rate_hz": 48000,
+              "blocks_per_frame": 6,
+              "samples_per_frame": 1536,
+              "i0_kbps": 640,
+              "i0_frame_bytes": 2560,
+              "d0_kbps": 1024,
+              "d0_frame_bytes": 4096,
+              "aggregate_access_unit_kbps": 1664,
+              "aggregate_access_unit_bytes": 6656,
+              "duration_ms": 32,
+              "single_1664_kbps_eac3_frame": false
+            },
+            "conditional_native_candidates": {
+              "384": {
+                "selector_code": 0,
+                "typed_setup_u32": 6
+              },
+              "1024": {
+                "selector_code": 5,
+                "typed_setup_u32": 8,
+                "condition": "only if lookup is reached"
+              },
+              "setup_candidate": "piVar17+0x206",
+              "setup_to_writer_state": "UNBOUND",
+              "writer_state_candidate": "param_1+0x810",
+              "dynamic_writer_global": "DAT_1806521e8",
+              "dynamic_writer_slot": "+0x28",
+              "bsi_bitrate_field": "UNBOUND",
+              "frame_size_writer": "UNBOUND",
+              "actual_output_rate": "NOT_RUN"
+            },
+            "production_gates": {
+              "gtc_source_role_projection": "UNBOUND",
+              "native_d0_audio_algorithm": "UNBOUND",
+              "native_d0_rate_writer_and_bsi": "UNBOUND",
+              "all_au_emdf_fit": "NOT_RUN",
+              "new_7_1_output": "NOT_RUN",
+              "production_allowed": false
+            },
+            "mode21_payload": "EXCLUDED",
+            "validation_boundary": "The target profile requires I0=640 kbps plus D0=1024 kbps for an aggregate 1664 kbps / 6656-byte / 32-ms AU; this is not one 1664-kbps E-AC-3 frame. Reused static receipts give conditional typed-setup candidates for tokens 384 and 1024 only if lookup is reached. The setup candidate is not joined to the writer-state owner; the native D0 rate writer, BSI bitrate field, and actual output rate remain UNBOUND/NOT_RUN. Production remains disabled by the GTC, D0 algorithm/writer, and all-AU EMDF-fit gates."
+          },
+          "vectors": {
+            "kind": "WASHED_RATE_PAIR_INPUT_ONLY_NO_WRITER_EXPECTATION",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "1024-versus-768 one-field contrast is proposed but not run; no expected frame size included."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-RATE-PAIR-WRITER-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "PROPOSED_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Setup candidate to writer-state owner and runtime lookup reachability.",
+            "D0 native frame-size writer, BSI bitrate field, and actual emitted rate.",
+            "1024-versus-768 contrast, GTC role projection, D0 algorithm, and all-AU EMDF fit.",
+            "Any mode21 output bytes, which are excluded from the package."
+          ],
+          "validation_boundary": "The target profile requires I0=640 kbps plus D0=1024 kbps for an aggregate 1664 kbps / 6656-byte / 32-ms AU; this is not one 1664-kbps E-AC-3 frame. Reused static receipts give conditional typed-setup candidates for tokens 384 and 1024 only if lookup is reached. The setup candidate is not joined to the writer-state owner; the native D0 rate writer, BSI bitrate field, and actual output rate remain UNBOUND/NOT_RUN. Production remains disabled by the GTC, D0 algorithm/writer, and all-AU EMDF-fit gates.",
+          "delivery_scope": "PROFILE_RATE_ALLOCATION_CONTRACT_ONLY_NO_D0_WRITER_OR_AUDIO_CLAIM"
         }
       ]
     },
@@ -72174,6 +72284,29 @@
       "disposition": "ADDITIVE_7_1_FLAT7X_1664_PROFILE_CONTRACT_APPROVED; PRODUCTION_ALLOWED_FALSE; GTC_D0_AUDIO_AND_ALL_AU_FIT_OPEN",
       "not_run": [
         "GTC source-role projection, native D0 audio algorithm, all-AU EMDF fit, new output, and W04 acceptance."
+      ]
+    },
+    {
+      "package_id": "DEE-ATMOS71-RATE-PAIR-WRITER-BOUNDARY-PARTIAL-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-RATE-PAIR-WRITER-BOUNDARY-PARTIAL-V1",
+      "manifest_sha256": "13e48af39e59bd1487a32a24895f950b909e3351ceb2ad842f8430795172f506",
+      "supplement_seal_sha256": "52dbbc079cee9d9715b49b91b5ee7b109e01fd67f142d416b651f4c83a83c5bd",
+      "functional_ids": [
+        "F01E",
+        "F12"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "TARGET_I0_640_D0_1024_AU_CONTRACT; SETUP_CANDIDATES_CONDITIONAL; D0_WRITER_BSI_AND_OUTPUT_UNBOUND; PRODUCTION_ALLOWED_FALSE",
+      "not_run": [
+        "Writer-state ownership/join, D0 writer/BSI, actual output rate, D0 audio algorithm, and all-AU EMDF fit.",
+        "1024-versus-768 contrast; no mode21 payload included or used."
       ]
     }
   ]

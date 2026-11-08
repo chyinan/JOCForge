@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-source-manifest-receipts.v1",
+  "source_receipt_package": {
+    "package_id": "ATMOS71-1664-GHIDRA-STATIC-RATE-RECEIPT-DRAFT-20261109",
+    "zip_sha256": "8a3dfe7a883100a52f86da461abf3e93aa39a4ba26307093aae8c69e21d5a68c",
+    "manifest_sha256": "bace98ff214ad8a04245db715ff68a7e65e745a27748b1697951a2249a08727f",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "mode21_failure_payload_forwarded": false
+  },
+  "reused_parent_packages": [
+    {
+      "package_id": "DEE-RATE-PAIR-BSI-WRITER-BOUNDARY-V1",
+      "manifest_sha256": "f1ea2ab322a39cf411ae8817da7662bcf89dda4f250fd136c9303fdf0a934ce9",
+      "package_seal_file_sha256": "e6087dc22a5b2e5e83886488431eedac4b782129a1c4d40ade89548a498cbcc9",
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS",
+      "wash_replayed_this_turn": true
+    },
+    {
+      "package_id": "DEE-ATMOS-DATA-RATE-CARRIER-WRITER-BOUNDARY-V1",
+      "manifest_sha256": "120d9e2e0f9348f7eb2dbad80e4b0df0dacf14d4ac4ae8be69f6bf6e66a919d5",
+      "package_seal_file_sha256": "a74b5fd21281580fb8d4ff5e80efbacc407d8bd608fb9c7a303e178e785fa782",
+      "frame_size_boundary": "UNBOUND",
+      "checker_replayed_this_turn": false,
+      "reason": "No verifier file was present in the referenced parent directory; manifest and seal were hash-bound by the source receipt."
+    }
+  ],
+  "target_profile_contract": {
+    "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+    "manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+    "seal_file_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+    "production_allowed": false
+  },
+  "exclusions": {
+    "mode21_ec3_hash_or_bytes": false,
+    "official_mka_or_ec3_bytes": false,
+    "pcm_or_payload_bytes": false,
+    "private_key_or_license": false
+  }
+}
