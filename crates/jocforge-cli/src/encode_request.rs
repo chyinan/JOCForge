@@ -319,11 +319,22 @@ fn resolve_job_xml_reference(
     Ok(directory.join(file_name_path))
 }
 
+fn ensure_selected_metering_mode(value: &str) -> Result<(), EncodeRequestError> {
+    if value == "1770-4" {
+        Ok(())
+    } else {
+        Err(EncodeRequestError::UnsupportedJobXmlOption(
+            "/filter/audio/encode_to_atmos_ddp/loudness/measure_only/metering_mode",
+        ))
+    }
+}
+
 fn validate_external_job_configuration(
     prepared: &PreparedJobInput,
 ) -> Result<(), EncodeRequestError> {
     let configuration = prepared.configuration();
     let loudness = configuration.loudness();
+    ensure_selected_metering_mode(loudness.metering_mode())?;
     if loudness.dialogue_intelligence() || loudness.speech_threshold() != 100 {
         return Err(EncodeRequestError::UnsupportedJobXmlOption(
             "/filter/audio/encode_to_atmos_ddp/loudness/measure_only/dialogue_intelligence or speech_threshold",
@@ -1162,7 +1173,8 @@ fn hex_lower(bytes: &[u8]) -> String {
 #[cfg(test)]
 mod tests {
     use super::{
-        EncodeRequestError, FileReferenceParts, run_with_data_rate, selected_full_file_job_xml,
+        EncodeRequestError, FileReferenceParts, ensure_selected_metering_mode, run_with_data_rate,
+        selected_full_file_job_xml,
     };
     use jocforge_application::meter_source_bridge::CodecRateProfile;
     use std::path::Path;
@@ -1208,5 +1220,18 @@ mod tests {
             ),
             Err(EncodeRequestError::UnsupportedDataRate)
         ));
+    }
+
+    #[test]
+    fn selected_cli_gate_rejects_nondefault_metering_modes() {
+        assert!(ensure_selected_metering_mode("1770-4").is_ok());
+        for mode in ["1770-3", "1770-2", "1770-1", "LeqA"] {
+            assert!(matches!(
+                ensure_selected_metering_mode(mode),
+                Err(EncodeRequestError::UnsupportedJobXmlOption(
+                    "/filter/audio/encode_to_atmos_ddp/loudness/measure_only/metering_mode"
+                ))
+            ));
+        }
     }
 }

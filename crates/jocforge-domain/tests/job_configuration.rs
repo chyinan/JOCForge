@@ -403,6 +403,48 @@ fn every_declared_preferred_downmix_token_is_admitted_and_preserved() {
 }
 
 #[test]
+fn every_declared_metering_mode_token_is_admitted_and_preserved() {
+    let vectors = fixture_json("job-configuration-vectors.json");
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["id"] == "accepted_full_adm")
+        .unwrap();
+    let descriptor = &case["pcm_descriptor"];
+    let wave = SelectedWaveDescriptor::new(
+        descriptor["sample_rate"].as_u64().unwrap() as u32,
+        descriptor["channels"].as_u64().unwrap() as u16,
+        descriptor["pcm_bits"].as_u64().unwrap() as u16,
+    );
+    let source_samples = descriptor["source_samples"].as_u64().unwrap();
+    let base_xml = case["input_xml"].as_str().unwrap();
+    let metering_field = "<metering_mode>1770-4</metering_mode>";
+
+    for mode in ["1770-4", "1770-3", "1770-2", "1770-1", "LeqA"] {
+        let replacement = format!("<metering_mode>{mode}</metering_mode>");
+        let authored_xml = base_xml.replacen(metering_field, &replacement, 1);
+        let configuration =
+            parse_selected_job_configuration(authored_xml.as_bytes(), wave, source_samples)
+                .unwrap_or_else(|error| panic!("metering mode {mode}: {error:?}"));
+
+        assert_eq!(configuration.loudness().metering_mode(), mode);
+        assert_eq!(
+            configuration.normalized_identity_value()["loudness"]["metering_mode"],
+            mode
+        );
+    }
+
+    let unsupported_xml =
+        base_xml.replacen(metering_field, "<metering_mode>1770-5</metering_mode>", 1);
+    assert_eq!(
+        parse_selected_job_configuration(unsupported_xml.as_bytes(), wave, source_samples)
+            .unwrap_err(),
+        JobConfigurationError::UnsupportedFieldValue
+    );
+}
+
+#[test]
 fn authored_silence_seconds_truncate_to_sample_counts_and_keep_append_presence() {
     let vectors = fixture_json("job-configuration-vectors.json");
     let case = vectors["config_cases"]

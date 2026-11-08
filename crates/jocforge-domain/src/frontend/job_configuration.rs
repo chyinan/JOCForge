@@ -38,6 +38,7 @@ const ADMITTED_TIMECODE_FRAME_RATE_TOKENS: &[&str] = &[
     "60",
 ];
 const ADMITTED_TIME_BASE_TOKENS: &[&str] = &["file_position", "embedded_timecode"];
+const ADMITTED_METERING_MODE_TOKENS: &[&str] = &["1770-4", "1770-3", "1770-2", "1770-1", "LeqA"];
 
 /// Validated WAVE descriptor supplied by the input provider.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -1154,8 +1155,12 @@ pub fn parse_selected_job_configuration(
     if speech_threshold > 100 {
         return Err(JobConfigurationError::UnsupportedFieldValue);
     }
+    let metering_mode = required_text(loudness_node, &["metering_mode"])?;
+    if !is_admitted_metering_mode_token(&metering_mode) {
+        return Err(JobConfigurationError::UnsupportedFieldValue);
+    }
     let loudness = SelectedLoudnessConfiguration {
-        metering_mode: require_exact(loudness_node, &["metering_mode"], "1770-4")?,
+        metering_mode,
         dialogue_intelligence,
         speech_threshold,
     };
@@ -1527,16 +1532,8 @@ fn is_admitted_time_base_token(value: &str) -> bool {
     ADMITTED_TIME_BASE_TOKENS.contains(&value)
 }
 
-fn require_exact(
-    root: Node<'_, '_>,
-    path: &[&str],
-    expected: &str,
-) -> Result<String, JobConfigurationError> {
-    let value = required_text(root, path)?;
-    if value != expected {
-        return Err(JobConfigurationError::UnsupportedFieldValue);
-    }
-    Ok(value)
+fn is_admitted_metering_mode_token(value: &str) -> bool {
+    ADMITTED_METERING_MODE_TOKENS.contains(&value)
 }
 
 fn parse_file_reference(

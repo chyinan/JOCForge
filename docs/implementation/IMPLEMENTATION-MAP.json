@@ -3228,8 +3228,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 61291,
-              "sha256": "f14d0550dc720d7a0d8809f1df60ec3c78648d34b0dab6a3eb80df6ab23920bd"
+              "bytes": 61359,
+              "sha256": "5c8a62c0fb6be7fd8dbe43bf127be661363cbc698a6653f66b4ff02bd6f332c7"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
@@ -3300,8 +3300,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/job_configuration.rs",
-              "bytes": 41764,
-              "sha256": "8e1c41e3e8dc90c235aa00ba545769e0734644cf08bb6bb94741770156531ab0"
+              "bytes": 43485,
+              "sha256": "0f0c4cd807178eb95a0ceea117af109f3f680da990cf47762a582de80d7c459a"
             },
             {
               "path": "crates/jocforge-domain/tests/adm_graph.rs",
@@ -4359,15 +4359,15 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 61291,
-              "sha256": "f14d0550dc720d7a0d8809f1df60ec3c78648d34b0dab6a3eb80df6ab23920bd"
+              "bytes": 61359,
+              "sha256": "5c8a62c0fb6be7fd8dbe43bf127be661363cbc698a6653f66b4ff02bd6f332c7"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/job_configuration.rs",
-              "bytes": 41764,
-              "sha256": "8e1c41e3e8dc90c235aa00ba545769e0734644cf08bb6bb94741770156531ab0"
+              "bytes": 43485,
+              "sha256": "0f0c4cd807178eb95a0ceea117af109f3f680da990cf47762a582de80d7c459a"
             }
           ]
         },
@@ -4793,8 +4793,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 61291,
-              "sha256": "f14d0550dc720d7a0d8809f1df60ec3c78648d34b0dab6a3eb80df6ab23920bd"
+              "bytes": 61359,
+              "sha256": "5c8a62c0fb6be7fd8dbe43bf127be661363cbc698a6653f66b4ff02bd6f332c7"
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
@@ -4843,8 +4843,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 52066,
-              "sha256": "70c588c3ddfc33861856cde4327fe6b69e052583981926f0a5815eaa579b4d94"
+              "bytes": 52960,
+              "sha256": "256dd64cd0aead8780be5138337aa44f8003685ee0273ff03d3a120a9ad9188a"
             },
             {
               "path": "crates/jocforge-cli/src/main.rs",
@@ -7334,7 +7334,7 @@
             "shares_native_owner_with_encoder_field": "NOT_ESTABLISHED",
             "validation_boundary": "The input-side /input/audio/{adm,atmos_mezz}/timecode_frame_rate field admits the exact ten tokens listed by the authored job_config field choices and stores the authored string in SelectedJobConfiguration and normalized identity. It remains separate from the encoder timecode field. No numeric conversion, 29.97df canonicalization, input-owner join, or runtime timecode effect is implemented. This slice does not rewrite the fixed timecode value used by the separate primary-metadata job projection.",
             "local_verification": {
-              "focused_job_configuration_test": "PASS_18",
+              "focused_job_configuration_test": "PASS_19",
               "workspace_cargo_check": "PASS",
               "workspace_clippy": "FAILED_UNRELATED_EXISTING_DIAGNOSTICS"
             }
@@ -7487,7 +7487,7 @@
             "embedded_timecode_cli_outcome": "UnsupportedJobXmlOption before Meter/callback/encode",
             "native_writer_value": "UNBOUND",
             "current_native_value": "NOT_CAPTURED",
-            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_18",
+            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_19",
             "validation_boundary": "The parser admits the exact authored time_base tokens file_position and embedded_timecode and preserves the token in normalized identity. The selected CLI effect gate still admits only file_position and rejects embedded_timecode before Meter, callbacks, or encoding. The Wash static writer route remains unbound; this slice does not set the native value or enable range/seek."
           },
           "vectors": {
@@ -7710,7 +7710,7 @@
             "selected_cli_gate": "auto only",
             "xml_host_owner_reader_join": "UNBOUND",
             "validation_boundary": "The selected XML parser preserves explicit offset and ffoa strings independently in normalized identity. Missing or empty fields retain the existing auto default. The CLI gate continues to accept only auto for both fields and rejects other values before Meter, callbacks, or encoding. No input time syntax, units, host owner, Reader join, or runtime effect is inferred.",
-            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_18"
+            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_19"
           },
           "vectors": {
             "kind": "LOCAL_INPUT_ONLY_STRING_PRESERVATION",
@@ -7867,7 +7867,7 @@
             ],
             "supplement_manifest_sha256": "6b6acabe96aaf4f23f46899ef3764a2fd66afc93c9a3b66afa8ddc42112843a3",
             "supplement_seal_sha256": "fde31c2c4d299aee3f5851e38127b3eb59d8bd8fda8ca50c4ce5d2737ad658e6",
-            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_18",
+            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_19",
             "implementation_ready": false,
             "static_evidence": {
               "input_only_case": "start=0; time_base=file_position; 24 fps",
@@ -7949,7 +7949,7 @@
             ],
             "supplement_manifest_sha256": "c1183a7b4343ed6300bd2b2560e2d5526c99339eb8860f0df0a9ba1dcd3f7ccd",
             "supplement_seal_sha256": "09dee9888291bb7cac970007c0c26200a0c622db95fca416cf6edd74d863f68d",
-            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_18",
+            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_19",
             "implementation_ready": false,
             "static_evidence": {
               "input_only_case": "end=47; time_base=file_position; 24 fps",
@@ -8044,7 +8044,7 @@
               "not_indicated": 3
             },
             "selected_cli_token": "loro",
-            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_18",
+            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_19",
             "implementation_ready": false,
             "validation_boundary": "The parser admits and preserves the four authored preferred_downmix_mode tokens in normalized identity. The selected CLI effect gate still admits only loro and rejects the other values before source processing. Wash maps the static tokens to raw codes 0/1/2/3 but does not bind selected XML to effective MixMode, a BSI sink, or a rendered effect."
           },
@@ -8082,6 +8082,119 @@
           ],
           "validation_boundary": "The parser admits and preserves the four authored preferred_downmix_mode tokens in normalized identity. The selected CLI effect gate still admits only loro and rejects the other values before source processing. Wash maps the static tokens to raw codes 0/1/2/3 but does not bind selected XML to effective MixMode, a BSI sink, or a rendered effect.",
           "delivery_scope": "LOCAL_XML_TOKEN_ADMISSION_ONLY_NO_DOWNMIX_EFFECT"
+        },
+        {
+          "slice_id": "authored-metering-mode-token-admission",
+          "mapping_status": "FIVE_AUTHORED_METERING_TOKENS_ADMITTED__CLI_1770_4_GATE_PRESERVED",
+          "implementation_status": "LOCALLY_VERIFIED_TOKEN_ADMISSION__SELECTED_METERING_GATE_PRESERVED",
+          "implementation_requirement": true,
+          "owner": "frontend",
+          "scope": "The parser admits the five exact authored metering_mode strings and preserves the token in normalized identity. The selected CLI gate accepts only 1770-4 and rejects the other tokens before Meter. Wash raw U32 candidates are not semantic mode ordinals and are not applied by this XML admission slice.",
+          "dependencies": [
+            "F01E/selected-job-xml-profile-normalization"
+          ],
+          "spec_files": [
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-MAP-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/frontend/job_configuration.rs",
+            "crates/jocforge-cli/src/encode_request.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/job_configuration.rs",
+            "crates/jocforge-cli/src/encode_request.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The parser preserves the authored metering token without converting it to an applied mode value.",
+              "The selected CLI rejects non-1770-4 values before Meter.",
+              "Washed raw-map values and bounded validator paths do not establish measurement/audio effects."
+            ]
+          },
+          "parameters": {
+            "kind": "EXACT_METERING_MODE_XML_TOKEN_ADMISSION",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-MAP-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-MAP-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-MAP-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-MAP-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-MAP-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-MAP-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-MAP-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-REMAINING-TOKENS-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-METERING-MODE-RAW-U32-VALIDATOR-BOUNDARY-V1/CHECK.py"
+            ],
+            "accepted_tokens": [
+              "1770-4",
+              "1770-3",
+              "1770-2",
+              "1770-1",
+              "LeqA"
+            ],
+            "selected_cli_token": "1770-4",
+            "wash_raw_code_map": {
+              "1770-4": 0,
+              "1770-3": 1,
+              "1770-2": 2,
+              "1770-1": 3,
+              "LeqA": 4
+            },
+            "raw_codes_are_semantic_ordinals": false,
+            "local_verification": "PASS_DOMAIN_SUITE_19_AND_CLI_GATE_TEST",
+            "implementation_ready": false,
+            "validation_boundary": "The parser admits the five exact authored metering_mode strings and preserves the token in normalized identity. The selected CLI gate accepts only 1770-4 and rejects the other tokens before Meter. Wash raw U32 candidates are not semantic mode ordinals and are not applied by this XML admission slice."
+          },
+          "vectors": {
+            "kind": "LOCAL_INPUT_ONLY_METERING_TOKEN_ADMISSION",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "every_declared_metering_mode_token_is_admitted_and_preserved",
+              "selected_cli_gate_rejects_nondefault_metering_modes"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json",
+              "sha256": "493eb904467d22f9ca6dc50b86bf05bcd9f6643f16fa352766cac26d15e156eb"
+            }
+          },
+          "error_outcomes": [
+            {
+              "error_code": "CONFIG_FIELD_VALUE",
+              "category": "invalid metering token",
+              "trigger": "The authored value is outside the five declared tokens.",
+              "programme_state_after": "No SelectedJobConfiguration is returned.",
+              "caller_action": "Reject the XML job."
+            },
+            {
+              "error_code": "UnsupportedJobXmlOption",
+              "category": "selected measurement mode not supported",
+              "trigger": "The parsed metering mode is not 1770-4.",
+              "programme_state_after": "The CLI request is rejected before Meter.",
+              "caller_action": "Use 1770-4 with the current selected pipeline."
+            }
+          ],
+          "not_run": [
+            "Semantic interpretation of raw U32 candidates and token-to-native owner transfer.",
+            "Selected Meter/provider generation, measurement result, and audio effect.",
+            "Any non-1770-4 CLI Meter execution."
+          ],
+          "validation_boundary": "The parser admits the five exact authored metering_mode strings and preserves the token in normalized identity. The selected CLI gate accepts only 1770-4 and rejects the other tokens before Meter. Wash raw U32 candidates are not semantic mode ordinals and are not applied by this XML admission slice.",
+          "delivery_scope": "LOCAL_XML_TOKEN_ADMISSION_ONLY_NO_ALTERNATE_METER_EFFECT"
         }
       ]
     },
@@ -12056,8 +12169,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 61291,
-              "sha256": "f14d0550dc720d7a0d8809f1df60ec3c78648d34b0dab6a3eb80df6ab23920bd"
+              "bytes": 61359,
+              "sha256": "5c8a62c0fb6be7fd8dbe43bf127be661363cbc698a6653f66b4ff02bd6f332c7"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/primary_metadata_control.rs",
@@ -13123,8 +13236,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 52066,
-              "sha256": "70c588c3ddfc33861856cde4327fe6b69e052583981926f0a5815eaa579b4d94"
+              "bytes": 52960,
+              "sha256": "256dd64cd0aead8780be5138337aa44f8003685ee0273ff03d3a120a9ad9188a"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
@@ -40186,8 +40299,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 52066,
-              "sha256": "70c588c3ddfc33861856cde4327fe6b69e052583981926f0a5815eaa579b4d94"
+              "bytes": 52960,
+              "sha256": "256dd64cd0aead8780be5138337aa44f8003685ee0273ff03d3a120a9ad9188a"
             },
             {
               "path": "crates/jocforge-cli/src/lib.rs",
@@ -42033,8 +42146,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 61291,
-              "sha256": "f14d0550dc720d7a0d8809f1df60ec3c78648d34b0dab6a3eb80df6ab23920bd"
+              "bytes": 61359,
+              "sha256": "5c8a62c0fb6be7fd8dbe43bf127be661363cbc698a6653f66b4ff02bd6f332c7"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/provider.rs",
@@ -42163,8 +42276,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 52066,
-              "sha256": "70c588c3ddfc33861856cde4327fe6b69e052583981926f0a5815eaa579b4d94"
+              "bytes": 52960,
+              "sha256": "256dd64cd0aead8780be5138337aa44f8003685ee0273ff03d3a120a9ad9188a"
             },
             {
               "path": "crates/jocforge-cli/src/main.rs",
@@ -42200,8 +42313,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/job_configuration.rs",
-              "bytes": 41764,
-              "sha256": "8e1c41e3e8dc90c235aa00ba545769e0734644cf08bb6bb94741770156531ab0"
+              "bytes": 43485,
+              "sha256": "0f0c4cd807178eb95a0ceea117af109f3f680da990cf47762a582de80d7c459a"
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_size.rs",
@@ -42270,8 +42383,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 52066,
-              "sha256": "70c588c3ddfc33861856cde4327fe6b69e052583981926f0a5815eaa579b4d94"
+              "bytes": 52960,
+              "sha256": "256dd64cd0aead8780be5138337aa44f8003685ee0273ff03d3a120a9ad9188a"
             },
             {
               "path": "crates/jocforge-io/src/provider/spatial_audio.rs",
@@ -52076,8 +52189,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 52066,
-              "sha256": "70c588c3ddfc33861856cde4327fe6b69e052583981926f0a5815eaa579b4d94"
+              "bytes": 52960,
+              "sha256": "256dd64cd0aead8780be5138337aa44f8003685ee0273ff03d3a120a9ad9188a"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -55014,8 +55127,8 @@
         },
         {
           "path": "crates/jocforge-cli/src/encode_request.rs",
-          "bytes": 52066,
-          "sha256": "70c588c3ddfc33861856cde4327fe6b69e052583981926f0a5815eaa579b4d94"
+          "bytes": 52960,
+          "sha256": "256dd64cd0aead8780be5138337aa44f8003685ee0273ff03d3a120a9ad9188a"
         },
         {
           "path": "crates/jocforge-cli/src/lib.rs",

@@ -1493,3 +1493,7 @@ The parser now preserves explicit `start` and `end` XML strings while retaining 
 ## 2026-11-08: Preferred downmix token admission
 
 The XML parser now preserves all four declared `preferred_downmix_mode` tokens: `loro`, `ltrt`, `ltrt-pl2`, and `not_indicated`. The selected CLI still admits only `loro`. Static raw-code mappings do not establish effective MixMode, BSI serialization, or a rendered downmix effect.
+
+## 2026-11-08: Metering mode token admission
+
+The XML parser now admits and preserves the five declared `metering_mode` strings. The selected CLI still accepts only `1770-4` and rejects the others before Meter. Washed raw U32 candidates remain unassigned semantic modes; no alternate measurement or audio effect is enabled.
