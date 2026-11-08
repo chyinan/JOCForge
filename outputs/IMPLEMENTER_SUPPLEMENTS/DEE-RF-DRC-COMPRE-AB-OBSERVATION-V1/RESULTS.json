@@ -1,0 +1,106 @@
+{
+  "arms": [
+    {
+      "arm": "A",
+      "audio_blocks": 192,
+      "carrier_parse_errors": 0,
+      "compre_code_counts": {
+        "0x01": 10,
+        "0x02": 10,
+        "0xFF": 12
+      },
+      "compre_present_frames": 32,
+      "compre_sequence_sha256": "a6171f0a0beb7530630d305fb94ad1c891e70c36bfd7b2370144bab1e51d98eb",
+      "dee_exit_code": 0,
+      "dynrng_code_counts": {
+        "0x00": 50,
+        "0x01": 65,
+        "0x02": 45,
+        "0x03": 32
+      },
+      "dynrng_sequence_sha256": "2ad58cee7f77396a067bc39aabac5a40ede5d1fded86818100edcf4d5dac4b5b",
+      "frames": 32,
+      "natural_exit": true,
+      "output_bytes": 131072,
+      "output_sha256": "14b6bc9704685c3071a4fe5323c869703ab132a69fdd0647fcd2b52ad4ae1278",
+      "probe_exit_code": 0,
+      "probe_sha256": "60e6d90f88c0cdf610727e83ffa2a07abca8f64a9312e08b384ec1a6cae5a4c3",
+      "raw_bsi_or_frame_bytes_persisted": false,
+      "value": "film_light",
+      "xml_sha256": "6836f16a64fde98133e7192a5cd5d11ba4137363fe7d961b9f3a30a4f34695d8"
+    },
+    {
+      "arm": "B",
+      "audio_blocks": 192,
+      "carrier_parse_errors": 0,
+      "compre_code_counts": {
+        "0x01": 14,
+        "0x02": 6,
+        "0xFE": 2,
+        "0xFF": 10
+      },
+      "compre_present_frames": 32,
+      "compre_sequence_sha256": "6a5eed1e53a62812a14957e6e51359879e27cb06e964d3aa23edc22a54239f20",
+      "dee_exit_code": 0,
+      "dynrng_code_counts": {
+        "0x00": 50,
+        "0x01": 65,
+        "0x02": 45,
+        "0x03": 32
+      },
+      "dynrng_sequence_sha256": "2ad58cee7f77396a067bc39aabac5a40ede5d1fded86818100edcf4d5dac4b5b",
+      "frames": 32,
+      "natural_exit": true,
+      "output_bytes": 131072,
+      "output_sha256": "06c9690ca8dc8bbd7bbeca11234e74d1e4bd13a9c562ea0119b728a09eba7be9",
+      "probe_exit_code": 0,
+      "probe_sha256": "60e6d90f88c0cdf610727e83ffa2a07abca8f64a9312e08b384ec1a6cae5a4c3",
+      "raw_bsi_or_frame_bytes_persisted": false,
+      "value": "music_standard",
+      "xml_sha256": "1f8646652abdaff8bf25f0ee53b1581ce3c909207a56f4c70c14e695b230bd1a"
+    }
+  ],
+  "attempt_id": "rf_profile_n38_film_light_vs_music_standard_20261108T0911Z",
+  "exclusions": {
+    "encoded_payload_retained": false,
+    "key_license_args": false,
+    "pcm_read": false,
+    "private_key_or_license_read": false,
+    "raw_bsi_or_frame_bytes_persisted": false
+  },
+  "fixed_configuration": {
+    "data_rate_kbps": 1024,
+    "dialogue_intelligence": true,
+    "end": "00:00:01:00",
+    "line_mode_drc_profile": "film_light",
+    "other_xml_fields_equal": true,
+    "speech_threshold": 15,
+    "start": "00:00:00:00",
+    "time_base": "file_position",
+    "xml_diff_normalized_after_rf_field": true
+  },
+  "input": {
+    "bits_per_sample": 24,
+    "channels": 38,
+    "identity_basis": "USER_CONFIRMED_IN_PRIOR_RECEIPT; HASH_REUSED_NOT_RECOMPUTED_FOR_THIS_AB",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "sample_rate_hz": 48000,
+    "source_kind": "ADM BWF via atmos_mezz"
+  },
+  "preflight_record": {
+    "parent_input_receipt_manifest_sha256_recorded": "aefb73676a14f713cd631be9d553309103e10e585de38746547b8a06d0a14629",
+    "record_sha256": "a63ea9a0106d482462d3115906daafd8dff0912fb41468a06c3a45f4f76e90281",
+    "run_receipt_ids": "DETAILS_RETAINED_IN_SOURCE_SIDE; NOT_COPIED"
+  },
+  "result": {
+    "audio_pcm_or_decoded_effect": "NOT_CAPTURED",
+    "bsi_compre_sequence_changed": true,
+    "compre_code_distribution_changed": true,
+    "dynrng_sequence_same": true,
+    "generalization_to_other_modes_or_track_counts": "NOT_ESTABLISHED",
+    "rf_profile_audio_gain_semantics": "UNBOUND"
+  },
+  "schema": "washed-rf-drc-ab-observation.v1",
+  "status": "SEALED_PARTIAL",
+  "variable": "rf_mode_drc_profile"
+}

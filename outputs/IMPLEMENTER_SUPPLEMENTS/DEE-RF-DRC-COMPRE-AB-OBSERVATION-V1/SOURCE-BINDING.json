@@ -1,0 +1,16 @@
+{
+  "input_identity_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "input_receipt_binding_status": "RECORDED_IN_PRELAUNCH; NOT_REOPENED_IN_THIS_SUMMARY",
+  "input_receipt_manifest_sha256_as_recorded": "aefb73676a14f713cd631be9d553309103e10e585de38746547b8a06d0a14629",
+  "observation_json_hashes": {
+    "A": "3533fa1a9c8d2168c950ffce8f39d99f2dac4dd95f641907d86095d2ee14f79a",
+    "B": "669cf3ccf8eac32dc615f6f2133929136e78520792168c45bb2bdf2a7c8ddc8c"
+  },
+  "payload_or_source_paths_included": false,
+  "preflight_record_sha256": "a63ea9a0106d482462d3115906daafd8dff0912fb41468a06c3a45f4f76e90281",
+  "schema": "washed-experiment-source-binding.v1",
+  "xml_hashes": {
+    "A": "6836f16a64fde98133e7192a5cd5d11ba4137363fe7d961b9f3a30a4f34695d8",
+    "B": "1f8646652abdaff8bf25f0ee53b1581ce3c909207a56f4c70c14e695b230bd1a"
+  }
+}

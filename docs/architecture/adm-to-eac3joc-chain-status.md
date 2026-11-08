@@ -1521,3 +1521,7 @@ The XML parser now reads exactly one `ec3`, `mp4`, or `dash` output branch and p
 ## 2026-11-08: Sample range and silence field boundary
 
 Wash package `DEE-ATMOS-SILENCE-RANGE-BOUNDARY-V1` (manifest SHA-256 `4c20f71b8f16bc69c88c0a10db5282987348b1f6b8ac75f9f923a245a3fe8604`, seal SHA-256 `ddb4038fd348e2a7f70b768886a349017db127f4010a0f7099395273c0bd0821`) statically binds seconds/integer-frame tokens to sample counts with truncation toward zero, separate prepend/append row fields `+0x20/+0x38`, and Reader start/end sample indices with `endSample-startSample` length. The first sample consumer, silence placement and ordering, PTS/output-length effect, XML endpoint execution, and 38-channel input identity remain `UNBOUND`; the proposed prepend-only/append-only contrast is `NOT_RUN`. This does not enable nonzero CLI silence.
+
+## 2026-11-08: Bounded N38 RF DRC BSI observation
+
+Wash package `DEE-RF-DRC-COMPRE-AB-OBSERVATION-V1` (manifest SHA-256 `2f774f444f7f94fb2d8a35e38221023461feddc38f73b98557f36329b614a905`, seal SHA-256 `af13bcf27af0c30833510d709f0b2b0dddd6c80687b23f8476b7f7aed19d4232`) records one controlled N38, 48 kHz, PCM24, 1024 kbps pair with Line=`film_light`; RF changes from `film_light` to `music_standard`. Both runs exited 0 with 32 frames/192 audio blocks. BSI `compre` differs and `dynrng` matches. This bounds only a single-input/window RF-associated BSI metadata difference. Decoded audio/gain semantics and generalization to other profiles, N36, or other rates remain `UNBOUND`; no product option gate or algorithm changed.

@@ -8551,6 +8551,89 @@
           ],
           "validation_boundary": "Wash reference-only boundary: decimal seconds and nonnegative integer frame tokens map to sample counts with truncation toward zero; prepend and append remain separate metadata counts copied to row +0x20 and +0x38. Reader startSample/endSample are separate sample indices and end-start is a sample count. Actual silence sample consumer, prepend/source/append effect, endpoint execution, PCM/PTS/length effect, and 38-channel source identity remain UNBOUND. The contrast vectors are PROPOSED_NOT_RUN; nonzero CLI values remain rejected.",
           "delivery_scope": "EXTERNAL_REFERENCE_ONLY_NO_NONZERO_SILENCE_ENABLEMENT"
+        },
+        {
+          "slice_id": "washed-n38-rf-drc-profile-bsi-observation",
+          "mapping_status": "BOUNDED_N38_RF_PROFILE_ASSOCIATED_BSI_COMPRE_CHANGE__AUDIO_EFFECT_UNBOUND",
+          "implementation_status": "WASHED_REFERENCE_ONLY_SINGLE_PAIR__NO_PROFILE_EXPANSION",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "One controlled N38, 48 kHz, PCM24, 1024 kbps pair held Line DRC at film_light and changed only RF DRC from film_light to music_standard. Both runs naturally exited 0 and produced 32 frames/192 audio blocks. The bounded BSI parser observed a changed compre sequence/distribution and identical dynrng sequence/distribution. This binds an RF-token-associated BSI metadata difference only for this input/window; decoded audio or gain effect, semantics of all codes, other profiles, N36, rates, and product enablement remain UNBOUND/NOT_ESTABLISHED.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-COMPRE-AB-OBSERVATION-V1/FINDINGS.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The evidence is a completed single-pair run observation; no callback-clock or cross-generation rule is established.",
+              "Each arm reported 32 frames and 192 audio blocks; no generalized timing contract is inferred."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_RF_DRC_PROFILE_BSI_A_B_OBSERVATION",
+            "package_id": "DEE-RF-DRC-COMPRE-AB-OBSERVATION-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-COMPRE-AB-OBSERVATION-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-COMPRE-AB-OBSERVATION-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-COMPRE-AB-OBSERVATION-V1/RESULTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-COMPRE-AB-OBSERVATION-V1/FINDINGS.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-COMPRE-AB-OBSERVATION-V1/SOURCE-BINDING.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-COMPRE-AB-OBSERVATION-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "2f774f444f7f94fb2d8a35e38221023461feddc38f73b98557f36329b614a905",
+            "supplement_seal_sha256": "af13bcf27af0c30833510d709f0b2b0dddd6c80687b23f8476b7f7aed19d4232",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "observed_pair": {
+              "channels": 38,
+              "sample_rate_hz": 48000,
+              "bits_per_sample": 24,
+              "data_rate_kbps": 1024,
+              "line_mode_drc_profile": "film_light",
+              "rf_profile_a": "film_light",
+              "rf_profile_b": "music_standard",
+              "natural_exit_codes": [
+                0,
+                0
+              ],
+              "frames_per_arm": 32,
+              "audio_blocks_per_arm": 192,
+              "compre_sequence_changed": true,
+              "dynrng_sequence_same": true
+            },
+            "unbound": [
+              "Decoded audio, loudness, or RF gain semantics.",
+              "Meaning of every BSI code and behavior beyond this pair/window.",
+              "Other RF/Line profiles, N36 inputs, other rates, and production option admission."
+            ],
+            "validation_boundary": "One controlled N38, 48 kHz, PCM24, 1024 kbps pair held Line DRC at film_light and changed only RF DRC from film_light to music_standard. Both runs naturally exited 0 and produced 32 frames/192 audio blocks. The bounded BSI parser observed a changed compre sequence/distribution and identical dynrng sequence/distribution. This binds an RF-token-associated BSI metadata difference only for this input/window; decoded audio or gain effect, semantics of all codes, other profiles, N36, rates, and product enablement remain UNBOUND/NOT_ESTABLISHED."
+          },
+          "vectors": {
+            "kind": "WASHED_OBSERVED_N38_PAIR_WITHOUT_AUDIO_GOLDEN",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "RESULTS.json contains the bounded A/B summaries; no raw frame bytes or PCM are included."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-COMPRE-AB-OBSERVATION-V1/RESULTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-COMPRE-AB-OBSERVATION-V1/SOURCE-BINDING.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "OBSERVED_BOUNDED_PAIR"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Decoded audio or gain comparison and semantic interpretation of the BSI codes.",
+            "Other RF/Line profiles, N36, other rates, or generalization beyond this one input/window.",
+            "Production option support or selected CLI gate changes."
+          ],
+          "validation_boundary": "One controlled N38, 48 kHz, PCM24, 1024 kbps pair held Line DRC at film_light and changed only RF DRC from film_light to music_standard. Both runs naturally exited 0 and produced 32 frames/192 audio blocks. The bounded BSI parser observed a changed compre sequence/distribution and identical dynrng sequence/distribution. This binds an RF-token-associated BSI metadata difference only for this input/window; decoded audio or gain effect, semantics of all codes, other profiles, N36, rates, and product enablement remain UNBOUND/NOT_ESTABLISHED.",
+          "delivery_scope": "BOUNDED_BSI_METADATA_OBSERVATION_ONLY_NO_ALGORITHM_OR_PROFILE_ENABLEMENT"
         }
       ]
     },
@@ -69523,6 +69606,28 @@
         "First actual sample consumer, PCM placement, output length, and PTS effects.",
         "Runtime conversion of start/end XML endpoints to sample indices.",
         "38-channel source identity and the proposed silence contrast vectors."
+      ]
+    },
+    {
+      "package_id": "DEE-RF-DRC-COMPRE-AB-OBSERVATION-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-COMPRE-AB-OBSERVATION-V1",
+      "manifest_sha256": "2f774f444f7f94fb2d8a35e38221023461feddc38f73b98557f36329b614a905",
+      "supplement_seal_sha256": "af13bcf27af0c30833510d709f0b2b0dddd6c80687b23f8476b7f7aed19d4232",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS_4_OF_4",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "ONE_N38_RF_PROFILE_PAIR_ASSOCIATED_BSI_COMPRE_CHANGE; AUDIO_EFFECT_UNBOUND; GENERALIZATION_NOT_ESTABLISHED; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Decoded audio/gain effect and semantic interpretation of all BSI codes.",
+        "Other RF or Line profiles, N36, other rates, and production support."
       ]
     }
   ]

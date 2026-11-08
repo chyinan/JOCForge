@@ -1,0 +1,33 @@
+{
+  "file_count": 5,
+  "files": [
+    {
+      "bytes": 3864,
+      "file": "RESULTS.json",
+      "sha256": "cdd04e09fd272e5e614edb1e6b667c604e5a9bf50b2782d6bbfb77e90c19c536"
+    },
+    {
+      "bytes": 834,
+      "file": "FINDINGS.md",
+      "sha256": "19b5e28f6c4c3f44bc15f57dacb1f95861a43c96a991920c1eca3cc4437a1eb2"
+    },
+    {
+      "bytes": 877,
+      "file": "SOURCE-BINDING.json",
+      "sha256": "1747bde97208cf558d7b0ea0a312cee930d28ab8442b7256a0c810bad967505e"
+    },
+    {
+      "bytes": 1790,
+      "file": "CHECK.py",
+      "sha256": "0443166bcf49beea203dcb8374294338148960a06a8e5da9cade40932dcb2411"
+    },
+    {
+      "bytes": 930,
+      "file": "MANIFEST.json",
+      "sha256": "2f774f444f7f94fb2d8a35e38221023461feddc38f73b98557f36329b614a905"
+    }
+  ],
+  "schema": "washed-implementer-supplement-seal.v1",
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-RF-DRC-COMPRE-AB-OBSERVATION-V1"
+}

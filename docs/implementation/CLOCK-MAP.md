@@ -193,6 +193,7 @@
 | F01E/authored-temp-directory-value-admission | — | `The parser stores the authored boolean and path value without using a file or directory API.`<br>`No path resolution, cleanup, or deletion/retention behavior is performed.`<br>`The selected CLI gate rejects a present temp_directory configuration before Meter/callback/encode.` |
 | F01E/authored-output-container-metadata-admission | — | `override_frame_rate is preserved as a token and is not converted or applied.`<br>`MP4/DASH output branches are rejected before output-path resolution.` |
 | F01E/washed-ddp-sample-range-silence-rule-matrix | — | `Static sample-count conversion uses the source sample rate and truncates toward zero.`<br>`No runtime callback clock, sample insertion, endpoint conversion, or output timing is established.` |
+| F01E/washed-n38-rf-drc-profile-bsi-observation | — | `The evidence is a completed single-pair run observation; no callback-clock or cross-generation rule is established.`<br>`Each arm reported 32 frames and 192 audio blocks; no generalized timing contract is inferred.` |
 | F03G/target-slot-install | — | `Pure per-callback value transition; no clock or committed state is owned.` |
 | F03C/candidate-selector | — | `Each selector call initializes cold scratch; no callback/source/AU counter or cross-call selector state is owned.` |
 | F03C/selector-score-choice | — | `No state or clock is owned.` |
