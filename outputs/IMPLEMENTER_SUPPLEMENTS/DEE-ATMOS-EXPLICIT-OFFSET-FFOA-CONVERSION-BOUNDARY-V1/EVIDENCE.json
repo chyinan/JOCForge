@@ -1,0 +1,58 @@
+{
+  "auto_rules": {
+    "ffoa": "source ffoa - source offset + selected offset; clamp to no earlier than selected offset",
+    "ffoa_ddp_consumer": "subtract selected offset before downstream helper",
+    "offset": "source metadata map key offset; fallback 0.0 if absent",
+    "status": "STATIC_RULE_BOUND"
+  },
+  "conclusion": {
+    "actual_xml_acceptance": "NOT_RUN",
+    "explicit_numeric_conversion": "STATIC_BEHAVIOR_ONLY",
+    "reader_frame_alignment": "UNBOUND",
+    "source_owner_generation": "UNBOUND"
+  },
+  "execution": {
+    "atmos_info": "NOT_RUN",
+    "dee": "NOT_RUN",
+    "pcm_payload_key_license_read": false
+  },
+  "explicit_values": {
+    "complete_rate_vocabulary": "UNBOUND",
+    "decimal_branch": "extract hours/minutes/seconds/fraction; common_strtod_l; hours*3600+minutes*60+seconds+fraction_seconds",
+    "drop_frame": "trailing lowercase df recognized by static path",
+    "ffoa_converter": "FUN_1401359e0(value,timecode_frame_rate,0,0)",
+    "frame_branch": "no-dot integer parses base-10 frame index; colon form parses hours/minutes/seconds/frames; selected frame-rate converts to seconds",
+    "minute_second_bounds": "less than 60 on colon component helper",
+    "offset_converter": "FUN_1401359e0(value,timecode_frame_rate,0,0)",
+    "result_type": "floating seconds coordinate",
+    "runtime_xml_acceptance": "NOT_RUN",
+    "strict_lexical_rules": "UNBOUND"
+  },
+  "implementation_ready": false,
+  "input_only_next_requirement": "one authorized 36/38 ADM with distinct nonzero source offset and FFOA candidates in readable metadata; hash exact field paths/chunks; keep XML offset/ffoa=auto",
+  "schema": "washed-implementer-supplement.v1",
+  "source_fields": {
+    "adm_time_token_path": "local_8d8 -> FUN_1400a3070 -> double -> descriptor+0x60 via vtable+0x40 -> master+0xa8 -> atmos_info Start time (in seconds)",
+    "descriptor+0x58_to_master+0xb0": "STATIC_CONSUMER_FLOW_BOUND",
+    "exact_xml_element_or_attribute": "UNBOUND",
+    "ffoa_source_writer_to_descriptor+0x58": "UNBOUND",
+    "programme_start_candidate_join": "UNBOUND",
+    "time_origin_absolute_or_relative": "UNBOUND"
+  },
+  "source_package": {
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "manifest_sha256": "8ee318103693c514759ee9d3d9763d1cfc8fd353e235e8138c9606f28388993e",
+    "package_id": "dee_atmosmezz_explicit_timecode_source_boundary_wash_v1",
+    "package_seal_sha256": "e5b123b421981fa24ff7cf131bd1e875cca5ab2db72bcd187bab86f848ad6554"
+  },
+  "source_scan": {
+    "BEXT_or_iXML_found": false,
+    "distinct_nonzero_source_candidates": false,
+    "n36_inputs": 6,
+    "n38_inputs": 1,
+    "named_offset_ffoa_or_time_reference_found": false
+  },
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-ATMOS-EXPLICIT-OFFSET-FFOA-CONVERSION-BOUNDARY-V1"
+}

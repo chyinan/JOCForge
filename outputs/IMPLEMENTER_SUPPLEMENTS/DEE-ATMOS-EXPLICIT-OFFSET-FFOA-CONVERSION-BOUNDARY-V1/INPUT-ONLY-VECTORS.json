@@ -1,0 +1,22 @@
+{
+  "existing_scan": {
+    "N36": 6,
+    "N38": 1,
+    "distinct_nonzero_metadata_candidate": false
+  },
+  "minimum_new_input": {
+    "channels": [
+      36,
+      38
+    ],
+    "source_ffoa": "distinct nonzero exact field/chunk path required",
+    "source_offset": "nonzero exact field/chunk path required",
+    "xml_values": {
+      "ffoa": "auto",
+      "offset": "auto"
+    }
+  },
+  "not_a_pass_record": true,
+  "schema": "washed-explicit-offset-ffoa-input-only.v1",
+  "status": "PROPOSED_INPUT_ONLY_NOT_RUN"
+}

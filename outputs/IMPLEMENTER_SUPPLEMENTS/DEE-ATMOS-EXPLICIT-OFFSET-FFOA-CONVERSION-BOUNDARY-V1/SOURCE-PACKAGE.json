@@ -1,0 +1,8 @@
+{
+  "checker_normal": "PASS",
+  "checker_python_O": "PASS",
+  "manifest_sha256": "8ee318103693c514759ee9d3d9763d1cfc8fd353e235e8138c9606f28388993e",
+  "package_id": "dee_atmosmezz_explicit_timecode_source_boundary_wash_v1",
+  "package_seal_sha256": "e5b123b421981fa24ff7cf131bd1e875cca5ab2db72bcd187bab86f848ad6554",
+  "raw_source_or_decompilation_copied": false
+}

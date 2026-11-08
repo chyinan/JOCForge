@@ -201,6 +201,7 @@
 | F01E/washed-temp-clean-flag-first-resolver-consumer | — | `This is a scoped resolver/path assembly observation; no runtime cleanup clock, generation, or file-lifecycle transition is established.` |
 | F01E/washed-drc-line-rf-six-value-profile-boundary | — | `The package includes bounded short-window observations, but establishes no callback clock or whole-programme DRC behavior.` |
 | F01E/washed-data-rate-type1-encoder-boundary | — | `Static parameter serialization is described; runtime callback target, frame size, and carrier clock are not established.` |
+| F01E/washed-explicit-offset-ffoa-static-converter-boundary | — | `The static conversion returns seconds coordinates; no Reader/frame alignment or runtime timeline effect is established.` |
 | F03G/target-slot-install | — | `Pure per-callback value transition; no clock or committed state is owned.` |
 | F03C/candidate-selector | — | `Each selector call initializes cold scratch; no callback/source/AU counter or cross-call selector state is owned.` |
 | F03C/selector-score-choice | — | `No state or clock is owned.` |

@@ -9377,6 +9377,96 @@
           ],
           "validation_boundary": "Six authored data_rate tokens statically map through enum codes 0..5 to core integers 384/448/576/640/768/1024, all at field ID 3 and type-1 generic-table serializer slot +0x28. The callback cell's static zero does not reveal its runtime target. The callback runtime target and field-3 join to a named carrier, frame-size word, or emitted bitrate remain UNBOUND/NOT_RUN. The kbps unit is an inference from a separate 448-kbps diagnostic, not a recovered type annotation. A 1024-versus-768 contrast remains PROPOSED_NOT_RUN; no full-rate support conclusion follows.",
           "delivery_scope": "EXTERNAL_REFERENCE_ONLY_NO_ALL_RATE_SUPPORT_OR_CARRIER_CLAIM"
+        },
+        {
+          "slice_id": "washed-explicit-offset-ffoa-static-converter-boundary",
+          "mapping_status": "EXPLICIT_STATIC_CONVERTER_BRANCHES_PARTIAL__XML_ADMISSION_AND_SOURCE_ORIGINS_UNBOUND",
+          "implementation_status": "WASHED_REFERENCE_ONLY__CLI_AUTO_GATE_PRESERVED__RUNTIME_NOT_RUN",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "A bounded static path sends both explicit offset and FFOA strings plus timecode_frame_rate to FUN_1401359e0 and returns floating seconds coordinates. Decimal and frame-shaped parsing branches are partially described, including a lowercase df path and a less-than-60 colon-component check. This does not prove native XML admission or strict lexical acceptance: exact widths/whitespace/trailing-character rules and the complete frame-rate vocabulary remain UNBOUND. Source metadata origins also remain open; the ADM time-token candidate path is separate from an unresolved FFOA writer. No runtime conversion, Reader alignment, or timeline effect is established.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-EXPLICIT-OFFSET-FFOA-CONVERSION-BOUNDARY-V1/FINDINGS.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The static conversion returns seconds coordinates; no Reader/frame alignment or runtime timeline effect is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_EXPLICIT_OFFSET_FFOA_CONVERTER_REFERENCE",
+            "package_id": "DEE-ATMOS-EXPLICIT-OFFSET-FFOA-CONVERSION-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-EXPLICIT-OFFSET-FFOA-CONVERSION-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-EXPLICIT-OFFSET-FFOA-CONVERSION-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-EXPLICIT-OFFSET-FFOA-CONVERSION-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-EXPLICIT-OFFSET-FFOA-CONVERSION-BOUNDARY-V1/FINDINGS.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-EXPLICIT-OFFSET-FFOA-CONVERSION-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-EXPLICIT-OFFSET-FFOA-CONVERSION-BOUNDARY-V1/SOURCE-PACKAGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-EXPLICIT-OFFSET-FFOA-CONVERSION-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "5548646a7c5de6dca49f5404df857a045488ac7aedea0d473021a5d2b64de7ea",
+            "supplement_seal_sha256": "7ee94810b9b7d8b26d43f699537915e4515570ae98cb90c029689c688fd02595",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "converter": {
+              "function": "FUN_1401359e0(value, timecode_frame_rate, 0, 0)",
+              "result": "floating seconds coordinate",
+              "decimal_branch": "hours/minutes/seconds/fraction; common_strtod_l; h*3600+m*60+s+fraction_seconds",
+              "frame_branch": "base-10 integer frame index or colon hours/minutes/seconds/frames; selected rate to seconds",
+              "drop_frame_branch": "trailing lowercase df statically recognized",
+              "colon_minute_second_bound": "less than 60",
+              "strict_lexical_rules": "UNBOUND",
+              "complete_frame_rate_vocabulary": "UNBOUND",
+              "native_xml_acceptance": "NOT_RUN"
+            },
+            "source_fields": {
+              "adm_time_token_candidate": "local_8d8 -> FUN_1400a3070 -> descriptor+0x60 -> master+0xa8",
+              "ffoa_source_writer_to_descriptor_plus_0x58": "UNBOUND",
+              "exact_xml_origin": "UNBOUND",
+              "programme_time_origin": "UNBOUND",
+              "reader_frame_alignment": "UNBOUND"
+            },
+            "source_scan": {
+              "n36_inputs": 6,
+              "n38_inputs": 1,
+              "distinct_nonzero_offset_ffoa_candidates": false,
+              "named_offset_ffoa_or_time_reference_found": false,
+              "BEXT_or_iXML_found": false
+            },
+            "execution": {
+              "dee": "NOT_RUN",
+              "atmos_info": "NOT_RUN"
+            },
+            "validation_boundary": "A bounded static path sends both explicit offset and FFOA strings plus timecode_frame_rate to FUN_1401359e0 and returns floating seconds coordinates. Decimal and frame-shaped parsing branches are partially described, including a lowercase df path and a less-than-60 colon-component check. This does not prove native XML admission or strict lexical acceptance: exact widths/whitespace/trailing-character rules and the complete frame-rate vocabulary remain UNBOUND. Source metadata origins also remain open; the ADM time-token candidate path is separate from an unresolved FFOA writer. No runtime conversion, Reader alignment, or timeline effect is established."
+          },
+          "vectors": {
+            "kind": "WASHED_EXPLICIT_OFFSET_FFOA_SOURCE_INPUT_REQUIREMENT_PROPOSED",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Existing six N36 and one N38 scans found no distinct nonzero named candidates; a new distinguishing input is required."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-EXPLICIT-OFFSET-FFOA-CONVERSION-BOUNDARY-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "PROPOSED_INPUT_ONLY_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Native XML acceptance of explicit offset/FFOA strings and strict grammar details.",
+            "Exact ADM/BWF source fields/chunks for offset and FFOA and their common time origin.",
+            "Runtime owner/generation, Reader/frame alignment, and timeline/output effect.",
+            "A 36/38-channel input with distinct nonzero source fields; required vectors remain NOT_RUN."
+          ],
+          "validation_boundary": "A bounded static path sends both explicit offset and FFOA strings plus timecode_frame_rate to FUN_1401359e0 and returns floating seconds coordinates. Decimal and frame-shaped parsing branches are partially described, including a lowercase df path and a less-than-60 colon-component check. This does not prove native XML admission or strict lexical acceptance: exact widths/whitespace/trailing-character rules and the complete frame-rate vocabulary remain UNBOUND. Source metadata origins also remain open; the ADM time-token candidate path is separate from an unresolved FFOA writer. No runtime conversion, Reader alignment, or timeline effect is established.",
+          "delivery_scope": "EXTERNAL_REFERENCE_ONLY_NO_EXPLICIT_TIME_RULE_OR_TIMELINE_EFFECT_ENABLEMENT"
         }
       ]
     },
@@ -70711,6 +70801,29 @@
       "not_run": [
         "Native XML writer, effective mode storage, and typed level consumer joins.",
         "Downmix/BSI/audio effects and all vectors; no DEE runtime run occurred."
+      ]
+    },
+    {
+      "package_id": "DEE-ATMOS-EXPLICIT-OFFSET-FFOA-CONVERSION-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-EXPLICIT-OFFSET-FFOA-CONVERSION-BOUNDARY-V1",
+      "manifest_sha256": "5548646a7c5de6dca49f5404df857a045488ac7aedea0d473021a5d2b64de7ea",
+      "supplement_seal_sha256": "7ee94810b9b7d8b26d43f699537915e4515570ae98cb90c029689c688fd02595",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "STATIC_EXPLICIT_CONVERTER_PARTIAL; XML_ACCEPTANCE_SOURCE_FIELDS_READER_AND_TIMELINE_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Actual XML acceptance and strict token grammar.",
+        "Exact source fields/chunks, Reader/frame alignment, and timeline effect.",
+        "Distinct nonzero input contrast and all runtime vectors."
       ]
     }
   ]

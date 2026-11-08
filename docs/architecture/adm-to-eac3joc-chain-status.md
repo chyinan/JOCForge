@@ -1565,3 +1565,7 @@ Wash package `DEE-DATA-RATE-TYPE1-ENCODER-BOUNDARY-V1` (manifest SHA-256 `021f7a
 ## 2026-11-08: DME downmix to native XML writer boundary
 
 Wash package `DEE-DME-DOWNMIX-XML-WRITER-BOUNDARY-V1` (manifest SHA-256 `f273cb8edfe2cfac430b686791f1c5ab9d7f025428619feaa09bbd81729c73d2`, seal SHA-256 `4ceb9b17673cae0cbe1983af524681535540c285e9ff9655143369e5dfcd9df7`) binds DME host values/active flags to clientJob JSON and composite `--encoder` argv. Native XML writer/leaf, effective mode storage, typed level consumers, and downmix/BSI/audio effects remain `UNBOUND`; vectors and DEE runtime remain `NOT_RUN`. The static candidate path does not establish a selected mode effect. No full XML support or licensed material is inferred.
+
+## 2026-11-08: explicit offset/FFOA converter boundary
+
+Wash package `DEE-ATMOS-EXPLICIT-OFFSET-FFOA-CONVERSION-BOUNDARY-V1` (manifest SHA-256 `5548646a7c5de6dca49f5404df857a045488ac7aedea0d473021a5d2b64de7ea`, seal SHA-256 `7ee94810b9b7d8b26d43f699537915e4515570ae98cb90c029689c688fd02595`) partially binds static decimal/frame conversion to floating-seconds coordinates, including a lowercase `df` branch. XML acceptance, strict token grammar, complete frame-rate vocabulary, source chunk identity, runtime owner/generation, Reader alignment, and timeline effect remain `UNBOUND/NOT_RUN`. Existing six N36 and one N38 scans found no distinct nonzero source fields; the proposed input requirement remains `NOT_RUN`. No explicit rule is enabled.

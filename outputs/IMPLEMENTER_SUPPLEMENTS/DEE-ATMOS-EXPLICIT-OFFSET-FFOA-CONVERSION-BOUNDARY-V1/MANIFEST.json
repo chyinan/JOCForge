@@ -1,0 +1,36 @@
+{
+  "implementation_ready": false,
+  "payloads": [
+    {
+      "bytes": 2844,
+      "file": "EVIDENCE.json",
+      "sha256": "4dee8f85705b376298d6047cfc892e25a6fe4335f06cd6f8b055fa4063ab27ba"
+    },
+    {
+      "bytes": 537,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "96b21be4b9133e9bc6cb0cc5a5e0c92787cd9487e7148c17742f731f39753911"
+    },
+    {
+      "bytes": 960,
+      "file": "FINDINGS.md",
+      "sha256": "c5751b434071cfb501471282f3592ed7f013de374829dbdb5c0dca1e19cdb9b8"
+    },
+    {
+      "bytes": 373,
+      "file": "SOURCE-PACKAGE.json",
+      "sha256": "363291e5abfa41b9bf4be3dcf8c6980e1ddb60c10b71d2f4d0a4709623e7c7bf"
+    },
+    {
+      "bytes": 1371,
+      "file": "CHECK.py",
+      "sha256": "227b595c46c49505c8254fa654153c9b7a93821eb93301232cfacbd80df1fba9"
+    }
+  ],
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "scope": "Static explicit timecode conversion and partial auto source flow; source metadata field, runtime acceptance, and Reader effect remain unbound.",
+  "source_manifest_sha256": "8ee318103693c514759ee9d3d9763d1cfc8fd353e235e8138c9606f28388993e",
+  "source_package_seal_sha256": "e5b123b421981fa24ff7cf131bd1e875cca5ab2db72bcd187bab86f848ad6554",
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-ATMOS-EXPLICIT-OFFSET-FFOA-CONVERSION-BOUNDARY-V1"
+}
