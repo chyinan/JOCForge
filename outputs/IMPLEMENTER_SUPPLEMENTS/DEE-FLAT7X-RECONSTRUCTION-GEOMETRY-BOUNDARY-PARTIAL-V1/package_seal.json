@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-implementer-supplement-seal.v1",
+  "package_id": "DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1",
+  "manifest_sha256": "a0852e041c393681b24fe7576f1b7cf84c6cb45b32611a3bc7bf53dc961e494e",
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 4076,
+      "sha256": "b4d508083e3cddbd75ec4297c0d110321dd8ee44cc94c91452647ee507757410"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 1909,
+      "sha256": "684530c73a6bc0ba31b55a766343136d88cbeda92b2f94a2b13e0f241669b783"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 922,
+      "sha256": "f7db74ee0a02d7c41819f50ca8eace40f447f2819a6fcac3d51bfa835603c7d1"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 1574,
+      "sha256": "b09bfa2558d6e2a96eb187851b6800469f9f339d11fb7943097bcb07432aca7f"
+    },
+    {
+      "path": "SOURCE-MANIFESTS.json",
+      "bytes": 1521,
+      "sha256": "8bee9c28a90d3283d25784b3fd12d4adac9e5e4982739f0dc831a9a400617f58"
+    }
+  ],
+  "seal_excluded_from_own_hash_list": true
+}

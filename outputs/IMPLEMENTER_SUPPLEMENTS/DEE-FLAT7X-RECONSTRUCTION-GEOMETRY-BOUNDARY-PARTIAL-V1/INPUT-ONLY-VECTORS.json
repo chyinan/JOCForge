@@ -1,0 +1,34 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "execution": "NOT_RUN",
+  "vectors": [
+    {
+      "id": "official_flat7x_shape",
+      "evidence_class": "SANITIZED_STRUCTURE_RECEIPT",
+      "profile_index": 1,
+      "carrier_count": 7,
+      "carriers": ["L", "R", "C", "Ls", "Rs", "Lrs", "Rrs"],
+      "objects": 15,
+      "rows": 15,
+      "complexity": 16,
+      "native_consumer": "UNBOUND"
+    },
+    {
+      "id": "legacy_five_x_phase_shape",
+      "evidence_class": "SANITIZED_FULL_FILE_JOC_RECEIPT",
+      "profile_index": 3,
+      "carrier_count": 5,
+      "objects": 15,
+      "rows": 15,
+      "complexity": 16,
+      "same_geometry_as_flat7x": false
+    },
+    {
+      "id": "exact_label_search",
+      "query": "flat7x",
+      "scope": ["dee_ddpjoc_encoder.exe", "dee_audio_filter_ddp_atmos.dll"],
+      "result": "0 exact defined-data string hits",
+      "absence_scope": "bounded query only"
+    }
+  ]
+}

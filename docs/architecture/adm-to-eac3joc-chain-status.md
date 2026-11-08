@@ -1629,3 +1629,7 @@ Wash package `DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1` (manifest SH
 ## 2026-11-09: JOC downmix index versus reconstruction profile
 
 Wash package `DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1` (manifest SHA-256 `507b7b495812fa7df491c843e21f169fb822745ca5e653b7d25453c9abc03ce6`, seal SHA-256 `9f316ded705debd959de7dd67d6cd54766a7458afeb444f911d82f43d3ab6c3d`) cross-checks 5.1 mode0/phase-flag1, contract downmix_index=3, and separate reconstruction `five_x_phase`/profile_index3. Numeric equality does not establish field identity; the legacy enum Index3 serializer relation remains `UNBOUND`. The official flat7x profile_index1 is a reconstruction-profile value; target mode/phase and serializer joins remain `UNBOUND`.
+
+## 2026-11-09: flat7x reconstruction geometry first break
+
+Wash package `DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1` (manifest SHA-256 `a0852e041c393681b24fe7576f1b7cf84c6cb45b32611a3bc7bf53dc961e494e`, seal SHA-256 `5505ede14712e6a14c5f98ff6cc1b013ed5f419e5e09deb186e7fca852c2927e`) records flat7x/index1 and seven contract carrier positions, 15 objects/rows, complexity 16. A bounded exact-string query had zero `flat7x` matches in two images; it did not inspect bodies/branches and is not global absence evidence. Native selector, carrier-to-row/object mapping, matrix/BSI consumer, and runtime remain `UNBOUND/NOT_RUN`. No JOC geometry algorithm is supplied.

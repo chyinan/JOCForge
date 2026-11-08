@@ -1,0 +1,34 @@
+{
+  "schema": "jocforge-source-manifest-receipts.v1",
+  "source_package": {
+    "package_id": "DEE-FLAT7X-PROFILE-INDEX1-GEOMETRY-FIRST-BREAK-WASH-V1",
+    "manifest_sha256": "b755d5d73e6dd4bd04744a77742618d30b4ad601a176fcd176c21f81153d47b6",
+    "sha256sums_file_sha256": "36976f4f7d19e459d689cc8af0fa839b49d068af06b1173de22d9c9e69d57e2a",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "payload_hashes_recomputed": true
+  },
+  "target_profile_contract": {
+    "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+    "manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+    "status": "PROFILE_CONTRACT_APPROVED; PRODUCTION_NOT_READY"
+  },
+  "official_structure_summary": {
+    "identity": "official-vs-mode21-structure-summary",
+    "sha256": "25b0c6488a92d0052164683ac051f20a5751d9ba76fdc2f133478730c5ccdce7",
+    "media_access_this_task": "NONE"
+  },
+  "legacy_profile_receipt": {
+    "package_id": "SAMPLE6-FULL-OUTPUT-JOC-PARSE-RECEIPT-V1",
+    "manifest_sha256": "571225e9cc8f0e56f3b814c79b11a957820b718fd0a7bd156d04f4770fca62bd",
+    "package_seal_file_sha256": "90ecd532c3162b6c4283778147c8c8c43b79ae486bbc2bba432e1b89a1bc040d",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "wash_review": {
+    "source_manifest_and_checksums_verified": true,
+    "raw_decompilation_or_product_source_in_handoff": false,
+    "official_mka_ec3_or_mode21_payload_in_handoff": false,
+    "implementation_readiness": "NO"
+  }
+}

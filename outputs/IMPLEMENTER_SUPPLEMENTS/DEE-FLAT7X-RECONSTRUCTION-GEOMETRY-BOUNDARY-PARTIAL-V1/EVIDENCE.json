@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package_id": "DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1",
+  "audience": "IMPLEMENTATION_EVIDENCE_ONLY",
+  "status": "PROFILE_SHAPE_BOUND_NATIVE_SELECTOR_AND_GEOMETRY_CONSUMER_UNBOUND",
+  "implementation_ready": "NO",
+  "scope": "flat7x shape contract and two bounded string-label searches only",
+  "target_profile": {
+    "profile": "flat7x",
+    "profile_index": 1,
+    "reconstruction_carriers": 7,
+    "carrier_order": ["L", "R", "C", "Ls", "Rs", "Lrs", "Rrs"],
+    "coded_objects": 15,
+    "reconstruction_rows": 15,
+    "complexity_index": 16,
+    "native_array_indices": "UNBOUND",
+    "carrier_to_row_or_object_mapping": "UNBOUND"
+  },
+  "legacy_profile": {
+    "profile": "five_x_phase",
+    "profile_index": 3,
+    "reconstruction_carriers": 5,
+    "coded_objects": 15,
+    "complexity_index": 16,
+    "shared_counts_prove_same_geometry": false
+  },
+  "bounded_ghidra_queries": {
+    "version": "12.2 PUBLIC",
+    "mode": "READ_ONLY_NO_ANALYSIS",
+    "query": "exact defined-data string flat7x",
+    "programs": [
+      {"program": "dee_ddpjoc_encoder.exe", "image_sha256": "4b4c624d94a5b47d97b62b28073e1bd351b2deeeea039a7ccfaa2af96562c8a", "hits": 0},
+      {"program": "dee_audio_filter_ddp_atmos.dll", "image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2", "hits": 0}
+    ],
+    "global_absence_claim": false,
+    "function_bodies_or_numeric_selectors_checked": false
+  },
+  "unbound_native_edges": {
+    "profile_index_1_to_native_typed_profile": "UNBOUND",
+    "profile_index_1_to_seven_column_geometry": "UNBOUND",
+    "native_matrix_consumer": "UNBOUND_NOT_TRACED",
+    "native_bsi_consumer": "UNBOUND_NOT_TRACED"
+  },
+  "execution": {
+    "dee_run": false,
+    "official_mka_or_ec3_read": false,
+    "mode21_payload_read": false,
+    "pcm_read": false,
+    "implementation_contact": false
+  }
+}

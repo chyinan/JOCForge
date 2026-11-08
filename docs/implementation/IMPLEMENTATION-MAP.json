@@ -10222,7 +10222,12 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/REPORT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1/PROFILE-ROW.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1/REPORT.md"
             ],
             "supplement_manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
             "supplement_seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
@@ -10334,6 +10339,13 @@
               "legacy_downmix_index3_to_reconstruction_index3_identity": "UNBOUND",
               "target_flat7x_reconstruction_index": 1,
               "target_downmix_mode_and_phase": "UNBOUND"
+            },
+            "selector_geometry_followup": {
+              "package_id": "DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1",
+              "manifest_sha256": "a0852e041c393681b24fe7576f1b7cf84c6cb45b32611a3bc7bf53dc961e494e",
+              "flat7x_index1_shape": "BOUND_BY_PROFILE_CONTRACT",
+              "native_selector_and_geometry_consumer": "UNBOUND",
+              "runtime": "NOT_RUN"
             }
           },
           "vectors": {
@@ -53079,6 +53091,112 @@
           ],
           "validation_boundary": "Hash-bound 5.1 receipts separately report config_mode=0/phase_flag=1, a contract-level downmix_index=3 candidate, and a full-file JOC reconstruction profile five_x_phase/index3. Equal numeric values do not establish field identity; the legacy enum's Index3 serializer relation remains UNBOUND. The official 7.1 structure reports reconstruction flat7x/index1 with seven carriers and phase_signaling=false; target mode and algorithm phase remain UNBOUND. The DDP XML preferred_downmix_mode MixMode effective store is separate and its relationship to reconstruction profile is UNBOUND.",
           "delivery_scope": "SELECTOR_SEMANTIC_REFERENCE_ONLY_NO_DOWNMIX_OR_RECONSTRUCTION_ALGORITHM"
+        },
+        {
+          "slice_id": "washed-flat7x-reconstruction-geometry-boundary-partial",
+          "mapping_status": "FLAT7X_PROFILE_SHAPE_BOUND__NATIVE_SELECTOR_GEOMETRY_AND_CONSUMER_UNBOUND",
+          "implementation_status": "WASHED_REFERENCE_ONLY__BOUNDED_STRING_QUERY_NOT_GLOBAL_ABSENCE__RUNTIME_NOT_RUN",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "The approved target contract records flat7x/profile index 1, seven non-LFE reconstruction carrier positions, 15 objects/rows, and complexity 16. A bounded exact defined-data string query found zero `flat7x` matches in two inspected images; it did not inspect function bodies/branches and is not a global absence proof. No typed edge joins index 1 to a native selector/profile object, seven-column geometry, carrier-to-row/object mapping, matrix writer, or BSI consumer. Runtime remains NOT_RUN and production audio is not ready.",
+          "dependencies": [
+            "F01E/approved-atmos71-flat7x-1664-profile-contract"
+          ],
+          "spec_files": [
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/ARCHITECTURE-DECISIONS.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The supplement reports static profile shape only; no native per-frame geometry or reconstruction clock is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_FLAT7X_RECONSTRUCTION_GEOMETRY_BOUNDARY",
+            "package_id": "DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "a0852e041c393681b24fe7576f1b7cf84c6cb45b32611a3bc7bf53dc961e494e",
+            "supplement_seal_sha256": "5505ede14712e6a14c5f98ff6cc1b013ed5f419e5e09deb186e7fca852c2927e",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "target_profile": {
+              "profile": "flat7x",
+              "profile_index": 1,
+              "reconstruction_carriers": [
+                "L",
+                "R",
+                "C",
+                "Ls",
+                "Rs",
+                "Lrs",
+                "Rrs"
+              ],
+              "carrier_count": 7,
+              "coded_objects": 15,
+              "reconstruction_rows": 15,
+              "complexity_index": 16,
+              "carrier_positions_are_native_array_indices": false,
+              "carrier_to_row_or_object_mapping": "UNBOUND"
+            },
+            "legacy_profile": {
+              "profile_index": 3,
+              "profile_name": "five_x_phase",
+              "reconstruction_carriers": 5,
+              "coded_objects": 15,
+              "complexity_index": 16,
+              "shared_counts_do_not_identify_geometry": true
+            },
+            "bounded_query": {
+              "query": "exact defined-data string flat7x",
+              "images_inspected": 2,
+              "matches": 0,
+              "function_bodies_or_branches_inspected": false,
+              "global_absence_claim": false
+            },
+            "unbound_native_edges": {
+              "selector_to_profile_object": "UNBOUND",
+              "native_selector_type_and_stride": "UNBOUND",
+              "carrier_to_row_or_object_mapping": "UNBOUND",
+              "matrix_writer": "UNBOUND_NOT_TRACED",
+              "bsi_consumer": "UNBOUND_NOT_TRACED"
+            },
+            "runtime": "NOT_RUN",
+            "production_allowed": false,
+            "validation_boundary": "The approved target contract records flat7x/profile index 1, seven non-LFE reconstruction carrier positions, 15 objects/rows, and complexity 16. A bounded exact defined-data string query found zero `flat7x` matches in two inspected images; it did not inspect function bodies/branches and is not a global absence proof. No typed edge joins index 1 to a native selector/profile object, seven-column geometry, carrier-to-row/object mapping, matrix writer, or BSI consumer. Runtime remains NOT_RUN and production audio is not ready."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_PROFILE_SHAPE_NOT_RUNTIME_VECTOR",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Target profile shape and bounded string-query result only; no geometry output."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Native selector/type/stride, profile object, and carrier-to-row/object mapping.",
+            "First matrix/BSI consumer, runtime, and any JOC geometry algorithm.",
+            "Global absence beyond the two bounded image string queries."
+          ],
+          "validation_boundary": "The approved target contract records flat7x/profile index 1, seven non-LFE reconstruction carrier positions, 15 objects/rows, and complexity 16. A bounded exact defined-data string query found zero `flat7x` matches in two inspected images; it did not inspect function bodies/branches and is not a global absence proof. No typed edge joins index 1 to a native selector/profile object, seven-column geometry, carrier-to-row/object mapping, matrix writer, or BSI consumer. Runtime remains NOT_RUN and production audio is not ready.",
+          "delivery_scope": "PROFILE_SHAPE_REFERENCE_ONLY_NO_JOC_GEOMETRY_ALGORITHM"
         }
       ]
     },
@@ -72539,6 +72657,29 @@
       "not_run": [
         "Legacy enum serializer relation, effective mode, target mode/phase, and output behavior.",
         "No implementation, new Ghidra query, or runtime capture occurred."
+      ]
+    },
+    {
+      "package_id": "DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1",
+      "manifest_sha256": "a0852e041c393681b24fe7576f1b7cf84c6cb45b32611a3bc7bf53dc961e494e",
+      "supplement_seal_sha256": "5505ede14712e6a14c5f98ff6cc1b013ed5f419e5e09deb186e7fca852c2927e",
+      "functional_ids": [
+        "F01E",
+        "F13C"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "FLAT7X_SHAPE_BOUND; NATIVE_SELECTOR_GEOMETRY_ROW_MAPPING_AND_MATRIX_BSI_CONSUMERS_UNBOUND; GLOBAL_ABSENCE_NOT_CLAIMED; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Native geometry mapping/consumer, matrix/BSI writer, runtime, and JOC geometry algorithm.",
+        "Global absence outside two bounded string queries."
       ]
     }
   ]
