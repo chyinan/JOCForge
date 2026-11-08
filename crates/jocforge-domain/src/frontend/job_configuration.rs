@@ -37,6 +37,7 @@ const ADMITTED_TIMECODE_FRAME_RATE_TOKENS: &[&str] = &[
     "59.94",
     "60",
 ];
+const ADMITTED_TIME_BASE_TOKENS: &[&str] = &["file_position", "embedded_timecode"];
 
 /// Validated WAVE descriptor supplied by the input provider.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -1206,7 +1207,7 @@ pub fn parse_selected_job_configuration(
     let start = optional_time_alias(encoder, "start", "first_frame_of_action")?;
     let end = optional_time_alias(encoder, "end", "end_of_file")?;
     let time_base = required_text(encoder, &["time_base"])?;
-    if time_base != "file_position" {
+    if !is_admitted_time_base_token(&time_base) {
         return Err(JobConfigurationError::TimeDomain);
     }
     let (prepend_silence_duration, prepend_silence_samples) =
@@ -1518,6 +1519,10 @@ fn required_text(root: Node<'_, '_>, path: &[&str]) -> Result<String, JobConfigu
 
 fn is_admitted_timecode_frame_rate_token(value: &str) -> bool {
     ADMITTED_TIMECODE_FRAME_RATE_TOKENS.contains(&value)
+}
+
+fn is_admitted_time_base_token(value: &str) -> bool {
+    ADMITTED_TIME_BASE_TOKENS.contains(&value)
 }
 
 fn require_exact(

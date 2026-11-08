@@ -1474,3 +1474,7 @@ The selected XML parser now admits the ten exact tokens documented for `/input/a
 ## 2026-11-08: Public mode-21 patcher and AU0 boundary
 
 Wash package `PUBLIC-ENABLE-ATMOS71-BINARY-PATCHER-AU0-BOUNDARY-V1` (manifest SHA-256 `d3cea0a54f2b9c93d86b2fffb817e0a725f18709ff64b7bf4f225537e33826b5`, seal SHA-256 `0b1783cb341e20bb40ef1164738bcb0dde4fc0de88e8b685c963eb10914cdc3b`) is registered as an external reference only. It binds a public, version-locked binary patcher's hash/pattern checks and layout-selector writes. The reported DEE 5.2.1 mode-21/flat-7.1 path has no output receipt in that repository; its tests use 64-byte synthetic buffers and it has no AU0 parser or validator. This evidence neither implements 7.1 in JOCForge nor explains the user-reported AU0 failure, whose file identity remains `USER_REPORTED_FAILURE_FILE_ID_UNBOUND`. JOCForge did not run the patcher or DEE.
+
+## 2026-11-08: Time-base token admission
+
+The XML parser now admits the exact `file_position` and `embedded_timecode` tokens and preserves the authored value. The selected CLI still rejects `embedded_timecode` before Meter, callbacks, or encoding. This does not bind the selected DDP writer or enable a range/seek effect; the native value remains `NOT_CAPTURED`.

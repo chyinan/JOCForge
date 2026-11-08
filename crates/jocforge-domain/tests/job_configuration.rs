@@ -245,6 +245,44 @@ fn authored_input_timecode_tokens_are_preserved_without_conversion() {
 }
 
 #[test]
+fn authored_time_base_tokens_are_preserved_without_range_effect() {
+    let vectors = fixture_json("job-configuration-vectors.json");
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["id"] == "accepted_full_adm")
+        .unwrap();
+    let descriptor = &case["pcm_descriptor"];
+    let wave = SelectedWaveDescriptor::new(
+        descriptor["sample_rate"].as_u64().unwrap() as u32,
+        descriptor["channels"].as_u64().unwrap() as u16,
+        descriptor["pcm_bits"].as_u64().unwrap() as u16,
+    );
+    let source_samples = descriptor["source_samples"].as_u64().unwrap();
+    let base_xml = case["input_xml"].as_str().unwrap();
+    let file_position = "<time_base>file_position</time_base>";
+
+    let embedded_xml =
+        base_xml.replacen(file_position, "<time_base>embedded_timecode</time_base>", 1);
+    let configuration =
+        parse_selected_job_configuration(embedded_xml.as_bytes(), wave, source_samples)
+            .expect("embedded_timecode is admitted as an authored XML token");
+    assert_eq!(configuration.time_base(), "embedded_timecode");
+    let identity = configuration.normalized_identity_value();
+    assert_eq!(identity["time_base"], "embedded_timecode");
+    assert_eq!(identity["input_timecode_frame_rate"], "not_indicated");
+
+    let unsupported_xml =
+        base_xml.replacen(file_position, "<time_base>source_samples</time_base>", 1);
+    assert_eq!(
+        parse_selected_job_configuration(unsupported_xml.as_bytes(), wave, source_samples)
+            .unwrap_err(),
+        JobConfigurationError::TimeDomain
+    );
+}
+
+#[test]
 fn authored_silence_seconds_truncate_to_sample_counts_and_keep_append_presence() {
     let vectors = fixture_json("job-configuration-vectors.json");
     let case = vectors["config_cases"]

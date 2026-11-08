@@ -181,6 +181,7 @@
 | F01E/washed-surround-trim-candidate-register-boundary | F01E | `UNBOUND` |
 | F01E/authored-input-timecode-token-admission | F01E | `frontend` |
 | F01E/washed-public-atmos71-patcher-reference-boundary | F01E | `UNBOUND` |
+| F01E/authored-time-base-token-admission | F01E | `frontend` |
 | F03G/target-slot-install | F03G | `spatial_control` |
 | F03C/candidate-selector | F03C | `spatial_control` |
 | F03C/selector-score-choice | F03C | `spatial_control` |
