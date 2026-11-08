@@ -1,0 +1,33 @@
+{
+  "file_count": 5,
+  "files": [
+    {
+      "bytes": 3797,
+      "file": "RESULTS.json",
+      "sha256": "16d760a7826a7465e31c79bcf4dc0fbfebfae405f3e53a68e77a4d6ad6720c76"
+    },
+    {
+      "bytes": 880,
+      "file": "FINDINGS.md",
+      "sha256": "bdd855ced53e26dea55e7635e454b520f1dc506b2c8c858171d75d7d96797758"
+    },
+    {
+      "bytes": 731,
+      "file": "SOURCE-PACKAGE.json",
+      "sha256": "88baedb49a6f5b909bd3b7c7759d465f4d27367838e7c42e4ddbd9fa12246c10"
+    },
+    {
+      "bytes": 1777,
+      "file": "CHECK.py",
+      "sha256": "709eeaa32998c6f8e1cf42c617f808b4516ee3e969771a77da182f4b6962d977"
+    },
+    {
+      "bytes": 1146,
+      "file": "MANIFEST.json",
+      "sha256": "8a00949bce37b1e6279941724bc72abe47abde347a9d79d5bdb89c0626a956f4"
+    }
+  ],
+  "schema": "washed-implementer-supplement-seal.v1",
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-DRC-LINE-NONE-N38-BSI-OBSERVATION-V1"
+}

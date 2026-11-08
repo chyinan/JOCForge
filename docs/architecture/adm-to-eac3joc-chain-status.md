@@ -1569,3 +1569,7 @@ Wash package `DEE-DME-DOWNMIX-XML-WRITER-BOUNDARY-V1` (manifest SHA-256 `f273cb8
 ## 2026-11-08: explicit offset/FFOA converter boundary
 
 Wash package `DEE-ATMOS-EXPLICIT-OFFSET-FFOA-CONVERSION-BOUNDARY-V1` (manifest SHA-256 `5548646a7c5de6dca49f5404df857a045488ac7aedea0d473021a5d2b64de7ea`, seal SHA-256 `7ee94810b9b7d8b26d43f699537915e4515570ae98cb90c029689c688fd02595`) partially binds static decimal/frame conversion to floating-seconds coordinates, including a lowercase `df` branch. XML acceptance, strict token grammar, complete frame-rate vocabulary, source chunk identity, runtime owner/generation, Reader alignment, and timeline effect remain `UNBOUND/NOT_RUN`. Existing six N36 and one N38 scans found no distinct nonzero source fields; the proposed input requirement remains `NOT_RUN`. No explicit rule is enabled.
+
+## 2026-11-08: Line DRC N38 BSI dynrng observation
+
+Wash package `DEE-DRC-LINE-NONE-N38-BSI-OBSERVATION-V1` (manifest SHA-256 `8a00949bce37b1e6279941724bc72abe47abde347a9d79d5bdb89c0626a956f4`, seal SHA-256 `14c65744af864d8751163611e8c86460a91a67fc584b22cbb350a29d27acea94`) records one N38 pair with RF=`film_light` held and Line=`film_light` versus `none`. Both runs exited 0 with 32 frames/192 blocks. Compre sequence and distribution matched; dynrng changed from a four-code distribution to `0x00` in all 192 blocks. This is one bounded BSI observation only; typed parameter `0x0d`, PCM/gain/listening effect, and generalization remain `UNBOUND/NOT_CAPTURED`. No line DRC algorithm closure is claimed.

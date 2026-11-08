@@ -1,0 +1,105 @@
+{
+  "arms": [
+    {
+      "arm": "A",
+      "audio_block_count": 192,
+      "bsi_parse_exit": 0,
+      "bsi_probe_sha256": "60e6d90f88c0cdf610727e83ffa2a07abca8f64a9312e08b384ec1a6cae5a4c3",
+      "carrier_parse_errors": 0,
+      "compre_code_counts": {
+        "0x01": 10,
+        "0x02": 10,
+        "0xFF": 12
+      },
+      "compre_present_frames": 32,
+      "compre_sequence_sha256": "a6171f0a0beb7530630d305fb94ad1c891e70c36bfd7b2370144bab1e51d98eb",
+      "dynrng_code_counts": {
+        "0x00": 50,
+        "0x01": 65,
+        "0x02": 45,
+        "0x03": 32
+      },
+      "dynrng_sequence_sha256": "2ad58cee7f77396a067bc39aabac5a40ede5d1fded86818100edcf4d5dac4b5b",
+      "frame_count": 32,
+      "line_mode_drc_profile": "film_light",
+      "output_bytes": 131072,
+      "output_sha256": "14b6bc9704685c3071a4fe5323c869703ab132a69fdd0647fcd2b52ad4ae1278",
+      "pcm_read": false,
+      "raw_frame_bytes_persisted": false
+    },
+    {
+      "arm": "B",
+      "audio_block_count": 192,
+      "bsi_parse_exit": 0,
+      "bsi_probe_sha256": "60e6d90f88c0cdf610727e83ffa2a07abca8f64a9312e08b384ec1a6cae5a4c3",
+      "carrier_parse_errors": 0,
+      "compre_code_counts": {
+        "0x01": 10,
+        "0x02": 10,
+        "0xFF": 12
+      },
+      "compre_present_frames": 32,
+      "compre_sequence_sha256": "a6171f0a0beb7530630d305fb94ad1c891e70c36bfd7b2370144bab1e51d98eb",
+      "dynrng_code_counts": {
+        "0x00": 192
+      },
+      "dynrng_sequence_sha256": "f999a485035cdb7320ab4058cdc8bdc285d4275a6b11e8239396dc10147271c1",
+      "frame_count": 32,
+      "line_mode_drc_profile": "none",
+      "output_bytes": 131072,
+      "output_sha256": "d61ed3e69b2de137ca25fe0c5a7c5adf7570af784c13ba57dd614a543a42d77c",
+      "pcm_read": false,
+      "raw_frame_bytes_persisted": false
+    }
+  ],
+  "comparison": {
+    "compre_distribution_and_sequence": "SAME_AS_A",
+    "ddp_parameter_0x0d_typed_join": "UNBOUND",
+    "decoded_audio_gain_or_pcm_effect": "NOT_CAPTURED",
+    "dynrng_sequence": "DIFFERENT_FROM_A; B codes all 0x00",
+    "generalization_to_other_profiles_or_N36": "NOT_ESTABLISHED",
+    "output_sha256": "DIFFERENT"
+  },
+  "exclusions": {
+    "key_license_read": false,
+    "payload_in_package": false
+  },
+  "experiment": {
+    "dee_exit_code": 0,
+    "fixed_configuration": {
+      "data_rate_kbps": 1024,
+      "dialogue_intelligence": true,
+      "end": "00:00:01:00",
+      "rf_mode_drc_profile": "film_light",
+      "speech_threshold": 15,
+      "start": "00:00:00:00",
+      "time_base": "file_position"
+    },
+    "input_channels": 38,
+    "input_identity_status": "AUTHORIZED_RECEIPT_REUSED; NOT_REHASHED_FOR_THIS_RUN",
+    "input_kind": "ADM BWF via atmos_mezz",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "natural_exit": true,
+    "normalized_xml_difference": "line_mode_drc_profile only; preflight XSD and normalization checks PASS",
+    "only_semantic_variable": "line_mode_drc_profile",
+    "timeline_events": [
+      "E-427",
+      "E-430",
+      "E-432"
+    ],
+    "xml_hashes": {
+      "A_film_light": "6836f16a64fde98133e7192a5cd5d11ba4137363fe7d961b9f3a30a4f34695d8",
+      "B_none": "4c88823f343464bfb2f4b09376842cc8a9d0aa7a2b31cddd5661f6fea996bc14"
+    }
+  },
+  "implementation_ready": false,
+  "probe_processing": {
+    "encoded_output_read_in_memory_by_probe": true,
+    "pcm_read": false,
+    "probe_fields": "compre presence/code and dynrng sequence only; not a typed parameter-0x0d observer",
+    "raw_ec3_or_bsi_bytes_persisted_or_printed": false
+  },
+  "schema": "washed-implementer-supplement.v1",
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-DRC-LINE-NONE-N38-BSI-OBSERVATION-V1"
+}

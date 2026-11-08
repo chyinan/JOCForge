@@ -1,0 +1,31 @@
+{
+  "implementation_ready": false,
+  "payloads": [
+    {
+      "bytes": 3797,
+      "file": "RESULTS.json",
+      "sha256": "16d760a7826a7465e31c79bcf4dc0fbfebfae405f3e53a68e77a4d6ad6720c76"
+    },
+    {
+      "bytes": 880,
+      "file": "FINDINGS.md",
+      "sha256": "bdd855ced53e26dea55e7635e454b520f1dc506b2c8c858171d75d7d96797758"
+    },
+    {
+      "bytes": 731,
+      "file": "SOURCE-PACKAGE.json",
+      "sha256": "88baedb49a6f5b909bd3b7c7759d465f4d27367838e7c42e4ddbd9fa12246c10"
+    },
+    {
+      "bytes": 1777,
+      "file": "CHECK.py",
+      "sha256": "709eeaa32998c6f8e1cf42c617f808b4516ee3e969771a77da182f4b6962d977"
+    }
+  ],
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "scope": "N38 one-factor Line film_light vs none BSI dynrng/compre metadata observation; no PCM/audio effect conclusion.",
+  "source_manifest_sha256": "34b4502c236c058668e35dfdce33badae70e5829cafd44ebb21c4a4362b9661d",
+  "source_package_seal_sha256": "2da348e1981e459793b799f2de84b17109cb3c86bcbf70eea3d54860e3a0c5ec",
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-DRC-LINE-NONE-N38-BSI-OBSERVATION-V1"
+}

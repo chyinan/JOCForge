@@ -9467,6 +9467,95 @@
           ],
           "validation_boundary": "A bounded static path sends both explicit offset and FFOA strings plus timecode_frame_rate to FUN_1401359e0 and returns floating seconds coordinates. Decimal and frame-shaped parsing branches are partially described, including a lowercase df path and a less-than-60 colon-component check. This does not prove native XML admission or strict lexical acceptance: exact widths/whitespace/trailing-character rules and the complete frame-rate vocabulary remain UNBOUND. Source metadata origins also remain open; the ADM time-token candidate path is separate from an unresolved FFOA writer. No runtime conversion, Reader alignment, or timeline effect is established.",
           "delivery_scope": "EXTERNAL_REFERENCE_ONLY_NO_EXPLICIT_TIME_RULE_OR_TIMELINE_EFFECT_ENABLEMENT"
+        },
+        {
+          "slice_id": "washed-line-drc-n38-dynrng-bsi-observation",
+          "mapping_status": "ONE_N38_LINE_PAIR_BSI_DYNRNG_SEQUENCE_CHANGED__TYPED_WRITER_AND_AUDIO_EFFECT_UNBOUND",
+          "implementation_status": "WASHED_SINGLE_WINDOW_OBSERVATION_ONLY__NO_LINE_DRC_ALGORITHM_OR_GATE_CHANGE",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "A single N38 pair held RF=film_light, input, rate, time base, and window constant; the only normalized XML difference was Line film_light (A) versus none (B). Both runs exited 0 with 32 frames/192 blocks. BSI compre presence/distribution/sequence matched, while dynrng changed from A's four-code distribution to B's 0x00 in all 192 blocks; output hashes differed. This is one sample/window BSI observation only. Parameter 0x0d typed writer, decoded PCM/gain/listening, and generalization remain UNBOUND/NOT_CAPTURED.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DRC-LINE-NONE-N38-BSI-OBSERVATION-V1/FINDINGS.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The observation covers one 32-frame/192-block window and establishes no programme-wide DRC clock or behavior."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_LINE_DRC_N38_BSI_DYNRNG_OBSERVATION",
+            "package_id": "DEE-DRC-LINE-NONE-N38-BSI-OBSERVATION-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DRC-LINE-NONE-N38-BSI-OBSERVATION-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DRC-LINE-NONE-N38-BSI-OBSERVATION-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DRC-LINE-NONE-N38-BSI-OBSERVATION-V1/RESULTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DRC-LINE-NONE-N38-BSI-OBSERVATION-V1/FINDINGS.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DRC-LINE-NONE-N38-BSI-OBSERVATION-V1/SOURCE-PACKAGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DRC-LINE-NONE-N38-BSI-OBSERVATION-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "8a00949bce37b1e6279941724bc72abe47abde347a9d79d5bdb89c0626a956f4",
+            "supplement_seal_sha256": "14c65744af864d8751163611e8c86460a91a67fc584b22cbb350a29d27acea94",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "observed_pair": {
+              "channels": 38,
+              "line_mode_a": "film_light",
+              "line_mode_b": "none",
+              "rf_mode_both": "film_light",
+              "normalized_xml_only_difference": "line_mode_drc_profile",
+              "natural_exit_codes": [
+                0,
+                0
+              ],
+              "frames_each": 32,
+              "audio_blocks_each": 192,
+              "compre_presence_distribution_sequence_same": true,
+              "dynrng_a_counts": {
+                "0x00": 50,
+                "0x01": 65,
+                "0x02": 45,
+                "0x03": 32
+              },
+              "dynrng_b_counts": {
+                "0x00": 192
+              },
+              "dynrng_sequence_changed": true,
+              "output_hashes_differ": true,
+              "probe": "in-memory EC-3 parser; raw bytes not persisted"
+            },
+            "unbound": [
+              "Typed DDP parameter 0x0d writer/consumer join.",
+              "Decoded PCM, gain, listening, or audio/JOC effect.",
+              "Behavior outside this N38 input/window and other Line/RF profiles."
+            ],
+            "validation_boundary": "A single N38 pair held RF=film_light, input, rate, time base, and window constant; the only normalized XML difference was Line film_light (A) versus none (B). Both runs exited 0 with 32 frames/192 blocks. BSI compre presence/distribution/sequence matched, while dynrng changed from A's four-code distribution to B's 0x00 in all 192 blocks; output hashes differed. This is one sample/window BSI observation only. Parameter 0x0d typed writer, decoded PCM/gain/listening, and generalization remain UNBOUND/NOT_CAPTURED."
+          },
+          "vectors": {
+            "kind": "WASHED_OBSERVED_SINGLE_N38_BSI_PAIR_NO_AUDIO_GOLDEN",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "RESULTS.json reports bounded A/B summaries; no raw EC-3/BSI bytes were persisted."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DRC-LINE-NONE-N38-BSI-OBSERVATION-V1/RESULTS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "OBSERVED_SINGLE_PAIR_NOT_GENERALIZED"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Typed parameter 0x0d writer/consumer and decoded audio or listening effects.",
+            "Other inputs, rates, profiles, full JOC, and any generalized Line DRC behavior."
+          ],
+          "validation_boundary": "A single N38 pair held RF=film_light, input, rate, time base, and window constant; the only normalized XML difference was Line film_light (A) versus none (B). Both runs exited 0 with 32 frames/192 blocks. BSI compre presence/distribution/sequence matched, while dynrng changed from A's four-code distribution to B's 0x00 in all 192 blocks; output hashes differed. This is one sample/window BSI observation only. Parameter 0x0d typed writer, decoded PCM/gain/listening, and generalization remain UNBOUND/NOT_CAPTURED.",
+          "delivery_scope": "ONE_N38_BSI_DYNRNG_OBSERVATION_ONLY_NO_ALGORITHM_OR_GATE_CHANGE"
         }
       ]
     },
@@ -70824,6 +70913,28 @@
         "Actual XML acceptance and strict token grammar.",
         "Exact source fields/chunks, Reader/frame alignment, and timeline effect.",
         "Distinct nonzero input contrast and all runtime vectors."
+      ]
+    },
+    {
+      "package_id": "DEE-DRC-LINE-NONE-N38-BSI-OBSERVATION-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DRC-LINE-NONE-N38-BSI-OBSERVATION-V1",
+      "manifest_sha256": "8a00949bce37b1e6279941724bc72abe47abde347a9d79d5bdb89c0626a956f4",
+      "supplement_seal_sha256": "14c65744af864d8751163611e8c86460a91a67fc584b22cbb350a29d27acea94",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "ONE_N38_LINE_PAIR_DYNRNG_BSI_OBSERVATION; PARAMETER_0D_PCM_GAIN_AND_GENERALIZATION_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Typed parameter 0x0d consumer and decoded audio/gain/listening effects.",
+        "Other inputs/profiles/rates and generalization beyond this short window."
       ]
     }
   ]

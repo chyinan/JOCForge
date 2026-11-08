@@ -1,0 +1,12 @@
+{
+  "external_paths_included": false,
+  "preflight_check_normal": "PASS",
+  "preflight_check_python_O": "PASS",
+  "preflight_manifest_sha256": "34b4502c236c058668e35dfdce33badae70e5829cafd44ebb21c4a4362b9661d",
+  "preflight_package_id": "line_drc_n38_film_light_none_preflight_wash_v1",
+  "preflight_seal_sha256": "2da348e1981e459793b799f2de84b17109cb3c86bcbf70eea3d54860e3a0c5ec",
+  "raw_source_or_decompilation_included": false,
+  "rf_baseline_package_id": "DEE-RF-DRC-COMPRE-AB-OBSERVATION-V1",
+  "rf_baseline_supplement_manifest_sha256": "2f774f444f7f94fb2d8a35e38221023461feddc38f73b98557f36329b614a905",
+  "rf_baseline_supplement_seal_sha256": "af13bcf27af0c30833510d709f0b2b0dddd6c80687b23f8476b7f7aed19d4232"
+}
