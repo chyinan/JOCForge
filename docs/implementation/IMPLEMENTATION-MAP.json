@@ -6965,7 +6965,7 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "3da43f5557ef3e7b9968fb767eb6921650df640445995e2e769ff4acf1607250",
-            "supplement_seal_sha256": "8793b9e928c018c263eff8876156a9665edf6d6021056dd4979a0bd3e516c854",
+            "supplement_seal_sha256": "dd13f6511860a0c7c8ca9316a84062db48a104abce163ebdafeb6513cf53d1a4",
             "local_verification": "PASS_NORMAL_AND_PYTHON_O",
             "implementation_ready": false,
             "static_evidence": {
@@ -6976,7 +6976,7 @@
               "global_absence": false,
               "source_package": "DEE-ADM-EC3-OUTPUT-WRITER-FIRST-CONSUMER-WASH-V1",
               "source_checksum_file_sha256": "63d998bcad4ecbad129c1d970c82b35480c93a2bb003a1c617b2f5747ae9490c",
-              "package_seal_checker_status": "PENDING",
+              "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
               "local_checker_status": "PASS_NORMAL_AND_PYTHON_O"
             },
             "validation_boundary": "Reference-only Wash boundary for /output/ec3. A candidate XSD declares the EC3 branch, but its installation identity is unbound. One bounded exact-string query over dee.exe found no exact ec3 string; no typed writer or muxer consumer was identified within that scope. This is a local first-break and does not establish global absence or alter the local EC3 output route."
@@ -67900,7 +67900,7 @@
       "package_id": "DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1",
       "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1",
       "manifest_sha256": "3da43f5557ef3e7b9968fb767eb6921650df640445995e2e769ff4acf1607250",
-      "supplement_seal_sha256": "8793b9e928c018c263eff8876156a9665edf6d6021056dd4979a0bd3e516c854",
+      "supplement_seal_sha256": "dd13f6511860a0c7c8ca9316a84062db48a104abce163ebdafeb6513cf53d1a4",
       "functional_ids": [
         "F01E"
       ],
@@ -67915,7 +67915,7 @@
         "EC3 writer, muxer, output factory, and nonliteral dispatch consumers.",
         "DEE output execution and native output effect."
       ],
-      "package_seal_checker_status": "PENDING"
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O"
     },
     {
       "package_id": "DEE-XML-START-TO-READER-SAMPLE-RANGE-BOUNDARY-V1",
