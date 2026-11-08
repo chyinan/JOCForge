@@ -224,6 +224,25 @@ impl SelectedFileReference {
     }
 }
 
+/// Authored misc/temp_dir values retained for XML identity only.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct SelectedTempDirectoryConfiguration {
+    clean_temp: Option<bool>,
+    path: Option<String>,
+}
+
+impl SelectedTempDirectoryConfiguration {
+    /// Returns the authored optional cleanup flag without applying it.
+    pub const fn clean_temp(&self) -> Option<bool> {
+        self.clean_temp
+    }
+
+    /// Returns the authored optional path without resolving or opening it.
+    pub fn path(&self) -> Option<&str> {
+        self.path.as_deref()
+    }
+}
+
 /// File references extracted from one structurally supported external job XML.
 ///
 /// Functional Core: this value contains authored references only; it performs no file I/O.
@@ -302,6 +321,7 @@ pub struct SelectedJobConfiguration {
     input_kind: SelectedInputKind,
     input_reference: SelectedFileReference,
     output_reference: SelectedFileReference,
+    temp_directory: Option<SelectedTempDirectoryConfiguration>,
     wave: SelectedWaveDescriptor,
     source_samples: u64,
     bit_rate_kbps: u32,
@@ -342,7 +362,7 @@ impl SelectedJobConfiguration {
             crate::profile::EmdfCarriageProfile::Unsupported => "unsupported",
         };
         let downmix = self.downmix;
-        json!({
+        let mut identity = json!({
             "profile_dimensions": {
                 "authored_input": "selected_adm_bwf_pcm24_48khz",
                 "core_carrier": "selected_5_1_six_carriers",
@@ -400,7 +420,14 @@ impl SelectedJobConfiguration {
             "prepend_silence_samples": self.prepend_silence_samples.value(),
             "append_silence_samples": self.append_silence_samples.value(),
             "append_silence_duration_explicit": self.append_silence_duration_explicit
-        })
+        });
+        if let Some(temp_directory) = &self.temp_directory {
+            identity["temp_directory"] = json!({
+                "clean_temp": temp_directory.clean_temp(),
+                "path": temp_directory.path()
+            });
+        }
+        identity
     }
 
     pub const fn selected_profile(&self) -> ResolvedEncodingProfile {
@@ -421,6 +448,11 @@ impl SelectedJobConfiguration {
 
     pub fn output_reference(&self) -> &SelectedFileReference {
         &self.output_reference
+    }
+
+    /// Returns the optional authored misc/temp_dir values retained for identity only.
+    pub fn temp_directory(&self) -> Option<&SelectedTempDirectoryConfiguration> {
+        self.temp_directory.as_ref()
     }
 
     pub const fn wave(&self) -> SelectedWaveDescriptor {
@@ -1221,6 +1253,7 @@ pub fn parse_selected_job_configuration(
         required_silence_duration(encoder, "prepend_silence_duration", wave.sample_rate_hz())?;
     let (append_silence_duration, append_silence_samples, append_silence_duration_explicit) =
         optional_silence_duration(encoder, "append_silence_duration", wave.sample_rate_hz())?;
+    let temp_directory = parse_optional_temp_directory(root)?;
 
     let output_node =
         path_node(root, &["output", "ec3"])?.ok_or(JobConfigurationError::MissingField)?;
@@ -1240,6 +1273,7 @@ pub fn parse_selected_job_configuration(
         input_kind,
         input_reference,
         output_reference,
+        temp_directory,
         wave,
         source_samples,
         bit_rate_kbps,
@@ -1441,6 +1475,10 @@ fn external_job_xml_element_is_supported(path: &str) -> bool {
             | "/job_config/output/ec3/storage"
             | "/job_config/output/ec3/storage/local"
             | "/job_config/output/ec3/storage/local/path"
+            | "/job_config/misc"
+            | "/job_config/misc/temp_dir"
+            | "/job_config/misc/temp_dir/clean_temp"
+            | "/job_config/misc/temp_dir/path"
     )
 }
 
@@ -1464,6 +1502,8 @@ fn external_job_xml_container_is_supported(path: &str) -> bool {
             | "/job_config/filter/audio/encode_to_atmos_ddp/drc"
             | "/job_config/filter/audio/encode_to_atmos_ddp/downmix"
             | "/job_config/filter/audio/encode_to_atmos_ddp/custom_trims"
+            | "/job_config/misc"
+            | "/job_config/misc/temp_dir"
             | "/job_config/output"
             | "/job_config/output/ec3"
             | "/job_config/output/ec3/storage"
@@ -1558,6 +1598,29 @@ fn optional_string_default_auto(
         Some(value) if value.trim() == "auto" => Ok("auto".to_owned()),
         Some(value) => Ok(value.to_owned()),
     }
+}
+
+fn parse_optional_temp_directory(
+    root: Node<'_, '_>,
+) -> Result<Option<SelectedTempDirectoryConfiguration>, JobConfigurationError> {
+    let Some(misc) = path_node(root, &["misc"])? else {
+        return Ok(None);
+    };
+    let Some(temp_directory) = single_child(misc, "temp_dir")? else {
+        return Ok(None);
+    };
+    let clean_temp = match path_text(temp_directory, &["clean_temp"])? {
+        None => None,
+        Some("true") => Some(true),
+        Some("false") => Some(false),
+        Some(_) => return Err(JobConfigurationError::UnsupportedFieldValue),
+    };
+    let path = path_text(temp_directory, &["path"])?.map(ToOwned::to_owned);
+
+    Ok(Some(SelectedTempDirectoryConfiguration {
+        clean_temp,
+        path,
+    }))
 }
 
 fn optional_authored_time_string(

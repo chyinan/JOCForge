@@ -8,6 +8,10 @@ Production 调用者提交六维 `EncodingProfile`。入口先验证完整组合
 
 `RenderTarget` 只存在于独立 `ValidationProfile`。Production encode 不接收 `RenderTarget`，render target 的变化不得影响 production profile resolution。
 
+## Selected job XML values
+
+`frontend::job_configuration::SelectedJobConfiguration::temp_directory()` 只返回 XML 中可选的 `misc/temp_dir` 字段。`SelectedTempDirectoryConfiguration` 保留可选的 `clean_temp` 布尔值和 `path` 字符串；domain 不解析路径、不访问文件系统，也不执行清理。当前 CLI 会在 Meter、callbacks 和编码前拒绝任何已提供的 `temp_dir` 配置。
+
 ## 时间域 API
 
 公共接口必须使用不同 newtype：

@@ -329,10 +329,21 @@ fn ensure_selected_metering_mode(value: &str) -> Result<(), EncodeRequestError> 
     }
 }
 
+fn ensure_no_temp_directory_configuration(is_configured: bool) -> Result<(), EncodeRequestError> {
+    if is_configured {
+        Err(EncodeRequestError::UnsupportedJobXmlOption(
+            "/job_config/misc/temp_dir",
+        ))
+    } else {
+        Ok(())
+    }
+}
+
 fn validate_external_job_configuration(
     prepared: &PreparedJobInput,
 ) -> Result<(), EncodeRequestError> {
     let configuration = prepared.configuration();
+    ensure_no_temp_directory_configuration(configuration.temp_directory().is_some())?;
     let loudness = configuration.loudness();
     ensure_selected_metering_mode(loudness.metering_mode())?;
     if loudness.dialogue_intelligence() || loudness.speech_threshold() != 100 {
@@ -1173,8 +1184,8 @@ fn hex_lower(bytes: &[u8]) -> String {
 #[cfg(test)]
 mod tests {
     use super::{
-        EncodeRequestError, FileReferenceParts, ensure_selected_metering_mode, run_with_data_rate,
-        selected_full_file_job_xml,
+        EncodeRequestError, FileReferenceParts, ensure_no_temp_directory_configuration,
+        ensure_selected_metering_mode, run_with_data_rate, selected_full_file_job_xml,
     };
     use jocforge_application::meter_source_bridge::CodecRateProfile;
     use std::path::Path;
@@ -1233,5 +1244,16 @@ mod tests {
                 ))
             ));
         }
+    }
+
+    #[test]
+    fn selected_cli_gate_rejects_authored_temp_directory() {
+        assert!(ensure_no_temp_directory_configuration(false).is_ok());
+        assert!(matches!(
+            ensure_no_temp_directory_configuration(true),
+            Err(EncodeRequestError::UnsupportedJobXmlOption(
+                "/job_config/misc/temp_dir"
+            ))
+        ));
     }
 }

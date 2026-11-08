@@ -5,6 +5,7 @@ use jocforge_domain::frontend::job_configuration::{
     JobConfigurationError, PrimaryMetadataChunkHashes, SelectedDrcProfile, SelectedHeightTrim,
     SelectedInputKind, SelectedPrimaryRuntimeIdentity, SelectedSurroundTrim,
     SelectedWaveDescriptor, bind_admitted_selected_input, parse_selected_job_configuration,
+    parse_selected_job_file_references,
 };
 use jocforge_domain::profile::EmdfCarriageProfile;
 use serde_json::Value;
@@ -324,6 +325,50 @@ fn authored_input_offset_and_ffoa_strings_are_preserved_independently() {
     let identity = configuration.normalized_identity_value();
     assert_eq!(identity["input_offset"], "authored-offset");
     assert_eq!(identity["input_ffoa"], "authored-ffoa");
+}
+
+#[test]
+fn authored_temp_directory_values_are_preserved_without_file_io() {
+    let vectors = fixture_json("job-configuration-vectors.json");
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["id"] == "accepted_full_adm")
+        .unwrap();
+    let descriptor = &case["pcm_descriptor"];
+    let wave = SelectedWaveDescriptor::new(
+        descriptor["sample_rate"].as_u64().unwrap() as u32,
+        descriptor["channels"].as_u64().unwrap() as u16,
+        descriptor["pcm_bits"].as_u64().unwrap() as u16,
+    );
+    let source_samples = descriptor["source_samples"].as_u64().unwrap();
+    let base_xml = case["input_xml"].as_str().unwrap();
+    let authored_xml = base_xml.replace(
+        "</job_config>",
+        "<misc><temp_dir><clean_temp>true</clean_temp><path>D:\\temporary-root</path></temp_dir></misc></job_config>",
+    );
+
+    parse_selected_job_file_references(authored_xml.as_bytes())
+        .expect("the strict XML surface admits the authored misc/temp_dir fields");
+    let configuration =
+        parse_selected_job_configuration(authored_xml.as_bytes(), wave, source_samples)
+            .expect("misc/temp_dir values are parsed as data only");
+    let temp_directory = configuration.temp_directory().unwrap();
+    assert_eq!(temp_directory.clean_temp(), Some(true));
+    assert_eq!(temp_directory.path(), Some("D:\\temporary-root"));
+    let identity = configuration.normalized_identity_value();
+    assert_eq!(identity["temp_directory"]["clean_temp"], true);
+    assert_eq!(identity["temp_directory"]["path"], "D:\\temporary-root");
+
+    let invalid_xml = authored_xml.replace(
+        "<clean_temp>true</clean_temp>",
+        "<clean_temp>yes</clean_temp>",
+    );
+    assert_eq!(
+        parse_selected_job_configuration(invalid_xml.as_bytes(), wave, source_samples).unwrap_err(),
+        JobConfigurationError::UnsupportedFieldValue
+    );
 }
 
 #[test]
