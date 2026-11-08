@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1",
+  "manifest_sha256": "3da43f5557ef3e7b9968fb767eb6921650df640445995e2e769ff4acf1607250",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PENDING",
+  "status": "SCHEMA_CANDIDATE_BOUND; EC3_NATIVE_WRITER_CONSUMER_UNBOUND; NO_GLOBAL_ABSENCE; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "SURROUND-TRIM-MINUS3-CANDIDATE-REGISTER-01",
+      "input_only": true,
+      "input": {
+        "field": "custom_trims:surround_trim_5_1",
+        "token": "-3",
+        "height_trim_5_1": "auto"
+      },
+      "expected_observation": {
+        "candidate_function": "FUN_1800b5c60",
+        "read_width_bits": 16,
+        "store_width_bits": 16,
+        "owner_join": "UNBOUND",
+        "numeric_mapping": "UNBOUND"
+      },
+      "expected_audio_output": null,
+      "runtime_status": "NOT_RUN"
+    }
+  ]
+}

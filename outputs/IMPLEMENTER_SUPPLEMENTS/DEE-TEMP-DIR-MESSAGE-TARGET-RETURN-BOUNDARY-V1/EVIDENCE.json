@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge.wash_supplement_evidence.v1",
+  "source_package": {
+    "package_id": "DEE-ATMOS-MISC-TEMP-MESSAGE-RETURN-BOUNDARY-WASH-V1",
+    "manifest_sha256": "31ce5ea3e3faaaf17a98c99d5c22515c3b8339260b504aaf3bb9fa0d7b300874",
+    "sha256sums_txt_sha256": "e6abbd174dac77b4ab4b6ca4a0346561fad693520b8ab3af4cec177a922f90cc",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS"
+  },
+  "parent_receipts": {
+    "first_read_manifest_sha256": "1e5fb3f064b3ea93ca7519e7e336aeabcf4f700dfab99f8f7e97338c3134a774",
+    "receiver_type_manifest_sha256": "50d0af4efbf630a44f80e31a9ed9f1d1926bc9f2ad8c265fa573e835a6bc41de"
+  },
+  "scope": {
+    "tool": "Ghidra 12.2 PUBLIC",
+    "mode": "read-only/no-analysis",
+    "claim": "one target function entry read through immediate return"
+  },
+  "target": {
+    "function": "FUN_14006c760",
+    "receiver": "dee::Messages::Message",
+    "receiver_register": "RCX",
+    "first_read": "MOV EAX,dword ptr [RCX+0x48]",
+    "read_width_bytes": 4,
+    "next_instruction": "RET",
+    "read_result_use": "returned directly in EAX/RAX without an intervening instruction"
+  },
+  "field": {
+    "offset": "+0x48",
+    "meaning": "UNBOUND",
+    "runtime_value": "NOT_CAPTURED"
+  },
+  "clean_temp": {
+    "path_object_field": "+0x90",
+    "joined_to_read_result": false,
+    "cleanup_effect": "UNBOUND"
+  },
+  "runtime": {
+    "dee_run": "NOT_RUN",
+    "windbg_run": "NOT_RUN",
+    "owner_generation": "UNBOUND",
+    "implementation_ready": false
+  },
+  "exclusions": {
+    "raw_disassembly_or_decompilation_included": false,
+    "binaries_included": false,
+    "media_pcm_payload_key_license_included": false,
+    "implementation_contact_by_research_agent": false
+  }
+}

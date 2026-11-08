@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-TEMP-DIR-MESSAGE-TARGET-RETURN-BOUNDARY-V1",
+  "manifest_sha256": "b500d3e19321884dfde52361addc99946fc507769779282c4ed422ee100b9e53",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "TARGET_READ_RETURN_BOUND; FIELD_SEMANTICS_UNBOUND; CLEAN_TEMP_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO"
+}

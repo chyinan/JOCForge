@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "TEMP-MESSAGE-TARGET-FIRST-READ-01",
+      "input_only": true,
+      "input": {
+        "receiver_type": "dee::Messages::Message",
+        "target_function": "FUN_14006c760"
+      },
+      "expected_observation": {
+        "first_read_offset": "+0x48",
+        "width_bytes": 4,
+        "field_semantics": "UNBOUND",
+        "clean_temp_join": "UNBOUND"
+      },
+      "expected_audio_output": null,
+      "runtime_status": "NOT_RUN"
+    }
+  ]
+}

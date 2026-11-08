@@ -4542,7 +4542,8 @@
           "scope": "Reference-only DRC boundary. Wash binds the static Line token table through a DLL-local profile tree and DDP_COMPR conversion to conditional 3-bit BSI codes. It does not bind XML delivery to the selected plugin, mode-1 selection, serializer activation, or decoded-PCM effect. RF runtime value and effect remain unbound and must not inherit the Line table.",
           "dependencies": [],
           "spec_files": [
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-FILM-LIGHT-SETTER-FIRST-CONSUMER-BOUNDARY-V2/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -4564,7 +4565,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-FILM-LIGHT-SETTER-FIRST-CONSUMER-BOUNDARY-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-FILM-LIGHT-SETTER-FIRST-CONSUMER-BOUNDARY-V2/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-FILM-LIGHT-SETTER-FIRST-CONSUMER-BOUNDARY-V2/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-FILM-LIGHT-SETTER-FIRST-CONSUMER-BOUNDARY-V2/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-FILM-LIGHT-SETTER-FIRST-CONSUMER-BOUNDARY-V2/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-FILM-LIGHT-SETTER-FIRST-CONSUMER-BOUNDARY-V2/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-FILM-LIGHT-SETTER-FIRST-CONSUMER-BOUNDARY-V2/CHECK.py"
             ],
             "supplement_manifest_sha256": "854fcdd8275d7575d1e0888f9f811930da82d60ef19bc827363cc8ed28d4f7a0",
             "supplement_seal_sha256": "d0c6b9996f6a0f29516872191f7ba163de5d12378bc12be13ff9ec19b9744e41",
@@ -4622,7 +4630,19 @@
             "rf_typed_owner_join": "UNBOUND",
             "rf_code_map": "NOT_BOUND",
             "rf_bsi_or_audio_effect": "UNBOUND/NOT_RUN",
-            "validation_boundary": "Static reference evidence only. Does not authorize DRC audio behavior or claim XML-to-selected-plugin support."
+            "validation_boundary": "Static reference evidence only. Does not authorize DRC audio behavior or claim XML-to-selected-plugin support.",
+            "rf_film_light_static_default_first_consumer_addendum": {
+              "package_id": "DEE-RF-DRC-FILM-LIGHT-SETTER-FIRST-CONSUMER-BOUNDARY-V2",
+              "manifest_sha256": "d33ff8dc62b0d11a7120109299b039228e557dfd3f4037a4baa62c885cb19b77",
+              "seal_sha256": "beb53b35ee1bc11344bc40ce7d42d0d134844a0a94e09f2e1f32c1c628258910",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "bounded_evidence": "Schema-default film_light stores at static RF Priv root+0x750 StringType +0x08; per-frame getter/map yields raw U32 candidate 0 at record +0xa4. Explicit XML node value at +0x28 is not joined to that value slot/selected provider.",
+              "remaining": [
+                "Explicit XML value to +0x08 writer and selected provider/generation.",
+                "Raw code semantic meaning, BSI serialization, and measurement/audio effect."
+              ]
+            }
           },
           "vectors": {
             "kind": "WASHED_STATIC_DRC_BOUNDARY_NO_RUNTIME_EFFECT",
@@ -4630,7 +4650,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-LINE-RF-DRC-PROFILE-CONDITIONAL-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-FILM-LIGHT-SETTER-FIRST-CONSUMER-BOUNDARY-V2/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-FILM-LIGHT-SETTER-FIRST-CONSUMER-BOUNDARY-V2/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-FILM-LIGHT-SETTER-FIRST-CONSUMER-BOUNDARY-V2/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-FILM-LIGHT-SETTER-FIRST-CONSUMER-BOUNDARY-V2/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "Line six-token mapping is conditional on downstream serializer gates.",
@@ -4948,7 +4972,8 @@
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-COMPOSITE-ITEM-RANGE-HANDOFF-BOUNDARY-V1/REPORT.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-PLUS20-FIRST-CONSUMER-BOUNDARY-V1/REPORT.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-VTABLE-SLOT-70-BOUNDARY-V1/REPORT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-END-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -4998,7 +5023,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-END-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-END-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-END-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-END-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-END-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-END-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-END-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "3b52546c362c6db03389328ad317d439f4478ddea8eb8abddc58f4b23226da37",
             "supplement_seal_sha256": "9d9657f7a0cbfddee54982588cdc957c82c483952395f47ec6ad97b6a8c0a576",
@@ -5073,6 +5105,18 @@
               "this_plus_0x20_and_0x28": "NOT_READ",
               "pointee_owner_generation_and_return_semantics": "UNBOUND",
               "range_pts_and_audio_effect": "UNBOUND/NOT_RUN"
+            },
+            "end_to_reader_sample_range_addendum": {
+              "package_id": "DEE-XML-END-TO-READER-SAMPLE-RANGE-BOUNDARY-V1",
+              "manifest_sha256": "c1183a7b4343ed6300bd2b2560e2d5526c99339eb8860f0df0a9ba1dcd3f7ccd",
+              "seal_sha256": "09dee9888291bb7cac970007c0c26200a0c622db95fca416cf6edd74d863f68d",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "input_only_case": "end=47; time_base=file_position; 24 fps",
+              "reader_field_candidate": "FUN_1801831c0 param_2[6] / CompositeMasterItem.endSample",
+              "numeric_sample_index": "NOT_COMPUTED",
+              "same_run_owner_generation_join": "UNBOUND",
+              "output_crop_effect": "NOT_EVALUATED"
             }
           },
           "vectors": {
@@ -5097,7 +5141,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MASTERSOURCE-SLOT70-FIELD-READ-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-END-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-END-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-END-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-END-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "R138 lexical values are source-document input-only, not runtime observations."
@@ -6394,7 +6442,8 @@
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-FIELD-CONSUMER-BOUNDARY-V1/REPORT.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-FIRST-READER-BOUNDARY-V1/REPORT.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-CONVERSION-FIRST-HELPER-BOUNDARY-V1/REPORT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -6437,7 +6486,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "5e74aef07b179668ab263f07642209a223dbaa1bcedeadd5f2fd1929a0a63f90",
             "supplement_seal_sha256": "1100d0026618279ebdd35ecd36c2a132d03b841c7a926965ead4ff1278549ffd",
@@ -6493,6 +6549,19 @@
               ],
               "direct_29_97df": "rejected; parent canonicalizes to 29.97 and adds separate drop_frame property",
               "numeric_conversion_and_runtime_effect": "NONE_AT_VALIDATOR; parent semantics UNBOUND/NOT_RUN"
+            },
+            "input_dropframe_candidate_addendum": {
+              "package_id": "DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1",
+              "manifest_sha256": "bba76c598d69463c528dd1545af2ef9c3b9acff11316d890686990ad494c2cb6",
+              "seal_sha256": "f7fef106172b35de64d64d994e6305fd265ebc046b560f17ac5e29c107036139",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "bounded_evidence": "A conditional candidate path canonicalizes 29.97df to 29.97 and writes drop_frame if the input value reaches FUN_14012ff20; input setter/reader owner join is not established.",
+              "remaining": [
+                "Input XML value to setter/reader object identity and owner/generation.",
+                "29.97df route to parent converter; ADM versus AtmosMezz attribution.",
+                "Numeric/timecode effect and runtime behavior."
+              ]
             }
           },
           "vectors": {
@@ -6513,7 +6582,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "Reference-only timecode_frame_rate boundary: the host exact-key setter stores a typed value at input object +0x31 without identifying its adm/atmos_mezz owner or first consumer. The DDP plugin has a numeric property-map consumer at +0xa0 in FUN_18014fd90, but XML output-node owner/generation is not joined. Input/output fields may not be merged; template not_indicated does not prove omission defaults."
@@ -6541,7 +6614,8 @@
           "spec_files": [
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-LIFECYCLE-BOUNDARY-V1/REPORT.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-ASSIGN-FILE-DELEGATE-BOUNDARY-V1/REPORT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-FIRST-READ-BOUNDARY-V1/REPORT.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -6577,7 +6651,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-FIRST-READ-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-FIRST-READ-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-FIRST-READ-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-FIRST-READ-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-FIRST-READ-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-FIRST-READ-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-FIRST-READ-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "3ec5385807a5a080bd93d099ab1ee0562c960200cdddc3889d947b2bd5288b54",
             "supplement_seal_sha256": "81762e2c76295df51bed9a26825a9212f2503d9468e71ec7f914f0db31c0ecbe",
@@ -6611,6 +6692,19 @@
                 "clean_temp flag to cleanup consumer and runtime provider/job identity.",
                 "Create/delete/retain behavior."
               ]
+            },
+            "message_receiver_first_read_addendum": {
+              "package_id": "DEE-TEMP-DIR-MESSAGE-TARGET-FIRST-READ-BOUNDARY-V1",
+              "manifest_sha256": "a8d2c9ed744df189744dbd820a410464206039e891c55afbefe88606ec5afc14",
+              "seal_sha256": "93c3fd48c15970b0b3c2102f0d0af53544d4d04fe6121ad682620aae91d2881e",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "implementation_ready": false,
+              "bounded_evidence": "FUN_14006c760 receiver is bound to returned dee::Messages::Message; its first non-stack read is a 4-byte load at receiver +0x48.",
+              "remaining": [
+                "+0x48 field semantics and owner/generation.",
+                "Message target to clean_temp +0x90 cleanup consumer.",
+                "File cleanup behavior and runtime provider/job identity."
+              ]
             }
           },
           "vectors": {
@@ -6627,7 +6721,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/REPORT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-FIRST-DELEGATE-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-FIRST-READ-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-FIRST-READ-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-FIRST-READ-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-FIRST-READ-BOUNDARY-V1/SOURCE-MANIFESTS.json"
             ],
             "case_pointers": [
               "Reference-only temp_dir lifecycle boundary: StageRunner fields and path/clean_temp writes plus a temp_dir_test write-mode open/close are observed. No probe deletion or job-output cleanup is proven; clean_temp consumer, selected storage-provider instance, and job generation remain unbound."
@@ -6762,6 +6860,421 @@
             "BSI/DDP consumer, rendered downmix, and audio effect."
           ],
           "validation_boundary": "Reference-only typed configuration boundary for four independent downmix mix-level fields. Lexical tokens map to internal MixLevelValue U32 candidates with per-field storage/default and accepted-code differences; these are not proven BSI/DDP levels. Runtime owner/event, DME host bridge, downstream consumer, and rendered/audio effect remain unbound/not run.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-surround-trim-minus3-setter-boundary",
+          "mapping_status": "STATIC_DEFAULT_SETTER_BOUND__EXPLICIT_MINUS3_AND_CONSUMER_OWNER_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_DEFAULT_AUTO__MINUSTHREE_EFFECT_NOT_RUN",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only Wash boundary for surround_trim_5_1=-3. The inspected StringType setter callsite writes the constructor default auto to value member +0x08. A separate U16 candidate reads +0x968; it is not joined to that StringType instance or the XML -3 value. No numeric conversion, units, BSI write, or audio effect is established.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-SURROUND-TRIM-MINUS3-SETTER-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The only inspected StringType setter callsite uses the constructor default auto.",
+              "The candidate consumer reads a 16-bit slot at +0x968 and is not joined to the StringType owner or XML -3 value.",
+              "Units, numeric mapping, BSI serialization, and audio effect remain UNBOUND/NOT_RUN."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_JOB_CONFIGURATION_BOUNDARY",
+            "package_id": "DEE-XML-SURROUND-TRIM-MINUS3-SETTER-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-SURROUND-TRIM-MINUS3-SETTER-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-SURROUND-TRIM-MINUS3-SETTER-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-SURROUND-TRIM-MINUS3-SETTER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-SURROUND-TRIM-MINUS3-SETTER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-SURROUND-TRIM-MINUS3-SETTER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-SURROUND-TRIM-MINUS3-SETTER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-SURROUND-TRIM-MINUS3-SETTER-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "e6904cbbab366b1813bf7b241d88b40b2e6ad74710dc72bf267b9e3e5dfc4b9f",
+            "supplement_seal_sha256": "85f227c3cbd6bd1d706226c5cf6b50ad635a4583c9889150c8d4be3ea41d3751",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "schema_token": "surround_trim_5_1=-3",
+              "inspected_setter_value": "constructor default auto",
+              "string_type_value_member": "+0x08",
+              "consumer_candidate": "+0x968 U16",
+              "xml_minus3_to_consumer_owner_join": "UNBOUND"
+            },
+            "validation_boundary": "Reference-only Wash boundary for surround_trim_5_1=-3. The inspected StringType setter callsite writes the constructor default auto to value member +0x08. A separate U16 candidate reads +0x968; it is not joined to that StringType instance or the XML -3 value. No numeric conversion, units, BSI write, or audio effect is established."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_REFERENCE_ONLY_INPUT_VECTOR",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Schema-default auto setter and independent U16 candidate; input-only -3 case not run."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-SURROUND-TRIM-MINUS3-SETTER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_RUNTIME_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Selected XML -3 assignment to the StringType value member and provider owner/generation.",
+            "Candidate U16 value, units, and numeric mapping.",
+            "BSI serialization and decoded-audio effect."
+          ],
+          "validation_boundary": "Reference-only Wash boundary for surround_trim_5_1=-3. The inspected StringType setter callsite writes the constructor default auto to value member +0x08. A separate U16 candidate reads +0x968; it is not joined to that StringType instance or the XML -3 value. No numeric conversion, units, BSI write, or audio effect is established.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-ec3-output-schema-first-break-boundary",
+          "mapping_status": "CANDIDATE_EC3_SCHEMA_BOUND__INSTALLATION_AND_NATIVE_WRITER_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_EC3_WRITER_NOT_IDENTIFIED__NO_GLOBAL_ABSENCE",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only Wash boundary for /output/ec3. A candidate XSD declares the EC3 branch, but its installation identity is unbound. One bounded exact-string query over dee.exe found no exact ec3 string; no typed writer or muxer consumer was identified within that scope. This is a local first-break and does not establish global absence or alter the local EC3 output route.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Candidate XSD declares /output/ec3; installation identity is UNBOUND.",
+              "The bounded dee.exe exact-string query found no exact ec3 string and did not inspect other modules or nonliteral dispatch.",
+              "No native writer, muxer, output factory, runtime execution, or output effect is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_JOB_CONFIGURATION_BOUNDARY",
+            "package_id": "DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "3da43f5557ef3e7b9968fb767eb6921650df640445995e2e769ff4acf1607250",
+            "supplement_seal_sha256": "8793b9e928c018c263eff8876156a9665edf6d6021056dd4979a0bd3e516c854",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "candidate_schema_branch": "/output/ec3",
+              "schema_installation_bound": false,
+              "scoped_exact_string_query": "zero exact ec3 entries in dee.exe defined-data strings",
+              "native_writer_consumer": "UNBOUND",
+              "global_absence": false,
+              "source_package": "DEE-ADM-EC3-OUTPUT-WRITER-FIRST-CONSUMER-WASH-V1",
+              "source_checksum_file_sha256": "63d998bcad4ecbad129c1d970c82b35480c93a2bb003a1c617b2f5747ae9490c",
+              "package_seal_checker_status": "PENDING",
+              "local_checker_status": "PASS_NORMAL_AND_PYTHON_O"
+            },
+            "validation_boundary": "Reference-only Wash boundary for /output/ec3. A candidate XSD declares the EC3 branch, but its installation identity is unbound. One bounded exact-string query over dee.exe found no exact ec3 string; no typed writer or muxer consumer was identified within that scope. This is a local first-break and does not establish global absence or alter the local EC3 output route."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_REFERENCE_ONLY_INPUT_VECTOR",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Candidate /output/ec3 schema declaration and scoped defined-string query; no runtime vector."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_RUNTIME_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Candidate XSD installation identity and selected runtime branch.",
+            "EC3 writer, muxer, output factory, and nonliteral dispatch consumers.",
+            "DEE output execution and native output effect."
+          ],
+          "validation_boundary": "Reference-only Wash boundary for /output/ec3. A candidate XSD declares the EC3 branch, but its installation identity is unbound. One bounded exact-string query over dee.exe found no exact ec3 string; no typed writer or muxer consumer was identified within that scope. This is a local first-break and does not establish global absence or alter the local EC3 output route.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-start-to-reader-sample-range-boundary",
+          "mapping_status": "STATIC_START_TO_READER_SAMPLE_RANGE_BOUND__RUNTIME_OWNER_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_START_SAMPLE_NOT_COMPUTED__CROP_NOT_EVALUATED",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only Wash supplement. Input-only start=0/file_position/24fps follows a static path through the DDP private string and a start-derived sample-index candidate to Reader param_2[5] / CompositeMasterItem.startSample. The numeric sample index, same-run owner/generation, source sample count, and output crop effect remain unbound or not evaluated.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-START-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Static path reaches Reader param_2[5] / CompositeMasterItem.startSample.",
+              "The input-only vector is start=0, file_position, 24 fps; no runtime vector ran.",
+              "Numeric sample index, owner/generation, sample count, crop, PTS, and audio effect remain open."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_JOB_CONFIGURATION_BOUNDARY",
+            "package_id": "DEE-XML-START-TO-READER-SAMPLE-RANGE-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-START-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-START-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-START-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-START-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-START-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-START-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-START-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "6b6acabe96aaf4f23f46899ef3764a2fd66afc93c9a3b66afa8ddc42112843a3",
+            "supplement_seal_sha256": "fde31c2c4d299aee3f5851e38127b3eb59d8bd8fda8ca50c4ce5d2737ad658e6",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "input_only_case": "start=0; time_base=file_position; 24 fps",
+              "reader_field_candidate": "FUN_1801831c0 param_2[5] / CompositeMasterItem.startSample",
+              "numeric_sample_index": "NOT_COMPUTED",
+              "same_run_owner_generation_join": "UNBOUND",
+              "source_sample_count": "NOT_EVALUATED",
+              "output_crop_effect": "NOT_EVALUATED",
+              "bounded_field_path": "Priv+0x450 -> Priv+0xf98 -> Reader param_2[5] / CompositeMasterItem.startSample"
+            },
+            "validation_boundary": "Reference-only Wash supplement. Input-only start=0/file_position/24fps follows a static path through the DDP private string and a start-derived sample-index candidate to Reader param_2[5] / CompositeMasterItem.startSample. The numeric sample index, same-run owner/generation, source sample count, and output crop effect remain unbound or not evaluated."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_REFERENCE_ONLY_INPUT_VECTOR",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Reference-only Wash supplement. Input-only start=0/file_position/24fps follows a static path through the DDP private string and a start-derived sample-index candidate to Reader param_2[5] / CompositeMasterItem.startSample. The numeric sample index, same-run owner/generation, source sample count, and output crop effect remain unbound or not evaluated."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-START-TO-READER-SAMPLE-RANGE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_RUNTIME_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Numeric start sample index and source sample count.",
+            "Same-run XML property, DDP Private, and Reader range owner/generation join.",
+            "Output crop, duration, PTS, and audio effect."
+          ],
+          "validation_boundary": "Reference-only Wash supplement. Input-only start=0/file_position/24fps follows a static path through the DDP private string and a start-derived sample-index candidate to Reader param_2[5] / CompositeMasterItem.startSample. The numeric sample index, same-run owner/generation, source sample count, and output crop effect remain unbound or not evaluated.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-temp-message-return-boundary",
+          "mapping_status": "MESSAGE_FIRST_READ_RETURN_BOUND__FIELD_SEMANTICS_AND_CLEANUP_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_UNTRANSFORMED_RETURN__NO_CLEANUP_EFFECT",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only Wash supplement. Reusing the bound Message receiver, FUN_14006c760 reads four bytes at receiver +0x48 and immediately returns that value. The field meaning and value are unknown; no edge joins the return to path-object clean_temp +0x90 or cleanup behavior.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-RETURN-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The bound Message receiver is read at +0x48 and the value is returned by the immediately following RET.",
+              "No transform, field meaning, or value range is established.",
+              "No join to clean_temp +0x90, cleanup behavior, or runtime owner/generation is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_JOB_CONFIGURATION_BOUNDARY",
+            "package_id": "DEE-TEMP-DIR-MESSAGE-TARGET-RETURN-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-RETURN-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-RETURN-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-RETURN-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-RETURN-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-RETURN-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-RETURN-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-RETURN-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "b500d3e19321884dfde52361addc99946fc507769779282c4ed422ee100b9e53",
+            "supplement_seal_sha256": "659a347bae80c584ff514c6d714a9f3ae8064089c900dcffcecb468da64011b0",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "receiver": "dee::Messages::Message returned by FUN_14006c760",
+              "first_read": "4-byte load at receiver +0x48",
+              "next_instruction": "RET",
+              "return_value": "same loaded value; semantics unknown",
+              "clean_temp_join": "UNBOUND"
+            },
+            "validation_boundary": "Reference-only Wash supplement. Reusing the bound Message receiver, FUN_14006c760 reads four bytes at receiver +0x48 and immediately returns that value. The field meaning and value are unknown; no edge joins the return to path-object clean_temp +0x90 or cleanup behavior."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_REFERENCE_ONLY_INPUT_VECTOR",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Reference-only Wash supplement. Reusing the bound Message receiver, FUN_14006c760 reads four bytes at receiver +0x48 and immediately returns that value. The field meaning and value are unknown; no edge joins the return to path-object clean_temp +0x90 or cleanup behavior."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-RETURN-BOUNDARY-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_RUNTIME_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Meaning or value range of the receiver +0x48 field.",
+            "Message return value to clean_temp +0x90 consumer and owner/generation.",
+            "Filesystem cleanup behavior and runtime job/provider identity."
+          ],
+          "validation_boundary": "Reference-only Wash supplement. Reusing the bound Message receiver, FUN_14006c760 reads four bytes at receiver +0x48 and immediately returns that value. The field meaning and value are unknown; no edge joins the return to path-object clean_temp +0x90 or cleanup behavior.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-time-base-host-template-first-break-boundary",
+          "mapping_status": "HOST_TEMPLATE_LITERAL_PATH_BOUND__XML_VALUE_WRITER_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_RUNTIME_VALUE_NOT_CAPTURED__NO_TIME_EFFECT",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only Wash supplement. A bounded host time_base literal xref reaches StageRunner/DocModel template construction. A property-list helper is only a candidate. The selected XML value is not joined to the selected DDP Priv+0x550 writer; the current value is NOT_CAPTURED. The factory default file_position and static consumer remain separate from an applied runtime value.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-HOST-TEMPLATE-FIRST-BREAK-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Host literal xref reaches StageRunner/DocModel template construction.",
+              "The property-list helper is only a candidate.",
+              "XML value to selected DDP Priv+0x550 writer is UNBOUND; current value is NOT_CAPTURED."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_JOB_CONFIGURATION_BOUNDARY",
+            "package_id": "DEE-TIME-BASE-HOST-TEMPLATE-FIRST-BREAK-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-HOST-TEMPLATE-FIRST-BREAK-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-HOST-TEMPLATE-FIRST-BREAK-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-HOST-TEMPLATE-FIRST-BREAK-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-HOST-TEMPLATE-FIRST-BREAK-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-HOST-TEMPLATE-FIRST-BREAK-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-HOST-TEMPLATE-FIRST-BREAK-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-HOST-TEMPLATE-FIRST-BREAK-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "410ee3c844e094e9e2394573bca658ac2389ecff4d87947ac1ba663e1f8cbed4",
+            "supplement_seal_sha256": "e559507c7cbbaf14bf2f44fa527e8a00c4dfeb6467e3755d484943753cce964d",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "host_literal_path": "StageRunner/DocModel template construction",
+              "property_list_helper": "candidate only",
+              "ddp_field": "StringType Priv+0x550",
+              "factory_default": "file_position",
+              "accepted_xml_value_to_writer": "UNBOUND",
+              "current_native_value": "NOT_CAPTURED"
+            },
+            "validation_boundary": "Reference-only Wash supplement. A bounded host time_base literal xref reaches StageRunner/DocModel template construction. A property-list helper is only a candidate. The selected XML value is not joined to the selected DDP Priv+0x550 writer; the current value is NOT_CAPTURED. The factory default file_position and static consumer remain separate from an applied runtime value."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_REFERENCE_ONLY_INPUT_VECTOR",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Input-only vector has no expected output; no DEE or WinDbg run."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-HOST-TEMPLATE-FIRST-BREAK-BOUNDARY-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_RUNTIME_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Accepted XML time_base to selected DDP Priv+0x550 writer and owner/generation join.",
+            "Current native time_base value; it was not captured.",
+            "Range, seek, time conversion, and audio effect."
+          ],
+          "validation_boundary": "Reference-only Wash supplement. A bounded host time_base literal xref reaches StageRunner/DocModel template construction. A property-list helper is only a candidate. The selected XML value is not joined to the selected DDP Priv+0x550 writer; the current value is NOT_CAPTURED. The factory default file_position and static consumer remain separate from an applied runtime value.",
+          "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "washed-surround-trim-candidate-register-boundary",
+          "mapping_status": "TRIM_CANDIDATE_REGISTER_FLOW_BOUND__CALLER_AND_XML_OWNER_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_LOCAL_STORE__NO_TRIM_EFFECT",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only Wash supplement for the surround-trim U16 candidate. A bounded function trace reads U16 [RDI+0x968] and stores U16 through *(RDI+0x4330)+0x240. The xref model has no direct code caller and no code/data reference to the untyped slot in this scope; this is not a global no-caller claim. Neither object is joined to the registered StringType or XML -3 assignment.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TRIM-SURROUND-CANDIDATE-REGISTER-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The bounded body reads U16 [RDI+0x968] and stores a U16 through *(RDI+0x4330)+0x240.",
+              "No direct code caller or code/data reference to the untyped slot is recorded in the bounded xref model.",
+              "The result is not joined to the StringType, XML -3 assignment, units, BSI, or audio effect."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_REFERENCE_ONLY_CUSTOM_TRIM_BOUNDARY",
+            "package_id": "DEE-TRIM-SURROUND-CANDIDATE-REGISTER-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TRIM-SURROUND-CANDIDATE-REGISTER-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TRIM-SURROUND-CANDIDATE-REGISTER-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TRIM-SURROUND-CANDIDATE-REGISTER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TRIM-SURROUND-CANDIDATE-REGISTER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TRIM-SURROUND-CANDIDATE-REGISTER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TRIM-SURROUND-CANDIDATE-REGISTER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TRIM-SURROUND-CANDIDATE-REGISTER-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "1901e779850a250f1044e2876cff173bce814b9887252178d1bfcab550ef72e3",
+            "supplement_seal_sha256": "0848b4f8a1743ceae5cff64c1fb9246fedfde5a16a6b31b9c1d9941d9bbcb6da",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "input_candidate": "U16 [RDI+0x968]",
+              "output_candidate": "U16 through *(RDI+0x4330)+0x240",
+              "bounded_code_caller": "NOT_FOUND_IN_SCOPED_XREF_MODEL",
+              "global_no_caller_claim": false,
+              "xml_minus3_to_stringtype_or_consumer": "UNBOUND"
+            },
+            "validation_boundary": "Reference-only Wash supplement for the surround-trim U16 candidate. A bounded function trace reads U16 [RDI+0x968] and stores U16 through *(RDI+0x4330)+0x240. The xref model has no direct code caller and no code/data reference to the untyped slot in this scope; this is not a global no-caller claim. Neither object is joined to the registered StringType or XML -3 assignment."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_REFERENCE_ONLY_INPUT_VECTOR",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Reference-only Wash supplement for the surround-trim U16 candidate. A bounded function trace reads U16 [RDI+0x968] and stores U16 through *(RDI+0x4330)+0x240. The xref model has no direct code caller and no code/data reference to the untyped slot in this scope; this is not a global no-caller claim. Neither object is joined to the registered StringType or XML -3 assignment."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TRIM-SURROUND-CANDIDATE-REGISTER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_STATIC_ANALYSIS_ONLY_RUNTIME_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Direct code caller and selected register owner/generation.",
+            "XML -3 assignment to the StringType or U16 candidate.",
+            "Numeric mapping, units, BSI serialization, and audio effect."
+          ],
+          "validation_boundary": "Reference-only Wash supplement for the surround-trim U16 candidate. A bounded function trace reads U16 [RDI+0x968] and stores U16 through *(RDI+0x4330)+0x240. The xref model has no direct code caller and no code/data reference to the untyped slot in this scope; this is not a global no-caller claim. Neither object is joined to the registered StringType or XML -3 assignment.",
           "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
         }
       ]
@@ -67282,6 +67795,210 @@
         "Target function body and file-system operation.",
         "clean_temp flag to delete/retain consumer and owner/generation.",
         "Runtime job/provider identity and cleanup effect."
+      ]
+    },
+    {
+      "package_id": "DEE-RF-DRC-FILM-LIGHT-SETTER-FIRST-CONSUMER-BOUNDARY-V2",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-FILM-LIGHT-SETTER-FIRST-CONSUMER-BOUNDARY-V2",
+      "manifest_sha256": "d33ff8dc62b0d11a7120109299b039228e557dfd3f4037a4baa62c885cb19b77",
+      "supplement_seal_sha256": "beb53b35ee1bc11344bc40ce7d42d0d134844a0a94e09f2e1f32c1c628258910",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "STATIC_DEFAULT_PATH_AND_RAW_CANDIDATE_BOUND; EXPLICIT_XML_OWNER_AND_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Explicit XML value to +0x08 writer and selected provider/generation.",
+        "Raw code semantic meaning, BSI serialization, and measurement/audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-TEMP-DIR-MESSAGE-TARGET-FIRST-READ-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-FIRST-READ-BOUNDARY-V1",
+      "manifest_sha256": "a8d2c9ed744df189744dbd820a410464206039e891c55afbefe88606ec5afc14",
+      "supplement_seal_sha256": "93c3fd48c15970b0b3c2102f0d0af53544d4d04fe6121ad682620aae91d2881e",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "MESSAGE_RECEIVER_AND_FIRST_READ_BOUND; CLEANUP_AND_OWNER_JOIN_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "+0x48 field semantics and owner/generation.",
+        "Message target to clean_temp +0x90 cleanup consumer.",
+        "File cleanup behavior and runtime provider/job identity."
+      ]
+    },
+    {
+      "package_id": "DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1",
+      "manifest_sha256": "bba76c598d69463c528dd1545af2ef9c3b9acff11316d890686990ad494c2cb6",
+      "supplement_seal_sha256": "f7fef106172b35de64d64d994e6305fd265ebc046b560f17ac5e29c107036139",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "DROPFRAME_TRANSFORM_CONDITIONAL_ONLY; INPUT_ROUTE_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Input XML value to setter/reader object identity and owner/generation.",
+        "29.97df route to parent converter; ADM versus AtmosMezz attribution.",
+        "Numeric/timecode effect and runtime behavior."
+      ]
+    },
+    {
+      "package_id": "DEE-XML-END-TO-READER-SAMPLE-RANGE-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-END-TO-READER-SAMPLE-RANGE-BOUNDARY-V1",
+      "manifest_sha256": "c1183a7b4343ed6300bd2b2560e2d5526c99339eb8860f0df0a9ba1dcd3f7ccd",
+      "supplement_seal_sha256": "09dee9888291bb7cac970007c0c26200a0c622db95fca416cf6edd74d863f68d",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "END_STATIC_PATH_TO_READER_SAMPLE_FIELD_BOUND; NUMERIC_INDEX_OWNER_JOIN_AND_CROP_EFFECT_OPEN; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Numeric sample index calculation.",
+        "Same-run Reader range owner/generation and source sample count.",
+        "Output crop, duration, PTS, and audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-XML-SURROUND-TRIM-MINUS3-SETTER-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-SURROUND-TRIM-MINUS3-SETTER-BOUNDARY-V1",
+      "manifest_sha256": "e6904cbbab366b1813bf7b241d88b40b2e6ad74710dc72bf267b9e3e5dfc4b9f",
+      "supplement_seal_sha256": "85f227c3cbd6bd1d706226c5cf6b50ad635a4583c9889150c8d4be3ea41d3751",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "STATIC_DEFAULT_AUTO_SETTER_BOUND; EXPLICIT_MINUS3_AND_CONSUMER_OWNER_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Selected XML -3 assignment to the StringType value member and provider owner/generation.",
+        "Candidate U16 value, units, and numeric mapping.",
+        "BSI serialization and decoded-audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1",
+      "manifest_sha256": "3da43f5557ef3e7b9968fb767eb6921650df640445995e2e769ff4acf1607250",
+      "supplement_seal_sha256": "8793b9e928c018c263eff8876156a9665edf6d6021056dd4979a0bd3e516c854",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "SCHEMA_CANDIDATE_BOUND; EC3_NATIVE_WRITER_CONSUMER_UNBOUND; NO_GLOBAL_ABSENCE; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Candidate XSD installation identity and selected runtime branch.",
+        "EC3 writer, muxer, output factory, and nonliteral dispatch consumers.",
+        "DEE output execution and native output effect."
+      ],
+      "package_seal_checker_status": "PENDING"
+    },
+    {
+      "package_id": "DEE-XML-START-TO-READER-SAMPLE-RANGE-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-START-TO-READER-SAMPLE-RANGE-BOUNDARY-V1",
+      "manifest_sha256": "6b6acabe96aaf4f23f46899ef3764a2fd66afc93c9a3b66afa8ddc42112843a3",
+      "supplement_seal_sha256": "fde31c2c4d299aee3f5851e38127b3eb59d8bd8fda8ca50c4ce5d2737ad658e6",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "STATIC_START_TO_READER_SAMPLE_RANGE_BOUND; RUNTIME_OWNER_GENERATION_UNBOUND; NUMERIC_SAMPLE_NOT_COMPUTED; CROP_NOT_EVALUATED; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Numeric start sample index and source sample count.",
+        "Same-run XML property, DDP Private, and Reader range owner/generation join.",
+        "Output crop, duration, PTS, and audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-TEMP-DIR-MESSAGE-TARGET-RETURN-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-MESSAGE-TARGET-RETURN-BOUNDARY-V1",
+      "manifest_sha256": "b500d3e19321884dfde52361addc99946fc507769779282c4ed422ee100b9e53",
+      "supplement_seal_sha256": "659a347bae80c584ff514c6d714a9f3ae8064089c900dcffcecb468da64011b0",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "TARGET_READ_RETURN_BOUND; FIELD_SEMANTICS_UNBOUND; CLEAN_TEMP_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Meaning or value range of the receiver +0x48 field.",
+        "Message return value to clean_temp +0x90 consumer and owner/generation.",
+        "Filesystem cleanup behavior and runtime job/provider identity."
+      ]
+    },
+    {
+      "package_id": "DEE-TIME-BASE-HOST-TEMPLATE-FIRST-BREAK-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIME-BASE-HOST-TEMPLATE-FIRST-BREAK-BOUNDARY-V1",
+      "manifest_sha256": "410ee3c844e094e9e2394573bca658ac2389ecff4d87947ac1ba663e1f8cbed4",
+      "supplement_seal_sha256": "e559507c7cbbaf14bf2f44fa527e8a00c4dfeb6467e3755d484943753cce964d",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "HOST_TEMPLATE_PATH_BOUND; XML_RUNTIME_WRITER_UNBOUND; DDP_VALUE_NOT_CAPTURED; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Accepted XML time_base to selected DDP Priv+0x550 writer and owner/generation join.",
+        "Current native time_base value; it was not captured.",
+        "Range, seek, time conversion, and audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-TRIM-SURROUND-CANDIDATE-REGISTER-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TRIM-SURROUND-CANDIDATE-REGISTER-BOUNDARY-V1",
+      "manifest_sha256": "1901e779850a250f1044e2876cff173bce814b9887252178d1bfcab550ef72e3",
+      "supplement_seal_sha256": "0848b4f8a1743ceae5cff64c1fb9246fedfde5a16a6b31b9c1d9941d9bbcb6da",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "TRIM_CANDIDATE_REGISTER_FLOW_BOUND; XML_MINUS3_OWNER_JOIN_UNBOUND; NUMERIC_BSI_AUDIO_SEMANTICS_UNBOUND_NOT_RUN; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Direct code caller and selected register owner/generation.",
+        "XML -3 assignment to the StringType or U16 candidate.",
+        "Numeric mapping, units, BSI serialization, and audio effect."
       ]
     }
   ]

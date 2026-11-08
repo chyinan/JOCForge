@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package_id": "custom_trim_surround_minus3_string_setter_boundary_wash_v1",
+    "manifest_sha256": "1748d1ae0676b347a8b14c87372994ac85f5521b64622fd27bedc4d828ceb7d1",
+    "manifest_checksum_file_sha256": "fbd1c248ce42106b0873cfb32292f1d1660a22b42a9b1344bb32c7fdf035d317",
+    "checker_results": {
+      "normal": "PASS",
+      "python_o": "PASS"
+    }
+  },
+  "parent_reuse": {
+    "source_manifests_verified_by_source_package_checker": true,
+    "raw_sources_included": false
+  }
+}

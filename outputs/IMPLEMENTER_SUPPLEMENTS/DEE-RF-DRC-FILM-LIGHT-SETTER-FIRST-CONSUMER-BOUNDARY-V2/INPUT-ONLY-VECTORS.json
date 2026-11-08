@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "RF-FILM-LIGHT-DEFAULT-STATIC-01",
+      "input_only": true,
+      "input": {
+        "field": "drc:rf_mode_drc_profile",
+        "token": "film_light",
+        "origin": "schema default only"
+      },
+      "expected_observation": {
+        "static_value_member": "+0x08",
+        "static_getter": "FUN_180152490",
+        "raw_u32_candidate": 0,
+        "width_bits": 32,
+        "xml_runtime_value_to_plus_08": "UNBOUND"
+      },
+      "expected_audio_output": null,
+      "runtime_status": "NOT_RUN"
+    }
+  ]
+}

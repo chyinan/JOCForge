@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package_id": "timecode-input-dropframe-consumer-boundary-wash-v1",
+    "manifest_sha256": "c65696e3a1e8ccac25169303a5323c4c2cc917f16db7535572a0817d7fa4c2fc",
+    "package_seal_sha256": "d028e341d01ee65825596a2ae74236632ccb5ee610aedc4eafa820326efd351a",
+    "checker_results": {
+      "normal": "PASS",
+      "python_o": "PASS"
+    }
+  },
+  "parents": [
+    [
+      "timecode_input_field_first_consumer_boundary_wash_v1",
+      "e7926bc2da0a723c623f28a30c6a717ab58f24f956eb330742e45905bcad3f7b",
+      "6284b7353d2b5a2536cd29b4c19aeca8e841d7dea41e1d54702834e2ef234089"
+    ],
+    [
+      "timecode_frame_rate_conversion_boundary_wash_v1",
+      "130340adebe95c7a43876898224777129c6ac411bb4c7c1f71b7b138897548fd",
+      "4a21324ed49786009b45001a999c2541718325c90b5c6bb5ca49f2e82f64a521"
+    ],
+    [
+      "timecode_frame_rate_validator_boundary_wash_v1",
+      "231e7fe00dd83ed8ea2c5b6882729a54bbb6cd2d18c3af46826f74efeae4329c",
+      "0e45ef763084c6e6b4610348270eb343d97b7519c046a805ed0dfdb54fca3a53"
+    ]
+  ]
+}

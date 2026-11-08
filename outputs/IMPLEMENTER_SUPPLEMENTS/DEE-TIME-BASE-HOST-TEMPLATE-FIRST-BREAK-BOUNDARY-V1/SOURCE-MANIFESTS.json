@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package_id": "dee_time_base_host_writer_edge_wash_v1",
+    "manifest_sha256": "11f60af1b2ba54cd973aba71ddb54b873bd7fead29d3ba9580dd6e793f01f365",
+    "seal_sha256": "30d5ac089d923825e4d3d184c487916c957d2220d8874e959b04fdbbd9106aad",
+    "normal_checker": "PASS",
+    "python_o_checker": "PASS"
+  },
+  "reused_ddp_endpoint": {
+    "field": "Priv+0x550",
+    "type": "dee::Types::StringType",
+    "factory_default": "file_position",
+    "consumer": "FUN_18014fd90",
+    "writer": "UNBOUND"
+  },
+  "runtime_capture": {
+    "time_base_value": "NOT_CAPTURED",
+    "adm_owner_generation": "UNBOUND"
+  }
+}

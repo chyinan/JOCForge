@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "INPUT_BYTE_OFFSET_PLUS_0X188_BOUND; CANONICAL_PAIR_REUSED; OWNER_JOIN_UNBOUND; VECTOR_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 790,
+      "sha256": "8f4e92328b674069e449f292f02b4fd6343588b7a359c3ce692ced3f990b5d7a"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1958,
+      "sha256": "caf006452472449375ad195ebe8249f7b55f8948e49dadae8e0dbfcb8f6a6f14"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1099,
+      "sha256": "675061804749dfa00b83b768b29ef5a112b3d5f764242ac95f93dd34105efa47"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 606,
+      "sha256": "f031e4d21382b44b14f42bfad4bfccce520339779ec50daf16aa35209395dbbb"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 1686,
+      "sha256": "6beb5814998e21c848b7e03ae21106a225a3175f1f03845a9273945c0f5732a2"
+    }
+  ]
+}

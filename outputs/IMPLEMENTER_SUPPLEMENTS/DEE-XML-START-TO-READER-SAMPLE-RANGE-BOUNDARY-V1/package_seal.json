@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-XML-START-TO-READER-SAMPLE-RANGE-BOUNDARY-V1",
+  "manifest_sha256": "6b6acabe96aaf4f23f46899ef3764a2fd66afc93c9a3b66afa8ddc42112843a3",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "STATIC_START_TO_READER_SAMPLE_RANGE_BOUND; RUNTIME_OWNER_GENERATION_UNBOUND; NUMERIC_SAMPLE_NOT_COMPUTED; CROP_NOT_EVALUATED; IMPLEMENTATION_READY=NO"
+}

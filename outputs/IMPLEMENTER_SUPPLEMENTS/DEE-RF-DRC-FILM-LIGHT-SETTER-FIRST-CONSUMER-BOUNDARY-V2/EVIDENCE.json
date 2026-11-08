@@ -1,0 +1,59 @@
+{
+  "schema": "jocforge.wash_supplement_evidence.v1",
+  "source_package": {
+    "package_id": "rf_mode_drc_profile_film_light_setter_consumer_wash_v2",
+    "manifest_sha256": "8626e8b262736eb7ba9ac73a62f488bf33217793a4d058ef6345dea35d6231bd",
+    "package_seal_sha256": "3085997e1e90c27f6053651cdb223ada47d5b91d8a2df5d419c6d8fdac5f00bc",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS"
+  },
+  "scope": {
+    "tool": "Ghidra 12.2 PUBLIC",
+    "mode": "read-only/no-analysis",
+    "claim": "static schema-default setter/getter path and first RF-local raw map candidate only"
+  },
+  "field": {
+    "key": "drc:rf_mode_drc_profile",
+    "input_token": "film_light",
+    "type": "xs:string StringType",
+    "static_owner_layout": "Priv root+0x750"
+  },
+  "schema_default_setter": {
+    "chain": [
+      "FUN_18014f820",
+      "FUN_180144410",
+      "FUN_18013b1c0"
+    ],
+    "destination": "StringType+0x08",
+    "initialized_flag": "+0x68",
+    "is_explicit_runtime_xml_value": false
+  },
+  "first_consumer": {
+    "getter": "FUN_180152490",
+    "slot": "+0x30",
+    "reads": "StringType+0x08",
+    "map_consumer": "FUN_1801535b0",
+    "map_table": "RF-local",
+    "raw_u32_candidate": 0,
+    "record_destination": "param_2+0xa4",
+    "width_bits": 32,
+    "semantic_branch_bsi_audio_meaning": "UNBOUND"
+  },
+  "xml_runtime_join": {
+    "lookup_node_destination": "StringType+0x28",
+    "same_owner_write_to_value_plus_0x08": "UNBOUND",
+    "runtime_priv_instance_generation": "NOT_OBSERVED",
+    "selected_provider": "UNBOUND"
+  },
+  "execution": {
+    "dee_run": "NOT_RUN",
+    "audio_or_pcm_effect": "NOT_RUN",
+    "implementation_ready": false
+  },
+  "exclusions": {
+    "raw_disassembly_or_decompilation_included": false,
+    "binaries_included": false,
+    "media_pcm_payload_key_license_included": false,
+    "implementation_contact_by_research_agent": false
+  }
+}

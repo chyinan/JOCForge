@@ -1,0 +1,57 @@
+{
+  "schema": "jocforge.wash_supplement_evidence.v1",
+  "source_package": {
+    "package_id": "timecode-input-dropframe-consumer-boundary-wash-v1",
+    "manifest_sha256": "c65696e3a1e8ccac25169303a5323c4c2cc917f16db7535572a0817d7fa4c2fc",
+    "package_seal_sha256": "d028e341d01ee65825596a2ae74236632ccb5ee610aedc4eafa820326efd351a",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS"
+  },
+  "scope": {
+    "tool": "Ghidra 12.2 PUBLIC",
+    "mode": "existing read-only/no-analysis receipts reused; no new Ghidra/DEE/A-B run",
+    "claim": "input-side byte-offset and candidate-reader boundary only"
+  },
+  "input_field": {
+    "path": "/job_config/input/audio/atmos_mezz/timecode_frame_rate",
+    "input_only_token": "29.97df",
+    "output_timecode_field_included": false
+  },
+  "setter": {
+    "expression": "param_1+0x31 on longlong*",
+    "byte_offset": "+0x188",
+    "status": "BOUND_STATIC"
+  },
+  "candidate_reader": {
+    "function": "FUN_1400f09d0",
+    "expression": "own param_1+0x188",
+    "candidate_label": "dee::input::AtmosMezz::Run",
+    "status": "BOUND_STATIC_FUNCTION_BODY"
+  },
+  "identity": {
+    "setter_object_to_reader_object": "UNBOUND",
+    "runtime_owner": "UNBOUND",
+    "runtime_generation": "UNBOUND",
+    "input_kind": "AtmosMezz candidate only; ADM/AtmosMezz not determined"
+  },
+  "conditional_conversion": {
+    "input": "29.97df",
+    "output_rate_text": "29.97",
+    "separate_drop_frame_property": true,
+    "validator_accepts": "29.97",
+    "validator_rejects_direct": "29.97df",
+    "condition": "only if value reaches FUN_14012ff20; route is UNBOUND"
+  },
+  "execution": {
+    "vector": "NOT_RUN",
+    "dee_run": "NOT_RUN",
+    "runtime": "NOT_RUN",
+    "implementation_ready": false
+  },
+  "exclusions": {
+    "raw_disassembly_or_decompilation_included": false,
+    "binaries_included": false,
+    "media_pcm_payload_key_license_included": false,
+    "implementation_contact_by_research_agent": false
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package_id": "dee_atmos_ddp_end_field_reader_consumer_wash_v1",
+    "evidence_manifest_sha256": "bf4382529e02fdcdb839c535609f48fa7b7a648655910f75b26adc1c119b55d7",
+    "package_seal_sha256": "4f56884ee7e2b477d38386011a9f90f55b5e62c15a9c0d91850331610cbf099a",
+    "checker_results": {
+      "normal": "PASS",
+      "python_o": "PASS"
+    }
+  },
+  "input_xml": {
+    "sha256": "8cbee914743d6d06efab7cff03201a531af39dfe7480fa3e609a94538dc6ffd6",
+    "field": "/encode_to_atmos_ddp/end",
+    "value": "47",
+    "runtime": "NOT_RUN"
+  },
+  "reused_parent_receipts": [
+    {
+      "package_id": "dee-end-property-lineage-static-wash",
+      "manifest_sha256": "fe47e41b8bff833bcf06d0dfd762cb678dbd373c4212ab5c48404d3e5983a1e8"
+    },
+    {
+      "package_id": "dee-atmos-host-range-property-transfer-wash",
+      "manifest_sha256": "47ff709ace3008b1d28275912838bc1e16fc5b339562e98ece072cbcd5000ed1"
+    },
+    {
+      "package_id": "dee-atmos-timecode-sample-conversion-wash",
+      "manifest_sha256": "d4aa0e1432f014a877fd7aa4ceb4366e1e2a04311c9892e10a42b50a0cbcdf57"
+    },
+    {
+      "package_id": "dee-atmos-range-context-copy-wash",
+      "manifest_sha256": "684d9d95385e6400283ce95835b29dbfb3730dafb3c2baa642c9a0252c58e982"
+    },
+    {
+      "package_id": "dee-atmos-range-reader-consumption-wash",
+      "manifest_sha256": "04af8e09505c54e94e6f032f041b729ca5b40ee436198d705f4a8bcaca9f1e68"
+    },
+    {
+      "package_id": "dee_atmos_ddp_composite_item_start_end_handoff_wash_v1",
+      "manifest_sha256": "12eaa69d7aea54ff71a9585a6d39c00034876d415a1efd9f0dc8a18c364d8064",
+      "seal_sha256": "a11aef5a08287f1ac75bb29a577c02f28ce23ddab65a16c70da6c7c19fa943e1"
+    }
+  ]
+}

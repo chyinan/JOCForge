@@ -1,0 +1,52 @@
+{
+  "schema": "jocforge.wash_supplement_evidence.v1",
+  "source_package": {
+    "package_id": "custom_trim_surround_candidate_register_owner_boundary_wash_v1",
+    "manifest_sha256": "005a6b7575304190d8fce8819452de1699ce675ca720afa1fd32410fa65b21dd",
+    "manifest_checksum_file_sha256": "1329db65d3ef6030b6fd30c3ac149fc158dc95f1aa27eb9462a91a75d9440c94",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS"
+  },
+  "scope": {
+    "tool": "Ghidra 12.2 PUBLIC",
+    "mode": "read-only/no-analysis",
+    "claim": "bounded in-function register flow for one candidate consumer; no typed owner inference"
+  },
+  "input": {
+    "field": "custom_trims:surround_trim_5_1",
+    "token": "-3",
+    "status": "INPUT_ONLY_NOT_RUN"
+  },
+  "candidate": {
+    "function": "FUN_1800b5c60",
+    "entry_rcx_to_rdi": "bound within function",
+    "read": "U16 [RDI+0x968]",
+    "store": "U16 [*(RDI+0x4330)+0x240]",
+    "direct_code_callers_in_inspected_xref": "NONE_OBSERVED",
+    "untyped_slot": "0x180843b00",
+    "slot_code_or_data_refs": "NONE_OBSERVED",
+    "global_no_caller_claim": false
+  },
+  "identity": {
+    "incoming_rdi_to_registered_stringtype_param_1_plus_0x968": "UNBOUND",
+    "dereferenced_receiver_owner_generation": "UNBOUND",
+    "xml_minus3_to_candidate": "UNBOUND"
+  },
+  "semantics": {
+    "numeric_mapping": "UNBOUND",
+    "unit": "NOT_SPECIFIED",
+    "bsi_effect": "UNBOUND",
+    "audio_effect": "NOT_RUN"
+  },
+  "execution": {
+    "dee_run": "NOT_RUN",
+    "runtime": "NOT_RUN",
+    "implementation_ready": false
+  },
+  "exclusions": {
+    "raw_disassembly_or_decompilation_included": false,
+    "binaries_included": false,
+    "media_pcm_payload_key_license_included": false,
+    "implementation_contact_by_research_agent": false
+  }
+}

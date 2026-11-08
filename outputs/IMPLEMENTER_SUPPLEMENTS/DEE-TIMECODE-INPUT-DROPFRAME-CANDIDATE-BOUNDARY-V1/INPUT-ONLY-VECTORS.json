@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "INPUT-DROPFRAME-CANDIDATE-01",
+      "input_only": true,
+      "input": {
+        "path": "/job_config/input/audio/atmos_mezz/timecode_frame_rate",
+        "token": "29.97df"
+      },
+      "expected_observation": {
+        "candidate_setter_byte_offset": "+0x188",
+        "candidate_reader_byte_offset": "+0x188",
+        "setter_reader_owner_join": "UNBOUND",
+        "conditional_conversion": "29.97df -> 29.97 plus drop_frame"
+      },
+      "expected_audio_output": null,
+      "runtime_status": "NOT_RUN"
+    }
+  ]
+}

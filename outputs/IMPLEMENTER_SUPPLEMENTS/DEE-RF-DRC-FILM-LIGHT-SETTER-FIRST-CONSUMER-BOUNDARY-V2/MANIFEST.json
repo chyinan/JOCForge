@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-RF-DRC-FILM-LIGHT-SETTER-FIRST-CONSUMER-BOUNDARY-V2",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "SCHEMA_DEFAULT_TO_STRINGTYPE_GETTER_PATH_BOUND; XML_RUNTIME_VALUE_TO_PLUS_08_UNBOUND; RF_CODE_ZERO_SEMANTICS_UNBOUND; DRC_EFFECT_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 799,
+      "sha256": "7b345480154603432637f7a0ab43339b22b1e1747910c2d93396cdb20b360da6"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1882,
+      "sha256": "87dc1f828aaa9b83d553e1fe5dfcb45355614a6d02a8df3ba8ca62523042e3e7"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1849,
+      "sha256": "f3ef6c554ca4218664dac48475e8928750a9dc2ba6a9585bb35797267a716bc8"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 597,
+      "sha256": "c987737fcb1863a17c7024647b50e457f48ee34e840a84a8762029867d677b8b"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 1788,
+      "sha256": "e6a2da9fbf20a51b26fcb5d480a2f04f26266ecf20e2af55a5c17dc46fd1a754"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "TIME-BASE-TOKEN-INPUT-ONLY-01",
+      "input_only": true,
+      "input": {
+        "field": "/filter/audio/encode_to_atmos_ddp/time_base",
+        "candidate_tokens": [
+          "file_position",
+          "embedded_timecode"
+        ]
+      },
+      "expected_observation": {
+        "host_literal_path": "template/default construction",
+        "accepted_xml_value_writer": "UNBOUND",
+        "Priv_plus_0x550_current_value": "NOT_CAPTURED"
+      },
+      "expected_audio_output": null,
+      "runtime_status": "NOT_RUN"
+    }
+  ]
+}

@@ -173,6 +173,12 @@
 | F01E/washed-timecode-frame-rate-field-consumer-boundary | F01E | `UNBOUND` |
 | F01E/washed-temp-dir-lifecycle-boundary | F01E | `UNBOUND` |
 | F01E/washed-downmix-mix-level-typed-config-boundary | F01E | `UNBOUND` |
+| F01E/washed-surround-trim-minus3-setter-boundary | F01E | `UNBOUND` |
+| F01E/washed-ec3-output-schema-first-break-boundary | F01E | `UNBOUND` |
+| F01E/washed-start-to-reader-sample-range-boundary | F01E | `UNBOUND` |
+| F01E/washed-temp-message-return-boundary | F01E | `UNBOUND` |
+| F01E/washed-time-base-host-template-first-break-boundary | F01E | `UNBOUND` |
+| F01E/washed-surround-trim-candidate-register-boundary | F01E | `UNBOUND` |
 | F03G/target-slot-install | F03G | `spatial_control` |
 | F03C/candidate-selector | F03C | `spatial_control` |
 | F03C/selector-score-choice | F03C | `spatial_control` |

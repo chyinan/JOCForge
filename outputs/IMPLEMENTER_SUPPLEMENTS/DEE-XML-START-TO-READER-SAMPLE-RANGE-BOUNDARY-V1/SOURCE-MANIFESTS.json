@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package_id": "dee_atmos_ddp_start_field_reader_consumer_wash_v1",
+    "evidence_manifest_sha256": "12c709e8df511f0ac470b39943fb2d5492fa87bfbd7d8e0890da1605b74494ff",
+    "package_seal_sha256": "c8d1c5412b49035193200bfddfe338d3671f12e43b8a98ca023a574bb1a99eba",
+    "checker_results": {
+      "normal": "PASS",
+      "python_o": "PASS"
+    }
+  },
+  "input_xml": {
+    "sha256": "8cbee914743d6d06efab7cff03201a531af39dfe7480fa3e609a94538dc6ffd6",
+    "field": "/encode_to_atmos_ddp/start",
+    "value": "0",
+    "time_base": "file_position",
+    "runtime": "NOT_RUN"
+  }
+}

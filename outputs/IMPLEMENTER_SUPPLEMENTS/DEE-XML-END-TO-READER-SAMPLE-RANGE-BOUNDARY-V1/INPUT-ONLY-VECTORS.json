@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "DDP-END-FILE-POSITION-47-01",
+      "input_only": true,
+      "input": {
+        "xml_path": "/encode_to_atmos_ddp/end",
+        "value": "47",
+        "time_base": "file_position",
+        "timecode_rate_fps": 24
+      },
+      "expected_observation": {
+        "xml_type": "xs:string",
+        "candidate_output_unit": "sample index",
+        "first_typed_reader_field": "CompositeMasterItem.endSample",
+        "numeric_sample_index": "NOT_COMPUTED",
+        "runtime_owner_generation": "UNBOUND",
+        "crop_effect": "NOT_EVALUATED"
+      },
+      "expected_audio_output": null,
+      "runtime_status": "NOT_RUN"
+    }
+  ]
+}

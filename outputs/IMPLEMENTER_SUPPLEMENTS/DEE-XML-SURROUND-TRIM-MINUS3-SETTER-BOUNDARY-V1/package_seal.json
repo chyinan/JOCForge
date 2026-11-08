@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-XML-SURROUND-TRIM-MINUS3-SETTER-BOUNDARY-V1",
+  "manifest_sha256": "e6904cbbab366b1813bf7b241d88b40b2e6ad74710dc72bf267b9e3e5dfc4b9f",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "STRINGTYPE_DEFAULT_SETTER_BOUND; XML_MINUS3_ASSIGNMENT_UNBOUND; CANDIDATE_CONSUMER_OWNER_UNBOUND; EFFECT_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

@@ -1,0 +1,63 @@
+{
+  "schema": "jocforge.wash_supplement_evidence.v1",
+  "source_package": {
+    "package_id": "dee_time_base_host_writer_edge_wash_v1",
+    "manifest_sha256": "11f60af1b2ba54cd973aba71ddb54b873bd7fead29d3ba9580dd6e793f01f365",
+    "package_seal_sha256": "30d5ac089d923825e4d3d184c487916c957d2220d8874e959b04fdbbd9106aad",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS"
+  },
+  "scope": {
+    "tool": "Ghidra 12.2 PUBLIC",
+    "mode": "read-only/no-analysis",
+    "host_image_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "claim": "bounded host literal xref to template/default construction; no accepted XML value writer"
+  },
+  "host_literal_path": {
+    "literal": "time_base",
+    "host_function": "FUN_1400b9d20",
+    "recorded_reference_rva": "0xbe3c9",
+    "template_call_path": [
+      "FUN_1400b9d20",
+      "FUN_1400b0cc0",
+      "FUN_1400ab7e0",
+      "FUN_140052470"
+    ],
+    "classification": "StageRunner/DocModel makeTemplate path"
+  },
+  "property_list_candidate": {
+    "function": "FUN_1400ad530",
+    "status": "candidate only",
+    "accepted_job_xml_value_to_property_entry": "UNBOUND",
+    "selected_runtime_owner_generation": "UNBOUND"
+  },
+  "ddp_field": {
+    "field": "Priv+0x550",
+    "type": "dee::Types::StringType",
+    "factory_default": "file_position",
+    "same_priv_consumer": "FUN_18014fd90",
+    "current_value_writer": "UNBOUND",
+    "runtime_value": "NOT_CAPTURED"
+  },
+  "input_vector": {
+    "tokens": [
+      "file_position",
+      "embedded_timecode"
+    ],
+    "expected_output": "NONE",
+    "runtime": "NOT_RUN"
+  },
+  "boundaries": {
+    "time_base_to_adm_owner_generation": "UNBOUND",
+    "numeric_or_audio_effect": "NOT_ASSERTED",
+    "dee_run": "NOT_RUN",
+    "windbg_run": "NOT_RUN",
+    "implementation_ready": false
+  },
+  "exclusions": {
+    "raw_disassembly_or_decompilation_included": false,
+    "binaries_included": false,
+    "media_pcm_payload_key_license_included": false,
+    "implementation_contact_by_research_agent": false
+  }
+}

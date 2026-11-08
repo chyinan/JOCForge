@@ -1,0 +1,55 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package_id": "rf_mode_drc_profile_film_light_setter_consumer_wash_v2",
+    "manifest_sha256": "8626e8b262736eb7ba9ac73a62f488bf33217793a4d058ef6345dea35d6231bd",
+    "package_seal_sha256": "3085997e1e90c27f6053651cdb223ada47d5b91d8a2df5d419c6d8fdac5f00bc",
+    "checker_results": {
+      "normal": "PASS",
+      "python_o": "PASS"
+    }
+  },
+  "research_index_sha256": "9a2f67e8304598fc38bae6b172d510db006f9755144220c2ee2ff150467e8d12",
+  "reused_parent_manifests": [
+    [
+      "rf_mode_drc_profile_value_origin_boundary_wash_v1",
+      "f051aca52b7ce38683d17a77d85fdfea989fada31bbf0f96c31462745e5bc573",
+      4
+    ],
+    [
+      "rf_mode_drc_profile_runtime_value_writer_boundary_wash_v1",
+      "7a825c825666aac6cc1682e8f14413872b5deb9e7858c72f3271dcf05ab2b420",
+      4
+    ],
+    [
+      "rf_mode_drc_profile_runtime_value_node_materialization_boundary_wash_v1",
+      "ef8ae11b454ddc21be681fc510842f637532414e05a44b7a3b717cd7855fc21f",
+      4
+    ],
+    [
+      "rf_mode_drc_profile_stringtype_node_materialization_boundary_wash_v1",
+      "60e548631a0aa420990b1a529934996153424a3094e7aba9258c706f4f252d9a",
+      4
+    ],
+    [
+      "rf_mode_drc_profile_stringtype_perframe_boundary_wash_v1",
+      "8bd39b86614ed883a57379434645e873e84d5fcd0a1f2be56c97fdcd7f542d68",
+      4
+    ],
+    [
+      "rf_mode_drc_profile_perframe_collection_owner_wash_v1",
+      "3ccef6a1185c9cb21013c1e0dc68c6c9f17d475248ae5cb4bebfd927f443ad8e",
+      4
+    ],
+    [
+      "RF-MODE-DRC-PROFILE-TOKEN-MAP-FIRST-CONSUMER-WASH-V1",
+      "876592442cd78bb32dd562dda6b8c340bdf1ec11fe26d166bb40e8ec7a97c837",
+      6
+    ],
+    [
+      "rf_mode_drc_profile_encoder_boundary_wash_v1",
+      "91dce089704a22c5db92a540423d17845953ceec46e748ced301922577cd00f7",
+      4
+    ]
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-TRIM-SURROUND-CANDIDATE-REGISTER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "TRIM_CANDIDATE_REGISTER_FLOW_BOUND; XML_MINUS3_OWNER_JOIN_UNBOUND; NUMERIC_BSI_AUDIO_SEMANTICS_UNBOUND_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 772,
+      "sha256": "05f0ea737db80ee95a0155c9e00230a38f8ae4f822ccf8d5e1f20f4e2cfbd2e0"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1754,
+      "sha256": "3168b573d3bb7765658ebfb1f3f37ecbdf33f4bee3085d7dd9dc7ccc3e709975"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 529,
+      "sha256": "ad8ef4bad1187771779f230bd6df9f37983dda949ab22ee2d3a558442dd9e4c9"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 591,
+      "sha256": "36185eb9214c69746286f13fc656faf15b1b71061b974ff3ffa23db553718ac2"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 1663,
+      "sha256": "c2d85a4a58d5b59075e239e032b7083f7fd92d7526b2ffd972f4065c539428d0"
+    }
+  ]
+}

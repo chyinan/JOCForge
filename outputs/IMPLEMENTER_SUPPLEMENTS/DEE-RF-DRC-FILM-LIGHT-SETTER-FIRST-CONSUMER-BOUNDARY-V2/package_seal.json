@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-RF-DRC-FILM-LIGHT-SETTER-FIRST-CONSUMER-BOUNDARY-V2",
+  "manifest_sha256": "d33ff8dc62b0d11a7120109299b039228e557dfd3f4037a4baa62c885cb19b77",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "SCHEMA_DEFAULT_TO_STRINGTYPE_GETTER_PATH_BOUND; XML_RUNTIME_VALUE_TO_PLUS_08_UNBOUND; RF_CODE_ZERO_SEMANTICS_UNBOUND; DRC_EFFECT_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1",
+  "manifest_sha256": "bba76c598d69463c528dd1545af2ef9c3b9acff11316d890686990ad494c2cb6",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "INPUT_BYTE_OFFSET_PLUS_0X188_BOUND; CANONICAL_PAIR_REUSED; OWNER_JOIN_UNBOUND; VECTOR_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

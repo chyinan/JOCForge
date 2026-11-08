@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package_id": "DEE-ATMOS-MISC-TEMP-MESSAGE-RETURN-BOUNDARY-WASH-V1",
+    "manifest_sha256": "31ce5ea3e3faaaf17a98c99d5c22515c3b8339260b504aaf3bb9fa0d7b300874",
+    "checksum_file_sha256": "e6abbd174dac77b4ab4b6ca4a0346561fad693520b8ab3af4cec177a922f90cc",
+    "checker_results": {
+      "normal": "PASS",
+      "python_o": "PASS"
+    }
+  },
+  "reused_receipts": [
+    {
+      "package_id": "DEE-ATMOS-MISC-TEMP-MESSAGE-TARGET-PREFIX-WASH-V1",
+      "manifest_sha256": "1e5fb3f064b3ea93ca7519e7e336aeabcf4f700dfab99f8f7e97338c3134a774"
+    },
+    {
+      "package_id": "DEE-ATMOS-MISC-TEMP-MESSAGE-VTABLE-RESOLUTION-WASH-V1",
+      "manifest_sha256": "50d0af4efbf630a44f80e31a9ed9f1d1926bc9f2ad8c265fa573e835a6bc41de"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge.wash_supplement_evidence.v1",
+  "source_package": {
+    "package_id": "DEE-ADM-EC3-OUTPUT-WRITER-FIRST-CONSUMER-WASH-V1",
+    "manifest_sha256": "63d998bcad4ecbad129c1d970c82b35480c93a2bb003a1c617b2f5747ae9490c",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS"
+  },
+  "scope": {
+    "tool": "Ghidra 12.2",
+    "mode": "read-only/no-analysis",
+    "program": "dee.exe",
+    "query": "exact defined-data string ec3 only",
+    "match_count": 0,
+    "other_modules_searched": false
+  },
+  "schema_candidate": {
+    "xml_path": "/output/ec3",
+    "declared_type": "ec3.output.type",
+    "file_name": "optional xs:string",
+    "storage": "required storage.type",
+    "installation_binding": "UNBOUND_CANDIDATE_SCHEMA_NOT_INSTALLATION_BOUND"
+  },
+  "first_break": {
+    "edge": "/output/ec3 schema leaf -> native output-format owner/typed writer consumer",
+    "status": "UNBOUND",
+    "reason": "no exact defined-data ec3 string or reused writer receipt in dee.exe",
+    "scope_limit": "does not exclude nonliteral or other-module runtime selection"
+  },
+  "execution": {
+    "dee_run": "NOT_RUN",
+    "win_dbg_run": "NOT_RUN",
+    "implementation_ready": false
+  },
+  "exclusions": {
+    "raw_disassembly_or_decompilation_included": false,
+    "binaries_included": false,
+    "media_pcm_payload_key_license_included": false,
+    "implementation_contact_by_research_agent": false
+  }
+}

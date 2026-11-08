@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-TRIM-SURROUND-CANDIDATE-REGISTER-BOUNDARY-V1",
+  "manifest_sha256": "1901e779850a250f1044e2876cff173bce814b9887252178d1bfcab550ef72e3",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "TRIM_CANDIDATE_REGISTER_FLOW_BOUND; XML_MINUS3_OWNER_JOIN_UNBOUND; NUMERIC_BSI_AUDIO_SEMANTICS_UNBOUND_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "EC3-OUTPUT-SCHEMA-ONLY-01",
+      "input_only": true,
+      "input": {
+        "output_element": "ec3",
+        "path": "/output/ec3",
+        "file_name": "symbolic only",
+        "storage": "symbolic only"
+      },
+      "expected_observation": {
+        "candidate_schema_declares_ec3": true,
+        "defined_data_exact_key_matches": 0,
+        "native_writer_consumer": "UNBOUND"
+      },
+      "media_path": null,
+      "expected_audio_output": null,
+      "runtime_status": "NOT_RUN"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-TEMP-DIR-MESSAGE-TARGET-FIRST-READ-BOUNDARY-V1",
+  "manifest_sha256": "a8d2c9ed744df189744dbd820a410464206039e891c55afbefe88606ec5afc14",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "FIRST_TARGET_READ_BOUND; FIELD_SEMANTICS_UNBOUND; CLEAN_TEMP_EFFECT_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

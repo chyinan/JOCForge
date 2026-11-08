@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-TIME-BASE-HOST-TEMPLATE-FIRST-BREAK-BOUNDARY-V1",
+  "manifest_sha256": "410ee3c844e094e9e2394573bca658ac2389ecff4d87947ac1ba663e1f8cbed4",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "HOST_TIME_BASE_LITERAL_TO_TEMPLATE_PATH_BOUND; XML_RUNTIME_WRITER_UNBOUND; DDP_VALUE_NOT_CAPTURED; IMPLEMENTATION_READY=NO"
+}

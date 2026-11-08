@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package_id": "DEE-ADM-EC3-OUTPUT-WRITER-FIRST-CONSUMER-WASH-V1",
+    "checksum_file": "MANIFEST.sha256",
+    "checksum_file_sha256": "63d998bcad4ecbad129c1d970c82b35480c93a2bb003a1c617b2f5747ae9490c",
+    "checker_results": {
+      "normal": "PASS",
+      "python_o": "PASS"
+    }
+  },
+  "parent_package": {
+    "package_id": "DEE-ADM-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-WASH-V1",
+    "schema_only_writer_receipt": true
+  },
+  "candidate_schema_hash": "eae11fff62d23d43459f602eec2e39ce667bef640a4fe5990d93b567ecc6af44"
+}
