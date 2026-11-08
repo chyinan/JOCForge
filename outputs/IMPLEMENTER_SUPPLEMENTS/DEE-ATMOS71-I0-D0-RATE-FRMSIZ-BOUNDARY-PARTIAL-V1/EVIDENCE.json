@@ -1,0 +1,59 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package_id": "DEE-ATMOS71-I0-D0-RATE-FRMSIZ-BOUNDARY-PARTIAL-V1",
+  "audience": "IMPLEMENTATION_EVIDENCE_ONLY",
+  "status": "TWO_FRAME_RATE_ALLOCATION_STATIC_WRITER_AND_BSI_UNBOUND_RUNTIME_NOT_RUN",
+  "implementation_ready": "NO",
+  "scope": "rate token to typed setup candidates, per-record dispatch, and frame-size writer boundary only",
+  "static_rate_mapper": {
+    "function": "FUN_1801ab520",
+    "schema_rates_kbps": [384, 448, 576, 640, 768, 1024],
+    "typed_key": 3,
+    "selector_type": "I32",
+    "mapped_value_type": "U32",
+    "conditional_token_map": {
+      "384": {"selector_code": 0, "setup_u32": 6},
+      "1024": {"selector_code": 5, "setup_u32": 8}
+    },
+    "condition": "only if the lookup is reached",
+    "xml_text_to_selector": "UNBOUND"
+  },
+  "native_writer_boundary": {
+    "setup_candidate": "piVar17+0x206",
+    "writer_state_candidate": "param_1+0x810",
+    "setup_to_writer_owner_join": "UNBOUND",
+    "dynamic_writer_global": "DAT_1806521e8",
+    "dynamic_writer_slot": "+0x28",
+    "dynamic_writer_target": "UNBOUND",
+    "bsi_bitrate_field": "UNBOUND",
+    "per_record_path": "FUN_1800b7930 calls FUN_180073ef0 per record and sums 16-bit word counts * 2 into aggregate output bytes",
+    "header_word_serializer": "FUN_1800c7950",
+    "second_word_frmsiz_producer": "UNBOUND",
+    "actual_output_rate": "NOT_RUN"
+  },
+  "target_rate_arithmetic": {
+    "sample_rate_hz": 48000,
+    "blocks_per_frame": 6,
+    "samples_per_frame": 1536,
+    "duration_seconds": 0.032,
+    "i0": {"rate_kbps": 640, "frame_bytes": 2560, "frame_words": 1280, "frmsiz_equivalent": 1279},
+    "d0": {"rate_kbps": 1024, "frame_bytes": 4096, "frame_words": 2048, "frmsiz_equivalent": 2047},
+    "aggregate_au": {"rate_kbps": 1664, "bytes": 6656, "words": 3328},
+    "single_1664_frame": {"frmsiz_equivalent": 3327, "fits_11_bit_field": false},
+    "rate_origin": "user target plus sanitized structural allocation summary; not a native writer observation"
+  },
+  "production_gates": {
+    "d0_audio_algorithm": "UNBOUND",
+    "gtc_source_role_projection": "UNBOUND",
+    "rate_to_writer_and_bsi": "UNBOUND",
+    "generated_au_emdf_fit": "NOT_RUN",
+    "production_allowed": false
+  },
+  "execution": {
+    "dee_run": false,
+    "mode21_payload_read": false,
+    "failed_ec3_hash_or_bytes_in_package": false,
+    "pcm_or_license_read": false,
+    "implementation_contact": false
+  }
+}

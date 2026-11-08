@@ -1622,6 +1622,12 @@ GTC source-role projection, native D0 audio algorithm, and all-AU EMDF fit remai
 
 Wash package `DEE-ATMOS71-RATE-PAIR-WRITER-BOUNDARY-PARTIAL-V1` (manifest SHA-256 `13e48af39e59bd1487a32a24895f950b909e3351ceb2ad842f8430795172f506`, seal SHA-256 `52dbbc079cee9d9715b49b91b5ee7b109e01fd67f142d416b651f4c83a83c5bd`) binds the target AU allocation I0 640 + D0 1024 = 1664 kbps / 6656 bytes / 32 ms, plus conditional 384/1024 typed setup candidates. The setup-to-writer state join, D0 frame-size writer, BSI bitrate field, and actual output rate remain `UNBOUND/NOT_RUN`; D0 audio, GTC, and all-AU EMDF-fit gates remain open. No mode21 payload was read or used.
 
+## 2026-11-09: Atmos71 I0/D0 rate and frame-size boundary partial
+
+Wash package `DEE-ATMOS71-I0-D0-RATE-FRMSIZ-BOUNDARY-PARTIAL-V1` (manifest SHA-256 `f62ff1854f0b690501fe9dab5c61ed7b67b6f911f9cb7290b95715e2b1fa475f`, seal SHA-256 `7d1854fcfc4cbc0382a19a0ce0cd21c268a969505aa270bb4487ecbba265e8b4`) records the 640 kbps / 2,560-byte I0 frame and 1,024 kbps / 4,096-byte D0 frame as two components of a 1,664 kbps / 6,656-byte / 32 ms AU. This is not one 1,664 kbps E-AC-3 frame. The conditional static lookup candidates are 384→selector 0→typed U32 6 and 1,024→selector 5→typed U32 8, only if lookup is reached.
+
+The package observes a per-record encode/word-count path and a two-word header serializer, but the setup-to-writer-owner join, dynamic writer target, producer of the second-word `frmsiz`, D0 BSI bitrate field, and actual emitted rate remain `UNBOUND/NOT_RUN`. The input-only arithmetic vectors are `NOT_RUN`; no mode21 payload was included or used. Production remains disabled by the open GTC, D0 audio/writer, and all-AU EMDF-fit gates.
+
 ## 2026-11-09: I0/D0 AU transaction boundary partial
 
 Wash package `DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1` (manifest SHA-256 `98697c0b352bb11379d0cc942911ad34b23350a554b2432cf9e9b8405f4523a6`, seal SHA-256 `fbec0caef75f1fd2f49d6e390b090127979b189861d0482381c337d511dfa61e`) binds one per-block JOC call sequence and separate in-memory per-unit and fwrite boundaries. It does not type these as I0/D0, establish I0→D0 ordering, same-generation identity, callback-buffer-to-fwrite join, atomic AU commit, or D0-failure partial-I0 behavior; all remain `UNBOUND`, and proposed runtime/failure vectors remain `NOT_RUN`.

@@ -18473,8 +18473,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2077800,
-              "sha256": "8cc68fbeea069d009867c1f069a760d05fa0e8e6981865e13df3b77517bb99fc"
+              "bytes": 2064062,
+              "sha256": "793f3341fbdb698b62faa2e58938f8890fa1e9e8d394beed22c642eb0f58cb09"
             }
           ],
           "test_modules": [
@@ -22000,8 +22000,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2077800,
-              "sha256": "8cc68fbeea069d009867c1f069a760d05fa0e8e6981865e13df3b77517bb99fc"
+              "bytes": 2064062,
+              "sha256": "793f3341fbdb698b62faa2e58938f8890fa1e9e8d394beed22c642eb0f58cb09"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -45045,6 +45045,130 @@
           ],
           "validation_boundary": "The target profile requires I0=640 kbps plus D0=1024 kbps for an aggregate 1664 kbps / 6656-byte / 32-ms AU; this is not one 1664-kbps E-AC-3 frame. Reused static receipts give conditional typed-setup candidates for tokens 384 and 1024 only if lookup is reached. The setup candidate is not joined to the writer-state owner; the native D0 rate writer, BSI bitrate field, and actual output rate remain UNBOUND/NOT_RUN. Production remains disabled by the GTC, D0 algorithm/writer, and all-AU EMDF-fit gates.",
           "delivery_scope": "PROFILE_RATE_ALLOCATION_CONTRACT_ONLY_NO_D0_WRITER_OR_AUDIO_CLAIM"
+        },
+        {
+          "slice_id": "washed-atmos71-i0-d0-rate-frmsiz-boundary-partial",
+          "mapping_status": "WASHED_640_PLUS_1024_TWO_FRAME_AU_ARITHMETIC_AND_CONDITIONAL_SETUP_CANDIDATES_BOUND__FRMSIZ_WRITER_OWNER_BSI_AND_OUTPUT_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_RATE_AND_FRAME_SIZE_ARITHMETIC__NO_D0_WRITER_OR_OUTPUT",
+          "implementation_requirement": false,
+          "owner": "codec",
+          "scope": "Records the approved 7.1 target as two per-substream frames: I0 640 kbps / 2,560 bytes and D0 1,024 kbps / 4,096 bytes, totaling 1,664 kbps / 6,656 bytes for a 32 ms AU. This is not one 1,664 kbps E-AC-3 frame. Conditional static setup candidates are 384→selector 0→U32 6 and 1,024→selector 5→U32 8 only if lookup is reached. The setup candidate is not joined to the writer-state owner. A per-record encode/word-count path and two-word header serializer are observed, but the second-word frmsiz producer, dynamic writer target, BSI bitrate field, and actual output rate remain UNBOUND/NOT_RUN.",
+          "dependencies": [
+            "F01E/approved-atmos71-flat7x-1664-profile-contract"
+          ],
+          "spec_files": [
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/ARCHITECTURE-DECISIONS.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-RATE-FRMSIZ-BOUNDARY-PARTIAL-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [
+              "Eac3Frame",
+              "AccessUnit"
+            ],
+            "covered_clauses": [
+              "Each selected substream frame covers 1,536 samples / 32 ms at 48 kHz and six blocks.",
+              "The 6,656-byte aggregate is an I0+D0 AU total, not one E-AC-3 frame.",
+              "No runtime writer or output clock is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_ATMOS71_I0_D0_RATE_FRMSIZ_BOUNDARY_PARTIAL",
+            "package_id": "DEE-ATMOS71-I0-D0-RATE-FRMSIZ-BOUNDARY-PARTIAL-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-RATE-FRMSIZ-BOUNDARY-PARTIAL-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-RATE-FRMSIZ-BOUNDARY-PARTIAL-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-RATE-FRMSIZ-BOUNDARY-PARTIAL-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-RATE-FRMSIZ-BOUNDARY-PARTIAL-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-RATE-FRMSIZ-BOUNDARY-PARTIAL-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-RATE-FRMSIZ-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-RATE-FRMSIZ-BOUNDARY-PARTIAL-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-RATE-FRMSIZ-BOUNDARY-PARTIAL-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "f62ff1854f0b690501fe9dab5c61ed7b67b6f911f9cb7290b95715e2b1fa475f",
+            "supplement_seal_sha256": "7d1854fcfc4cbc0382a19a0ce0cd21c268a969505aa270bb4487ecbba265e8b4",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "rate_allocation": {
+              "sample_rate_hz": 48000,
+              "blocks_per_frame": 6,
+              "samples_per_frame": 1536,
+              "duration_ms": 32,
+              "i0_kbps": 640,
+              "i0_frame_bytes": 2560,
+              "i0_frame_words": 1280,
+              "i0_frmsiz_equivalent": 1279,
+              "d0_kbps": 1024,
+              "d0_frame_bytes": 4096,
+              "d0_frame_words": 2048,
+              "d0_frmsiz_equivalent": 2047,
+              "aggregate_access_unit_kbps": 1664,
+              "aggregate_access_unit_bytes": 6656,
+              "single_1664_kbps_eac3_frame": false,
+              "single_frame_frmsiz_equivalent": 3327,
+              "single_frame_fits_11_bit_frmsiz": false,
+              "rate_origin": "User-approved target plus sanitized structural allocation summary; not a native writer observation."
+            },
+            "conditional_setup_candidates": {
+              "384": {
+                "selector_code": 0,
+                "typed_setup_u32": 6
+              },
+              "1024": {
+                "selector_code": 5,
+                "typed_setup_u32": 8,
+                "condition": "only if lookup is reached"
+              }
+            },
+            "native_writer_boundary": {
+              "setup_candidate": "piVar17+0x206",
+              "writer_state_candidate": "param_1+0x810",
+              "setup_to_writer_owner_join": "UNBOUND",
+              "per_record_encode_word_count_path": "observed static boundary only",
+              "dynamic_writer_target": "UNBOUND",
+              "second_word_frmsiz_producer": "UNBOUND",
+              "bsi_bitrate_field": "UNBOUND",
+              "actual_output_rate": "NOT_RUN"
+            },
+            "production_gates": {
+              "gtc_source_role_projection": "UNBOUND",
+              "d0_audio_algorithm": "UNBOUND",
+              "d0_rate_writer_and_bsi": "UNBOUND",
+              "all_au_emdf_fit": "NOT_RUN",
+              "production_allowed": false
+            },
+            "validation_boundary": "Arithmetic and conditional static candidates only. No native rate-to-writer owner join, D0 frmsiz/BSI writer, or actual output is established."
+          },
+          "vectors": {
+            "kind": "WASHED_INPUT_ONLY_RATE_ALLOCATION_AND_FRMSIZ_ARITHMETIC",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-RATE-FRMSIZ-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "mode21_rate_allocation_summary_only: two-frame I0+D0 arithmetic; payload excluded.",
+              "single_frame_bound: aggregate 1,664 kbps does not fit one 11-bit frmsiz frame.",
+              "conditional_native_mapping: 1,024 token setup candidate only if lookup is reached."
+            ],
+            "local_fixture": {
+              "file": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-RATE-FRMSIZ-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 984,
+              "sha256": "4e32f134601c6d119cbf66be20a0e4c41c74801f971903f5da4db7ec08817244"
+            },
+            "expected_outputs_included": false,
+            "execution_status": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Conditional lookup reachability and XML token to selector transfer.",
+            "Rate setup candidate to writer-state owner join and dynamic writer target.",
+            "Second header word frmsiz producer, D0 BSI bitrate field, and actual emitted rate.",
+            "D0 audio algorithm, GTC source-role projection, all-AU EMDF fit, and new output."
+          ],
+          "validation_boundary": "Two-frame rate allocation and conditional typed setup candidates only; D0 frmsiz/BSI writer ownership and actual output remain UNBOUND/NOT_RUN.",
+          "delivery_scope": "PROFILE_RATE_AND_FRAME_SIZE_ARITHMETIC_ONLY_NO_D0_WRITER_OR_AUDIO_CLAIM"
         }
       ]
     },
@@ -54242,8 +54366,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2077800,
-              "sha256": "8cc68fbeea069d009867c1f069a760d05fa0e8e6981865e13df3b77517bb99fc"
+              "bytes": 2064062,
+              "sha256": "793f3341fbdb698b62faa2e58938f8890fa1e9e8d394beed22c642eb0f58cb09"
             }
           ],
           "test_inventory": [
@@ -72680,6 +72804,28 @@
       "not_run": [
         "Native geometry mapping/consumer, matrix/BSI writer, runtime, and JOC geometry algorithm.",
         "Global absence outside two bounded string queries."
+      ]
+    },
+    {
+      "package_id": "DEE-ATMOS71-I0-D0-RATE-FRMSIZ-BOUNDARY-PARTIAL-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-RATE-FRMSIZ-BOUNDARY-PARTIAL-V1",
+      "manifest_sha256": "f62ff1854f0b690501fe9dab5c61ed7b67b6f911f9cb7290b95715e2b1fa475f",
+      "supplement_seal_sha256": "7d1854fcfc4cbc0382a19a0ce0cd21c268a969505aa270bb4487ecbba265e8b4",
+      "functional_ids": [
+        "F12"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "I0_640_D0_1024_TWO_FRAME_AU_ARITHMETIC_AND_CONDITIONAL_SETUP_CANDIDATES; FRMSIZ_PRODUCER_WRITER_OWNER_BSI_AND_ACTUAL_OUTPUT_UNBOUND_NOT_RUN; PRODUCTION_ALLOWED_FALSE",
+      "not_run": [
+        "Conditional lookup reachability and XML token to selector transfer.",
+        "Rate setup candidate to writer-state owner join and dynamic writer target.",
+        "Second header word frmsiz producer, D0 BSI bitrate field, and actual emitted rate.",
+        "D0 audio algorithm, GTC source-role projection, all-AU EMDF fit, and new output."
       ]
     }
   ]

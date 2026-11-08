@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-implementer-supplement-seal.v1",
+  "package_id": "DEE-ATMOS71-I0-D0-RATE-FRMSIZ-BOUNDARY-PARTIAL-V1",
+  "manifest_sha256": "f62ff1854f0b690501fe9dab5c61ed7b67b6f911f9cb7290b95715e2b1fa475f",
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 4625,
+      "sha256": "ebe73d609c7af9d192ad5a93b93f7c240b1034f2ec9992e9e6826c6df00266bd"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 2449,
+      "sha256": "32dcf5b49b1fe6221b5e906e902949a658ace67cf2b20dd12d3c0176107e4f9c"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 984,
+      "sha256": "4e32f134601c6d119cbf66be20a0e4c41c74801f971903f5da4db7ec08817244"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 1607,
+      "sha256": "9fdf58e739b3ef063ac859ef5267445eda45d23f039cda34bc08d5b60b6ededf"
+    },
+    {
+      "path": "SOURCE-MANIFESTS.json",
+      "bytes": 1750,
+      "sha256": "1dc76903fc462e0bc07b6c7b144c0a54d95f142cf51ae07352609114f47d529c"
+    }
+  ],
+  "seal_excluded_from_own_hash_list": true
+}

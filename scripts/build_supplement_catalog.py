@@ -196,7 +196,7 @@ def render_catalog(records: list[dict]) -> str:
         "",
         "> Generated locator only. A catalog row is not evidence. Read the selected package, verify its manifest and payload hashes, then use only its stated scope.",
         "",
-        f"Cataloged package directories: {len(records)}. Top-level manifests: {manifest_count}.",
+        f"Package directories: {len(records)}. Top-level manifests: {manifest_count}.",
         "",
         "Search by function, parameter, status, or package name:",
         "",

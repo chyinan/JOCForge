@@ -1,0 +1,34 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "execution": "NOT_RUN",
+  "vectors": [
+    {
+      "id": "mode21_rate_allocation_summary_only",
+      "source_kind": "sanitized structural summary",
+      "payload_bytes_included": false,
+      "i0": {"rate_kbps": 640, "frame_bytes": 2560},
+      "d0": {"rate_kbps": 1024, "frame_bytes": 4096},
+      "frames_per_au": 2,
+      "au_total_kbps": 1664,
+      "au_total_bytes": 6656,
+      "native_writer_join": "UNBOUND"
+    },
+    {
+      "id": "single_frame_bound",
+      "aggregate_rate_kbps": 1664,
+      "single_frame_bytes": 6656,
+      "single_frame_words": 3328,
+      "frmsiz_equivalent": 3327,
+      "fits_11_bit_frmsiz": false,
+      "conclusion": "1664 kbps is an AU aggregate, not one E-AC-3 frame"
+    },
+    {
+      "id": "conditional_native_mapping",
+      "rate_token": "1024",
+      "selector_code": 5,
+      "setup_u32": 8,
+      "condition": "only if lookup reached",
+      "writer_state_join": "UNBOUND"
+    }
+  ]
+}
