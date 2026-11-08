@@ -39,9 +39,10 @@ The 5.1 row remains unchanged, but `SelectedMode0Phase1Index3` must not be treat
 |---|---|---|
 | `config_mode` | `JocDownmixProfile.mode` | 0 |
 | `phase_flag` | `JocDownmixProfile.algorithm_phase_control` | 1 |
-| reconstruction profile index | `JocReconstructionProfile` | `five_x_phase` / index 3 |
+| contract-level `downmix_index` | downmix selector candidate; serializer relation remains `UNBOUND` | 3, derived from mode0/phase-flag1 |
+| reconstruction profile index | `JocReconstructionProfile` | `five_x_phase` / index 3 in a separate full-file parse |
 
-`JocReconstructionProfile` is distinct from the downmix mode, algorithm phase flag, and the wire `phase_signaling` bit. This documents a type/meaning split; it does not claim that the current Rust enum or production resolver has been changed.
+The equal numeric value 3 does not join `downmix_index` to reconstruction `profile_index`; the legacy enum's `Index3` serializer meaning remains `UNBOUND`. The DDP XML `preferred_downmix_mode` property is a separate typed `MixMode` field whose effective stored value and relation to reconstruction profile are also `UNBOUND`. `JocReconstructionProfile` is distinct from downmix controls and the wire `phase_signaling` bit. This documents a type/meaning split; it does not claim that the current Rust enum or production resolver has been changed.
 
 ## Approved additive target contract: Atmos 7.1 flat7x / 1664
 

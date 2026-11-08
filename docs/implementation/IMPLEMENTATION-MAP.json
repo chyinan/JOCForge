@@ -10215,7 +10215,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/EMDF-AND-VALIDATION-DISPOSITION.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/ARCHITECTURE-DECISION-ADDENDUM.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/WASH-REVIEW.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
             "supplement_seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
@@ -10320,7 +10327,14 @@
               "all_access_unit_emdf_fit": "NOT_RUN",
               "new_output": "NOT_RUN"
             },
-            "validation_boundary": "Additive approved 7.1 flat7x/1664 profile contract only. It preserves the existing 5.1 production row, separates I0 and D0 carrier/rate roles, splits downmix controls from reconstruction profile, and requires an ordered same-generation I0+D0 AU with fail-closed atomic publication. Production remains disabled: GTC source-role projection, native D0 audio algorithm, and all-AU EMDF fit are UNBOUND/NOT_RUN."
+            "validation_boundary": "Additive approved 7.1 flat7x/1664 profile contract only. It preserves the existing 5.1 production row, separates I0 and D0 carrier/rate roles, splits downmix controls from reconstruction profile, and requires an ordered same-generation I0+D0 AU with fail-closed atomic publication. Production remains disabled: GTC source-role projection, native D0 audio algorithm, and all-AU EMDF fit are UNBOUND/NOT_RUN.",
+            "selector_semantic_followup": {
+              "package_id": "DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1",
+              "manifest_sha256": "507b7b495812fa7df491c843e21f169fb822745ca5e653b7d25453c9abc03ce6",
+              "legacy_downmix_index3_to_reconstruction_index3_identity": "UNBOUND",
+              "target_flat7x_reconstruction_index": 1,
+              "target_downmix_mode_and_phase": "UNBOUND"
+            }
           },
           "vectors": {
             "kind": "PROFILE_CONTRACT_NO_PRODUCTION_OUTPUT_VECTOR",
@@ -52977,6 +52991,94 @@
           ],
           "validation_boundary": "DME downmix host values/active flags are statically bound to clientJob JSON and a composite --encoder argument, but not to a native DDP XML writer/leaf. The native parser maps four preferred_downmix_mode tokens to U32 ordinals and calls a typed MixMode setter whose null callback leaves the effective stored value UNBOUND. Four mix-level fields have distinct typed MixLevel objects/defaults, but host keys differ from plugin XML keys and encoder-parser keys; typed writer/owner/generation, first matrix/BSI consumer, and audio effect remain UNBOUND/NOT_RUN.",
           "delivery_scope": "EXTERNAL_REFERENCE_ONLY_NO_DOWNMIX_MODE_LEVEL_OR_AUDIO_ENABLEMENT"
+        },
+        {
+          "slice_id": "washed-joc-downmix-reconstruction-profile-separation",
+          "mapping_status": "DOWNMIX_CONTROLS_DOWNMIX_INDEX_AND_RECONSTRUCTION_PROFILE_DISTINCT__SERIALIZER_JOIN_UNBOUND",
+          "implementation_status": "WASHED_REFERENCE_ONLY_SELECTOR_SEMANTICS__NO_SERIALIZER_OR_AUDIO_EFFECT",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Hash-bound 5.1 receipts separately report config_mode=0/phase_flag=1, a contract-level downmix_index=3 candidate, and a full-file JOC reconstruction profile five_x_phase/index3. Equal numeric values do not establish field identity; the legacy enum's Index3 serializer relation remains UNBOUND. The official 7.1 structure reports reconstruction flat7x/index1 with seven carriers and phase_signaling=false; target mode and algorithm phase remain UNBOUND. The DDP XML preferred_downmix_mode MixMode effective store is separate and its relationship to reconstruction profile is UNBOUND.",
+          "dependencies": [
+            "F01E/approved-atmos71-flat7x-1664-profile-contract"
+          ],
+          "spec_files": [
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/ARCHITECTURE-DECISIONS.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "This crosswalk is a static selector/profile distinction; no runtime JOC clock or emitted field is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_JOC_DOWNMIX_RECONSTRUCTION_PROFILE_SEMANTIC_BOUNDARY",
+            "package_id": "DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "507b7b495812fa7df491c843e21f169fb822745ca5e653b7d25453c9abc03ce6",
+            "supplement_seal_sha256": "9f316ded705debd959de7dd67d6cd54766a7458afeb444f911d82f43d3ab6c3d",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "five_one_receipts": {
+              "config_mode": 0,
+              "phase_flag": 1,
+              "carrier_count": 5,
+              "contract_downmix_index": 3,
+              "reconstruction_profile_index": 3,
+              "reconstruction_profile_name": "five_x_phase",
+              "numeric_equality_is_identity": false,
+              "legacy_index3_serializer_relation": "UNBOUND"
+            },
+            "official_seven_one_structure": {
+              "reconstruction_profile_index": 1,
+              "reconstruction_profile_name": "flat7x",
+              "reconstruction_carriers": 7,
+              "phase_signaling_wire_bit": false,
+              "target_mode_control": "UNBOUND",
+              "target_algorithm_phase_flag": "UNBOUND"
+            },
+            "separate_ddp_xml_property": {
+              "field": "preferred_downmix_mode",
+              "native_type": "MixMode",
+              "effective_store": "UNBOUND",
+              "relation_to_reconstruction_profile": "UNBOUND"
+            },
+            "validation_boundary": "Hash-bound 5.1 receipts separately report config_mode=0/phase_flag=1, a contract-level downmix_index=3 candidate, and a full-file JOC reconstruction profile five_x_phase/index3. Equal numeric values do not establish field identity; the legacy enum's Index3 serializer relation remains UNBOUND. The official 7.1 structure reports reconstruction flat7x/index1 with seven carriers and phase_signaling=false; target mode and algorithm phase remain UNBOUND. The DDP XML preferred_downmix_mode MixMode effective store is separate and its relationship to reconstruction profile is UNBOUND."
+          },
+          "vectors": {
+            "kind": "WASHED_RECEIPT_CROSSWALK_NOT_RUNTIME_VECTOR",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "5.1 and official 7.1 structure receipts; no runtime execution or serializer result."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Legacy enum Index3 typed serializer relation to downmix_index or reconstruction profile index.",
+            "DDP MixMode effective store and relation to JOC reconstruction profile.",
+            "7.1 target mode/phase control, serializer, and audio/JOC effect.",
+            "Any new Ghidra query, DEE run, or output capture."
+          ],
+          "validation_boundary": "Hash-bound 5.1 receipts separately report config_mode=0/phase_flag=1, a contract-level downmix_index=3 candidate, and a full-file JOC reconstruction profile five_x_phase/index3. Equal numeric values do not establish field identity; the legacy enum's Index3 serializer relation remains UNBOUND. The official 7.1 structure reports reconstruction flat7x/index1 with seven carriers and phase_signaling=false; target mode and algorithm phase remain UNBOUND. The DDP XML preferred_downmix_mode MixMode effective store is separate and its relationship to reconstruction profile is UNBOUND.",
+          "delivery_scope": "SELECTOR_SEMANTIC_REFERENCE_ONLY_NO_DOWNMIX_OR_RECONSTRUCTION_ALGORITHM"
         }
       ]
     },
@@ -72414,6 +72516,29 @@
       "not_run": [
         "I0/D0 builder identity, AU ordering, source generation, callback/fwrite join, and durable publication.",
         "D0-failure partial-I0 behavior and any runtime failure-injection."
+      ]
+    },
+    {
+      "package_id": "DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1",
+      "manifest_sha256": "507b7b495812fa7df491c843e21f169fb822745ca5e653b7d25453c9abc03ce6",
+      "supplement_seal_sha256": "9f316ded705debd959de7dd67d6cd54766a7458afeb444f911d82f43d3ab6c3d",
+      "functional_ids": [
+        "F01E",
+        "F13C"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "DOWNMIX_AND_RECONSTRUCTION_FIELDS_DISTINCT; LEGACY_SERIALIZER_AND_TARGET_CONTROLS_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Legacy enum serializer relation, effective mode, target mode/phase, and output behavior.",
+        "No implementation, new Ghidra query, or runtime capture occurred."
       ]
     }
   ]

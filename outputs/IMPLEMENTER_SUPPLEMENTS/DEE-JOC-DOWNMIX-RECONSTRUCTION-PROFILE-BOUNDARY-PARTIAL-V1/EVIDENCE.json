@@ -1,0 +1,67 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package_id": "DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1",
+  "audience": "IMPLEMENTATION_EVIDENCE_ONLY",
+  "status": "DOWNMIX_CONTROLS_AND_RECONSTRUCTION_PROFILE_DISTINCT_SERIALIZER_JOIN_UNBOUND",
+  "implementation_ready": "NO",
+  "scope": "Profile-control semantics and distinct reconstruction-profile values only",
+  "five_one_selected_profile4": {
+    "config_mode": 0,
+    "phase_flag": 1,
+    "carrier_count": 5,
+    "source_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "source_file_sha256": "af08ef531f8708ab81cd6af0bf8ae71504ffb19ba76d5fb8571b1ae8db53c747"
+  },
+  "five_one_full_file_joc_parse": {
+    "profile_index": 3,
+    "profile_name": "five_x_phase",
+    "object_count": 15,
+    "complexity_index": 16,
+    "render_verified": false
+  },
+  "official_seven_one_structure": {
+    "profile_index": 1,
+    "profile_name": "flat7x",
+    "reconstruction_carrier_count": 7,
+    "phase_signaling": false,
+    "object_count": 15,
+    "complexity_index": 16
+  },
+  "contract_level_downmix_selection": {
+    "field": "downmix_index",
+    "width_bits": 3,
+    "five_one_value": 3,
+    "derivation": "config_mode=0 and phase_flag=1 selects 3",
+    "typed_serializer_consumer": "UNBOUND"
+  },
+  "legacy_composite_enum": {
+    "name": "JocDownmixProfile::SelectedMode0Phase1Index3",
+    "mode0_component": "config_mode=0 contract correspondence for selected 5.1 profile",
+    "phase1_component": "phase_flag=1 contract correspondence for selected 5.1 profile",
+    "index3_component": "UNBOUND between downmix_index and reconstruction_profile_index",
+    "numeric_equality_is_identity": false
+  },
+  "distinct_ddp_xml_property": {
+    "field": "preferred_downmix_mode",
+    "native_type": "dee::Types::MixMode",
+    "effective_store": "UNBOUND",
+    "relation_to_joc_reconstruction_profile": "UNBOUND"
+  },
+  "target_7_1": {
+    "reconstruction_profile": "flat7x",
+    "profile_index": 1,
+    "mode_control": "UNBOUND",
+    "algorithm_phase_flag": "UNBOUND",
+    "phase_signaling_wire_bit": false,
+    "phase_flag_equals_wire_bit": "NOT_ESTABLISHED",
+    "serializer_join": "UNBOUND",
+    "production_allowed": false
+  },
+  "execution": {
+    "new_ghidra_query": false,
+    "dee_run": false,
+    "media_or_payload_read": false,
+    "pcm_read": false,
+    "implementation_contact": false
+  }
+}

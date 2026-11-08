@@ -1,0 +1,37 @@
+{
+  "schema": "jocforge-source-manifest-receipts.v1",
+  "source_package": {
+    "package_id": "joc_downmix_profile_dimension_serializer_boundary_wash_v1",
+    "manifest_sha256": "71e13b2352db4ff89c6fc5486b3567cd2b53d678b3da549e6dc8a6c9c284652e",
+    "package_seal_file_sha256": "d4d42a6b6a279b6336fb7acf8723e3d5be9a852f505156ef090eda8ac74cbf10",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "reused_receipts": [
+    {
+      "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+      "manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS"
+    },
+    {
+      "package_id": "SAMPLE6-FULL-OUTPUT-JOC-PARSE-RECEIPT-V1",
+      "manifest_sha256": "571225e9cc8f0e56f3b814c79b11a957820b718fd0a7bd156d04f4770fca62bd",
+      "seal_file_sha256": "90ecd532c3162b6c4283778147c8c8c43b79ae486bbc2bba432e1b89a1bc040d",
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS"
+    },
+    {
+      "package_id": "IMPLEMENTER_PACKAGE joc-functional-authorized-v1",
+      "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+      "source_file_sha256": "af08ef531f8708ab81cd6af0bf8ae71504ffb19ba76d5fb8571b1ae8db53c747"
+    }
+  ],
+  "wash_review": {
+    "profile_dimension_package_normal_and_optimized": "PASS",
+    "five_one_parse_package_normal_and_optimized": "PASS",
+    "approved_profile_parameter_file_hash_recomputed": true,
+    "raw_media_pcm_or_payload_in_handoff": false,
+    "implementation_readiness": "NO"
+  }
+}

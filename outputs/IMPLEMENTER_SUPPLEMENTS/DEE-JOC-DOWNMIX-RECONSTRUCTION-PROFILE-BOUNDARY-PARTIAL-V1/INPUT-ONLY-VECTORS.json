@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "execution": "NOT_RUN",
+  "vectors": [
+    {
+      "id": "legacy_5_1_controls_and_profile",
+      "status": "SEALED_RECEIPT_CROSSWALK",
+      "config_mode": 0,
+      "phase_flag": 1,
+      "derived_downmix_index": 3,
+      "reconstruction_profile_index": 3,
+      "reconstruction_profile_name": "five_x_phase",
+      "numeric_equality_proves_identity": false,
+      "serializer_join": "UNBOUND"
+    },
+    {
+      "id": "official_7_1_reconstruction_profile",
+      "status": "SEALED_STRUCTURE_RECEIPT",
+      "reconstruction_profile_index": 1,
+      "reconstruction_profile_name": "flat7x",
+      "reconstruction_carriers": 7,
+      "phase_signaling": false,
+      "target_mode_control": "UNBOUND",
+      "target_algorithm_phase_flag": "UNBOUND"
+    }
+  ]
+}
