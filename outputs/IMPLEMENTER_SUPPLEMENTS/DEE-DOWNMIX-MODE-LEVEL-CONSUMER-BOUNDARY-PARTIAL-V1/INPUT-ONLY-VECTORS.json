@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "status": "INPUT_ONLY_NOT_RUN",
+  "preferred_downmix_mode": [
+    {"token": "loro", "parser_u32": 0, "xml_default_literal": true, "effective_stored_mode": "UNBOUND"},
+    {"token": "ltrt", "parser_u32": 1, "xml_default_literal": false, "effective_stored_mode": "UNBOUND"},
+    {"token": "ltrt-pl2", "parser_u32": 2, "xml_default_literal": false, "effective_stored_mode": "UNBOUND"},
+    {"token": "not_indicated", "parser_u32": 3, "xml_default_literal": false, "effective_stored_mode": "UNBOUND"}
+  ],
+  "mix_level_fields": [
+    {"field": "loro_center_mix_level", "token_to_internal_u32": {"+3": 0, "+1.5": 1, "0": 2, "-1.5": 3, "-3": 4, "-4.5": 5, "-6": 6, "-inf": 7}, "default_token": "-3", "extra_predicate": "none"},
+    {"field": "loro_surround_mix_level", "token_to_internal_u32": {"-1.5": 3, "-3": 4, "-4.5": 5, "-6": 6, "-inf": 7}, "default_token": "-3", "extra_predicate": "unsigned U32 code greater than 2"},
+    {"field": "ltrt_center_mix_level", "token_to_internal_u32": {"+3": 0, "+1.5": 1, "0": 2, "-1.5": 3, "-3": 4, "-4.5": 5, "-6": 6, "-inf": 7}, "default_token": "-3", "extra_predicate": "none"},
+    {"field": "ltrt_surround_mix_level", "token_to_internal_u32": {"-1.5": 3, "-3": 4, "-4.5": 5, "-6": 6, "-inf": 7}, "default_token": "-3", "extra_predicate": "unsigned U32 code greater than 2"}
+  ],
+  "runtime_owner_generation": "UNBOUND_NOT_CAPTURED",
+  "first_matrix_or_bsi_consumer": "UNBOUND_NOT_TRACED",
+  "render_pcm_or_bsi_result": "NOT_RUN"
+}

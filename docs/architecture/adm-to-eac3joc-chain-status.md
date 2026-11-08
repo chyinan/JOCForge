@@ -1597,3 +1597,7 @@ Wash package `DEE-RF-DRC-PROFILE-CONSUMER-BOUNDARY-PARTIAL-V1` (manifest SHA-256
 ## 2026-11-09: 5.1 custom trim first-consumer boundary
 
 Wash package `DEE-CUSTOM-TRIM-5-1-FIRST-CONSUMER-BOUNDARY-PARTIAL-V1` (manifest SHA-256 `59993495f71749d6402c6544ade30f687c7e4af2c1f82e2dc7ae27051d143474`, seal SHA-256 `7f703ae8bd28cbef2630cbc037cc41d5bbdf31238182b51fa09ad2949eaafe85`) records the declared choices and static StringType metadata for surround `+0x968` and height `+0x9e8`. The surround U16 candidate is not joined to the registered owner or proven as the first effective gain consumer; the height cleanup path is not an audio consumer. Omission/auto selection, token assignment, numeric units/precision, and first gain consumer remain `UNBOUND`; runtime and effects are `NOT_RUN`.
+
+## 2026-11-09: DME downmix mode/level consumer partial
+
+Wash package `DEE-DOWNMIX-MODE-LEVEL-CONSUMER-BOUNDARY-PARTIAL-V1` (manifest SHA-256 `6f69b6d1bc5b3ca3b16b9e3587fc1751bd1ffd364dafcbd538136003c080ce7d`, seal SHA-256 `8730aff3da70c5037fa32b4eb8183f57dc210f95e34fdc6a7fc36e32521d7d85`) records static token-to-ordinal and four MixLevel default/object mappings. DME host→native XML writer, effective mode storage, selected level owner/read, and first matrix/BSI consumer remain `UNBOUND`; runtime and render are `NOT_RUN`. This is not an enablement or audio-effect claim.

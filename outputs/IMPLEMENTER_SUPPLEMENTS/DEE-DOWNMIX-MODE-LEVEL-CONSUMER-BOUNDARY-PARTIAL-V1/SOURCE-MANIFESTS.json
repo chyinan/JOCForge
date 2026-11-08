@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge-source-manifest-receipts.v1",
+  "source_package": {
+    "package_id": "F13C-DOWNMIX-TYPED-CONFIG-FIRST-CONSUMER-WASH-V1",
+    "manifest_sha256": "f159d62f535313e46a7b7c28bf2257a37b26407943f06a377b9fc6a076676480",
+    "sha256sums_file_sha256": "862e4d23693174750e7827f71fe7f519577c73af0ee77bac8476e3b3b3ed7f14",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "payload_hashes_recomputed": true
+  },
+  "reused_receipts": [
+    {"package_id": "F13C-DME-DOWNMIX-XML-WRITER-FIRST-BREAK-WASH-V1", "manifest_sha256": "262f7c90f6fe51f13e0fe161dea01cd70d0c9e87e862ca3ff2ed833b26e86041", "checker_status_from_receipt": "PASS_NORMAL_AND_OPTIMIZED", "manifest_recomputed": true},
+    {"package_id": "F13C-preferred-downmix-host-property-transfer-boundary-v3", "manifest_sha256": "8a36ee08e5e500feee68c133e54e9cc910735677b31afaf539af2efcc16f6bf6", "checker_status_from_receipt": "PASS_NORMAL_AND_OPTIMIZED", "manifest_recomputed": true},
+    {"package_id": "F13C-preferred-downmix-host-property-transfer-first-break-v1", "manifest_sha256": "12d878c0a32c593269f07c1d6fe79d925c7f8be0c97fa4527f51f30e7c4c1f99", "checker_status_from_receipt": "PASS_NORMAL_AND_OPTIMIZED", "manifest_recomputed": true},
+    {"package_id": "F13C-preferred-downmix-dme-job-model-xml-boundary-v1", "manifest_sha256": "39ea1c33c6fe00b8b0232b5b791c8c8f201c16892d7ad9fecf018fb40a53d9b9", "checker_status_from_receipt": "PASS_NORMAL_AND_OPTIMIZED", "manifest_recomputed": true},
+    {"package_id": "F13C-preferred-downmix-enum-serialization-addendum-v1", "manifest_sha256": "c30e7eb3c4577ff81d25105e0e1011379d15431068e01e918ba96e759a359eb5", "checker_status_from_receipt": "PASS_NORMAL_AND_OPTIMIZED", "manifest_recomputed": true},
+    {"package_id": "F13C-mix-level-field-lineage-addendum-v1", "manifest_sha256": "1ec72691e2c34df1a002b6d04aa0fe2dfa97b5cf77b554bb21babe7f10b4d0ec", "checker_status_from_receipt": "PASS_NORMAL_AND_OPTIMIZED", "manifest_recomputed": true},
+    {"package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-FOUR-TOKEN-MODE-CONSUMER-WASH-V1", "manifest_sha256": "cff5229a849a4ce265d45e34c2ced0be063cf054cbb80779fca6b7d621893b8b", "checker_status_from_receipt": "PASS_NORMAL_AND_OPTIMIZED", "manifest_recomputed": true},
+    {"package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-TYPED-WRITE-DESTINATION-BOUNDARY-WASH-V1", "manifest_sha256": "70b680374a68e72184c6a3e3753d00533cebe4221c3b3d4b98a3180365554a76", "checker_status_from_receipt": "PASS_NORMAL_AND_OPTIMIZED", "manifest_recomputed": true},
+    {"package_id": "DEE-ATMOS-DDP-PREFERRED-DOWNMIX-PRIV-MEMBER-CONSTRUCTOR-BOUNDARY-WASH-V1", "manifest_sha256": "5a09cdaef80b89170cc39ad5f7a893651b23b94c78ec9f79926e9dbe57dfa366", "checker_status_from_receipt": "PASS_NORMAL_AND_OPTIMIZED", "manifest_recomputed": true},
+    {"package_id": "downmix-mix-level-typed-config-consumer-wash-v1", "manifest_sha256": "21b636b236c846da04cda0a0957734164bec9c0ca560c00a0703fa8564999cfe", "checker_status_from_receipt": "PASS_NORMAL_AND_OPTIMIZED", "manifest_recomputed": false},
+    {"package_id": "loro-center-runtime-owner-generation-boundary-wash-v1", "manifest_sha256": "172f3ad007f9382453532f265744a14ce66556bf542b306a8d01a228efbb9a86", "checker_status_from_receipt": "PASS_NORMAL_AND_OPTIMIZED", "manifest_recomputed": false}
+  ],
+  "wash_review": {
+    "source_package_manifest_recomputed": true,
+    "source_package_payload_hashes": "verified by package checker normal and optimized",
+    "source_code_or_decompilation_in_handoff": false,
+    "implementation_readiness": "NO"
+  }
+}

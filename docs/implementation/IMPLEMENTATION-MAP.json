@@ -52357,6 +52357,146 @@
           ],
           "validation_boundary": "Static DME receipts bind downmix host values/active flags into clientJob JSON and a composite --encoder child argument. They do not bind that composite to a native DDP XML writer or XML leaf; host property keys differ from native XML keys. The native parser separately maps preferred_downmix_mode tokens to ordinals and calls MixMode setter; its optional callback is null so the helper returns the pre-existing MixMode+0x50 value, leaving ordinal-to-effective storage UNBOUND. The separate Priv+0x210 StringType output member is not joined to mode or level values. Four mix-level results remain untyped/unbound. No DEE run, 2ch downmix, BSI, or Atmos/JOC effect is established.",
           "delivery_scope": "EXTERNAL_REFERENCE_ONLY_NO_FULL_XML_OR_DOWNMIX_SUPPORT_CLAIM"
+        },
+        {
+          "slice_id": "washed-downmix-mode-level-consumer-boundary-partial",
+          "mapping_status": "DME_HOST_TO_CLIENTJOB_ARGV_BOUND__MODE_EFFECTIVE_STORAGE_AND_TYPED_LEVEL_CONSUMERS_UNBOUND",
+          "implementation_status": "WASHED_PARTIAL_REFERENCE_ONLY__INPUT_MAP_NOT_RUNTIME_EFFECT__NO_ALGORITHM_CHANGE",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "DME downmix host values/active flags are statically bound to clientJob JSON and a composite --encoder argument, but not to a native DDP XML writer/leaf. The native parser maps four preferred_downmix_mode tokens to U32 ordinals and calls a typed MixMode setter whose null callback leaves the effective stored value UNBOUND. Four mix-level fields have distinct typed MixLevel objects/defaults, but host keys differ from plugin XML keys and encoder-parser keys; typed writer/owner/generation, first matrix/BSI consumer, and audio effect remain UNBOUND/NOT_RUN.",
+          "dependencies": [
+            "F01E/washed-preferred-downmix-four-token-boundary",
+            "F13C/washed-dme-downmix-to-native-xml-writer-boundary"
+          ],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MODE-LEVEL-CONSUMER-BOUNDARY-PARTIAL-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Static host serialization only; no runtime callback, matrix, BSI, or render clock is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_DME_DOWNMIX_MODE_AND_LEVEL_CONSUMER_BOUNDARY",
+            "package_id": "DEE-DOWNMIX-MODE-LEVEL-CONSUMER-BOUNDARY-PARTIAL-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MODE-LEVEL-CONSUMER-BOUNDARY-PARTIAL-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MODE-LEVEL-CONSUMER-BOUNDARY-PARTIAL-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MODE-LEVEL-CONSUMER-BOUNDARY-PARTIAL-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MODE-LEVEL-CONSUMER-BOUNDARY-PARTIAL-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MODE-LEVEL-CONSUMER-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MODE-LEVEL-CONSUMER-BOUNDARY-PARTIAL-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MODE-LEVEL-CONSUMER-BOUNDARY-PARTIAL-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "6f69b6d1bc5b3ca3b16b9e3587fc1751bd1ffd364dafcbd538136003c080ce7d",
+            "supplement_seal_sha256": "8730aff3da70c5037fa32b4eb8183f57dc210f95e34fdc6a7fc36e32521d7d85",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "mode": {
+              "dme_host_to_clientjob_and_composite_argv": "STATIC_SOURCE_BOUND",
+              "native_xml_writer": "UNBOUND",
+              "native_xml_tokens_to_parser_u32": {
+                "loro": 0,
+                "ltrt": 1,
+                "ltrt-pl2": 2,
+                "not_indicated": 3
+              },
+              "typed_destination": "MixMode at plugin subobject +0x910 / outer +0x930",
+              "setter_callback": "NULL",
+              "effective_stored_value": "UNBOUND; writeback retains pre-existing MixMode+0x50",
+              "first_processing_consumer": "UNBOUND"
+            },
+            "mix_level_fields": [
+              {
+                "field": "loro_center_mix_level",
+                "host_key": "loro_cmix",
+                "plugin_xml_key": "downmix:loro_center_mix_level",
+                "separate_encoder_parser_key": "lorocmixlev",
+                "typed_object": "Priv+0x7D0",
+                "default": {
+                  "token": "-3",
+                  "internal_code": 4
+                },
+                "typed_consumer": "UNBOUND"
+              },
+              {
+                "field": "loro_surround_mix_level",
+                "host_key": "loro_smix",
+                "plugin_xml_key": "downmix:loro_surround_mix_level",
+                "separate_encoder_parser_key": "lorosurmixlev",
+                "typed_object": "Priv+0x828",
+                "default": {
+                  "token": "-3",
+                  "internal_code": 4
+                },
+                "typed_consumer": "UNBOUND"
+              },
+              {
+                "field": "ltrt_center_mix_level",
+                "host_key": "ltrt_cmix",
+                "plugin_xml_key": "downmix:ltrt_center_mix_level",
+                "separate_encoder_parser_key": "ltrtcmixlev",
+                "typed_object": "Priv+0x880",
+                "default": {
+                  "token": "-3",
+                  "internal_code": 4
+                },
+                "typed_consumer": "UNBOUND"
+              },
+              {
+                "field": "ltrt_surround_mix_level",
+                "host_key": "ltrt_smix",
+                "plugin_xml_key": "downmix:ltrt_surround_mix_level",
+                "separate_encoder_parser_key": "ltrtsurmixlev",
+                "typed_object": "Priv+0x8D8",
+                "default": {
+                  "token": "-3",
+                  "internal_code": 4
+                },
+                "typed_consumer": "UNBOUND"
+              }
+            ],
+            "unbound_consumer_edges": {
+              "dme_host_keys_to_native_xml_writer": "UNBOUND",
+              "encoder_parser_slots_to_plugin_mixlevel_objects": "UNBOUND",
+              "mixlevel_same_owner_generation_read": "UNBOUND_NOT_CAPTURED",
+              "first_matrix_consumer": "UNBOUND_NOT_TRACED",
+              "first_bsi_consumer": "UNBOUND_NOT_TRACED"
+            },
+            "effects": {
+              "2ch_downmix": "UNBOUND",
+              "BSI": "UNBOUND",
+              "Atmos_JOC_audio": "UNBOUND"
+            },
+            "validation_boundary": "DME downmix host values/active flags are statically bound to clientJob JSON and a composite --encoder argument, but not to a native DDP XML writer/leaf. The native parser maps four preferred_downmix_mode tokens to U32 ordinals and calls a typed MixMode setter whose null callback leaves the effective stored value UNBOUND. Four mix-level fields have distinct typed MixLevel objects/defaults, but host keys differ from plugin XML keys and encoder-parser keys; typed writer/owner/generation, first matrix/BSI consumer, and audio effect remain UNBOUND/NOT_RUN."
+          },
+          "vectors": {
+            "kind": "DME_DOWNMIX_MODE_AND_LEVEL_INPUTS_ONLY_NOT_RUN",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Input-only mode/level maps are NOT_RUN and are not runtime/pass records."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MODE-LEVEL-CONSUMER-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "DME host configuration to native XML writer/leaf and selected provider owner/generation.",
+            "Effective stored MixMode value and MixLevel typed reads/serialization.",
+            "First matrix/BSI consumers, 2ch/rendered downmix, and Atmos/JOC audio effects.",
+            "All input-only vectors and any DEE/A-B run."
+          ],
+          "validation_boundary": "DME downmix host values/active flags are statically bound to clientJob JSON and a composite --encoder argument, but not to a native DDP XML writer/leaf. The native parser maps four preferred_downmix_mode tokens to U32 ordinals and calls a typed MixMode setter whose null callback leaves the effective stored value UNBOUND. Four mix-level fields have distinct typed MixLevel objects/defaults, but host keys differ from plugin XML keys and encoder-parser keys; typed writer/owner/generation, first matrix/BSI consumer, and audio effect remain UNBOUND/NOT_RUN.",
+          "delivery_scope": "EXTERNAL_REFERENCE_ONLY_NO_DOWNMIX_MODE_LEVEL_OR_AUDIO_ENABLEMENT"
         }
       ]
     },
@@ -71572,6 +71712,29 @@
         "Runtime token assignment, omitted-field/auto rule, numeric mapping, units, and precision.",
         "First effective audio/gain consumer and audio/BSI effect.",
         "Proposed minimal contrast; no DEE or JOCForge run occurred."
+      ]
+    },
+    {
+      "package_id": "DEE-DOWNMIX-MODE-LEVEL-CONSUMER-BOUNDARY-PARTIAL-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DOWNMIX-MODE-LEVEL-CONSUMER-BOUNDARY-PARTIAL-V1",
+      "manifest_sha256": "6f69b6d1bc5b3ca3b16b9e3587fc1751bd1ffd364dafcbd538136003c080ce7d",
+      "supplement_seal_sha256": "8730aff3da70c5037fa32b4eb8183f57dc210f95e34fdc6a7fc36e32521d7d85",
+      "functional_ids": [
+        "F01E",
+        "F13C"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "DME_HOST_ARGV_STATIC_BOUND; NATIVE_XML_MODE_AND_LEVEL_WRITERS_EFFECTIVE_STORAGE_AND_AUDIO_CONSUMERS_UNBOUND; NOT_RUN; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Native XML writer/leaf, effective mode storage, and typed level reads.",
+        "First matrix/BSI/audio consumer and all runtime vectors."
       ]
     }
   ]

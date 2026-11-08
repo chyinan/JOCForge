@@ -1,0 +1,34 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package_id": "DEE-DOWNMIX-MODE-LEVEL-CONSUMER-BOUNDARY-PARTIAL-V1",
+  "audience": "IMPLEMENTATION_EVIDENCE_ONLY",
+  "status": "STATIC_TYPED_CONFIG_BOUND_HOST_WRITER_AND_AUDIO_CONSUMERS_UNBOUND_RUNTIME_NOT_RUN",
+  "implementation_ready": "NO",
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 5906,
+      "sha256": "f3e7f9c9bb7bf9c077cd3d5447592923d16f049ec826c15f4baa545e48cd1bcf"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 4238,
+      "sha256": "c8542553d637ba8ea70b977d4ba3cace4207fc310c8c7b85d575e8d0eadd0789"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1520,
+      "sha256": "e5f5fe64c652e868ef1af2cafac928b585fbd6427e63b581386468c58cedb3d8"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 1813,
+      "sha256": "4b75659bb694c39e59a0936c0aa0312a3c4d5cd6132b92d505c56639a5b2b26c"
+    },
+    {
+      "path": "SOURCE-MANIFESTS.json",
+      "bytes": 3547,
+      "sha256": "8c0dc416a793526a5427c5f916f21b48d2225fac9be7d27d6a1ae908362f70d5"
+    }
+  ]
+}

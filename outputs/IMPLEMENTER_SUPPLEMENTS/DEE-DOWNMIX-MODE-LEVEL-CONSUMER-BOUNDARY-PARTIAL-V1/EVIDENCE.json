@@ -1,0 +1,93 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package_id": "DEE-DOWNMIX-MODE-LEVEL-CONSUMER-BOUNDARY-PARTIAL-V1",
+  "audience": "IMPLEMENTATION_EVIDENCE_ONLY",
+  "status": "STATIC_TYPED_CONFIG_BOUND_HOST_WRITER_AND_AUDIO_CONSUMERS_UNBOUND_RUNTIME_NOT_RUN",
+  "implementation_ready": "NO",
+  "scope": "Preferred downmix mode and four mix-level typed configuration paths only",
+  "evidence_tiers": {
+    "static_native_observation": "Ghidra 12.2 read-only receipts reused and package-hash-bound",
+    "dynamic_runtime": "NOT_RUN",
+    "render_or_pcm_effect": "NOT_RUN"
+  },
+  "preferred_downmix_mode": {
+    "dme_ui_mapping": {"Stereo": "loro", "Surround": "ltrt", "Not Indicated": "not_indicated"},
+    "dme_initial_state": {"value": "Stereo", "active": false},
+    "dme_emit_rule": "emit only while active",
+    "host_argv_key": "preferred_downmix_mode inside composite --encoder value",
+    "host_to_native_xml_writer": "UNBOUND",
+    "native_xml_key": "downmix:preferred_downmix_mode",
+    "xml_type": "string enum",
+    "xml_default_literal": "loro",
+    "tokens_to_parser_u32": {"loro": 0, "ltrt": 1, "ltrt-pl2": 2, "not_indicated": 3},
+    "typed_destination": "dee::Types::MixMode at plugin subobject +0x910 / outer +0x930",
+    "setter_input_type": "U32 mapped ordinal",
+    "setter_callback": "null",
+    "effective_stored_value": "UNBOUND; setter writeback retains pre-existing MixMode +0x50",
+    "first_processing_consumer": "UNBOUND"
+  },
+  "mix_level_fields": [
+    {
+      "field": "loro_center_mix_level",
+      "host_key": "loro_cmix",
+      "plugin_xml_key": "downmix:loro_center_mix_level",
+      "separate_encoder_parser_key": "lorocmixlev",
+      "typed_object": "Priv+0x7D0 dee::Types::MixLevel",
+      "typed_value": "U32 MixLevelValue at object+0x50 / Priv+0x820",
+      "default": {"token": "-3", "internal_code": 4},
+      "token_to_code": {"+3": 0, "+1.5": 1, "0": 2, "-1.5": 3, "-3": 4, "-4.5": 5, "-6": 6, "-inf": 7},
+      "extra_code_constraint": "none"
+    },
+    {
+      "field": "loro_surround_mix_level",
+      "host_key": "loro_smix",
+      "plugin_xml_key": "downmix:loro_surround_mix_level",
+      "separate_encoder_parser_key": "lorosurmixlev",
+      "typed_object": "Priv+0x828 dee::Types::MixLevel",
+      "typed_value": "U32 MixLevelValue at object+0x50 / Priv+0x878",
+      "default": {"token": "-3", "internal_code": 4},
+      "token_to_code": {"-1.5": 3, "-3": 4, "-4.5": 5, "-6": 6, "-inf": 7},
+      "extra_code_constraint": "unsigned U32 code greater than 2"
+    },
+    {
+      "field": "ltrt_center_mix_level",
+      "host_key": "ltrt_cmix",
+      "plugin_xml_key": "downmix:ltrt_center_mix_level",
+      "separate_encoder_parser_key": "ltrtcmixlev",
+      "typed_object": "Priv+0x880 dee::Types::MixLevel",
+      "typed_value": "U32 MixLevelValue at object+0x50 / Priv+0x8D0",
+      "default": {"token": "-3", "internal_code": 4},
+      "token_to_code": {"+3": 0, "+1.5": 1, "0": 2, "-1.5": 3, "-3": 4, "-4.5": 5, "-6": 6, "-inf": 7},
+      "extra_code_constraint": "none"
+    },
+    {
+      "field": "ltrt_surround_mix_level",
+      "host_key": "ltrt_smix",
+      "plugin_xml_key": "downmix:ltrt_surround_mix_level",
+      "separate_encoder_parser_key": "ltrtsurmixlev",
+      "typed_object": "Priv+0x8D8 dee::Types::MixLevel",
+      "typed_value": "U32 MixLevelValue at object+0x50 / Priv+0x928",
+      "default": {"token": "-3", "internal_code": 4},
+      "token_to_code": {"-1.5": 3, "-3": 4, "-4.5": 5, "-6": 6, "-inf": 7},
+      "extra_code_constraint": "unsigned U32 code greater than 2",
+      "host_handler_only_tokens_not_visible": ["+3", "+1.5", "0"]
+    }
+  ],
+  "unbound_consumer_edges": {
+    "dme_host_keys_to_native_xml_writer": "UNBOUND",
+    "encoder_parser_helper_u32_slots_to_plugin_mixlevel_objects": "UNBOUND",
+    "mixlevel_u32_to_selected_same_owner_generation_read": "UNBOUND_NOT_CAPTURED",
+    "first_matrix_consumer": "UNBOUND_NOT_TRACED",
+    "first_bsi_consumer": "UNBOUND_NOT_TRACED",
+    "mode_effective_value": "UNBOUND"
+  },
+  "execution": {
+    "dee_run": false,
+    "windbg_run": false,
+    "ab_run": false,
+    "media_or_payload_read": false,
+    "pcm_bytes_read": 0,
+    "key_or_license_read": false,
+    "implementation_contact": false
+  }
+}
