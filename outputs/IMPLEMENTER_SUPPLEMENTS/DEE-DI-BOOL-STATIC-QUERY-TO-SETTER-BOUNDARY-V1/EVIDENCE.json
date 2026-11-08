@@ -1,0 +1,59 @@
+{
+  "schema": "jocforge.wash_supplement_evidence.v1",
+  "source_package": {
+    "package_id": "DEE-DIALOGUE-INTELLIGENCE-BOOL-FIRST-TYPED-CONSUMER-BOUNDARY-WASH-V1",
+    "manifest_sha256": "7aed6cf7d8e99d846420f1b62a6cd386ab759460ad97c569a4f77db6b1797d2d",
+    "package_seal_sha256": "226a6d831c4d80f5c6c7e5a98e161d2a9134481cd7555b068b24f02c00c41f0a",
+    "payloads_verified": 60,
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS"
+  },
+  "scope": {
+    "tool": "Ghidra 12.2 PUBLIC",
+    "mode": "existing read-only/no-analysis receipts reused",
+    "claim": "static Bool registration and conditional query-to-setter path only"
+  },
+  "xml_field": {
+    "path": "/filter/audio/encode_to_atmos_ddp/loudness/measure_only/dialogue_intelligence",
+    "type": "dee::bool / xs:boolean",
+    "input_only_value": "true"
+  },
+  "static_registration": {
+    "ctor": "FUN_180135d40",
+    "config_subobject": "Priv+0x20",
+    "register_function": "FUN_180136220",
+    "registered_member": "param_1+0x270 = Priv+0x290",
+    "container": "ParametersContainer at Priv+0xec0"
+  },
+  "conditional_query": {
+    "query_function": "FUN_18014f9f0",
+    "query_key_source": "dynamic param_2 record array",
+    "key_match": "exact byte-key match",
+    "getter": "FUN_1801a39b0 vtable slot +0x38",
+    "condition": "only if exact Dialogue Intelligence key is supplied",
+    "actual_xml_key_to_query": "UNBOUND"
+  },
+  "typed_setter": {
+    "dispatcher_object": "returned candidate Bool",
+    "setter_vtable_slot": "+0x28",
+    "target": "FUN_18016a540",
+    "stores_value_at": "this+0x50",
+    "runtime_invocation_for_dialogue_intelligence_key": "NOT_OBSERVED"
+  },
+  "f06_measurement": {
+    "result_path_summary": "F06 result vector +0x14 -> root +0xf6c -> source record +0x114 -> DDPJocEnc +0x54",
+    "bool_to_f06_same_owner_generation_join": "UNBOUND"
+  },
+  "limits": {
+    "selected_plugin_instance": "UNBOUND",
+    "runtime_generation": "UNBOUND",
+    "audio_or_measurement_effect": "NOT_RUN",
+    "implementation_ready": false
+  },
+  "exclusions": {
+    "raw_disassembly_or_decompilation_included": false,
+    "binaries_included": false,
+    "media_pcm_payload_key_license_included": false,
+    "implementation_contact_by_research_agent": false
+  }
+}

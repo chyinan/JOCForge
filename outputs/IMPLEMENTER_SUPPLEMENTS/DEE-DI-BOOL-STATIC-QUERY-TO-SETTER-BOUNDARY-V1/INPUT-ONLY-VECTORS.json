@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "DIALOGUE-INTELLIGENCE-BOOL-TRUE-01",
+      "input_only": true,
+      "input": {
+        "path": "/filter/audio/encode_to_atmos_ddp/loudness/measure_only/dialogue_intelligence",
+        "value": "true"
+      },
+      "expected_observation": {
+        "registered_bool_member": "Priv+0x290",
+        "conditional_exact_key_query": "UNBOUND",
+        "conditional_setter": "FUN_18016a540",
+        "f06_owner_join": "UNBOUND"
+      },
+      "expected_audio_output": null,
+      "runtime_status": "NOT_RUN"
+    }
+  ]
+}

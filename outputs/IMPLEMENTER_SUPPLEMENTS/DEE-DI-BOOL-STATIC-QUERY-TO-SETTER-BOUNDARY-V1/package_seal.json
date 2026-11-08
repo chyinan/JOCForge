@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-DI-BOOL-STATIC-QUERY-TO-SETTER-BOUNDARY-V1",
+  "manifest_sha256": "5dbba2d0f274e302bf061835a65b5e85cc5afc11014cdc326ee7dfc22a25475c",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "STATIC_BOOL_REGISTRATION_AND_CONDITIONAL_SETTER_BOUND; ACTUAL_QUERY_KEY_AND_F06_JOIN_UNBOUND; EFFECT_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package_id": "RF-MUSIC-STANDARD-SELECTOR-LINEAGE-WASH-V1",
+    "manifest_sha256": "233d3d0e8532e49fe6f4f371636fe689761b3a54876d541eb73944b93f03f906",
+    "manifest_sha256_marker": "dfc21213e007d4619d669455110e09c3e35e85ff3beaf5918c0ab2bd592553b8",
+    "package_seal_sha256": "096ec67c591cb125aa9d8296485ec2ed872626a38e5c0ec034de088f9d63a51f",
+    "checker_results": {
+      "normal": "PASS",
+      "python_o": "PASS"
+    }
+  },
+  "reused_token_map_manifest_sha256": "876592442cd78bb32dd562dda6b8c340bdf1ec11fe26d166bb40e8ec7a97c837"
+}

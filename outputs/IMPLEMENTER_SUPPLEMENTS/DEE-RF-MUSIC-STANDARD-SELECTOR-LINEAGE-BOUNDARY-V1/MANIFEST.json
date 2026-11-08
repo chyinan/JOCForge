@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-RF-MUSIC-STANDARD-SELECTOR-LINEAGE-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "RF_RAW_MAP3_AND_SEPARATE_SELECTOR_PATH_BOUND; RAW_TO_SELECTOR_JOIN_UNBOUND; BSI_AUDIO_EFFECT_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 808,
+      "sha256": "5193ae0bd0deca9be614be06d8020fcc78624b77e68f7aabcba22f1038f861c1"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2178,
+      "sha256": "9fce15ac5eea5484404b490b28fb5bc54347e34f6adc1cd1d2211306494ae279"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 621,
+      "sha256": "c7bbb9912cd1de3ed9071579b99b7efde363890d34674a381c5195d7b4151c9e"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 637,
+      "sha256": "2b6f1c1dfe3e33cc55d0a1b84b9683be1a0a821ca0485bdc0abb55f77c0f98fd"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 1714,
+      "sha256": "5b3bcb408e934f5f5a1625a5fcdba16f9abdcee98e717fb57c30906af2880ff1"
+    }
+  ]
+}

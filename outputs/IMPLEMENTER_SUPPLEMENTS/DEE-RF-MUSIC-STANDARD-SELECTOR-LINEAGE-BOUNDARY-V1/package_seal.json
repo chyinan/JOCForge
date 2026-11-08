@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "DEE-RF-MUSIC-STANDARD-SELECTOR-LINEAGE-BOUNDARY-V1",
+  "manifest_sha256": "f008158fa2b9c82563887f2dcf6aea652b3124589616fc64fb316ac868291668",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "RF_RAW_MAP3_AND_SEPARATE_SELECTOR_PATH_BOUND; RAW_TO_SELECTOR_JOIN_UNBOUND; BSI_AUDIO_EFFECT_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

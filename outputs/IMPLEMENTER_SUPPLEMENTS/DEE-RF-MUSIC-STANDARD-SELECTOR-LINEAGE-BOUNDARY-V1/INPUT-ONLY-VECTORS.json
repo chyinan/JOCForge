@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "RF-MUSIC-STANDARD-RAW3-VS-SELECTOR-01",
+      "input_only": true,
+      "input": {
+        "field": "drc:rf_mode_drc_profile",
+        "token": "music_standard"
+      },
+      "expected_observation": {
+        "rf_map_candidate_raw_u32": 3,
+        "rf_map_destination": "per-frame +0xa4",
+        "separate_selector_field": "Priv+0xfc8",
+        "selector_source": "constructor default or parseWav channels rule",
+        "raw_3_to_selector_relation": "UNBOUND"
+      },
+      "expected_audio_output": null,
+      "runtime_status": "NOT_RUN"
+    }
+  ]
+}

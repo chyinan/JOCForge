@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "source_package": {
+    "package_id": "DEE-DIALOGUE-INTELLIGENCE-BOOL-FIRST-TYPED-CONSUMER-BOUNDARY-WASH-V1",
+    "manifest_sha256": "7aed6cf7d8e99d846420f1b62a6cd386ab759460ad97c569a4f77db6b1797d2d",
+    "package_seal_sha256": "226a6d831c4d80f5c6c7e5a98e161d2a9134481cd7555b068b24f02c00c41f0a",
+    "payloads_verified": 60,
+    "checker_results": {
+      "normal": "PASS",
+      "python_o": "PASS"
+    }
+  },
+  "claims": {
+    "actual_query_key_to_bool": "UNBOUND",
+    "actual_selected_instance": "UNBOUND",
+    "f06_generation_join": "UNBOUND"
+  }
+}

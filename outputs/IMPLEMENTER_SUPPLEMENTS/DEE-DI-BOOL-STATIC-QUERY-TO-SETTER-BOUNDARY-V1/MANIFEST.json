@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "DEE-DI-BOOL-STATIC-QUERY-TO-SETTER-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "STATIC_BOOL_REGISTRATION_AND_CONDITIONAL_SETTER_BOUND; ACTUAL_QUERY_KEY_AND_F06_JOIN_UNBOUND; EFFECT_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 752,
+      "sha256": "6f6ffb3377eca328b3c2b06458aaaa37f155a78c8aa1a8976dead9d93ff2a715"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2247,
+      "sha256": "1caf6dcd90f734bc9ced989b7769a0cf927cdda3a35518b85deaed697955ad6d"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 614,
+      "sha256": "0fb165bb86a32972b3303729cb11ca6bc4006bc0cc80047e64e3b9f94083d937"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 597,
+      "sha256": "536b260a1b9823058feea831d1e6dd402b87fac0c00c8e7b2bbce7bceeaf890b"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 1787,
+      "sha256": "06fd1d4954aa1d7db3ad47342a922af783a9aece1d8a86175c02746df24815a8"
+    }
+  ]
+}

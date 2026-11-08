@@ -1,0 +1,71 @@
+{
+  "schema": "jocforge.wash_supplement_evidence.v1",
+  "source_package": {
+    "package_id": "RF-MUSIC-STANDARD-SELECTOR-LINEAGE-WASH-V1",
+    "manifest_sha256": "233d3d0e8532e49fe6f4f371636fe689761b3a54876d541eb73944b93f03f906",
+    "manifest_checksum_file_sha256": "dfc21213e007d4619d669455110e09c3e35e85ff3beaf5918c0ab2bd592553b8",
+    "package_seal_sha256": "096ec67c591cb125aa9d8296485ec2ed872626a38e5c0ec034de088f9d63a51f",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS"
+  },
+  "scope": {
+    "tool": "Ghidra 12.2 PUBLIC",
+    "mode": "read-only/no-analysis",
+    "claim": "one RF raw-map candidate to separate selector boundary; no audio semantics"
+  },
+  "rf_input": {
+    "field": "drc:rf_mode_drc_profile",
+    "token": "music_standard",
+    "static_map_raw_u32": 3,
+    "raw_bits": 32,
+    "raw_semantics": "UNBOUND",
+    "per_frame_map_destination": "FUN_1801535b0 -> param_2+0xa4"
+  },
+  "selector": {
+    "field": "Priv+0xfc8",
+    "width_bits": 32,
+    "constructor_default_writer": {
+      "function": "FUN_180135d40",
+      "value": 0,
+      "typed_priv_receiver": true
+    },
+    "parsewav_writer": {
+      "function": "FUN_18014cb80",
+      "source_key": "channels",
+      "rule": "2 if channels < 10 else 1",
+      "called_by": "FUN_18014a600 with same static param_1"
+    },
+    "first_encode_read": {
+      "function": "FUN_1801535b0",
+      "copies_to": [
+        "per-frame +0x9c",
+        "per-frame +0x12c"
+      ]
+    },
+    "branch_consumer": {
+      "function": "FUN_1801475f0",
+      "tests": [
+        1,
+        2
+      ]
+    },
+    "raw_music_standard_3_to_selector": "UNBOUND"
+  },
+  "lineage": {
+    "per_frame_raw_a4_to_priv_fc8_transfer": "UNBOUND",
+    "runtime_instance_generation": "UNBOUND",
+    "parsewav_to_encoder_same_instance_generation": "UNBOUND"
+  },
+  "effect": {
+    "bsi_writer": "UNBOUND",
+    "audio_effect": "NOT_ASSERTED",
+    "dee_run": "NOT_RUN",
+    "implementation_ready": false
+  },
+  "exclusions": {
+    "raw_disassembly_or_decompilation_included": false,
+    "binaries_included": false,
+    "media_pcm_payload_key_license_included": false,
+    "implementation_contact_by_research_agent": false
+  }
+}
