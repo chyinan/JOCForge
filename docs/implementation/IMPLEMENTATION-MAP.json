@@ -8634,6 +8634,82 @@
           ],
           "validation_boundary": "One controlled N38, 48 kHz, PCM24, 1024 kbps pair held Line DRC at film_light and changed only RF DRC from film_light to music_standard. Both runs naturally exited 0 and produced 32 frames/192 audio blocks. The bounded BSI parser observed a changed compre sequence/distribution and identical dynrng sequence/distribution. This binds an RF-token-associated BSI metadata difference only for this input/window; decoded audio or gain effect, semantics of all codes, other profiles, N36, rates, and product enablement remain UNBOUND/NOT_ESTABLISHED.",
           "delivery_scope": "BOUNDED_BSI_METADATA_OBSERVATION_ONLY_NO_ALGORITHM_OR_PROFILE_ENABLEMENT"
+        },
+        {
+          "slice_id": "washed-di-measure-only-bool-boundary",
+          "mapping_status": "SETUP_BOOL_CANDIDATE_PLUS94__SCOPED_CONSUMER_READS_PLUS9C_PLUS140__BOOL_USE_UNBOUND",
+          "implementation_status": "WASHED_REFERENCE_ONLY_PRIOR_DIAGNOSTICS_REUSED__NO_NEW_RUN_OR_EFFECT",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "The washed scoped static trace conditionally writes a Bool candidate to measurement setup +0x94. The scoped first per-record consumer FUN_1801764e0 reads +0x9c and +0x140; this body did not capture a read of +0x94. Earlier measurement-only A/B observations are reused, not new runs, and show sample-dependent diagnostic changes; the measurement unit is unstated. Bool-to-algorithm/result, selected owner/generation, and audio/JOC effect remain UNBOUND/NOT_RUN.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1/FINDINGS.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "This is a static setup/consumer boundary plus references to prior measurement receipts; no callback clock or new execution is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_DI_MEASUREMENT_ONLY_BOOL_BOUNDARY",
+            "package_id": "DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1/FINDINGS.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1/SOURCE-PACKAGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "97b0efcbf4390327f668e784e7d613cb90ae5372661dc2e4ee57da6190546497",
+            "supplement_seal_sha256": "c6fedabb3518de4b5062e90a95f5deebdfaeb8077d4dd3297f89a608f4084cce",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "bool_candidate": "Priv+0x290; conditional measurement setup destination +0x94",
+              "first_scoped_per_record_consumer": "FUN_1801764e0",
+              "scoped_consumer_reads": [
+                "+0x9c",
+                "+0x140"
+              ],
+              "setup_plus_0x94_read": "NOT_CAPTURED_IN_SCOPED_BODY",
+              "prior_measurement_diagnostic": "SAMPLE_DEPENDENT_CHANGE_REUSED_FROM_PRIOR_RECEIPTS",
+              "measurement_unit": "NOT_STATED_IN_NATIVE_LOG",
+              "bool_to_algorithm_or_result": "UNBOUND",
+              "owner_generation": "UNBOUND",
+              "new_runtime_capture": "NOT_RUN",
+              "audio_or_joc_effect": "NOT_INFERRED"
+            },
+            "validation_boundary": "The washed scoped static trace conditionally writes a Bool candidate to measurement setup +0x94. The scoped first per-record consumer FUN_1801764e0 reads +0x9c and +0x140; this body did not capture a read of +0x94. Earlier measurement-only A/B observations are reused, not new runs, and show sample-dependent diagnostic changes; the measurement unit is unstated. Bool-to-algorithm/result, selected owner/generation, and audio/JOC effect remain UNBOUND/NOT_RUN."
+          },
+          "vectors": {
+            "kind": "WASHED_PRIOR_RECEIPT_INPUTS_ONLY_NO_NEW_RUN",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Two prior DI false/true measurement-only pairs are referenced; both pairs remain NOT_RUN in this supplement."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1/EVIDENCE.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "NO_NEW_RUN_PRIOR_RECEIPTS_REUSED"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Actual query-key selection and selected Bool provider owner/generation.",
+            "A read of setup +0x94 by a typed algorithm consumer and Bool-to-result mapping.",
+            "New runtime capture, measurement unit, and any audio/JOC effect."
+          ],
+          "validation_boundary": "The washed scoped static trace conditionally writes a Bool candidate to measurement setup +0x94. The scoped first per-record consumer FUN_1801764e0 reads +0x9c and +0x140; this body did not capture a read of +0x94. Earlier measurement-only A/B observations are reused, not new runs, and show sample-dependent diagnostic changes; the measurement unit is unstated. Bool-to-algorithm/result, selected owner/generation, and audio/JOC effect remain UNBOUND/NOT_RUN.",
+          "delivery_scope": "MEASUREMENT_ONLY_REFERENCE_NO_BOOL_BEHAVIOR_OR_AUDIO_ENABLEMENT"
         }
       ]
     },
@@ -69628,6 +69704,28 @@
       "not_run": [
         "Decoded audio/gain effect and semantic interpretation of all BSI codes.",
         "Other RF or Line profiles, N36, other rates, and production support."
+      ]
+    },
+    {
+      "package_id": "DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1",
+      "manifest_sha256": "97b0efcbf4390327f668e784e7d613cb90ae5372661dc2e4ee57da6190546497",
+      "supplement_seal_sha256": "c6fedabb3518de4b5062e90a95f5deebdfaeb8077d4dd3297f89a608f4084cce",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS_4_OF_4",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "SCOPED_SETUP_BOOL_CANDIDATE_AND_PRIOR_DIAGNOSTICS_ONLY; BOOL_USE_OWNER_JOIN_AND_EFFECT_UNBOUND; NEW_RUN_NOT_RUN; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Actual query selection, setup +0x94 consumer, Bool algorithm/result use, owner/generation, and audio/JOC effect.",
+        "Any new measurement or audio run; prior observations were reused only."
       ]
     }
   ]

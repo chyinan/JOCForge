@@ -1525,3 +1525,7 @@ Wash package `DEE-ATMOS-SILENCE-RANGE-BOUNDARY-V1` (manifest SHA-256 `4c20f71b8f
 ## 2026-11-08: Bounded N38 RF DRC BSI observation
 
 Wash package `DEE-RF-DRC-COMPRE-AB-OBSERVATION-V1` (manifest SHA-256 `2f774f444f7f94fb2d8a35e38221023461feddc38f73b98557f36329b614a905`, seal SHA-256 `af13bcf27af0c30833510d709f0b2b0dddd6c80687b23f8476b7f7aed19d4232`) records one controlled N38, 48 kHz, PCM24, 1024 kbps pair with Line=`film_light`; RF changes from `film_light` to `music_standard`. Both runs exited 0 with 32 frames/192 audio blocks. BSI `compre` differs and `dynrng` matches. This bounds only a single-input/window RF-associated BSI metadata difference. Decoded audio/gain semantics and generalization to other profiles, N36, or other rates remain `UNBOUND`; no product option gate or algorithm changed.
+
+## 2026-11-08: DI measurement-only Bool boundary
+
+Wash package `DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1` (manifest SHA-256 `97b0efcbf4390327f668e784e7d613cb90ae5372661dc2e4ee57da6190546497`, seal SHA-256 `c6fedabb3518de4b5062e90a95f5deebdfaeb8077d4dd3297f89a608f4084cce`) conditionally places a Bool candidate at measurement setup `+0x94`. The scoped first per-record consumer reads `+0x9c/+0x140`; a `+0x94` read was not captured in that body. Prior measurement-only A/B receipts are reused and show sample-dependent diagnostic changes; no new run occurred and the measurement unit is unstated. Query selection, owner/generation, Bool-to-algorithm/result, and audio/JOC effects remain `UNBOUND/NOT_RUN`. No behavior is enabled.

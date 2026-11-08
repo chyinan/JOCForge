@@ -1,0 +1,129 @@
+{
+  "conclusion": {
+    "audio_or_joc_effect": "NOT_INFERRED",
+    "bool_algorithm_consumer": "UNBOUND",
+    "new_runtime_capture": "NOT_RUN",
+    "sample_dependent_measurement_diagnostic_change": "OBSERVED_IN_PRIOR_RECEIPT"
+  },
+  "exclusions": {
+    "encoded_payload": false,
+    "implementation_contact": false,
+    "key_license": false,
+    "pcm": false
+  },
+  "implementation_ready": false,
+  "input_only_vectors": {
+    "controlled_field": "dialogue_intelligence",
+    "metering_mode": "1770-4",
+    "outputs_or_effects_in_vector": "NONE",
+    "pairs": [
+      {
+        "arms": [
+          {
+            "dialogue_intelligence": false,
+            "new_run": "NOT_RUN"
+          },
+          {
+            "dialogue_intelligence": true,
+            "new_run": "NOT_RUN"
+          }
+        ],
+        "range": {
+          "end": 2207,
+          "start": 2112,
+          "time_base": "file_position"
+        },
+        "sample_id": "human_is_cat",
+        "source_sha256_from_prior_receipt": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+      },
+      {
+        "arms": [
+          {
+            "dialogue_intelligence": false,
+            "new_run": "NOT_RUN"
+          },
+          {
+            "dialogue_intelligence": true,
+            "new_run": "NOT_RUN"
+          }
+        ],
+        "range": {
+          "end": "",
+          "start": "",
+          "time_base": "file_position"
+        },
+        "sample_id": "my_jealousy",
+        "source_sha256_from_prior_receipt": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d"
+      }
+    ],
+    "schema": "wash-di-bool-measurement-input-only-v1",
+    "source_hash_provenance": "INHERITED_FROM_SEALED_PRIOR_RECEIPT; NO_AUDIO_REREAD_OR_REHASH_THIS_TASK",
+    "speech_threshold": 15,
+    "status": "INPUTS_ONLY; PRIOR_RECEIPT_REFERENCED; NO_NEW_OUTPUTS"
+  },
+  "prior_measurement_observations": {
+    "human_is_cat": {
+      "di_false": {
+        "final_integrated_loudness": -18.605364,
+        "gating": "level",
+        "speech_percentage": -1
+      },
+      "di_true": {
+        "final_integrated_loudness": -18.605364,
+        "gating": "level",
+        "speech_percentage": 0
+      },
+      "range": "2112-2207 file_position",
+      "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+    },
+    "measurement_unit": "NOT_STATED_IN_NATIVE_LOG",
+    "metering_mode": "1770-4",
+    "my_jealousy": {
+      "di_false": {
+        "final_integrated_loudness": -16.291187,
+        "gating": "level",
+        "speech_percentage": -1
+      },
+      "di_true": {
+        "final_integrated_loudness": -24.719242,
+        "gating": "dialogue",
+        "speech_percentage": 91.47
+      },
+      "range": "full file",
+      "source_sha256": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d"
+    },
+    "new_run": "NOT_RUN",
+    "source_receipt_sha256": "5fde217056781608cf43dff97fc4d10baf95e815af98a1cef70bc863694f168d",
+    "speech_threshold": 15,
+    "xml_only_difference": "dialogue_intelligence"
+  },
+  "schema": "washed-implementer-supplement.v1",
+  "source_package": {
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "manifest_sha256": "1598c2739e596d5f74ed61394cb052dbbdf7797967242bbb5e769d100352f560",
+    "package_id": "dialogue_intelligence_bool_measurement_first_consumer_20261108_0851z",
+    "package_seal_sha256": "e7c39ab3ca8ae7b6e0751047e80f25b331e2357abc22167bce79fdaf34940b9",
+    "payloads_verified": 37
+  },
+  "static_boundary": {
+    "F06_per_record_source": "F32 at record+0x14",
+    "aggregate_result_function": "FUN_1801769a0",
+    "bool_candidate": "Priv+0x290 dee::bool",
+    "bool_read_helper": "FUN_180152f30",
+    "bool_to_result_join": "UNBOUND",
+    "first_measurement_consumer": "FUN_1801764e0",
+    "first_typed_algorithm_use": "UNBOUND",
+    "measurement_setup_destination": "+0x94",
+    "observed_setup_reads": [
+      "+0x9c",
+      "+0x140"
+    ],
+    "owner_generation_join": "UNBOUND",
+    "query_key": "loudness:measure_only:dialogue_intelligence",
+    "query_key_to_selected_bool": "CONDITIONAL_STATIC; ACTUAL_SELECTION_UNBOUND",
+    "setup_bool_plus_0x94_read": "NOT_CAPTURED_IN_SCOPED_BODY"
+  },
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1"
+}

@@ -1,0 +1,9 @@
+{
+  "checker_normal": "PASS",
+  "checker_python_O": "PASS",
+  "manifest_sha256": "1598c2739e596d5f74ed61394cb052dbbdf7797967242bbb5e769d100352f560",
+  "package_id": "dialogue_intelligence_bool_measurement_first_consumer_20261108_0851z",
+  "package_seal_sha256": "e7c39ab3ca8ae7b6e0751047e80f25b331e2357abc22167bce79fdaf34940b9",
+  "payloads_verified": 37,
+  "raw_source_or_decompilation_copied": false
+}
