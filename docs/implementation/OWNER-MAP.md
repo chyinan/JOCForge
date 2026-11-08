@@ -191,6 +191,7 @@
 | F01E/authored-preferred-downmix-mode-token-admission | F01E | `frontend` |
 | F01E/authored-metering-mode-token-admission | F01E | `frontend` |
 | F01E/authored-temp-directory-value-admission | F01E | `frontend` |
+| F01E/authored-output-container-metadata-admission | F01E | `frontend` |
 | F03G/target-slot-install | F03G | `spatial_control` |
 | F03C/candidate-selector | F03C | `spatial_control` |
 | F03C/selector-score-choice | F03C | `spatial_control` |

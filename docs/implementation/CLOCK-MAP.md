@@ -191,6 +191,7 @@
 | F01E/authored-preferred-downmix-mode-token-admission | — | `The parser stores the authored mode token without rendering or applying an audio mix.`<br>`The selected CLI gate still accepts only loro.`<br>`No selected XML to native MixMode or BSI sink is established.` |
 | F01E/authored-metering-mode-token-admission | — | `The parser preserves the authored metering token without converting it to an applied mode value.`<br>`The selected CLI rejects non-1770-4 values before Meter.`<br>`Washed raw-map values and bounded validator paths do not establish measurement/audio effects.` |
 | F01E/authored-temp-directory-value-admission | — | `The parser stores the authored boolean and path value without using a file or directory API.`<br>`No path resolution, cleanup, or deletion/retention behavior is performed.`<br>`The selected CLI gate rejects a present temp_directory configuration before Meter/callback/encode.` |
+| F01E/authored-output-container-metadata-admission | — | `override_frame_rate is preserved as a token and is not converted or applied.`<br>`MP4/DASH output branches are rejected before output-path resolution.` |
 | F03G/target-slot-install | — | `Pure per-callback value transition; no clock or committed state is owned.` |
 | F03C/candidate-selector | — | `Each selector call initializes cold scratch; no callback/source/AU counter or cross-call selector state is owned.` |
 | F03C/selector-score-choice | — | `No state or clock is owned.` |

@@ -39,6 +39,10 @@ const ADMITTED_TIMECODE_FRAME_RATE_TOKENS: &[&str] = &[
 ];
 const ADMITTED_TIME_BASE_TOKENS: &[&str] = &["file_position", "embedded_timecode"];
 const ADMITTED_METERING_MODE_TOKENS: &[&str] = &["1770-4", "1770-3", "1770-2", "1770-1", "LeqA"];
+const ADMITTED_OUTPUT_FORMAT_TOKENS: &[&str] = &["mp4", "dash"];
+const ADMITTED_OUTPUT_FRAME_RATE_TOKENS: &[&str] = &[
+    "no", "23.976", "24", "25", "29.97", "30", "48", "50", "59.94", "60",
+];
 
 /// Validated WAVE descriptor supplied by the input provider.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -224,6 +228,55 @@ impl SelectedFileReference {
     }
 }
 
+/// Authored output container kind accepted by the XML parser.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum SelectedOutputContainer {
+    Ec3,
+    Mp4,
+    Dash,
+}
+
+impl SelectedOutputContainer {
+    pub const fn xml_name(self) -> &'static str {
+        match self {
+            Self::Ec3 => "ec3",
+            Self::Mp4 => "mp4",
+            Self::Dash => "dash",
+        }
+    }
+
+    pub const fn is_ec3(self) -> bool {
+        matches!(self, Self::Ec3)
+    }
+}
+
+/// Parsed output-container tokens, retained without creating a muxer or writer.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct SelectedOutputConfiguration {
+    container: SelectedOutputContainer,
+    output_format: Option<String>,
+    override_frame_rate: Option<String>,
+    plugin_base: Option<String>,
+}
+
+impl SelectedOutputConfiguration {
+    pub const fn container(&self) -> SelectedOutputContainer {
+        self.container
+    }
+
+    pub fn output_format(&self) -> Option<&str> {
+        self.output_format.as_deref()
+    }
+
+    pub fn override_frame_rate(&self) -> Option<&str> {
+        self.override_frame_rate.as_deref()
+    }
+
+    pub fn plugin_base(&self) -> Option<&str> {
+        self.plugin_base.as_deref()
+    }
+}
+
 /// Authored misc/temp_dir values retained for XML identity only.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct SelectedTempDirectoryConfiguration {
@@ -250,6 +303,7 @@ impl SelectedTempDirectoryConfiguration {
 pub struct SelectedJobFileReferences {
     input_kind: SelectedInputKind,
     input_reference: SelectedFileReference,
+    output_container: SelectedOutputContainer,
     output_reference: SelectedFileReference,
 }
 
@@ -264,6 +318,10 @@ impl SelectedJobFileReferences {
 
     pub fn output_reference(&self) -> &SelectedFileReference {
         &self.output_reference
+    }
+
+    pub const fn output_container(&self) -> SelectedOutputContainer {
+        self.output_container
     }
 }
 
@@ -321,6 +379,7 @@ pub struct SelectedJobConfiguration {
     input_kind: SelectedInputKind,
     input_reference: SelectedFileReference,
     output_reference: SelectedFileReference,
+    output_configuration: SelectedOutputConfiguration,
     temp_directory: Option<SelectedTempDirectoryConfiguration>,
     wave: SelectedWaveDescriptor,
     source_samples: u64,
@@ -427,6 +486,14 @@ impl SelectedJobConfiguration {
                 "path": temp_directory.path()
             });
         }
+        if !self.output_configuration.container().is_ec3() {
+            identity["output_configuration"] = json!({
+                "container": self.output_configuration.container().xml_name(),
+                "output_format": self.output_configuration.output_format(),
+                "override_frame_rate": self.output_configuration.override_frame_rate(),
+                "plugin_base": self.output_configuration.plugin_base()
+            });
+        }
         identity
     }
 
@@ -448,6 +515,10 @@ impl SelectedJobConfiguration {
 
     pub fn output_reference(&self) -> &SelectedFileReference {
         &self.output_reference
+    }
+
+    pub fn output_configuration(&self) -> &SelectedOutputConfiguration {
+        &self.output_configuration
     }
 
     /// Returns the optional authored misc/temp_dir values retained for identity only.
@@ -1255,13 +1326,13 @@ pub fn parse_selected_job_configuration(
         optional_silence_duration(encoder, "append_silence_duration", wave.sample_rate_hz())?;
     let temp_directory = parse_optional_temp_directory(root)?;
 
-    let output_node =
-        path_node(root, &["output", "ec3"])?.ok_or(JobConfigurationError::MissingField)?;
+    let (output_container, output_node) = selected_output_branch(root)?;
     let output_reference =
         parse_file_reference(output_node, JobConfigurationError::InvalidOutputReference)?;
     if output_reference.file_name.is_empty() || output_reference.local_path.is_empty() {
         return Err(JobConfigurationError::InvalidOutputReference);
     }
+    let output_configuration = parse_selected_output_configuration(output_container, output_node)?;
 
     let selected_profile = resolve_selected_profile(&EncodingProfile::selected_with_codec_rate(
         codec_rate,
@@ -1273,6 +1344,7 @@ pub fn parse_selected_job_configuration(
         input_kind,
         input_reference,
         output_reference,
+        output_configuration,
         temp_directory,
         wave,
         source_samples,
@@ -1350,11 +1422,8 @@ pub fn parse_selected_job_file_references(
         parse_file_reference(input_node, JobConfigurationError::InvalidInputReference)
             .map_err(JobXmlIngressError::Configuration)?;
 
-    let output_node = path_node(root, &["output", "ec3"])
-        .map_err(JobXmlIngressError::Configuration)?
-        .ok_or(JobXmlIngressError::Configuration(
-            JobConfigurationError::MissingField,
-        ))?;
+    let (output_container, output_node) =
+        selected_output_branch(root).map_err(JobXmlIngressError::Configuration)?;
     let output_reference =
         parse_file_reference(output_node, JobConfigurationError::InvalidOutputReference)
             .map_err(JobXmlIngressError::Configuration)?;
@@ -1367,6 +1436,7 @@ pub fn parse_selected_job_file_references(
     Ok(SelectedJobFileReferences {
         input_kind,
         input_reference,
+        output_container,
         output_reference,
     })
 }
@@ -1375,11 +1445,6 @@ fn validate_external_job_xml_node(
     node: Node<'_, '_>,
     path: &str,
 ) -> Result<(), JobXmlIngressError> {
-    if matches!(path, "/job_config/output/mp4" | "/job_config/output/dash") {
-        return Err(JobXmlIngressError::UnsupportedOutputContainer(
-            path.to_owned(),
-        ));
-    }
     if node.tag_name().namespace().is_some() || !external_job_xml_element_is_supported(path) {
         return Err(JobXmlIngressError::UnsupportedElement(path.to_owned()));
     }
@@ -1393,6 +1458,8 @@ fn validate_external_job_xml_node(
                     | "/job_config/input/audio/atmos_mezz"
                     | "/job_config/filter/audio/encode_to_atmos_ddp"
                     | "/job_config/output/ec3"
+                    | "/job_config/output/mp4"
+                    | "/job_config/output/dash"
             );
         if !allowed_version {
             return Err(JobXmlIngressError::UnsupportedAttribute {
@@ -1475,6 +1542,24 @@ fn external_job_xml_element_is_supported(path: &str) -> bool {
             | "/job_config/output/ec3/storage"
             | "/job_config/output/ec3/storage/local"
             | "/job_config/output/ec3/storage/local/path"
+            | "/job_config/output/mp4"
+            | "/job_config/output/mp4/output_format"
+            | "/job_config/output/mp4/override_frame_rate"
+            | "/job_config/output/mp4/file_name"
+            | "/job_config/output/mp4/storage"
+            | "/job_config/output/mp4/storage/local"
+            | "/job_config/output/mp4/storage/local/path"
+            | "/job_config/output/mp4/plugin"
+            | "/job_config/output/mp4/plugin/base"
+            | "/job_config/output/dash"
+            | "/job_config/output/dash/output_format"
+            | "/job_config/output/dash/override_frame_rate"
+            | "/job_config/output/dash/file_name"
+            | "/job_config/output/dash/storage"
+            | "/job_config/output/dash/storage/local"
+            | "/job_config/output/dash/storage/local/path"
+            | "/job_config/output/dash/plugin"
+            | "/job_config/output/dash/plugin/base"
             | "/job_config/misc"
             | "/job_config/misc/temp_dir"
             | "/job_config/misc/temp_dir/clean_temp"
@@ -1508,6 +1593,14 @@ fn external_job_xml_container_is_supported(path: &str) -> bool {
             | "/job_config/output/ec3"
             | "/job_config/output/ec3/storage"
             | "/job_config/output/ec3/storage/local"
+            | "/job_config/output/mp4"
+            | "/job_config/output/mp4/storage"
+            | "/job_config/output/mp4/storage/local"
+            | "/job_config/output/mp4/plugin"
+            | "/job_config/output/dash"
+            | "/job_config/output/dash/storage"
+            | "/job_config/output/dash/storage/local"
+            | "/job_config/output/dash/plugin"
     )
 }
 
@@ -1586,6 +1679,67 @@ fn parse_file_reference(
         file_name: file_name.to_owned(),
         local_path: local_path.to_owned(),
     })
+}
+
+fn selected_output_branch<'a, 'input>(
+    root: Node<'a, 'input>,
+) -> Result<(SelectedOutputContainer, Node<'a, 'input>), JobConfigurationError> {
+    let output = path_node(root, &["output"])?.ok_or(JobConfigurationError::MissingField)?;
+    let branches = [
+        (SelectedOutputContainer::Ec3, single_child(output, "ec3")?),
+        (SelectedOutputContainer::Mp4, single_child(output, "mp4")?),
+        (SelectedOutputContainer::Dash, single_child(output, "dash")?),
+    ];
+    let mut selected = None;
+    for (container, node) in branches {
+        if let Some(node) = node {
+            if selected.is_some() {
+                return Err(JobConfigurationError::UnsupportedFieldValue);
+            }
+            selected = Some((container, node));
+        }
+    }
+    selected.ok_or(JobConfigurationError::MissingField)
+}
+
+fn parse_selected_output_configuration(
+    container: SelectedOutputContainer,
+    node: Node<'_, '_>,
+) -> Result<SelectedOutputConfiguration, JobConfigurationError> {
+    if container.is_ec3() {
+        return Ok(SelectedOutputConfiguration {
+            container,
+            output_format: None,
+            override_frame_rate: None,
+            plugin_base: None,
+        });
+    }
+    Ok(SelectedOutputConfiguration {
+        container,
+        output_format: optional_xml_choice(
+            node,
+            &["output_format"],
+            ADMITTED_OUTPUT_FORMAT_TOKENS,
+        )?,
+        override_frame_rate: optional_xml_choice(
+            node,
+            &["override_frame_rate"],
+            ADMITTED_OUTPUT_FRAME_RATE_TOKENS,
+        )?,
+        plugin_base: path_text(node, &["plugin", "base"])?.map(ToOwned::to_owned),
+    })
+}
+
+fn optional_xml_choice(
+    root: Node<'_, '_>,
+    path: &[&str],
+    choices: &[&str],
+) -> Result<Option<String>, JobConfigurationError> {
+    match path_text(root, path)? {
+        None => Ok(None),
+        Some(value) if choices.contains(&value) => Ok(Some(value.to_owned())),
+        Some(_) => Err(JobConfigurationError::UnsupportedFieldValue),
+    }
 }
 
 /// Preserves an optional XML string, using the selected `auto` default when absent or empty.

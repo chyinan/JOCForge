@@ -3,9 +3,9 @@ use jocforge_domain::frontend::bed_channel_join::{PhysicalBedTrack, join_selecte
 use jocforge_domain::frontend::dbmd_sections::parse_selected_dbmd_sections;
 use jocforge_domain::frontend::job_configuration::{
     JobConfigurationError, PrimaryMetadataChunkHashes, SelectedDrcProfile, SelectedHeightTrim,
-    SelectedInputKind, SelectedPrimaryRuntimeIdentity, SelectedSurroundTrim,
-    SelectedWaveDescriptor, bind_admitted_selected_input, parse_selected_job_configuration,
-    parse_selected_job_file_references,
+    SelectedInputKind, SelectedOutputContainer, SelectedPrimaryRuntimeIdentity,
+    SelectedSurroundTrim, SelectedWaveDescriptor, bind_admitted_selected_input,
+    parse_selected_job_configuration, parse_selected_job_file_references,
 };
 use jocforge_domain::profile::EmdfCarriageProfile;
 use serde_json::Value;
@@ -364,6 +364,72 @@ fn authored_temp_directory_values_are_preserved_without_file_io() {
     let invalid_xml = authored_xml.replace(
         "<clean_temp>true</clean_temp>",
         "<clean_temp>yes</clean_temp>",
+    );
+    assert_eq!(
+        parse_selected_job_configuration(invalid_xml.as_bytes(), wave, source_samples).unwrap_err(),
+        JobConfigurationError::UnsupportedFieldValue
+    );
+}
+
+#[test]
+fn authored_mp4_and_dash_output_options_are_parsed_without_muxing() {
+    let vectors = fixture_json("job-configuration-vectors.json");
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["id"] == "accepted_full_adm")
+        .unwrap();
+    let descriptor = &case["pcm_descriptor"];
+    let wave = SelectedWaveDescriptor::new(
+        descriptor["sample_rate"].as_u64().unwrap() as u32,
+        descriptor["channels"].as_u64().unwrap() as u16,
+        descriptor["pcm_bits"].as_u64().unwrap() as u16,
+    );
+    let source_samples = descriptor["source_samples"].as_u64().unwrap();
+    let base_xml = case["input_xml"].as_str().unwrap();
+    let ec3_branch = "<output><ec3><file_name>out.ec3</file_name><storage><local><path>fixture</path></local></storage></ec3></output>";
+    let cases = [
+        ("mp4", "mp4", "no", "out.m4a", SelectedOutputContainer::Mp4),
+        (
+            "dash",
+            "dash",
+            "24",
+            "out.mpd",
+            SelectedOutputContainer::Dash,
+        ),
+    ];
+
+    for (branch, format, frame_rate, file_name, expected_container) in cases {
+        let output_xml = format!(
+            "<output><{branch} version=\"1\"><output_format>{format}</output_format><override_frame_rate>{frame_rate}</override_frame_rate><file_name>{file_name}</file_name><storage><local><path>fixture</path></local></storage><plugin><base>opaque-plugin-value</base></plugin></{branch}></output>"
+        );
+        let authored_xml = base_xml.replacen(ec3_branch, &output_xml, 1);
+        let references = parse_selected_job_file_references(authored_xml.as_bytes())
+            .expect("the strict XML surface admits MP4 and DASH values as references");
+        assert_eq!(references.output_container(), expected_container);
+        assert_eq!(references.output_reference().file_name(), file_name);
+
+        let configuration =
+            parse_selected_job_configuration(authored_xml.as_bytes(), wave, source_samples)
+                .expect("output fields are parsed without starting a muxer");
+        let output = configuration.output_configuration();
+        assert_eq!(output.container(), expected_container);
+        assert_eq!(output.output_format(), Some(format));
+        assert_eq!(output.override_frame_rate(), Some(frame_rate));
+        assert_eq!(output.plugin_base(), Some("opaque-plugin-value"));
+        let identity = configuration.normalized_identity_value();
+        assert_eq!(identity["output_configuration"]["container"], branch);
+        assert_eq!(identity["output_configuration"]["output_format"], format);
+        assert_eq!(
+            identity["output_configuration"]["override_frame_rate"],
+            frame_rate
+        );
+    }
+
+    let invalid_xml = base_xml.replace(
+        "<output><ec3><file_name>out.ec3</file_name><storage><local><path>fixture</path></local></storage></ec3></output>",
+        "<output><mp4><output_format>other</output_format><file_name>out.m4a</file_name><storage><local><path>fixture</path></local></storage></mp4></output>",
     );
     assert_eq!(
         parse_selected_job_configuration(invalid_xml.as_bytes(), wave, source_samples).unwrap_err(),

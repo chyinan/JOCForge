@@ -1494,6 +1494,10 @@ The parser now preserves explicit `start` and `end` XML strings while retaining 
 
 The strict XML parser admits the optional `misc/temp_dir` structure and retains optional `clean_temp` boolean and `path` string values without file I/O. The selected CLI rejects a present temp directory before Meter, callbacks, or encoding. Cleanup consumer, Message field semantics, owner/generation, and actual deletion behavior remain `UNBOUND/NOT_RUN`.
 
+## 2026-11-08: Output-container metadata admission
+
+The XML parser now reads exactly one `ec3`, `mp4`, or `dash` output branch and preserves the declared MP4/DASH format, frame-rate override, and plugin/base strings when present. The selected CLI still allows only `ec3` and rejects MP4/DASH before resolving input or output paths. No muxer, plugin, writer, or container output is implemented by this admission slice.
+
 ## 2026-11-08: Preferred downmix token admission
 
 The XML parser now preserves all four declared `preferred_downmix_mode` tokens: `loro`, `ltrt`, `ltrt-pl2`, and `not_indicated`. The selected CLI still admits only `loro`. Static raw-code mappings do not establish effective MixMode, BSI serialization, or a rendered downmix effect.
@@ -1501,3 +1505,7 @@ The XML parser now preserves all four declared `preferred_downmix_mode` tokens: 
 ## 2026-11-08: Metering mode token admission
 
 The XML parser now admits and preserves the five declared `metering_mode` strings. The selected CLI still accepts only `1770-4` and rejects the others before Meter. Washed raw U32 candidates remain unassigned semantic modes; no alternate measurement or audio effect is enabled.
+
+## 2026-11-08: Output-container metadata admission
+
+The XML parser now reads exactly one `ec3`, `mp4`, or `dash` output branch and preserves the declared MP4/DASH format, frame-rate override, and plugin/base strings when present. The selected CLI still allows only `ec3` and rejects MP4/DASH before resolving input or output paths. No muxer, plugin, writer, or container output is implemented by this admission slice.

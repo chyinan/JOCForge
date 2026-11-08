@@ -224,6 +224,7 @@ fn resolve_job_xml_request(
     let job_xml = std::fs::read(&job_xml_path).map_err(EncodeRequestError::JobXmlInput)?;
     let references =
         parse_selected_job_file_references(&job_xml).map_err(EncodeRequestError::JobXmlIngress)?;
+    ensure_ec3_output_container(references.output_container().is_ec3())?;
     let input_reference = references.input_reference();
     let input_path =
         resolve_job_xml_reference(input_reference.file_name(), input_reference.local_path())?;
@@ -339,10 +340,21 @@ fn ensure_no_temp_directory_configuration(is_configured: bool) -> Result<(), Enc
     }
 }
 
+fn ensure_ec3_output_container(is_ec3: bool) -> Result<(), EncodeRequestError> {
+    if is_ec3 {
+        Ok(())
+    } else {
+        Err(EncodeRequestError::UnsupportedJobXmlOption(
+            "/job_config/output/mp4 or dash",
+        ))
+    }
+}
+
 fn validate_external_job_configuration(
     prepared: &PreparedJobInput,
 ) -> Result<(), EncodeRequestError> {
     let configuration = prepared.configuration();
+    ensure_ec3_output_container(configuration.output_configuration().container().is_ec3())?;
     ensure_no_temp_directory_configuration(configuration.temp_directory().is_some())?;
     let loudness = configuration.loudness();
     ensure_selected_metering_mode(loudness.metering_mode())?;
@@ -1184,8 +1196,9 @@ fn hex_lower(bytes: &[u8]) -> String {
 #[cfg(test)]
 mod tests {
     use super::{
-        EncodeRequestError, FileReferenceParts, ensure_no_temp_directory_configuration,
-        ensure_selected_metering_mode, run_with_data_rate, selected_full_file_job_xml,
+        EncodeRequestError, FileReferenceParts, ensure_ec3_output_container,
+        ensure_no_temp_directory_configuration, ensure_selected_metering_mode, run_with_data_rate,
+        selected_full_file_job_xml,
     };
     use jocforge_application::meter_source_bridge::CodecRateProfile;
     use std::path::Path;
@@ -1253,6 +1266,17 @@ mod tests {
             ensure_no_temp_directory_configuration(true),
             Err(EncodeRequestError::UnsupportedJobXmlOption(
                 "/job_config/misc/temp_dir"
+            ))
+        ));
+    }
+
+    #[test]
+    fn selected_cli_gate_accepts_only_elementary_ec3_output() {
+        assert!(ensure_ec3_output_container(true).is_ok());
+        assert!(matches!(
+            ensure_ec3_output_container(false),
+            Err(EncodeRequestError::UnsupportedJobXmlOption(
+                "/job_config/output/mp4 or dash"
             ))
         ));
     }

@@ -3228,8 +3228,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 63570,
-              "sha256": "a293eb12572461143d46e9c6e713e7fbb05817a9ae5f7360682298f94aaba407"
+              "bytes": 69016,
+              "sha256": "ec5b9585c933cdccc2536970f81d39e7ee7eaf0b8f7e05fab5e14c94d27527a7"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
@@ -3300,8 +3300,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/job_configuration.rs",
-              "bytes": 45460,
-              "sha256": "5a68bf8fd99539ecb2d736ce5d7e6810c811c2263de0497c16b8958392b483bd"
+              "bytes": 48766,
+              "sha256": "3bc12445be5150526979ee34cdc57eb58f2e7d90742bc837d012641ebc90d286"
             },
             {
               "path": "crates/jocforge-domain/tests/adm_graph.rs",
@@ -4359,15 +4359,15 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 63570,
-              "sha256": "a293eb12572461143d46e9c6e713e7fbb05817a9ae5f7360682298f94aaba407"
+              "bytes": 69016,
+              "sha256": "ec5b9585c933cdccc2536970f81d39e7ee7eaf0b8f7e05fab5e14c94d27527a7"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/job_configuration.rs",
-              "bytes": 45460,
-              "sha256": "5a68bf8fd99539ecb2d736ce5d7e6810c811c2263de0497c16b8958392b483bd"
+              "bytes": 48766,
+              "sha256": "3bc12445be5150526979ee34cdc57eb58f2e7d90742bc837d012641ebc90d286"
             }
           ]
         },
@@ -4674,11 +4674,11 @@
         },
         {
           "slice_id": "selected-profile-external-job-xml-reference-ingress",
-          "mapping_status": "LOCALLY_MATERIALIZED_STRICT_XML_REFERENCE_INGRESS__ADM_BWF_BRANCHES_AND_EC3_ONLY",
-          "implementation_status": "LOCALLY_VERIFIED_ATMOSMEZZ_PREPARED_INPUT_PREFLIGHT__FULL_ENCODING_NOT_RUN",
+          "mapping_status": "LOCALLY_MATERIALIZED_STRICT_XML_REFERENCE_INGRESS__EC3_MP4_DASH_PARSED__EC3_CLI_GATE_ONLY",
+          "implementation_status": "LOCALLY_VERIFIED_ADM_PREFLIGHT_AND_OUTPUT_CONTAINER_PARSER__FULL_ENCODING_NOT_RUN",
           "implementation_requirement": true,
           "owner": "cli",
-          "scope": "Additive CLI job-XML ingress. Both authored ADM BWF XML branches, adm and atmos_mezz, use the same RIFF WAVE reader while their branch label is preserved in normalized configuration identity. The ingress resolves XML input and EC-3 output references, reads the selected input, passes the original XML bytes and actual WAVE descriptor through the existing selected parser and pipeline, and rejects unknown structure and unsupported control combinations.",
+          "scope": "Additive CLI job-XML ingress. Both authored ADM BWF XML branches, adm and atmos_mezz, use the same RIFF WAVE reader while their branch label remains in normalized identity. The parser reads one ec3, mp4, or dash output branch and preserves its value-only metadata. The CLI gate permits only ec3 and rejects mp4/dash before resolving input/output paths. No muxer or plugin runs.",
           "dependencies": [
             "F01R/selected-riff-pcm24-reader-and-hop",
             "F01E/selected-job-xml-profile-normalization"
@@ -4721,10 +4721,10 @@
             ],
             "input_container": "ADM BWF RIFF through the existing loader",
             "input_branch_identity": "exact authored branch label is preserved",
-            "accepted_output_branch": "/job_config/output/ec3 only",
+            "accepted_output_branch": "Parser accepts one of /job_config/output/ec3, /mp4, or /dash; selected CLI output gate accepts /ec3 only.",
             "reference_policy": "absolute storage/local/path plus basename file_name",
-            "output_policy": "elementary .ec3 file; no MP4 or DASH muxing",
-            "strict_surface_policy": "unknown elements and attributes reject with the path",
+            "output_policy": "Elementary .ec3 output only. MP4/DASH metadata is parsed as values and rejected before path resolution; no muxer or plugin is started.",
+            "strict_surface_policy": "Known XML elements and attributes are parsed; unknown structure rejects with its path. MP4/DASH option text is preserved as configuration data only.",
             "external_control_gate": "the existing fixed selected row; other effectful or unclosed values reject",
             "validated_controls": [
               "six explicit data rates",
@@ -4738,7 +4738,7 @@
             ],
             "validation_boundary": "XML parsing and selected-profile admission are distinct from effect implementation. No external job XML execution or output was run in this slice.",
             "provider_files": [],
-            "preflight_only_mode": "Parses XML, resolves references, reads ADM BWF, and prepares/binds PreparedJobInput; returns before Meter prepass, output staging, source callbacks, and encoding.",
+            "preflight_only_mode": "For ec3, parses XML, resolves references, reads ADM BWF, and prepares/binds PreparedJobInput; returns before Meter prepass, output staging, source callbacks, and encoding. MP4/DASH branches are rejected before input/output path resolution or media reads.",
             "local_preflight": {
               "status": "PASS_NO_LAUNCH",
               "xml_path": ".test-tmp/love-song-n36-atmos-mezz-1024-preflight-20261107/job_config.xml",
@@ -4793,8 +4793,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 63570,
-              "sha256": "a293eb12572461143d46e9c6e713e7fbb05817a9ae5f7360682298f94aaba407"
+              "bytes": 69016,
+              "sha256": "ec5b9585c933cdccc2536970f81d39e7ee7eaf0b8f7e05fab5e14c94d27527a7"
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
@@ -4843,8 +4843,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 53723,
-              "sha256": "79705acda44b27846ed437ef40048a55eb1e061511c7c08b6d56298b9044255b"
+              "bytes": 54529,
+              "sha256": "cd5bf36ffd82b0ce39d0904a0cd3f15a82ac31171cc1b8a748412c67f3e5ab70"
             },
             {
               "path": "crates/jocforge-cli/src/main.rs",
@@ -7334,7 +7334,7 @@
             "shares_native_owner_with_encoder_field": "NOT_ESTABLISHED",
             "validation_boundary": "The input-side /input/audio/{adm,atmos_mezz}/timecode_frame_rate field admits the exact ten tokens listed by the authored job_config field choices and stores the authored string in SelectedJobConfiguration and normalized identity. It remains separate from the encoder timecode field. No numeric conversion, 29.97df canonicalization, input-owner join, or runtime timecode effect is implemented. This slice does not rewrite the fixed timecode value used by the separate primary-metadata job projection.",
             "local_verification": {
-              "focused_job_configuration_test": "PASS_20",
+              "focused_job_configuration_test": "PASS_21",
               "workspace_cargo_check": "PASS",
               "workspace_clippy": "FAILED_UNRELATED_EXISTING_DIAGNOSTICS"
             }
@@ -7487,7 +7487,7 @@
             "embedded_timecode_cli_outcome": "UnsupportedJobXmlOption before Meter/callback/encode",
             "native_writer_value": "UNBOUND",
             "current_native_value": "NOT_CAPTURED",
-            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_20",
+            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_21",
             "validation_boundary": "The parser admits the exact authored time_base tokens file_position and embedded_timecode and preserves the token in normalized identity. The selected CLI effect gate still admits only file_position and rejects embedded_timecode before Meter, callbacks, or encoding. The Wash static writer route remains unbound; this slice does not set the native value or enable range/seek."
           },
           "vectors": {
@@ -7710,7 +7710,7 @@
             "selected_cli_gate": "auto only",
             "xml_host_owner_reader_join": "UNBOUND",
             "validation_boundary": "The selected XML parser preserves explicit offset and ffoa strings independently in normalized identity. Missing or empty fields retain the existing auto default. The CLI gate continues to accept only auto for both fields and rejects other values before Meter, callbacks, or encoding. No input time syntax, units, host owner, Reader join, or runtime effect is inferred.",
-            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_20"
+            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_21"
           },
           "vectors": {
             "kind": "LOCAL_INPUT_ONLY_STRING_PRESERVATION",
@@ -7867,7 +7867,7 @@
             ],
             "supplement_manifest_sha256": "6b6acabe96aaf4f23f46899ef3764a2fd66afc93c9a3b66afa8ddc42112843a3",
             "supplement_seal_sha256": "fde31c2c4d299aee3f5851e38127b3eb59d8bd8fda8ca50c4ce5d2737ad658e6",
-            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_20",
+            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_21",
             "implementation_ready": false,
             "static_evidence": {
               "input_only_case": "start=0; time_base=file_position; 24 fps",
@@ -7949,7 +7949,7 @@
             ],
             "supplement_manifest_sha256": "c1183a7b4343ed6300bd2b2560e2d5526c99339eb8860f0df0a9ba1dcd3f7ccd",
             "supplement_seal_sha256": "09dee9888291bb7cac970007c0c26200a0c622db95fca416cf6edd74d863f68d",
-            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_20",
+            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_21",
             "implementation_ready": false,
             "static_evidence": {
               "input_only_case": "end=47; time_base=file_position; 24 fps",
@@ -8044,7 +8044,7 @@
               "not_indicated": 3
             },
             "selected_cli_token": "loro",
-            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_20",
+            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_21",
             "implementation_ready": false,
             "validation_boundary": "The parser admits and preserves the four authored preferred_downmix_mode tokens in normalized identity. The selected CLI effect gate still admits only loro and rejects the other values before source processing. Wash maps the static tokens to raw codes 0/1/2/3 but does not bind selected XML to effective MixMode, a BSI sink, or a rendered effect."
           },
@@ -8156,7 +8156,7 @@
               "LeqA": 4
             },
             "raw_codes_are_semantic_ordinals": false,
-            "local_verification": "PASS_DOMAIN_SUITE_20_AND_CLI_GATE_TESTS_2",
+            "local_verification": "PASS_DOMAIN_SUITE_21_AND_CLI_GATE_TESTS_3",
             "implementation_ready": false,
             "validation_boundary": "The parser admits the five exact authored metering_mode strings and preserves the token in normalized identity. The selected CLI gate accepts only 1770-4 and rejects the other tokens before Meter. Wash raw U32 candidates are not semantic mode ordinals and are not applied by this XML admission slice."
           },
@@ -8253,7 +8253,7 @@
             "clean_temp_omission": "preserved as None; no default is inferred",
             "path_value": "optional raw XML string; no path validation or normalization",
             "selected_cli_outcome": "UnsupportedJobXmlOption for any present temp_dir object",
-            "local_verification": "PASS_DOMAIN_SUITE_20_AND_CLI_GATE_TEST",
+            "local_verification": "PASS_DOMAIN_SUITE_21_AND_CLI_GATE_TESTS_3",
             "implementation_ready": false,
             "validation_boundary": "The strict XML parser admits the optional misc/temp_dir structure and retains an optional clean_temp boolean and path string in normalized identity. It does not resolve or open the path. The selected CLI rejects any present temp_dir configuration before Meter, callbacks, or encoding. Wash has no bound delete/retain consumer, Message-field meaning, or same-owner/generation cleanup edge."
           },
@@ -8292,6 +8292,138 @@
           ],
           "validation_boundary": "The strict XML parser admits the optional misc/temp_dir structure and retains an optional clean_temp boolean and path string in normalized identity. It does not resolve or open the path. The selected CLI rejects any present temp_dir configuration before Meter, callbacks, or encoding. Wash has no bound delete/retain consumer, Message-field meaning, or same-owner/generation cleanup edge.",
           "delivery_scope": "LOCAL_XML_VALUE_ADMISSION_ONLY_NO_TEMP_DIRECTORY_IO_OR_CLEANUP"
+        },
+        {
+          "slice_id": "authored-output-container-metadata-admission",
+          "mapping_status": "EC3_MP4_DASH_OUTPUT_METADATA_PARSED__NON_EC3_CLI_GATE_PRESERVED",
+          "implementation_status": "LOCALLY_VERIFIED_VALUE_PARSER__NO_CONTAINER_OR_PLUGIN_EFFECT",
+          "implementation_requirement": true,
+          "owner": "frontend",
+          "scope": "The parser accepts one ec3, mp4, or dash output container and preserves optional output_format, override_frame_rate, and plugin/base strings. The selected CLI allows only ec3 and rejects mp4/dash before resolving input/output paths. No muxer, plugin, writer, or container output is created. Wash candidate schemas and setter paths do not establish installed native output support.",
+          "dependencies": [
+            "F01E/selected-profile-external-job-xml-reference-ingress"
+          ],
+          "spec_files": [
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/frontend/job_configuration.rs",
+            "crates/jocforge-cli/src/encode_request.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/job_configuration.rs",
+            "crates/jocforge-cli/src/encode_request.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "override_frame_rate is preserved as a token and is not converted or applied.",
+              "MP4/DASH output branches are rejected before output-path resolution."
+            ]
+          },
+          "parameters": {
+            "kind": "AUTHORED_OUTPUT_CONTAINER_METADATA_ADMISSION",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-XML-EC3-OUTPUT-FIRST-CONSUMER-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-OUTPUT-FORMAT-FIRST-CONSUMER-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-SETTER-OWNER-FIRST-BREAK-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-MP4-INITPLUGIN-FIRST-ACTIVATION-BOUNDARY-V1/CHECK.py"
+            ],
+            "container_tokens": [
+              "ec3",
+              "mp4",
+              "dash"
+            ],
+            "output_format_tokens": [
+              "mp4",
+              "dash"
+            ],
+            "override_frame_rate_tokens": [
+              "no",
+              "23.976",
+              "24",
+              "25",
+              "29.97",
+              "30",
+              "48",
+              "50",
+              "59.94",
+              "60"
+            ],
+            "plugin_base": "optional raw XML string; no execution",
+            "selected_cli_container": "ec3",
+            "local_verification": "PASS_DOMAIN_SUITE_21_AND_CLI_GATE_TESTS_3",
+            "implementation_ready": false,
+            "static_evidence": {
+              "candidate_xsd_installation": "UNBOUND",
+              "native_mp4_dash_writer": "UNBOUND",
+              "muxer_plugin_runtime": "NOT_RUN"
+            },
+            "validation_boundary": "The parser accepts one ec3, mp4, or dash output container and preserves optional output_format, override_frame_rate, and plugin/base strings. The selected CLI allows only ec3 and rejects mp4/dash before resolving input/output paths. No muxer, plugin, writer, or container output is created. Wash candidate schemas and setter paths do not establish installed native output support."
+          },
+          "vectors": {
+            "kind": "LOCAL_INPUT_ONLY_OUTPUT_METADATA_ADMISSION",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "authored_mp4_and_dash_output_options_are_parsed_without_muxing",
+              "selected_cli_gate_accepts_only_elementary_ec3_output"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json",
+              "sha256": "493eb904467d22f9ca6dc50b86bf05bcd9f6643f16fa352766cac26d15e156eb"
+            }
+          },
+          "error_outcomes": [
+            {
+              "error_code": "CONFIG_FIELD_VALUE",
+              "category": "invalid output metadata token",
+              "trigger": "output_format or override_frame_rate is outside its exact XML choices.",
+              "programme_state_after": "No SelectedJobConfiguration is returned.",
+              "caller_action": "Reject the XML job."
+            },
+            {
+              "error_code": "UnsupportedJobXmlOption",
+              "category": "container output not supported by selected CLI",
+              "trigger": "The parsed output container is mp4 or dash.",
+              "programme_state_after": "The CLI request is rejected before resolving input/output paths.",
+              "caller_action": "Use ec3 with the current selected output pipeline."
+            }
+          ],
+          "not_run": [
+            "Selected MP4/DASH installation identity, native muxer/writer, and runtime output.",
+            "Plugin/base execution and frame-rate override behavior.",
+            "Any MP4, M4A, or DASH output file."
+          ],
+          "validation_boundary": "The parser accepts one ec3, mp4, or dash output container and preserves optional output_format, override_frame_rate, and plugin/base strings. The selected CLI allows only ec3 and rejects mp4/dash before resolving input/output paths. No muxer, plugin, writer, or container output is created. Wash candidate schemas and setter paths do not establish installed native output support.",
+          "delivery_scope": "LOCAL_OUTPUT_METADATA_ADMISSION_ONLY_NO_MP4_DASH_MUXING"
         }
       ]
     },
@@ -12266,8 +12398,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 63570,
-              "sha256": "a293eb12572461143d46e9c6e713e7fbb05817a9ae5f7360682298f94aaba407"
+              "bytes": 69016,
+              "sha256": "ec5b9585c933cdccc2536970f81d39e7ee7eaf0b8f7e05fab5e14c94d27527a7"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/primary_metadata_control.rs",
@@ -13333,8 +13465,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 53723,
-              "sha256": "79705acda44b27846ed437ef40048a55eb1e061511c7c08b6d56298b9044255b"
+              "bytes": 54529,
+              "sha256": "cd5bf36ffd82b0ce39d0904a0cd3f15a82ac31171cc1b8a748412c67f3e5ab70"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
@@ -40396,8 +40528,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 53723,
-              "sha256": "79705acda44b27846ed437ef40048a55eb1e061511c7c08b6d56298b9044255b"
+              "bytes": 54529,
+              "sha256": "cd5bf36ffd82b0ce39d0904a0cd3f15a82ac31171cc1b8a748412c67f3e5ab70"
             },
             {
               "path": "crates/jocforge-cli/src/lib.rs",
@@ -42243,8 +42375,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 63570,
-              "sha256": "a293eb12572461143d46e9c6e713e7fbb05817a9ae5f7360682298f94aaba407"
+              "bytes": 69016,
+              "sha256": "ec5b9585c933cdccc2536970f81d39e7ee7eaf0b8f7e05fab5e14c94d27527a7"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/provider.rs",
@@ -42373,8 +42505,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 53723,
-              "sha256": "79705acda44b27846ed437ef40048a55eb1e061511c7c08b6d56298b9044255b"
+              "bytes": 54529,
+              "sha256": "cd5bf36ffd82b0ce39d0904a0cd3f15a82ac31171cc1b8a748412c67f3e5ab70"
             },
             {
               "path": "crates/jocforge-cli/src/main.rs",
@@ -42410,8 +42542,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/job_configuration.rs",
-              "bytes": 45460,
-              "sha256": "5a68bf8fd99539ecb2d736ce5d7e6810c811c2263de0497c16b8958392b483bd"
+              "bytes": 48766,
+              "sha256": "3bc12445be5150526979ee34cdc57eb58f2e7d90742bc837d012641ebc90d286"
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_size.rs",
@@ -42480,8 +42612,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 53723,
-              "sha256": "79705acda44b27846ed437ef40048a55eb1e061511c7c08b6d56298b9044255b"
+              "bytes": 54529,
+              "sha256": "cd5bf36ffd82b0ce39d0904a0cd3f15a82ac31171cc1b8a748412c67f3e5ab70"
             },
             {
               "path": "crates/jocforge-io/src/provider/spatial_audio.rs",
@@ -52286,8 +52418,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 53723,
-              "sha256": "79705acda44b27846ed437ef40048a55eb1e061511c7c08b6d56298b9044255b"
+              "bytes": 54529,
+              "sha256": "cd5bf36ffd82b0ce39d0904a0cd3f15a82ac31171cc1b8a748412c67f3e5ab70"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -55224,8 +55356,8 @@
         },
         {
           "path": "crates/jocforge-cli/src/encode_request.rs",
-          "bytes": 53723,
-          "sha256": "79705acda44b27846ed437ef40048a55eb1e061511c7c08b6d56298b9044255b"
+          "bytes": 54529,
+          "sha256": "cd5bf36ffd82b0ce39d0904a0cd3f15a82ac31171cc1b8a748412c67f3e5ab70"
         },
         {
           "path": "crates/jocforge-cli/src/lib.rs",
