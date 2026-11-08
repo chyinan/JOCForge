@@ -1,0 +1,57 @@
+{
+  "schema": "jocforge-source-manifest-receipts.v1",
+  "source_package": {
+    "package_id": "rf_profile_bsi_consumer_boundary",
+    "manifest_sha256": "67454aafb11d8c96468384e4406ebf48cafaa22630dd3482f2370ab7338ba5f1",
+    "package_seal_sha256": "090fcfedaeda75a75980bcb63dc35ae2b762550910716454c8882c739da961a9",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "verified_parent_packages": [
+    {
+      "package_id": "drc-line-rf-profile-mapping-first-consumer-wash-v8",
+      "manifest_sha256": "b9de6b25d91daf68426e05a3ce932e29f9d084b580c47b076676b526c0222d0d",
+      "seal_file_sha256": "62e91dbb3ad044d66a6264fc2f9eab3c7a43c568960a55ca3e8b3151c38939fe",
+      "payload_hashes_recomputed": true,
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS"
+    },
+    {
+      "package_id": "rf_mode_drc_profile_token_map_first_consumer_wash_v1",
+      "manifest_sha256": "876592442cd78bb32dd562dda6b8c340bdf1ec11fe26d166bb40e8ec7a97c837",
+      "seal_file_sha256": "212a4cfc7a9edd0320d50b7ed613cbde5523b500aee413abb59a043983e7f804",
+      "payload_hashes_recomputed": true,
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS"
+    },
+    {
+      "package_id": "rf_mode_drc_profile_encoder_boundary_wash_v1",
+      "manifest_sha256": "91dce089704a22c5db92a540423d17845953ceec46e748ced301922577cd00f7",
+      "seal_file_sha256": "c1d655096c8a8ab63005d1d15b370bd29861e15913ad3308d94934e1f5556c5e",
+      "payload_hashes_recomputed": true,
+      "checker_replay": "NOT_AVAILABLE_IN_PARENT_PACKAGE"
+    },
+    {
+      "package_id": "sample6-matched-drc-block-code-producer-wash-v1",
+      "manifest_sha256": "084097031852758217f929edbd4fe4953f72eb2d5abbcd13abfb4d4fdb410428",
+      "seal_file_sha256": "261e6fe0225852da41ddea72782642aeb52af254e15eac0c4c2a7e934d642a05",
+      "payload_hashes_recomputed": true,
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS"
+    },
+    {
+      "package_id": "sample6-matched-drc-bsi-field-crosswalk-v1",
+      "manifest_sha256": "f83b04f3b3503b6e13428c48d969eb8ca5cde27822199dc1473ec1278aaadd67",
+      "seal_file_sha256": "9271e0e2467fa00d9080efa06e5c4ad7b2ba858f01a97b877b87d18172661c70",
+      "payload_hashes_recomputed": true,
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS"
+    }
+  ],
+  "wash_review": {
+    "source_package_manifest_sha256_recomputed": true,
+    "source_package_seal_sha256_recomputed": true,
+    "source_code_or_decompilation_in_handoff": false,
+    "implementation_readiness": "NO"
+  }
+}

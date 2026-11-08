@@ -1,0 +1,95 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package_id": "DEE-RF-DRC-PROFILE-CONSUMER-BOUNDARY-PARTIAL-V1",
+  "audience": "IMPLEMENTATION_EVIDENCE_ONLY",
+  "status": "PARTIAL_SIX_TOKEN_CONDITIONAL_MAP_DYNRNG_JOIN_UNBOUND_RUNTIME_NOT_RUN",
+  "implementation_ready": "NO",
+  "scope": "RF profile token mapping and a separate DRC table-consumer path only",
+  "evidence_tiers": {
+    "static_native_observation": "Ghidra 12.2 read-only, source manifest hash-bound",
+    "dynamic_runtime": "NOT_RUN",
+    "output_effect": "NOT_OBSERVED"
+  },
+  "native_image_identity": [
+    {
+      "program_role": "Atmos DDP plugin property and static lookup",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+    },
+    {
+      "program_role": "DDP encoder DRC selector and table consumers",
+      "sha256": "0cf23520799f52323b0994e5fcc16924da7b027a5b83a0cff3b4f06792c18532"
+    }
+  ],
+  "rf_profile_property": {
+    "xml_key": "drc:rf_mode_drc_profile",
+    "type": "dee::Types::StringType",
+    "schema_default": "film_light",
+    "allowed_values": [
+      "film_standard",
+      "film_light",
+      "music_standard",
+      "music_light",
+      "speech",
+      "none"
+    ],
+    "canonical_value_member": "+0x08",
+    "runtime_value_writer": "UNBOUND",
+    "runtime_xml_to_handler_owner_generation": "UNBOUND"
+  },
+  "conditional_ddpi_mapping": {
+    "parameter": "DDPI_ENC_DRCPROF",
+    "parameter_id": "0x0f",
+    "ddpjoc_record_pointer_sibling": "+0xd8",
+    "workflow_u32_sibling": "+0xe0",
+    "condition": "only if the RF handler receives the token",
+    "runtime_xml_binding": "UNBOUND",
+    "output_value": "NOT_OBSERVED"
+  },
+  "separate_core_dynrng_path": {
+    "custom_profile_flag": {"offset": "state+0xac4", "type": "I32"},
+    "preset_selector": {"offset": "state+0xac8", "type": "U8"},
+    "selector_projection": "FUN_1403479c0/FUN_140348000 copy +0xac8 to +0x21ab0",
+    "curve_resolver": "FUN_14033eb60 resolves a curve into state+0x21aa8",
+    "table_writer": {
+      "function": "FUN_14033dc10",
+      "code_pointer_slot": "+0x78",
+      "presence_pointer_slot": "+0x88",
+      "stored_shape": "per-block U16 code and U16 presence rows"
+    },
+    "bitstream_consumers": [
+      {
+        "function": "FUN_14036e570",
+        "presence_getter": "FUN_14033e910",
+        "code_getter": "FUN_14033e930"
+      },
+      {
+        "function": "FUN_14036f8f0",
+        "presence_getter": "FUN_14033e910",
+        "code_getter": "FUN_14033e930"
+      }
+    ],
+    "wire_shape_on_inspected_path": "U1 presence followed by optional U8 code",
+    "rf_parameter_to_selector_table_owner_mode_generation": "UNBOUND"
+  },
+  "compre_boundary": {
+    "header_compre": "U1 presence",
+    "optional_compr": "U8 value",
+    "native_writer": "UNBOUND_IN_SCOPED_TRACE",
+    "parameter_0x0f_to_writer": "UNBOUND",
+    "absence_scope": "bounded Ghidra scan only; no global absence claim"
+  },
+  "first_unclosed_edge": {
+    "from": "runtime XML/property node and selected provider/handler owner generation",
+    "to": "same-owner StringType value member +0x08 writer",
+    "status": "UNBOUND",
+    "next_static_edge_if_closed": "StringType token to RF handler and DDPJoc config sibling +0xe0"
+  },
+  "execution": {
+    "dee_launched": false,
+    "dynamic_capture": false,
+    "output_or_bsi_reopened": false,
+    "pcm_or_key_license_access": false,
+    "implementation_change_or_contact": false,
+    "runtime": "NOT_RUN"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-implementer-supplement-seal.v1",
+  "package_id": "DEE-RF-DRC-PROFILE-CONSUMER-BOUNDARY-PARTIAL-V1",
+  "manifest_sha256": "590ead98f379ba1b02e55590655b90d0461af99be8b710993c883f04dd3a71a6",
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 5075,
+      "sha256": "d5b977a1c1fdb937251c441463de736092580575820377030eee5011be94fad5"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 3451,
+      "sha256": "2812c106a80239ab48ca2aa506440e78dc60019200b2cff8c1270a62e93b403e"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1523,
+      "sha256": "456e82bc3b4db4ce10807ff412d0254dde97c97255cd1e881c0647340323926e"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 2323,
+      "sha256": "b69a5288db8707ad8029a714fa0847fcad8e2dd2b075a699fb5128a9cd238741"
+    },
+    {
+      "path": "SOURCE-MANIFESTS.json",
+      "bytes": 2558,
+      "sha256": "7114acc790a8523b79859ae6d4eb42df89ea9735501bc05bbce959f5e960a4bd"
+    }
+  ],
+  "seal_excluded_from_own_hash_list": true
+}

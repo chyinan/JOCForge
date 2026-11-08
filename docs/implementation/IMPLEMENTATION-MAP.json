@@ -9757,6 +9757,128 @@
           ],
           "validation_boundary": "The explicit offset/FFOA converter returns floating-seconds coordinates. Explicit offset replaces the selected offset after source offset lookup; the explicit FFOA branch does not read source FFOA and final FFOA is max(selected_offset, converted_explicit_ffoa). The first DDP source consumer passes FFOA-offset downstream. A reused Reader observation identifies the first generic read_float at FUN_180186870, with private cursor +0x28 advancing by configured frame size +0x10. No normalized explicit value is joined to cursor initialization, seek, or duration clipping. Native XML acceptance, source fields, runtime owner/generation, Reader variant, and timeline effect remain UNBOUND/NOT_RUN.",
           "delivery_scope": "REFERENCE_ONLY_NO_EXPLICIT_TIME_AXIS_OR_READER_ALIGNMENT_ENABLEMENT"
+        },
+        {
+          "slice_id": "washed-rf-drc-profile-consumer-boundary-partial",
+          "mapping_status": "SIX_RF_CONDITIONAL_PARAMETER_CANDIDATES_AND_SEPARATE_DYNRNG_PATH_BOUND__XML_OWNER_AND_JOIN_UNBOUND",
+          "implementation_status": "WASHED_PARTIAL_REFERENCE_ONLY__RUNTIME_NOT_RUN__NO_DRC_ALGORITHM_CHANGE",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "The six RF profile tokens conditionally map to workflow U32 and DDPI_ENC_DRCPROF parameter 0x0f candidates only if the RF handler receives the token. The StringType runtime writer and XML-to-handler owner/generation remain UNBOUND. A separate core dynrng table/bitstream path exists, but its selector, table owner/mode/generation are not joined to the RF parameter. Native compre/compr writer linkage is also UNBOUND. No runtime or output was observed.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-PROFILE-CONSUMER-BOUNDARY-PARTIAL-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Static per-block DRC table shape is described, but no selected RF profile/runtime generation or frame-clock join is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_RF_DRC_CONDITIONAL_CONSUMER_BOUNDARY",
+            "package_id": "DEE-RF-DRC-PROFILE-CONSUMER-BOUNDARY-PARTIAL-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-PROFILE-CONSUMER-BOUNDARY-PARTIAL-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-PROFILE-CONSUMER-BOUNDARY-PARTIAL-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-PROFILE-CONSUMER-BOUNDARY-PARTIAL-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-PROFILE-CONSUMER-BOUNDARY-PARTIAL-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-PROFILE-CONSUMER-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-PROFILE-CONSUMER-BOUNDARY-PARTIAL-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-PROFILE-CONSUMER-BOUNDARY-PARTIAL-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "590ead98f379ba1b02e55590655b90d0461af99be8b710993c883f04dd3a71a6",
+            "supplement_seal_sha256": "5b398144542dc31583a7e0e6eedd3c20e89f17e3a0c7391907c242454d01421d",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "rf_profile_property": {
+              "type": "dee::Types::StringType",
+              "schema_default": "film_light",
+              "tokens": [
+                "film_standard",
+                "film_light",
+                "music_standard",
+                "music_light",
+                "speech",
+                "none"
+              ],
+              "canonical_value_member": "+0x08",
+              "runtime_value_writer": "UNBOUND",
+              "runtime_xml_to_handler_owner_generation": "UNBOUND"
+            },
+            "conditional_mapping": [
+              {
+                "token": "film_standard",
+                "workflow_u32": 1,
+                "ddpi_enc_drcprof_u32": 1
+              },
+              {
+                "token": "film_light",
+                "workflow_u32": 0,
+                "ddpi_enc_drcprof_u32": 2
+              },
+              {
+                "token": "music_standard",
+                "workflow_u32": 3,
+                "ddpi_enc_drcprof_u32": 3
+              },
+              {
+                "token": "music_light",
+                "workflow_u32": 2,
+                "ddpi_enc_drcprof_u32": 4
+              },
+              {
+                "token": "speech",
+                "workflow_u32": 4,
+                "ddpi_enc_drcprof_u32": 5
+              },
+              {
+                "token": "none",
+                "workflow_u32": 5,
+                "ddpi_enc_drcprof_u32": 0
+              }
+            ],
+            "mapping_condition": "only if runtime RF handler receives token",
+            "separate_core_dynrng_path": {
+              "custom_profile_flag": "state+0xac4 I32",
+              "preset_selector": "state+0xac8 U8",
+              "table_writer": "per-block U16 code/presence rows",
+              "wire_shape": "U1 presence followed by optional U8 code",
+              "rf_parameter_to_selector_table_owner_mode_generation": "UNBOUND"
+            },
+            "compre_boundary": {
+              "header_compre_presence": "U1",
+              "optional_compr_value": "U8",
+              "native_writer": "UNBOUND_IN_SCOPED_TRACE",
+              "parameter_0x0f_to_writer": "UNBOUND"
+            },
+            "runtime": "NOT_RUN",
+            "validation_boundary": "The six RF profile tokens conditionally map to workflow U32 and DDPI_ENC_DRCPROF parameter 0x0f candidates only if the RF handler receives the token. The StringType runtime writer and XML-to-handler owner/generation remain UNBOUND. A separate core dynrng table/bitstream path exists, but its selector, table owner/mode/generation are not joined to the RF parameter. Native compre/compr writer linkage is also UNBOUND. No runtime or output was observed."
+          },
+          "vectors": {
+            "kind": "SIX_STATIC_CONDITIONAL_TOKEN_MAPPINGS_NOT_RUNTIME_VECTORS",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Six token rows are conditional static mappings; observed output is NOT_APPLICABLE."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-PROFILE-CONSUMER-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Runtime XML writer, handler owner/generation, and selected RF token value.",
+            "RF parameter 0x0f to core dynrng selector/table owner/mode/generation join.",
+            "Native compre/compr writer linkage, output effect, and all runtime vectors."
+          ],
+          "validation_boundary": "The six RF profile tokens conditionally map to workflow U32 and DDPI_ENC_DRCPROF parameter 0x0f candidates only if the RF handler receives the token. The StringType runtime writer and XML-to-handler owner/generation remain UNBOUND. A separate core dynrng table/bitstream path exists, but its selector, table owner/mode/generation are not joined to the RF parameter. Native compre/compr writer linkage is also UNBOUND. No runtime or output was observed.",
+          "delivery_scope": "REFERENCE_ONLY_NO_RF_OR_LINE_DRC_ALGORITHM_OR_GATE_ENABLEMENT"
         }
       ]
     },
@@ -71310,6 +71432,28 @@
       "not_run": [
         "Native XML admission, exact source fields, Reader cursor/seek/duration join, runtime owner/generation, and timeline effect.",
         "Proposed A/B; no DEE or atmos_info run occurred."
+      ]
+    },
+    {
+      "package_id": "DEE-RF-DRC-PROFILE-CONSUMER-BOUNDARY-PARTIAL-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-RF-DRC-PROFILE-CONSUMER-BOUNDARY-PARTIAL-V1",
+      "manifest_sha256": "590ead98f379ba1b02e55590655b90d0461af99be8b710993c883f04dd3a71a6",
+      "supplement_seal_sha256": "5b398144542dc31583a7e0e6eedd3c20e89f17e3a0c7391907c242454d01421d",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "CONDITIONAL_SIX_TOKEN_PARAMETER_CANDIDATES; XML_HANDLER_DYNRNG_AND_COMPRE_WRITER_JOINS_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Runtime XML handler, profile owner/generation, dynrng join, and native compre/compr writer.",
+        "Any output effect or audio/gain conclusion."
       ]
     }
   ]

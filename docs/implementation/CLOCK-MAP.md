@@ -205,6 +205,7 @@
 | F01E/washed-line-drc-n38-dynrng-bsi-observation | — | `The observation covers one 32-frame/192-block window and establishes no programme-wide DRC clock or behavior.` |
 | F01E/washed-temp-provider-slot58-callsite-boundary | — | `Static callsite argument flow only; no runtime file-lifecycle transition or cleanup timing is established.` |
 | F01E/washed-explicit-offset-ffoa-reader-alignment-partial | — | `The Reader cursor stride is statically reported, but explicit-value to cursor initialization/seek and runtime frame alignment remain unbound.` |
+| F01E/washed-rf-drc-profile-consumer-boundary-partial | — | `Static per-block DRC table shape is described, but no selected RF profile/runtime generation or frame-clock join is established.` |
 | F03G/target-slot-install | — | `Pure per-callback value transition; no clock or committed state is owned.` |
 | F03C/candidate-selector | — | `Each selector call initializes cold scratch; no callback/source/AU counter or cross-call selector state is owned.` |
 | F03C/selector-score-choice | — | `No state or clock is owned.` |

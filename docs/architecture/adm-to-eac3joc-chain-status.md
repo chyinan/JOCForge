@@ -1589,3 +1589,7 @@ Seven map-referenced directories lack a standalone `package_seal.json` and were 
 ## 2026-11-09: explicit offset/FFOA Reader alignment partial
 
 Wash package `DEE-ATMOSMEZZ-EXPLICIT-OFFSET-FFOA-READER-ALIGNMENT-PARTIAL-V1` (manifest SHA-256 `a63d985451a710c76de62c76312384c1c3969eccd41f0c13f66d0087380b6e40`, seal SHA-256 `1649d6b3775042afb60c17ebcbd4bd89b311e5459f93323d7c5774d3dc5a40f3`) adds the first generic Reader `read_float` at `FUN_180186870`, private cursor `+0x28`, and advance by configured frame size `+0x10`. This does not join normalized explicit values to cursor initialization/seek or duration clipping. XML acceptance, source FFOA producer, owner/generation, Reader variant, and timeline effect remain `UNBOUND/NOT_RUN`; the contrast is `PROPOSED_NOT_RUN`.
+
+## 2026-11-09: RF DRC profile consumer partial boundary
+
+Wash package `DEE-RF-DRC-PROFILE-CONSUMER-BOUNDARY-PARTIAL-V1` (manifest SHA-256 `590ead98f379ba1b02e55590655b90d0461af99be8b710993c883f04dd3a71a6`, seal SHA-256 `5b398144542dc31583a7e0e6eedd3c20e89f17e3a0c7391907c242454d01421d`) conditionally maps six RF tokens to workflow U32 and parameter-0x0f candidates. The XML writer and runtime handler owner/generation remain `UNBOUND`. A separate core dynrng path and native compre/compr writer are not joined to that parameter. Runtime/output remain `NOT_RUN`; no DRC algorithm or gate change is claimed.

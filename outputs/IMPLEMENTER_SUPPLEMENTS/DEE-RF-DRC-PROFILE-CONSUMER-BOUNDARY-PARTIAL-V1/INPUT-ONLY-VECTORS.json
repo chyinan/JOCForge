@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "xml_field": "drc:rf_mode_drc_profile",
+  "execution": "NOT_RUN",
+  "vectors": [
+    {"token": "film_standard", "static_workflow_u32": 1, "conditional_ddpi_enc_drcprof_u32": 1, "condition": "only if the RF handler receives this token", "runtime_xml_binding": "UNBOUND", "observed_output": "NOT_APPLICABLE"},
+    {"token": "film_light", "static_workflow_u32": 0, "conditional_ddpi_enc_drcprof_u32": 2, "condition": "only if the RF handler receives this token", "runtime_xml_binding": "UNBOUND", "observed_output": "NOT_APPLICABLE"},
+    {"token": "music_standard", "static_workflow_u32": 3, "conditional_ddpi_enc_drcprof_u32": 3, "condition": "only if the RF handler receives this token", "runtime_xml_binding": "UNBOUND", "observed_output": "NOT_APPLICABLE"},
+    {"token": "music_light", "static_workflow_u32": 2, "conditional_ddpi_enc_drcprof_u32": 4, "condition": "only if the RF handler receives this token", "runtime_xml_binding": "UNBOUND", "observed_output": "NOT_APPLICABLE"},
+    {"token": "speech", "static_workflow_u32": 4, "conditional_ddpi_enc_drcprof_u32": 5, "condition": "only if the RF handler receives this token", "runtime_xml_binding": "UNBOUND", "observed_output": "NOT_APPLICABLE"},
+    {"token": "none", "static_workflow_u32": 5, "conditional_ddpi_enc_drcprof_u32": 0, "condition": "only if the RF handler receives this token", "runtime_xml_binding": "UNBOUND", "observed_output": "NOT_APPLICABLE"}
+  ],
+  "no_bsi_or_runtime_values_included": true
+}
