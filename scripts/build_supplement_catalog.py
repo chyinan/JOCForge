@@ -22,8 +22,11 @@ SUMMARY_NAMES = ("CONTRACT.md", "REPORT.md", "README.md", "SUMMARY.md")
 STATUS_NAMES = ("CHECK.json", "VERIFICATION.json", "WASH-REVIEW.json", "PACKAGE-SEAL.json")
 SUMMARY_LIMIT = 360
 PAYLOAD_NAME_LIMIT = 8
-# V2's prior seal is invalid; V3 is the only current speech-threshold closeout.
-EXCLUDED_SUPPLEMENT_DIR_NAMES = frozenset({"SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V2"})
+# Superseded or locally checker-invalid packages are omitted until a sealed successor is registered.
+EXCLUDED_SUPPLEMENT_DIR_NAMES = frozenset({
+    "SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V2",
+    "DEE-TEMP-DIR-PROVIDER-SLOT58-BOUNDARY-V1",
+})
 
 
 def sha256_bytes(content: bytes) -> str:
