@@ -1683,7 +1683,7 @@
           "slice_id": "selected-job-xml-profile-normalization",
           "mapping_status": "SELECTED_XML_EXACT_INPUT_AND_ENCODER_TIMECODE_ADMISSION__FIELDS_AND_EFFECT_REMAIN_SEPARATE",
           "implementation_status": "LOCALLY_VERIFIED_SELECTED_XML_TOKEN_AND_STRING_ADMISSION__EFFECT_GATES_PRESERVED",
-          "scope": "Parses the selected UTF-8 job XML, validates the selected WAVE descriptor/source-sample count, normalizes F01E.1 fields, and resolves the result through the existing selected production-profile gate. File paths are returned as values only; this function performs no file I/O. It does not parse ADM/CHNA, DBMD or events, produce control38, or wire encode. It also accepts a film_light/film_light DRC candidate paired with the existing false/100 meter inputs; DI true/15 remains unsupported by the selected meter model. A Wash follow-up binds only same-receiver continuity inside the SimpleType<bool> wrapper-to-setter edge; the property-map caller, owner/generation, and first measurement/audio consumer remain open. The local parser also admits exactly one explicit decimal data_rate token from 384, 448, 576, 640, 768, or 1024 kbps and carries the typed selected rate through F01E projection. Schema omission/default and multi-token list behavior remain unsupported; this is not evidence of a DEE runtime host-property join. The encoder and authored-input timecode_frame_rate fields each admit the exact ten-token choice list and preserve their authored strings as separate normalized identity fields. Matching token lists do not join their native owners or select a shared conversion path. Explicit input offset/ffoa strings are retained separately with the existing auto default; only auto passes the CLI gate. time_base accepts its two exact XML tokens, while the CLI gate still admits file_position only. This does not apply rate conversion, normalize 29.97df, or establish output behavior.",
+          "scope": "Parses the selected UTF-8 job XML, validates the selected WAVE descriptor/source-sample count, normalizes F01E.1 fields, and resolves the result through the existing selected production-profile gate. File paths are returned as values only; this function performs no file I/O. It does not parse ADM/CHNA, DBMD or events, produce control38, or wire encode. It also accepts a film_light/film_light DRC candidate paired with the existing false/100 meter inputs; DI true/15 remains unsupported by the selected meter model. A Wash follow-up binds only same-receiver continuity inside the SimpleType<bool> wrapper-to-setter edge; the property-map caller, owner/generation, and first measurement/audio consumer remain open. The local parser also admits exactly one explicit decimal data_rate token from 384, 448, 576, 640, 768, or 1024 kbps and carries the typed selected rate through F01E projection. The host XSD separately declares data_rate optional with default 448 as an xs:list and no length facet; the selected local CLI requires exactly one explicit token. Host multi-token runtime policy and same-run XML-to-plugin selection remain UNBOUND. The encoder and authored-input timecode_frame_rate fields each admit the exact ten-token choice list and preserve their authored strings as separate normalized identity fields. Matching token lists do not join their native owners or select a shared conversion path. Explicit input offset/ffoa strings are retained separately with the existing auto default; only auto passes the CLI gate. time_base accepts its two exact XML tokens, while the CLI gate still admits file_position only. This does not apply rate conversion, normalize 29.97df, or establish output behavior.",
           "owner": "frontend",
           "implementation_files": [
             "crates/jocforge-domain/src/frontend/job_configuration.rs",
@@ -1899,6 +1899,40 @@
               "direct_29_97df": "REJECTED; parent canonicalization is not implemented here",
               "raw_token_preserved_in_normalized_identity": true,
               "numeric_conversion_and_output_effect": "NOT_IMPLEMENTED/NOT_RUN"
+            },
+            "host_data_rate_schema": {
+              "path": "/job_config/filter/audio/encode_to_atmos_ddp/data_rate",
+              "optional": true,
+              "schema_default": 448,
+              "type": "xs:list of xs:string items",
+              "legal_items": [
+                384,
+                448,
+                576,
+                640,
+                768,
+                1024
+              ],
+              "list_length_facet": "NOT_DECLARED",
+              "multi_token_runtime_policy": "UNBOUND",
+              "local_selected_cli": "one explicit token only; omission and multi-token list are rejected locally"
+            },
+            "bounded_dee_rate_observation": {
+              "package_id": "DEE-EC3-SIX-BITRATE-FRAME-HEADER-OBSERVATION-V1",
+              "manifest_sha256": "c69e412ce749f3553cf5fd2d55fb69bafba0429784df1de9ebb5d74359250d70",
+              "package_seal_sha256": "0d31de2b9e59e6ad3150bf99cae3730464e22899608c48b1c8e64f432e0d2278",
+              "scope": "One N36, 48 kHz, 5.1, 33-frame M4A window; all six rate outputs observed",
+              "frame_bytes_by_rate": {
+                "384": 1536,
+                "448": 1792,
+                "576": 2304,
+                "640": 2560,
+                "768": 3072,
+                "1024": 4096
+              },
+              "writer_join": "UNBOUND",
+              "generalization": "UNBOUND",
+              "full_joc_or_audio_parity": "NOT_RUN"
             }
           },
           "test_modules": [
@@ -2475,7 +2509,7 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/CONTRACT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/SOURCES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/WASH-VERIFICATION.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/MANIFEST.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/CONTRACT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/BINDING.json",
@@ -2485,9 +2519,9 @@
               "specs/01-bed-routing-and-source-geometry.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-CONTROL-AFTER-STATE-V1/MANIFEST.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-CONTROL-AFTER-STATE-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-CONTROL-AFTER-STATE-V1/INTERFACE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-CONTROL-AFTER-STATE-V1/CONTRACT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-CONTROL-AFTER-STATE-V1/INPUT-ONLY-CASES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-CONTROL-AFTER-STATE-V1/SOURCES.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-CONTROL-AFTER-STATE-V1/SOURCE-IDENTITIES.json"
             ],
             "frontend_after_state_manifest_sha256": "808f676d304deca762aa474ae10de6628642caa3325d0da2bd95b9fd1335060f",
             "validation_boundary": "Six normal snapshot unit tests plus one authorized real-resource g0 probe pass. The probe uses selected-profile job XML from a repository vector, stages the complete 38-row normal snapshot, and drops it without parent installation; g1/drains and full encode remain open.",
@@ -71039,6 +71073,136 @@
       "not_run": [
         "Slot target, provider/descriptor join, first file/path action, runtime owner/generation, and cleanup effect.",
         "Any DEE/WinDbg run or file deletion."
+      ]
+    },
+    {
+      "package_id": "ADM-FRAME-COUNT-LINEAGE-STATIC-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/ADM-FRAME-COUNT-LINEAGE-STATIC-V1",
+      "manifest_sha256": "5fca02a1dd968790b5449aa8c0ab47d14251de101ec64f93fcbcf29ddb6c925a",
+      "supplement_seal_sha256": "2895ea0efee3a19af0cf1cb253f1b57e66c704e2c0a1de7a84b6d8165d21de5b",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS_MANIFEST_HASH_AUDIT_4_FILES",
+        "checker": "NOT_PRESENT_OR_NOT_DECLARED; MANUAL_HASH_AUDIT_ONLY"
+      },
+      "package_seal_checker_status": "NOT_RUN_OR_NOT_DECLARED_BY_WASH; LOCAL_MANIFEST_AND_PAYLOAD_HASHES_VERIFIED",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "USE_COUNT_DRIVEN_ROW_RULE_FOR_SCOPED_BRANCH; VERIFY_SELECTED_OWNER_AND_OPAQUE_API_LIMIT_BEFORE_ARBITRARY_N_CLAIM",
+      "not_run": [
+        "Selected runtime source instance, owner/generation, and opaque API limit outside the inspected wrapper."
+      ]
+    },
+    {
+      "package_id": "DEE-ATMOS-SOURCE-AXIS-OAMDI-CAP-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-SOURCE-AXIS-OAMDI-CAP-V1",
+      "manifest_sha256": "847514711fbb916b7f0828b8b2f0c09b29a11aed8e0cc3cf1bd94e18ad3c7124",
+      "supplement_seal_sha256": "e838c932f1accdfa69c2885080dec56ba1c80d250f84363df0b0fb6f36b7b497",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS_MANIFEST_HASH_AUDIT_4_FILES",
+        "checker": "NOT_PRESENT_OR_NOT_DECLARED; MANUAL_HASH_AUDIT_ONLY"
+      },
+      "package_seal_checker_status": "NOT_RUN_OR_NOT_DECLARED_BY_WASH; LOCAL_MANIFEST_AND_PAYLOAD_HASHES_VERIFIED",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "DYNAMIC_SOURCE_AXIS_MAX_159; CODE_ROW_AXIS_SEPARATE; SELECTED_INPUT_AND_AU_UNBOUND",
+      "not_run": [
+        "Selected input/source generation, native AU mapping, and runtime behavior."
+      ]
+    },
+    {
+      "package_id": "DEE-DATA-RATE-JOB-SCHEMA-TO-PLUGIN-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DATA-RATE-JOB-SCHEMA-TO-PLUGIN-BOUNDARY-V1",
+      "manifest_sha256": "cfb03f7b46f77cd91601878a5979c14af540b4b25010c0bfd916f4101e5c1c53",
+      "supplement_seal_sha256": "33eab9e0795339cdbfbbc719a30a2cda0b1f512329aece1ae19d5bf904ff2dd9",
+      "functional_ids": [
+        "F01E",
+        "F12"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS_MANIFEST_HASH_AUDIT_0_FILES",
+        "checker": "NOT_PRESENT_OR_NOT_DECLARED; MANUAL_HASH_AUDIT_ONLY"
+      },
+      "package_seal_checker_status": "NOT_RUN_OR_NOT_DECLARED_BY_WASH; LOCAL_MANIFEST_AND_PAYLOAD_HASHES_VERIFIED",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "OPTIONAL_XSD_DEFAULT_448; MULTI_TOKEN_POLICY_AND_NATIVE_SELECTION_UNBOUND",
+      "not_run": [
+        "Host data_rate property to selected DDP plugin instance, multi-token policy, and native output-rate selection."
+      ]
+    },
+    {
+      "package_id": "DEE-EC3-SIX-BITRATE-FRAME-HEADER-OBSERVATION-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-EC3-SIX-BITRATE-FRAME-HEADER-OBSERVATION-V1",
+      "manifest_sha256": "c69e412ce749f3553cf5fd2d55fb69bafba0429784df1de9ebb5d74359250d70",
+      "supplement_seal_sha256": "0d31de2b9e59e6ad3150bf99cae3730464e22899608c48b1c8e64f432e0d2278",
+      "functional_ids": [
+        "F01E",
+        "F12"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS_MANIFEST_HASH_AUDIT_0_FILES",
+        "checker": "NOT_PRESENT_OR_NOT_DECLARED; MANUAL_HASH_AUDIT_ONLY"
+      },
+      "package_seal_checker_status": "NOT_RUN_OR_NOT_DECLARED_BY_WASH; LOCAL_MANIFEST_AND_PAYLOAD_HASHES_VERIFIED",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "SIX_BOUNDED_RATE_FRAME_HEADER_OBSERVATIONS; WRITER_JOIN_AND_GENERALIZATION_UNBOUND",
+      "not_run": [
+        "Universal writer causality, other sample rates/layouts, full-program parity, and full JOC rendering."
+      ]
+    },
+    {
+      "package_id": "JOCFORGE-36-ROW-CURRENT-PRODUCTION-GATE-ERRATUM-V2",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-36-ROW-CURRENT-PRODUCTION-GATE-ERRATUM-V2",
+      "manifest_sha256": "9bc12cc20b21e1a4ca60b4e77020d6cc3c43c6c7a8d917e197e212ed19b948bb",
+      "supplement_seal_sha256": "a90454c466e3276033722f8bdeead86fee195432ca504c71a692a6f8a98f0aaa",
+      "functional_ids": [
+        "F01E",
+        "F06OF"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS_MANIFEST_HASH_AUDIT_4_FILES",
+        "checker": "NOT_PRESENT_OR_NOT_DECLARED; MANUAL_HASH_AUDIT_ONLY"
+      },
+      "package_seal_checker_status": "NOT_RUN_OR_NOT_DECLARED_BY_WASH; LOCAL_MANIFEST_AND_PAYLOAD_HASHES_VERIFIED",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "CORRECTS_METER_GATE_ATTRIBUTION; METER_MAP_DYNAMIC; SELECTED_NORMAL_SNAPSHOT_FIXED_38; PRIMARY_BINDING_SEPARATE",
+      "not_run": [
+        "Selected 36-row playable callback, owner install, native row identity, and whole-chain output."
+      ]
+    },
+    {
+      "package_id": "JOCFORGE-36-ROW-DYNAMIC-SHAPE-COLD-RESET-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-36-ROW-DYNAMIC-SHAPE-COLD-RESET-V1",
+      "manifest_sha256": "7d7ed2fe971d43f5ced37fc5fbfa40e4c41a943ba43346041cfb0a3e97b816c8",
+      "supplement_seal_sha256": "20f9c5cb96e3cf75623f337e895bfd88eca5c0e6dc3ebdecdc489bf419f95bd9",
+      "functional_ids": [
+        "F01E",
+        "F06OF"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS_MANIFEST_HASH_AUDIT_4_FILES",
+        "checker": "NOT_PRESENT_OR_NOT_DECLARED; MANUAL_HASH_AUDIT_ONLY"
+      },
+      "package_seal_checker_status": "NOT_RUN_OR_NOT_DECLARED_BY_WASH; LOCAL_MANIFEST_AND_PAYLOAD_HASHES_VERIFIED",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "MODEL_SHAPE_AND_COLD_RESET_RULES_ONLY; NATIVE_IDENTITY_AND_PLAYABLE_36_OUTPUT_UNBOUND",
+      "not_run": [
+        "Native row identity, arbitrary-N support, production callback, and playable 36-row output."
       ]
     }
   ]
