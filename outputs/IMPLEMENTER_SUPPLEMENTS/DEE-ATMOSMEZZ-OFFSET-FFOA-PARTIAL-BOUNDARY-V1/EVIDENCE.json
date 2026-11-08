@@ -1,0 +1,58 @@
+{
+  "combined_dependency": {
+    "adm_bwf_source_chunk_for_named_fields": "UNBOUND",
+    "metadata_text_parser": "common_atof_l; floating seconds coordinate",
+    "normalized_ffoa_depends_on_source_and_selected_offsets": true,
+    "reader_or_frame_alignment_consumer": "UNBOUND",
+    "runtime_owner_generation": "UNBOUND",
+    "xml_fields_independent_at_ingress": true
+  },
+  "conclusion": {
+    "auto_metadata_normalization": "STATIC_RULE_BOUND",
+    "downstream_time_alignment_effect": "UNBOUND",
+    "explicit_numeric_behavior": "UNBOUND",
+    "global_absence_claim": false
+  },
+  "execution": {
+    "atmos_info_run": "NOT_RUN",
+    "dee_run": "NOT_RUN",
+    "key_license_read": false,
+    "pcm_or_payload_read": false
+  },
+  "implementation_ready": false,
+  "properties": {
+    "ffoa": {
+      "auto_rule": "source metadata key ffoa; rebase relative to source and selected offsets; clamp to no earlier than selected offset",
+      "explicit_value_semantics": "UNBOUND",
+      "first_ddp_consumer": "FUN_18014fd90",
+      "relative_ddp_path": "subtract offset then pass to FUN_180164580",
+      "xml_slot": "+0x148"
+    },
+    "offset": {
+      "auto_rule": "selected source metadata key offset; absent key fallback 0.0",
+      "explicit_value_semantics": "UNBOUND",
+      "first_ddp_consumer": "FUN_18014fd90",
+      "xml_slot": "+0x168"
+    }
+  },
+  "schema": "washed-implementer-supplement.v1",
+  "source_discrimination": {
+    "BEXT_or_iXML_found": false,
+    "metadata_scan_count": {
+      "N36": 6,
+      "N38": 1
+    },
+    "minimum_vector": "one authorized N36 or N38 ADM with distinct nonzero source offset/FFOA candidates and exact metadata paths",
+    "named_offset_ffoa_or_time_reference_found": false,
+    "shared_audioProgramme_start_candidate": "NOT_BOUND_TO_EITHER_OUTPUT_METADATA_FIELD"
+  },
+  "source_package": {
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "manifest_sha256": "82f3d474d398403b911555cd61bb71671accd1e6e49ed189761d93e784be4b76",
+    "package_id": "dee_atmosmezz_offset_ffoa_auto_consumer_wash_v1",
+    "package_seal_sha256": "8926244d5a57b3de3959fb1a9bbde3020049df783a79eecb79fc03e24da5c3a3"
+  },
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-ATMOSMEZZ-OFFSET-FFOA-PARTIAL-BOUNDARY-V1"
+}

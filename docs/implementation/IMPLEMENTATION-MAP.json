@@ -8908,6 +8908,90 @@
           ],
           "validation_boundary": "Reference-only static boundary: a setter candidate stores mp4/dash at receiver+0x3b; Mp4::Run reaches InitPlugin on its param_1 path, where output_format at +0x1d8 is passed through an indirect slot +0x18. The setter receiver is not joined to the selected Run/InitPlugin instance. The +0x18 target, ABI, registration owner, selected muxer, writer, installed XML schema, and frame-rate consumer remain UNBOUND. DDP FileWriter/fwrite is not evidence of an MP4 muxer. Runtime and vectors remain NOT_RUN; local CLI rejection is unchanged.",
           "delivery_scope": "EXTERNAL_REFERENCE_ONLY_NO_MP4_DASH_ENABLEMENT_OR_ALGORITHM_CHANGE"
+        },
+        {
+          "slice_id": "washed-atmosmezz-auto-offset-ffoa-static-normalization",
+          "mapping_status": "AUTO_STATIC_NORMALIZATION_AND_FIRST_DDP_CONSUMER_BOUND__EXPLICIT_SOURCE_AND_READER_JOINS_UNBOUND",
+          "implementation_status": "WASHED_REFERENCE_ONLY_AUTO_RULE__EXPLICIT_VALUES_AND_TIMELINE_EFFECT_DISABLED",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "For authored auto values only, the static AtmosMezz path selects offset from source metadata with a 0.0 fallback when absent; auto FFOA is rebased using source and selected offsets, clamped not earlier than the selected offset, and its downstream helper receives FFOA minus offset. The first statically joined DDP consumer is FUN_18014fd90. This does not bind explicit numeric syntax/units, the source chunk supplying these named fields, runtime owner/generation, Reader/frame alignment, or timeline/output effect. The seven bounded samples did not discriminate candidate named fields; vectors remain PROPOSED_NOT_RUN.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-OFFSET-FFOA-PARTIAL-BOUNDARY-V1/FINDINGS.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Static auto offset/FFOA normalization reaches the first DDP consumer; no Reader/frame clock or timeline effect is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_ATMOSMEZZ_AUTO_OFFSET_FFOA_STATIC_RULES",
+            "package_id": "DEE-ATMOSMEZZ-OFFSET-FFOA-PARTIAL-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-OFFSET-FFOA-PARTIAL-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-OFFSET-FFOA-PARTIAL-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-OFFSET-FFOA-PARTIAL-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-OFFSET-FFOA-PARTIAL-BOUNDARY-V1/FINDINGS.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-OFFSET-FFOA-PARTIAL-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-OFFSET-FFOA-PARTIAL-BOUNDARY-V1/SOURCE-PACKAGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-OFFSET-FFOA-PARTIAL-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "0f1f8d3bd8014cbffaf4dd07c99ab8aa99cd5fbd5a87e6d890b119325b68e9b4",
+            "supplement_seal_sha256": "115dd6234a1df83cc9a78491a9f87f605913f08707c448aa4ef5f3523ee515ca",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "properties": {
+              "offset_auto": {
+                "source": "source metadata",
+                "missing_metadata_fallback": "0.0",
+                "first_ddp_consumer": "FUN_18014fd90"
+              },
+              "ffoa_auto": {
+                "normalization": "rebase with source and selected offsets; clamp not earlier than selected offset",
+                "downstream_value": "FFOA minus offset",
+                "first_ddp_consumer": "FUN_18014fd90"
+              },
+              "explicit_numeric_syntax_and_units": "UNBOUND",
+              "source_chunk_for_named_fields": "UNBOUND",
+              "runtime_owner_generation": "UNBOUND",
+              "reader_or_frame_alignment_consumer": "UNBOUND",
+              "timeline_output_effect": "NOT_ESTABLISHED"
+            },
+            "sample_scan": {
+              "n36_inputs": 6,
+              "n38_inputs": 1,
+              "named_offset_ffoa_fields_discriminated": false,
+              "vectors": "PROPOSED_NOT_RUN"
+            },
+            "validation_boundary": "For authored auto values only, the static AtmosMezz path selects offset from source metadata with a 0.0 fallback when absent; auto FFOA is rebased using source and selected offsets, clamped not earlier than the selected offset, and its downstream helper receives FFOA minus offset. The first statically joined DDP consumer is FUN_18014fd90. This does not bind explicit numeric syntax/units, the source chunk supplying these named fields, runtime owner/generation, Reader/frame alignment, or timeline/output effect. The seven bounded samples did not discriminate candidate named fields; vectors remain PROPOSED_NOT_RUN."
+          },
+          "vectors": {
+            "kind": "WASHED_AUTO_OFFSET_FFOA_CANDIDATES_PROPOSED_NOT_RUN",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Seven existing samples did not discriminate the candidate named fields; proposed vectors remain NOT_RUN."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-OFFSET-FFOA-PARTIAL-BOUNDARY-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "PROPOSED_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Explicit numeric syntax, units, precision, and validation behavior.",
+            "ADM/BWF source chunk that supplies named offset/FFOA metadata.",
+            "Runtime owner/generation, Reader/frame alignment consumer, and timeline/output effect.",
+            "Candidate input vectors; seven existing samples did not discriminate the fields."
+          ],
+          "validation_boundary": "For authored auto values only, the static AtmosMezz path selects offset from source metadata with a 0.0 fallback when absent; auto FFOA is rebased using source and selected offsets, clamped not earlier than the selected offset, and its downstream helper receives FFOA minus offset. The first statically joined DDP consumer is FUN_18014fd90. This does not bind explicit numeric syntax/units, the source chunk supplying these named fields, runtime owner/generation, Reader/frame alignment, or timeline/output effect. The seven bounded samples did not discriminate candidate named fields; vectors remain PROPOSED_NOT_RUN.",
+          "delivery_scope": "AUTO_STATIC_REFERENCE_ONLY_NO_EXPLICIT_RULE_OR_TIMELINE_EFFECT_ENABLEMENT"
         }
       ]
     },
@@ -69992,6 +70076,28 @@
         "Installation-bound XML schema, exact authored XML, and selected same-instance join.",
         "Activation target/ABI, concrete muxer/writer, frame-rate consumer, and runtime output.",
         "Both package vectors; no MP4/DASH run or patcher execution occurred."
+      ]
+    },
+    {
+      "package_id": "DEE-ATMOSMEZZ-OFFSET-FFOA-PARTIAL-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-OFFSET-FFOA-PARTIAL-BOUNDARY-V1",
+      "manifest_sha256": "0f1f8d3bd8014cbffaf4dd07c99ab8aa99cd5fbd5a87e6d890b119325b68e9b4",
+      "supplement_seal_sha256": "115dd6234a1df83cc9a78491a9f87f605913f08707c448aa4ef5f3523ee515ca",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "AUTO_STATIC_NORMALIZATION_AND_FIRST_DDP_CONSUMER_BOUND; EXPLICIT_SOURCE_READER_AND_TIMELINE_JOINS_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Explicit numeric values, syntax, units, source chunk identity, owner/generation, and Reader/frame alignment.",
+        "Timeline/output effect and proposed input vectors."
       ]
     }
   ]

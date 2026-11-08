@@ -1,0 +1,25 @@
+{
+  "expected_rule": [
+    "resolve selected offset from source or 0.0 fallback",
+    "rebase auto FFOA using source/selected offsets",
+    "clamp normalized FFOA to no earlier than selected offset",
+    "DDP path subtracts selected offset before downstream helper"
+  ],
+  "not_a_pass_record": true,
+  "observed_existing_scan": {
+    "N36": 6,
+    "N38": 1,
+    "discriminating_metadata_candidate_found": false
+  },
+  "required_input": {
+    "channel_count": [
+      36,
+      38
+    ],
+    "metadata_field_paths": "exact and hash-bound",
+    "source_ffoa_candidate": "distinct nonzero",
+    "source_offset_candidate": "distinct nonzero"
+  },
+  "schema": "washed-offset-ffoa-input-only.v1",
+  "status": "PROPOSED_NOT_RUN"
+}

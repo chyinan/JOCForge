@@ -197,6 +197,7 @@
 | F01E/washed-di-measure-only-bool-boundary | — | `This is a static setup/consumer boundary plus references to prior measurement receipts; no callback clock or new execution is established.` |
 | F01E/washed-metering-mode-runtime-boundary | — | `The evidence combines a scoped static record-field trace with one completed failed run; no callback clock or mode transition is established.` |
 | F01E/washed-mp4-dash-output-selection-boundary | — | `No frame-rate consumer, output clock, or runtime muxer transition is established.` |
+| F01E/washed-atmosmezz-auto-offset-ffoa-static-normalization | — | `Static auto offset/FFOA normalization reaches the first DDP consumer; no Reader/frame clock or timeline effect is established.` |
 | F03G/target-slot-install | — | `Pure per-callback value transition; no clock or committed state is owned.` |
 | F03C/candidate-selector | — | `Each selector call initializes cold scratch; no callback/source/AU counter or cross-call selector state is owned.` |
 | F03C/selector-score-choice | — | `No state or clock is owned.` |

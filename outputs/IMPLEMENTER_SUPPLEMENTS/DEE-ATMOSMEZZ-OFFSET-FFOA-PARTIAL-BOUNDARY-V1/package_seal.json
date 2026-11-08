@@ -1,0 +1,38 @@
+{
+  "file_count": 6,
+  "files": [
+    {
+      "bytes": 2312,
+      "file": "EVIDENCE.json",
+      "sha256": "021c357134aec86d054b970d60713af6055f47f4997ab232283f6fe0b7a39f4e"
+    },
+    {
+      "bytes": 749,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "6f4ce1cc830a2c79ab8883303c484e87655c3f41e8d45369e1046853827ed35e"
+    },
+    {
+      "bytes": 803,
+      "file": "FINDINGS.md",
+      "sha256": "8b8e7c5af34580ae9ec7c7d160f324789e17c76468c5a5b2713c66638ef420b0"
+    },
+    {
+      "bytes": 365,
+      "file": "SOURCE-PACKAGE.json",
+      "sha256": "07e5e3bbbd931cc57c2708554784d50ac9d5cc34ff953b99568818235b177114"
+    },
+    {
+      "bytes": 1577,
+      "file": "CHECK.py",
+      "sha256": "2b50b640311d06e2ba66f139881c0e802eceb51204dfb675fcdd49b9fb37db32"
+    },
+    {
+      "bytes": 1313,
+      "file": "MANIFEST.json",
+      "sha256": "0f1f8d3bd8014cbffaf4dd07c99ab8aa99cd5fbd5a87e6d890b119325b68e9b4"
+    }
+  ],
+  "schema": "washed-implementer-supplement-seal.v1",
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-ATMOSMEZZ-OFFSET-FFOA-PARTIAL-BOUNDARY-V1"
+}

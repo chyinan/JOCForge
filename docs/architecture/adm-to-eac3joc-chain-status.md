@@ -1541,3 +1541,7 @@ Wash package `SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V3` (manifest SHA-256 `0d2327
 ## 2026-11-08: MP4/DASH output selection boundary
 
 Wash package `DEE-MP4-DASH-OUTPUT-SELECTION-BOUNDARY-V1` (manifest SHA-256 `668fc7a64dbcb1a28b5f6f0bbbaec4cdbee087b87bb683c5950eeb0f736cd966`, seal SHA-256 `5ebe06978a934cdaf7f8b86de0aa322544f40936590d804b96ca64743847039b`) binds a static setter token path and the Run/InitPlugin property/activation route. Same-object ownership, indirect target/ABI, concrete muxer/writer, frame-rate consumer, and installation-bound XML remain `UNBOUND`; DDP FileWriter is not an MP4 muxer. Runtime and two input vectors are `NOT_RUN`; MP4/DASH remain rejected by the local CLI.
+
+## 2026-11-08: AtmosMezz auto offset/FFOA static boundary
+
+Wash package `DEE-ATMOSMEZZ-OFFSET-FFOA-PARTIAL-BOUNDARY-V1` (manifest SHA-256 `0f1f8d3bd8014cbffaf4dd07c99ab8aa99cd5fbd5a87e6d890b119325b68e9b4`, seal SHA-256 `115dd6234a1df83cc9a78491a9f87f605913f08707c448aa4ef5f3523ee515ca`) statically binds only auto behavior: offset selects source metadata with a `0.0` fallback; FFOA is rebased from source/selected offsets, clamped not earlier than selected offset, and passed as FFOA minus offset to the first DDP consumer `FUN_18014fd90`. Explicit numeric syntax/units, source chunk, owner/generation, Reader/frame alignment, and timeline/output effect remain `UNBOUND`. Seven existing samples did not discriminate candidate fields; proposed vectors are `NOT_RUN`. The selected CLI still accepts only `auto`; no explicit non-default rule is enabled.

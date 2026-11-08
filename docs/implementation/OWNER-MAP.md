@@ -197,6 +197,7 @@
 | F01E/washed-di-measure-only-bool-boundary | F01E | `UNBOUND` |
 | F01E/washed-metering-mode-runtime-boundary | F01E | `UNBOUND` |
 | F01E/washed-mp4-dash-output-selection-boundary | F01E | `UNBOUND` |
+| F01E/washed-atmosmezz-auto-offset-ffoa-static-normalization | F01E | `UNBOUND` |
 | F03G/target-slot-install | F03G | `spatial_control` |
 | F03C/candidate-selector | F03C | `spatial_control` |
 | F03C/selector-score-choice | F03C | `spatial_control` |
