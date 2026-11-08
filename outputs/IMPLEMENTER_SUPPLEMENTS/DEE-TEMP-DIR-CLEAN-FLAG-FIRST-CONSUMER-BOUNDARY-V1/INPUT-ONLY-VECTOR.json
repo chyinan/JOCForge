@@ -1,0 +1,11 @@
+{
+  "cleanup_effect": "UNBOUND",
+  "expected_observation": "first read on non-null path_object+0x68 route; controls path-string assembly",
+  "known_path_only": true,
+  "not_a_pass_record": true,
+  "object_field": "+0x90 one-byte value",
+  "runtime_owner_generation": "NOT_CAPTURED",
+  "schema": "washed-temp-dir-clean-flag-input-only.v1",
+  "setting": "misc/temp_dir/clean_temp",
+  "status": "INPUT_ONLY_STATIC_NOT_RUN"
+}

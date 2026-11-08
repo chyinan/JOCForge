@@ -8992,6 +8992,80 @@
           ],
           "validation_boundary": "For authored auto values only, the static AtmosMezz path selects offset from source metadata with a 0.0 fallback when absent; auto FFOA is rebased using source and selected offsets, clamped not earlier than the selected offset, and its downstream helper receives FFOA minus offset. The first statically joined DDP consumer is FUN_18014fd90. This does not bind explicit numeric syntax/units, the source chunk supplying these named fields, runtime owner/generation, Reader/frame alignment, or timeline/output effect. The seven bounded samples did not discriminate candidate named fields; vectors remain PROPOSED_NOT_RUN.",
           "delivery_scope": "AUTO_STATIC_REFERENCE_ONLY_NO_EXPLICIT_RULE_OR_TIMELINE_EFFECT_ENABLEMENT"
+        },
+        {
+          "slice_id": "washed-temp-clean-flag-first-resolver-consumer",
+          "mapping_status": "KNOWN_RESOLVER_READS_PATH_OBJECT_PLUS90_AND_BUILDS_PATH__DELETE_PROVIDER_EFFECT_UNBOUND",
+          "implementation_status": "WASHED_REFERENCE_ONLY_PATH_CONSTRUCTION__NO_CLEANUP_SEMANTICS_ENABLED",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "On the known StageRunner resolver path, the path_object written by the clean_temp setter reaches FUN_14007b6f0. When path_object+0x68 is non-null, the first scoped read compares one byte at +0x90 and selects a local path-string assembly branch, then passes the assembled value through the provider object at +0x68/vtable slot +0x58. This is a path-construction use, not deletion or cleanup policy. Provider target/type, runtime owner/generation, and cleanup/delete effect remain UNBOUND; the +0x68-null Message branch is separate and not joined to clean_temp.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-CLEAN-FLAG-FIRST-CONSUMER-BOUNDARY-V1/FINDINGS.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "This is a scoped resolver/path assembly observation; no runtime cleanup clock, generation, or file-lifecycle transition is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_TEMP_CLEAN_FLAG_FIRST_RESOLVER_CONSUMER",
+            "package_id": "DEE-TEMP-DIR-CLEAN-FLAG-FIRST-CONSUMER-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-CLEAN-FLAG-FIRST-CONSUMER-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-CLEAN-FLAG-FIRST-CONSUMER-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-CLEAN-FLAG-FIRST-CONSUMER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-CLEAN-FLAG-FIRST-CONSUMER-BOUNDARY-V1/FINDINGS.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-CLEAN-FLAG-FIRST-CONSUMER-BOUNDARY-V1/INPUT-ONLY-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-CLEAN-FLAG-FIRST-CONSUMER-BOUNDARY-V1/SOURCE-PACKAGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-CLEAN-FLAG-FIRST-CONSUMER-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "017105f6a6238af67a97261d18275adf8ad01f592dacc78462e08c224a3abd4e",
+            "supplement_seal_sha256": "c27c4106e040767a42817367a09e9f7a112d546bbdf59bb030c5f64a1bb94df0",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_path": {
+              "clean_temp_setter": "one byte to path_object+0x90",
+              "static_object_join": "BOUND_TO_STAGE_RUNNER_TEMP_PATH_OBJECT",
+              "known_resolver": "FUN_14007ae60",
+              "first_consumer": "FUN_14007b6f0",
+              "branch_guard": "path_object+0x68 non-null",
+              "first_read": "one-byte comparison at path_object+0x90",
+              "local_effect": "selects among local path-string assembly branches",
+              "provider_handoff": "path_object+0x68 object, vtable slot +0x58",
+              "provider_target_type": "UNBOUND",
+              "runtime_owner_generation": "UNBOUND",
+              "cleanup_delete_effect": "UNBOUND",
+              "separate_null_message_branch": "not joined to clean_temp"
+            },
+            "validation_boundary": "On the known StageRunner resolver path, the path_object written by the clean_temp setter reaches FUN_14007b6f0. When path_object+0x68 is non-null, the first scoped read compares one byte at +0x90 and selects a local path-string assembly branch, then passes the assembled value through the provider object at +0x68/vtable slot +0x58. This is a path-construction use, not deletion or cleanup policy. Provider target/type, runtime owner/generation, and cleanup/delete effect remain UNBOUND; the +0x68-null Message branch is separate and not joined to clean_temp."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_KNOWN_PATH_INPUT_ONLY_NOT_RUN",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "One input-only known resolver path; it is not a cleanup pass record."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-CLEAN-FLAG-FIRST-CONSUMER-BOUNDARY-V1/INPUT-ONLY-VECTOR.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "INPUT_ONLY_STATIC_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Delete/retain/cleanup effect and target operation of vtable slot +0x58.",
+            "Provider object type, runtime owner/generation, and null-branch Message field join.",
+            "Any file deletion, cleanup run, or runtime observation; none was performed."
+          ],
+          "validation_boundary": "On the known StageRunner resolver path, the path_object written by the clean_temp setter reaches FUN_14007b6f0. When path_object+0x68 is non-null, the first scoped read compares one byte at +0x90 and selects a local path-string assembly branch, then passes the assembled value through the provider object at +0x68/vtable slot +0x58. This is a path-construction use, not deletion or cleanup policy. Provider target/type, runtime owner/generation, and cleanup/delete effect remain UNBOUND; the +0x68-null Message branch is separate and not joined to clean_temp.",
+          "delivery_scope": "PATH_CONSTRUCTION_REFERENCE_ONLY_NO_CLEANUP_OR_DELETE_SEMANTICS"
         }
       ]
     },
@@ -70098,6 +70172,28 @@
       "not_run": [
         "Explicit numeric values, syntax, units, source chunk identity, owner/generation, and Reader/frame alignment.",
         "Timeline/output effect and proposed input vectors."
+      ]
+    },
+    {
+      "package_id": "DEE-TEMP-DIR-CLEAN-FLAG-FIRST-CONSUMER-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-CLEAN-FLAG-FIRST-CONSUMER-BOUNDARY-V1",
+      "manifest_sha256": "017105f6a6238af67a97261d18275adf8ad01f592dacc78462e08c224a3abd4e",
+      "supplement_seal_sha256": "c27c4106e040767a42817367a09e9f7a112d546bbdf59bb030c5f64a1bb94df0",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "PATH_OBJECT_PLUS90_READ_AND_PATH_ASSEMBLY_BOUND_ON_KNOWN_ROUTE; CLEANUP_DELETE_PROVIDER_EFFECT_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "File deletion/cleanup effect, provider target/type, and runtime owner/generation.",
+        "Separate null-provider Message branch join and any runtime cleanup/delete operation."
       ]
     }
   ]

@@ -1,0 +1,10 @@
+{
+  "checker_normal": "PASS",
+  "checker_python_O": "PASS",
+  "checksums_count": 8,
+  "manifest_sha256": "082b3eb1da87cc67e542806028c92242a47fdc07d46a6b6545d11e52fd20434e",
+  "package_id": "misc_temp_clean_flag_first_consumer_wash_v1",
+  "package_seal_sha256": "f19adbee8e592075306faac7d433f1d2b4c679dbab002480009afd843becb255",
+  "payload_count": 7,
+  "raw_source_or_decompilation_copied": false
+}

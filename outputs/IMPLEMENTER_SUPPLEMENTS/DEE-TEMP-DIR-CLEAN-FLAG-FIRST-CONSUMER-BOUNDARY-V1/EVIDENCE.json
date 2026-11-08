@@ -1,0 +1,53 @@
+{
+  "config_binding": {
+    "field_write": "one byte to path_object+0x90",
+    "path_object_member": "+0x2a0",
+    "runtime_owner_generation": "NOT_CAPTURED",
+    "setting": "misc/temp_dir/clean_temp",
+    "stage_runner_build": "FUN_14003f690",
+    "static_object_join": "BOUND_TO_STAGE_RUNNER_TEMP_PATH_OBJECT",
+    "writer": "FUN_14007c880"
+  },
+  "exclusions": {
+    "implementation_contact": false,
+    "media_pcm_payload_key_license_read": false
+  },
+  "execution": {
+    "dee": "NOT_RUN",
+    "file_deletion_performed": false,
+    "windbg": "NOT_RUN"
+  },
+  "first_consumer": {
+    "cleanup_or_delete_effect": "UNBOUND",
+    "direct_call": "FUN_14007ae60 -> FUN_14007b6f0 at RVA 0x7b20d; same path_object is param_1",
+    "first_read": "one-byte comparison at param_1+0x90, RVA 0x7babd",
+    "guard": "path_object+0x68 must be non-null",
+    "known_resolver": "FUN_14007ae60",
+    "local_effect": "selects among local path-string assembly branches; opaque conditions remain",
+    "next_boundary": "indirect vtable slot +0x58 through object loaded from path_object+0x68",
+    "slot_target_and_object_type": "UNBOUND"
+  },
+  "implementation_ready": false,
+  "other_edges": {
+    "additional_direct_caller": "FUN_1400e60b0; owner route not followed",
+    "global_absence_claim": false,
+    "same_offset_candidate": "FUN_14007ac50; not joined"
+  },
+  "schema": "washed-implementer-supplement.v1",
+  "separate_message_branch": {
+    "message_plus_0x48": "separate Message receiver field; no clean_temp value/effect join",
+    "path_object_plus_0x68_null": "constructs CreateTempFile Message and follows separate AssignTempFile/Message path"
+  },
+  "source_package": {
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "checksums_count": 8,
+    "manifest_sha256": "082b3eb1da87cc67e542806028c92242a47fdc07d46a6b6545d11e52fd20434e",
+    "package_id": "misc_temp_clean_flag_first_consumer_wash_v1",
+    "package_seal_sha256": "f19adbee8e592075306faac7d433f1d2b4c679dbab002480009afd843becb255",
+    "payload_count": 7,
+    "raw_source_or_decompilation_copied": false
+  },
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-TEMP-DIR-CLEAN-FLAG-FIRST-CONSUMER-BOUNDARY-V1"
+}
