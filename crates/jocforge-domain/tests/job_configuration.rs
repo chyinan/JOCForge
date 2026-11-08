@@ -457,11 +457,15 @@ fn complete_job_xml_value_surface_parses_without_enabling_unselected_effects() {
     let descriptor = &case["pcm_descriptor"];
     let wave = SelectedWaveDescriptor::new(
         descriptor["sample_rate"].as_u64().unwrap() as u32,
-        descriptor["channels"].as_u64().unwrap() as u16,
+        36,
         descriptor["pcm_bits"].as_u64().unwrap() as u16,
     );
     let source_samples = descriptor["source_samples"].as_u64().unwrap();
-    let base_xml = case["input_xml"].as_str().unwrap();
+    let base_xml = case["input_xml"]
+        .as_str()
+        .unwrap()
+        .replace("<adm>", "<atmos_mezz>")
+        .replace("</adm>", "</atmos_mezz>");
     let ec3_branch = "<output><ec3><file_name>out.ec3</file_name><storage><local><path>fixture</path></local></storage></ec3></output>";
     let mp4_branch = "<output><mp4 version=\"1\"><output_format>mp4</output_format><override_frame_rate>no</override_frame_rate><file_name>out.m4a</file_name><storage><local><path>fixture</path></local></storage><plugin><base></base></plugin></mp4></output>";
     let authored_xml = base_xml
@@ -477,6 +481,8 @@ fn complete_job_xml_value_surface_parses_without_enabling_unselected_effects() {
     let configuration =
         parse_selected_job_configuration(authored_xml.as_bytes(), wave, source_samples)
             .expect("XML values parse without applying unsupported effects");
+    assert_eq!(configuration.input_kind(), SelectedInputKind::AtmosMezz);
+    assert_eq!(configuration.wave().channels(), 36);
     assert!(configuration.loudness().dialogue_intelligence());
     assert_eq!(configuration.loudness().speech_threshold(), 15);
     assert_eq!(configuration.line_drc_profile().xml_value(), "film_light");
