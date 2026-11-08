@@ -1,0 +1,25 @@
+{
+  "schema": "wash.speech_threshold_ab_run_source_manifest.v1",
+  "source_preflight": {
+    "package_id": "speech_threshold_ab_prelaunch_wash_v1",
+    "manifest_sha256": "afaa47cc806414bff4f0756a04eee401f1db6b19435569940a02d51e2d3cee7d",
+    "seal_sha256": "f27f438732fe0fb2fec31b210976663d36f429079cf57f366809cfa04da8660e",
+    "checker_results": {
+      "normal": "PASS",
+      "python_o": "PASS"
+    }
+  },
+  "run_receipts": [
+    {
+      "arm": "arm_threshold_0",
+      "receipt_sha256": "e5d4fdfc969d1f10521bcdfee587056b5ee1ffe86940093acf1c454dfde8a04d",
+      "status_sha256": "e5d4fdfc969d1f10521bcdfee587056b5ee1ffe86940093acf1c454dfde8a04d"
+    },
+    {
+      "arm": "arm_threshold_100",
+      "receipt_sha256": "abff9102b7b7c5ce2a737c49688b7803121f54d1a93c1d7f9465ad3ec3ad3ae5",
+      "status_sha256": "abff9102b7b7c5ce2a737c49688b7803121f54d1a93c1d7f9465ad3ec3ad3ae5"
+    }
+  ],
+  "raw_receipts_exported": false
+}

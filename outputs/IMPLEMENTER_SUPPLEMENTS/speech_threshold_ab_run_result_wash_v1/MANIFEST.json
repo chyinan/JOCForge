@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "speech_threshold_ab_run_result_wash_v1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "TWO_ARM_NATURAL_EXIT10; NO_CAPTURE_EVENTS_OR_EC3_OUTPUT; THRESHOLD_EFFECT_UNBOUND_NOT_RUN; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 968,
+      "sha256": "a7ead6d7f57c27cd15e209dee23a4f4fad188c5b20c67b445f0fe058a786eb50"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3952,
+      "sha256": "829ebdd9896eeb5ee42bb0c859a90f0a55868d7ad0d8faa64da392e8cf355448"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 926,
+      "sha256": "a2d46c3124243fcb8812c7183751701edc5c1ec68b3b8c20188a4400e998888f"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 747,
+      "sha256": "cca0fdfc8c0c65c69270e674e3854eca2250c749f74b83259669d7bb5ddea18b"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 1930,
+      "sha256": "fa92823e5fccdf98b93f3682db34751d7dddf31f52d49f32783841855dfd0933"
+    }
+  ]
+}

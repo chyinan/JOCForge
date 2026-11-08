@@ -185,6 +185,7 @@
 | F01E/washed-rf-music-standard-selector-lineage-boundary | F01E | `UNBOUND` |
 | F01E/washed-dialogue-intelligence-bool-query-setter-boundary | F01E | `UNBOUND` |
 | F01E/authored-input-offset-and-ffoa-string-admission | F01E | `frontend` |
+| F01E/washed-speech-threshold-ab-run-result-boundary | F01E | `UNBOUND` |
 | F03G/target-slot-install | F03G | `spatial_control` |
 | F03C/candidate-selector | F03C | `spatial_control` |
 | F03C/selector-score-choice | F03C | `spatial_control` |

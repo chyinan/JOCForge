@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "SPEECH-THRESHOLD-AB-0-VS-100-N36",
+      "input_only": true,
+      "input": {
+        "input_kind": "atmos_mezz",
+        "channels": 36,
+        "sample_rate_hz": 48000,
+        "pcm_bits": 24,
+        "metering_mode": "1770-4",
+        "dialogue_intelligence": true,
+        "speech_threshold_arms": [
+          0,
+          100
+        ],
+        "data_rate_kbps": 1024,
+        "line_drc": "film_light",
+        "rf_drc": "film_light",
+        "preferred_downmix": "loro"
+      },
+      "expected_output": null,
+      "observed_execution": "two natural exits code 10; zero observer scalar events; no output files",
+      "effect": "UNBOUND_NOT_RUN"
+    }
+  ]
+}

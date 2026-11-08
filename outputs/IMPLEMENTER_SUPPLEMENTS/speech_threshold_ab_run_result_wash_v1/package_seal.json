@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "speech_threshold_ab_run_result_wash_v1",
+  "manifest_sha256": "9fd44544f2cebe4d680cc192d12c53f356205645fb9b1872bdb9acfa63172f8e",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "TWO_ARM_NATURAL_EXIT10; NO_CAPTURE_EVENTS_OR_EC3_OUTPUT; THRESHOLD_EFFECT_UNBOUND_NOT_RUN; IMPLEMENTATION_READY=NO"
+}

@@ -1385,7 +1385,7 @@ DLL-local candidate map 静态给出 1770-4→U32 0、1770-3→U32 1；一个处
 
 ## 2026-11-08: Additional washed job_config reference boundaries
 
-The following fifty-three tabled packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. Registry-only addenda are recorded in `IMPLEMENTATION-MAP.json`; all remain evidence-only and do not enable additional job_config behavior:
+The following fifty-four tabled packages were independently hash-checked and passed their package checkers under both normal Python and `python -O`. Registry-only addenda are recorded in `IMPLEMENTATION-MAP.json`; all remain evidence-only and do not enable additional job_config behavior:
 
 | Package | Manifest / seal SHA-256 | Bounded evidence | Still unbound or not run |
 |---|---|---|---|
@@ -1442,6 +1442,7 @@ The following fifty-three tabled packages were independently hash-checked and pa
 | DEE-TRIM-SURROUND-CANDIDATE-REGISTER-BOUNDARY-V1 | 1901e779850a250f1044e2876cff173bce814b9887252178d1bfcab550ef72e3 / 0848b4f8a1743ceae5cff64c1fb9246fedfde5a16a6b31b9c1d9941d9bbcb6da | Bounded consumer reads U16 `[RDI+0x968]` and stores a U16 at `*(RDI+0x4330)+0x240`; scoped xref model has no direct code caller. | Caller and StringType/XML owner join, numeric meaning, units, BSI, and audio effect; not a global no-caller claim. |
 | DEE-RF-MUSIC-STANDARD-SELECTOR-LINEAGE-BOUNDARY-V1 | f008158fa2b9c82563887f2dcf6aea652b3124589616fc64fb316ac868291668 / 9703dce9aca20de2381c49a8dd8c923f8a02111e8571f49ef2c63484e6296316 | `music_standard` raw candidate 3 at per-frame `+0xa4`; separate `Priv+0xfc8` selector path uses 1/2. | Raw-3 transfer, DRC meaning, runtime owner/generation, BSI, and audio effect. |
 | DEE-DI-BOOL-STATIC-QUERY-TO-SETTER-BOUNDARY-V1 | 5dbba2d0f274e302bf061835a65b5e85cc5afc11014cdc326ee7dfc22a25475c / a3de433a80e8e3c994562ae363c10ecd7ef62cd8f4eacecf4dac0b2c149bbb72 | Bool candidate at `Priv+0x290` and conditional exact-key dispatch to `FUN_18016a540`. | Actual query key, runtime owner/generation, F06 measurement join, and effect. |
+| speech_threshold_ab_run_result_wash_v1 | 9fd44544f2cebe4d680cc192d12c53f356205645fb9b1872bdb9acfa63172f8e / 18070d1b9521a8db05a92dfe2ab57fa87183cc121359e821853c556689c65d9a | Two authorized N36 arms (threshold 0/100) naturally exit 10 with zero capture events and no EC-3 output. | Exit cause, threshold effect, and any conclusion about threshold equivalence; result is uninformative. |
 
 The EC3 output package source receipt records checksum-file SHA-256 `63d998bcad4ecbad129c1d970c82b35480c93a2bb003a1c617b2f5747ae9490c`. Its corrected seal records `checker_status=PASS_NORMAL_AND_PYTHON_O`, matching the local checker results under normal Python and `python -O`. The package remains a scoped first-break only.
 

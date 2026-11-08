@@ -7739,6 +7739,91 @@
           ],
           "validation_boundary": "The selected XML parser preserves explicit offset and ffoa strings independently in normalized identity. Missing or empty fields retain the existing auto default. The CLI gate continues to accept only auto for both fields and rejects other values before Meter, callbacks, or encoding. No input time syntax, units, host owner, Reader join, or runtime effect is inferred.",
           "delivery_scope": "LOCAL_XML_STRING_ADMISSION_ONLY_NO_INPUT_TIME_EFFECT"
+        },
+        {
+          "slice_id": "washed-speech-threshold-ab-run-result-boundary",
+          "mapping_status": "TWO_ARM_EXIT10_NO_CAPTURE_OR_OUTPUT__THRESHOLD_EFFECT_UNBOUND",
+          "implementation_status": "FAILED_UNINFORMATIVE_AB__NO_THRESHOLD_EFFECT_CONCLUSION",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Wash-only run-result boundary for two authorized N36 arms. The arms differ only in speech_threshold (0 versus 100); both naturally exited with code 10, produced zero capture events, and created no EC-3 output. Exit cause and threshold effect are unbound/not observed. This is an uninformative failed A/B result, not a pass, equivalence result, or threshold-effect claim.",
+          "dependencies": [
+            "F01E/selected-job-xml-profile-normalization"
+          ],
+          "spec_files": [
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/speech_threshold_ab_run_result_wash_v1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The run result reports two natural terminal outcomes and no captured events or output file.",
+              "No time or measurement effect is computed from these run results."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_SPEECH_THRESHOLD_AB_RUN_RESULT_ONLY",
+            "package_id": "speech_threshold_ab_run_result_wash_v1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/speech_threshold_ab_run_result_wash_v1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/speech_threshold_ab_run_result_wash_v1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/speech_threshold_ab_run_result_wash_v1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/speech_threshold_ab_run_result_wash_v1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/speech_threshold_ab_run_result_wash_v1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/speech_threshold_ab_run_result_wash_v1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/speech_threshold_ab_run_result_wash_v1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "9fd44544f2cebe4d680cc192d12c53f356205645fb9b1872bdb9acfa63172f8e",
+            "supplement_seal_sha256": "18070d1b9521a8db05a92dfe2ab57fa87183cc121359e821853c556689c65d9a",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "arms": [
+                {
+                  "threshold": 0,
+                  "natural_exit_code": 10,
+                  "capture_events": 0,
+                  "ec3_output": false
+                },
+                {
+                  "threshold": 100,
+                  "natural_exit_code": 10,
+                  "capture_events": 0,
+                  "ec3_output": false
+                }
+              ],
+              "fixed_controls": "DI=true; metering_mode=1770-4; listed controls held constant",
+              "exit_cause": "UNBOUND",
+              "threshold_effect": "UNBOUND_NOT_OBSERVED",
+              "raw_module_base_value_in_package": false,
+              "user_reported_failure_identity": "USER_REPORTED_FAILURE_FILE_ID_UNBOUND"
+            },
+            "validation_boundary": "Wash-only run-result boundary for two authorized N36 arms. The arms differ only in speech_threshold (0 versus 100); both naturally exited with code 10, produced zero capture events, and created no EC-3 output. Exit cause and threshold effect are unbound/not observed. This is an uninformative failed A/B result, not a pass, equivalence result, or threshold-effect claim."
+          },
+          "vectors": {
+            "kind": "WASHED_RUN_RESULT_WITH_INPUT_ONLY_RECIPE",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Two arms; no expected audio output or scalar result is included."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/speech_threshold_ab_run_result_wash_v1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "WASH_RUN_RESULT_ONLY_NOT_A_PRODUCT_VECTOR"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Cause of natural exit code 10 for either arm.",
+            "Any threshold-dependent measurement or audio effect.",
+            "Any conclusion that thresholds 0 and 100 are equivalent.",
+            "Retries or new runs; this package does not authorize another attempt.",
+            "Failure artifact identity for the separate user-reported damaged output."
+          ],
+          "validation_boundary": "Wash-only run-result boundary for two authorized N36 arms. The arms differ only in speech_threshold (0 versus 100); both naturally exited with code 10, produced zero capture events, and created no EC-3 output. Exit cause and threshold effect are unbound/not observed. This is an uninformative failed A/B result, not a pass, equivalence result, or threshold-effect claim.",
+          "delivery_scope": "WASHED_FAILURE_RESULT_ONLY_NO_THRESHOLD_EFFECT_OR_EQUIVALENCE_CLAIM"
         }
       ]
     },
@@ -68526,6 +68611,29 @@
         "Dynamic ParametersContainer query key to the Dialogue Intelligence XML field.",
         "Runtime invocation, Bool provider owner/generation, and F06 measurement-instance join.",
         "Measurement result, meter/audio behavior, and any audio effect."
+      ]
+    },
+    {
+      "package_id": "speech_threshold_ab_run_result_wash_v1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/speech_threshold_ab_run_result_wash_v1",
+      "manifest_sha256": "9fd44544f2cebe4d680cc192d12c53f356205645fb9b1872bdb9acfa63172f8e",
+      "supplement_seal_sha256": "18070d1b9521a8db05a92dfe2ab57fa87183cc121359e821853c556689c65d9a",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "TWO_ARM_NATURAL_EXIT10; NO_CAPTURE_EVENTS_OR_EC3_OUTPUT; THRESHOLD_EFFECT_UNBOUND_NOT_RUN; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Cause of natural exit code 10 for either arm.",
+        "Any threshold-dependent measurement or audio effect.",
+        "Any conclusion that thresholds 0 and 100 are equivalent.",
+        "Retries or new runs; this package does not authorize another attempt.",
+        "Failure artifact identity for the separate user-reported damaged output."
       ]
     }
   ]

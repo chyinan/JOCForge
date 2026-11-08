@@ -1,0 +1,110 @@
+{
+  "schema": "wash.speech_threshold_ab_n36_run_result.v1",
+  "source_preflight": {
+    "package_id": "speech_threshold_ab_prelaunch_wash_v1",
+    "manifest_sha256": "afaa47cc806414bff4f0756a04eee401f1db6b19435569940a02d51e2d3cee7d",
+    "package_seal_sha256": "f27f438732fe0fb2fec31b210976663d36f429079cf57f366809cfa04da8660e",
+    "checker_normal": "PASS",
+    "checker_python_o": "PASS"
+  },
+  "authorization": {
+    "timeline_event": "E-373",
+    "scope": "one serial run for each threshold arm, natural exit only, no retry",
+    "completed": true
+  },
+  "input": {
+    "authorized_source_sha256": "34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5",
+    "input_kind": "atmos_mezz",
+    "channels": 36,
+    "sample_rate_hz": 48000,
+    "pcm_bits": 24,
+    "bytes": 1396237802,
+    "ascii_alias_sha256": "34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5"
+  },
+  "fixed_controls": {
+    "dialogue_intelligence": true,
+    "metering_mode": "1770-4",
+    "data_rate_kbps": 1024,
+    "line_drc": "film_light",
+    "rf_drc": "film_light",
+    "preferred_downmix": "loro",
+    "center_mix": "-3",
+    "surround_mix": "-3",
+    "trims": "auto",
+    "time_base": "file_position",
+    "input_timecode_frame_rate": "not_indicated",
+    "silence": "0.0"
+  },
+  "a_b_design": {
+    "only_semantic_xml_difference": "loudness/measure_only/speech_threshold",
+    "arms": [
+      "0",
+      "100"
+    ],
+    "normalized_semantic_xml_sha256": "fc19e89fbae00160037ee950da5feddcb85e960ad9e8f05d73b2bcb25c3312e7"
+  },
+  "arm_results": [
+    {
+      "arm": "arm_threshold_0",
+      "threshold": 0,
+      "xml_sha256": "14ae59e5b4e695dc1bae49ddbfcfc06b4e0af6c337dad686aaef0e9c304d447a",
+      "observer_contract_sha256": "b939ae08a89b0ea204bacd18c2e577be2905a4e15d2aaa71a1c908d7dc0a4643",
+      "observer_script_sha256": "66fff4ee9e33deb30788b77278641a6fdddcbc56a3629c3a9585e69521599025",
+      "run_receipt_sha256": "e5d4fdfc969d1f10521bcdfee587056b5ee1ffe86940093acf1c454dfde8a04d",
+      "run_state": "NATURAL_EXIT_OBSERVED",
+      "dee_exit_code": 10,
+      "event_count": 0,
+      "hook_errors": 0,
+      "output_file_present": false,
+      "output_temp_empty_after_run": true,
+      "payload_read": false,
+      "payload_retained": false
+    },
+    {
+      "arm": "arm_threshold_100",
+      "threshold": 100,
+      "xml_sha256": "32b13df883ec29d82c71c72e3fe7b1187636c6171e0d93e4ced18e09bae6aba5",
+      "observer_contract_sha256": "661d0119a20405165c0064fa43512de3d278d300416bed1ba4c63acba8ce635d",
+      "observer_script_sha256": "b9078e10d080831f8d11ed9d07b4b86a71e8a33b44274696935d836a12910c21",
+      "run_receipt_sha256": "abff9102b7b7c5ce2a737c49688b7803121f54d1a93c1d7f9465ad3ec3ad3ae5",
+      "run_state": "NATURAL_EXIT_OBSERVED",
+      "dee_exit_code": 10,
+      "event_count": 0,
+      "hook_errors": 0,
+      "output_file_present": false,
+      "output_temp_empty_after_run": true,
+      "payload_read": false,
+      "payload_retained": false
+    }
+  ],
+  "observer_boundary": {
+    "module_ready": true,
+    "hook_count": 4,
+    "allowed_event_count": 16,
+    "max_scalar_bytes_per_event": 4,
+    "capture_events": "NONE",
+    "scalar_results": "NONE",
+    "raw_module_base_status_field_present": true,
+    "raw_pointer_value_in_this_washed_package": false,
+    "raw_run_receipts_not_modified": true
+  },
+  "final_process_snapshot": {
+    "checked_at_utc": "2026-11-08T00:39:43Z",
+    "target_processes_observed": 0,
+    "e333_or_windbg_touched": false
+  },
+  "disposition": {
+    "measurement_effect": "UNBOUND_NOT_RUN",
+    "threshold_delta": "NOT_OBSERVED",
+    "cause_of_exit_10": "UNBOUND",
+    "retry": "NOT_PERFORMED",
+    "implementation_ready": false
+  },
+  "exclusions": {
+    "pcm_or_audio_payload_included": false,
+    "private_key_or_license_included": false,
+    "raw_memory_pointer_values_included": false,
+    "raw_run_receipts_included": false,
+    "implementation_contact_by_research_agent": false
+  }
+}
