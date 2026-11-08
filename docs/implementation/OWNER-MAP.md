@@ -188,6 +188,7 @@
 | F01E/washed-speech-threshold-ab-run-result-boundary | F01E | `UNBOUND` |
 | F01E/authored-start-range-endpoint-string-admission | F01E | `frontend` |
 | F01E/authored-end-range-endpoint-string-admission | F01E | `frontend` |
+| F01E/authored-preferred-downmix-mode-token-admission | F01E | `frontend` |
 | F03G/target-slot-install | F03G | `spatial_control` |
 | F03C/candidate-selector | F03C | `spatial_control` |
 | F03C/selector-score-choice | F03C | `spatial_control` |

@@ -188,6 +188,7 @@
 | F01E/washed-speech-threshold-ab-run-result-boundary | — | `The run result reports two natural terminal outcomes and no captured events or output file.`<br>`No time or measurement effect is computed from these run results.` |
 | F01E/authored-start-range-endpoint-string-admission | — | `The authored start string is stored without converting it to a sample index.`<br>`The selected CLI rejects non-empty start/end strings before Meter, callbacks, and encoding.`<br>`The Wash static Reader field candidate has no same-run owner/generation or sample-count join.` |
 | F01E/authored-end-range-endpoint-string-admission | — | `The authored end string is stored without converting it to a sample index.`<br>`The selected CLI rejects non-empty start/end strings before Meter, callbacks, and encoding.`<br>`The Wash static Reader field candidate has no same-run owner/generation or sample-count join.` |
+| F01E/authored-preferred-downmix-mode-token-admission | — | `The parser stores the authored mode token without rendering or applying an audio mix.`<br>`The selected CLI gate still accepts only loro.`<br>`No selected XML to native MixMode or BSI sink is established.` |
 | F03G/target-slot-install | — | `Pure per-callback value transition; no clock or committed state is owned.` |
 | F03C/candidate-selector | — | `Each selector call initializes cold scratch; no callback/source/AU counter or cross-call selector state is owned.` |
 | F03C/selector-score-choice | — | `No state or clock is owned.` |

@@ -358,6 +358,51 @@ fn authored_range_endpoint_strings_are_preserved_without_range_effect() {
 }
 
 #[test]
+fn every_declared_preferred_downmix_token_is_admitted_and_preserved() {
+    let vectors = fixture_json("job-configuration-vectors.json");
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["id"] == "accepted_full_adm")
+        .unwrap();
+    let descriptor = &case["pcm_descriptor"];
+    let wave = SelectedWaveDescriptor::new(
+        descriptor["sample_rate"].as_u64().unwrap() as u32,
+        descriptor["channels"].as_u64().unwrap() as u16,
+        descriptor["pcm_bits"].as_u64().unwrap() as u16,
+    );
+    let source_samples = descriptor["source_samples"].as_u64().unwrap();
+    let base_xml = case["input_xml"].as_str().unwrap();
+    let downmix_field = "<preferred_downmix_mode>loro</preferred_downmix_mode>";
+
+    for token in ["loro", "ltrt", "ltrt-pl2", "not_indicated"] {
+        let replacement = format!("<preferred_downmix_mode>{token}</preferred_downmix_mode>");
+        let authored_xml = base_xml.replacen(downmix_field, &replacement, 1);
+        let configuration =
+            parse_selected_job_configuration(authored_xml.as_bytes(), wave, source_samples)
+                .unwrap_or_else(|error| panic!("preferred downmix {token}: {error:?}"));
+
+        assert_eq!(configuration.downmix().preferred_mode(), token);
+        assert_eq!(
+            configuration.normalized_identity_value()["downmix"]["preferred_mode"],
+            token
+        );
+    }
+
+    let unsupported_xml = base_xml.replacen(
+        downmix_field,
+        "<preferred_downmix_mode>mono</preferred_downmix_mode>",
+        1,
+    );
+    assert_eq!(
+        parse_selected_job_configuration(unsupported_xml.as_bytes(), wave, source_samples)
+            .unwrap_err(),
+        JobConfigurationError::UnsupportedFieldValue
+    );
+}
+
+#[test]
 fn authored_silence_seconds_truncate_to_sample_counts_and_keep_append_presence() {
     let vectors = fixture_json("job-configuration-vectors.json");
     let case = vectors["config_cases"]

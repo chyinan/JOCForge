@@ -1682,7 +1682,7 @@
         {
           "slice_id": "selected-job-xml-profile-normalization",
           "mapping_status": "SELECTED_XML_EXACT_INPUT_AND_ENCODER_TIMECODE_ADMISSION__FIELDS_AND_EFFECT_REMAIN_SEPARATE",
-          "implementation_status": "LOCALLY_VERIFIED_SELECTED_XML_STRING_ADMISSION__EFFECT_GATES_PRESERVED",
+          "implementation_status": "LOCALLY_VERIFIED_SELECTED_XML_TOKEN_AND_STRING_ADMISSION__EFFECT_GATES_PRESERVED",
           "scope": "Parses the selected UTF-8 job XML, validates the selected WAVE descriptor/source-sample count, normalizes F01E.1 fields, and resolves the result through the existing selected production-profile gate. File paths are returned as values only; this function performs no file I/O. It does not parse ADM/CHNA, DBMD or events, produce control38, or wire encode. It also accepts a film_light/film_light DRC candidate paired with the existing false/100 meter inputs; DI true/15 remains unsupported by the selected meter model. A Wash follow-up binds only same-receiver continuity inside the SimpleType<bool> wrapper-to-setter edge; the property-map caller, owner/generation, and first measurement/audio consumer remain open. The local parser also admits exactly one explicit decimal data_rate token from 384, 448, 576, 640, 768, or 1024 kbps and carries the typed selected rate through F01E projection. Schema omission/default and multi-token list behavior remain unsupported; this is not evidence of a DEE runtime host-property join. The encoder and authored-input timecode_frame_rate fields each admit the exact ten-token choice list and preserve their authored strings as separate normalized identity fields. Matching token lists do not join their native owners or select a shared conversion path. Explicit input offset/ffoa strings are retained separately with the existing auto default; only auto passes the CLI gate. time_base accepts its two exact XML tokens, while the CLI gate still admits file_position only. This does not apply rate conversion, normalize 29.97df, or establish output behavior.",
           "owner": "frontend",
           "implementation_files": [
@@ -3228,8 +3228,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 61121,
-              "sha256": "61289f1a7d13b54c0d47a74a838eeea86977cebb3acf9b6d06405275d7a761fb"
+              "bytes": 61291,
+              "sha256": "f14d0550dc720d7a0d8809f1df60ec3c78648d34b0dab6a3eb80df6ab23920bd"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
@@ -3300,8 +3300,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/job_configuration.rs",
-              "bytes": 39963,
-              "sha256": "0484dcd442b11ea072dc38c43ef0a613e782f3fa57ab8e2ba52c2b2095036166"
+              "bytes": 41764,
+              "sha256": "8e1c41e3e8dc90c235aa00ba545769e0734644cf08bb6bb94741770156531ab0"
             },
             {
               "path": "crates/jocforge-domain/tests/adm_graph.rs",
@@ -4359,15 +4359,15 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 61121,
-              "sha256": "61289f1a7d13b54c0d47a74a838eeea86977cebb3acf9b6d06405275d7a761fb"
+              "bytes": 61291,
+              "sha256": "f14d0550dc720d7a0d8809f1df60ec3c78648d34b0dab6a3eb80df6ab23920bd"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/job_configuration.rs",
-              "bytes": 39963,
-              "sha256": "0484dcd442b11ea072dc38c43ef0a613e782f3fa57ab8e2ba52c2b2095036166"
+              "bytes": 41764,
+              "sha256": "8e1c41e3e8dc90c235aa00ba545769e0734644cf08bb6bb94741770156531ab0"
             }
           ]
         },
@@ -4793,8 +4793,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 61121,
-              "sha256": "61289f1a7d13b54c0d47a74a838eeea86977cebb3acf9b6d06405275d7a761fb"
+              "bytes": 61291,
+              "sha256": "f14d0550dc720d7a0d8809f1df60ec3c78648d34b0dab6a3eb80df6ab23920bd"
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
@@ -7334,7 +7334,7 @@
             "shares_native_owner_with_encoder_field": "NOT_ESTABLISHED",
             "validation_boundary": "The input-side /input/audio/{adm,atmos_mezz}/timecode_frame_rate field admits the exact ten tokens listed by the authored job_config field choices and stores the authored string in SelectedJobConfiguration and normalized identity. It remains separate from the encoder timecode field. No numeric conversion, 29.97df canonicalization, input-owner join, or runtime timecode effect is implemented. This slice does not rewrite the fixed timecode value used by the separate primary-metadata job projection.",
             "local_verification": {
-              "focused_job_configuration_test": "PASS_17",
+              "focused_job_configuration_test": "PASS_18",
               "workspace_cargo_check": "PASS",
               "workspace_clippy": "FAILED_UNRELATED_EXISTING_DIAGNOSTICS"
             }
@@ -7487,7 +7487,7 @@
             "embedded_timecode_cli_outcome": "UnsupportedJobXmlOption before Meter/callback/encode",
             "native_writer_value": "UNBOUND",
             "current_native_value": "NOT_CAPTURED",
-            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_17",
+            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_18",
             "validation_boundary": "The parser admits the exact authored time_base tokens file_position and embedded_timecode and preserves the token in normalized identity. The selected CLI effect gate still admits only file_position and rejects embedded_timecode before Meter, callbacks, or encoding. The Wash static writer route remains unbound; this slice does not set the native value or enable range/seek."
           },
           "vectors": {
@@ -7710,7 +7710,7 @@
             "selected_cli_gate": "auto only",
             "xml_host_owner_reader_join": "UNBOUND",
             "validation_boundary": "The selected XML parser preserves explicit offset and ffoa strings independently in normalized identity. Missing or empty fields retain the existing auto default. The CLI gate continues to accept only auto for both fields and rejects other values before Meter, callbacks, or encoding. No input time syntax, units, host owner, Reader join, or runtime effect is inferred.",
-            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_17"
+            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_18"
           },
           "vectors": {
             "kind": "LOCAL_INPUT_ONLY_STRING_PRESERVATION",
@@ -7867,7 +7867,7 @@
             ],
             "supplement_manifest_sha256": "6b6acabe96aaf4f23f46899ef3764a2fd66afc93c9a3b66afa8ddc42112843a3",
             "supplement_seal_sha256": "fde31c2c4d299aee3f5851e38127b3eb59d8bd8fda8ca50c4ce5d2737ad658e6",
-            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_17",
+            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_18",
             "implementation_ready": false,
             "static_evidence": {
               "input_only_case": "start=0; time_base=file_position; 24 fps",
@@ -7949,7 +7949,7 @@
             ],
             "supplement_manifest_sha256": "c1183a7b4343ed6300bd2b2560e2d5526c99339eb8860f0df0a9ba1dcd3f7ccd",
             "supplement_seal_sha256": "09dee9888291bb7cac970007c0c26200a0c622db95fca416cf6edd74d863f68d",
-            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_17",
+            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_18",
             "implementation_ready": false,
             "static_evidence": {
               "input_only_case": "end=47; time_base=file_position; 24 fps",
@@ -7988,6 +7988,100 @@
           ],
           "validation_boundary": "The parser preserves authored XML end strings, including the recognized empty/default aliases, in normalized identity. The selected CLI rejects any non-empty endpoint before Meter, callbacks, or encoding. Wash binds only the input-only candidate path Reader param_2[6] / CompositeMasterItem.endSample; sample-index calculation, same-run owner/generation, source sample count, and crop effect remain unbound or unevaluated.",
           "delivery_scope": "LOCAL_XML_STRING_ADMISSION_ONLY_NO_RANGE_OR_AUDIO_EFFECT"
+        },
+        {
+          "slice_id": "authored-preferred-downmix-mode-token-admission",
+          "mapping_status": "FOUR_AUTHORED_TOKENS_ADMITTED__SELECTED_MIXMODE_EFFECT_UNBOUND",
+          "implementation_status": "LOCALLY_VERIFIED_TOKEN_IDENTITY__CLI_LORO_GATE_PRESERVED",
+          "implementation_requirement": true,
+          "owner": "frontend",
+          "scope": "The parser admits and preserves the four authored preferred_downmix_mode tokens in normalized identity. The selected CLI effect gate still admits only loro and rejects the other values before source processing. Wash maps the static tokens to raw codes 0/1/2/3 but does not bind selected XML to effective MixMode, a BSI sink, or a rendered effect.",
+          "dependencies": [
+            "F01E/selected-job-xml-profile-normalization"
+          ],
+          "spec_files": [
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/frontend/job_configuration.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/job_configuration.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The parser stores the authored mode token without rendering or applying an audio mix.",
+              "The selected CLI gate still accepts only loro.",
+              "No selected XML to native MixMode or BSI sink is established."
+            ]
+          },
+          "parameters": {
+            "kind": "EXACT_PREFERRED_DOWNMIX_TOKEN_ADMISSION",
+            "package_id": "DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-PREFERRED-DOWNMIX-FOUR-TOKEN-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "bc7c0a8a09e3abd3df9c8e0c40d97e0328cffdb6cdd461a043f074c0e42ec855",
+            "supplement_seal_sha256": "fc7fe61adb783dca80912306d4de772b93f051af4e778fc8ebca0a3fa8c65",
+            "accepted_tokens": [
+              "loro",
+              "ltrt",
+              "ltrt-pl2",
+              "not_indicated"
+            ],
+            "static_raw_code_map": {
+              "loro": 0,
+              "ltrt": 1,
+              "ltrt-pl2": 2,
+              "not_indicated": 3
+            },
+            "selected_cli_token": "loro",
+            "local_verification": "PASS_JOB_CONFIGURATION_SUITE_18",
+            "implementation_ready": false,
+            "validation_boundary": "The parser admits and preserves the four authored preferred_downmix_mode tokens in normalized identity. The selected CLI effect gate still admits only loro and rejects the other values before source processing. Wash maps the static tokens to raw codes 0/1/2/3 but does not bind selected XML to effective MixMode, a BSI sink, or a rendered effect."
+          },
+          "vectors": {
+            "kind": "LOCAL_INPUT_ONLY_PREFERRED_DOWNMIX_TOKEN_ADMISSION",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "every_declared_preferred_downmix_token_is_admitted_and_preserved"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json",
+              "sha256": "493eb904467d22f9ca6dc50b86bf05bcd9f6643f16fa352766cac26d15e156eb"
+            }
+          },
+          "error_outcomes": [
+            {
+              "error_code": "CONFIG_FIELD_VALUE",
+              "category": "invalid preferred downmix token",
+              "trigger": "The token is outside loro, ltrt, ltrt-pl2, and not_indicated.",
+              "programme_state_after": "No SelectedJobConfiguration is returned.",
+              "caller_action": "Reject the XML job."
+            },
+            {
+              "error_code": "UnsupportedJobXmlOption",
+              "category": "selected mode effect not supported",
+              "trigger": "The parsed preferred mode is not loro.",
+              "programme_state_after": "The CLI request is rejected before source processing.",
+              "caller_action": "Use loro with the current selected CLI pipeline."
+            }
+          ],
+          "not_run": [
+            "Selected XML token to effective native MixMode owner/generation.",
+            "BSI serialization, rendered downmix, and audio effect.",
+            "Any selected CLI execution with non-loro mode."
+          ],
+          "validation_boundary": "The parser admits and preserves the four authored preferred_downmix_mode tokens in normalized identity. The selected CLI effect gate still admits only loro and rejects the other values before source processing. Wash maps the static tokens to raw codes 0/1/2/3 but does not bind selected XML to effective MixMode, a BSI sink, or a rendered effect.",
+          "delivery_scope": "LOCAL_XML_TOKEN_ADMISSION_ONLY_NO_DOWNMIX_EFFECT"
         }
       ]
     },
@@ -11962,8 +12056,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 61121,
-              "sha256": "61289f1a7d13b54c0d47a74a838eeea86977cebb3acf9b6d06405275d7a761fb"
+              "bytes": 61291,
+              "sha256": "f14d0550dc720d7a0d8809f1df60ec3c78648d34b0dab6a3eb80df6ab23920bd"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/primary_metadata_control.rs",
@@ -41939,8 +42033,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 61121,
-              "sha256": "61289f1a7d13b54c0d47a74a838eeea86977cebb3acf9b6d06405275d7a761fb"
+              "bytes": 61291,
+              "sha256": "f14d0550dc720d7a0d8809f1df60ec3c78648d34b0dab6a3eb80df6ab23920bd"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/provider.rs",
@@ -42106,8 +42200,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/job_configuration.rs",
-              "bytes": 39963,
-              "sha256": "0484dcd442b11ea072dc38c43ef0a613e782f3fa57ab8e2ba52c2b2095036166"
+              "bytes": 41764,
+              "sha256": "8e1c41e3e8dc90c235aa00ba545769e0734644cf08bb6bb94741770156531ab0"
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_size.rs",

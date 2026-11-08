@@ -1489,3 +1489,7 @@ The XML parser now preserves explicit `offset` and `ffoa` strings independently;
 ## 2026-11-08: Authored start and end range strings
 
 The parser now preserves explicit `start` and `end` XML strings while retaining the existing empty-value behavior and recognized aliases. The selected CLI still rejects non-empty endpoints before Meter, callbacks, or encoding. Wash candidate paths reach Reader `startSample`/`endSample`, but numeric sample indices, runtime owner/generation, and crop effects remain unbound or unevaluated.
+
+## 2026-11-08: Preferred downmix token admission
+
+The XML parser now preserves all four declared `preferred_downmix_mode` tokens: `loro`, `ltrt`, `ltrt-pl2`, and `not_indicated`. The selected CLI still admits only `loro`. Static raw-code mappings do not establish effective MixMode, BSI serialization, or a rendered downmix effect.

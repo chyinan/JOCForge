@@ -269,7 +269,7 @@ impl SelectedLoudnessConfiguration {
     }
 }
 
-/// Selected Loro/LtRt mix level fields.
+/// Selected preferred downmix mode and Loro/LtRt mix level fields.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct SelectedDownmixConfiguration {
     preferred_mode: &'static str,
@@ -1169,14 +1169,16 @@ pub fn parse_selected_job_configuration(
         .ok_or(JobConfigurationError::UnsupportedFieldValue)?;
     let downmix_node =
         path_node(encoder, &["downmix"])?.ok_or(JobConfigurationError::MissingField)?;
+    let preferred_mode_value = required_text(downmix_node, &["preferred_downmix_mode"])?;
+    let preferred_mode = match preferred_mode_value.as_str() {
+        "loro" => "loro",
+        "ltrt" => "ltrt",
+        "ltrt-pl2" => "ltrt-pl2",
+        "not_indicated" => "not_indicated",
+        _ => return Err(JobConfigurationError::UnsupportedFieldValue),
+    };
     let downmix = SelectedDownmixConfiguration {
-        preferred_mode: if require_exact(downmix_node, &["preferred_downmix_mode"], "loro")?
-            == "loro"
-        {
-            "loro"
-        } else {
-            return Err(JobConfigurationError::UnsupportedFieldValue);
-        },
+        preferred_mode,
         loro_center_mix_level: parse_selected_mix_level(&required_text(
             downmix_node,
             &["loro_center_mix_level"],
