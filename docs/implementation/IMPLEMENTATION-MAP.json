@@ -9066,6 +9066,148 @@
           ],
           "validation_boundary": "On the known StageRunner resolver path, the path_object written by the clean_temp setter reaches FUN_14007b6f0. When path_object+0x68 is non-null, the first scoped read compares one byte at +0x90 and selects a local path-string assembly branch, then passes the assembled value through the provider object at +0x68/vtable slot +0x58. This is a path-construction use, not deletion or cleanup policy. Provider target/type, runtime owner/generation, and cleanup/delete effect remain UNBOUND; the +0x68-null Message branch is separate and not joined to clean_temp.",
           "delivery_scope": "PATH_CONSTRUCTION_REFERENCE_ONLY_NO_CLEANUP_OR_DELETE_SEMANTICS"
+        },
+        {
+          "slice_id": "washed-drc-line-rf-six-value-profile-boundary",
+          "mapping_status": "SIX_LINE_AND_RF_STATIC_CANDIDATES_BOUND__SELECTED_XML_AND_RUNTIME_JOINS_UNBOUND",
+          "implementation_status": "WASHED_PARTIAL_REFERENCE_ONLY__NO_GATE_CHANGE__MINIMUM_LINE_PAIR_NOT_RUN",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "The six Line tokens have static initializer/DDP_COMPR candidates, and the six RF tokens have static workflow/U32 and conditional encoder-parameter-0x0f candidates. Selected Line XML-to-encoder and RF XML-to-handler/runtime owner joins remain UNBOUND; candidates are not six established algorithms. Bounded prior short-window observations cover only N36/N38 Line music_standard versus film_light and one N38 RF pair; no decoded-audio/gain effect or broad generalization is established. The minimum Line film_light/none pair with RF fixed film_light remains PROPOSED_NOT_RUN; no full 6x6 matrix exists.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DRC-LINE-RF-SIX-VALUE-BOUNDARY-V1/FINDINGS.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The package includes bounded short-window observations, but establishes no callback clock or whole-programme DRC behavior."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_DRC_LINE_RF_SIX_VALUE_CANDIDATES",
+            "package_id": "DEE-DRC-LINE-RF-SIX-VALUE-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DRC-LINE-RF-SIX-VALUE-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DRC-LINE-RF-SIX-VALUE-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DRC-LINE-RF-SIX-VALUE-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DRC-LINE-RF-SIX-VALUE-BOUNDARY-V1/FINDINGS.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DRC-LINE-RF-SIX-VALUE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DRC-LINE-RF-SIX-VALUE-BOUNDARY-V1/SOURCE-PACKAGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DRC-LINE-RF-SIX-VALUE-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "3a817fb084527f577ded1ca3171c98f9b7b76d1ed25476747a5a920deaa260ba",
+            "supplement_seal_sha256": "08f2adc9c40d22fd45734e7da98b15a02a1feee9e9cbf01bdbec55077555bb0c",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "line_profile_candidates": [
+              {
+                "token": "film_standard",
+                "initializer_u32": 1,
+                "ddp_compr_candidate": 1,
+                "bits_if_conditional_sink": "001"
+              },
+              {
+                "token": "film_light",
+                "initializer_u32": 0,
+                "ddp_compr_candidate": 2,
+                "bits_if_conditional_sink": "010"
+              },
+              {
+                "token": "music_standard",
+                "initializer_u32": 3,
+                "ddp_compr_candidate": 3,
+                "bits_if_conditional_sink": "011"
+              },
+              {
+                "token": "music_light",
+                "initializer_u32": 2,
+                "ddp_compr_candidate": 4,
+                "bits_if_conditional_sink": "100"
+              },
+              {
+                "token": "speech",
+                "initializer_u32": 4,
+                "ddp_compr_candidate": 5,
+                "bits_if_conditional_sink": "101"
+              },
+              {
+                "token": "none",
+                "initializer_u32": 5,
+                "ddp_compr_candidate": 0,
+                "bits_if_conditional_sink": "000"
+              }
+            ],
+            "rf_profile_candidates": [
+              {
+                "token": "film_standard",
+                "workflow_u32_candidate": 1,
+                "parameter_0f_candidate": 1
+              },
+              {
+                "token": "film_light",
+                "workflow_u32_candidate": 0,
+                "parameter_0f_candidate": 2
+              },
+              {
+                "token": "music_standard",
+                "workflow_u32_candidate": 3,
+                "parameter_0f_candidate": 3
+              },
+              {
+                "token": "music_light",
+                "workflow_u32_candidate": 2,
+                "parameter_0f_candidate": 4
+              },
+              {
+                "token": "speech",
+                "workflow_u32_candidate": 4,
+                "parameter_0f_candidate": 5
+              },
+              {
+                "token": "none",
+                "workflow_u32_candidate": 5,
+                "parameter_0f_candidate": 0
+              }
+            ],
+            "selected_line_xml_to_encoder_join": "UNBOUND",
+            "selected_rf_xml_to_handler_join": "UNBOUND",
+            "runtime_owner_generation": "UNBOUND",
+            "next_minimal_line_pair": {
+              "line": [
+                "film_light",
+                "none"
+              ],
+              "rf": "film_light",
+              "measure": "parameter 0x0d presence and three-bit value",
+              "status": "PROPOSED_NOT_RUN"
+            },
+            "validation_boundary": "The six Line tokens have static initializer/DDP_COMPR candidates, and the six RF tokens have static workflow/U32 and conditional encoder-parameter-0x0f candidates. Selected Line XML-to-encoder and RF XML-to-handler/runtime owner joins remain UNBOUND; candidates are not six established algorithms. Bounded prior short-window observations cover only N36/N38 Line music_standard versus film_light and one N38 RF pair; no decoded-audio/gain effect or broad generalization is established. The minimum Line film_light/none pair with RF fixed film_light remains PROPOSED_NOT_RUN; no full 6x6 matrix exists."
+          },
+          "vectors": {
+            "kind": "WASHED_SIX_VALUE_REFERENCE_WITH_PROPOSED_LINE_PAIR",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Input-only vectors are not a full 6x6 matrix; next Line film_light/none pair remains PROPOSED_NOT_RUN."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DRC-LINE-RF-SIX-VALUE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "PARTIAL_OBSERVATIONS_PLUS_PROPOSED_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Selected XML-to-Line encoder join and RF XML-to-handler/runtime owner join.",
+            "The proposed Line film_light versus none pair and a full six-by-six matrix.",
+            "Decoded audio/gain, listening effect, full JOC, and generalization beyond bounded observations."
+          ],
+          "validation_boundary": "The six Line tokens have static initializer/DDP_COMPR candidates, and the six RF tokens have static workflow/U32 and conditional encoder-parameter-0x0f candidates. Selected Line XML-to-encoder and RF XML-to-handler/runtime owner joins remain UNBOUND; candidates are not six established algorithms. Bounded prior short-window observations cover only N36/N38 Line music_standard versus film_light and one N38 RF pair; no decoded-audio/gain effect or broad generalization is established. The minimum Line film_light/none pair with RF fixed film_light remains PROPOSED_NOT_RUN; no full 6x6 matrix exists.",
+          "delivery_scope": "EXTERNAL_REFERENCE_ONLY_NO_DRC_GATE_OR_ALGORITHM_CHANGE"
         }
       ]
     },
@@ -70194,6 +70336,27 @@
       "not_run": [
         "File deletion/cleanup effect, provider target/type, and runtime owner/generation.",
         "Separate null-provider Message branch join and any runtime cleanup/delete operation."
+      ]
+    },
+    {
+      "package_id": "DEE-DRC-LINE-RF-SIX-VALUE-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DRC-LINE-RF-SIX-VALUE-BOUNDARY-V1",
+      "manifest_sha256": "3a817fb084527f577ded1ca3171c98f9b7b76d1ed25476747a5a920deaa260ba",
+      "supplement_seal_sha256": "08f2adc9c40d22fd45734e7da98b15a02a1feee9e9cbf01bdbec55077555bb0c",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "SIX_LINE_RF_STATIC_CANDIDATES_ONLY; SELECTED_XML_OWNER_JOINS_AND_AUDIO_EFFECT_UNBOUND; LINE_PAIR_PROPOSED_NOT_RUN; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Selected XML/owner/runtime joins, proposed minimal Line pair, full six-by-six matrix, and audio/gain effects."
       ]
     }
   ]

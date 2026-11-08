@@ -1,0 +1,38 @@
+{
+  "file_count": 6,
+  "files": [
+    {
+      "bytes": 5333,
+      "file": "EVIDENCE.json",
+      "sha256": "0f0ccd2fa47388f0766b91491a413bbb6bc17398905db53ec58b98d2f21ecb0d"
+    },
+    {
+      "bytes": 574,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "947fc5bbbf6fb0670c0aa8a5b4cd864593eb41d2036a682f35c93026ea29a4a8"
+    },
+    {
+      "bytes": 1078,
+      "file": "FINDINGS.md",
+      "sha256": "904012c76bd7b648a47254e2fb240fd539493b040b2ca226d2d22a6f9eb0c374"
+    },
+    {
+      "bytes": 395,
+      "file": "SOURCE-PACKAGE.json",
+      "sha256": "8042329c9d20522abc2e515b5925a092a46367287160e22689d1a754d802db25"
+    },
+    {
+      "bytes": 1505,
+      "file": "CHECK.py",
+      "sha256": "b03cce1d62202fa49c00b07a8eff9c643991e1e9b336c7c73941d0cb890e787d"
+    },
+    {
+      "bytes": 1305,
+      "file": "MANIFEST.json",
+      "sha256": "3a817fb084527f577ded1ca3171c98f9b7b76d1ed25476747a5a920deaa260ba"
+    }
+  ],
+  "schema": "washed-implementer-supplement-seal.v1",
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-DRC-LINE-RF-SIX-VALUE-BOUNDARY-V1"
+}

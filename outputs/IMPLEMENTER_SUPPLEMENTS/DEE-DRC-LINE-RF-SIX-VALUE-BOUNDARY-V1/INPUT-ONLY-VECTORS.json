@@ -1,0 +1,29 @@
+{
+  "line_values": [
+    "film_standard",
+    "film_light",
+    "music_standard",
+    "music_light",
+    "speech",
+    "none"
+  ],
+  "next_line_pair": {
+    "line": [
+      "film_light",
+      "none"
+    ],
+    "rf": "film_light",
+    "status": "PROPOSED_NOT_RUN"
+  },
+  "not_a_full_six_by_six_matrix": true,
+  "rf_values": [
+    "film_standard",
+    "film_light",
+    "music_standard",
+    "music_light",
+    "speech",
+    "none"
+  ],
+  "schema": "washed-drc-six-value-input-only.v1",
+  "status": "PARTIAL_OBSERVATIONS_PLUS_PROPOSED_NOT_RUN"
+}

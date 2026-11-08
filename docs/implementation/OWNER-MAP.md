@@ -199,6 +199,7 @@
 | F01E/washed-mp4-dash-output-selection-boundary | F01E | `UNBOUND` |
 | F01E/washed-atmosmezz-auto-offset-ffoa-static-normalization | F01E | `UNBOUND` |
 | F01E/washed-temp-clean-flag-first-resolver-consumer | F01E | `UNBOUND` |
+| F01E/washed-drc-line-rf-six-value-profile-boundary | F01E | `UNBOUND` |
 | F03G/target-slot-install | F03G | `spatial_control` |
 | F03C/candidate-selector | F03C | `spatial_control` |
 | F03C/selector-score-choice | F03C | `spatial_control` |

@@ -1,0 +1,9 @@
+{
+  "checker_normal": "PASS",
+  "checker_python_O": "PASS",
+  "manifest_sha256": "b9de6b25d91daf68426e05a3ce932e29f9d084b580c47b076676b526c0222d0d",
+  "package_id": "DRC-LINE-RF-PROFILE-MAPPING-FIRST-CONSUMER-WASH-V8",
+  "package_seal_sha256": "62e91dbb3ad044d66a6264fc2f9eab3c7a43c568960a55ca3e8b3151c38939fe",
+  "payloads_verified": 5,
+  "raw_source_or_decompilation_copied": false
+}

@@ -1,0 +1,166 @@
+{
+  "bounded_observations": {
+    "line_music_profiles": {
+      "N36": {
+        "drc_scale_0_equal": true,
+        "drc_scale_1_music_standard_differs": true,
+        "full_joc": "NOT_RUN",
+        "music_light_matches_film_light_observed_fields": true,
+        "music_standard_dynrng_differs": true,
+        "window": "one short window"
+      },
+      "N38": {
+        "drc_scale_0_equal": true,
+        "drc_scale_1_music_standard_differs": true,
+        "full_joc": "NOT_RUN",
+        "music_light_matches_film_light_observed_fields": true,
+        "music_standard_dynrng_differs": true,
+        "window": "one short window"
+      }
+    },
+    "rf_pair": {
+      "N38": true,
+      "arms": [
+        "film_light",
+        "music_standard"
+      ],
+      "both_exit_0": true,
+      "compre_sequence_changed": true,
+      "dynrng_sequence_same": true,
+      "pcm_or_decoded_effect": "NOT_CAPTURED",
+      "supplement_manifest_sha256": "2f774f444f7f94fb2d8a35e38221023461feddc38f73b98557f36329b614a905"
+    }
+  },
+  "conclusion": {
+    "audio_gain_or_listening_effect": "UNBOUND",
+    "generalization_to_N36_N38_or_other_rates": "NOT_ESTABLISHED",
+    "global_absence_claim": false,
+    "six_line_algorithms": "NOT_ESTABLISHED",
+    "six_rf_algorithms": "NOT_ESTABLISHED"
+  },
+  "exclusions": {
+    "ec3_pcm_or_raw_bsi_included": false,
+    "key_license": false,
+    "source_or_decompilation_copied": false
+  },
+  "implementation_ready": false,
+  "line_profile": {
+    "candidate_values": [
+      {
+        "bits_if_conditional_sink": "001",
+        "ddp_compr_candidate": 1,
+        "initializer_tree_u32": 1,
+        "selected_encoder_join": "UNBOUND",
+        "token": "film_standard"
+      },
+      {
+        "bits_if_conditional_sink": "010",
+        "ddp_compr_candidate": 2,
+        "initializer_tree_u32": 0,
+        "selected_encoder_join": "UNBOUND",
+        "token": "film_light"
+      },
+      {
+        "bits_if_conditional_sink": "011",
+        "ddp_compr_candidate": 3,
+        "initializer_tree_u32": 3,
+        "selected_encoder_join": "UNBOUND",
+        "token": "music_standard"
+      },
+      {
+        "bits_if_conditional_sink": "100",
+        "ddp_compr_candidate": 4,
+        "initializer_tree_u32": 2,
+        "selected_encoder_join": "UNBOUND",
+        "token": "music_light"
+      },
+      {
+        "bits_if_conditional_sink": "101",
+        "ddp_compr_candidate": 5,
+        "initializer_tree_u32": 4,
+        "selected_encoder_join": "UNBOUND",
+        "token": "speech"
+      },
+      {
+        "bits_if_conditional_sink": "000",
+        "ddp_compr_candidate": 0,
+        "initializer_tree_u32": 5,
+        "selected_encoder_join": "UNBOUND",
+        "token": "none"
+      }
+    ],
+    "conditional_parameter_0d_sink": {
+      "film_light": "010",
+      "none": "000 with presence if guard entered",
+      "selected_job_join": "UNBOUND"
+    },
+    "encoder_join": "UNBOUND",
+    "first_integer_consumer": "FUN_1801535b0; conditional exact tree hit writes node+0x40 U32 to per-frame +0xa0",
+    "setter": "FUN_18014f820",
+    "token_type": "xs:string enum"
+  },
+  "next_minimal_line_pair": {
+    "fixed_rf": "film_light",
+    "line_arms": [
+      "film_light",
+      "none"
+    ],
+    "measure": "parameter 0x0d presence and three-bit value",
+    "status": "PROPOSED_NOT_RUN"
+  },
+  "rf_profile": {
+    "candidate_values": [
+      {
+        "encoder_parameter_0f_candidate": 1,
+        "token": "film_standard",
+        "workflow_u32_candidate": 1,
+        "xml_to_handler": "UNBOUND"
+      },
+      {
+        "encoder_parameter_0f_candidate": 2,
+        "token": "film_light",
+        "workflow_u32_candidate": 0,
+        "xml_to_handler": "UNBOUND"
+      },
+      {
+        "encoder_parameter_0f_candidate": 3,
+        "token": "music_standard",
+        "workflow_u32_candidate": 3,
+        "xml_to_handler": "UNBOUND"
+      },
+      {
+        "encoder_parameter_0f_candidate": 4,
+        "token": "music_light",
+        "workflow_u32_candidate": 2,
+        "xml_to_handler": "UNBOUND"
+      },
+      {
+        "encoder_parameter_0f_candidate": 5,
+        "token": "speech",
+        "workflow_u32_candidate": 4,
+        "xml_to_handler": "UNBOUND"
+      },
+      {
+        "encoder_parameter_0f_candidate": 0,
+        "token": "none",
+        "workflow_u32_candidate": 5,
+        "xml_to_handler": "UNBOUND"
+      }
+    ],
+    "conditional_translation": "token -> workflow U32 -> DDPI_ENC_DRCPROF parameter ID 0x0f",
+    "provider_key_to_static_handler": "NO_FOR_INSPECTED_STATIC_PATH",
+    "runtime_owner_generation": "UNBOUND",
+    "separate_selector": "Priv+0xfc8 is channel-derived; not an RF profile selector"
+  },
+  "schema": "washed-implementer-supplement.v1",
+  "source_package": {
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "manifest_sha256": "b9de6b25d91daf68426e05a3ce932e29f9d084b580c47b076676b526c0222d0d",
+    "package_id": "DRC-LINE-RF-PROFILE-MAPPING-FIRST-CONSUMER-WASH-V8",
+    "package_seal_sha256": "62e91dbb3ad044d66a6264fc2f9eab3c7a43c568960a55ca3e8b3151c38939fe",
+    "payloads_verified": 5
+  },
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-DRC-LINE-RF-SIX-VALUE-BOUNDARY-V1"
+}

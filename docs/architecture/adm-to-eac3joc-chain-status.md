@@ -1549,3 +1549,7 @@ Wash package `DEE-ATMOSMEZZ-OFFSET-FFOA-PARTIAL-BOUNDARY-V1` (manifest SHA-256 `
 ## 2026-11-08: temp_dir clean flag resolver consumer
 
 Wash package `DEE-TEMP-DIR-CLEAN-FLAG-FIRST-CONSUMER-BOUNDARY-V1` (manifest SHA-256 `017105f6a6238af67a97261d18275adf8ad01f592dacc78462e08c224a3abd4e`, seal SHA-256 `c27c4106e040767a42817367a09e9f7a112d546bbdf59bb030c5f64a1bb94df0`) joins the clean_temp setter's path object to the known resolver. On the non-null `+0x68` branch, FUN_14007b6f0 reads one byte at `+0x90`, selects local path-string assembly, and hands the assembled value through provider `+0x68`/slot `+0x58`. This does not show file deletion or cleanup policy. Provider target/type, runtime owner/generation, and cleanup/delete effect remain `UNBOUND`; the null-provider Message branch is separate. No runtime or file-deletion operation was run.
+
+## 2026-11-08: DRC Line/RF six-value partial boundary
+
+Wash package `DEE-DRC-LINE-RF-SIX-VALUE-BOUNDARY-V1` (manifest SHA-256 `3a817fb084527f577ded1ca3171c98f9b7b76d1ed25476747a5a920deaa260ba`, seal SHA-256 `08f2adc9c40d22fd45734e7da98b15a02a1feee9e9cbf01bdbec55077555bb0c`) records six Line initializer/DDP_COMPR and six RF workflow/U32/parameter-0x0f candidates. Selected Line XML-to-encoder and RF XML-to-handler/runtime owner joins remain `UNBOUND`; candidate values are not algorithm identities. Bounded short-window observations and one N38 RF pair do not bind audio gain. The minimum Line `film_light`/`none` pair with RF fixed to `film_light` is `PROPOSED_NOT_RUN`; no full 6x6 matrix or gate change is included.
