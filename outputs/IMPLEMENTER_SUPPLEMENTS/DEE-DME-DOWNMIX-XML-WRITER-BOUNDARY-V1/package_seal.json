@@ -1,0 +1,38 @@
+{
+  "file_count": 6,
+  "files": [
+    {
+      "bytes": 3257,
+      "file": "EVIDENCE.json",
+      "sha256": "8c5b46e6442503da0379d4557aaf924976bc45eb13b087e2e9e75c3ea59aba89"
+    },
+    {
+      "bytes": 473,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "6c43481ea373b743065ef393efc4929a78f9eaebcbdf241fdb25412ed0b8a49f"
+    },
+    {
+      "bytes": 958,
+      "file": "FINDINGS.md",
+      "sha256": "9aaa139d9c90fed7ac8160e9de4153804931e82a922ebe2d22a4bafb66b18dd0"
+    },
+    {
+      "bytes": 431,
+      "file": "SOURCE-PACKAGE.json",
+      "sha256": "520e18986dce2879663fd962abdc08bc6951ddf12b277e49f018bac08ded6feb"
+    },
+    {
+      "bytes": 1515,
+      "file": "CHECK.py",
+      "sha256": "aa8d624b3c7e45b913b438a8208aa4a40d28b9bce33c92ff0baeaf6c62d51a9f"
+    },
+    {
+      "bytes": 1297,
+      "file": "MANIFEST.json",
+      "sha256": "f273cb8edfe2cfac430b686791f1c5ab9d7f025428619feaa09bbd81729c73d2"
+    }
+  ],
+  "schema": "washed-implementer-supplement-seal.v1",
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-DME-DOWNMIX-XML-WRITER-BOUNDARY-V1"
+}

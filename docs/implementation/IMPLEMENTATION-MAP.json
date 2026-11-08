@@ -51642,6 +51642,124 @@
           ],
           "validation_boundary": "Reference-only Wash boundary for the selected JOCForge 38-channel source path. It reports preferred_downmix_mode=loro and four -3 mix levels mapping to dmixmod=2 and level codes [4,4,4,4]. It does not establish a DEE-native effect or map any other mode or mix-level combination; all eight experiment vectors remain NOT_RUN.",
           "delivery_scope": "EXTERNAL_REFERENCE_ONLY_NO_MODE_OR_LEVEL_EXPANSION"
+        },
+        {
+          "slice_id": "washed-dme-downmix-to-native-xml-writer-boundary",
+          "mapping_status": "DME_TO_CLIENTJOB_AND_ENCODER_ARGV_STATIC_BOUND__NATIVE_XML_WRITER_AND_EFFECT_UNBOUND",
+          "implementation_status": "WASHED_REFERENCE_ONLY__NO_XML_OR_DOWNMIX_ENABLEMENT",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Static DME receipts bind downmix host values/active flags into clientJob JSON and a composite --encoder child argument. They do not bind that composite to a native DDP XML writer or XML leaf; host property keys differ from native XML keys. The native parser separately maps preferred_downmix_mode tokens to ordinals and calls MixMode setter; its optional callback is null so the helper returns the pre-existing MixMode+0x50 value, leaving ordinal-to-effective storage UNBOUND. The separate Priv+0x210 StringType output member is not joined to mode or level values. Four mix-level results remain untyped/unbound. No DEE run, 2ch downmix, BSI, or Atmos/JOC effect is established.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DME-DOWNMIX-XML-WRITER-BOUNDARY-V1/FINDINGS.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Static host configuration serialization only; no runtime callback clock, generation, or render transition is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_DME_TO_NATIVE_DOWNMIX_XML_WRITER_BOUNDARY",
+            "package_id": "DEE-DME-DOWNMIX-XML-WRITER-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DME-DOWNMIX-XML-WRITER-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DME-DOWNMIX-XML-WRITER-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DME-DOWNMIX-XML-WRITER-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DME-DOWNMIX-XML-WRITER-BOUNDARY-V1/FINDINGS.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DME-DOWNMIX-XML-WRITER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DME-DOWNMIX-XML-WRITER-BOUNDARY-V1/SOURCE-PACKAGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DME-DOWNMIX-XML-WRITER-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "f273cb8edfe2cfac430b686791f1c5ab9d7f025428619feaa09bbd81729c73d2",
+            "supplement_seal_sha256": "4ceb9b17673cae0cbe1983af524681535540c285e9ff9655143369e5dfcd9df7",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "host_to_child": {
+              "dme_state_to_clientjob_json": "STATIC_SOURCE_BOUND",
+              "dme_property_map_to_active_encoder_composite": "STATIC_SOURCE_BOUND_CONDITIONAL",
+              "serverjob_argv_to_child_spawn": "STATIC_SOURCE_BOUND",
+              "clientjob_json_to_native_ddp_xml_leaf": "UNBOUND",
+              "host_keys_match_native_xml_keys": false
+            },
+            "native_mode": {
+              "tokens": [
+                "loro",
+                "ltrt",
+                "ltrt-pl2",
+                "not_indicated"
+              ],
+              "parser_ordinals": {
+                "loro": 0,
+                "ltrt": 1,
+                "ltrt-pl2": 2,
+                "not_indicated": 3
+              },
+              "setter_target": "MixMode at plugin subobject +0x910 / outer +0x930",
+              "optional_callback": "NULL; helper returns pre-existing MixMode+0x50 value",
+              "ordinal_to_effective_stored_value": "UNBOUND",
+              "separate_string_member": "Priv+0x210; not joined to mode or level values"
+            },
+            "mix_levels": [
+              {
+                "field": "loro_center_mix_level",
+                "host_key": "loro_cmix",
+                "native_xml_key": "lorocmixlev",
+                "typed_consumer": "UNBOUND"
+              },
+              {
+                "field": "loro_surround_mix_level",
+                "host_key": "loro_smix",
+                "native_xml_key": "lorosurmixlev",
+                "typed_consumer": "UNBOUND"
+              },
+              {
+                "field": "ltrt_center_mix_level",
+                "host_key": "ltrt_cmix",
+                "native_xml_key": "ltrtcmixlev",
+                "typed_consumer": "UNBOUND"
+              },
+              {
+                "field": "ltrt_surround_mix_level",
+                "host_key": "ltrt_smix",
+                "native_xml_key": "ltrtsurmixlev",
+                "typed_consumer": "UNBOUND"
+              }
+            ],
+            "effects": {
+              "2ch_downmix": "UNBOUND",
+              "BSI_metadata": "UNBOUND",
+              "Atmos_JOC_audio": "UNBOUND",
+              "DEE_runtime": "NOT_RUN"
+            },
+            "validation_boundary": "Static DME receipts bind downmix host values/active flags into clientJob JSON and a composite --encoder child argument. They do not bind that composite to a native DDP XML writer or XML leaf; host property keys differ from native XML keys. The native parser separately maps preferred_downmix_mode tokens to ordinals and calls MixMode setter; its optional callback is null so the helper returns the pre-existing MixMode+0x50 value, leaving ordinal-to-effective storage UNBOUND. The separate Priv+0x210 StringType output member is not joined to mode or level values. Four mix-level results remain untyped/unbound. No DEE run, 2ch downmix, BSI, or Atmos/JOC effect is established."
+          },
+          "vectors": {
+            "kind": "DME_DOWNMIX_INPUTS_ONLY_NOT_RUN",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Package vectors are NOT_RUN and are not pass records."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DME-DOWNMIX-XML-WRITER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Composite --encoder to provider split/rename/drop or native XML writer input.",
+            "Effective mode storage, host-level to native XML leaf, and typed MixLevel consumer joins.",
+            "2ch/rendered downmix, BSI metadata, Atmos/JOC audio effect, and all package vectors.",
+            "Any DEE/A-B run; no private key/license was read or included."
+          ],
+          "validation_boundary": "Static DME receipts bind downmix host values/active flags into clientJob JSON and a composite --encoder child argument. They do not bind that composite to a native DDP XML writer or XML leaf; host property keys differ from native XML keys. The native parser separately maps preferred_downmix_mode tokens to ordinals and calls MixMode setter; its optional callback is null so the helper returns the pre-existing MixMode+0x50 value, leaving ordinal-to-effective storage UNBOUND. The separate Priv+0x210 StringType output member is not joined to mode or level values. Four mix-level results remain untyped/unbound. No DEE run, 2ch downmix, BSI, or Atmos/JOC effect is established.",
+          "delivery_scope": "EXTERNAL_REFERENCE_ONLY_NO_FULL_XML_OR_DOWNMIX_SUPPORT_CLAIM"
         }
       ]
     },
@@ -70571,6 +70689,28 @@
       "not_run": [
         "Runtime output/carrier/frame-size behavior and 1024-versus-768 contrast.",
         "Recovered unit annotation, actual callback target, and field-3 carrier consumer."
+      ]
+    },
+    {
+      "package_id": "DEE-DME-DOWNMIX-XML-WRITER-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DME-DOWNMIX-XML-WRITER-BOUNDARY-V1",
+      "manifest_sha256": "f273cb8edfe2cfac430b686791f1c5ab9d7f025428619feaa09bbd81729c73d2",
+      "supplement_seal_sha256": "4ceb9b17673cae0cbe1983af524681535540c285e9ff9655143369e5dfcd9df7",
+      "functional_ids": [
+        "F13C"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "DME_CLIENTJOB_AND_ARGV_STATIC_BOUND; NATIVE_XML_WRITER_MODE_STORAGE_LEVEL_CONSUMERS_AND_EFFECT_UNBOUND; NOT_RUN; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Native XML writer, effective mode storage, and typed level consumer joins.",
+        "Downmix/BSI/audio effects and all vectors; no DEE runtime run occurred."
       ]
     }
   ]

@@ -1,0 +1,20 @@
+{
+  "dme_to_xml_writer": "UNBOUND",
+  "level_typed_consumers": "UNBOUND",
+  "mix_level_fields": [
+    "loro_center_mix_level",
+    "loro_surround_mix_level",
+    "ltrt_center_mix_level",
+    "ltrt_surround_mix_level"
+  ],
+  "mode_tokens": [
+    "loro",
+    "ltrt",
+    "ltrt-pl2",
+    "not_indicated"
+  ],
+  "not_a_pass_record": true,
+  "ordinal_to_effective_mode": "UNBOUND",
+  "schema": "washed-dme-downmix-xml-input-only.v1",
+  "status": "NOT_RUN"
+}

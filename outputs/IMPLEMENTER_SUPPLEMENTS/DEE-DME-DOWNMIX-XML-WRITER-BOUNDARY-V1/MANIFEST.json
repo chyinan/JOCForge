@@ -1,0 +1,36 @@
+{
+  "implementation_ready": false,
+  "payloads": [
+    {
+      "bytes": 3257,
+      "file": "EVIDENCE.json",
+      "sha256": "8c5b46e6442503da0379d4557aaf924976bc45eb13b087e2e9e75c3ea59aba89"
+    },
+    {
+      "bytes": 473,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "6c43481ea373b743065ef393efc4929a78f9eaebcbdf241fdb25412ed0b8a49f"
+    },
+    {
+      "bytes": 958,
+      "file": "FINDINGS.md",
+      "sha256": "9aaa139d9c90fed7ac8160e9de4153804931e82a922ebe2d22a4bafb66b18dd0"
+    },
+    {
+      "bytes": 431,
+      "file": "SOURCE-PACKAGE.json",
+      "sha256": "520e18986dce2879663fd962abdc08bc6951ddf12b277e49f018bac08ded6feb"
+    },
+    {
+      "bytes": 1515,
+      "file": "CHECK.py",
+      "sha256": "aa8d624b3c7e45b913b438a8208aa4a40d28b9bce33c92ff0baeaf6c62d51a9f"
+    }
+  ],
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "scope": "Static DME argument and native XML writer boundary; mode/level storage and effects remain unbound.",
+  "source_manifest_sha256": "262f7c90f6fe51f13e0fe161dea01cd70d0c9e87e862ca3ff2ed833b26e86041",
+  "source_sha256sums_txt_sha256": "729cbdfd6f744b510358c3ed1375d18154bdf48fb4a3ed8c5b244788dafb79bc",
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-DME-DOWNMIX-XML-WRITER-BOUNDARY-V1"
+}

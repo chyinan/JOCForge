@@ -1561,3 +1561,7 @@ Wash package `DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V2` (manifest SHA-256 `c56c0a8fc
 ## 2026-11-08: data_rate type-1 static boundary
 
 Wash package `DEE-DATA-RATE-TYPE1-ENCODER-BOUNDARY-V1` (manifest SHA-256 `021f7a641668432b41d81ffaea399c1041bca1b57e4e967674d617a03d0e8527`, seal SHA-256 `e9843891c34b781abf8ff1ebb3e7d602a48ebb0ad0619809a51d4166f8ba7c6c`) statically maps the six authored tokens through enum codes 0..5 to matching core integers at field ID 3 and a type-1 serializer slot `+0x28`. The callback cell is statically zero but its runtime target is `UNBOUND`; field 3 to a carrier/frmsize writer and emitted bitrate remain `UNBOUND/NOT_RUN`. The kbps unit is an inference, not a recovered type annotation. The 1024-versus-768 contrast is `PROPOSED_NOT_RUN`; no full-rate support conclusion is drawn.
+
+## 2026-11-08: DME downmix to native XML writer boundary
+
+Wash package `DEE-DME-DOWNMIX-XML-WRITER-BOUNDARY-V1` (manifest SHA-256 `f273cb8edfe2cfac430b686791f1c5ab9d7f025428619feaa09bbd81729c73d2`, seal SHA-256 `4ceb9b17673cae0cbe1983af524681535540c285e9ff9655143369e5dfcd9df7`) binds DME host values/active flags to clientJob JSON and composite `--encoder` argv. Native XML writer/leaf, effective mode storage, typed level consumers, and downmix/BSI/audio effects remain `UNBOUND`; vectors and DEE runtime remain `NOT_RUN`. The static candidate path does not establish a selected mode effect. No full XML support or licensed material is inferred.

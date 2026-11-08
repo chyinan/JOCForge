@@ -613,6 +613,7 @@
 | F13C/washed-rate-child-owner-first-break | `RateCondition`<br>`NestedU32`<br>`GenericChildPlus4`<br>`CodecBsiOwner` | `Static evidence only; runtime owner/generation and product outcomes are not inferred.` |
 | F13C/washed-rate-slot2-parent-reset-not-child-constructor | `RateHandle`<br>`Slot2Parent`<br>`ParentPlus248`<br>`ChildPlus38`<br>`Slot4Generation` | `Static evidence only; preserve owner/generation and runtime unknowns.` |
 | F13C/washed-f13c-downmix-mode-level-boundary | — | `The evidence is a static selected-source-path mapping; no audio clock or runtime transition is established.`<br>`No DEE-native effect or output observation is included.` |
+| F13C/washed-dme-downmix-to-native-xml-writer-boundary | — | `Static host configuration serialization only; no runtime callback clock, generation, or render transition is established.` |
 | F13D2/id2-profile-header-and-body-wire | — | `The profile mapper, local Type11 prefix reader, and ID2 body serializer own no source, dispatch, AU, or persistent clock.` |
 | F14/authenticated-bit-compaction | — | `Stateless bit-stream projection; no frame, source, AU, or programme clock is owned.` |
 | F14/hmac-sha256-primitive | — | `Stateless byte primitive; no AU, source, programme, or history clock is owned.` |

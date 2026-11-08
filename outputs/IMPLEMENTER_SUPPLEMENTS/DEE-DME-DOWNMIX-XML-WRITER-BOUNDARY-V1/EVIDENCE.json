@@ -1,0 +1,99 @@
+{
+  "effects": {
+    "2ch_downmix": "UNBOUND",
+    "Atmos/JOC_main_audio": "UNBOUND",
+    "BSI_metadata": "UNBOUND",
+    "DEE_runtime": "NOT_RUN",
+    "intentional_ignore": "UNBOUND"
+  },
+  "execution": {
+    "ab_run": "NOT_RUN",
+    "dee_run": "NOT_RUN",
+    "implementation_contact": false,
+    "media_pcm_payload_key_license_read": false,
+    "windbg": "NOT_RUN"
+  },
+  "first_unbound_edges": [
+    "--encoder composite to provider split/rename/drop or native XML writer input",
+    "host level key/value to native XML leaf and typed DDP descriptor",
+    "Mode ordinal to effective stored value",
+    "Mode to separate Priv+0x210 StringType output member"
+  ],
+  "host_to_child": {
+    "clientjob_json_to_target_ddp_xml_leaf": "UNBOUND",
+    "dme_property_map_to_active_encoder_composite": "STATIC_SOURCE_BOUND_CONDITIONAL",
+    "dme_state_to_clientjob_json": "STATIC_SOURCE_BOUND",
+    "serverjob_argv_to_child_spawn": "STATIC_SOURCE_BOUND"
+  },
+  "implementation_ready": false,
+  "mix_levels": [
+    {
+      "field": "loro_center_mix_level",
+      "host_key": "loro_cmix",
+      "native_xml_key": "lorocmixlev",
+      "outer_offset": "+0x1a8",
+      "result_slot": "puVar16[0xf]",
+      "typed_consumer": "UNBOUND"
+    },
+    {
+      "field": "loro_surround_mix_level",
+      "host_key": "loro_smix",
+      "native_xml_key": "lorosurmixlev",
+      "outer_offset": "+0x1ac",
+      "result_slot": "puVar16[0x10]",
+      "typed_consumer": "UNBOUND"
+    },
+    {
+      "field": "ltrt_center_mix_level",
+      "host_key": "ltrt_cmix",
+      "native_xml_key": "ltrtcmixlev",
+      "outer_offset": "+0x1b4",
+      "result_slot": "puVar16[0x12]",
+      "typed_consumer": "UNBOUND"
+    },
+    {
+      "field": "ltrt_surround_mix_level",
+      "host_key": "ltrt_smix",
+      "native_xml_key": "ltrtsurmixlev",
+      "outer_offset": "+0x1b8",
+      "result_slot": "puVar16[0x13]",
+      "typed_consumer": "UNBOUND"
+    }
+  ],
+  "mode": {
+    "effective_stored_value": "UNBOUND; setter helper returns pre-existing MixMode+0x50 because optional callback is null",
+    "host_key": "preferred_downmix_mode",
+    "host_type": "string plus separate active flag",
+    "native_schema_tokens": [
+      "loro",
+      "ltrt",
+      "ltrt-pl2",
+      "not_indicated"
+    ],
+    "native_xml_key": "dmixmod",
+    "parser_ordinal": {
+      "loro": 0,
+      "ltrt": 1,
+      "ltrt-pl2": 2,
+      "not_indicated": 3
+    },
+    "typed_destination": "MixMode at plugin subobject +0x910 / outer +0x930",
+    "typed_setter_input": "32-bit mapped ordinal",
+    "ui_map": {
+      "Not Indicated": "not_indicated",
+      "Stereo": "loro",
+      "Surround": "ltrt"
+    }
+  },
+  "schema": "washed-implementer-supplement.v1",
+  "source_package": {
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "manifest_sha256": "262f7c90f6fe51f13e0fe161dea01cd70d0c9e87e862ca3ff2ed833b26e86041",
+    "package_id": "F13C-DME-DOWNMIX-XML-WRITER-FIRST-BREAK-WASH-V1",
+    "payloads_verified": 6,
+    "sha256sums_txt_sha256": "729cbdfd6f744b510358c3ed1375d18154bdf48fb4a3ed8c5b244788dafb79bc"
+  },
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-DME-DOWNMIX-XML-WRITER-BOUNDARY-V1"
+}

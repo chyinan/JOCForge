@@ -1,0 +1,10 @@
+{
+  "checker_normal": "PASS",
+  "checker_python_O": "PASS",
+  "external_paths_included": false,
+  "manifest_sha256": "262f7c90f6fe51f13e0fe161dea01cd70d0c9e87e862ca3ff2ed833b26e86041",
+  "package_id": "F13C-DME-DOWNMIX-XML-WRITER-FIRST-BREAK-WASH-V1",
+  "payloads_verified": 6,
+  "raw_source_or_decompilation_copied": false,
+  "sha256sums_txt_sha256": "729cbdfd6f744b510358c3ed1375d18154bdf48fb4a3ed8c5b244788dafb79bc"
+}
