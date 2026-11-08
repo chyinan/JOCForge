@@ -9556,6 +9556,88 @@
           ],
           "validation_boundary": "A single N38 pair held RF=film_light, input, rate, time base, and window constant; the only normalized XML difference was Line film_light (A) versus none (B). Both runs exited 0 with 32 frames/192 blocks. BSI compre presence/distribution/sequence matched, while dynrng changed from A's four-code distribution to B's 0x00 in all 192 blocks; output hashes differed. This is one sample/window BSI observation only. Parameter 0x0d typed writer, decoded PCM/gain/listening, and generalization remain UNBOUND/NOT_CAPTURED.",
           "delivery_scope": "ONE_N38_BSI_DYNRNG_OBSERVATION_ONLY_NO_ALGORITHM_OR_GATE_CHANGE"
+        },
+        {
+          "slice_id": "washed-temp-provider-slot58-callsite-boundary",
+          "mapping_status": "SLOT58_CALLSITE_ARGUMENTS_BOUND__TARGET_OWNER_ACTION_AND_CLEANUP_UNBOUND",
+          "implementation_status": "V2_CHECKER_CORRECTED__CALLSITE_ONLY__NO_RUNTIME_OR_FILE_DELETE",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "A focused static callsite at RVA 0x7bb83 binds RCX to the object loaded from path_object+0x68, RDX to the assembled local path string, the indirect target to receiver vtable slot +0x58, and return AL to a conditional loop branch. This is callsite argument flow, not a complete method prototype. StageRunner Build writes the provider object from StageRunner+0x290 and separately records a selected descriptor at +0x298; the returned-object-to-descriptor join, concrete source helper class/vtable, slot target, and first file/path action remain UNBOUND. No cleanup/delete effect or runtime owner/generation is established. The prior +0x90 candidate is not reinterpreted.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-PROVIDER-SLOT58-BOUNDARY-V2/FINDINGS.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Static callsite argument flow only; no runtime file-lifecycle transition or cleanup timing is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_TEMP_PROVIDER_SLOT58_CALLSITE_BOUNDARY",
+            "package_id": "DEE-TEMP-DIR-PROVIDER-SLOT58-BOUNDARY-V2",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-PROVIDER-SLOT58-BOUNDARY-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-PROVIDER-SLOT58-BOUNDARY-V2/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-PROVIDER-SLOT58-BOUNDARY-V2/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-PROVIDER-SLOT58-BOUNDARY-V2/FINDINGS.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-PROVIDER-SLOT58-BOUNDARY-V2/INPUT-ONLY-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-PROVIDER-SLOT58-BOUNDARY-V2/SOURCE-PACKAGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-PROVIDER-SLOT58-BOUNDARY-V2/REVISION.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-PROVIDER-SLOT58-BOUNDARY-V2/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "596dc53732de322343c3d9db5f4b38046997d0ebe4cc382e5671b65f21d0eb09",
+            "supplement_seal_sha256": "f77426760cb8c1f8e102732802827505a06ec794ad65846ceef0049b6f92b15d",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "callsite": {
+              "rva": "0x7bb83",
+              "receiver_rcx": "object loaded from path_object+0x68",
+              "path_rdx": "assembled local path value address",
+              "indirect_target": "receiver vtable slot +0x58; UNBOUND",
+              "return_al": "tested by conditional loop branch",
+              "complete_method_prototype": "NOT_ESTABLISHED"
+            },
+            "construction": {
+              "build_function": "FUN_14003f690",
+              "path_object_field": "+0x2a0",
+              "provider_value_field": "+0x290",
+              "provider_value_source": "FUN_140041d50(local_3a8)",
+              "source_helper_reads_input_vtable_slot": "+0x18; concrete class/vtable UNBOUND",
+              "selected_descriptor_field": "+0x298",
+              "provider_object_to_selected_descriptor_join": "UNBOUND"
+            },
+            "runtime_owner_generation": "NOT_CAPTURED",
+            "first_file_path_action": "UNBOUND",
+            "cleanup_delete_effect": "UNBOUND",
+            "prior_plus_0x90_candidate_reinterpreted": false,
+            "validation_boundary": "A focused static callsite at RVA 0x7bb83 binds RCX to the object loaded from path_object+0x68, RDX to the assembled local path string, the indirect target to receiver vtable slot +0x58, and return AL to a conditional loop branch. This is callsite argument flow, not a complete method prototype. StageRunner Build writes the provider object from StageRunner+0x290 and separately records a selected descriptor at +0x298; the returned-object-to-descriptor join, concrete source helper class/vtable, slot target, and first file/path action remain UNBOUND. No cleanup/delete effect or runtime owner/generation is established. The prior +0x90 candidate is not reinterpreted."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_SLOT58_CALLSITE_NOT_RUN",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "One static callsite boundary; input-only vector is not a pass record."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-PROVIDER-SLOT58-BOUNDARY-V2/INPUT-ONLY-VECTOR.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "STATIC_EDGE_ONLY_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Slot +0x58 target function, method prototype, and first file/path operation.",
+            "Provider object to selected descriptor +0x298 owner join and runtime generation.",
+            "Cleanup/delete effect or any DEE/WinDbg/file-deletion execution."
+          ],
+          "validation_boundary": "A focused static callsite at RVA 0x7bb83 binds RCX to the object loaded from path_object+0x68, RDX to the assembled local path string, the indirect target to receiver vtable slot +0x58, and return AL to a conditional loop branch. This is callsite argument flow, not a complete method prototype. StageRunner Build writes the provider object from StageRunner+0x290 and separately records a selected descriptor at +0x298; the returned-object-to-descriptor join, concrete source helper class/vtable, slot target, and first file/path action remain UNBOUND. No cleanup/delete effect or runtime owner/generation is established. The prior +0x90 candidate is not reinterpreted.",
+          "delivery_scope": "STATIC_CALLSITE_REFERENCE_ONLY_NO_PROVIDER_OR_CLEANUP_SEMANTICS"
         }
       ]
     },
@@ -70935,6 +71017,28 @@
       "not_run": [
         "Typed parameter 0x0d consumer and decoded audio/gain/listening effects.",
         "Other inputs/profiles/rates and generalization beyond this short window."
+      ]
+    },
+    {
+      "package_id": "DEE-TEMP-DIR-PROVIDER-SLOT58-BOUNDARY-V2",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TEMP-DIR-PROVIDER-SLOT58-BOUNDARY-V2",
+      "manifest_sha256": "596dc53732de322343c3d9db5f4b38046997d0ebe4cc382e5671b65f21d0eb09",
+      "supplement_seal_sha256": "f77426760cb8c1f8e102732802827505a06ec794ad65846ceef0049b6f92b15d",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "SLOT58_CALLSITE_FLOW_ONLY; TARGET_OWNER_ACTION_AND_CLEANUP_UNBOUND; NO_RUNTIME; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Slot target, provider/descriptor join, first file/path action, runtime owner/generation, and cleanup effect.",
+        "Any DEE/WinDbg run or file deletion."
       ]
     }
   ]

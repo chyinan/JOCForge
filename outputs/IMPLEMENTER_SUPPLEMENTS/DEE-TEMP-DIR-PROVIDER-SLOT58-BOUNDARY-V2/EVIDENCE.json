@@ -1,0 +1,50 @@
+{
+  "callsite": {
+    "argument": "assembled local path value address in RDX",
+    "receiver": "object loaded from path_object+0x68 in RCX",
+    "return": "AL tested by conditional loop branch",
+    "rva": "0x7bb83",
+    "target": "receiver vtable slot +0x58; UNBOUND"
+  },
+  "cleanup_delete_effect": "UNBOUND",
+  "construction": {
+    "path_object_field": "+0x2a0",
+    "provider_value_field": "+0x290",
+    "provider_value_source": "FUN_140041d50(local_3a8)",
+    "same_path_owner_join": "+0x290 returned object to +0x298 selected descriptor UNBOUND",
+    "selected_descriptor_field": "+0x298",
+    "source_helper": "reads a value through input vtable slot +0x18; concrete class/vtable UNBOUND",
+    "stage_runner_build": "FUN_14003f690"
+  },
+  "exclusions": {
+    "implementation_contact": false,
+    "media_pcm_payload_key_license": false
+  },
+  "execution": {
+    "dee": "NOT_RUN",
+    "file_delete": "NOT_PERFORMED",
+    "windbg": "NOT_RUN"
+  },
+  "first_file_path_action": "UNBOUND",
+  "implementation_ready": false,
+  "runtime_owner_generation": "NOT_CAPTURED",
+  "schema": "washed-implementer-supplement.v1",
+  "scope_limit": {
+    "export_contains_prior_plus_0x90_candidate": true,
+    "no_full_callee_body_followup": true,
+    "reused_plus_0x90_reinterpreted": false,
+    "whole_function_export_instruction_count": 450
+  },
+  "source_package": {
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "checksums_verified": 8,
+    "manifest_sha256": "e8818d445b0d9adf79c70cfd513e04c76b25b621a5f31c36df28e3cb67e7e8f7",
+    "package_id": "misc_temp_storage_dispatch_boundary_wash_v1",
+    "package_seal_sha256": "54d5b71c1b87fbe7560d59390a0f530dacf84a78d6db37200be869d3b0a82d03",
+    "payloads_verified": 7,
+    "raw_source_or_decompilation_copied": false
+  },
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-TEMP-DIR-PROVIDER-SLOT58-BOUNDARY-V2"
+}

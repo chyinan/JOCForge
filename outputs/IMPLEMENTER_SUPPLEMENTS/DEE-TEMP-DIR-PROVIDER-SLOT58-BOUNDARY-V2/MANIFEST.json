@@ -1,0 +1,41 @@
+{
+  "implementation_ready": false,
+  "payloads": [
+    {
+      "bytes": 1924,
+      "file": "EVIDENCE.json",
+      "sha256": "58a7a12a2465633e5691f75b3e0f5854de4a3d9b554550e24034458b37ffcb25"
+    },
+    {
+      "bytes": 418,
+      "file": "INPUT-ONLY-VECTOR.json",
+      "sha256": "ae44e3d5b60bf6e3f0f09a8e30ddd64e8ef4b234aa8f147d9764a55d99eecd6d"
+    },
+    {
+      "bytes": 1019,
+      "file": "FINDINGS.md",
+      "sha256": "934fbd459e74d06a06407ea0e0bce9510fd3e3357d8933a90af583b69a1077c2"
+    },
+    {
+      "bytes": 954,
+      "file": "SOURCE-PACKAGE.json",
+      "sha256": "3097107df0ced7db22b55515a4abfdfbc935fcda28362dd8c4bd6e4d485f704c"
+    },
+    {
+      "bytes": 203,
+      "file": "REVISION.md",
+      "sha256": "a18c99e99838a96334e2e2a5c8f7ef4d3baa07bcaf3c3f444fb8dd5393280c11"
+    },
+    {
+      "bytes": 1475,
+      "file": "CHECK.py",
+      "sha256": "cb3f5a91099cb62c88f63313d8a7e88cfc10a9d31c5e116666d396471cbe5e6b"
+    }
+  ],
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "scope": "Static +0x58 callsite register flow only; concrete target/owner and cleanup action remain unbound.",
+  "source_manifest_sha256": "e8818d445b0d9adf79c70cfd513e04c76b25b621a5f31c36df28e3cb67e7e8f7",
+  "source_package_seal_sha256": "54d5b71c1b87fbe7560d59390a0f530dacf84a78d6db37200be869d3b0a82d03",
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-TEMP-DIR-PROVIDER-SLOT58-BOUNDARY-V2"
+}

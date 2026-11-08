@@ -1573,3 +1573,7 @@ Wash package `DEE-ATMOS-EXPLICIT-OFFSET-FFOA-CONVERSION-BOUNDARY-V1` (manifest S
 ## 2026-11-08: Line DRC N38 BSI dynrng observation
 
 Wash package `DEE-DRC-LINE-NONE-N38-BSI-OBSERVATION-V1` (manifest SHA-256 `8a00949bce37b1e6279941724bc72abe47abde347a9d79d5bdb89c0626a956f4`, seal SHA-256 `14c65744af864d8751163611e8c86460a91a67fc584b22cbb350a29d27acea94`) records one N38 pair with RF=`film_light` held and Line=`film_light` versus `none`. Both runs exited 0 with 32 frames/192 blocks. Compre sequence and distribution matched; dynrng changed from a four-code distribution to `0x00` in all 192 blocks. This is one bounded BSI observation only; typed parameter `0x0d`, PCM/gain/listening effect, and generalization remain `UNBOUND/NOT_CAPTURED`. No line DRC algorithm closure is claimed.
+
+## 2026-11-08: temp_dir provider slot +0x58 V2
+
+Wash package `DEE-TEMP-DIR-PROVIDER-SLOT58-BOUNDARY-V2` (manifest SHA-256 `596dc53732de322343c3d9db5f4b38046997d0ebe4cc382e5671b65f21d0eb09`, seal SHA-256 `f77426760cb8c1f8e102732802827505a06ec794ad65846ceef0049b6f92b15d`) binds the focused callsite at RVA `0x7bb83`: RCX receives the object from `path_object+0x68`, RDX the assembled local path, target slot `+0x58`, and return AL a loop branch. This is argument-flow evidence, not a method prototype. Target, same-path owner join, first file action, runtime generation, and cleanup/delete effect remain `UNBOUND`; no file deletion was performed.

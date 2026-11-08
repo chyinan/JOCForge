@@ -1,0 +1,17 @@
+{
+  "checker_normal": "PASS",
+  "checker_python_O": "PASS",
+  "checksums_verified": 8,
+  "manifest_sha256": "e8818d445b0d9adf79c70cfd513e04c76b25b621a5f31c36df28e3cb67e7e8f7",
+  "package_id": "misc_temp_storage_dispatch_boundary_wash_v1",
+  "package_seal_sha256": "54d5b71c1b87fbe7560d59390a0f530dacf84a78d6db37200be869d3b0a82d03",
+  "payloads_verified": 7,
+  "raw_source_or_decompilation_copied": false,
+  "supersedes_invalid_supplement": {
+    "manifest_sha256": "2869ed98545a27f02fb5d6baa114cd9cc22c8bc2ab28060061291ba0f4c9503b",
+    "reason": "Checker read same_path_owner_join from root instead of construction.same_path_owner_join; evidence status was unchanged.",
+    "seal_sha256": "0b3d774916ae273a62f03937ba693fe070c7619a784cd311210cbfdd35ad406e",
+    "supplement_id": "DEE-TEMP-DIR-PROVIDER-SLOT58-BOUNDARY-V1"
+  },
+  "version_note": "V2 checker is self-contained and validates the nested construction owner-join boundary."
+}

@@ -1,0 +1,1 @@
+V2 supersedes V1, whose checker used the wrong EVIDENCE nesting for same_path_owner_join. V2 corrects only checker/package identity; the sealed source observation and UNBOUND conclusions are unchanged.
