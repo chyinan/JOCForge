@@ -390,19 +390,27 @@ fn authored_mp4_and_dash_output_options_are_parsed_without_muxing() {
     let base_xml = case["input_xml"].as_str().unwrap();
     let ec3_branch = "<output><ec3><file_name>out.ec3</file_name><storage><local><path>fixture</path></local></storage></ec3></output>";
     let cases = [
-        ("mp4", "mp4", "no", "out.m4a", SelectedOutputContainer::Mp4),
+        (
+            "mp4",
+            "mp4",
+            "no",
+            "out.m4a",
+            "",
+            SelectedOutputContainer::Mp4,
+        ),
         (
             "dash",
             "dash",
             "24",
             "out.mpd",
+            "opaque-plugin-value",
             SelectedOutputContainer::Dash,
         ),
     ];
 
-    for (branch, format, frame_rate, file_name, expected_container) in cases {
+    for (branch, format, frame_rate, file_name, plugin_base, expected_container) in cases {
         let output_xml = format!(
-            "<output><{branch} version=\"1\"><output_format>{format}</output_format><override_frame_rate>{frame_rate}</override_frame_rate><file_name>{file_name}</file_name><storage><local><path>fixture</path></local></storage><plugin><base>opaque-plugin-value</base></plugin></{branch}></output>"
+            "<output><{branch} version=\"1\"><output_format>{format}</output_format><override_frame_rate>{frame_rate}</override_frame_rate><file_name>{file_name}</file_name><storage><local><path>fixture</path></local></storage><plugin><base>{plugin_base}</base></plugin></{branch}></output>"
         );
         let authored_xml = base_xml.replacen(ec3_branch, &output_xml, 1);
         let references = parse_selected_job_file_references(authored_xml.as_bytes())
@@ -417,7 +425,7 @@ fn authored_mp4_and_dash_output_options_are_parsed_without_muxing() {
         assert_eq!(output.container(), expected_container);
         assert_eq!(output.output_format(), Some(format));
         assert_eq!(output.override_frame_rate(), Some(frame_rate));
-        assert_eq!(output.plugin_base(), Some("opaque-plugin-value"));
+        assert_eq!(output.plugin_base(), Some(plugin_base));
         let identity = configuration.normalized_identity_value();
         assert_eq!(identity["output_configuration"]["container"], branch);
         assert_eq!(identity["output_configuration"]["output_format"], format);
@@ -435,6 +443,54 @@ fn authored_mp4_and_dash_output_options_are_parsed_without_muxing() {
         parse_selected_job_configuration(invalid_xml.as_bytes(), wave, source_samples).unwrap_err(),
         JobConfigurationError::UnsupportedFieldValue
     );
+}
+
+#[test]
+fn complete_job_xml_value_surface_parses_without_enabling_unselected_effects() {
+    let vectors = fixture_json("job-configuration-vectors.json");
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["id"] == "accepted_full_adm")
+        .unwrap();
+    let descriptor = &case["pcm_descriptor"];
+    let wave = SelectedWaveDescriptor::new(
+        descriptor["sample_rate"].as_u64().unwrap() as u32,
+        descriptor["channels"].as_u64().unwrap() as u16,
+        descriptor["pcm_bits"].as_u64().unwrap() as u16,
+    );
+    let source_samples = descriptor["source_samples"].as_u64().unwrap();
+    let base_xml = case["input_xml"].as_str().unwrap();
+    let ec3_branch = "<output><ec3><file_name>out.ec3</file_name><storage><local><path>fixture</path></local></storage></ec3></output>";
+    let mp4_branch = "<output><mp4 version=\"1\"><output_format>mp4</output_format><override_frame_rate>no</override_frame_rate><file_name>out.m4a</file_name><storage><local><path>fixture</path></local></storage><plugin><base></base></plugin></mp4></output>";
+    let authored_xml = base_xml
+        .replace("<dialogue_intelligence>false</dialogue_intelligence>", "<dialogue_intelligence>true</dialogue_intelligence>")
+        .replace("<speech_threshold>100</speech_threshold>", "<speech_threshold>15</speech_threshold>")
+        .replace("<line_mode_drc_profile>none</line_mode_drc_profile>", "<line_mode_drc_profile>film_light</line_mode_drc_profile>")
+        .replace("<rf_mode_drc_profile>none</rf_mode_drc_profile>", "<rf_mode_drc_profile>film_light</rf_mode_drc_profile>")
+        .replace(ec3_branch, mp4_branch)
+        .replace("</job_config>", "<misc><temp_dir><clean_temp>true</clean_temp><path>D:\\temporary-root</path></temp_dir></misc></job_config>");
+
+    parse_selected_job_file_references(authored_xml.as_bytes())
+        .expect("the full authored XML shape is structurally admitted");
+    let configuration =
+        parse_selected_job_configuration(authored_xml.as_bytes(), wave, source_samples)
+            .expect("XML values parse without applying unsupported effects");
+    assert!(configuration.loudness().dialogue_intelligence());
+    assert_eq!(configuration.loudness().speech_threshold(), 15);
+    assert_eq!(configuration.line_drc_profile().xml_value(), "film_light");
+    assert_eq!(configuration.rf_drc_profile().xml_value(), "film_light");
+    assert_eq!(
+        configuration.output_configuration().container(),
+        SelectedOutputContainer::Mp4
+    );
+    assert_eq!(configuration.output_configuration().plugin_base(), Some(""));
+    assert_eq!(
+        configuration.temp_directory().unwrap().clean_temp(),
+        Some(true)
+    );
+    assert_eq!(configuration.time_base(), "file_position");
 }
 
 #[test]

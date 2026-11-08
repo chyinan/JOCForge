@@ -1644,6 +1644,13 @@ fn path_node<'a, 'input>(
     Ok(current)
 }
 
+fn optional_element_text(
+    root: Node<'_, '_>,
+    path: &[&str],
+) -> Result<Option<String>, JobConfigurationError> {
+    Ok(path_node(root, path)?.map(|node| node.text().unwrap_or_default().to_owned()))
+}
+
 fn path_text<'a>(
     root: Node<'a, '_>,
     path: &[&str],
@@ -1726,7 +1733,7 @@ fn parse_selected_output_configuration(
             &["override_frame_rate"],
             ADMITTED_OUTPUT_FRAME_RATE_TOKENS,
         )?,
-        plugin_base: path_text(node, &["plugin", "base"])?.map(ToOwned::to_owned),
+        plugin_base: optional_element_text(node, &["plugin", "base"])?,
     })
 }
 
@@ -1735,9 +1742,9 @@ fn optional_xml_choice(
     path: &[&str],
     choices: &[&str],
 ) -> Result<Option<String>, JobConfigurationError> {
-    match path_text(root, path)? {
+    match optional_element_text(root, path)? {
         None => Ok(None),
-        Some(value) if choices.contains(&value) => Ok(Some(value.to_owned())),
+        Some(value) if choices.contains(&value.as_str()) => Ok(Some(value)),
         Some(_) => Err(JobConfigurationError::UnsupportedFieldValue),
     }
 }
@@ -1763,13 +1770,13 @@ fn parse_optional_temp_directory(
     let Some(temp_directory) = single_child(misc, "temp_dir")? else {
         return Ok(None);
     };
-    let clean_temp = match path_text(temp_directory, &["clean_temp"])? {
+    let clean_temp = match optional_element_text(temp_directory, &["clean_temp"])? {
         None => None,
-        Some("true") => Some(true),
-        Some("false") => Some(false),
+        Some(value) if value == "true" => Some(true),
+        Some(value) if value == "false" => Some(false),
         Some(_) => return Err(JobConfigurationError::UnsupportedFieldValue),
     };
-    let path = path_text(temp_directory, &["path"])?.map(ToOwned::to_owned);
+    let path = optional_element_text(temp_directory, &["path"])?;
 
     Ok(Some(SelectedTempDirectoryConfiguration {
         clean_temp,
