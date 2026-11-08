@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.eac3.chanmap-u16-msb-first-vectors.v1",
+  "status": "INPUT_ONLY_NOT_RUN",
+  "field_width_bits": 16,
+  "numeric_bit_numbering": "LSB_INDEX_0",
+  "field_emission_order": "MSB_FIRST",
+  "emitted_slot_formula": "15 - numeric_bit_index",
+  "slot_zero": "first bit emitted within the 16-bit field",
+  "one_hot_vectors": [
+    {"numeric_bit_index":0,"mask_hex":"0x0001","expected_emitted_slot":15,"expected_field_bits":"0000000000000001"},
+    {"numeric_bit_index":1,"mask_hex":"0x0002","expected_emitted_slot":14,"expected_field_bits":"0000000000000010"},
+    {"numeric_bit_index":2,"mask_hex":"0x0004","expected_emitted_slot":13,"expected_field_bits":"0000000000000100"},
+    {"numeric_bit_index":3,"mask_hex":"0x0008","expected_emitted_slot":12,"expected_field_bits":"0000000000001000"},
+    {"numeric_bit_index":4,"mask_hex":"0x0010","expected_emitted_slot":11,"expected_field_bits":"0000000000010000"},
+    {"numeric_bit_index":5,"mask_hex":"0x0020","expected_emitted_slot":10,"expected_field_bits":"0000000000100000"},
+    {"numeric_bit_index":6,"mask_hex":"0x0040","expected_emitted_slot":9,"expected_field_bits":"0000000001000000"},
+    {"numeric_bit_index":7,"mask_hex":"0x0080","expected_emitted_slot":8,"expected_field_bits":"0000000010000000"},
+    {"numeric_bit_index":8,"mask_hex":"0x0100","expected_emitted_slot":7,"expected_field_bits":"0000000100000000"},
+    {"numeric_bit_index":9,"mask_hex":"0x0200","expected_emitted_slot":6,"expected_field_bits":"0000001000000000"},
+    {"numeric_bit_index":10,"mask_hex":"0x0400","expected_emitted_slot":5,"expected_field_bits":"0000010000000000"},
+    {"numeric_bit_index":11,"mask_hex":"0x0800","expected_emitted_slot":4,"expected_field_bits":"0000100000000000"},
+    {"numeric_bit_index":12,"mask_hex":"0x1000","expected_emitted_slot":3,"expected_field_bits":"0001000000000000"},
+    {"numeric_bit_index":13,"mask_hex":"0x2000","expected_emitted_slot":2,"expected_field_bits":"0010000000000000"},
+    {"numeric_bit_index":14,"mask_hex":"0x4000","expected_emitted_slot":1,"expected_field_bits":"0100000000000000"},
+    {"numeric_bit_index":15,"mask_hex":"0x8000","expected_emitted_slot":0,"expected_field_bits":"1000000000000000"}
+  ],
+  "target_composite": {
+    "profile_id": "atmos71_flat7x_i0_640_d0_1024_v1",
+    "field": "D0 chanmap",
+    "mask_hex": "0x1A00",
+    "set_bits_lsb_indexed": [12,11,9],
+    "expected_emitted_slots": [3,4,6],
+    "expected_field_bits": "0001101000000000",
+    "profile_contract_set_bits_msb_indexed": [3,4,6],
+    "semantic_labels_source": "approved profile contract; not derived by this serializer supplement",
+    "ADM_source_role_join": "UNBOUND",
+    "native_execution": "NOT_RUN"
+  }
+}

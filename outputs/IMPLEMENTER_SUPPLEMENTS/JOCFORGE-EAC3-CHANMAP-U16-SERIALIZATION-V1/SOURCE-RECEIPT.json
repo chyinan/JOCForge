@@ -1,0 +1,34 @@
+{
+  "schema": "jocforge.wash-supplement-source-receipt.v1",
+  "package_id": "JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1",
+  "wash_inputs": [
+    {
+      "package_id": "d0_chanmap_bit_order_vectors_wash_v1",
+      "manifest_sha256": "2ae28569be3ea502938ceef977619eb8b793fe40e303ee2bccd5e791648ffcb2",
+      "package_seal_sha256": "4f5299f7ac9e94762c1eb9f26368024f9b9442d60ad048f1469fecf56f3db53e",
+      "wash_receipt": "outputs/WASH_RECEIPTS/dee-71-d0-chanmap-bit-order-receipt.md",
+      "independent_checker_normal": "PASS",
+      "independent_checker_python_O": "PASS",
+      "contribution": "numeric U16 field emission order and 16 one-hot input-only vectors"
+    },
+    {
+      "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+      "manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+      "package_seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+      "contribution": "approved profile row target 0x1A00 and separate semantic profile declaration"
+    }
+  ],
+  "status": {
+    "numeric_field_order": "BOUND_FOR_U16_MSB_FIRST_SERIALIZATION",
+    "chanmap_semantic_labels": "FROM_PROFILE_CONTRACT_ONLY",
+    "D0_to_ADM_source_role": "UNBOUND",
+    "native_execution": "NOT_RUN",
+    "production_allowed": false
+  },
+  "exclusions": [
+    "Ghidra output or native source code",
+    "DEE or JOCForge binaries",
+    "audio, PCM, E-AC-3 or JOC payload",
+    "private keys or licenses"
+  ]
+}

@@ -1628,6 +1628,12 @@ Wash package `DEE-ATMOS71-I0-D0-RATE-FRMSIZ-BOUNDARY-PARTIAL-V1` (manifest SHA-2
 
 The package observes a per-record encode/word-count path and a two-word header serializer, but the setup-to-writer-owner join, dynamic writer target, producer of the second-word `frmsiz`, D0 BSI bitrate field, and actual emitted rate remain `UNBOUND/NOT_RUN`. The input-only arithmetic vectors are `NOT_RUN`; no mode21 payload was included or used. Production remains disabled by the open GTC, D0 audio/writer, and all-AU EMDF-fit gates.
 
+## 2026-11-09: E-AC-3 chanmap U16 field serialization
+
+Wash package `JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1` (manifest SHA-256 `470fa9830a7937fcd1d5169c980f139669011e766e136ce2dc9bf7498103f787`, seal SHA-256 `aaeb22108dac10742ad410e624d9a3dae6cf9d5707b56b58697a4068d335bf81`) specifies only a 16-bit numeric chanmap field emitted MSB-first: LSB-indexed bit `n` occupies emitted slot `15-n`. For `0x1A00`, bits `[12,11,9]` map to emitted slots `[3,4,6]`, yielding `0001101000000000`; all 16 one-hot vectors are input-only and execution is `NOT_RUN`.
+
+The profile contract supplies semantic labels independently; this package does not derive speaker meanings. Absolute bit cursor, final file byte order, and ADM source-row→D0 owner remain outside scope or `UNBOUND`. The set-bit count is not a channel, ADM-row, or JOC-carrier count. This registration does not make the 7.1 profile production-ready; `production_allowed=false` remains in force.
+
 ## 2026-11-09: I0/D0 AU transaction boundary partial
 
 Wash package `DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1` (manifest SHA-256 `98697c0b352bb11379d0cc942911ad34b23350a554b2432cf9e9b8405f4523a6`, seal SHA-256 `fbec0caef75f1fd2f49d6e390b090127979b189861d0482381c337d511dfa61e`) binds one per-block JOC call sequence and separate in-memory per-unit and fwrite boundaries. It does not type these as I0/D0, establish I0→D0 ordering, same-generation identity, callback-buffer-to-fwrite join, atomic AU commit, or D0-failure partial-I0 behavior; all remain `UNBOUND`, and proposed runtime/failure vectors remain `NOT_RUN`.

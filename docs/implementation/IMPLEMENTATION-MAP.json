@@ -18473,8 +18473,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2064062,
-              "sha256": "793f3341fbdb698b62faa2e58938f8890fa1e9e8d394beed22c642eb0f58cb09"
+              "bytes": 2065311,
+              "sha256": "56f0af8d6f204b5fe79e4cbf15ee73dbb9f70c4fdbdd2929a19bbd22fa2ef7b6"
             }
           ],
           "test_modules": [
@@ -22000,8 +22000,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2064062,
-              "sha256": "793f3341fbdb698b62faa2e58938f8890fa1e9e8d394beed22c642eb0f58cb09"
+              "bytes": 2065311,
+              "sha256": "56f0af8d6f204b5fe79e4cbf15ee73dbb9f70c4fdbdd2929a19bbd22fa2ef7b6"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -45169,6 +45169,104 @@
           ],
           "validation_boundary": "Two-frame rate allocation and conditional typed setup candidates only; D0 frmsiz/BSI writer ownership and actual output remain UNBOUND/NOT_RUN.",
           "delivery_scope": "PROFILE_RATE_AND_FRAME_SIZE_ARITHMETIC_ONLY_NO_D0_WRITER_OR_AUDIO_CLAIM"
+        },
+        {
+          "slice_id": "washed-eac3-chanmap-u16-msb-first-serialization",
+          "mapping_status": "WASHED_U16_CHANMAP_MSB_FIRST_NUMERIC_FIELD_SERIALIZATION_BOUND__SEMANTIC_SOURCE_MAPPING_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_16_ONE_HOT_AND_TARGET_ARITHMETIC_VECTORS__NATIVE_WRITER_NOT_RUN",
+          "implementation_requirement": false,
+          "owner": "codec",
+          "scope": "For a 16-bit E-AC-3 chanmap numeric field emitted MSB-first, LSB-indexed numeric bit n occupies field slot 15-n. The target value 0x1A00 therefore emits field bits 0001101000000000 with set positions in emitted slots 3, 4, and 6. This is a field-local numeric serialization contract only. It does not establish an absolute bit cursor or final file byte order, does not derive speaker meanings or map ADM source rows to D0 coded locations, and does not make the set-bit count a channel, ADM-row, or JOC-carrier count.",
+          "dependencies": [
+            "F01E/approved-atmos71-flat7x-1664-profile-contract"
+          ],
+          "spec_files": [
+            "specs/12-codec-and-wire.md",
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1/RECEIPT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "This contract covers only the 16 emitted slots within one field; absolute frame/bit cursor and file byte order are outside scope."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_EAC3_CHANMAP_U16_MSB_FIRST_SERIALIZATION",
+            "package_id": "JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1/RECEIPT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1/SOURCE-RECEIPT.json"
+            ],
+            "supplement_manifest_sha256": "470fa9830a7937fcd1d5169c980f139669011e766e136ce2dc9bf7498103f787",
+            "supplement_seal_sha256": "aaeb22108dac10742ad410e624d9a3dae6cf9d5707b56b58697a4068d335bf81",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "field_width_bits": 16,
+            "numeric_bit_numbering": "LSB_INDEX_0",
+            "field_emission_order": "MSB_FIRST",
+            "emitted_slot_formula": "15 - numeric_bit_index",
+            "slot_zero": "first bit emitted within the field",
+            "target_composite": {
+              "profile_id": "atmos71_flat7x_i0_640_d0_1024_v1",
+              "field": "D0 chanmap",
+              "mask_hex": "0x1A00",
+              "set_bits_lsb_indexed": [
+                12,
+                11,
+                9
+              ],
+              "expected_emitted_slots": [
+                3,
+                4,
+                6
+              ],
+              "expected_field_bits": "0001101000000000",
+              "semantic_labels_source": "approved profile contract; not derived by this serializer supplement",
+              "ADM_source_role_join": "UNBOUND",
+              "native_execution": "NOT_RUN"
+            },
+            "absolute_bit_cursor": "OUTSIDE_SCOPE",
+            "final_file_byte_order": "OUTSIDE_SCOPE",
+            "set_bit_count_semantic": "NOT_A_CHANNEL_ADM_ROW_OR_JOC_CARRIER_COUNT",
+            "production_allowed": false,
+            "validation_boundary": "Only the 16-bit numeric field-slot mapping and input-only vectors are bound. Absolute cursor, final byte order, semantic D0 labels, source-row owner, and native output remain outside scope or UNBOUND/NOT_RUN.",
+            "one_hot_vector_count": 16
+          },
+          "vectors": {
+            "kind": "WASHED_CHANMAP_U16_MSB_FIRST_INPUT_ONLY_VECTORS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "Sixteen one-hot numeric input masks map bit n to emitted slot 15-n.",
+              "The 0x1A00 target composite emits set positions [3,4,6] and field bits 0001101000000000; semantic labels come from the separate approved profile contract."
+            ],
+            "local_fixture": {
+              "file": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 2703,
+              "sha256": "7ecf381a9ead372e46a8e004671a68fc78735dbc0f87bc3c4937a9952eb7a8ff"
+            },
+            "expected_outputs_included": true,
+            "execution_status": "INPUT_ONLY_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Native writer and real output validation.",
+            "Absolute bit cursor, final file byte order, and D0 source role owner join.",
+            "Derivation of semantic speaker labels from the numeric mask.",
+            "Any inference of channel, ADM-row, or JOC-carrier count from set-bit count."
+          ],
+          "validation_boundary": "Numeric U16 field serialization only; semantic profile labels are sourced independently, source-row owner remains UNBOUND, and native execution is NOT_RUN.",
+          "delivery_scope": "EAC3_CHANMAP_NUMERIC_FIELD_SERIALIZATION_ONLY_NO_SEMANTIC_OR_PRODUCTION_CLAIM"
         }
       ]
     },
@@ -54366,8 +54464,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2064062,
-              "sha256": "793f3341fbdb698b62faa2e58938f8890fa1e9e8d394beed22c642eb0f58cb09"
+              "bytes": 2065311,
+              "sha256": "56f0af8d6f204b5fe79e4cbf15ee73dbb9f70c4fdbdd2929a19bbd22fa2ef7b6"
             }
           ],
           "test_inventory": [
@@ -72826,6 +72924,27 @@
         "Rate setup candidate to writer-state owner join and dynamic writer target.",
         "Second header word frmsiz producer, D0 BSI bitrate field, and actual emitted rate.",
         "D0 audio algorithm, GTC source-role projection, all-AU EMDF fit, and new output."
+      ]
+    },
+    {
+      "package_id": "JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1",
+      "manifest_sha256": "470fa9830a7937fcd1d5169c980f139669011e766e136ce2dc9bf7498103f787",
+      "supplement_seal_sha256": "aaeb22108dac10742ad410e624d9a3dae6cf9d5707b56b58697a4068d335bf81",
+      "functional_ids": [
+        "F12"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "NUMERIC_U16_MSB_FIRST_FIELD_SERIALIZATION_ONLY; PROFILE_SEMANTIC_LABELS_NOT_DERIVED; ADM_SOURCE_ROW_TO_D0_OWNER_UNBOUND; PRODUCTION_ALLOWED_FALSE",
+      "not_run": [
+        "Native writer execution and generated bitstream validation.",
+        "Absolute bit cursor and final file byte order.",
+        "ADM source-row to D0 owner mapping and semantic speaker labels.",
+        "Any claim that set-bit count equals channel, ADM-row, or JOC-carrier count."
       ]
     }
   ]

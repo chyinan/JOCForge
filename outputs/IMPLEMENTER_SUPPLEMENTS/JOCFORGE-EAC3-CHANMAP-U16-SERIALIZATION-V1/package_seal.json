@@ -1,0 +1,29 @@
+{
+  "schema": "wash-supplement-seal.v1",
+  "package_id": "JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1",
+  "manifest_sha256": "470fa9830a7937fcd1d5169c980f139669011e766e136ce2dc9bf7498103f787",
+  "status": "U16_FIELD_ORDER_BOUND; D0_SEMANTIC_MAPPING_UNBOUND; PRODUCTION_NOT_READY",
+  "production_allowed": false,
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 2644,
+      "sha256": "196995243b761e7ec039d7200fb1b631f25bd52cb006676001b4b3e8633a1edd"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 2703,
+      "sha256": "7ecf381a9ead372e46a8e004671a68fc78735dbc0f87bc3c4937a9952eb7a8ff"
+    },
+    {
+      "path": "RECEIPT.md",
+      "bytes": 1348,
+      "sha256": "b7b746ba897c61ff4160a1d192022a6930e946e05523105c6445e318dc60c2fe"
+    },
+    {
+      "path": "SOURCE-RECEIPT.json",
+      "bytes": 1477,
+      "sha256": "0913a88e1bb31d5d9cbb621a9c1b87b2991303e012dc09399a064fca216304ad"
+    }
+  ]
+}

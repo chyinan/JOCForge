@@ -540,6 +540,7 @@
 | F12/selected-six-rate-profile-frame-size-through-output | — | `Frame extent is an AU profile property. The 33 syncframes are per-rate observed windows; this slice does not add a source/callback/AU scheduler.` |
 | F12/washed-atmos71-rate-pair-writer-boundary-partial | `48 kHz`<br>`six E-AC-3 blocks`<br>`32 ms AU` | `The package specifies target frame/AU dimensions; no runtime frame writer or output clock is established.` |
 | F12/washed-atmos71-i0-d0-rate-frmsiz-boundary-partial | `Eac3Frame`<br>`AccessUnit` | `Each selected substream frame covers 1,536 samples / 32 ms at 48 kHz and six blocks.`<br>`The 6,656-byte aggregate is an I0+D0 AU total, not one E-AC-3 frame.`<br>`No runtime writer or output clock is established.` |
+| F12/washed-eac3-chanmap-u16-msb-first-serialization | — | `This contract covers only the 16 emitted slots within one field; absolute frame/bit cursor and file byte order are outside scope.` |
 | F12S/mantissa-quantizer | — | `The quantizer is stateless and has no callback, source, AU, or trial-search clock ownership.` |
 | F12A/selected-f12a-public-bap-network | — | `F12A has no persistent cross-row/block state; BapFrame carries candidate q but source-generation identity remains caller-owned.` |
 | F13/selected-metadata-owner-source-stage | `CodecSourceIndex`<br>`JocDispatchIndex`<br>`PublishedAuIndex` | `source s`<br>`dispatch s+1`<br>`AU absent for s<2 else s-2`<br>`ordinary writer s-2`<br>`ID14 writer s-1` |
