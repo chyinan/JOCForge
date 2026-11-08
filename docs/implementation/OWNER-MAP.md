@@ -179,6 +179,7 @@
 | F01E/washed-temp-message-return-boundary | F01E | `UNBOUND` |
 | F01E/washed-time-base-host-template-first-break-boundary | F01E | `UNBOUND` |
 | F01E/washed-surround-trim-candidate-register-boundary | F01E | `UNBOUND` |
+| F01E/authored-input-timecode-token-admission | F01E | `frontend` |
 | F03G/target-slot-install | F03G | `spatial_control` |
 | F03C/candidate-selector | F03C | `spatial_control` |
 | F03C/selector-score-choice | F03C | `spatial_control` |

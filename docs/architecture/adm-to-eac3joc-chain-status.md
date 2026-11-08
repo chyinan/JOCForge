@@ -1447,7 +1447,7 @@ These packages preserve the existing fail-closed CLI selection. None authorizes 
 
 ## 2026-11-08: Encoder timecode exact-token admission
 
-The encoder-side job XML parser now admits the exact ten `timecode_frame_rate` tokens listed by `DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1` and preserves the authored token in normalized identity. This is lexical admission only: the `adm`/`atmos_mezz` input-side field remains fixed to `not_indicated`; direct `29.97df` is rejected, and no parent canonicalization, numeric conversion, or output timecode effect is implemented by this slice. Runtime effect remains `NOT_RUN`.
+The job XML parser admits the exact ten `timecode_frame_rate` tokens for the encoder and authored-input fields and preserves them in separate normalized identity fields. This is lexical admission only: direct `29.97df` is rejected, and neither field performs parent canonicalization, numeric conversion, or an output timecode effect. The input setter/reader owner and converter route remain `UNBOUND`; runtime effect remains `NOT_RUN`.
 
 ## 2026-11-08: Local test-support clip-gain experiment status
 
@@ -1466,3 +1466,7 @@ At the audit snapshot HEAD `154bd300120962a864fcd3d7535df29b05ffb9eb`, five sour
 The three `implementation_inventory` records for `metadata_source_bridge.rs` still expect its LF blob: `F05JL/authorized-main-g2-joc-id14-candidate`, `F13/authorized-main-g2-metadata-body-proposal`, and `F13/meter-receipt-to-metadata-owner-cold-candidate`, each at 12,505 bytes and SHA-256 `98f198149054a865af9b4d841cd7167e3b783a5734781af56b6b429e085c3132`. The current file has 328 CRLF pairs, adding 328 bytes. `scripts/check-boundaries.py` hashes `read_bytes()` without EOL normalization and fails its direct-slice inventory check at line 12489. `git hash-object --path` still matches the committed blob. The two Cargo manifests from the first snapshot are no longer marked modified; the reason is not inferred.
 
 The current default CLI feature set is empty. `jocforge-application` declares `test-support = []`, while `jocforge-domain` currently has no `test-support` feature declaration; no feature-enabled build was run. This note preserves the earlier authorized experiment scope as history and does not claim its override code is currently present. No source file was normalized or overwritten, and no Cargo tests, JOCForge encoding, or DEE execution were run. The Wash-side review has not accepted the current raw-byte worktree as clean or the boundary gate as passing.
+
+## 2026-11-08: Authored input timecode token admission
+
+The selected XML parser now admits the ten exact tokens documented for `/input/audio/{adm,atmos_mezz}/timecode_frame_rate` and preserves the authored value separately from the encoder-side timecode field. Direct `29.97df` remains rejected. This is lexical XML admission only; numeric conversion, the conditional Wash converter route, native owner/generation, and output effect remain `UNBOUND/NOT_RUN`.

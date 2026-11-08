@@ -24,6 +24,7 @@ const SELECTED_FRAME_SAMPLES: u16 = 1_536;
 const SELECTED_SPATIAL_CONFIG_MODE: u8 = 0;
 const SELECTED_DISPATCH_MODE: u8 = 2;
 const SELECTED_ROUTE_VIRTUAL_PREFIX_COUNT: u8 = 11;
+/// Exact lexical tokens for separate input-side and encoder-side timecode fields.
 const ADMITTED_TIMECODE_FRAME_RATE_TOKENS: &[&str] = &[
     "not_indicated",
     "23.976",
@@ -316,6 +317,7 @@ pub struct SelectedJobConfiguration {
     downmix: SelectedDownmixConfiguration,
     surround_trim_5_1: SelectedSurroundTrim,
     height_trim_5_1: SelectedHeightTrim,
+    input_timecode_frame_rate: String,
     input_offset: String,
     input_ffoa: String,
     encode_timecode_frame_rate: String,
@@ -384,6 +386,7 @@ impl SelectedJobConfiguration {
             },
             "surround_trim_5_1": self.surround_trim_5_1.xml_value(),
             "height_trim_5_1": self.height_trim_5_1.xml_value(),
+            "input_timecode_frame_rate": self.input_timecode_frame_rate,
             "input_offset": self.input_offset,
             "input_ffoa": self.input_ffoa,
             "encode_timecode_frame_rate": self.encode_timecode_frame_rate,
@@ -408,6 +411,10 @@ impl SelectedJobConfiguration {
 
     pub fn input_reference(&self) -> &SelectedFileReference {
         &self.input_reference
+    }
+
+    pub fn input_timecode_frame_rate(&self) -> &str {
+        &self.input_timecode_frame_rate
     }
 
     pub fn output_reference(&self) -> &SelectedFileReference {
@@ -1112,8 +1119,8 @@ pub fn parse_selected_job_configuration(
     }
     let input_reference =
         parse_file_reference(input_node, JobConfigurationError::InvalidInputReference)?;
-    let input_timecode = required_text(input_node, &["timecode_frame_rate"])?;
-    if input_timecode != "not_indicated" {
+    let input_timecode_frame_rate = required_text(input_node, &["timecode_frame_rate"])?;
+    if !is_admitted_timecode_frame_rate_token(&input_timecode_frame_rate) {
         return Err(JobConfigurationError::TimeDomain);
     }
     let input_offset = optional_auto(input_node, &["offset"])?;
@@ -1242,6 +1249,7 @@ pub fn parse_selected_job_configuration(
         downmix,
         surround_trim_5_1,
         height_trim_5_1,
+        input_timecode_frame_rate,
         input_offset,
         input_ffoa,
         encode_timecode_frame_rate,

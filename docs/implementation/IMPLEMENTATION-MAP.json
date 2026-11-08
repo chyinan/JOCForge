@@ -1681,9 +1681,9 @@
       "direct_slices": [
         {
           "slice_id": "selected-job-xml-profile-normalization",
-          "mapping_status": "SELECTED_XML_EXACT_ENCODER_TIMECODE_ADMISSION__INPUT_FIELD_AND_EFFECT_REMAIN_SEPARATE",
-          "implementation_status": "LOCALLY_IMPLEMENTED_EXACT_ENCODER_TIMECODE_TOKEN_ADMISSION__NUMERIC_AND_OUTPUT_EFFECT_NOT_RUN",
-          "scope": "Parses the selected UTF-8 job XML, validates the selected WAVE descriptor/source-sample count, normalizes F01E.1 fields, and resolves the result through the existing selected production-profile gate. File paths are returned as values only; this function performs no file I/O. It does not parse ADM/CHNA, DBMD or events, produce control38, or wire encode. It also accepts a film_light/film_light DRC candidate paired with the existing false/100 meter inputs; DI true/15 remains unsupported by the selected meter model. A Wash follow-up binds only same-receiver continuity inside the SimpleType<bool> wrapper-to-setter edge; the property-map caller, owner/generation, and first measurement/audio consumer remain open. The local parser also admits exactly one explicit decimal data_rate token from 384, 448, 576, 640, 768, or 1024 kbps and carries the typed selected rate through F01E projection. Schema omission/default and multi-token list behavior remain unsupported; this is not evidence of a DEE runtime host-property join. The encoder-side timecode_frame_rate field admits the Wash-bound exact ten-token set and preserves the authored token in normalized identity; the input-side timecode field remains fixed to not_indicated. This does not apply rate conversion, normalize 29.97df, or establish output behavior.",
+          "mapping_status": "SELECTED_XML_EXACT_INPUT_AND_ENCODER_TIMECODE_ADMISSION__FIELDS_AND_EFFECT_REMAIN_SEPARATE",
+          "implementation_status": "LOCALLY_VERIFIED_EXACT_INPUT_AND_ENCODER_TIMECODE_ADMISSION__NUMERIC_EFFECT_NOT_RUN",
+          "scope": "Parses the selected UTF-8 job XML, validates the selected WAVE descriptor/source-sample count, normalizes F01E.1 fields, and resolves the result through the existing selected production-profile gate. File paths are returned as values only; this function performs no file I/O. It does not parse ADM/CHNA, DBMD or events, produce control38, or wire encode. It also accepts a film_light/film_light DRC candidate paired with the existing false/100 meter inputs; DI true/15 remains unsupported by the selected meter model. A Wash follow-up binds only same-receiver continuity inside the SimpleType<bool> wrapper-to-setter edge; the property-map caller, owner/generation, and first measurement/audio consumer remain open. The local parser also admits exactly one explicit decimal data_rate token from 384, 448, 576, 640, 768, or 1024 kbps and carries the typed selected rate through F01E projection. Schema omission/default and multi-token list behavior remain unsupported; this is not evidence of a DEE runtime host-property join. The encoder and authored-input timecode_frame_rate fields each admit the exact ten-token choice list and preserve their authored strings as separate normalized identity fields. Matching token lists do not join their native owners or select a shared conversion path. This does not apply rate conversion, normalize 29.97df, or establish output behavior.",
           "owner": "frontend",
           "implementation_files": [
             "crates/jocforge-domain/src/frontend/job_configuration.rs",
@@ -3228,8 +3228,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 60394,
-              "sha256": "e2cac119731a574cbdb9dbd7cb1e6f322e61c9e45b0ffb1efa5929e74580787d"
+              "bytes": 60769,
+              "sha256": "fe31295cbb6c2f383f6229c8d090b8784ef28b5b5117909ed8c7e77aa429bb1b"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
@@ -3300,8 +3300,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/job_configuration.rs",
-              "bytes": 33095,
-              "sha256": "8ba92b37dfc4b3642d9f27379fc449af0cb7d5a65ca1b235ca2001a7bae7192b"
+              "bytes": 35091,
+              "sha256": "b7273b09b143f38ddc12af3ca4f1ea3104b53a85ea381a5f1b67d2919385f0da"
             },
             {
               "path": "crates/jocforge-domain/tests/adm_graph.rs",
@@ -4359,15 +4359,15 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 60394,
-              "sha256": "e2cac119731a574cbdb9dbd7cb1e6f322e61c9e45b0ffb1efa5929e74580787d"
+              "bytes": 60769,
+              "sha256": "fe31295cbb6c2f383f6229c8d090b8784ef28b5b5117909ed8c7e77aa429bb1b"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/job_configuration.rs",
-              "bytes": 33095,
-              "sha256": "8ba92b37dfc4b3642d9f27379fc449af0cb7d5a65ca1b235ca2001a7bae7192b"
+              "bytes": 35091,
+              "sha256": "b7273b09b143f38ddc12af3ca4f1ea3104b53a85ea381a5f1b67d2919385f0da"
             }
           ]
         },
@@ -4793,8 +4793,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 60394,
-              "sha256": "e2cac119731a574cbdb9dbd7cb1e6f322e61c9e45b0ffb1efa5929e74580787d"
+              "bytes": 60769,
+              "sha256": "fe31295cbb6c2f383f6229c8d090b8784ef28b5b5117909ed8c7e77aa429bb1b"
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
@@ -7276,6 +7276,96 @@
           ],
           "validation_boundary": "Reference-only Wash supplement for the surround-trim U16 candidate. A bounded function trace reads U16 [RDI+0x968] and stores U16 through *(RDI+0x4330)+0x240. The xref model has no direct code caller and no code/data reference to the untyped slot in this scope; this is not a global no-caller claim. Neither object is joined to the registered StringType or XML -3 assignment.",
           "delivery_scope": "WASH_REFERENCE_ONLY_NOT_IMPLEMENTATION_CONTRACT"
+        },
+        {
+          "slice_id": "authored-input-timecode-token-admission",
+          "mapping_status": "LOCAL_EXACT_INPUT_TOKEN_ADMISSION__NATIVE_CONVERSION_UNBOUND",
+          "implementation_status": "LOCALLY_VERIFIED_AUTHORED_INPUT_TOKEN_IDENTITY__NO_CONVERSION",
+          "implementation_requirement": true,
+          "owner": "frontend",
+          "scope": "The input-side /input/audio/{adm,atmos_mezz}/timecode_frame_rate field admits the exact ten tokens listed by the authored job_config field choices and stores the authored string in SelectedJobConfiguration and normalized identity. It remains separate from the encoder timecode field. No numeric conversion, 29.97df canonicalization, input-owner join, or runtime timecode effect is implemented. This slice does not rewrite the fixed timecode value used by the separate primary-metadata job projection.",
+          "dependencies": [
+            "F01E/selected-job-xml-profile-normalization"
+          ],
+          "spec_files": [
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/frontend/job_configuration.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/job_configuration.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The parser stores the authored token without converting it to frames, samples, or another clock domain.",
+              "Input and encoder timecode tokens remain separate normalized identity fields.",
+              "The input setter/reader owner and any runtime conversion remain UNBOUND/NOT_RUN."
+            ]
+          },
+          "parameters": {
+            "kind": "EXACT_AUTHORED_INPUT_TIMECODE_TOKEN_ADMISSION",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-RATE-EXACT-ALLOWLIST-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-TIMECODE-INPUT-DROPFRAME-CANDIDATE-BOUNDARY-V1/REPORT.md"
+            ],
+            "accepted_tokens": [
+              "not_indicated",
+              "23.976",
+              "24",
+              "25",
+              "29.97",
+              "30",
+              "48",
+              "50",
+              "59.94",
+              "60"
+            ],
+            "input_field_choice_source": "User-provided job_config example",
+            "exact_match": true,
+            "normalized_identity_field": "input_timecode_frame_rate",
+            "shares_native_owner_with_encoder_field": "NOT_ESTABLISHED",
+            "validation_boundary": "The input-side /input/audio/{adm,atmos_mezz}/timecode_frame_rate field admits the exact ten tokens listed by the authored job_config field choices and stores the authored string in SelectedJobConfiguration and normalized identity. It remains separate from the encoder timecode field. No numeric conversion, 29.97df canonicalization, input-owner join, or runtime timecode effect is implemented. This slice does not rewrite the fixed timecode value used by the separate primary-metadata job projection.",
+            "local_verification": {
+              "focused_job_configuration_test": "PASS_14",
+              "workspace_cargo_check": "PASS",
+              "workspace_clippy": "FAILED_UNRELATED_EXISTING_DIAGNOSTICS"
+            }
+          },
+          "vectors": {
+            "kind": "LOCAL_INPUT_ONLY_TOKEN_PRESERVATION",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "authored_input_timecode_tokens_are_preserved_without_conversion"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json",
+              "sha256": "493eb904467d22f9ca6dc50b86bf05bcd9f6643f16fa352766cac26d15e156eb"
+            }
+          },
+          "error_outcomes": [
+            {
+              "error_code": "CONFIG_TIME_DOMAIN",
+              "category": "invalid input timecode token",
+              "trigger": "The exact input token is outside the ten admitted values.",
+              "programme_state_after": "No SelectedJobConfiguration is returned.",
+              "caller_action": "Reject the XML job before F01E downstream work."
+            }
+          ],
+          "not_run": [
+            "Input XML value to native setter/reader owner and generation.",
+            "Primary-metadata projection, selected converter route, 29.97df canonicalization, and numeric timebase conversion.",
+            "Runtime output timecode or any audio effect."
+          ],
+          "validation_boundary": "The input-side /input/audio/{adm,atmos_mezz}/timecode_frame_rate field admits the exact ten tokens listed by the authored job_config field choices and stores the authored string in SelectedJobConfiguration and normalized identity. It remains separate from the encoder timecode field. No numeric conversion, 29.97df canonicalization, input-owner join, or runtime timecode effect is implemented. This slice does not rewrite the fixed timecode value used by the separate primary-metadata job projection.",
+          "delivery_scope": "LOCAL_XML_ADMISSION_ONLY_NO_NATIVE_TIMECODE_EFFECT"
         }
       ]
     },
@@ -11250,8 +11340,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 60394,
-              "sha256": "e2cac119731a574cbdb9dbd7cb1e6f322e61c9e45b0ffb1efa5929e74580787d"
+              "bytes": 60769,
+              "sha256": "fe31295cbb6c2f383f6229c8d090b8784ef28b5b5117909ed8c7e77aa429bb1b"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/primary_metadata_control.rs",
@@ -41227,8 +41317,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
-              "bytes": 60394,
-              "sha256": "e2cac119731a574cbdb9dbd7cb1e6f322e61c9e45b0ffb1efa5929e74580787d"
+              "bytes": 60769,
+              "sha256": "fe31295cbb6c2f383f6229c8d090b8784ef28b5b5117909ed8c7e77aa429bb1b"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/provider.rs",
@@ -41394,8 +41484,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/job_configuration.rs",
-              "bytes": 33095,
-              "sha256": "8ba92b37dfc4b3642d9f27379fc449af0cb7d5a65ca1b235ca2001a7bae7192b"
+              "bytes": 35091,
+              "sha256": "b7273b09b143f38ddc12af3ca4f1ea3104b53a85ea381a5f1b67d2919385f0da"
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_size.rs",

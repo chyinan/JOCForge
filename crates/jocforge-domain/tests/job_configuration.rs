@@ -189,6 +189,62 @@ fn selected_job_configuration_normalizes_three_accepted_inputs_and_rejects_eight
 }
 
 #[test]
+fn authored_input_timecode_tokens_are_preserved_without_conversion() {
+    let vectors = fixture_json("job-configuration-vectors.json");
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["id"] == "accepted_full_adm")
+        .unwrap();
+    let descriptor = &case["pcm_descriptor"];
+    let wave = SelectedWaveDescriptor::new(
+        descriptor["sample_rate"].as_u64().unwrap() as u32,
+        descriptor["channels"].as_u64().unwrap() as u16,
+        descriptor["pcm_bits"].as_u64().unwrap() as u16,
+    );
+    let source_samples = descriptor["source_samples"].as_u64().unwrap();
+    let base_xml = case["input_xml"].as_str().unwrap();
+    let input_field = "<timecode_frame_rate>not_indicated</timecode_frame_rate>";
+    let tokens = [
+        "not_indicated",
+        "23.976",
+        "24",
+        "25",
+        "29.97",
+        "30",
+        "48",
+        "50",
+        "59.94",
+        "60",
+    ];
+
+    for token in tokens {
+        let replacement = format!("<timecode_frame_rate>{token}</timecode_frame_rate>");
+        let authored_xml = base_xml.replacen(input_field, &replacement, 1);
+        let configuration =
+            parse_selected_job_configuration(authored_xml.as_bytes(), wave, source_samples)
+                .unwrap_or_else(|error| panic!("input token {token}: {error:?}"));
+
+        assert_eq!(configuration.input_timecode_frame_rate(), token);
+        let identity = configuration.normalized_identity_value();
+        assert_eq!(identity["input_timecode_frame_rate"], token);
+        assert_eq!(identity["encode_timecode_frame_rate"], "not_indicated");
+    }
+
+    let unsupported_xml = base_xml.replacen(
+        input_field,
+        "<timecode_frame_rate>29.97df</timecode_frame_rate>",
+        1,
+    );
+    assert_eq!(
+        parse_selected_job_configuration(unsupported_xml.as_bytes(), wave, source_samples)
+            .unwrap_err(),
+        JobConfigurationError::TimeDomain
+    );
+}
+
+#[test]
 fn authored_silence_seconds_truncate_to_sample_counts_and_keep_append_presence() {
     let vectors = fixture_json("job-configuration-vectors.json");
     let case = vectors["config_cases"]
