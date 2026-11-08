@@ -1,0 +1,36 @@
+{
+  "implementation_ready": false,
+  "payloads": [
+    {
+      "bytes": 732,
+      "file": "FINDINGS.md",
+      "sha256": "c2135cc8a002d828b3ca180c3a85202ce33c15763f0334dda11f8ddfc5663462"
+    },
+    {
+      "bytes": 4443,
+      "file": "EVIDENCE.json",
+      "sha256": "b87a27d3b908c39471b04fddb36082b1274c51f0ad31eb902cfd9acbccea6a5c"
+    },
+    {
+      "bytes": 1032,
+      "file": "SOURCE-PACKAGE.json",
+      "sha256": "88e7b79540cae30d9881de2a92f2119e6f9e64e84b10d9d2ff4e28580ff74695"
+    },
+    {
+      "bytes": 1921,
+      "file": "CHECK.py",
+      "sha256": "d683254a2a32e8fe8a1790a5e7b7336d8090868c2ad66961b09d25205a8b8924"
+    },
+    {
+      "bytes": 323,
+      "file": "REVISION.md",
+      "sha256": "cee3c5331a4b96f9dd858f4ad0541d1c176973d8f42032f4ce539a3dd0ab0167"
+    }
+  ],
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "scope": "Historical failed-run closeout only; no audio effect conclusion and no new launch.",
+  "source_manifest_sha256": "f5331757e976aabfe0925e8cd65a3e615d069d7d083f29725a6cb3c3c1bbc8a2",
+  "source_package_seal_sha256": "f1e0690045aebea3b56c2a8265cfe62dced660c3d9df1d57bab6d4a6cd289367",
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V3"
+}

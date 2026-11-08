@@ -7743,7 +7743,7 @@
         {
           "slice_id": "washed-speech-threshold-ab-run-result-boundary",
           "mapping_status": "TWO_ARM_EXIT10_UNINFORMATIVE__RECEIPT_HASHES_BOUND__EFFECT_UNBOUND",
-          "implementation_status": "RECEIPT_LEVEL_PROVENANCE_BOUND__NO_THRESHOLD_EFFECT_CONCLUSION",
+          "implementation_status": "V3_RECEIPT_HASH_CLOSEOUT_BOUND__HISTORICAL_RESULT_UNINFORMATIVE__NO_THRESHOLD_EFFECT_CONCLUSION",
           "implementation_requirement": false,
           "owner": "UNBOUND",
           "scope": "Wash-only run-result boundary for two authorized N36 arms. The arms differ only in speech_threshold (0 versus 100); both naturally exited with code 10, produced zero capture events, and created no EC-3 output. Exit cause and threshold effect are unbound/not observed. This is an uninformative failed A/B result, not a pass, equivalence result, or threshold-effect claim.",
@@ -7779,7 +7779,13 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1/package_seal.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1/FINDINGS.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V3/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V3/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V3/FINDINGS.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V3/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V3/SOURCE-PACKAGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V3/CHECK.py"
             ],
             "supplement_manifest_sha256": "9fd44544f2cebe4d680cc192d12c53f356205645fb9b1872bdb9acfa63172f8e",
             "supplement_seal_sha256": "18070d1b9521a8db05a92dfe2ab57fa87183cc121359e821853c556689c65d9a",
@@ -7850,6 +7856,30 @@
               "runtime_scalar": "NOT_CAPTURED",
               "exit_cause": "UNBOUND",
               "new_run": "NONE"
+            },
+            "current_receipt_closeout": {
+              "package_id": "SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V3",
+              "manifest_sha256": "0d2327e33662d32e2430c66a94465beb7394c9446403058f967991a80021fa2e",
+              "package_seal_sha256": "eecf9acf5515beec594253a2db99ecb36201f7f282ac81859bc5206d38d43135",
+              "local_manifest_seal_payload_integrity": "PASS_MANIFEST_SEAL_AND_4_OF_4_SEALED_FILES",
+              "checker_result": "PASS_NORMAL_AND_PYTHON_O; SELF_CONTAINED_LOCAL_FILES_ONLY",
+              "historical_run_receipts": {
+                "threshold_0_sha256": "e5d4fdcf969d1f10521bcdfee587056b5ee1ffe86940093acf1c454dfde8a04d",
+                "threshold_100_sha256": "abff9102b7b7c5ce2a737c49688b7803121f54d1a93c1d7f9465ad3ec3ad3ae5",
+                "receipt_payloads_copied_or_read_here": false
+              },
+              "result": {
+                "threshold_0_exit": 10,
+                "threshold_100_exit": 10,
+                "natural_exit": true,
+                "observer_events_each": 0,
+                "output_created": false,
+                "threshold_effect": "UNBOUND_NOT_CAPTURED",
+                "owner_generation": "UNBOUND_NOT_CAPTURED",
+                "runtime_scalar": "NOT_CAPTURED",
+                "exit_cause": "UNBOUND",
+                "new_run": "NONE"
+              }
             }
           },
           "vectors": {
@@ -7857,12 +7887,15 @@
             "authoritative_vectors": [],
             "case_pointers": [
               "Two arms; no expected audio output or scalar result is included.",
-              "SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1"
+              "SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1",
+              "SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V3"
             ],
             "provider_files": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/speech_threshold_ab_run_result_wash_v1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1/INPUT-ONLY-VECTORS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V3/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V3/SOURCE-PACKAGE.json"
             ],
             "expected_outputs_included": false,
             "execution_status": "WASH_RUN_RESULT_ONLY_NOT_A_PRODUCT_VECTOR"
@@ -7871,7 +7904,7 @@
           "not_run": [
             "Threshold effect, selected owner/generation, runtime scalar, and exit cause remain unbound or not captured.",
             "No retry or additional run is authorized by this result.",
-            "The implementation-side checker was not run because it reads research-side receipt files; Wash reports both checker modes passed."
+            "V1 source receipt/preflight/run receipt payloads remain omitted; V3 binds historical receipt identities by hash only and ran no new experiment."
           ],
           "validation_boundary": "Wash-only run-result boundary for two authorized N36 arms. The arms differ only in speech_threshold (0 versus 100); both naturally exited with code 10, produced zero capture events, and created no EC-3 output. Exit cause and threshold effect are unbound/not observed. This is an uninformative failed A/B result, not a pass, equivalence result, or threshold-effect claim.",
           "delivery_scope": "WASHED_FAILURE_RESULT_ONLY_NO_THRESHOLD_EFFECT_OR_EQUIVALENCE_CLAIM"
@@ -69838,6 +69871,29 @@
       "not_run": [
         "Effective consumer, algorithm mapping, measurement scalar, or audio/JOC effect.",
         "1770-1/1770-2 runtime behavior and any retry of the 1770-3 attempt."
+      ]
+    },
+    {
+      "package_id": "SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V3",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V3",
+      "manifest_sha256": "0d2327e33662d32e2430c66a94465beb7394c9446403058f967991a80021fa2e",
+      "supplement_seal_sha256": "eecf9acf5515beec594253a2db99ecb36201f7f282ac81859bc5206d38d43135",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS_4_OF_4",
+        "checker": "PASS_NORMAL_AND_PYTHON_O_SELF_CONTAINED"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "HISTORICAL_TWO_ARM_EXIT10_CLOSEOUT; RECEIPTS_HASH_BOUND; EFFECT_AND_CAUSE_UNBOUND; NO_NEW_RUN; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Threshold effect, selected owner/generation, runtime scalar, and exit cause remain unbound/not captured.",
+        "No retry or additional run is authorized by this result.",
+        "Original receipt/status payloads are omitted and were not read here."
       ]
     }
   ]

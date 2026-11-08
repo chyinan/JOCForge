@@ -1533,3 +1533,7 @@ Wash package `DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1` (manifest SHA-256 `97b0efcbf
 ## 2026-11-08: Metering-mode runtime boundary
 
 Wash package `DEE-METERING-MODE-TOKEN-RUNTIME-BOUNDARY-V1` (manifest SHA-256 `5007ae0b8db3276ec45e1e11e800e648d0b466b523c78cee51b58cc6af71f81e`, seal SHA-256 `37edfa73375c4df289bd758ae0d2f4f5c7afa59ff028864b947bf88a49b97fdd`) retains raw U32 candidates 0..4 without assigning five algorithms. The generic consumer conditionally writes record `+0x90`; the scoped validator does not read it and the first effective consumer is `UNBOUND`. One N36 `1770-3` arm exited 10 without scalar or output; cause is unknown and no retry occurred. This is not unsupported-option evidence. Earlier `1770-4`/LeqA observations are reused context, not new runs; their measurement unit is unstated. No alternate token or audio behavior is enabled.
+
+## 2026-11-08: Speech-threshold receipt closeout V3
+
+Wash package `SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V3` (manifest SHA-256 `0d2327e33662d32e2430c66a94465beb7394c9446403058f967991a80021fa2e`, seal SHA-256 `eecf9acf5515beec594253a2db99ecb36201f7f282ac81859bc5206d38d43135`) is the current self-contained receipt closeout. It hash-binds the two historical E-373 N36 run/status receipts; raw receipt payloads and raw module base values are omitted. Both arms exited naturally with code 10, observed no events, and produced no output. Threshold effect, owner/generation, runtime scalar, and exit cause remain `UNBOUND/NOT_CAPTURED`; no new run occurred and no unsupported-option conclusion is drawn.

@@ -1,0 +1,109 @@
+{
+  "arms": [
+    {
+      "arm": "arm_threshold_0",
+      "attempt_id": "speech_threshold_ab_n36_20261107T233528Z_b904ce76:arm_threshold_0",
+      "exit_code": 10,
+      "natural_exit": true,
+      "observer_event_count": 0,
+      "observer_hook_error_count": 0,
+      "observer_module_ready": true,
+      "original_receipts_modified": false,
+      "output_directory_empty_now": true,
+      "output_file_exists_now": false,
+      "output_file_present_at_exit": false,
+      "payload_read_or_retained": false,
+      "raw_module_base_value": "OMITTED",
+      "run_receipt_sha256": "e5d4fdcf969d1f10521bcdfee587056b5ee1ffe86940093acf1c454dfde8a04d",
+      "run_started": true,
+      "status_receipt_sha256": "e5d4fdcf969d1f10521bcdfee587056b5ee1ffe86940093acf1c454dfde8a04d",
+      "temp_directory_empty_now": true
+    },
+    {
+      "arm": "arm_threshold_100",
+      "attempt_id": "speech_threshold_ab_n36_20261107T233528Z_b904ce76:arm_threshold_100",
+      "exit_code": 10,
+      "natural_exit": true,
+      "observer_event_count": 0,
+      "observer_hook_error_count": 0,
+      "observer_module_ready": true,
+      "original_receipts_modified": false,
+      "output_directory_empty_now": true,
+      "output_file_exists_now": false,
+      "output_file_present_at_exit": false,
+      "payload_read_or_retained": false,
+      "raw_module_base_value": "OMITTED",
+      "run_receipt_sha256": "abff9102b7b7c5ce2a737c49688b7803121f54d1a93c1d7f9465ad3ec3ad3ae5",
+      "run_started": true,
+      "status_receipt_sha256": "abff9102b7b7c5ce2a737c49688b7803121f54d1a93c1d7f9465ad3ec3ad3ae5",
+      "temp_directory_empty_now": true
+    }
+  ],
+  "conclusion": {
+    "exit_cause": "UNBOUND",
+    "global_absence_claim": false,
+    "owner_generation_join": "UNBOUND_NOT_CAPTURED",
+    "run_result": "BOTH_NATURAL_EXIT_CODE_10_ZERO_OBSERVER_EVENTS_NO_OUTPUT",
+    "runtime_scalar_result": "NOT_CAPTURED",
+    "threshold_effect": "UNBOUND_NOT_CAPTURED"
+  },
+  "current_process_snapshot": {
+    "E333": "NOT_QUERIED_NOT_TOUCHED",
+    "checked_at_utc": "2026-11-08T08:51:05.5331048Z",
+    "target_processes": []
+  },
+  "implementation_ready": false,
+  "input_vector": {
+    "arms": [
+      {
+        "value": 0,
+        "xml_sha256": "14ae59e5b4e695dc1bae49ddbfcfc06b4e0af6c337dad686aaef0e9c304d447a"
+      },
+      {
+        "value": 100,
+        "xml_sha256": "32b13df883ec29d82c71c72e3fe7b1187636c6171e0d93e4ced18e09bae6aba5"
+      }
+    ],
+    "authorized_input_sha256": "34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5",
+    "dialogue_intelligence": true,
+    "input_kind": "ADM BWF via atmos_mezz",
+    "metering_mode": "1770-4",
+    "track_count": 36,
+    "variable": "speech_threshold"
+  },
+  "preflight_parent": {
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "manifest_sha256": "afaa47cc806414bff4f0756a04eee401f1db6b19435569940a02d51e2d3cee7d",
+    "package_id": "speech_threshold_ab_prelaunch_wash_v1",
+    "package_seal_sha256": "f27f438732fe0fb2fec31b210976663d36f429079cf57f366809cfa04da8660e"
+  },
+  "prior_authorization": {
+    "launches_used": 2,
+    "new_launch_authorized_by_this_package": false,
+    "timeline_event": "E-373",
+    "timeline_row_sha256": "855ddcccf89cf14b71a3003bd95be6688136fc3ed349aa96db94f3f8ded1e08b",
+    "timeline_sha256_at_event": "e924e68c2d99128c25cabfdf94e8e8ce4104f7efb899c588604e0b7a58fa2737"
+  },
+  "redaction": {
+    "encoded_payload_read": false,
+    "key_license_read": false,
+    "original_run_receipts_copied": false,
+    "original_run_receipts_modified": false,
+    "payload_retained": false,
+    "pcm_read": false,
+    "raw_module_base_value_included": false
+  },
+  "schema": "washed-implementer-supplement.v2",
+  "scope": "Hash-bound closeout of two historical E-373 speech-threshold arms; no new run and no audio effect conclusion.",
+  "source_package": {
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "manifest_sha256": "f5331757e976aabfe0925e8cd65a3e615d069d7d083f29725a6cb3c3c1bbc8a2",
+    "package_id": "speech_threshold_ab_run_summary_wash_v1",
+    "package_seal_sha256": "f1e0690045aebea3b56c2a8265cfe62dced660c3d9df1d57bab6d4a6cd289367",
+    "run_summary_sha256": "40de0bdfd946a48a02099179922e04b5013fa51d3bd3d39742841b9c48b1dcb9"
+  },
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V3"
+}

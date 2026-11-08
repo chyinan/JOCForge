@@ -1,0 +1,16 @@
+{
+  "external_paths_included": false,
+  "parent_preflight_manifest_sha256": "afaa47cc806414bff4f0756a04eee401f1db6b19435569940a02d51e2d3cee7d",
+  "parent_preflight_seal_sha256": "f27f438732fe0fb2fec31b210976663d36f429079cf57f366809cfa04da8660e",
+  "raw_receipt_contents_included": false,
+  "source_checkers_normal_and_python_O": "PASS",
+  "source_manifest_sha256": "f5331757e976aabfe0925e8cd65a3e615d069d7d083f29725a6cb3c3c1bbc8a2",
+  "source_package_seal_sha256": "f1e0690045aebea3b56c2a8265cfe62dced660c3d9df1d57bab6d4a6cd289367",
+  "source_summary_package_id": "speech_threshold_ab_run_summary_wash_v1",
+  "supersedes_invalid_handoff": {
+    "manifest_sha256": "e704e7644595d328248112a381451bcdbffa80a39144a4199f1850ab2dc68b89",
+    "package_seal_sha256": "9119417ff0322bb4836dc8b673752962f6050ae5e0279770ee2a42d0587cf5f2",
+    "reason": "V2 checker used a misspelled evidence key; no evidence status changed."
+  },
+  "version_note": "V3 includes a self-contained checker which reads only package-local files."
+}
