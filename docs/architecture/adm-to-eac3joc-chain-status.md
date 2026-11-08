@@ -1621,3 +1621,7 @@ GTC source-role projection, native D0 audio algorithm, and all-AU EMDF fit remai
 ## 2026-11-09: Atmos71 per-substream rate pair writer boundary
 
 Wash package `DEE-ATMOS71-RATE-PAIR-WRITER-BOUNDARY-PARTIAL-V1` (manifest SHA-256 `13e48af39e59bd1487a32a24895f950b909e3351ceb2ad842f8430795172f506`, seal SHA-256 `52dbbc079cee9d9715b49b91b5ee7b109e01fd67f142d416b651f4c83a83c5bd`) binds the target AU allocation I0 640 + D0 1024 = 1664 kbps / 6656 bytes / 32 ms, plus conditional 384/1024 typed setup candidates. The setup-to-writer state join, D0 frame-size writer, BSI bitrate field, and actual output rate remain `UNBOUND/NOT_RUN`; D0 audio, GTC, and all-AU EMDF-fit gates remain open. No mode21 payload was read or used.
+
+## 2026-11-09: I0/D0 AU transaction boundary partial
+
+Wash package `DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1` (manifest SHA-256 `98697c0b352bb11379d0cc942911ad34b23350a554b2432cf9e9b8405f4523a6`, seal SHA-256 `fbec0caef75f1fd2f49d6e390b090127979b189861d0482381c337d511dfa61e`) binds one per-block JOC call sequence and separate in-memory per-unit and fwrite boundaries. It does not type these as I0/D0, establish I0→D0 ordering, same-generation identity, callback-buffer-to-fwrite join, atomic AU commit, or D0-failure partial-I0 behavior; all remain `UNBOUND`, and proposed runtime/failure vectors remain `NOT_RUN`.

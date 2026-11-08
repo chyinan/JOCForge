@@ -643,3 +643,4 @@
 | F15/private-plan-admission-and-destination-capability | F15 | `output` |
 | F15/native-reference-output-file-sink | F15 | `output` |
 | F15/washed-f15-provider-role-and-destination-contract-boundary | F15 | `programme_root` |
+| F15/washed-i0-d0-au-transaction-boundary-partial | F15 | `UNBOUND` |

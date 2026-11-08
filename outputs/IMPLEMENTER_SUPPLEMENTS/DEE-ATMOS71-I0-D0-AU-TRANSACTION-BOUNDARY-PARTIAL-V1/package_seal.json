@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-implementer-supplement-seal.v1",
+  "package_id": "DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1",
+  "manifest_sha256": "98697c0b352bb11379d0cc942911ad34b23350a554b2432cf9e9b8405f4523a6",
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 4634,
+      "sha256": "47272228c79e022ca4f194ba1c4ee8b93b0281fe4fe133aec403a76ba46ca0bf"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 2537,
+      "sha256": "2f7f0f5eae85ee0713df3568c9a664e9de426187ac2ef8444feceb5340dfc34d"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 914,
+      "sha256": "e2df82b9725ca7edd2f91900d4ae604436879832f1167be3007ce4f6551c198e"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 1469,
+      "sha256": "f31292a8743b4e07ea03ddd3c5785c4b7d5ba6547556611100b3d467ca6b3ead"
+    },
+    {
+      "path": "SOURCE-MANIFESTS.json",
+      "bytes": 1873,
+      "sha256": "55bece864cb545027e514dad23a3d47e15e8b37da9a6f2b1890fdac9799c7dfe"
+    }
+  ],
+  "seal_excluded_from_own_hash_list": true
+}

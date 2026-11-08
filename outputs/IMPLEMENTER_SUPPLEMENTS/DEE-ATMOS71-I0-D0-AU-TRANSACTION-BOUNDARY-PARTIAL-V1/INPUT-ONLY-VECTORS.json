@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "vectors": [
+    {
+      "id": "user_target_i0_then_d0",
+      "status": "USER_TARGET_REQUIREMENT",
+      "sample_rate_hz": 48000,
+      "blocks_per_frame": 6,
+      "stream_roles": ["I0", "D0"],
+      "ordered_substreams": ["I0", "D0"],
+      "rate_kbps": {"I0": 640, "D0": 1024},
+      "native_builder_binding": "UNBOUND",
+      "execution": "NOT_RUN"
+    },
+    {
+      "id": "minimal_d0_failure_transaction_check",
+      "status": "PROPOSED_NOT_RUN",
+      "required_join": "same source generation and AU identity across I0 staging, D0 staging, and first commit boundary",
+      "failure_point": "inject one D0 failure after I0 staging",
+      "observation": "whether any I0 bytes crossed durable commit before complete AU",
+      "paths": "Wash must assign unique paths after a separately authorized preflight",
+      "timeline_go": "NOT_GRANTED"
+    }
+  ]
+}

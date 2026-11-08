@@ -55194,6 +55194,91 @@
             "whole_chain_ready": false
           },
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-i0-d0-au-transaction-boundary-partial",
+          "mapping_status": "PER_BLOCK_JOC_CALL_ORDER_AND_SEPARATE_MEMORY_FILE_WRITERS_BOUND__STREAM_ROLE_AU_ORDER_COMMIT_UNBOUND",
+          "implementation_status": "WASHED_REFERENCE_ONLY__DO_NOT_LABEL_AS_I0_D0_OR_ATOMIC_AU",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "One native per-block JOC path has a scoped call order over the same block ordinal/state base. A separate per-unit function writes to a caller-provided in-memory buffer, while another path reaches fwrite with a different buffer and length; no typed join connects those boundaries. The evidence does not type the per-block/per-unit paths as I0 or D0, establish I0-then-D0 AU order, same-source generation, atomic AU commit, or partial-I0 behavior after D0 failure.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "docs/architecture/DATAFLOW.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The scoped per-block call order is not mapped to I0/D0 stream roles or a published access-unit clock."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_PER_BLOCK_AND_MEMORY_FILE_WRITER_BOUNDARIES",
+            "package_id": "DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "98697c0b352bb11379d0cc942911ad34b23350a554b2432cf9e9b8405f4523a6",
+            "supplement_seal_sha256": "fbec0caef75f1fd2f49d6e390b090127979b189861d0482381c337d511dfa61e",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "native_joc_block_path": {
+              "call_sequence": [
+                "FUN_1800942d0",
+                "FUN_1800a3710",
+                "FUN_1800cb0d0",
+                "FUN_1800a5810"
+              ],
+              "same_block_ordinal_and_state_base": true,
+              "field_close_flush": "FUN_180093360",
+              "producer_packer_pointer_table_alias": "UNBOUND"
+            },
+            "memory_and_file_writer": {
+              "per_unit_memory_writer": "FUN_1800e01e0 writes caller-provided buffer",
+              "separate_fwrite_path": "FUN_180175c80 -> FUN_180189c80",
+              "callback_buffer_to_fwrite_buffer_and_length": "UNBOUND",
+              "durable_au_commit": "UNBOUND"
+            },
+            "owner_generation_matrix": {
+              "i0_builder_writer": "NOT_IDENTIFIED_IN_REUSED_RECEIPTS",
+              "d0_builder_writer": "UNBOUND",
+              "i0_then_d0_au_order": "UNBOUND",
+              "source_generation": "UNBOUND",
+              "partial_i0_commit_on_d0_failure": "UNBOUND"
+            },
+            "validation_boundary": "One native per-block JOC path has a scoped call order over the same block ordinal/state base. A separate per-unit function writes to a caller-provided in-memory buffer, while another path reaches fwrite with a different buffer and length; no typed join connects those boundaries. The evidence does not type the per-block/per-unit paths as I0 or D0, establish I0-then-D0 AU order, same-source generation, atomic AU commit, or partial-I0 behavior after D0 failure."
+          },
+          "vectors": {
+            "kind": "USER_TARGET_REQUIREMENT_AND_FAILURE_PROPOSAL_NOT_RUN",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "The user target I0→D0 order is a requirement, not a native observation; D0 failure check remains proposed."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "PROPOSED_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Mapping per-block/per-unit calls to I0 or D0 stream role and source generation.",
+            "Callback memory buffer to fwrite buffer/length and durable AU commit.",
+            "I0 then D0 AU order and D0-failure behavior with respect to partial I0 publication.",
+            "Any runtime output or failure-injection result."
+          ],
+          "validation_boundary": "One native per-block JOC path has a scoped call order over the same block ordinal/state base. A separate per-unit function writes to a caller-provided in-memory buffer, while another path reaches fwrite with a different buffer and length; no typed join connects those boundaries. The evidence does not type the per-block/per-unit paths as I0 or D0, establish I0-then-D0 AU order, same-source generation, atomic AU commit, or partial-I0 behavior after D0 failure.",
+          "delivery_scope": "TRANSACTION_EDGE_REFERENCE_ONLY_NO_I0_D0_ORDER_OR_ATOMICITY_CLAIM"
         }
       ]
     },
@@ -72307,6 +72392,28 @@
       "not_run": [
         "Writer-state ownership/join, D0 writer/BSI, actual output rate, D0 audio algorithm, and all-AU EMDF fit.",
         "1024-versus-768 contrast; no mode21 payload included or used."
+      ]
+    },
+    {
+      "package_id": "DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1",
+      "manifest_sha256": "98697c0b352bb11379d0cc942911ad34b23350a554b2432cf9e9b8405f4523a6",
+      "supplement_seal_sha256": "fbec0caef75f1fd2f49d6e390b090127979b189861d0482381c337d511dfa61e",
+      "functional_ids": [
+        "F15"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "PER_BLOCK_JOC_ORDER_AND_SEPARATE_WRITER_BOUNDARIES_ONLY; I0_D0_ROLES_AU_ORDER_ATOMICITY_AND_FAILURE_BEHAVIOR_UNBOUND; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "I0/D0 builder identity, AU ordering, source generation, callback/fwrite join, and durable publication.",
+        "D0-failure partial-I0 behavior and any runtime failure-injection."
       ]
     }
   ]

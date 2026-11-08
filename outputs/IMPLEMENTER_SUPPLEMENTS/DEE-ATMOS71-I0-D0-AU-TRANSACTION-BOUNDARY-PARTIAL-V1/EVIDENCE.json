@@ -1,0 +1,64 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package_id": "DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1",
+  "audience": "IMPLEMENTATION_EVIDENCE_ONLY",
+  "status": "PER_BLOCK_JOC_PATH_BOUND_STREAM_ROLE_AU_ORDER_AND_COMMIT_UNBOUND_RUNTIME_NOT_RUN",
+  "implementation_ready": "NO",
+  "scope": "one native per-block JOC path, per-unit in-memory publish, and first FileWriter boundary only",
+  "evidence_tiers": {
+    "static_native_observation": "Ghidra 12.2 read-only sealed receipts",
+    "user_target_requirement": "one 6-block I0 followed by one 6-block D0 per AU",
+    "runtime": "NOT_RUN"
+  },
+  "native_joc_block_path": {
+    "program": "dee_audio_filter_ddp_atmos.dll",
+    "image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "per_unit_entry": "FUN_180073ef0",
+    "block_assembler": "FUN_1800942d0",
+    "within_block_calls": [
+      {"order": 1, "function": "FUN_1800a3710"},
+      {"order": 2, "function": "FUN_1800cb0d0"},
+      {"order": 3, "function": "FUN_1800a5810"}
+    ],
+    "first_two_share_state_base": "state+0x140e8",
+    "first_two_share_block_ordinal": true,
+    "field_close": "FUN_180093360",
+    "producer_packer_pointer_table_alias": "UNBOUND"
+  },
+  "per_unit_and_file_writer": {
+    "per_unit_caller": "FUN_1800b7930",
+    "per_unit_ordinals": "increasing",
+    "unit_ordinal_to_i0_d0_or_au_identity": "UNBOUND",
+    "first_memory_publish": "FUN_1800e01e0 writes to caller-provided per-unit buffer",
+    "file_writer_caller": "FUN_180175c80",
+    "fwrite_function": "FUN_180189c80",
+    "callback_buffer_to_fwrite_buffer_and_length": "UNBOUND",
+    "durable_au_commit": "UNBOUND"
+  },
+  "owner_generation_matrix": {
+    "i0_builder_writer": "NOT_IDENTIFIED_IN_REUSED_RECEIPTS",
+    "d0_builder_writer": "UNBOUND",
+    "shared_source_generation_clock": "UNBOUND",
+    "i0_then_d0_au_order": "UNBOUND",
+    "partial_i0_commit_on_d0_failure": "UNBOUND",
+    "rollback_semantics": "UNBOUND"
+  },
+  "user_target_requirement": {
+    "sample_rate_hz": 48000,
+    "blocks_per_frame": 6,
+    "ordered_stream_roles": ["I0", "D0"],
+    "per_substream_rate_kbps": {"I0": 640, "D0": 1024},
+    "evidence_class": "REQUIREMENT_ONLY_NOT_NATIVE_OBSERVATION"
+  },
+  "execution": {
+    "ghidra_version": "12.2 PUBLIC",
+    "dee_run": false,
+    "process_control": false,
+    "media_mka_ec3_read": false,
+    "pcm_read": false,
+    "encoded_payload_read": false,
+    "key_or_license_read": false,
+    "failure_injection": "NOT_RUN",
+    "implementation_contact": false
+  }
+}
