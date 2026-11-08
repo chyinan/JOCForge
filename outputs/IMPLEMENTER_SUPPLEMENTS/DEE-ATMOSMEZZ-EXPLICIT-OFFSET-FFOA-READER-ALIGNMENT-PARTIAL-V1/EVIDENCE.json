@@ -1,0 +1,113 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package_id": "DEE-ATMOSMEZZ-EXPLICIT-OFFSET-FFOA-READER-ALIGNMENT-PARTIAL-V1",
+  "audience": "IMPLEMENTATION_EVIDENCE_ONLY",
+  "status": "PARTIAL_READER_ALIGNMENT_UNBOUND_SOURCE_FIELDS_PARTIAL_EXPERIMENT_NOT_RUN",
+  "implementation_ready": "NO",
+  "scope": "Explicit offset/FFOA conversion and the first generic Reader sample-read boundary only",
+  "evidence_tiers": {
+    "static_native_observation": "Ghidra 12.2 read-only observation, source package manifest hash-bound",
+    "reused_static_observation": "Four previously sealed Wash packages, each manifest hash-bound and checker-replayed normally and under python -O",
+    "model_arithmetic": "Input-only arithmetic illustrations derived from the reported static formula; not runtime or codec conformance tests",
+    "dynamic_runtime": "NOT_RUN"
+  },
+  "native_image_identity": {
+    "analysis_tool": "Ghidra 12.2",
+    "analysis_mode": "READ_ONLY_NO_ANALYSIS",
+    "plugin_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "observations": {
+    "explicit_value_converter": {
+      "host_function": "FUN_14012ff20",
+      "converter": "FUN_1401359e0",
+      "arguments_include_timecode_frame_rate": true,
+      "return_type": "double",
+      "return_unit": "seconds",
+      "dotted_form": {
+        "components": ["hours", "minutes", "seconds", "fractional_seconds"],
+        "fraction_rule": "prefix 0. to the suffix and parse as a fractional second",
+        "minute_and_second_limit": "less than 60"
+      },
+      "frame_form": {
+        "selected_when": "no dot in the option string",
+        "bare_decimal_integer": "frame index divided by the selected frame rate",
+        "colon_form": "hours, minutes, seconds, frames",
+        "trailing_lowercase_df": "selects a drop-frame correction branch",
+        "negative_integer_with_observed_normalizer_arguments": "out-of-range branch"
+      },
+      "unbound_parser_details": [
+        "complete accepted timecode_frame_rate token set",
+        "strict component widths",
+        "whitespace and trailing-character handling",
+        "maximum hours and frame component",
+        "XML runtime admission for each form"
+      ]
+    },
+    "normalization": {
+      "explicit_offset": "replaces selected offset after source offset map lookup",
+      "explicit_ffoa": "does not read source FFOA map in this branch",
+      "final_ffoa_rule": "max(selected_offset, converted_explicit_ffoa)"
+    },
+    "ddp_setup_and_reader": {
+      "first_ddp_source_consumer": "FUN_18014fd90",
+      "relative_action_value": "FFOA minus offset is passed to FUN_180164580",
+      "generic_first_sample_read": "FUN_180186870 read_float",
+      "reader_private_cursor": "+0x28",
+      "cursor_advance": "configured frame size +0x10",
+      "explicit_option_to_cursor_initial_value_or_seek": "UNBOUND",
+      "explicit_option_to_duration_clipping": "UNBOUND",
+      "reader_variant": "UNBOUND",
+      "runtime_owner_generation": "NOT_OBSERVED"
+    },
+    "source_metadata": {
+      "adm_start_time": {
+        "candidate": "FUN_1402042f0 local_8d8 parsed by FUN_1400a3070",
+        "destination": "AdmFileStorageDesc +0x60; master +0xA8",
+        "exact_xml_element_or_attribute": "UNBOUND",
+        "time_origin": "UNBOUND"
+      },
+      "ffoa_source": {
+        "candidate_destination": "AdmFileStorageDesc +0x58; master +0xB0",
+        "typed_adm_bwf_writer": "UNBOUND",
+        "source_chunk_or_xml_field": "UNBOUND"
+      }
+    },
+    "reused_input_scan": {
+      "scan_sha256": "ff06a577b5d39d03952e50fc12063fbd7cf44823af66a73c8d575afab6aa2275",
+      "file_count": 7,
+      "channel_counts": {"36": 6, "38": 1},
+      "named_offset_ffoa_time_reference_in_axml": "NOT_FOUND",
+      "dbmd_chna_bounded_text_tokens": "NOT_FOUND",
+      "bext_present": false,
+      "ixml_present": false,
+      "axml_programme_start_candidate": "01:00:10.00000",
+      "candidate_join": "UNBOUND",
+      "data_chunk_payload_bytes_read": 0,
+      "pcm_bytes_read": 0,
+      "rescan": false
+    }
+  },
+  "remaining_boundaries": [
+    "No source FFOA writer or chunk is joined to the descriptor candidate.",
+    "No normalized explicit value is joined to Reader cursor initialization, seek, or duration clipping.",
+    "No runtime Reader variant or same-run owner/generation was observed.",
+    "The seven-file scan has no distinguishable source offset/FFOA candidate."
+  ],
+  "minimum_experiment": {
+    "status": "PROPOSED_NOT_RUN",
+    "input_requirement": "authorized N36/N38 input with a distinguishable source FFOA candidate",
+    "arm_a": {"offset": "auto", "ffoa": "auto"},
+    "arm_b": {"offset": "auto", "ffoa": "explicit source candidate"},
+    "only_xml_difference": "ffoa",
+    "output_temp_paths": "NOT_ASSIGNED",
+    "timeline_go": "NOT_GRANTED",
+    "required_before_launch": ["fresh input identity", "unique output/temp paths", "process snapshot", "Wash timeline event", "one-shot GO"]
+  },
+  "execution": {
+    "dee_executed": false,
+    "atmos_info_executed": false,
+    "sample_rescan": false,
+    "media_payload_pcm_key_license_read_or_retained": false,
+    "experiment": "NOT_RUN"
+  }
+}

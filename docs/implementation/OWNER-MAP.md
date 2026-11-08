@@ -204,6 +204,7 @@
 | F01E/washed-explicit-offset-ffoa-static-converter-boundary | F01E | `UNBOUND` |
 | F01E/washed-line-drc-n38-dynrng-bsi-observation | F01E | `UNBOUND` |
 | F01E/washed-temp-provider-slot58-callsite-boundary | F01E | `UNBOUND` |
+| F01E/washed-explicit-offset-ffoa-reader-alignment-partial | F01E | `UNBOUND` |
 | F03G/target-slot-install | F03G | `spatial_control` |
 | F03C/candidate-selector | F03C | `spatial_control` |
 | F03C/selector-score-choice | F03C | `spatial_control` |

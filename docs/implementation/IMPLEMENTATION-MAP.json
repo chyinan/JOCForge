@@ -9672,6 +9672,91 @@
           ],
           "validation_boundary": "A focused static callsite at RVA 0x7bb83 binds RCX to the object loaded from path_object+0x68, RDX to the assembled local path string, the indirect target to receiver vtable slot +0x58, and return AL to a conditional loop branch. This is callsite argument flow, not a complete method prototype. StageRunner Build writes the provider object from StageRunner+0x290 and separately records a selected descriptor at +0x298; the returned-object-to-descriptor join, concrete source helper class/vtable, slot target, and first file/path action remain UNBOUND. No cleanup/delete effect or runtime owner/generation is established. The prior +0x90 candidate is not reinterpreted.",
           "delivery_scope": "STATIC_CALLSITE_REFERENCE_ONLY_NO_PROVIDER_OR_CLEANUP_SEMANTICS"
+        },
+        {
+          "slice_id": "washed-explicit-offset-ffoa-reader-alignment-partial",
+          "mapping_status": "EXPLICIT_CONVERSION_AND_GENERIC_READER_READ_BOUND__XML_CURSOR_AND_SOURCE_JOINS_UNBOUND",
+          "implementation_status": "WASHED_PARTIAL_REFERENCE_ONLY__RUNTIME_NOT_RUN__CLI_AUTO_GATE_PRESERVED",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "The explicit offset/FFOA converter returns floating-seconds coordinates. Explicit offset replaces the selected offset after source offset lookup; the explicit FFOA branch does not read source FFOA and final FFOA is max(selected_offset, converted_explicit_ffoa). The first DDP source consumer passes FFOA-offset downstream. A reused Reader observation identifies the first generic read_float at FUN_180186870, with private cursor +0x28 advancing by configured frame size +0x10. No normalized explicit value is joined to cursor initialization, seek, or duration clipping. Native XML acceptance, source fields, runtime owner/generation, Reader variant, and timeline effect remain UNBOUND/NOT_RUN.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-EXPLICIT-OFFSET-FFOA-READER-ALIGNMENT-PARTIAL-V1/FINDINGS.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The Reader cursor stride is statically reported, but explicit-value to cursor initialization/seek and runtime frame alignment remain unbound."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_EXPLICIT_OFFSET_FFOA_READER_ALIGNMENT_PARTIAL",
+            "package_id": "DEE-ATMOSMEZZ-EXPLICIT-OFFSET-FFOA-READER-ALIGNMENT-PARTIAL-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-EXPLICIT-OFFSET-FFOA-READER-ALIGNMENT-PARTIAL-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-EXPLICIT-OFFSET-FFOA-READER-ALIGNMENT-PARTIAL-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-EXPLICIT-OFFSET-FFOA-READER-ALIGNMENT-PARTIAL-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-EXPLICIT-OFFSET-FFOA-READER-ALIGNMENT-PARTIAL-V1/FINDINGS.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-EXPLICIT-OFFSET-FFOA-READER-ALIGNMENT-PARTIAL-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-EXPLICIT-OFFSET-FFOA-READER-ALIGNMENT-PARTIAL-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-EXPLICIT-OFFSET-FFOA-READER-ALIGNMENT-PARTIAL-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "a63d985451a710c76de62c76312384c1c3969eccd41f0c13f66d0087380b6e40",
+            "supplement_seal_sha256": "1649d6b3775042afb60c17ebcbd4bd89b311e5459f93323d7c5774d3dc5a40f3",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "explicit_conversion": {
+              "function": "FUN_1401359e0",
+              "return": "double seconds",
+              "explicit_offset": "replaces selected offset after source offset map lookup",
+              "explicit_ffoa": "does not read source FFOA map in this branch",
+              "final_ffoa": "max(selected_offset, converted_explicit_ffoa)",
+              "relative_value": "FFOA minus offset passed downstream",
+              "native_xml_acceptance": "NOT_RUN"
+            },
+            "reader_boundary": {
+              "first_ddp_source_consumer": "FUN_18014fd90",
+              "first_generic_sample_read": "FUN_180186870 read_float",
+              "private_cursor": "+0x28",
+              "cursor_advance": "configured frame size +0x10",
+              "explicit_to_cursor_initialization_or_seek": "UNBOUND",
+              "explicit_to_duration_clipping": "UNBOUND",
+              "reader_variant": "UNBOUND",
+              "runtime_owner_generation": "UNBOUND"
+            },
+            "source_fields": {
+              "exact_xml_element_or_attribute": "UNBOUND",
+              "ffoa_typed_source_writer": "UNBOUND",
+              "adm_start_time_time_origin": "UNBOUND"
+            },
+            "validation_boundary": "The explicit offset/FFOA converter returns floating-seconds coordinates. Explicit offset replaces the selected offset after source offset lookup; the explicit FFOA branch does not read source FFOA and final FFOA is max(selected_offset, converted_explicit_ffoa). The first DDP source consumer passes FFOA-offset downstream. A reused Reader observation identifies the first generic read_float at FUN_180186870, with private cursor +0x28 advancing by configured frame size +0x10. No normalized explicit value is joined to cursor initialization, seek, or duration clipping. Native XML acceptance, source fields, runtime owner/generation, Reader variant, and timeline effect remain UNBOUND/NOT_RUN."
+          },
+          "vectors": {
+            "kind": "WASHED_CONVERTER_MODEL_AND_REUSED_SCAN_PLUS_PROPOSED_NOT_RUN",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Arithmetic illustrations are model-only; source scan is reused; explicit-FFOA A/B remains PROPOSED_NOT_RUN."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-EXPLICIT-OFFSET-FFOA-READER-ALIGNMENT-PARTIAL-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-EXPLICIT-OFFSET-FFOA-READER-ALIGNMENT-PARTIAL-V1/SOURCE-MANIFESTS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "MODEL_ARITHMETIC_ONLY_AND_PROPOSED_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Native XML admission, explicit option to Reader cursor/seek/duration join, and Reader variant.",
+            "Exact source offset/FFOA fields and source writer; no distinct nonzero source candidates were found in the reused scan.",
+            "Runtime owner/generation, timeline effect, and proposed A/B experiment."
+          ],
+          "validation_boundary": "The explicit offset/FFOA converter returns floating-seconds coordinates. Explicit offset replaces the selected offset after source offset lookup; the explicit FFOA branch does not read source FFOA and final FFOA is max(selected_offset, converted_explicit_ffoa). The first DDP source consumer passes FFOA-offset downstream. A reused Reader observation identifies the first generic read_float at FUN_180186870, with private cursor +0x28 advancing by configured frame size +0x10. No normalized explicit value is joined to cursor initialization, seek, or duration clipping. Native XML acceptance, source fields, runtime owner/generation, Reader variant, and timeline effect remain UNBOUND/NOT_RUN.",
+          "delivery_scope": "REFERENCE_ONLY_NO_EXPLICIT_TIME_AXIS_OR_READER_ALIGNMENT_ENABLEMENT"
         }
       ]
     },
@@ -71203,6 +71288,28 @@
       "disposition": "MODEL_SHAPE_AND_COLD_RESET_RULES_ONLY; NATIVE_IDENTITY_AND_PLAYABLE_36_OUTPUT_UNBOUND",
       "not_run": [
         "Native row identity, arbitrary-N support, production callback, and playable 36-row output."
+      ]
+    },
+    {
+      "package_id": "DEE-ATMOSMEZZ-EXPLICIT-OFFSET-FFOA-READER-ALIGNMENT-PARTIAL-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOSMEZZ-EXPLICIT-OFFSET-FFOA-READER-ALIGNMENT-PARTIAL-V1",
+      "manifest_sha256": "a63d985451a710c76de62c76312384c1c3969eccd41f0c13f66d0087380b6e40",
+      "supplement_seal_sha256": "1649d6b3775042afb60c17ebcbd4bd89b311e5459f93323d7c5774d3dc5a40f3",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "CONVERTER_AND_FIRST_GENERIC_READER_READ_BOUND; EXPLICIT_XML_CURSOR_SOURCE_AND_TIMELINE_JOINS_UNBOUND; EXPERIMENT_NOT_RUN; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Native XML admission, exact source fields, Reader cursor/seek/duration join, runtime owner/generation, and timeline effect.",
+        "Proposed A/B; no DEE or atmos_info run occurred."
       ]
     }
   ]

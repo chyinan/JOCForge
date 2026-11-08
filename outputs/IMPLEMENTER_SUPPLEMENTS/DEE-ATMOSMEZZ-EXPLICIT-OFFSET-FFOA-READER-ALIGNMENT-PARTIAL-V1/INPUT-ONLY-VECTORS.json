@@ -1,0 +1,47 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "scope": "Arithmetic consequences of the static explicit offset/FFOA formula; no XML, DEE, Reader, or audio execution",
+  "vectors": [
+    {
+      "id": "explicit_offset_replaces_selected",
+      "status": "MODEL_ARITHMETIC_ONLY",
+      "selected_offset_seconds": 2.0,
+      "converted_explicit_offset_seconds": 10.5,
+      "expected_selected_offset_seconds": 10.5,
+      "not_proven": ["XML admission", "Reader seek", "sample alignment", "audio effect"]
+    },
+    {
+      "id": "explicit_ffoa_clamped_to_selected_offset",
+      "status": "MODEL_ARITHMETIC_ONLY",
+      "selected_offset_seconds": 8.0,
+      "converted_explicit_ffoa_seconds": 5.0,
+      "expected_final_ffoa_seconds": 8.0,
+      "not_proven": ["XML admission", "Reader seek", "sample alignment", "audio effect"]
+    },
+    {
+      "id": "explicit_ffoa_after_selected_offset",
+      "status": "MODEL_ARITHMETIC_ONLY",
+      "selected_offset_seconds": 8.0,
+      "converted_explicit_ffoa_seconds": 12.0,
+      "expected_final_ffoa_seconds": 12.0,
+      "not_proven": ["XML admission", "Reader seek", "sample alignment", "audio effect"]
+    },
+    {
+      "id": "existing_source_scan",
+      "status": "REUSED_NOT_RESCANNED",
+      "scan_sha256": "ff06a577b5d39d03952e50fc12063fbd7cf44823af66a73c8d575afab6aa2275",
+      "population": {"36_channel": 6, "38_channel": 1},
+      "source_values_distinguishable": false,
+      "experiment": "NOT_RUN"
+    },
+    {
+      "id": "proposed_ffoa_ab",
+      "status": "PROPOSED_NOT_RUN",
+      "arm_a": {"offset": "auto", "ffoa": "auto"},
+      "arm_b": {"offset": "auto", "ffoa": "explicit source candidate"},
+      "only_xml_difference": "ffoa",
+      "input_available": false,
+      "timeline_go": "NOT_GRANTED"
+    }
+  ]
+}

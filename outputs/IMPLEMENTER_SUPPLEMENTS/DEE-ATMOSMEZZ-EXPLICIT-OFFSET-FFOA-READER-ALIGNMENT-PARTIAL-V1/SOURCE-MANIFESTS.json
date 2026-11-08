@@ -1,0 +1,46 @@
+{
+  "schema": "jocforge-source-manifest-receipts.v1",
+  "source_package": {
+    "package_id": "dee_atmosmezz_explicit_offset_reader_alignment_wash_v1",
+    "manifest_sha256": "89adf8f32f92c013cf01df40d1a61a5e6a503340ab466f0087108a3acb472017",
+    "package_seal_sha256": "92a03fa89bf2931650cf1876d44f9971f1a3602919dcb3640923b0d81b8ccf00",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "reused_source_packages": [
+    {
+      "package_id": "dee_atmosmezz_explicit_timecode_source_boundary_wash_v1",
+      "manifest_sha256": "8ee318103693c514759ee9d3d9763d1cfc8fd353e235e8138c9606f28388993e",
+      "manifest_sha256_recomputed": true,
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS"
+    },
+    {
+      "package_id": "dee_atmosmezz_offset_ffoa_auto_consumer_wash_v1",
+      "manifest_sha256": "82f3d474d398403b911555cd61bb71671accd1e6e49ed189761d93e784be4b76",
+      "manifest_sha256_recomputed": true,
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS"
+    },
+    {
+      "package_id": "DEE-ATMOS-DDP-READER-CURSOR-RANGE-BOUNDARY-WASH-V1",
+      "manifest_sha256": "88a30df23de989b10dd13d282800d7768d7ae2ab15b615d922685445b6c4582a",
+      "manifest_sha256_recomputed": true,
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS"
+    },
+    {
+      "package_id": "DEE-ATMOS-INFO-ADM-TIME-FIELD-PRODUCER-WASH-V2",
+      "manifest_sha256": "a13f23aaa542ce34361ec26eae44b3e03938e018b3aff96bf1f2384d48a1b651",
+      "manifest_sha256_recomputed": true,
+      "checker_normal": "PASS",
+      "checker_python_optimized": "PASS"
+    }
+  ],
+  "wash_review": {
+    "reviewed_manifest_and_seal": true,
+    "reviewed_report_evidence_vectors_and_checker": true,
+    "source_code_or_decompilation_in_payload": false,
+    "implementation_readiness": "NO"
+  }
+}

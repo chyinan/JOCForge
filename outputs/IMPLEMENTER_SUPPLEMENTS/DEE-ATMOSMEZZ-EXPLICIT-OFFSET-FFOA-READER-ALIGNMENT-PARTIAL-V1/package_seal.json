@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-implementer-supplement-seal.v1",
+  "package_id": "DEE-ATMOSMEZZ-EXPLICIT-OFFSET-FFOA-READER-ALIGNMENT-PARTIAL-V1",
+  "manifest_sha256": "a63d985451a710c76de62c76312384c1c3969eccd41f0c13f66d0087380b6e40",
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 5505,
+      "sha256": "d1e50e52444d5dc69d8b66250f21d66adeb457b3b4de33fdb462560cfd49b6cb"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 5165,
+      "sha256": "82920e7008816b8ae86671641e056a37de5fb656a33beefd9c08c87e020f4396"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1782,
+      "sha256": "891c1ae8f4d29fd181cea24b3291ae7237b2346bb6b467d5024a14d93f06f8ee"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 2916,
+      "sha256": "7294f31860206bc0e5ac5089bee870a61a75e80c0702be1777d4fd6a2ee003c1"
+    },
+    {
+      "path": "SOURCE-MANIFESTS.json",
+      "bytes": 1838,
+      "sha256": "24ffea150ae116e3aa1f3c8592315aa0c828f3fc843efcc8da66f7916c1ccf59"
+    }
+  ],
+  "seal_excluded_from_own_hash_list": true
+}
