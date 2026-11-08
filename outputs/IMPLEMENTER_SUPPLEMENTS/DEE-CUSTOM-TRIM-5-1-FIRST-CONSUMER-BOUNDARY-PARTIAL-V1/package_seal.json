@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-implementer-supplement-seal.v1",
+  "package_id": "DEE-CUSTOM-TRIM-5-1-FIRST-CONSUMER-BOUNDARY-PARTIAL-V1",
+  "manifest_sha256": "59993495f71749d6402c6544ade30f687c7e4af2c1f82e2dc7ae27051d143474",
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 4443,
+      "sha256": "e59b25cde624eae9a7e11ff76af8e3e8aa817cfa614d488cdddfa378c9c9b109"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 2755,
+      "sha256": "366679f7c2d54a26fb04f1b5fe6eaaa833f8e55f925835f37789bdcaa069deda"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1816,
+      "sha256": "9bdf0674530c8aed0751d996062f2e9510afba8c1db9df98aca6c9af44d5d2d3"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 2055,
+      "sha256": "679826fa92ec953351f3aa9c440afd4ca7da2da1d0a5b8c0470323558b97b57f"
+    },
+    {
+      "path": "SOURCE-MANIFESTS.json",
+      "bytes": 2703,
+      "sha256": "c3cbe76f9e81513df9d55ab6263d411fb7f43cacf06f05f97d0d945ee662cd9f"
+    }
+  ],
+  "seal_excluded_from_own_hash_list": true
+}

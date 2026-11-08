@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge-source-manifest-receipts.v1",
+  "source_package": {
+    "package_id": "custom-trim-5-1-audio-consumer-boundary-wash-v1",
+    "manifest_sha256": "51531d27d12dfc1824d637a5ed923ca2bd0c36273af07950e8db6635f1800a2e",
+    "package_seal_file_sha256": "1efbfac41856f115338eaeec8037e40e93cbdc84c1bd95ceff1be04fc132a283",
+    "manifest_format": "MANIFEST.sha256 SHA-256SUMS payload list; no MANIFEST.json",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "reported_seal_hash_recomputed": false,
+    "note": "Agent relay contained a 65-character seal digest; the 64-character file hash above was recomputed from PACKAGE-SEAL.json."
+  },
+  "reused_parents": [
+    {
+      "package_id": "custom_trim_5_1_xml_string_metadata_boundary_wash_v1",
+      "manifest_sha256": "db5a3f1f8d55607d8c5e20f520fd0bd81cf5fa863b61bca5de3fa662f6701052",
+      "seal_file_sha256": "c4a91af9c8e1fa723c7b2f2ab477bd0817cfe496c4b251bc9d9804aed69ecae3",
+      "contract_sha256": "c5e19b031380cc7a3972716c71abeae5d14e78bcdde13e77119abb7309e15e77",
+      "recomputed": true,
+      "checker_status_from_receipt": "PASS_NORMAL_AND_OPTIMIZED"
+    },
+    {
+      "package_id": "custom_trims_5_1_token_consumer_boundary_wash_v2",
+      "manifest_sha256": "a15784d51a60bcfa6b5d1c2d96b1feb3734aaddbc902dc51763944c8a688f154",
+      "seal_file_sha256": "f2a4b45c263897b240824d06d8b3a0591241039bef5d634b6ff267d289aca1c8",
+      "boundary_sha256": "d30ac4fd7c9e47a9335420bfe29f2c6fe183ac6641fd3d0f4d817be705b7cf5c",
+      "recomputed": true,
+      "checker_status_from_receipt": "PASS_NORMAL_AND_OPTIMIZED"
+    },
+    {
+      "package_id": "surround_trim_atmosmezz_no_launch_preflight_wash_v1",
+      "manifest_sha256": "3a8ac88db87cb243279e8e49521fe4db29f4c125622f494980c9d422286d96be",
+      "seal_file_sha256": "a0daa728f161e26584180fdcb5b6f9b6a65c1b67136a055da15648601156cb3d",
+      "input_identity_sha256": "c99733817354e02af9ff4e454ed363fb54debab79bcf3483b3d154e2897dfe68",
+      "xml_pair_identity_sha256": "b28c9b9f9b1c96391b2b598425dbc612820285c99ba977f60eef81c453e84dd5",
+      "no_launch_receipt_addendum_sha256": "a23b53db2e47eb220de1182341d02e409268527d5a15e594f5923260977f287c",
+      "recomputed": true,
+      "checker_status_from_receipt": "PASS_NORMAL_AND_OPTIMIZED"
+    }
+  ],
+  "source_identity": {
+    "target_plugin_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "analysis": "Ghidra 12.2 PUBLIC read-only/noanalysis receipts reused"
+  },
+  "wash_review": {
+    "evidence_and_vectors_reviewed": true,
+    "parent_artifact_hashes_recomputed": true,
+    "product_source_or_decompilation_in_handoff": false,
+    "implementation_readiness": "NO"
+  }
+}

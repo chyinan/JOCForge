@@ -1,0 +1,67 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package_id": "DEE-CUSTOM-TRIM-5-1-FIRST-CONSUMER-BOUNDARY-PARTIAL-V1",
+  "audience": "IMPLEMENTATION_EVIDENCE_ONLY",
+  "status": "STATIC_ENUM_AND_METADATA_BOUND_FIRST_AUDIO_GAIN_CONSUMER_UNBOUND_RUNTIME_NOT_RUN",
+  "implementation_ready": "NO",
+  "scope": "XML schema choices, StringType metadata, and bounded candidate scans for the two custom 5.1 trim fields",
+  "evidence_tiers": {
+    "static_native_observation": "Ghidra 12.2 read-only receipts reused from sealed Wash packages",
+    "dynamic_runtime": "NOT_RUN",
+    "audio_or_bsi_effect": "NOT_RUN"
+  },
+  "fields": [
+    {
+      "xml_key": "surround_trim_5_1",
+      "declared_choices": ["auto", "0", "-3", "-6", "-9"],
+      "xsd_type": "xs:string",
+      "typed_metadata": "FUN_180136220 param_1+0x968, dee::Types::StringType",
+      "constructor_literal": "auto",
+      "runtime_token_assignment": "UNBOUND",
+      "omitted_field_materialization": "UNBOUND",
+      "auto_selection_input_and_rule": "UNBOUND",
+      "numeric_conversion_unit_precision": "UNBOUND",
+      "candidate_only_path": {
+        "function": "FUN_1800b5c60",
+        "read": "U16 [RDI+0x968]",
+        "write": "U16 [RCX+0x240]",
+        "receiver_to_registered_stringtype_owner": "UNBOUND",
+        "classification": "CANDIDATE_ONLY_NOT_PROVEN_AUDIO_GAIN_CONSUMER"
+      },
+      "first_effective_audio_or_bsi_consumer": "UNBOUND",
+      "effect": "NOT_RUN"
+    },
+    {
+      "xml_key": "height_trim_5_1",
+      "declared_choices": ["auto", "-3", "-6", "-9", "-12"],
+      "xsd_type": "xs:string",
+      "typed_metadata": "FUN_180136220 param_1+0x9e8, dee::Types::StringType",
+      "constructor_literal": "auto",
+      "runtime_token_assignment": "UNBOUND",
+      "omitted_field_materialization": "UNBOUND",
+      "auto_selection_input_and_rule": "UNBOUND",
+      "numeric_conversion_unit_precision": "UNBOUND",
+      "scoped_value_reader": "UNBOUND",
+      "scoped_cleanup": "FUN_18013aad0 passes param_1+0x9e8 to FUN_18013adb0",
+      "cleanup_is_audio_value_consumer": false,
+      "scan_scope": "bounded literal +0x9e8 memory-operand query",
+      "first_effective_audio_or_bsi_consumer": "UNBOUND",
+      "effect": "NOT_RUN"
+    }
+  ],
+  "global_absence_claim": false,
+  "dynamic_plan": {
+    "status": "PROPOSED_NOT_RUN",
+    "arm_a": {"surround_trim_5_1": "auto", "height_trim_5_1": "auto"},
+    "arm_b": {"surround_trim_5_1": "-3", "height_trim_5_1": "auto"},
+    "only_xml_difference": "surround_trim_5_1",
+    "timeline_go": "NOT_GRANTED",
+    "preflight_repeated": false
+  },
+  "execution": {
+    "dee_or_jocforge": "NOT_RUN",
+    "new_ghidra_query": "NOT_RUN",
+    "media_pcm_payload_key_license_read": false,
+    "implementation_contact": false
+  }
+}

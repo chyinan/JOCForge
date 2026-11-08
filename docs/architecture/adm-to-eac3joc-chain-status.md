@@ -1593,3 +1593,7 @@ Wash package `DEE-ATMOSMEZZ-EXPLICIT-OFFSET-FFOA-READER-ALIGNMENT-PARTIAL-V1` (m
 ## 2026-11-09: RF DRC profile consumer partial boundary
 
 Wash package `DEE-RF-DRC-PROFILE-CONSUMER-BOUNDARY-PARTIAL-V1` (manifest SHA-256 `590ead98f379ba1b02e55590655b90d0461af99be8b710993c883f04dd3a71a6`, seal SHA-256 `5b398144542dc31583a7e0e6eedd3c20e89f17e3a0c7391907c242454d01421d`) conditionally maps six RF tokens to workflow U32 and parameter-0x0f candidates. The XML writer and runtime handler owner/generation remain `UNBOUND`. A separate core dynrng path and native compre/compr writer are not joined to that parameter. Runtime/output remain `NOT_RUN`; no DRC algorithm or gate change is claimed.
+
+## 2026-11-09: 5.1 custom trim first-consumer boundary
+
+Wash package `DEE-CUSTOM-TRIM-5-1-FIRST-CONSUMER-BOUNDARY-PARTIAL-V1` (manifest SHA-256 `59993495f71749d6402c6544ade30f687c7e4af2c1f82e2dc7ae27051d143474`, seal SHA-256 `7f703ae8bd28cbef2630cbc037cc41d5bbdf31238182b51fa09ad2949eaafe85`) records the declared choices and static StringType metadata for surround `+0x968` and height `+0x9e8`. The surround U16 candidate is not joined to the registered owner or proven as the first effective gain consumer; the height cleanup path is not an audio consumer. Omission/auto selection, token assignment, numeric units/precision, and first gain consumer remain `UNBOUND`; runtime and effects are `NOT_RUN`.

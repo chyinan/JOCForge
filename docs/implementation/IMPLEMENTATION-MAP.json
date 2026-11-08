@@ -9879,6 +9879,101 @@
           ],
           "validation_boundary": "The six RF profile tokens conditionally map to workflow U32 and DDPI_ENC_DRCPROF parameter 0x0f candidates only if the RF handler receives the token. The StringType runtime writer and XML-to-handler owner/generation remain UNBOUND. A separate core dynrng table/bitstream path exists, but its selector, table owner/mode/generation are not joined to the RF parameter. Native compre/compr writer linkage is also UNBOUND. No runtime or output was observed.",
           "delivery_scope": "REFERENCE_ONLY_NO_RF_OR_LINE_DRC_ALGORITHM_OR_GATE_ENABLEMENT"
+        },
+        {
+          "slice_id": "washed-custom-trim-first-effective-consumer-partial",
+          "mapping_status": "TRIM_ENUM_AND_STRINGTYPE_METADATA_BOUND__TOKEN_ASSIGNMENT_NUMERIC_AND_FIRST_GAIN_CONSUMER_UNBOUND",
+          "implementation_status": "WASHED_REFERENCE_ONLY__AUTO_AND_NONAUTO_EFFECTS_NOT_RUN",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "The package confirms declared XML choice sets and static StringType metadata for surround/height trim fields, plus a candidate U16 path for surround and a scoped cleanup path for height. It does not bind omitted-field materialization, auto-selection inputs/rules, token assignment, numeric conversion/units/precision, or the first effective audio/gain consumer. The candidate path is not proven to be an audio consumer; effects/runtime remain NOT_RUN.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-5-1-FIRST-CONSUMER-BOUNDARY-PARTIAL-V1/FINDINGS.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "No runtime trim callback or audio-frame timing is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_CUSTOM_5_1_TRIM_FIRST_CONSUMER_PARTIAL",
+            "package_id": "DEE-CUSTOM-TRIM-5-1-FIRST-CONSUMER-BOUNDARY-PARTIAL-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-5-1-FIRST-CONSUMER-BOUNDARY-PARTIAL-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-5-1-FIRST-CONSUMER-BOUNDARY-PARTIAL-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-5-1-FIRST-CONSUMER-BOUNDARY-PARTIAL-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-5-1-FIRST-CONSUMER-BOUNDARY-PARTIAL-V1/FINDINGS.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-5-1-FIRST-CONSUMER-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-5-1-FIRST-CONSUMER-BOUNDARY-PARTIAL-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "59993495f71749d6402c6544ade30f687c7e4af2c1f82e2dc7ae27051d143474",
+            "supplement_seal_sha256": "7f703ae8bd28cbef2630cbc037cc41d5bbdf31238182b51fa09ad2949eaafe85",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "fields": [
+              {
+                "xml_key": "surround_trim_5_1",
+                "choices": [
+                  "auto",
+                  "0",
+                  "-3",
+                  "-6",
+                  "-9"
+                ],
+                "typed_metadata": "FUN_180136220 param_1+0x968, StringType",
+                "constructor_literal": "auto",
+                "candidate_only_path": "FUN_1800b5c60 reads U16 [RDI+0x968], writes U16 [RCX+0x240]",
+                "receiver_to_registered_stringtype_owner": "UNBOUND",
+                "first_effective_audio_or_bsi_consumer": "UNBOUND"
+              },
+              {
+                "xml_key": "height_trim_5_1",
+                "choices": [
+                  "auto",
+                  "-3",
+                  "-6",
+                  "-9",
+                  "-12"
+                ],
+                "typed_metadata": "FUN_180136220 param_1+0x9e8, StringType",
+                "constructor_literal": "auto",
+                "scoped_cleanup_path": "FUN_18013aad0 passes param_1+0x9e8 to FUN_18013adb0; not an audio consumer",
+                "first_effective_audio_or_bsi_consumer": "UNBOUND"
+              }
+            ],
+            "runtime_token_assignment": "UNBOUND",
+            "omitted_field_materialization": "UNBOUND",
+            "auto_selection_input_and_rule": "UNBOUND",
+            "numeric_conversion_unit_precision": "UNBOUND",
+            "effect": "NOT_RUN",
+            "validation_boundary": "The package confirms declared XML choice sets and static StringType metadata for surround/height trim fields, plus a candidate U16 path for surround and a scoped cleanup path for height. It does not bind omitted-field materialization, auto-selection inputs/rules, token assignment, numeric conversion/units/precision, or the first effective audio/gain consumer. The candidate path is not proven to be an audio consumer; effects/runtime remain NOT_RUN."
+          },
+          "vectors": {
+            "kind": "WASHED_TRIM_INPUT_ONLY_CHOICE_ROWS_NOT_RUN",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Declared trim choices only; ten rows are not runtime or effect results."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-5-1-FIRST-CONSUMER-BOUNDARY-PARTIAL-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Omitted-field materialization and runtime auto-selection inputs/rules.",
+            "Authored token assignment, numeric conversion, units, and precision.",
+            "First effective audio/gain consumer, BSI effect, and any runtime trim experiment."
+          ],
+          "validation_boundary": "The package confirms declared XML choice sets and static StringType metadata for surround/height trim fields, plus a candidate U16 path for surround and a scoped cleanup path for height. It does not bind omitted-field materialization, auto-selection inputs/rules, token assignment, numeric conversion/units/precision, or the first effective audio/gain consumer. The candidate path is not proven to be an audio consumer; effects/runtime remain NOT_RUN.",
+          "delivery_scope": "REFERENCE_ONLY_NO_TRIM_NUMERIC_OR_AUDIO_EFFECT_ENABLEMENT"
         }
       ]
     },
@@ -71454,6 +71549,29 @@
       "not_run": [
         "Runtime XML handler, profile owner/generation, dynrng join, and native compre/compr writer.",
         "Any output effect or audio/gain conclusion."
+      ]
+    },
+    {
+      "package_id": "DEE-CUSTOM-TRIM-5-1-FIRST-CONSUMER-BOUNDARY-PARTIAL-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-CUSTOM-TRIM-5-1-FIRST-CONSUMER-BOUNDARY-PARTIAL-V1",
+      "manifest_sha256": "59993495f71749d6402c6544ade30f687c7e4af2c1f82e2dc7ae27051d143474",
+      "supplement_seal_sha256": "7f703ae8bd28cbef2630cbc037cc41d5bbdf31238182b51fa09ad2949eaafe85",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "STATIC_ENUM_AND_STRINGTYPE_METADATA_ONLY; FIRST_AUDIO_GAIN_CONSUMER_UNBOUND; RUNTIME_NOT_RUN; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Runtime token assignment, omitted-field/auto rule, numeric mapping, units, and precision.",
+        "First effective audio/gain consumer and audio/BSI effect.",
+        "Proposed minimal contrast; no DEE or JOCForge run occurred."
       ]
     }
   ]

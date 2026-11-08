@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "execution": "NOT_RUN",
+  "vectors_are_not_pass_records": true,
+  "vectors": [
+    {"field": "surround_trim_5_1", "token": "auto", "declared_choice": true, "constructor_literal": true, "runtime_assignment": "UNBOUND", "numeric_mapping": "UNBOUND"},
+    {"field": "surround_trim_5_1", "token": "0", "declared_choice": true, "constructor_literal": false, "runtime_assignment": "UNBOUND", "numeric_mapping": "UNBOUND"},
+    {"field": "surround_trim_5_1", "token": "-3", "declared_choice": true, "constructor_literal": false, "runtime_assignment": "UNBOUND", "numeric_mapping": "UNBOUND"},
+    {"field": "surround_trim_5_1", "token": "-6", "declared_choice": true, "constructor_literal": false, "runtime_assignment": "UNBOUND", "numeric_mapping": "UNBOUND"},
+    {"field": "surround_trim_5_1", "token": "-9", "declared_choice": true, "constructor_literal": false, "runtime_assignment": "UNBOUND", "numeric_mapping": "UNBOUND"},
+    {"field": "height_trim_5_1", "token": "auto", "declared_choice": true, "constructor_literal": true, "runtime_assignment": "UNBOUND", "numeric_mapping": "UNBOUND"},
+    {"field": "height_trim_5_1", "token": "-3", "declared_choice": true, "constructor_literal": false, "runtime_assignment": "UNBOUND", "numeric_mapping": "UNBOUND"},
+    {"field": "height_trim_5_1", "token": "-6", "declared_choice": true, "constructor_literal": false, "runtime_assignment": "UNBOUND", "numeric_mapping": "UNBOUND"},
+    {"field": "height_trim_5_1", "token": "-9", "declared_choice": true, "constructor_literal": false, "runtime_assignment": "UNBOUND", "numeric_mapping": "UNBOUND"},
+    {"field": "height_trim_5_1", "token": "-12", "declared_choice": true, "constructor_literal": false, "runtime_assignment": "UNBOUND", "numeric_mapping": "UNBOUND"}
+  ]
+}
