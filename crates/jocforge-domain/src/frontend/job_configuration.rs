@@ -1204,8 +1204,8 @@ pub fn parse_selected_job_configuration(
     let height_trim_5_1 = SelectedHeightTrim::from_xml_value(&height_trim_value)
         .ok_or(JobConfigurationError::UnsupportedFieldValue)?;
 
-    let start = optional_time_alias(encoder, "start", "first_frame_of_action")?;
-    let end = optional_time_alias(encoder, "end", "end_of_file")?;
+    let start = optional_authored_time_string(encoder, "start", "first_frame_of_action")?;
+    let end = optional_authored_time_string(encoder, "end", "end_of_file")?;
     let time_base = required_text(encoder, &["time_base"])?;
     if !is_admitted_time_base_token(&time_base) {
         return Err(JobConfigurationError::TimeDomain);
@@ -1561,7 +1561,7 @@ fn optional_string_default_auto(
     }
 }
 
-fn optional_time_alias(
+fn optional_authored_time_string(
     root: Node<'_, '_>,
     name: &str,
     allowed_value: &str,
@@ -1570,7 +1570,7 @@ fn optional_time_alias(
         None => Ok(String::new()),
         Some(value) if value.trim().is_empty() => Ok(String::new()),
         Some(value) if value.trim() == allowed_value => Ok(allowed_value.to_owned()),
-        Some(_) => Err(JobConfigurationError::TimeDomain),
+        Some(value) => Ok(value.to_owned()),
     }
 }
 

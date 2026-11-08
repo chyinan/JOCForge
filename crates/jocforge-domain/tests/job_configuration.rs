@@ -59,7 +59,7 @@ fn selected_job_configuration_vectors_are_hash_bound_to_the_approved_package() {
 }
 
 #[test]
-fn selected_job_configuration_normalizes_three_accepted_inputs_and_rejects_eight_cases() {
+fn selected_job_configuration_normalizes_inputs_and_rejects_unsupported_cases() {
     let vectors = fixture_json("job-configuration-vectors.json");
     let cases = vectors["config_cases"].as_array().unwrap();
     assert_eq!(cases.len(), 11);
@@ -91,6 +91,19 @@ fn selected_job_configuration_normalizes_three_accepted_inputs_and_rejects_eight
             let config = result.expect("36-channel ADM input is now admitted");
             assert_eq!(config.input_kind(), SelectedInputKind::Adm);
             assert_eq!(config.wave().channels(), 36);
+            accepted_count += 1;
+            continue;
+        }
+
+        if case["id"] == "reject_nonzero_start" {
+            // The hash-bound vector predates lexical range admission. The parser
+            // now preserves the string; the selected CLI effect gate still rejects it.
+            let config = result.expect("start text is admitted without applying a range");
+            assert_eq!(config.start(), "00:00:01.000000");
+            assert_eq!(
+                config.normalized_identity_value()["start"],
+                "00:00:01.000000"
+            );
             accepted_count += 1;
             continue;
         }
@@ -184,8 +197,8 @@ fn selected_job_configuration_normalizes_three_accepted_inputs_and_rejects_eight
             assert_eq!(expected["state_commit"], false);
         }
     }
-    assert_eq!(accepted_count, 4);
-    assert_eq!(rejected_count, 7);
+    assert_eq!(accepted_count, 5);
+    assert_eq!(rejected_count, 6);
 }
 
 #[test]
@@ -311,6 +324,37 @@ fn authored_input_offset_and_ffoa_strings_are_preserved_independently() {
     let identity = configuration.normalized_identity_value();
     assert_eq!(identity["input_offset"], "authored-offset");
     assert_eq!(identity["input_ffoa"], "authored-ffoa");
+}
+
+#[test]
+fn authored_range_endpoint_strings_are_preserved_without_range_effect() {
+    let vectors = fixture_json("job-configuration-vectors.json");
+    let case = vectors["config_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["id"] == "accepted_full_adm")
+        .unwrap();
+    let descriptor = &case["pcm_descriptor"];
+    let wave = SelectedWaveDescriptor::new(
+        descriptor["sample_rate"].as_u64().unwrap() as u32,
+        descriptor["channels"].as_u64().unwrap() as u16,
+        descriptor["pcm_bits"].as_u64().unwrap() as u16,
+    );
+    let source_samples = descriptor["source_samples"].as_u64().unwrap();
+    let base_xml = case["input_xml"].as_str().unwrap();
+    let authored_xml = base_xml
+        .replace("<start></start>", "<start>0</start>")
+        .replace("<end></end>", "<end>47</end>");
+    let configuration =
+        parse_selected_job_configuration(authored_xml.as_bytes(), wave, source_samples)
+            .expect("start and end XML strings are lexically admitted");
+
+    assert_eq!(configuration.start(), "0");
+    assert_eq!(configuration.end(), "47");
+    let identity = configuration.normalized_identity_value();
+    assert_eq!(identity["start"], "0");
+    assert_eq!(identity["end"], "47");
 }
 
 #[test]

@@ -1485,3 +1485,7 @@ The XML parser now admits the exact `file_position` and `embedded_timecode` toke
 ## 2026-11-08: Authored input offset and FFOA strings
 
 The XML parser now preserves explicit `offset` and `ffoa` strings independently; missing or empty fields retain the existing `auto` default. The selected CLI still rejects non-`auto` values before Meter, callbacks, or encoding. No time syntax, units, input owner, Reader join, or runtime effect is inferred from the host normalizer evidence.
+
+## 2026-11-08: Authored start and end range strings
+
+The parser now preserves explicit `start` and `end` XML strings while retaining the existing empty-value behavior and recognized aliases. The selected CLI still rejects non-empty endpoints before Meter, callbacks, or encoding. Wash candidate paths reach Reader `startSample`/`endSample`, but numeric sample indices, runtime owner/generation, and crop effects remain unbound or unevaluated.
