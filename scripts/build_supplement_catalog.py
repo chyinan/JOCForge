@@ -22,6 +22,8 @@ SUMMARY_NAMES = ("CONTRACT.md", "REPORT.md", "README.md", "SUMMARY.md")
 STATUS_NAMES = ("CHECK.json", "VERIFICATION.json", "WASH-REVIEW.json", "PACKAGE-SEAL.json")
 SUMMARY_LIMIT = 360
 PAYLOAD_NAME_LIMIT = 8
+# V2's prior seal is invalid; V3 is the only current speech-threshold closeout.
+EXCLUDED_SUPPLEMENT_DIR_NAMES = frozenset({"SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V2"})
 
 
 def sha256_bytes(content: bytes) -> str:
@@ -191,7 +193,7 @@ def render_catalog(records: list[dict]) -> str:
         "",
         "> Generated locator only. A catalog row is not evidence. Read the selected package, verify its manifest and payload hashes, then use only its stated scope.",
         "",
-        f"Package directories: {len(records)}. Top-level manifests: {manifest_count}.",
+        f"Cataloged package directories: {len(records)}. Top-level manifests: {manifest_count}.",
         "",
         "Search by function, parameter, status, or package name:",
         "",
@@ -226,7 +228,11 @@ def main() -> int:
 
     if not SUPPLEMENT_ROOT.is_dir():
         raise SystemExit(f"supplement directory not found: {SUPPLEMENT_ROOT}")
-    package_dirs = sorted(path for path in SUPPLEMENT_ROOT.iterdir() if path.is_dir())
+    package_dirs = sorted(
+        path
+        for path in SUPPLEMENT_ROOT.iterdir()
+        if path.is_dir() and path.name not in EXCLUDED_SUPPLEMENT_DIR_NAMES
+    )
     records = [package_record(path) for path in package_dirs]
     expected_catalog = render_catalog(records)
     if args.check:
