@@ -1,0 +1,72 @@
+{
+  "schema": "jocforge.wash_supplement_evidence.v1",
+  "source_repo": {
+    "repository": "SakuzyPeng/enable-atmos71",
+    "url": "https://github.com/SakuzyPeng/enable-atmos71",
+    "commit": "459b23b6eef609edc831642a3084e4d0af7e1e32",
+    "tree_sha": "5d42e31f159a2cfdbb1a0b8a51466eb1dd3013c1",
+    "license": "MIT (repo-authored code/docs only; no Dolby rights)",
+    "read_via": "GitHub CLI/API via agent-reach, read-only"
+  },
+  "source_files": [
+    {
+      "path": "src/main.rs",
+      "sha256": "6125178be1a5001e30cae0dc02188b0bdf124dbb001e0641ae78f585eb0801b4"
+    },
+    {
+      "path": "enable_atmos71_reference.py",
+      "sha256": "5328a6fa77e9872cd5dfc1f5a1f6d92ce088f4e0ce7f4971cc3aeedf1d9f2e12"
+    },
+    {
+      "path": "README.md",
+      "sha256": "7bd8ba9f838c147497ca891e84606da6329d92a8aa967cff3362f06d5a2762b4"
+    },
+    {
+      "path": "README.zh-CN.md",
+      "sha256": "4d1400ae8d333101a0e2eff07fafaaa1027d98efccc86788c1547838588e438a"
+    },
+    {
+      "path": "KNOWN_HASHES.md",
+      "sha256": "5a890313c2370d2b99dfa756e282805a34a785fec0573da1c724327060750a18"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "e0ee181a62462be2d38564068d9f1a950a7d39e440c09672ce0b0eaca7e9591b"
+    }
+  ],
+  "patcher_code_facts": {
+    "summary": "version-locked binary patch utility; it changes DEE/DME encoder binary bytes only and validates the patched binary's full SHA-256",
+    "dee_profile": "DEE 5.2.1-5994839 profile recognizes internal modes 21 and 28",
+    "mode21_claim": "two internal layout selector immediates are changed from 19 to 21; README labels this flat 7.1 and claims dependent chanmap 0x1A00",
+    "mode28_claim": "DEE-only mode 28 also changes a whitelist entry; README labels this 5.1.2 Top Side and chanmap 0x1804",
+    "patcher_parses_or_writes_ec3": false,
+    "patcher_parses_or_validates_au0": false,
+    "patcher_modifies_audio_payload": false
+  },
+  "validation_coverage": {
+    "rust_unit_tests": "64-byte synthetic binary fixtures; expected hashes are computed from the synthetic fixtures",
+    "real_dee_binary_patch_tests": "NOT_IN_REPOSITORY",
+    "real_encoder_output_fixture": "NOT_IN_REPOSITORY",
+    "au0_integrity_or_parser_test": "NOT_IN_REPOSITORY",
+    "ci": "format/clippy/tests/release build; no AU0 or real encoded-output test"
+  },
+  "claim_disposition": {
+    "readme_real_encode_claim": "README states mode 21 produced flat 7.1 and gives chanmap 0x1A00",
+    "repository_artifact_support": "No encoded output file or run receipt is committed in the inspected tree; claim is not independently reproducible from repository artifacts",
+    "inference": "The patch may select a retained native 7.1 branch in the exact supported binary, but this does not prove AU0 validity or repair AU0 corruption"
+  },
+  "user_reported_au0_failure": {
+    "status": "USER_REPORTED_FAILURE_FILE_ID_UNBOUND",
+    "user_description": "OpenJOC detects AU0 damaged in a generated 7.1 stream",
+    "output_path_or_sha256": "NOT_PROVIDED",
+    "root_cause": "UNBOUND"
+  },
+  "implementation_readiness": false,
+  "exclusions": {
+    "repository_source_or_patch_code_included": false,
+    "dee_or_dme_binary_included": false,
+    "ec3_or_pcm_payload_included": false,
+    "key_or_license_included": false,
+    "patcher_or_encoder_executed": false
+  }
+}

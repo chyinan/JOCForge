@@ -7366,6 +7366,76 @@
           ],
           "validation_boundary": "The input-side /input/audio/{adm,atmos_mezz}/timecode_frame_rate field admits the exact ten tokens listed by the authored job_config field choices and stores the authored string in SelectedJobConfiguration and normalized identity. It remains separate from the encoder timecode field. No numeric conversion, 29.97df canonicalization, input-owner join, or runtime timecode effect is implemented. This slice does not rewrite the fixed timecode value used by the separate primary-metadata job projection.",
           "delivery_scope": "LOCAL_XML_ADMISSION_ONLY_NO_NATIVE_TIMECODE_EFFECT"
+        },
+        {
+          "slice_id": "washed-public-atmos71-patcher-reference-boundary",
+          "mapping_status": "PUBLIC_PATCHER_MODE21_CLAIM_BOUND__REAL_OUTPUT_AND_AU0_VALIDATION_ABSENT",
+          "implementation_status": "EXTERNAL_REFERENCE_ONLY__NO_LOCAL_7_1_OR_AU0_SUPPORT",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "External reference only. The public repository at commit 459b23b6eef609edc831642a3084e4d0af7e1e32 contains a version-locked binary patcher that verifies input hashes and byte patterns, changes internal layout-selector immediates, and verifies the resulting binary hash. Its README claims DEE 5.2.1 mode 21 selects a flat 7.1 path. The package does not establish a real encode, AU0 validation, or a JOCForge implementation; it does not explain or repair the reported AU0 failure.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/PUBLIC-ENABLE-ATMOS71-BINARY-PATCHER-AU0-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The patcher edits binary layout-selector fields; it does not process audio clocks or encoded AU time.",
+              "No real mode-21 output, AU0 parse, or AU0 validation is present."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_EXTERNAL_PUBLIC_PATCHER_REFERENCE_ONLY",
+            "package_id": "PUBLIC-ENABLE-ATMOS71-BINARY-PATCHER-AU0-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PUBLIC-ENABLE-ATMOS71-BINARY-PATCHER-AU0-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PUBLIC-ENABLE-ATMOS71-BINARY-PATCHER-AU0-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PUBLIC-ENABLE-ATMOS71-BINARY-PATCHER-AU0-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PUBLIC-ENABLE-ATMOS71-BINARY-PATCHER-AU0-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PUBLIC-ENABLE-ATMOS71-BINARY-PATCHER-AU0-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PUBLIC-ENABLE-ATMOS71-BINARY-PATCHER-AU0-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PUBLIC-ENABLE-ATMOS71-BINARY-PATCHER-AU0-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "d3cea0a54f2b9c93d86b2fffb817e0a725f18709ff64b7bf4f225537e33826b5",
+            "supplement_seal_sha256": "0b1783cb341e20bb40ef1164738bcb0dde4fc0de88e8b685c963eb10914cdc3b",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "public_repository_commit": "459b23b6eef609edc831642a3084e4d0af7e1e32",
+              "patcher": "version-locked binary patch; checks input hash and patterns; verifies patched output hash",
+              "mode_claim": "README claims DEE 5.2.1 mode 21 selects flat 7.1; not validated by an output receipt",
+              "tests": "64-byte synthetic patch buffers",
+              "au0_parser_or_validator": "ABSENT",
+              "real_encode_receipt": "ABSENT",
+              "failure_identity": "USER_REPORTED_FAILURE_FILE_ID_UNBOUND"
+            },
+            "validation_boundary": "External reference only. The public repository at commit 459b23b6eef609edc831642a3084e4d0af7e1e32 contains a version-locked binary patcher that verifies input hashes and byte patterns, changes internal layout-selector immediates, and verifies the resulting binary hash. Its README claims DEE 5.2.1 mode 21 selects a flat 7.1 path. The package does not establish a real encode, AU0 validation, or a JOCForge implementation; it does not explain or repair the reported AU0 failure."
+          },
+          "vectors": {
+            "kind": "EXTERNAL_PATCHER_SYNTHETIC_TESTS_NOT_PRODUCT_AUDIO_VECTORS",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Public repository tests use 64-byte synthetic patch buffers; no EC-3/AU0 output is supplied."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PUBLIC-ENABLE-ATMOS71-BINARY-PATCHER-AU0-BOUNDARY-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "The public binary patcher and any patched DEE/DME binary.",
+            "A real DEE encode, output sample, or run receipt for mode 21 / flat 7.1.",
+            "AU0 or EC-3 parsing, validation, modification, or repair.",
+            "The user-reported damaged-output path/hash; failure identity remains USER_REPORTED_FAILURE_FILE_ID_UNBOUND."
+          ],
+          "validation_boundary": "External reference only. The public repository at commit 459b23b6eef609edc831642a3084e4d0af7e1e32 contains a version-locked binary patcher that verifies input hashes and byte patterns, changes internal layout-selector immediates, and verifies the resulting binary hash. Its README claims DEE 5.2.1 mode 21 selects a flat 7.1 path. The package does not establish a real encode, AU0 validation, or a JOCForge implementation; it does not explain or repair the reported AU0 failure.",
+          "delivery_scope": "EXTERNAL_REFERENCE_ONLY_NO_LOCAL_PATCHER_OR_AU0_IMPLEMENTATION"
         }
       ]
     },
@@ -68089,6 +68159,28 @@
         "Direct code caller and selected register owner/generation.",
         "XML -3 assignment to the StringType or U16 candidate.",
         "Numeric mapping, units, BSI serialization, and audio effect."
+      ]
+    },
+    {
+      "package_id": "PUBLIC-ENABLE-ATMOS71-BINARY-PATCHER-AU0-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/PUBLIC-ENABLE-ATMOS71-BINARY-PATCHER-AU0-BOUNDARY-V1",
+      "manifest_sha256": "d3cea0a54f2b9c93d86b2fffb817e0a725f18709ff64b7bf4f225537e33826b5",
+      "supplement_seal_sha256": "0b1783cb341e20bb40ef1164738bcb0dde4fc0de88e8b685c963eb10914cdc3b",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "EXTERNAL_REFERENCE_ONLY; MODE21_PATCHER_CLAIM_NOT_REAL_OUTPUT_VALIDATION; AU0_VALIDATION_ABSENT; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "The public binary patcher and any patched DEE/DME binary.",
+        "A real DEE encode, output sample, or run receipt for mode 21 / flat 7.1.",
+        "AU0 or EC-3 parsing, validation, modification, or repair.",
+        "The user-reported damaged-output path/hash; failure identity remains USER_REPORTED_FAILURE_FILE_ID_UNBOUND."
       ]
     }
   ]

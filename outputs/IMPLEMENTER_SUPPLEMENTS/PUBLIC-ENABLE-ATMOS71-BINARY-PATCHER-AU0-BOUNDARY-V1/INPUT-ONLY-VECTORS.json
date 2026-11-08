@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge.input_only_vectors.v1",
+  "vectors": [
+    {
+      "id": "PUBLIC-ATMOS71-MODE21-REPO-CLAIM-01",
+      "input_only": true,
+      "input": {
+        "repository": "SakuzyPeng/enable-atmos71",
+        "commit": "459b23b6eef609edc831642a3084e4d0af7e1e32",
+        "binary_profile": "DEE 5.2.1-5994839",
+        "claimed_internal_mode": 21
+      },
+      "expected_observation": {
+        "patcher_action": "binary selector patch only",
+        "au0_validation": "NOT_IN_REPOSITORY",
+        "actual_output": "NOT_PROVIDED"
+      },
+      "expected_audio_output": null,
+      "runtime_status": "NOT_RUN"
+    }
+  ]
+}

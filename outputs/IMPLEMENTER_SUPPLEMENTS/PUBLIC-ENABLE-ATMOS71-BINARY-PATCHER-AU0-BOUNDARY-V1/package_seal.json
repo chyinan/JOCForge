@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "PUBLIC-ENABLE-ATMOS71-BINARY-PATCHER-AU0-BOUNDARY-V1",
+  "manifest_sha256": "d3cea0a54f2b9c93d86b2fffb817e0a725f18709ff64b7bf4f225537e33826b5",
+  "payload_file_count": 5,
+  "payload_hash_audit": "PASS_5_OF_5",
+  "checker_status": "PASS_NORMAL_AND_PYTHON_O",
+  "status": "MODE21_PATCHER_CLAIM_BOUND_TO_PUBLIC_SOURCE; AU0_OUTPUT_VALIDATION_ABSENT; USER_FAILURE_FILE_ID_UNBOUND; IMPLEMENTATION_READY=NO"
+}

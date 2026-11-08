@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash_supplement_manifest.v1",
+  "package_id": "PUBLIC-ENABLE-ATMOS71-BINARY-PATCHER-AU0-BOUNDARY-V1",
+  "recipient_role": "implementation-evidence-supplement",
+  "status": "MODE21_PATCHER_CLAIM_BOUND_TO_PUBLIC_SOURCE; AU0_OUTPUT_VALIDATION_ABSENT; USER_FAILURE_FILE_ID_UNBOUND; IMPLEMENTATION_READY=NO",
+  "contains_private_key_or_license": false,
+  "contains_pcm_or_media": false,
+  "contains_native_source_or_decompilation": false,
+  "payloads": [
+    {
+      "file": "REPORT.md",
+      "bytes": 1108,
+      "sha256": "808e862b983a162a878ea17f4a1350e2e989f0a8fe79987880e4bdd9ffa54049"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3312,
+      "sha256": "0e0e9704fd00f12b22a4a0cf7a5bfc1cedb63ccb8c147b28679a891044bdf516"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 951,
+      "sha256": "df702e25d85c89defd5e7f8db1eccdf217490f0555c2c9dd3af09a57b15585f5"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 635,
+      "sha256": "1660c05238c177451e69f212e1445b89f4beb45b6bfc0958faf44329de806ef2"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 1713,
+      "sha256": "30b4afb914f95948c3c502466c14930eb2928613e637ceba5c2838ea0d85a6a4"
+    }
+  ]
+}

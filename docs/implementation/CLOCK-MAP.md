@@ -180,6 +180,7 @@
 | F01E/washed-time-base-host-template-first-break-boundary | — | `Host literal xref reaches StageRunner/DocModel template construction.`<br>`The property-list helper is only a candidate.`<br>`XML value to selected DDP Priv+0x550 writer is UNBOUND; current value is NOT_CAPTURED.` |
 | F01E/washed-surround-trim-candidate-register-boundary | — | `The bounded body reads U16 [RDI+0x968] and stores a U16 through *(RDI+0x4330)+0x240.`<br>`No direct code caller or code/data reference to the untyped slot is recorded in the bounded xref model.`<br>`The result is not joined to the StringType, XML -3 assignment, units, BSI, or audio effect.` |
 | F01E/authored-input-timecode-token-admission | — | `The parser stores the authored token without converting it to frames, samples, or another clock domain.`<br>`Input and encoder timecode tokens remain separate normalized identity fields.`<br>`The input setter/reader owner and any runtime conversion remain UNBOUND/NOT_RUN.` |
+| F01E/washed-public-atmos71-patcher-reference-boundary | — | `The patcher edits binary layout-selector fields; it does not process audio clocks or encoded AU time.`<br>`No real mode-21 output, AU0 parse, or AU0 validation is present.` |
 | F03G/target-slot-install | — | `Pure per-callback value transition; no clock or committed state is owned.` |
 | F03C/candidate-selector | — | `Each selector call initializes cold scratch; no callback/source/AU counter or cross-call selector state is owned.` |
 | F03C/selector-score-choice | — | `No state or clock is owned.` |

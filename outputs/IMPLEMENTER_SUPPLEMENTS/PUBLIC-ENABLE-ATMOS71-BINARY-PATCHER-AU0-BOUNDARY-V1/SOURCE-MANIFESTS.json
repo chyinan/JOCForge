@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.wash_source_manifest_bindings.v1",
+  "repository": {
+    "url": "https://github.com/SakuzyPeng/enable-atmos71",
+    "commit": "459b23b6eef609edc831642a3084e4d0af7e1e32",
+    "tree_sha": "5d42e31f159a2cfdbb1a0b8a51466eb1dd3013c1",
+    "source_sha256s": {
+      "src/main.rs": "6125178be1a5001e30cae0dc02188b0bdf124dbb001e0641ae78f585eb0801b4",
+      "enable_atmos71_reference.py": "5328a6fa77e9872cd5dfc1f5a1f6d92ce088f4e0ce7f4971cc3aeedf1d9f2e12",
+      "README.md": "7bd8ba9f838c147497ca891e84606da6329d92a8aa967cff3362f06d5a2762b4",
+      "README.zh-CN.md": "4d1400ae8d333101a0e2eff07fafaaa1027d98efccc86788c1547838588e438a",
+      "KNOWN_HASHES.md": "5a890313c2370d2b99dfa756e282805a34a785fec0573da1c724327060750a18",
+      ".github/workflows/ci.yml": "e0ee181a62462be2d38564068d9f1a950a7d39e440c09672ce0b0eaca7e9591b"
+    }
+  },
+  "review_mode": "GitHub CLI/API read-only; no clone, build, test, patch, or binary access"
+}
