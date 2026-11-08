@@ -1,0 +1,49 @@
+{
+  "schema": "wash.ddp_silence_minimal_contrast_experiment.v1",
+  "status": "PROPOSED_NOT_RUN; THIS_TASK_DOES_NOT_AUTHORIZE_DEE_LAUNCH",
+  "why_static_is_not_enough": [
+    "field counts are carried as separate metadata but no actual sample-consumer row field read was observed",
+    "prefix/source/suffix order remains an implementation inference",
+    "native output-length/PTS delta is not captured"
+  ],
+  "minimal_arms": [
+    {
+      "arm": "baseline",
+      "prepend": "0.0",
+      "append": "0.0",
+      "source": "reuse existing matched 36-channel zero-control config; do not rerun for this package"
+    },
+    {
+      "arm": "prepend_only",
+      "prepend": "0.00390625",
+      "append": "0.0",
+      "expected_parser_count_samples": 187
+    },
+    {
+      "arm": "append_only",
+      "prepend": "0.0",
+      "append": "0.00390625",
+      "expected_parser_count_samples": 187
+    }
+  ],
+  "fixed_context": [
+    "use same input identity and all other fields",
+    "start/end/time_base/offset/ffoa unchanged",
+    "source_sample_rate metadata 48000 Hz for existing First Love zero-control profile"
+  ],
+  "observation_budget": [
+    "only non-audio per-source sample counters/range metadata if available",
+    "container-level duration metadata only; do not inspect compressed payload",
+    "never persist or read PCM"
+  ],
+  "decision_rule": "A/B can verify aggregate count/length only if that counter is exposed; exact prefix/suffix placement requires a field-observable first sample consumer. Do not declare placement verified from output byte size alone.",
+  "preflight_required_if_later_authorized": [
+    "reread docs/user-command-timeline.md",
+    "confirm no active dee.exe, muxer, or JOCForge attempt",
+    "rehash authorized input identities",
+    "reserve unique empty output and temp paths",
+    "record UTC and Asia/Shanghai timestamps before GO",
+    "never stop or replace an active attempt"
+  ],
+  "38_channel_followup": "same matched contrast on a hash-bound 38-channel ADM only after its source identity is available; current package has no such input identity"
+}

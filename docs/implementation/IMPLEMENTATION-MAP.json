@@ -7742,8 +7742,8 @@
         },
         {
           "slice_id": "washed-speech-threshold-ab-run-result-boundary",
-          "mapping_status": "TWO_ARM_EXIT10_NO_CAPTURE_OR_OUTPUT__THRESHOLD_EFFECT_UNBOUND",
-          "implementation_status": "FAILED_UNINFORMATIVE_AB__NO_THRESHOLD_EFFECT_CONCLUSION",
+          "mapping_status": "TWO_ARM_EXIT10_UNINFORMATIVE__RECEIPT_HASHES_BOUND__EFFECT_UNBOUND",
+          "implementation_status": "RECEIPT_LEVEL_PROVENANCE_BOUND__NO_THRESHOLD_EFFECT_CONCLUSION",
           "implementation_requirement": false,
           "owner": "UNBOUND",
           "scope": "Wash-only run-result boundary for two authorized N36 arms. The arms differ only in speech_threshold (0 versus 100); both naturally exited with code 10, produced zero capture events, and created no EC-3 output. Exit cause and threshold effect are unbound/not observed. This is an uninformative failed A/B result, not a pass, equivalence result, or threshold-effect claim.",
@@ -7752,7 +7752,8 @@
           ],
           "spec_files": [
             "docs/implementation/job-configuration.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/speech_threshold_ab_run_result_wash_v1/REPORT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/speech_threshold_ab_run_result_wash_v1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1/FINDINGS.md"
           ],
           "implementation_files": [],
           "test_modules": [],
@@ -7773,7 +7774,12 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/speech_threshold_ab_run_result_wash_v1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/speech_threshold_ab_run_result_wash_v1/SOURCE-MANIFESTS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/speech_threshold_ab_run_result_wash_v1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/speech_threshold_ab_run_result_wash_v1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/speech_threshold_ab_run_result_wash_v1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1/FINDINGS.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1/CHECK.py"
             ],
             "supplement_manifest_sha256": "9fd44544f2cebe4d680cc192d12c53f356205645fb9b1872bdb9acfa63172f8e",
             "supplement_seal_sha256": "18070d1b9521a8db05a92dfe2ab57fa87183cc121359e821853c556689c65d9a",
@@ -7800,27 +7806,72 @@
               "raw_module_base_value_in_package": false,
               "user_reported_failure_identity": "USER_REPORTED_FAILURE_FILE_ID_UNBOUND"
             },
-            "validation_boundary": "Wash-only run-result boundary for two authorized N36 arms. The arms differ only in speech_threshold (0 versus 100); both naturally exited with code 10, produced zero capture events, and created no EC-3 output. Exit cause and threshold effect are unbound/not observed. This is an uninformative failed A/B result, not a pass, equivalence result, or threshold-effect claim."
+            "validation_boundary": "Wash-only run-result boundary for two authorized N36 arms. The arms differ only in speech_threshold (0 versus 100); both naturally exited with code 10, produced zero capture events, and created no EC-3 output. Exit cause and threshold effect are unbound/not observed. This is an uninformative failed A/B result, not a pass, equivalence result, or threshold-effect claim.",
+            "receipt_level_closeout_addendum": {
+              "package_id": "SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1",
+              "manifest_sha256": "f6d83e5790c9e4e05e423976d3b5d824524e35eb5d44fe5b004f821b047fcdf1",
+              "package_seal_sha256": "e12adafaaeb4fd89f77115df4fe6fb2c2901bde3180a230293b72eaac1913a5e",
+              "local_manifest_seal_payload_integrity": "PASS_MANIFEST_SEAL_AND_4_OF_4_SEALED_FILES",
+              "wash_checker_result": "PASS_NORMAL_AND_PYTHON_O_REPORTED; CHECK_NOT_RUN_HERE_BECAUSE_IT_READS_RESEARCH_RECEIPTS",
+              "source_run_summary": {
+                "package_id": "speech_threshold_ab_run_summary_wash_v1",
+                "manifest_sha256": "f5331757e976aabfe0925e8cd65a3e615d069d7d083f29725a6cb3c3c1bbc8a2",
+                "package_seal_sha256": "f1e0690045aebea3b56c2a8265cfe62dced660c3d9df1d57bab6d4a6cd289367",
+                "run_summary_sha256": "40de0bdfd946a48a02099179922e04b5013fa51d3bd3d39742841b9c48b1dcb9"
+              },
+              "preflight_parent": {
+                "package_id": "speech_threshold_ab_prelaunch_wash_v1",
+                "manifest_sha256": "afaa47cc806414bff4f0756a04eee401f1db6b19435569940a02d51e2d3cee7d",
+                "package_seal_sha256": "f27f438732fe0fb2fec31b210976663d36f429079cf57f366809cfa04da8660e"
+              },
+              "arms": [
+                {
+                  "threshold": 0,
+                  "exit_code": 10,
+                  "natural_exit": true,
+                  "observer_event_count": 0,
+                  "output_file_present": false,
+                  "run_receipt_sha256": "e5d4fdcf969d1f10521bcdfee587056b5ee1ffe86940093acf1c454dfde8a04d",
+                  "status_receipt_sha256": "e5d4fdcf969d1f10521bcdfee587056b5ee1ffe86940093acf1c454dfde8a04d"
+                },
+                {
+                  "threshold": 100,
+                  "exit_code": 10,
+                  "natural_exit": true,
+                  "observer_event_count": 0,
+                  "output_file_present": false,
+                  "run_receipt_sha256": "abff9102b7b7c5ce2a737c49688b7803121f54d1a93c1d7f9465ad3ec3ad3ae5",
+                  "status_receipt_sha256": "abff9102b7b7c5ce2a737c49688b7803121f54d1a93c1d7f9465ad3ec3ad3ae5"
+                }
+              ],
+              "raw_module_base_value": "OMITTED",
+              "threshold_effect": "UNBOUND_NOT_CAPTURED",
+              "owner_generation": "UNBOUND_NOT_CAPTURED",
+              "runtime_scalar": "NOT_CAPTURED",
+              "exit_cause": "UNBOUND",
+              "new_run": "NONE"
+            }
           },
           "vectors": {
             "kind": "WASHED_RUN_RESULT_WITH_INPUT_ONLY_RECIPE",
             "authoritative_vectors": [],
             "case_pointers": [
-              "Two arms; no expected audio output or scalar result is included."
+              "Two arms; no expected audio output or scalar result is included.",
+              "SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1"
             ],
             "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/speech_threshold_ab_run_result_wash_v1/INPUT-ONLY-VECTORS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/speech_threshold_ab_run_result_wash_v1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1/INPUT-ONLY-VECTORS.json"
             ],
             "expected_outputs_included": false,
             "execution_status": "WASH_RUN_RESULT_ONLY_NOT_A_PRODUCT_VECTOR"
           },
           "error_outcomes": [],
           "not_run": [
-            "Cause of natural exit code 10 for either arm.",
-            "Any threshold-dependent measurement or audio effect.",
-            "Any conclusion that thresholds 0 and 100 are equivalent.",
-            "Retries or new runs; this package does not authorize another attempt.",
-            "Failure artifact identity for the separate user-reported damaged output."
+            "Threshold effect, selected owner/generation, runtime scalar, and exit cause remain unbound or not captured.",
+            "No retry or additional run is authorized by this result.",
+            "The implementation-side checker was not run because it reads research-side receipt files; Wash reports both checker modes passed."
           ],
           "validation_boundary": "Wash-only run-result boundary for two authorized N36 arms. The arms differ only in speech_threshold (0 versus 100); both naturally exited with code 10, produced zero capture events, and created no EC-3 output. Exit cause and threshold effect are unbound/not observed. This is an uninformative failed A/B result, not a pass, equivalence result, or threshold-effect claim.",
           "delivery_scope": "WASHED_FAILURE_RESULT_ONLY_NO_THRESHOLD_EFFECT_OR_EQUIVALENCE_CLAIM"
@@ -8425,6 +8476,81 @@
           ],
           "validation_boundary": "The parser accepts one ec3, mp4, or dash output container and preserves optional output_format, override_frame_rate, and plugin/base strings. The selected CLI allows only ec3 and rejects mp4/dash before resolving input/output paths. No muxer, plugin, writer, or container output is created. Wash candidate schemas and setter paths do not establish installed native output support.",
           "delivery_scope": "LOCAL_OUTPUT_METADATA_ADMISSION_ONLY_NO_MP4_DASH_MUXING"
+        },
+        {
+          "slice_id": "washed-ddp-sample-range-silence-rule-matrix",
+          "mapping_status": "SILENCE_SAMPLE_CONVERSION_AND_RANGE_FIELD_UNITS_STATIC_BOUND__ACTUAL_EFFECT_UNBOUND",
+          "implementation_status": "WASHED_REFERENCE_ONLY__NONZERO_SILENCE_DISABLED__VECTORS_NOT_RUN",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Wash reference-only boundary: decimal seconds and nonnegative integer frame tokens map to sample counts with truncation toward zero; prepend and append remain separate metadata counts copied to row +0x20 and +0x38. Reader startSample/endSample are separate sample indices and end-start is a sample count. Actual silence sample consumer, prepend/source/append effect, endpoint execution, PCM/PTS/length effect, and 38-channel source identity remain UNBOUND. The contrast vectors are PROPOSED_NOT_RUN; nonzero CLI values remain rejected.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-SILENCE-RANGE-BOUNDARY-V1/FINDINGS.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Static sample-count conversion uses the source sample rate and truncates toward zero.",
+              "No runtime callback clock, sample insertion, endpoint conversion, or output timing is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_SAMPLE_RANGE_AND_SILENCE_REFERENCE_ONLY",
+            "package_id": "DEE-ATMOS-SILENCE-RANGE-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-SILENCE-RANGE-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-SILENCE-RANGE-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-SILENCE-RANGE-BOUNDARY-V1/FINDINGS.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-SILENCE-RANGE-BOUNDARY-V1/SUPPLEMENT-SCOPE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-SILENCE-RANGE-BOUNDARY-V1/RULE-MATRIX.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-SILENCE-RANGE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-SILENCE-RANGE-BOUNDARY-V1/MINIMAL-CONTRAST-EXPERIMENT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-SILENCE-RANGE-BOUNDARY-V1/SOURCE-PACKAGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-SILENCE-RANGE-BOUNDARY-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "4c20f71b8f16bc69c88c0a10db5282987348b1f6b8ac75f9f923a245a3fe8604",
+            "supplement_seal_sha256": "ddb4038fd348e2a7f70b768886a349017db127f4010a0f7099395273c0bd0821",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "decimal_seconds_conversion": "TRUNCATE_TOWARD_ZERO_TO_SAMPLE_COUNT",
+              "integer_frame_tokens": "LOWERCASE_F_SUFFIX_REQUIRES_NUMERIC_FRAME_RATE",
+              "prepend_row_offset": "0x20",
+              "append_row_offset": "0x38",
+              "reader_range": "END_EXCLUSIVE_SAMPLE_INDICES; LENGTH=end-start",
+              "actual_sample_consumer": "UNBOUND",
+              "placement_and_timing_effect": "UNBOUND",
+              "38_channel_source_identity": "UNBOUND"
+            },
+            "validation_boundary": "Wash reference-only boundary: decimal seconds and nonnegative integer frame tokens map to sample counts with truncation toward zero; prepend and append remain separate metadata counts copied to row +0x20 and +0x38. Reader startSample/endSample are separate sample indices and end-start is a sample count. Actual silence sample consumer, prepend/source/append effect, endpoint execution, PCM/PTS/length effect, and 38-channel source identity remain UNBOUND. The contrast vectors are PROPOSED_NOT_RUN; nonzero CLI values remain rejected."
+          },
+          "vectors": {
+            "kind": "WASHED_MINIMAL_SILENCE_CONTRAST_PROPOSED_NOT_RUN",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Proposed prepend-only and append-only contrasts; both remain NOT_RUN."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-SILENCE-RANGE-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-SILENCE-RANGE-BOUNDARY-V1/MINIMAL-CONTRAST-EXPERIMENT.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "PROPOSED_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "First actual sample consumer and PCM insertion behavior.",
+            "Prepend/source/append ordering and output-length or PTS effect.",
+            "Execution mapping from XML range endpoints to sample indices.",
+            "38-channel source identity and proposed contrast vectors."
+          ],
+          "validation_boundary": "Wash reference-only boundary: decimal seconds and nonnegative integer frame tokens map to sample counts with truncation toward zero; prepend and append remain separate metadata counts copied to row +0x20 and +0x38. Reader startSample/endSample are separate sample indices and end-start is a sample count. Actual silence sample consumer, prepend/source/append effect, endpoint execution, PCM/PTS/length effect, and 38-channel source identity remain UNBOUND. The contrast vectors are PROPOSED_NOT_RUN; nonzero CLI values remain rejected.",
+          "delivery_scope": "EXTERNAL_REFERENCE_ONLY_NO_NONZERO_SILENCE_ENABLEMENT"
         }
       ]
     },
@@ -50600,6 +50726,96 @@
           ],
           "validation_boundary": "Slot-2 reset writes writer parent+0x248 and does not read, initialize or store child+0x38. Equal handle-field offsets do not establish the same runtime handle instance/generation as slot 4; child constructor source remains UNBOUND.",
           "delivery_scope": "WASHED_STATIC_EVIDENCE_ONLY_NO_PRODUCT_CHANGE"
+        },
+        {
+          "slice_id": "washed-f13c-downmix-mode-level-boundary",
+          "mapping_status": "SELECTED_38CH_LORO_MINUS3_SOURCE_PATH_BOUND__DEE_EFFECT_AND_VARIANTS_UNBOUND",
+          "implementation_status": "WASHED_REFERENCE_ONLY_SELECTED_DOWNMIX_MAPPING__NO_VARIANT_ENABLEMENT",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Reference-only Wash boundary for the selected JOCForge 38-channel source path. It reports preferred_downmix_mode=loro and four -3 mix levels mapping to dmixmod=2 and level codes [4,4,4,4]. It does not establish a DEE-native effect or map any other mode or mix-level combination; all eight experiment vectors remain NOT_RUN.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-DOWNMIX-MODE-LEVEL-BOUNDARY-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The evidence is a static selected-source-path mapping; no audio clock or runtime transition is established.",
+              "No DEE-native effect or output observation is included."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_SELECTED_DOWNMIX_MODE_LEVEL_REFERENCE_ONLY",
+            "package_id": "F13C-DOWNMIX-MODE-LEVEL-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-DOWNMIX-MODE-LEVEL-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-DOWNMIX-MODE-LEVEL-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-DOWNMIX-MODE-LEVEL-BOUNDARY-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-DOWNMIX-MODE-LEVEL-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-DOWNMIX-MODE-LEVEL-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-DOWNMIX-MODE-LEVEL-BOUNDARY-V1/SUPPLEMENT-SCOPE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-DOWNMIX-MODE-LEVEL-BOUNDARY-V1/VALID-VALUE-MATRIX.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-DOWNMIX-MODE-LEVEL-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-DOWNMIX-MODE-LEVEL-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-DOWNMIX-MODE-LEVEL-BOUNDARY-V1/CONSUMER-BOUNDARIES.json"
+            ],
+            "supplement_manifest_sha256": "6b59ccdefa8651eb11a9786a38114fc1ac27789b2ee053c261721414a5499f1b",
+            "supplement_seal_sha256": "4b8b13ca8edc784109432a60d5ab88d0fd19fde6915ca6cbd840880e94531210",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "static_evidence": {
+              "selected_profile": "JOCForge 38-channel source path",
+              "selected_tokens": {
+                "preferred_downmix_mode": "loro",
+                "mix_levels": [
+                  "-3",
+                  "-3",
+                  "-3",
+                  "-3"
+                ]
+              },
+              "mapped_fields": {
+                "dmixmod": 2,
+                "level_codes": [
+                  4,
+                  4,
+                  4,
+                  4
+                ]
+              },
+              "dee_native_effect": "UNBOUND",
+              "other_mode_level_values": "UNBOUND",
+              "experiment_vectors": "NOT_RUN",
+              "runtime_output": "NOT_OBSERVED"
+            },
+            "validation_boundary": "Reference-only Wash boundary for the selected JOCForge 38-channel source path. It reports preferred_downmix_mode=loro and four -3 mix levels mapping to dmixmod=2 and level codes [4,4,4,4]. It does not establish a DEE-native effect or map any other mode or mix-level combination; all eight experiment vectors remain NOT_RUN."
+          },
+          "vectors": {
+            "kind": "WASHED_MINIMUM_MODE_LEVEL_MATRIX_NOT_RUN",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Wash package records eight minimum-matrix vectors as NOT_RUN."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-DOWNMIX-MODE-LEVEL-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-DOWNMIX-MODE-LEVEL-BOUNDARY-V1/VALID-VALUE-MATRIX.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "DEE-native downmix effect and DME-to-XML writer join.",
+            "Any mode other than the selected loro source path or any alternate mix-level value.",
+            "The package minimum matrix vectors; status remains NOT_RUN.",
+            "Runtime output, BSI comparison, and audio effect."
+          ],
+          "validation_boundary": "Reference-only Wash boundary for the selected JOCForge 38-channel source path. It reports preferred_downmix_mode=loro and four -3 mix levels mapping to dmixmod=2 and level codes [4,4,4,4]. It does not establish a DEE-native effect or map any other mode or mix-level combination; all eight experiment vectors remain NOT_RUN.",
+          "delivery_scope": "EXTERNAL_REFERENCE_ONLY_NO_MODE_OR_LEVEL_EXPANSION"
         }
       ]
     },
@@ -69235,6 +69451,78 @@
         "Any conclusion that thresholds 0 and 100 are equivalent.",
         "Retries or new runs; this package does not authorize another attempt.",
         "Failure artifact identity for the separate user-reported damaged output."
+      ]
+    },
+    {
+      "package_id": "SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1",
+      "manifest_sha256": "f6d83e5790c9e4e05e423976d3b5d824524e35eb5d44fe5b004f821b047fcdf1",
+      "supplement_seal_sha256": "e12adafaaeb4fd89f77115df4fe6fb2c2901bde3180a230293b72eaac1913a5e",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS_4_OF_4",
+        "source_receipt_checks": "WASH_REPORTED_PASS_NOT_RUN_HERE"
+      },
+      "package_seal_checker_status": "WASH_REPORTED_PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "RECEIPT_HASH_BINDING_ADDED; TWO_ARM_RESULT_UNINFORMATIVE; EFFECT_UNBOUND_NOT_CAPTURED; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Threshold-dependent measurement or audio effect; both arms are uninformative.",
+        "Exit cause, selected runtime owner/generation, and scalar result.",
+        "Raw source/preflight/run receipt payloads in the implementation workspace.",
+        "Any retry or new run; this package does not authorize another attempt."
+      ]
+    },
+    {
+      "package_id": "F13C-DOWNMIX-MODE-LEVEL-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-DOWNMIX-MODE-LEVEL-BOUNDARY-V1",
+      "manifest_sha256": "6b59ccdefa8651eb11a9786a38114fc1ac27789b2ee053c261721414a5499f1b",
+      "supplement_seal_sha256": "4b8b13ca8edc784109432a60d5ab88d0fd19fde6915ca6cbd840880e94531210",
+      "functional_ids": [
+        "F01E",
+        "F13C"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS",
+        "source_payloads": "PASS_7_OF_7",
+        "external_path_check": "PASS_NONE_DECLARED"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "SELECTED_JOCFORGE_38CH_LORO_MINUS3_SOURCE_PATH_BOUND; OTHER_MODES_LEVELS_AND_DEE_EFFECT_UNBOUND; VECTORS_NOT_RUN; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "DEE-native downmix effect and DME-to-XML writer join.",
+        "Any mode other than the selected loro source path or any alternate mix-level value.",
+        "The package minimum matrix vectors; status remains NOT_RUN.",
+        "Runtime output, BSI comparison, and audio effect."
+      ]
+    },
+    {
+      "package_id": "DEE-ATMOS-SILENCE-RANGE-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS-SILENCE-RANGE-BOUNDARY-V1",
+      "manifest_sha256": "4c20f71b8f16bc69c88c0a10db5282987348b1f6b8ac75f9f923a245a3fe8604",
+      "supplement_seal_sha256": "ddb4038fd348e2a7f70b768886a349017db127f4010a0f7099395273c0bd0821",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS_8_OF_8",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "STATIC_SAMPLE_COUNT_AND_METADATA_ROW_BOUNDARIES; ACTUAL_SILENCE_EFFECT_UNBOUND; VECTORS_NOT_RUN; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "First actual sample consumer, PCM placement, output length, and PTS effects.",
+        "Runtime conversion of start/end XML endpoints to sample indices.",
+        "38-channel source identity and the proposed silence contrast vectors."
       ]
     }
   ]

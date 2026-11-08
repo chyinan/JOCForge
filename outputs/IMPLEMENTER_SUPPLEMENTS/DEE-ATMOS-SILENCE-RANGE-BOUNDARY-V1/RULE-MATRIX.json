@@ -1,0 +1,142 @@
+{
+  "schema": "wash.ddp_sample_range_and_silence_rule_matrix.v1",
+  "status": "RANGE_FIELD_UNIT_PATH_STATIC_BOUND; SILENCE_SAMPLE_CONVERSION_STATIC_BOUND; PRE_SOURCE_SUFFIX_ORDER_IMPLEMENTATION_INFERENCE; ACTUAL_SAMPLE_CONSUMER_UNBOUND; DYNAMIC_A_B_NOT_RUN",
+  "classes": [
+    "STATIC_FACT",
+    "HISTORICAL_NATIVE_OBSERVATION",
+    "IMPLEMENTATION_INFERENCE",
+    "UNBOUND",
+    "NOT_RUN"
+  ],
+  "range_fields": {
+    "input_xml": {
+      "path": "/encode_to_atmos_ddp/start,/encode_to_atmos_ddp/end",
+      "start_token": "0",
+      "end_token": "47",
+      "time_base": "file_position",
+      "xml_sha256": "8cbee914743d6d06efab7cff03201a531af39dfe7480fa3e609a94538dc6ffd6",
+      "runtime": "NOT_RUN"
+    },
+    "start": {
+      "schema_type": "xs:string",
+      "private_sample_index_field": "Priv+0xf98",
+      "reader_field": "CompositeMasterItem.startSample",
+      "numeric_sample": "NOT_COMPUTED",
+      "evidence_class": "STATIC_FACT_REUSED"
+    },
+    "end": {
+      "schema_type": "xs:string",
+      "private_sample_index_field": "Priv+0xfb0",
+      "reader_field": "CompositeMasterItem.endSample",
+      "numeric_sample": "NOT_COMPUTED",
+      "evidence_class": "STATIC_FACT_REUSED"
+    },
+    "reader_setup": {
+      "length_expression": "endSample - startSample",
+      "count_unit": "samples",
+      "setup_representation": "END_EXCLUSIVE_COUNT",
+      "xml_endpoint_to_sample_boundary": "UNBOUND_NOT_RUN"
+    },
+    "silence_to_range_mutation": "NOT_OBSERVED_IN_BOUNDED_RECEIPTS; do not infer silence shifts start/end or PTS"
+  },
+  "silence_duration_fields": [
+    {
+      "field": "prepend_silence_duration",
+      "xml_type": "xs:string",
+      "default_token": "0.0",
+      "stage_object_offset": "0x5d0",
+      "accepted_input_units": [
+        "decimal seconds",
+        "nonnegative integer frames with lowercase f suffix"
+      ],
+      "numeric_parser": "FUN_18014bec0/stod",
+      "frame_rate_requirement": "numeric frame rate; not_indicated is rejected on frame form",
+      "negative_value": "rejected",
+      "sample_rate_source": "source sampling_rate; 48000 Hz fallback in FUN_180145380",
+      "decimal_sample_count_formula": "(longlong)(seconds * sample_rate_hz); truncates toward zero",
+      "frame_sample_count_formula": "(longlong)(frame_count_to_seconds(frame_count, frame_rate) * sample_rate_hz)",
+      "per_source_record_offset": "0x38",
+      "copied_encode_context_offset": "0x18",
+      "composite_row_offset": "0x20",
+      "first_typed_metadata_consumer": "FUN_1801844c0 copies the qword into a composite row",
+      "actual_sample_consumer": "UNBOUND"
+    },
+    {
+      "field": "append_silence_duration",
+      "xml_type": "xs:string",
+      "default_token": "0.0",
+      "stage_object_offset": "0x650",
+      "accepted_input_units": [
+        "decimal seconds",
+        "nonnegative integer frames with lowercase f suffix"
+      ],
+      "numeric_parser": "FUN_18014bec0/stod",
+      "frame_rate_requirement": "numeric frame rate; not_indicated is rejected on frame form",
+      "negative_value": "rejected",
+      "sample_rate_source": "source sampling_rate; 48000 Hz fallback in FUN_180145380",
+      "decimal_sample_count_formula": "(longlong)(seconds * sample_rate_hz); truncates toward zero",
+      "frame_sample_count_formula": "(longlong)(frame_count_to_seconds(frame_count, frame_rate) * sample_rate_hz)",
+      "per_source_record_offset": "0x50",
+      "copied_encode_context_offset": "0x60",
+      "composite_row_offset": "0x38",
+      "first_typed_metadata_consumer": "FUN_1801844c0 copies the qword into a composite row",
+      "actual_sample_consumer": "UNBOUND"
+    }
+  ],
+  "separate_record_and_row_flow": {
+    "per_source_counts": "PREPEND and APPEND use separate qword vectors and separate encode-record offsets",
+    "composite_row_labels": {
+      "+0x20": "prepend (%llu diagnostic formatter)",
+      "+0x38": "append (%llu diagnostic formatter)"
+    },
+    "first_composite_row_consumer": "FUN_1801844c0",
+    "next_row_copy": "FUN_180173e70 copies 0x40-byte rows without reading +0x20/+0x38",
+    "FUN_180185240": "forwards row span to FUN_180173c70; wrapper metadata is copied but no silence count or PCM is read",
+    "FUN_180173c70": "row string cleanup; does not read row +0x20/+0x38",
+    "FUN_18029c130": "row vector release boundary; body not inspected",
+    "actual_first_sample_consumer": "UNBOUND; none identified in this bounded path"
+  },
+  "row_path": {
+    "bounded_operations": [
+      {
+        "function": "FUN_1801844c0",
+        "operation": "copies prepend/append qwords into 0x40-byte metadata rows"
+      },
+      {
+        "function": "FUN_180173e70",
+        "operation": "copies 0x40-byte row vector; does not read +0x20/+0x38"
+      },
+      {
+        "function": "FUN_180185240",
+        "operation": "forwards the row vector and handles wrapper metadata; does not read silence counts"
+      },
+      {
+        "function": "FUN_180173c70",
+        "operation": "cleans each row string at +0x18; does not read +0x20/+0x38"
+      }
+    ],
+    "next_unopened_edge": "FUN_180185240 -> FUN_18029c130 row-vector release; body not inspected",
+    "actual_sample_consumer": "UNBOUND; no sample-buffer access found in the bounded copy/cleanup path"
+  },
+  "combination_order": {
+    "model_rule": "prepend samples, then selected source span, then append samples",
+    "evidence_class": "IMPLEMENTATION_INFERENCE_FROM_FIELD_NAMES_AND_SEPARATE_PER_SOURCE_RECORD_FLOW",
+    "native_sample_order_observed": false,
+    "output_length_formula": "prepend_samples + selected_source_sample_count + append_samples",
+    "output_length_observed": false,
+    "status": "UNVERIFIED"
+  },
+  "layout_coverage": {
+    "36_channel": {
+      "existing_zero_control_source_identities": 2,
+      "existing_zero_control_runs": 3,
+      "nonzero_silence_effect_isolated": false,
+      "status": "STATIC_RULE_PLUS_ZERO_BASELINE_ONLY"
+    },
+    "38_channel": {
+      "hash_bound_source_identity": "NOT_CAPTURED_IN_REUSED_SILENCE_VECTOR",
+      "status": "NOT_VALIDATED"
+    },
+    "static_parser_layout_dependence": "not indicated by the parser/record evidence; per-source record counts are distinct from channel count; implementation across layouts unverified"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "file_count": 4,
+  "files": [
+    {
+      "bytes": 745,
+      "file": "FINDINGS.md",
+      "sha256": "655abfa23a9dd1368cf8f5f225bdb99ccdb9483ddb1b81df373f208023709575"
+    },
+    {
+      "bytes": 5404,
+      "file": "EVIDENCE.json",
+      "sha256": "c80df6a635f8e050b06e73425b63e1afc3fe89e1b32cdb8f7cbfe7ecea039099"
+    },
+    {
+      "bytes": 2499,
+      "file": "CHECK.py",
+      "sha256": "dbdeaff33fb0c8881c40d955be84f78c7a0826b55ca54f01c19d0fca43a1c71e"
+    },
+    {
+      "bytes": 926,
+      "file": "MANIFEST.json",
+      "sha256": "f6d83e5790c9e4e05e423976d3b5d824524e35eb5d44fe5b004f821b047fcdf1"
+    }
+  ],
+  "schema": "washed-implementer-supplement-seal.v1",
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1"
+}

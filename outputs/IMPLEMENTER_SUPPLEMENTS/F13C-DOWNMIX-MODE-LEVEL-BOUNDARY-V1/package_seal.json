@@ -1,0 +1,48 @@
+{
+  "file_count": 8,
+  "files": [
+    {
+      "bytes": 3359,
+      "file": "REPORT.md",
+      "sha256": "c61c279654d963ad74d328a8c8239234b6279aa0d999d956433360d6b697b3fd"
+    },
+    {
+      "bytes": 2089,
+      "file": "CONSUMER-BOUNDARIES.json",
+      "sha256": "f480b1c6bb4448d514b81e5ec0b58e35406505c561979d0dae54ee6749663d81"
+    },
+    {
+      "bytes": 1435,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "ac8315b42dcc2fbd0c38c34f311aab999b7cd2809e25ce89cf53c796c9280b5b"
+    },
+    {
+      "bytes": 428,
+      "file": "SOURCE-MANIFESTS.json",
+      "sha256": "ac6b9be507035435814e61f7a3ae55be8892bfd20bb4767ca692972b05f489e2"
+    },
+    {
+      "bytes": 7625,
+      "file": "VALID-VALUE-MATRIX.json",
+      "sha256": "adbf078f35e5cab9ab6bb7fe4729f92283ff55f762db9f9666241e61b4218bae"
+    },
+    {
+      "bytes": 1162,
+      "file": "SUPPLEMENT-SCOPE.json",
+      "sha256": "afa6f80280394b903b8cd5b664367169580732f6bcec648af84a773052e39fff"
+    },
+    {
+      "bytes": 1522,
+      "file": "CHECK.py",
+      "sha256": "98842eabb360d6a4134fb55ff00fd1c258a01dd8bef9a0d2f5512370f353e352"
+    },
+    {
+      "bytes": 1649,
+      "file": "MANIFEST.json",
+      "sha256": "6b59ccdefa8651eb11a9786a38114fc1ac27789b2ee053c261721414a5499f1b"
+    }
+  ],
+  "schema": "washed-implementer-supplement-seal.v1",
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "F13C-DOWNMIX-MODE-LEVEL-BOUNDARY-V1"
+}

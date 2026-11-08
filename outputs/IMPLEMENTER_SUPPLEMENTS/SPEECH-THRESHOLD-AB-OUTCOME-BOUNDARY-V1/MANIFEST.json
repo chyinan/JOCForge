@@ -1,0 +1,25 @@
+{
+  "payloads": [
+    {
+      "bytes": 745,
+      "file": "FINDINGS.md",
+      "sha256": "655abfa23a9dd1368cf8f5f225bdb99ccdb9483ddb1b81df373f208023709575"
+    },
+    {
+      "bytes": 5404,
+      "file": "EVIDENCE.json",
+      "sha256": "c80df6a635f8e050b06e73425b63e1afc3fe89e1b32cdb8f7cbfe7ecea039099"
+    },
+    {
+      "bytes": 2499,
+      "file": "CHECK.py",
+      "sha256": "dbdeaff33fb0c8881c40d955be84f78c7a0826b55ca54f01c19d0fca43a1c71e"
+    }
+  ],
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "scope": "Historical N36 speech-threshold A/B run closeout only; no audio effect conclusion.",
+  "source_manifest_sha256": "f5331757e976aabfe0925e8cd65a3e615d069d7d083f29725a6cb3c3c1bbc8a2",
+  "source_package_seal_sha256": "f1e0690045aebea3b56c2a8265cfe62dced660c3d9df1d57bab6d4a6cd289367",
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1"
+}

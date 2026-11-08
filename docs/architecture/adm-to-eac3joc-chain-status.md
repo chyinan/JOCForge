@@ -1498,6 +1498,14 @@ The strict XML parser admits the optional `misc/temp_dir` structure and retains 
 
 The XML parser now reads exactly one `ec3`, `mp4`, or `dash` output branch and preserves the declared MP4/DASH format, frame-rate override, and plugin/base strings when present. The selected CLI still allows only `ec3` and rejects MP4/DASH before resolving input or output paths. No muxer, plugin, writer, or container output is implemented by this admission slice.
 
+## 2026-11-08: F13C selected downmix source-path boundary
+
+Wash package `F13C-DOWNMIX-MODE-LEVEL-BOUNDARY-V1` (manifest SHA-256 `6b59ccdefa8651eb11a9786a38114fc1ac27789b2ee053c261721414a5499f1b`, seal SHA-256 `4b8b13ca8edc784109432a60d5ab88d0fd19fde6915ca6cbd840880e94531210`) binds only the selected JOCForge 38-channel `loro`/four-`-3` source path to `dmixmod=2` and level codes `[4,4,4,4]`. It does not bind a DEE-native effect or other mode/level values; eight input-only experiment vectors remain `NOT_RUN`.
+
+## 2026-11-08: Speech-threshold receipt-level closeout
+
+Wash addendum `SPEECH-THRESHOLD-AB-OUTCOME-BOUNDARY-V1` (manifest SHA-256 `f6d83e5790c9e4e05e423976d3b5d824524e35eb5d44fe5b004f821b047fcdf1`, seal SHA-256 `e12adafaaeb4fd89f77115df4fe6fb2c2901bde3180a230293b72eaac1913a5e`) hash-binds the source-summary/preflight identities and both arms' run/status receipts. It adds provenance to the prior result only: each arm exited 10 naturally, captured no events, and created no output. Cause, owner/generation, runtime scalar, and threshold effect remain `UNBOUND/NOT_CAPTURED`; the result is not a pass, equivalence, or unsupported-option conclusion. The local implementation audit verified the addendum manifest, seal, and four sealed files. Its checker was not run here because it reads research-side receipts; Wash reports normal and `python -O` checks passed. No retry was performed.
+
 ## 2026-11-08: Preferred downmix token admission
 
 The XML parser now preserves all four declared `preferred_downmix_mode` tokens: `loro`, `ltrt`, `ltrt-pl2`, and `not_indicated`. The selected CLI still admits only `loro`. Static raw-code mappings do not establish effective MixMode, BSI serialization, or a rendered downmix effect.
@@ -1509,3 +1517,7 @@ The XML parser now admits and preserves the five declared `metering_mode` string
 ## 2026-11-08: Output-container metadata admission
 
 The XML parser now reads exactly one `ec3`, `mp4`, or `dash` output branch and preserves the declared MP4/DASH format, frame-rate override, and plugin/base strings when present. The selected CLI still allows only `ec3` and rejects MP4/DASH before resolving input or output paths. No muxer, plugin, writer, or container output is implemented by this admission slice.
+
+## 2026-11-08: Sample range and silence field boundary
+
+Wash package `DEE-ATMOS-SILENCE-RANGE-BOUNDARY-V1` (manifest SHA-256 `4c20f71b8f16bc69c88c0a10db5282987348b1f6b8ac75f9f923a245a3fe8604`, seal SHA-256 `ddb4038fd348e2a7f70b768886a349017db127f4010a0f7099395273c0bd0821`) statically binds seconds/integer-frame tokens to sample counts with truncation toward zero, separate prepend/append row fields `+0x20/+0x38`, and Reader start/end sample indices with `endSample-startSample` length. The first sample consumer, silence placement and ordering, PTS/output-length effect, XML endpoint execution, and 38-channel input identity remain `UNBOUND`; the proposed prepend-only/append-only contrast is `NOT_RUN`. This does not enable nonzero CLI silence.

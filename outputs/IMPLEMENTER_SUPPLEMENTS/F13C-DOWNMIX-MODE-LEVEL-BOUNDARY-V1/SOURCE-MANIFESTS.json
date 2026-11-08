@@ -1,0 +1,10 @@
+{
+  "checker_normal": "PASS",
+  "checker_python_O": "PASS",
+  "checksums_verified": 8,
+  "manifest_sha256": "4df9fb1fac0e685fbde897239b20a51ea5e8a519ca38d143e7b811b0cefefb02",
+  "package_id": "F13C-DOWNMIX-MODE-LEVEL-VALIDATION-MATRIX-WASH-V1",
+  "payloads_verified": 7,
+  "raw_source_paths_or_codec_source_included": false,
+  "sha256s_txt_sha256": "9978ad39f3468e1afc4193a9b0bf5cdc846386a2412e5a45150e38d460f741a8"
+}

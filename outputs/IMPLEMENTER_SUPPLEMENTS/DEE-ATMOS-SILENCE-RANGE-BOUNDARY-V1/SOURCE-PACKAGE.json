@@ -1,0 +1,10 @@
+{
+  "checker_normal": "PASS",
+  "checker_python_O": "PASS",
+  "checksums_count": 8,
+  "manifest_sha256": "f197567214bb57adb0661dc9f078d200b445ccc9b7f04ab897b1f1c4e1115070",
+  "package_id": "dee_atmos_ddp_sample_range_silence_rule_matrix_wash_v1",
+  "package_seal_sha256": "40b30304a1654aa12685adf4287814f28b6a2677fb88b5dde1488847a12134d3",
+  "payload_count": 7,
+  "raw_source_or_decompilation_copied": false
+}

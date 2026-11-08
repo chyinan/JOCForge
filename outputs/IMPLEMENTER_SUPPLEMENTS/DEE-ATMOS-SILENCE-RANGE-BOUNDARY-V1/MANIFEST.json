@@ -1,0 +1,46 @@
+{
+  "implementation_ready": false,
+  "payloads": [
+    {
+      "bytes": 2047,
+      "file": "FINDINGS.md",
+      "sha256": "a648ca64f9926337db0c01f6acf8f1f54cf821444faac30e3b7e9e8241893238"
+    },
+    {
+      "bytes": 6239,
+      "file": "RULE-MATRIX.json",
+      "sha256": "fedde3792704ea1c29fea66d90f1eef6162a69ecd29edf248f0a63a152707c83"
+    },
+    {
+      "bytes": 2092,
+      "file": "MINIMAL-CONTRAST-EXPERIMENT.json",
+      "sha256": "530cfc8ee761194129c6674c8071fdb0597f10086f5f14ce12ebdfa51fb30805"
+    },
+    {
+      "bytes": 2051,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "872bba2107732432c4c2612858249ec30ac6d3b7251fcd607518f10c8043c16d"
+    },
+    {
+      "bytes": 420,
+      "file": "SOURCE-PACKAGE.json",
+      "sha256": "8bd566a494b3f2781f300768e1c4fdba8df2a356fb38586748bd5338064ca81c"
+    },
+    {
+      "bytes": 1305,
+      "file": "SUPPLEMENT-SCOPE.json",
+      "sha256": "a557d4db7c5fcc26202268409162d36f3f10cea67c5b5c7ddec62b8820e237a3"
+    },
+    {
+      "bytes": 1871,
+      "file": "CHECK.py",
+      "sha256": "95c5fb3983a27eb7ff0e0657f40592dc752f92e5e253b69b87461f884c89b473"
+    }
+  ],
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "scope": "Sample-count conversion and metadata flow only; sample consumer and time order remain unbound; experiments not run.",
+  "source_manifest_sha256": "f197567214bb57adb0661dc9f078d200b445ccc9b7f04ab897b1f1c4e1115070",
+  "source_package_seal_sha256": "40b30304a1654aa12685adf4287814f28b6a2677fb88b5dde1488847a12134d3",
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-ATMOS-SILENCE-RANGE-BOUNDARY-V1"
+}

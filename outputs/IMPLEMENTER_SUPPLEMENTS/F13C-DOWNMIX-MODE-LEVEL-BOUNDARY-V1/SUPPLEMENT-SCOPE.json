@@ -1,0 +1,27 @@
+{
+  "claims": {
+    "dee_native_effect": "UNBOUND",
+    "implementation_effect_gates": "NOT_CLOSED_BY_THIS_PACKAGE",
+    "jocforge_source_path_only": "loro plus four -3 mix levels maps to dmixmod=2 and levels=[4,4,4,4] in the selected 38-channel source path",
+    "mode_and_level_experiments": "NOT_RUN",
+    "native_dme_to_xml_writer": "UNBOUND",
+    "parser_token_acceptance": "STATIC_ONLY",
+    "runtime_output": "NOT_OBSERVED"
+  },
+  "excluded": {
+    "media_pcm_payload_key_license": "Not included",
+    "source_code": "No codec or product source/decompilation copied; generic package tooling omitted"
+  },
+  "implementation_ready": false,
+  "source_package": {
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "manifest_sha256": "4df9fb1fac0e685fbde897239b20a51ea5e8a519ca38d143e7b811b0cefefb02",
+    "package_id": "F13C-DOWNMIX-MODE-LEVEL-VALIDATION-MATRIX-WASH-V1",
+    "sha256s_txt_sha256": "9978ad39f3468e1afc4193a9b0bf5cdc846386a2412e5a45150e38d460f741a8",
+    "verified_checksums": 8,
+    "verified_payloads": 7
+  },
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "F13C-DOWNMIX-MODE-LEVEL-BOUNDARY-V1"
+}

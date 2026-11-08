@@ -1,0 +1,58 @@
+{
+  "historical_controls_are_not_new_vectors": true,
+  "input_payload_or_pcm_read": false,
+  "key_or_license_access": false,
+  "prior_36_channel_zero_controls": [
+    {
+      "append_silence_duration": "0.0",
+      "channel_count": 36,
+      "pcm_retained": false,
+      "prepend_silence_duration": "0.0",
+      "prior_matched_run_status": "DEE_SUCCEEDED",
+      "prior_run_count_including_preserved_control": 2,
+      "silence_effect_isolated": false,
+      "source_sample_rate_hz": 48000,
+      "source_sha256": "db3ccb02260882bbd830d22c0ab207e6b8a6916743e87c939e2caa8fb4be4335"
+    },
+    {
+      "append_silence_duration": "0.0",
+      "channel_count": 36,
+      "pcm_retained": false,
+      "prepend_silence_duration": "0.0",
+      "prior_matched_run_status": "DEE_SUCCEEDED",
+      "prior_run_count_including_preserved_control": 1,
+      "silence_effect_isolated": false,
+      "source_sample_rate_hz": 48000,
+      "source_sha256": "591360094fe5471db96b4ed3e2809e6d9f2d05ef1d482ad05f487d4be73eb72e"
+    }
+  ],
+  "proposed_nonzero_contrast": [
+    {
+      "append_silence_duration": "0.0",
+      "execution": "PROPOSED_NOT_RUN",
+      "id": "prepend_only",
+      "prepend_silence_duration": "0.00390625",
+      "sample_rate_hz": 48000,
+      "static_parser_count_samples": 187
+    },
+    {
+      "append_silence_duration": "0.00390625",
+      "execution": "PROPOSED_NOT_RUN",
+      "id": "append_only",
+      "prepend_silence_duration": "0.0",
+      "sample_rate_hz": 48000,
+      "static_parser_count_samples": 187
+    }
+  ],
+  "reused_range_pair": {
+    "effective_rate_fps": 24,
+    "end": "47",
+    "numeric_sample_indices": "NOT_COMPUTED",
+    "source_xml_sha256": "8cbee914743d6d06efab7cff03201a531af39dfe7480fa3e609a94538dc6ffd6",
+    "start": "0",
+    "status": "REUSED_INPUT_ONLY_NOT_RUN",
+    "time_base": "file_position"
+  },
+  "schema": "wash.ddp_range_and_silence_input_only_vectors.v1",
+  "status": "PROPOSED_INPUTS_NOT_EXECUTED; HISTORICAL_ZERO_CONTROL_METADATA_REUSED"
+}

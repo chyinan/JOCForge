@@ -1,0 +1,169 @@
+{
+  "schema": "f13c-downmix-mode-level-valid-value-matrix.v1",
+  "mode_domains": {
+    "ddp_xml_schema_parser": [
+      {"token": "loro", "static_parse_code": 0, "stored_effective_value": "UNBOUND", "selected_consumer": "UNBOUND"},
+      {"token": "ltrt", "static_parse_code": 1, "stored_effective_value": "UNBOUND", "selected_consumer": "UNBOUND"},
+      {"token": "ltrt-pl2", "static_parse_code": 2, "stored_effective_value": "UNBOUND", "selected_consumer": "UNBOUND"},
+      {"token": "not_indicated", "static_parse_code": 3, "stored_effective_value": "UNBOUND", "selected_consumer": "UNBOUND"}
+    ],
+    "dme_ui_mapping": [
+      {"label": "Stereo", "token": "loro", "emission": "active-only; inactive initial value omitted"},
+      {"label": "Surround", "token": "ltrt", "emission": "active-only"},
+      {"label": "Not Indicated", "token": "not_indicated", "emission": "active-only"}
+    ],
+    "token_without_dme_ui_option": "ltrt-pl2",
+    "native_ddp_dmixmod_validator": {
+      "separate_field": true,
+      "accepted_text_tokens": ["not_indicated", "pro_logic", "stereo", "pro_logic_ii"],
+      "typed_enum_or_current_value_consumer": "UNBOUND",
+      "join_to_preferred_downmix_mode": "UNBOUND"
+    }
+  },
+  "mix_level_fields": [
+    {
+      "field": "loro_center_mix_level",
+      "dme_ui_values": ["+3", "+1.5", "0", "-1.5", "-3", "-4.5", "-6", "-inf"],
+      "dme_handler_values": ["+3", "+1.5", "0", "-1.5", "-3", "-4.5", "-6", "-inf"],
+      "host_request_key": "loro_cmix",
+      "native_xml_key": "lorocmixlev",
+      "parser_result_slot": "puVar16[0xf]",
+      "outer_config_offset": "+0x1a8"
+    },
+    {
+      "field": "loro_surround_mix_level",
+      "dme_ui_values": ["-1.5", "-3", "-4.5", "-6", "-inf"],
+      "dme_handler_values": ["-1.5", "-3", "-4.5", "-6", "-inf"],
+      "host_request_key": "loro_smix",
+      "native_xml_key": "lorosurmixlev",
+      "parser_result_slot": "puVar16[0x10]",
+      "outer_config_offset": "+0x1ac"
+    },
+    {
+      "field": "ltrt_center_mix_level",
+      "dme_ui_values": ["+3", "+1.5", "0", "-1.5", "-3", "-4.5", "-6", "-inf"],
+      "dme_handler_values": ["+3", "+1.5", "0", "-1.5", "-3", "-4.5", "-6", "-inf"],
+      "host_request_key": "ltrt_cmix",
+      "native_xml_key": "ltrtcmixlev",
+      "parser_result_slot": "puVar16[0x12]",
+      "outer_config_offset": "+0x1b4"
+    },
+    {
+      "field": "ltrt_surround_mix_level",
+      "dme_ui_values": ["-1.5", "-3", "-4.5", "-6", "-inf"],
+      "dme_handler_values": ["+3", "+1.5", "0", "-1.5", "-3", "-4.5", "-6", "-inf"],
+      "host_request_key": "ltrt_smix",
+      "native_xml_key": "ltrtsurmixlev",
+      "parser_result_slot": "puVar16[0x13]",
+      "outer_config_offset": "+0x1b8",
+      "handler_only_values_not_visible_in_ui": ["+3", "+1.5", "0"]
+    }
+  ],
+  "native_level_boundary": {
+    "host_to_native_typed_descriptor": "UNBOUND",
+    "numeric_conversion_to_db_or_code": "UNBOUND",
+    "first_typed_consumer": "UNBOUND",
+    "bsi_or_audio_consumer": "UNBOUND"
+  },
+  "jocforge_selected_source_profile": {
+    "profile_input_shape": "38-channel ADM, 48 kHz, PCM24, 1024 kbps",
+    "accepted_preferred_downmix_mode": "loro",
+    "mode_constraint": "ONLY_THIS_VALUE_ACCEPTED_BY_SELECTED_SOURCE_PROFILE",
+    "accepted_mix_level_tuple_db": ["-3", "-3", "-3", "-3"],
+    "mapped_bsi_dmixmod": 2,
+    "mapped_bsi_level_codes": [4, 4, 4, 4],
+    "serialized_dmixmod_width_bits": 2,
+    "serialized_level_width_bits_each": 3,
+    "source_path_runtime_output_observed": false,
+    "not_generalized_to_36_channel_or_native_dee": true
+  },
+  "minimum_input_only_matrix": [
+    {
+      "id": "MODE-LORO-BASE",
+      "preferred_downmix_mode": "loro",
+      "levels_db": {"loro_center": "-3", "loro_surround": "-3", "ltrt_center": "-3", "ltrt_surround": "-3"},
+      "basis": "DDP token accepted; DME Stereo option; selected JOCForge source profile accepts this tuple",
+      "job_xml_validation": "PASS_RECORDED_EXISTING_PAIR",
+      "source_profile_acceptance": "SOURCE_PATH_ACCEPTED",
+      "native_effect": "UNBOUND",
+      "run_status": "NOT_RUN"
+    },
+    {
+      "id": "MODE-LTRT-BASE",
+      "preferred_downmix_mode": "ltrt",
+      "levels_db": {"loro_center": "-3", "loro_surround": "-3", "ltrt_center": "-3", "ltrt_surround": "-3"},
+      "basis": "DDP token accepted; DME Surround option; common visible level value",
+      "job_xml_validation": "PASS_RECORDED_EXISTING_PAIR",
+      "source_profile_acceptance": "SOURCE_PATH_REJECTED_UNSUPPORTED_MODE",
+      "native_effect": "UNBOUND",
+      "run_status": "NOT_RUN"
+    },
+    {
+      "id": "MODE-LTRT-PL2-BASE",
+      "preferred_downmix_mode": "ltrt-pl2",
+      "levels_db": {"loro_center": "-3", "loro_surround": "-3", "ltrt_center": "-3", "ltrt_surround": "-3"},
+      "basis": "DDP token accepted; no matching DME UI option; common visible level value",
+      "job_xml_validation": "NOT_PREPARED",
+      "source_profile_acceptance": "SOURCE_PATH_REJECTED_UNSUPPORTED_MODE",
+      "native_effect": "UNBOUND",
+      "run_status": "NOT_RUN"
+    },
+    {
+      "id": "MODE-NOT-INDICATED-BASE",
+      "preferred_downmix_mode": "not_indicated",
+      "levels_db": {"loro_center": "-3", "loro_surround": "-3", "ltrt_center": "-3", "ltrt_surround": "-3"},
+      "basis": "DDP token accepted; DME Not Indicated option; common visible level value",
+      "job_xml_validation": "NOT_PREPARED",
+      "source_profile_acceptance": "SOURCE_PATH_REJECTED_UNSUPPORTED_MODE",
+      "native_effect": "UNBOUND",
+      "run_status": "NOT_RUN"
+    },
+    {
+      "id": "LEVEL-LORO-CENTER-OAT",
+      "preferred_downmix_mode": "loro",
+      "levels_db": {"loro_center": "-1.5", "loro_surround": "-3", "ltrt_center": "-3", "ltrt_surround": "-3"},
+      "basis": "-1.5 and -3 are visible UI values for this field",
+      "job_xml_validation": "NOT_PREPARED",
+      "source_profile_acceptance": "SOURCE_PATH_REJECTED_UNSUPPORTED_LEVEL",
+      "native_effect": "UNBOUND",
+      "run_status": "NOT_RUN"
+    },
+    {
+      "id": "LEVEL-LORO-SURROUND-OAT",
+      "preferred_downmix_mode": "loro",
+      "levels_db": {"loro_center": "-3", "loro_surround": "-1.5", "ltrt_center": "-3", "ltrt_surround": "-3"},
+      "basis": "-1.5 and -3 are visible UI values for this field",
+      "job_xml_validation": "NOT_PREPARED",
+      "source_profile_acceptance": "SOURCE_PATH_REJECTED_UNSUPPORTED_LEVEL",
+      "native_effect": "UNBOUND",
+      "run_status": "NOT_RUN"
+    },
+    {
+      "id": "LEVEL-LTRT-CENTER-OAT",
+      "preferred_downmix_mode": "ltrt",
+      "levels_db": {"loro_center": "-3", "loro_surround": "-3", "ltrt_center": "-1.5", "ltrt_surround": "-3"},
+      "basis": "-1.5 and -3 are visible UI values for this field",
+      "job_xml_validation": "NOT_PREPARED",
+      "source_profile_acceptance": "SOURCE_PATH_REJECTED_UNSUPPORTED_MODE_AND_LEVEL",
+      "native_effect": "UNBOUND",
+      "run_status": "NOT_RUN"
+    },
+    {
+      "id": "LEVEL-LTRT-SURROUND-OAT",
+      "preferred_downmix_mode": "ltrt",
+      "levels_db": {"loro_center": "-3", "loro_surround": "-3", "ltrt_center": "-3", "ltrt_surround": "-1.5"},
+      "basis": "-1.5 and -3 are visible UI values for this field",
+      "job_xml_validation": "NOT_PREPARED",
+      "source_profile_acceptance": "SOURCE_PATH_REJECTED_UNSUPPORTED_MODE_AND_LEVEL",
+      "native_effect": "UNBOUND",
+      "run_status": "NOT_RUN"
+    }
+  ],
+  "matrix_limits": {
+    "candidate_values_are_individually_valid_not_proven_mode_level_combinations": true,
+    "full_factorial": false,
+    "all_native_effects_not_run": true,
+    "36_channel_runtime_coverage": "NOT_RUN",
+    "38_channel_runtime_coverage": "NOT_RUN"
+  }
+}

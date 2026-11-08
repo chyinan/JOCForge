@@ -1,0 +1,39 @@
+{
+  "schema": "f13c-downmix-mode-level-consumer-boundaries.v1",
+  "static_facts": {
+    "ddp_preferred_mode_tokens": ["loro", "ltrt", "ltrt-pl2", "not_indicated"],
+    "ddp_parser_codes": [0, 1, 2, 3],
+    "ddp_code_to_effective_stored_value": "UNBOUND",
+    "selected_processing_consumer": "UNBOUND",
+    "dme_preferred_mode_ui_labels": {"Stereo": "loro", "Surround": "ltrt", "Not Indicated": "not_indicated"},
+    "dme_ui_emission": "active-only; inactive initial Stereo is omitted",
+    "ltrt_pl2_dme_ui_option": "ABSENT",
+    "dme_host_to_client_job_model_json": "STATIC_SOURCE_BOUND",
+    "dme_host_to_preferred_downmix_xml_writer": "UNBOUND",
+    "dme_level_controls_have_separate_active_flags": true,
+    "native_level_parser_result_slots_are_typed_db_or_bsi_codes": "UNBOUND",
+    "host_level_key_to_native_xml_key_typed_alias": "UNBOUND"
+  },
+  "native_vs_model_separation": {
+    "native_ddp_dmixmod_validator_token_list": ["not_indicated", "pro_logic", "stereo", "pro_logic_ii"],
+    "native_ddp_dmixmod_to_preferred_downmix_mode_join": "UNBOUND",
+    "native_ddp_dmixmod_audio_or_bsi_consumer": "UNBOUND",
+    "jocforge_source_only_selected_tuple": {"preferred_downmix_mode": "loro", "levels_db": ["-3", "-3", "-3", "-3"]},
+    "jocforge_source_only_bsi_mapping": {"dmixmod": 2, "levels": [4, 4, 4, 4]},
+    "jocforge_source_only_runtime_output": "NOT_OBSERVED"
+  },
+  "effect_classification": {
+    "native_2ch_downmix_or_fold_down": "UNBOUND",
+    "native_atmos_main_audio_effect": "UNBOUND",
+    "native_bsi_metadata_effect": "UNBOUND",
+    "native_intentional_ignore": "UNBOUND",
+    "selected_jocforge_source_bsi_writer": "SOURCE_PATH_BOUND_FOR_LORO_MINUS3X4_ONLY"
+  },
+  "experiment_status": {
+    "preferred_mode_ab": "NOT_RUN",
+    "mix_level_oat_pairs": "NOT_RUN",
+    "dee_launch_attempted": false,
+    "reason": "The existing R4 path requires a complete command line with an opaque license-file argument unavailable in this task context; no placeholder was supplied.",
+    "active_dee_muxer_jocforge_process_snapshot": "NO_MATCHING_PROCESS_AT_READ_ONLY_CHECK"
+  }
+}

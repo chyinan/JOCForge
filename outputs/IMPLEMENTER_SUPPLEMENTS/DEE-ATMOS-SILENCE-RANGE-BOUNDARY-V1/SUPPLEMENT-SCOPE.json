@@ -1,0 +1,34 @@
+{
+  "closed_static_rules": [
+    "seconds and integer frame strings convert to longlong sample counts; cast truncates toward zero",
+    "prepend and append counts remain separate fields at composite row +0x20 and +0x38",
+    "Reader startSample/endSample are separate sample-index fields; end-start is sample count"
+  ],
+  "dee_run": "NOT_RUN",
+  "implementation_ready": false,
+  "payload_policy": {
+    "encoded_payload": false,
+    "key_license": false,
+    "pcm": false
+  },
+  "source_package": {
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "checksums_count": 8,
+    "manifest_sha256": "f197567214bb57adb0661dc9f078d200b445ccc9b7f04ab897b1f1c4e1115070",
+    "package_id": "dee_atmos_ddp_sample_range_silence_rule_matrix_wash_v1",
+    "package_seal_sha256": "40b30304a1654aa12685adf4287814f28b6a2677fb88b5dde1488847a12134d3",
+    "payload_count": 7,
+    "raw_source_or_decompilation_copied": false
+  },
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-ATMOS-SILENCE-RANGE-BOUNDARY-V1",
+  "unbound": [
+    "first actual sample consumer",
+    "prepend/source/append order",
+    "PCM zero fill or output-length/PTS effect",
+    "endpoint XML-to-sample execution behavior",
+    "38-channel source identity"
+  ],
+  "vectors": "PROPOSED_NOT_RUN"
+}

@@ -192,6 +192,7 @@
 | F01E/authored-metering-mode-token-admission | — | `The parser preserves the authored metering token without converting it to an applied mode value.`<br>`The selected CLI rejects non-1770-4 values before Meter.`<br>`Washed raw-map values and bounded validator paths do not establish measurement/audio effects.` |
 | F01E/authored-temp-directory-value-admission | — | `The parser stores the authored boolean and path value without using a file or directory API.`<br>`No path resolution, cleanup, or deletion/retention behavior is performed.`<br>`The selected CLI gate rejects a present temp_directory configuration before Meter/callback/encode.` |
 | F01E/authored-output-container-metadata-admission | — | `override_frame_rate is preserved as a token and is not converted or applied.`<br>`MP4/DASH output branches are rejected before output-path resolution.` |
+| F01E/washed-ddp-sample-range-silence-rule-matrix | — | `Static sample-count conversion uses the source sample rate and truncates toward zero.`<br>`No runtime callback clock, sample insertion, endpoint conversion, or output timing is established.` |
 | F03G/target-slot-install | — | `Pure per-callback value transition; no clock or committed state is owned.` |
 | F03C/candidate-selector | — | `Each selector call initializes cold scratch; no callback/source/AU counter or cross-call selector state is owned.` |
 | F03C/selector-score-choice | — | `No state or clock is owned.` |
@@ -603,6 +604,7 @@
 | F13C/washed-rate-nested-record-generic-destination-projection | `RateCondition`<br>`NestedRecord`<br>`GenericDestination`<br>`CodecBsiOwner` | `Wash-only static evidence; runtime owner/generation and product effect are not inferred.` |
 | F13C/washed-rate-child-owner-first-break | `RateCondition`<br>`NestedU32`<br>`GenericChildPlus4`<br>`CodecBsiOwner` | `Static evidence only; runtime owner/generation and product outcomes are not inferred.` |
 | F13C/washed-rate-slot2-parent-reset-not-child-constructor | `RateHandle`<br>`Slot2Parent`<br>`ParentPlus248`<br>`ChildPlus38`<br>`Slot4Generation` | `Static evidence only; preserve owner/generation and runtime unknowns.` |
+| F13C/washed-f13c-downmix-mode-level-boundary | — | `The evidence is a static selected-source-path mapping; no audio clock or runtime transition is established.`<br>`No DEE-native effect or output observation is included.` |
 | F13D2/id2-profile-header-and-body-wire | — | `The profile mapper, local Type11 prefix reader, and ID2 body serializer own no source, dispatch, AU, or persistent clock.` |
 | F14/authenticated-bit-compaction | — | `Stateless bit-stream projection; no frame, source, AU, or programme clock is owned.` |
 | F14/hmac-sha256-primitive | — | `Stateless byte primitive; no AU, source, programme, or history clock is owned.` |

@@ -1,0 +1,43 @@
+{
+  "schema": "f13c-downmix-mode-level-input-only-vectors.v1",
+  "status": "INPUT_ONLY_NOT_RUN",
+  "value_source": "reused host UI/schema and selected source-path receipts",
+  "level_pair_basis": ["-3", "-1.5"],
+  "level_pair_rationale": "Both values are visible and handler-accepted for all four controls; use -3 as the existing selected-source baseline and -1.5 as the one-field alternative.",
+  "vector_ids": [
+    "MODE-LORO-BASE",
+    "MODE-LTRT-BASE",
+    "MODE-LTRT-PL2-BASE",
+    "MODE-NOT-INDICATED-BASE",
+    "LEVEL-LORO-CENTER-OAT",
+    "LEVEL-LORO-SURROUND-OAT",
+    "LEVEL-LTRT-CENTER-OAT",
+    "LEVEL-LTRT-SURROUND-OAT"
+  ],
+  "input_profiles": [
+    {
+      "channels": 36,
+      "sample_rate_hz": 48000,
+      "bits_per_sample": 24,
+      "metadata_only_candidate_count": 6,
+      "selected_input_identity": "UNBOUND",
+      "run_status": "NOT_RUN"
+    },
+    {
+      "channels": 38,
+      "sample_rate_hz": 48000,
+      "bits_per_sample": 24,
+      "metadata_only_candidate_count": 1,
+      "existing_loro_ltrt_pair": "SCHEMA_VALIDATED_RECORDED; same data rate 1024 and levels -3",
+      "input_identity": "USER_CONFIRMED_IN_PARENT_PREFLIGHT; hash previously recorded and not recomputed in this pass",
+      "run_status": "NOT_RUN"
+    }
+  ],
+  "artifacts": {
+    "new_job_xml_created": false,
+    "dee_launched": false,
+    "output_created": false,
+    "pcm_or_payload_read": false,
+    "result_is_pass": false
+  }
+}
