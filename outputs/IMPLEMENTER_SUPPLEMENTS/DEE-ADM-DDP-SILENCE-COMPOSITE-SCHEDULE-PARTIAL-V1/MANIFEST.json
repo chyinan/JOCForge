@@ -1,0 +1,34 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package_id": "DEE-ADM-DDP-SILENCE-COMPOSITE-SCHEDULE-PARTIAL-V1",
+  "audience": "IMPLEMENTATION_EVIDENCE_ONLY",
+  "status": "STATIC_SAMPLE_SCHEDULE_BOUND_PCM_MATERIALIZATION_UNBOUND_RUNTIME_NOT_RUN",
+  "implementation_ready": "NO",
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 4903,
+      "sha256": "f0ada28788cb54e58df932182f5ae684024a9cb30d294217a0fabe354436e5d5"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 4753,
+      "sha256": "c8c9999a803dbf3d061b2299df045b3755de3b102395e2de1cc90055fb25c258"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1913,
+      "sha256": "d64fec6ed7b691c231ec33d8426acdbbe0d79e671feec203db8e4512796f7172"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 2259,
+      "sha256": "aad57fb8e2fc6ab3537f8cc3dd7eabcdd9ec30fdec9641eb946fc5e5a798d5d6"
+    },
+    {
+      "path": "SOURCE-MANIFESTS.json",
+      "bytes": 2792,
+      "sha256": "d11c18f2dd5ac8705cd7fe3d64e64aea865d11eec8fe9f21097ac9019c5ad855"
+    }
+  ]
+}

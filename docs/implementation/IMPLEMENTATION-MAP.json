@@ -9974,6 +9974,108 @@
           ],
           "validation_boundary": "The package confirms declared XML choice sets and static StringType metadata for surround/height trim fields, plus a candidate U16 path for surround and a scoped cleanup path for height. It does not bind omitted-field materialization, auto-selection inputs/rules, token assignment, numeric conversion/units/precision, or the first effective audio/gain consumer. The candidate path is not proven to be an audio consumer; effects/runtime remain NOT_RUN.",
           "delivery_scope": "REFERENCE_ONLY_NO_TRIM_NUMERIC_OR_AUDIO_EFFECT_ENABLEMENT"
+        },
+        {
+          "slice_id": "washed-ddp-silence-composite-schedule-partial",
+          "mapping_status": "STATIC_SILENCE_SAMPLE_SCHEDULE_AND_FIRST_FRAME_BOUNDARY__PCM_MATERIALIZATION_UNBOUND",
+          "implementation_status": "WASHED_SCHEDULE_ORDER_ONLY__OMISSION_OVERLAY_AND_RUNTIME_NOT_RUN",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "The package statically binds prepend/append sample conversion and composite schedule order. The selected XSD snapshot declares both optional strings with default `0`; an earlier sealed transcription reported `0.0`, and both explicit zero forms convert to zero samples. Omitted-element overlay remains UNBOUND. Separate sample counts are placed around the exclusive source span: composite start is prior length plus prepend; next length is prior length + prepend + (endSample-startSample) + append. The first Reader virtual +0x18 fills a local frame and output virtual +0x08 receives it, but concrete Reader, sample layout, zero-fill, PTS/track length, and channel/bed/object consistency remain UNBOUND/NOT_OBSERVED. Runtime and A/B remain NOT_RUN.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "docs/implementation/job-configuration.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ADM-DDP-SILENCE-COMPOSITE-SCHEDULE-PARTIAL-V1/REPORT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Static sample-count and composite schedule formulas only; no Reader sample layout, zero-fill, PTS, or track-length clock is established."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_DDP_SILENCE_COMPOSITE_SCHEDULE_PARTIAL",
+            "package_id": "DEE-ADM-DDP-SILENCE-COMPOSITE-SCHEDULE-PARTIAL-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ADM-DDP-SILENCE-COMPOSITE-SCHEDULE-PARTIAL-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ADM-DDP-SILENCE-COMPOSITE-SCHEDULE-PARTIAL-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ADM-DDP-SILENCE-COMPOSITE-SCHEDULE-PARTIAL-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ADM-DDP-SILENCE-COMPOSITE-SCHEDULE-PARTIAL-V1/REPORT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ADM-DDP-SILENCE-COMPOSITE-SCHEDULE-PARTIAL-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ADM-DDP-SILENCE-COMPOSITE-SCHEDULE-PARTIAL-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ADM-DDP-SILENCE-COMPOSITE-SCHEDULE-PARTIAL-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "b715d7225fb8562cc1595baf4c0ffb1cb0962761b2341bfa9ff67819d00d131c",
+            "supplement_seal_sha256": "cc3d4599019939ff35509b8d60a0dfbf849b90fdbd6d69fd8f1ce5e3be51adbd",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "schema_defaults": {
+              "selected_snapshot_default": "0",
+              "prior_transcription_default": "0.0",
+              "explicit_zero_forms_sample_equivalent": true,
+              "omitted_element_overlay": "UNBOUND"
+            },
+            "conversion": {
+              "decimal": "seconds * source sampling_rate (fallback 48000 Hz), cast signed long long, truncate toward zero",
+              "frame": "nonnegative integer with lowercase f; numeric timecode frame rate required, not not_indicated",
+              "negative_decimal": "REJECTED",
+              "fractional_frame_count": "REJECTED",
+              "prepend_vector_qword": "+0x38",
+              "append_vector_qword": "+0x50",
+              "encode_context_fields": {
+                "prepend": "+0x18",
+                "append": "+0x60"
+              }
+            },
+            "composite_schedule": {
+              "row_builder": "FUN_1801844c0",
+              "row_stride_bytes": 64,
+              "row_fields": {
+                "+0x20": "prepend",
+                "+0x28": "startSample",
+                "+0x30": "exclusive endSample",
+                "+0x38": "append"
+              },
+              "source_range_length": "endSample - startSample",
+              "composite_source_start": "prior composite length + prepend samples",
+              "next_composite_length": "prior composite length + prepend + (endSample-startSample) + append",
+              "schedule_consumer": "FUN_180553a60 composite-open boundary",
+              "interpretation": "STATIC_SCHEDULE_ORDER_ONLY"
+            },
+            "first_frame_boundary": {
+              "encode_loop": "FUN_1801764e0",
+              "reader_virtual_slot": "+0x18 fills local frame object",
+              "output_virtual_slot": "+0x08 receives frame object",
+              "concrete_reader": "UNBOUND",
+              "zero_sample_materialization": "UNBOUND",
+              "pts_or_track_length_effect": "NOT_OBSERVED",
+              "channel_bed_object_consistency": "UNBOUND"
+            },
+            "validation_boundary": "The package statically binds prepend/append sample conversion and composite schedule order. The selected XSD snapshot declares both optional strings with default `0`; an earlier sealed transcription reported `0.0`, and both explicit zero forms convert to zero samples. Omitted-element overlay remains UNBOUND. Separate sample counts are placed around the exclusive source span: composite start is prior length plus prepend; next length is prior length + prepend + (endSample-startSample) + append. The first Reader virtual +0x18 fills a local frame and output virtual +0x08 receives it, but concrete Reader, sample layout, zero-fill, PTS/track length, and channel/bed/object consistency remain UNBOUND/NOT_OBSERVED. Runtime and A/B remain NOT_RUN."
+          },
+          "vectors": {
+            "kind": "WASHED_STATIC_SAMPLE_AND_SCHEDULE_VECTORS_NOT_RUN",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "Static arithmetic and schedule examples only; no native PCM/output pass vector."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ADM-DDP-SILENCE-COMPOSITE-SCHEDULE-PARTIAL-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "INPUT_ONLY_NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Omitted-element overlay and selected XML runtime values.",
+            "Reader slot target, frame sample layout, zero-fill, PTS/encoded track length, and channel/bed/object consistency.",
+            "Minimum prepend-only A/B; timeline GO and output/temp paths are not assigned."
+          ],
+          "validation_boundary": "The package statically binds prepend/append sample conversion and composite schedule order. The selected XSD snapshot declares both optional strings with default `0`; an earlier sealed transcription reported `0.0`, and both explicit zero forms convert to zero samples. Omitted-element overlay remains UNBOUND. Separate sample counts are placed around the exclusive source span: composite start is prior length plus prepend; next length is prior length + prepend + (endSample-startSample) + append. The first Reader virtual +0x18 fills a local frame and output virtual +0x08 receives it, but concrete Reader, sample layout, zero-fill, PTS/track length, and channel/bed/object consistency remain UNBOUND/NOT_OBSERVED. Runtime and A/B remain NOT_RUN.",
+          "delivery_scope": "STATIC_SCHEDULE_ONLY_NO_PCM_MATERIALIZATION_OR_AUDIBLE_EFFECT"
         }
       ]
     },
@@ -71735,6 +71837,28 @@
       "not_run": [
         "Native XML writer/leaf, effective mode storage, and typed level reads.",
         "First matrix/BSI/audio consumer and all runtime vectors."
+      ]
+    },
+    {
+      "package_id": "DEE-ADM-DDP-SILENCE-COMPOSITE-SCHEDULE-PARTIAL-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ADM-DDP-SILENCE-COMPOSITE-SCHEDULE-PARTIAL-V1",
+      "manifest_sha256": "b715d7225fb8562cc1595baf4c0ffb1cb0962761b2341bfa9ff67819d00d131c",
+      "supplement_seal_sha256": "cc3d4599019939ff35509b8d60a0dfbf849b90fdbd6d69fd8f1ce5e3be51adbd",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "STATIC_SAMPLE_SCHEDULE_BOUND; OMITTED_DEFAULT_OVERLAY_READER_PCM_AND_PTS_EFFECT_UNBOUND; A_B_NOT_RUN; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Omission overlay, Reader/sample materialization, PTS/track length, and channel/bed/object consistency.",
+        "Proposed A/B; no timeline GO or output/temp assignment."
       ]
     }
   ]

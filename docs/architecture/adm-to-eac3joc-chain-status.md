@@ -1601,3 +1601,7 @@ Wash package `DEE-CUSTOM-TRIM-5-1-FIRST-CONSUMER-BOUNDARY-PARTIAL-V1` (manifest 
 ## 2026-11-09: DME downmix mode/level consumer partial
 
 Wash package `DEE-DOWNMIX-MODE-LEVEL-CONSUMER-BOUNDARY-PARTIAL-V1` (manifest SHA-256 `6f69b6d1bc5b3ca3b16b9e3587fc1751bd1ffd364dafcbd538136003c080ce7d`, seal SHA-256 `8730aff3da70c5037fa32b4eb8183f57dc210f95e34fdc6a7fc36e32521d7d85`) records static token-to-ordinal and four MixLevel default/object mappings. DME host→native XML writer, effective mode storage, selected level owner/read, and first matrix/BSI consumer remain `UNBOUND`; runtime and render are `NOT_RUN`. This is not an enablement or audio-effect claim.
+
+## 2026-11-09: DDP silence composite schedule partial
+
+Wash package `DEE-ADM-DDP-SILENCE-COMPOSITE-SCHEDULE-PARTIAL-V1` (manifest SHA-256 `b715d7225fb8562cc1595baf4c0ffb1cb0962761b2341bfa9ff67819d00d131c`, seal SHA-256 `cc3d4599019939ff35509b8d60a0dfbf849b90fdbd6d69fd8f1ce5e3be51adbd`) binds static prepend/source-range/append schedule order. The selected XSD default is `0`, while a prior sealed transcription says `0.0`; explicit zero forms convert equivalently, but omitted-element overlay remains `UNBOUND`. Composite source start/length formulas are static only. First Reader target, zero-fill, PCM, PTS/track length, and channel/bed/object consistency remain `UNBOUND/NOT_OBSERVED`; A/B and runtime are `NOT_RUN`. No zero-PCM or audible-effect claim is made.

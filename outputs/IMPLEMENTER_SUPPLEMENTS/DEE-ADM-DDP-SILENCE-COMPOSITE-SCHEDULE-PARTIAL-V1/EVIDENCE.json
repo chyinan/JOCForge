@@ -1,0 +1,113 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package_id": "DEE-ADM-DDP-SILENCE-COMPOSITE-SCHEDULE-PARTIAL-V1",
+  "audience": "IMPLEMENTATION_EVIDENCE_ONLY",
+  "status": "STATIC_SAMPLE_SCHEDULE_BOUND_PCM_MATERIALIZATION_UNBOUND_RUNTIME_NOT_RUN",
+  "implementation_ready": "NO",
+  "scope": "Prepend/append silence XML, sample-count schedule, and first Reader-frame boundary only",
+  "evidence_tiers": {
+    "static_native_observation": "Ghidra 12.2 read-only hash-bound evidence",
+    "reused_wash_observation": "Sealed prior Wash packages referenced by manifest hashes",
+    "dynamic_runtime": "NOT_RUN",
+    "pcm_or_encoded_output": "NOT_OBSERVED"
+  },
+  "source_image": {
+    "plugin_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "analysis_tool": "Ghidra 12.2",
+    "analysis_mode": "READ_ONLY_NO_ANALYSIS"
+  },
+  "xml_fields": {
+    "selected_filter": "encode_to_atmos_ddp",
+    "selected_xsd_snapshot_sha256": "eae11fff62d23d43459f602eec2e39ce667bef640a4fe5990d93b567ecc6af44",
+    "fields": [
+      {
+        "key": "prepend_silence_duration",
+        "path": "filter.audio.encode_to_atmos_ddp.prepend_silence_duration",
+        "type": "xs:string",
+        "optional": true,
+        "default_in_selected_snapshot": "0",
+        "documentation_units": "seconds.milliseconds or xf with numeric frame rate"
+      },
+      {
+        "key": "append_silence_duration",
+        "path": "filter.audio.encode_to_atmos_ddp.append_silence_duration",
+        "type": "xs:string",
+        "optional": true,
+        "default_in_selected_snapshot": "0",
+        "documentation_units": "seconds.milliseconds or xf with numeric frame rate"
+      }
+    ],
+    "cross_snapshot_default": {
+      "prior_transcription": "0.0",
+      "selected_snapshot": "0",
+      "explicit_zero_equivalence": "both explicit forms convert to zero samples",
+      "omitted_element_overlay": "UNBOUND"
+    },
+    "runtime_owner_generation": "UNBOUND"
+  },
+  "conversion_and_storage": {
+    "property_reader": "FUN_180145380 reads named prepend/append properties",
+    "converter": "FUN_18014bec0",
+    "decimal_form": "seconds as double multiplied by source sample rate then cast to signed long long",
+    "decimal_rounding": "truncate toward zero",
+    "frame_form": "nonnegative integer with lowercase f; requires numeric timecode frame rate other than not_indicated",
+    "negative_decimal": "rejected",
+    "fractional_frame_count": "rejected",
+    "sample_rate": "source sampling_rate with 48000 Hz fallback",
+    "separate_per_source_vectors": {
+      "prepend": "qword element +0x38",
+      "append": "qword element +0x50"
+    },
+    "encode_context_fields": {
+      "prepend": "+0x18",
+      "append": "+0x60",
+      "copy": "FUN_1801535b0"
+    }
+  },
+  "composite_schedule": {
+    "row_builder": "FUN_1801844c0",
+    "row_stride_bytes": 64,
+    "row_fields": {
+      "+0x20": "prepend sample count",
+      "+0x28": "source startSample",
+      "+0x30": "source endSample, exclusive",
+      "+0x38": "append sample count"
+    },
+    "row_to_item": "FUN_1801831c0",
+    "guards": ["endSample <= source sample count", "startSample <= endSample"],
+    "schedule_builder": "FUN_1801828c0",
+    "source_range_length": "endSample - startSample",
+    "composite_source_start": "prior composite length + prepend samples",
+    "next_composite_length": "prior composite length + prepend + (endSample - startSample) + append",
+    "schedule_consumer": "FUN_180553a60 composite-open boundary",
+    "interpretation": "STATIC_SCHEDULE_ORDER_ONLY"
+  },
+  "first_frame_boundary": {
+    "encode_loop": "FUN_1801764e0",
+    "reader_virtual_slot": "+0x18 fills a local frame object",
+    "output_virtual_slot": "+0x08 receives that frame object",
+    "concrete_reader_target": "UNBOUND",
+    "frame_sample_type_or_layout": "UNBOUND",
+    "zero_sample_materialization": "UNBOUND",
+    "pts_or_encoded_track_length_effect": "NOT_OBSERVED",
+    "channel_bed_object_layout_equivalence": "UNBOUND"
+  },
+  "input_identity": {
+    "sample_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "description": "Previously authorized 38-track fixture; not accessed in this static task"
+  },
+  "minimum_experiment": {
+    "status": "PROPOSED_NOT_RUN_WAITING_FOR_WASH_TIMELINE_GO",
+    "single_variable": "prepend_silence_duration",
+    "arm_a": {"prepend": "0.0", "append": "0.0", "source_range": "[2160,2162)"},
+    "arm_b": {"prepend": "0.125", "append": "0.0", "source_range": "[2160,2162)"},
+    "output_temp_paths": "UNASSIGNED",
+    "timeline_go": "NOT_GRANTED"
+  },
+  "execution": {
+    "dee_launched": false,
+    "jocforge_launched": false,
+    "pcm_payload_key_license_accessed": false,
+    "implementation_contact": false
+  }
+}

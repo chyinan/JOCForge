@@ -207,6 +207,7 @@
 | F01E/washed-explicit-offset-ffoa-reader-alignment-partial | — | `The Reader cursor stride is statically reported, but explicit-value to cursor initialization/seek and runtime frame alignment remain unbound.` |
 | F01E/washed-rf-drc-profile-consumer-boundary-partial | — | `Static per-block DRC table shape is described, but no selected RF profile/runtime generation or frame-clock join is established.` |
 | F01E/washed-custom-trim-first-effective-consumer-partial | — | `No runtime trim callback or audio-frame timing is established.` |
+| F01E/washed-ddp-silence-composite-schedule-partial | — | `Static sample-count and composite schedule formulas only; no Reader sample layout, zero-fill, PTS, or track-length clock is established.` |
 | F03G/target-slot-install | — | `Pure per-callback value transition; no clock or committed state is owned.` |
 | F03C/candidate-selector | — | `Each selector call initializes cold scratch; no callback/source/AU counter or cross-call selector state is owned.` |
 | F03C/selector-score-choice | — | `No state or clock is owned.` |

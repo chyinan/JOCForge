@@ -1,0 +1,61 @@
+{
+  "schema": "jocforge-input-only-vectors.v1",
+  "status": "INPUT_ONLY_NOT_RUN",
+  "sample_rate_hz": 48000,
+  "vectors": [
+    {
+      "name": "explicit_zero_baseline",
+      "prepend_token": "0.0",
+      "append_token": "0.0",
+      "prepend_samples_static": 0,
+      "append_samples_static": 0,
+      "native_effect": "NOT_OBSERVED"
+    },
+    {
+      "name": "prepend_half_sample_conversion",
+      "prepend_token": "0.00390625",
+      "append_token": "0.0",
+      "product": "0.00390625 * 48000 = 187.5",
+      "prepend_samples_static": 187,
+      "append_samples_static": 0,
+      "rounding": "truncate_toward_zero",
+      "native_effect": "NOT_RUN"
+    },
+    {
+      "name": "append_half_sample_conversion",
+      "prepend_token": "0.0",
+      "append_token": "0.00390625",
+      "product": "0.00390625 * 48000 = 187.5",
+      "prepend_samples_static": 0,
+      "append_samples_static": 187,
+      "rounding": "truncate_toward_zero",
+      "native_effect": "NOT_RUN"
+    },
+    {
+      "name": "numeric_frame_token_example",
+      "prepend_token": "3f",
+      "append_token": "0.0",
+      "numeric_timecode_frame_rate": 24,
+      "product": "3 / 24 * 48000 = 6000",
+      "prepend_samples_static": 6000,
+      "append_samples_static": 0,
+      "native_effect": "NOT_RUN"
+    },
+    {
+      "name": "schedule_around_selected_source_span",
+      "source_start_sample": 4320000,
+      "source_end_sample_exclusive": 4326000,
+      "source_span_samples": 6000,
+      "prepend_samples_static": 6000,
+      "append_samples_static": 0,
+      "composite_source_start_sample_static": 6000,
+      "next_composite_length_samples_static": 12000,
+      "evidence_class": "STATIC_SCHEDULE_ONLY; ZERO_FILL_AND_NATIVE_OUTPUT_NOT_OBSERVED"
+    }
+  ],
+  "static_invalid_input_rules": {
+    "negative_decimal": "REJECTED",
+    "fractional_frame_count": "REJECTED",
+    "frame_form_with_not_indicated_rate": "REJECTED"
+  }
+}

@@ -207,6 +207,7 @@
 | F01E/washed-explicit-offset-ffoa-reader-alignment-partial | F01E | `UNBOUND` |
 | F01E/washed-rf-drc-profile-consumer-boundary-partial | F01E | `UNBOUND` |
 | F01E/washed-custom-trim-first-effective-consumer-partial | F01E | `UNBOUND` |
+| F01E/washed-ddp-silence-composite-schedule-partial | F01E | `UNBOUND` |
 | F03G/target-slot-install | F03G | `spatial_control` |
 | F03C/candidate-selector | F03C | `spatial_control` |
 | F03C/selector-score-choice | F03C | `spatial_control` |

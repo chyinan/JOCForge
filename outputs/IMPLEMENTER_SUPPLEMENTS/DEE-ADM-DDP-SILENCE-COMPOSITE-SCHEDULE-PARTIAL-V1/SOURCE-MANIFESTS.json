@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-source-manifest-receipts.v1",
+  "source_package": {
+    "package_id": "adm_silence_composite_schedule_wash_v1",
+    "manifest_sha256": "1c67adbe36a7f8946329a11af15bfcb239fee90029779e4ab77fd67d1cd0685e",
+    "package_seal_sha256": "857f4479dcb703f9c0d86edcd8f8794773df204cf10f27be67958a246d280d5e",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS"
+  },
+  "static_source_identities": [
+    {"source_id": "R33_selected_job_config_xsd_snapshot", "sha256": "eae11fff62d23d43459f602eec2e39ce667bef640a4fe5990d93b567ecc6af44"},
+    {"source_id": "R33_range_position_field_consumers_focused_v4", "sha256": "c8738d11eab08e312128b7fe1842fd5f19e8f6873e6f5971f2c5488171296d34"},
+    {"source_id": "R33_spatial_timeline_consumer_candidates_v8_static", "sha256": "d44ece1720eb7f0e49c4df0d413b0d3c1fc2a8862b077c888d983452de5708ca"},
+    {"source_id": "R33_spatial_codec_adapter_ghidra_jdk25_v29", "sha256": "640dced700f854d96fdf5c2c9a813df9e5a1c04ac5a026e7f58239b622a1fba5"}
+  ],
+  "reused_wash_packages": [
+    {"package_id": "dee_atmos_ddp_silence_duration_sample_rule_wash_v1", "manifest_sha256": "95f2282edfbf32fbbf6f4c72662242c400429b44fdc32396bf595c8367fb9220", "seal_sha256": "4b617e06a3fd7ede6c5707fac4bddb2d57a7bd32ce669dabaa812faa5346aaca", "checker_status_from_source": "PASS_NORMAL_AND_OPTIMIZED"},
+    {"package_id": "dee_atmos_ddp_silence_first_consumer_wash_v1", "manifest_sha256": "eb1a164cfe7190b1c75b8840c46b2dc3c3fd3fce0136aa4844b4d67b996857de", "seal_sha256": "31e5e308a112fc30b7a65cc5dfa645b48453abf43144273b04a4d02bb128cad7", "checker_status_from_source": "PASS_NORMAL_AND_OPTIMIZED"},
+    {"package_id": "dee_atmos_ddp_silence_composite_row_next_consumer_wash_v1", "manifest_sha256": "5537992a45f9a0b202260fbe15d20033557e50d6fa199c4a69b5fb24e835f5dc", "seal_sha256": "9c72485a3b9537457f1164c1ac95e3b706e70f1bba3d3b1d12397eb89461e50f", "checker_status_from_source": "PASS_NORMAL_AND_OPTIMIZED"},
+    {"package_id": "dee_atmos_ddp_silence_row_reader_handoff_wash_v1", "manifest_sha256": "b6effe207fa1bd6e81f035bb7898c91bca0b50e6d4f98e33e6bbb7cdbfefb3c1", "seal_sha256": "ae23318cac110b0f00bc393e97fb9b79739a7c5d08bd137ec61ccf4e0bac1449", "checker_status_from_source": "PASS_NORMAL_AND_OPTIMIZED"},
+    {"package_id": "dee_atmos_ddp_sample_range_silence_rule_matrix_wash_v1", "manifest_sha256": "f197567214bb57adb0661dc9f078d200b445ccc9b7f04ab897b1f1c4e1115070", "seal_sha256": "40b30304a1654aa12685adf4287814f28b6a2677fb88b5dde1488847a12134d3", "checker_status_from_source": "PASS_NORMAL_AND_OPTIMIZED"}
+  ],
+  "wash_review": {
+    "source_package_manifest_and_seal_recomputed": true,
+    "source_checker_normal_and_optimized": "PASS",
+    "product_source_decompilation_or_media_in_handoff": false,
+    "implementation_readiness": "NO"
+  }
+}
