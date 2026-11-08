@@ -1,0 +1,37 @@
+{
+  "schema": "jocforge-7-1-gtc-role-projection-contract.v1",
+  "status": "CONTRACT_DEFINED_SOURCE_ROLE_JOIN_UNBOUND",
+  "count_domains": [
+    {"domain": "ADM physical BWF rows", "owner": "input/CHNA/ADM graph", "count": "N, presently 36/38 scope", "must_not_equal": ["D0 coded channel count", "JOC carrier count"]},
+    {"domain": "I0 coded channels", "owner": "independent E-AC-3 substream", "count": 6, "roles": ["L", "C", "R", "Ls", "Rs", "LFE"]},
+    {"domain": "D0 coded channel locations", "owner": "dependent E-AC-3 chanmap", "count": 4, "roles": ["Ls", "Rs", "Lrs", "Rrs"]},
+    {"domain": "JOC reconstruction carriers", "owner": "JOC flat7x profile", "count": 7, "roles": ["L", "R", "C", "Ls", "Rs", "Lrs", "Rrs"]},
+    {"domain": "coded object count", "owner": "JOC metadata", "count": 15},
+    {"domain": "reconstruction row count", "owner": "JOC metadata", "count": 15}
+  ],
+  "d0_map_projection": {
+    "chanmap_hex": "0x1A00",
+    "set_bits_msb_indexed": [3, 4, 6],
+    "bit_roles": [
+      {"bit": 3, "role": "Left Surround"},
+      {"bit": 4, "role": "Right Surround"},
+      {"bit": 6, "role": "Left/Right Rear Surround pair"}
+    ],
+    "coded_order": ["Ls", "Rs", "Lrs", "Rrs"],
+    "acmod": 5,
+    "lfeon": false,
+    "coded_channel_count": 4,
+    "adm_trackuid_channelformat_to_d0_role": "UNBOUND"
+  },
+  "gtc_owner_projection_contract": {
+    "input_identity": "resolved ADM TrackUID and channel_format_id, not a numeric row ordinal",
+    "generation_key": ["programme_id", "source_identity", "source_frame_index", "access_unit_index", "six_block_window"],
+    "i0_projection": "separate role projection for I0's six coded channels",
+    "d0_projection": "separate role projection for the four chanmap-coded D0 channels",
+    "joc_projection": "separate seven-carrier reconstruction input and 15-object model",
+    "au_invariant": "I0 and D0 receipts share one source generation and are published as one ordered AU",
+    "duplicate_or_missing_role": "reject profile plan; no index-based substitute",
+    "current_input_specific_owner_mapping": "UNBOUND"
+  },
+  "implementation_contract_not_native_observation": true
+}

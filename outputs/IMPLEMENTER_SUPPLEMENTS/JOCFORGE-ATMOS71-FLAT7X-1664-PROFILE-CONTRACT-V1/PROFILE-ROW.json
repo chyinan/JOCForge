@@ -1,0 +1,99 @@
+{
+  "schema": "jocforge-production-profile-row.v1",
+  "profile_id": "atmos71_flat7x_i0_640_d0_1024_v1",
+  "authority": "USER_AUTHORIZED_ADDITIVE_TARGET_AND_WASH_REVIEW",
+  "status": "PROFILE_CONTRACT_APPROVED; PRODUCTION_AUDIO_NOT_READY",
+  "legacy_5_1_row": "PRESERVE_UNCHANGED",
+  "automatic_fallback": false,
+  "input_scope": {
+    "format": "ADM BWF",
+    "sample_format": "PCM24",
+    "sample_rate_hz": 48000,
+    "track_count_scope": "reuse currently accepted 36/38-channel inputs only",
+    "arbitrary_n_expansion": "DEFERRED",
+    "selected_input_identity_for_a_future_run": "NOT_SELECTED"
+  },
+  "production_axes": {
+    "count": 8,
+    "names": [
+      "authored_input_profile",
+      "i0_core_carrier_profile",
+      "d0_dependent_channel_map_profile",
+      "substream_topology_and_order",
+      "per_substream_rate_allocation",
+      "joc_downmix_controls",
+      "joc_reconstruction_profile",
+      "emdf_carrier_and_single_field_policy"
+    ],
+    "validation_profile_is_separate": true
+  },
+  "i0": {
+    "role": "independent_substream",
+    "substream_id": 0,
+    "sample_rate_hz": 48000,
+    "audio_blocks": 6,
+    "samples_per_channel_per_frame": 1536,
+    "acmod": 7,
+    "lfeon": true,
+    "chanmap": "not_present",
+    "coded_channel_locations": ["L", "C", "R", "Ls", "Rs", "LFE"],
+    "rate_kbps": 640,
+    "frame_bytes": 2560,
+    "rate_status": "USER_TARGET_AND_SANITIZED_RATE_RECEIPT"
+  },
+  "d0": {
+    "role": "dependent_substream",
+    "substream_id": 0,
+    "sample_rate_hz": 48000,
+    "audio_blocks": 6,
+    "samples_per_channel_per_frame": 1536,
+    "acmod": 5,
+    "lfeon": false,
+    "chanmap_hex": "0x1A00",
+    "chanmap_set_bits_msb_indexed": [3, 4, 6],
+    "coded_channel_locations": ["Ls", "Rs", "Lrs", "Rrs"],
+    "rate_kbps": 1024,
+    "frame_bytes": 4096,
+    "rate_status": "USER_TARGET_AND_SANITIZED_RATE_RECEIPT",
+    "source_adm_role_to_coded_channel_join": "UNBOUND"
+  },
+  "access_unit": {
+    "ordered_substreams": ["I0", "D0"],
+    "aggregate_rate_kbps": 1664,
+    "total_frame_bytes": 6656,
+    "duration_ms": 32,
+    "single_1664_kbps_eac3_frame": false,
+    "same_source_generation_required": true,
+    "atomic_publish_required": true,
+    "partial_i0_only_publish": "REJECT"
+  },
+  "joc": {
+    "reconstruction_profile": "flat7x",
+    "profile_index": 1,
+    "reconstruction_carrier_count": 7,
+    "carriers": ["L", "R", "C", "Ls", "Rs", "Lrs", "Rrs"],
+    "coded_object_count": 15,
+    "reconstruction_rows": 15,
+    "complexity_index": 16,
+    "phase_signaling": false,
+    "mode_and_phase_algorithm_controls": "UNBOUND_FOR_THIS_TARGET",
+    "profile_index_is_not_downmix_mode_or_phase_flag": true
+  },
+  "emdf": {
+    "target_substream": "D0",
+    "target_block_zero_based": 2,
+    "target_location": "single_audio_block_skipfld",
+    "maximum_complete_container_bytes": 511,
+    "cross_skipfld_fragmentation": "FORBIDDEN",
+    "oversize_or_missing_container": "FAIL_CLOSED_BEFORE_AU_PUBLISH",
+    "all_au_fit_status": "NOT_RUN",
+    "target_block_ordinal_source_status": "USER_SPECIFIED; VERIFY_IN_NEW_OUTPUT"
+  },
+  "production_gates": {
+    "gtc_source_role_projection": "UNBOUND",
+    "native_d0_audio_algorithm": "UNBOUND",
+    "all_access_unit_emdf_fit": "NOT_RUN",
+    "new_output": "NOT_RUN",
+    "production_allowed": false
+  }
+}

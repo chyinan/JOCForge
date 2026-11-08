@@ -50,4 +50,25 @@ EOF 不新增 codec flush。ordinary pending writer `4247` 和 `4248` 丢弃。I
 
 `g`、`q`、`s`、`d`、writer 和 `j` 必须分别使用 `FrontendCallbackIndex`、`ReaderInvocationIndex`、`CodecSourceIndex`、`JocDispatchIndex`、`JocWriterIndex` 和 `PublishedAuIndex`。公共接口不得使用裸 `usize` 传递时间域。
 
+## Additive flat7x AU plan (contract only)
+
+The approved 7.1 profile contract is not a current executable production path; `production_allowed=false`. It preserves the existing 5.1 row and does not define the D0 audio algorithm or input-specific GTC role map.
+
+```mermaid
+flowchart LR
+  S[Same-generation source-role plan] --> I0[I0 frame receipt]
+  S --> D0[D0 frame receipt]
+  I0 --> A[Ordered AU plan: I0 then D0]
+  D0 --> A
+  A --> M[Complete EMDF in D0 block 2]
+  M --> G[Integrity receipt]
+  G --> P[F15 atomic publication]
+  I0 -. missing .-> R[Reject whole AU]
+  D0 -. missing .-> R
+  M -. missing or over 511 bytes .-> R
+  G -. missing .-> R
+```
+
+The plan requires one I0 and one D0 frame for the same source generation. EMDF is one complete skipfld container with a 511-byte maximum; cross-skipfld fragmentation is forbidden. Missing/oversize metadata or any missing frame, role, or integrity receipt rejects the whole AU before publication. All-AU fit, runtime output, GTC source-role projection, and native D0 audio remain `NOT_RUN`/`UNBOUND`; no I0-only partial AU is published.
+
 独立 validation 读取最终发布结果，调用外部工具解码或比较，输出带工具身份的证据。它不能反馈生产算法常数，不能作为编码器主体。FFmpeg 不属于 production 依赖图。

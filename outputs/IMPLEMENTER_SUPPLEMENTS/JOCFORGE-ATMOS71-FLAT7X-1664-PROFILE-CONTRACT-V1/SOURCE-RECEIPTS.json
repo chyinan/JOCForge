@@ -1,0 +1,68 @@
+{
+  "schema": "jocforge-7-1-profile-wash-source-receipts.v1",
+  "draft_package": {
+    "zip_sha256": "e152aac21356e958b696043ac42a5909e728d80459cd4a5d22f7cf54577fb4a1",
+    "manifest_sha256": "a3b0f42e7112f199ead75f860240ac181503a78e8b50c2d3c615b33aa64ce9e6",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "draft_is_not_handoff_material": true
+  },
+  "isolated_checkout_review": {
+    "draft_recorded_head": "bf66973dea273038cb618980866a5e419a263cf9",
+    "live_head_at_wash_review": "a7b7aaad5d5b21babe06b57f660958c7127454c5",
+    "live_remote_tracking_ref": "01c9ce35dc0b5dacb617a4c338af6dd6418a443d",
+    "branch": "experimental/independent-encoder",
+    "working_tree_dirty": true,
+    "draft_receipted_source_files": 29,
+    "current_source_file_hash_matches": 29,
+    "wash_modified_checkout": false,
+    "dirty_files_cleaned_or_overwritten": false
+  },
+  "prior_structure_receipts": [
+    {"identity": "official-vs-mode21-report", "sha256": "1ced2fcf6bb4ea09a4977c918689989db88018038b267bb74977d0e0ac1273d9", "rehash_status": "PASS"},
+    {"identity": "official-vs-mode21-structure-summary", "sha256": "25b0c6488a92d0052164683ac051f20a5751d9ba76fdc2f133478730c5ccdce7", "rehash_status": "PASS"},
+    {"identity": "official-vs-mode21-evidence-summary", "sha256": "8ebfbaf854c7d5e7d30958b8faf180246078e463cf7926d8f9464ea64590409b", "rehash_status": "PASS"}
+  ],
+  "approved_5_1_baseline": {
+    "implementation_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "selected_profile_parameters_sha256": "af08ef531f8708ab81cd6af0bf8ae71504ffb19ba76d5fb8571b1ae8db53c747",
+    "full_song_profile_vector_sha256": "5d0fa84a3bf01182f933a066d59c9db874bff4dc84b51755061e85e60ece6ebf",
+    "selected_profile_parameters_role": "mode0/phase_flag1 and carrier_count5; not a flat7x reconstruction index"
+  },
+  "observed_5_1_joc_profile": {
+    "package_id": "SAMPLE6-FULL-OUTPUT-JOC-PARSE-RECEIPT-V1",
+    "manifest_sha256": "571225e9cc8f0e56f3b814c79b11a957820b718fd0a7bd156d04f4770fca62bd",
+    "package_seal_file_sha256": "90ecd532c3162b6c4283778147c8c8c43b79ae486bbc2bba432e1b89a1bc040d",
+    "checker_normal": "PASS",
+    "checker_python_optimized": "PASS",
+    "observed_profile": "index 3 / five_x_phase / 5 carriers / 15 objects / complexity 16"
+  },
+  "official_7_1_structure_receipt": {
+    "source": "hash-bound sanitized prior structure summary only; the official MKA and elementary stream were not opened in this review",
+    "observed": "I0+D0; flat7x/index1; chanmap 0x1A00; 7 carriers; 15 objects/rows; complexity 16; one D0 skipfld carrier per AU",
+    "official_media_bytes_copied_or_read": false
+  },
+  "mode21_rate_receipt": {
+    "role": "I0=640 kbps and D0=1024 kbps rate-allocation summary only",
+    "failed_ec3_hash_or_bytes_in_this_package": false,
+    "cross-skipfld behavior_used_as_template": false
+  },
+  "external_primary_sources": [
+    {
+      "standard": "ETSI TS 102 366 V1.4.1",
+      "url": "https://www.etsi.org/deliver/etsi_ts/102300_102399/102366/01.04.01_60/ts_102366v010401p.pdf",
+      "clauses": ["4.4.2.3 Table 4.3", "4.4.3.59-4.4.3.60", "E.1.3.1.8 Table E.1.4"]
+    },
+    {
+      "standard": "ETSI TS 103 420 V1.2.1",
+      "url": "https://www.etsi.org/deliver/etsi_ts/103400_103499/103420/01.02.01_60/ts_103420v010201p.pdf",
+      "clauses": ["8.2"]
+    }
+  ],
+  "restricted_inputs": {
+    "official_mka_path_or_hash_forwarded": false,
+    "mode21_ec3_path_hash_or_bytes_forwarded": false,
+    "historical_main_source_code_forwarded": false,
+    "private_key_or_license_data": false
+  }
+}

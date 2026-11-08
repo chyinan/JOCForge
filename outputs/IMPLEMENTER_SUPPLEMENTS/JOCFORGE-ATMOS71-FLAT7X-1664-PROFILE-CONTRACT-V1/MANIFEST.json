@@ -1,0 +1,44 @@
+{
+  "schema": "jocforge-profile-contract-supplement.v1",
+  "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+  "audience": "IMPLEMENTATION_EVIDENCE_ONLY",
+  "status": "WASH_APPROVED_TARGET_CONTRACT; PRODUCTION_AUDIO_NOT_READY",
+  "implementation_ready": "NO_AUDIO_PRODUCTION",
+  "files": [
+    {
+      "path": "ARCHITECTURE-DECISION-ADDENDUM.md",
+      "bytes": 2770,
+      "sha256": "a35db11231e5226e2dc61447665021c8683e16941d72d0902f271f89ed78abea"
+    },
+    {
+      "path": "CHECK.py",
+      "bytes": 6919,
+      "sha256": "59e45a8ea0bb316306d55964dba35257661c470497d95c79b5d7ed39c4090698"
+    },
+    {
+      "path": "COUNT-DOMAINS-AND-GTC-PROJECTION.json",
+      "bytes": 2142,
+      "sha256": "568ac7049c65845f5c2f12515a7bfb31a293d38306ccc026115fda8ee3bee53c"
+    },
+    {
+      "path": "EMDF-AND-VALIDATION-DISPOSITION.json",
+      "bytes": 2115,
+      "sha256": "4375e778eda68482035abecf6dea115aaa7ee289deff07babecf0d85b6f7115a"
+    },
+    {
+      "path": "PROFILE-ROW.json",
+      "bytes": 3296,
+      "sha256": "9a7f1f92da546dfd4d5d19b7c778423b0ab7f41143c7314c1ecc698e73cec137"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 3603,
+      "sha256": "f9a14d3a0c6d01c9438f65b8cd7f3bb7e08f8bef98d594417b684bd953f80f95"
+    },
+    {
+      "path": "WASH-REVIEW.md",
+      "bytes": 4261,
+      "sha256": "1d6d3047a1da4e0c27e6bf1fe9bf685173a96dd99808491f9b0a0ddcda8761c3"
+    }
+  ]
+}

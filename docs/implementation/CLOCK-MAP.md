@@ -209,6 +209,7 @@
 | F01E/washed-custom-trim-first-effective-consumer-partial | — | `No runtime trim callback or audio-frame timing is established.` |
 | F01E/washed-ddp-silence-composite-schedule-partial | — | `Static sample-count and composite schedule formulas only; no Reader sample layout, zero-fill, PTS, or track-length clock is established.` |
 | F01E/washed-ddp-output-timecode-frame-rate-partial-boundary | — | `The supplement binds schema and candidate property paths only; no runtime rate conversion or frame clock is selected.` |
+| F01E/approved-atmos71-flat7x-1664-profile-contract | — | `The contract row lists 48 kHz and six-block/1,536-sample dimensions but does not establish runtime clock behavior.`<br>`No runtime callback clock, D0 source-role projection, or output observation is established.` |
 | F03G/target-slot-install | — | `Pure per-callback value transition; no clock or committed state is owned.` |
 | F03C/candidate-selector | — | `Each selector call initializes cold scratch; no callback/source/AU counter or cross-call selector state is owned.` |
 | F03C/selector-score-choice | — | `No state or clock is owned.` |

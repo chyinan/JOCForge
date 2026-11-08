@@ -4,9 +4,9 @@
 
 本仓库不继承 `469cc61cb4345c89dc96cb205f991ac23c26457b` 的 Git 历史。该值只作为批准设计参考身份。当前文件从已核验的 IMPLEMENTER_PACKAGE 独立物化，不读取或复制旧仓库源码。
 
-## AD-002 只支持 selected profile
+## AD-002 当前 production profile 与 additive contract 分离
 
-七个 profile 维度必须显式建模。当前只登记 `PROFILE-DIMENSIONS.md` 中的一行。其他组合返回 `UNSUPPORTED_PROFILE`。不设计未来 profile 框架，不提供自动降级或 fallback。
+当前 Rust production resolver 仅接受 `PROFILE-DIMENSIONS.md` 中既有 5.1 row；`EncodingProfile` 有六个 production 字段。此前关于七个 profile dimensions 的概括不适用于该 struct。另一个已批准的 Atmos 7.1 flat7x / 1664 row 是 additive profile contract，尚未 materialize 为 production path，`production_allowed=false`。不自动 fallback 到 5.1。
 
 ## AD-003 唯一状态 owner
 
@@ -39,3 +39,11 @@ integrity owner 的局部提交不发布 frame，也不代表全局 CALLBACK com
 keyless integrity root 先作为独立 direct slice 验证。它返回 SOURCE、DISPATCH、AU 三个 provisional stage receipts，并在成功后更新本地 owner state。任何失败都丢弃所有临时输出，保持 committed state 不变，并将 attempt 标记为 `RETIRED`。
 
 此 slice 不接入 CallbackTransaction。未来 coordinator 仍须在 12 个 owner roots 和所需 source-stage roots 完整后，统一提交 CALLBACK receipt。当前局部 commit count 不等于 global top-level commit count。
+
+## AD-010 additive Atmos 7.1 target contract
+
+The sealed `JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1` defines one additive target row. It preserves the existing 5.1 row, native I0 path, multirate choices, and output identity; it does not enable production output or automatic fallback.
+
+The legacy `SelectedMode0Phase1Index3` value combines distinct meanings. For the contract, downmix mode and algorithm phase controls belong to `JocDownmixProfile`; reconstruction profile belongs to `JocReconstructionProfile`. The 5.1 evidence is mode0/phase-flag1 plus reconstruction `five_x_phase`/index3. The target reconstruction is `flat7x`/index1. Never interpret profile index as mode/phase, or wire `phase_signaling` as the algorithm phase flag. Target mode/phase controls remain `UNBOUND`.
+
+The target access unit contains ordered I0 then D0 receipts from the same source generation. F12 supplies separate I0/D0 frames; F13 binds one complete EMDF container to D0 audio-block skipfld block 2; an integrity receipt is required; F15 publishes the whole AU atomically. A missing frame/role/metadata/integrity receipt or a container above 511 bytes rejects the entire AU; I0-only publication is forbidden. GTC source-role projection, native D0 audio algorithm, and all-AU EMDF fit remain `UNBOUND/NOT_RUN`.

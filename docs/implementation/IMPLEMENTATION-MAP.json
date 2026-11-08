@@ -10180,6 +10180,170 @@
           ],
           "validation_boundary": "The DDP schema statically declares ten timecode_frame_rate enum tokens and default not_indicated. A host setter candidate parses the same key and stores to receiver+0x188, while a DDP property-map reader candidate checks constructor offset +0x3f8 and queries +0xa0. The host setter receiver is not joined to the selected DDP output node; the reader caller owner is unbound. The same key occurs on input and output nodes, so no transfer, selected value, runtime admission, timecode conversion, or output effect is inferred. E-439 is only a historical static-research receipt, not current launch authorization.",
           "delivery_scope": "EXTERNAL_REFERENCE_ONLY_NO_TIMECODE_CONVERSION_OR_OUTPUT_ENABLEMENT"
+        },
+        {
+          "slice_id": "approved-atmos71-flat7x-1664-profile-contract",
+          "mapping_status": "APPROVED_ADDITIVE_7_1_PROFILE_CONTRACT__PRODUCTION_GATES_OPEN",
+          "implementation_status": "PROFILE_SCHEMA_AND_FAIL_CLOSED_AU_PLAN_APPROVED__PRODUCTION_AUDIO_NOT_READY",
+          "implementation_requirement": false,
+          "owner": "UNBOUND",
+          "scope": "Additive approved 7.1 flat7x/1664 profile contract only. It preserves the existing 5.1 production row, separates I0 and D0 carrier/rate roles, splits downmix controls from reconstruction profile, and requires an ordered same-generation I0+D0 AU with fail-closed atomic publication. Production remains disabled: GTC source-role projection, native D0 audio algorithm, and all-AU EMDF fit are UNBOUND/NOT_RUN.",
+          "dependencies": [],
+          "spec_files": [
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/ARCHITECTURE-DECISIONS.md",
+            "docs/architecture/DATAFLOW.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The contract row lists 48 kHz and six-block/1,536-sample dimensions but does not establish runtime clock behavior.",
+              "No runtime callback clock, D0 source-role projection, or output observation is established."
+            ]
+          },
+          "parameters": {
+            "kind": "APPROVED_ADDITIVE_ATMOS71_FLAT7X_PROFILE_CONTRACT",
+            "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/COUNT-DOMAINS-AND-GTC-PROJECTION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/EMDF-AND-VALIDATION-DISPOSITION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/ARCHITECTURE-DECISION-ADDENDUM.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/WASH-REVIEW.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/CHECK.py"
+            ],
+            "supplement_manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+            "supplement_seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "production_allowed": false,
+            "legacy_5_1_row": "PRESERVE_UNCHANGED",
+            "automatic_fallback": false,
+            "input_scope": {
+              "format": "ADM BWF",
+              "sample_format": "PCM24",
+              "sample_rate_hz": 48000,
+              "track_count_scope": "reuse currently accepted 36/38-channel inputs only",
+              "arbitrary_n_expansion": "DEFERRED",
+              "selected_input_identity": "NOT_SELECTED"
+            },
+            "production_axes": [
+              "authored_input_profile",
+              "i0_core_carrier_profile",
+              "d0_dependent_channel_map_profile",
+              "substream_topology_and_order",
+              "per_substream_rate_allocation",
+              "joc_downmix_controls",
+              "joc_reconstruction_profile",
+              "emdf_carrier_and_single_field_policy"
+            ],
+            "i0": {
+              "substream_id": 0,
+              "role": "independent",
+              "acmod": 7,
+              "lfeon": true,
+              "channels": [
+                "L",
+                "C",
+                "R",
+                "Ls",
+                "Rs",
+                "LFE"
+              ],
+              "rate_kbps": 640,
+              "frame_bytes": 2560,
+              "blocks": 6,
+              "samples_per_channel": 1536
+            },
+            "d0": {
+              "substream_id": 0,
+              "role": "dependent",
+              "chanmap": "0x1A00",
+              "coded_channel_locations": [
+                "Ls",
+                "Rs",
+                "Lrs",
+                "Rrs"
+              ],
+              "rate_kbps": 1024,
+              "frame_bytes": 4096,
+              "blocks": 6,
+              "samples_per_channel": 1536,
+              "source_adm_role_join": "UNBOUND"
+            },
+            "access_unit": {
+              "ordered_substreams": [
+                "I0",
+                "D0"
+              ],
+              "aggregate_rate_kbps": 1664,
+              "bytes": 6656,
+              "duration_ms": 32,
+              "single_1664_kbps_eac3_frame": false,
+              "same_source_generation": true,
+              "atomic_publish": true,
+              "partial_i0_only": "REJECT"
+            },
+            "joc": {
+              "downmix_mode_and_algorithm_phase": "UNBOUND_FOR_TARGET",
+              "reconstruction_profile": "flat7x",
+              "profile_index": 1,
+              "carriers": 7,
+              "coded_objects": 15,
+              "reconstruction_rows": 15,
+              "complexity_index": 16,
+              "phase_signaling": false,
+              "index_is_not_mode_or_phase": true
+            },
+            "emdf": {
+              "substream": "D0",
+              "block_zero_based": 2,
+              "maximum_container_bytes": 511,
+              "cross_skipfld_fragmentation": "FORBIDDEN",
+              "oversize_or_missing": "FAIL_CLOSED_BEFORE_AU_PUBLISH",
+              "all_au_fit": "NOT_RUN"
+            },
+            "validation": {
+              "target": "OpenJOC 7.1.4 validation only",
+              "vendor_compat": "PASS_ON_REFERENCE",
+              "etsi_strict": "FAIL_PAYLOAD_CONFIGURATION_FLAGS",
+              "production_profile_separate": true
+            },
+            "production_gates": {
+              "gtc_source_role_projection": "UNBOUND",
+              "native_d0_audio_algorithm": "UNBOUND",
+              "all_access_unit_emdf_fit": "NOT_RUN",
+              "new_output": "NOT_RUN"
+            },
+            "validation_boundary": "Additive approved 7.1 flat7x/1664 profile contract only. It preserves the existing 5.1 production row, separates I0 and D0 carrier/rate roles, splits downmix controls from reconstruction profile, and requires an ordered same-generation I0+D0 AU with fail-closed atomic publication. Production remains disabled: GTC source-role projection, native D0 audio algorithm, and all-AU EMDF fit are UNBOUND/NOT_RUN."
+          },
+          "vectors": {
+            "kind": "PROFILE_CONTRACT_NO_PRODUCTION_OUTPUT_VECTOR",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "The supplement records a target contract and validation disposition only."
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/EMDF-AND-VALIDATION-DISPOSITION.json"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Input-specific GTC source-role mapping and selected source identity.",
+            "Native D0 audio algorithm and production D0 frame output.",
+            "EMDF fit for all generated AUs, new 7.1 output, and W04/audio acceptance.",
+            "Arbitrary-N support and automatic fallback; both remain disabled/deferred."
+          ],
+          "validation_boundary": "Additive approved 7.1 flat7x/1664 profile contract only. It preserves the existing 5.1 production row, separates I0 and D0 carrier/rate roles, splits downmix controls from reconstruction profile, and requires an ordered same-generation I0+D0 AU with fail-closed atomic publication. Production remains disabled: GTC source-role projection, native D0 audio algorithm, and all-AU EMDF fit are UNBOUND/NOT_RUN.",
+          "delivery_scope": "APPROVED_TARGET_PROFILE_CONTRACT_ONLY_PRODUCTION_AUDIO_NOT_READY"
         }
       ]
     },
@@ -71985,6 +72149,31 @@
       "not_run": [
         "Host-to-selected-DDP owner/property map join, runtime admission, conversion effect, and output behavior.",
         "No launch authorization is included; E-439 remains historical only."
+      ]
+    },
+    {
+      "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+      "manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+      "supplement_seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+      "functional_ids": [
+        "F01E",
+        "F12",
+        "F13",
+        "F14",
+        "F15"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "ADDITIVE_7_1_FLAT7X_1664_PROFILE_CONTRACT_APPROVED; PRODUCTION_ALLOWED_FALSE; GTC_D0_AUDIO_AND_ALL_AU_FIT_OPEN",
+      "not_run": [
+        "GTC source-role projection, native D0 audio algorithm, all-AU EMDF fit, new output, and W04 acceptance."
       ]
     }
   ]

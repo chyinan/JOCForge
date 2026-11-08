@@ -8,4 +8,4 @@
 
 模块责任见 MODULE-MAP，状态约束见 STATE-OWNERSHIP，流程见 DATAFLOW。Profile 维度见 PROFILE-DIMENSIONS，公共边界见 PUBLIC-API，决策见 ARCHITECTURE-DECISIONS。权威规格包已提供 GTC、owner projection、F01～F15 条款、时钟和 selected profile 功能规格。本实现只使用批准包内材料，不从旧实现猜测时钟、owner、表或算法。
 
-架构批准只允许按 selected profile 分阶段实现。未来 profile 不在当前批准范围。独立实现验证、W04 产品验收和用户试听仍未运行。禁止从可编译或测试通过推导功能完成。
+架构批准允许按既有 selected 5.1 profile 分阶段实现，并另行保留 Atmos 7.1 flat7x/1664 的 additive profile contract；该新增 contract 尚非 production-enabled（`production_allowed=false`）。GTC source-role projection、native D0 audio algorithm 和 all-AU EMDF fit 仍未闭合。独立实现验证、W04 产品验收和用户试听仍未运行。禁止从可编译或测试通过推导功能完成。

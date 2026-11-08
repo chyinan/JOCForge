@@ -1,24 +1,24 @@
 # Profile 维度
 
-Production `EncodingProfile` 由六个正交维度组成。Validation 使用独立 `ValidationProfile`。公共 API 不得把 render target 传入 production resolver。
+当前 Rust production `EncodingProfile` 仍是六个字段，且只有既有 5.1 row 可进入 production resolver。另有一个经批准的 additive 7.1 flat7x profile contract，仅定义目标 schema 与 fail-closed AU plan；其 `production_allowed=false`，不代表实现或输出支持。Validation 使用独立 `ValidationProfile`，公共 API 不得把 render target 传入 production resolver。
 
 | 维度 | 类型 | 当前唯一允许值 | 拒绝规则 |
 |---|---|---|---|
 | Authored input | `AuthoredInputProfile` | ADM BWF；PCM24；48 kHz；实际行数随输入携带 | 输入行数必须与 RIFF PCM channel count 和 CHNA declared track count 一致，并满足选定 ADM graph 约束；不补齐、截断或重排。 |
 | Core carrier | `CoreCarrierProfile` | 5.1；六 carrier | 其他布局或 carrier 数返回 `UNSUPPORTED_PROFILE`。 |
-| JOC downmix | `JocDownmixProfile` | DEE selected mode0；phase1；index3 | 其他 mode、phase 或 index 返回 `UNSUPPORTED_PROFILE`。 |
+| JOC selector（既有 5.1 编码） | legacy `SelectedMode0Phase1Index3` | 当前 row 的组合值；mode0/phase1 与 reconstruction index3/five_x_phase 的语义拆分见下文。 | 既有 5.1 row 不变；新 target 不复用该组合枚举。 |
 | Substream topology | `SubstreamTopology` | 1 个 independent；0 个 dependent | multi-independent 或任意 dependent 返回 `UNSUPPORTED_PROFILE`。 |
 | Codec rate | `CodecRateProfile` / `SelectedDataRate` | 48 kHz 下显式单值 384、448、576、640、768 或 1,024 kbps；6 blocks；1,536 samples/AU；每档对应一个固定 AU 字节数 | 不在六值表内、multi-token 或无法解析的 rate 返回 `UNSUPPORTED_PROFILE`。其他布局和采样率仍不支持。 |
 | EMDF carriage | `EmdfCarriageProfile` | `deployed_compat`（默认）或 `etsi_emdf`（可选） | 未登记模式返回 `UNSUPPORTED_PROFILE`，不得降级。 |
 | Validation render target | `ValidationProfile.render_target` | OpenJOC 7.1.4，仅用于 validation | 不参与 production profile resolution。 |
 
-## Supported row
+## 当前 supported production row（既有 5.1）
 
 当前支持一组共享其余维度的 production profile row。`EmdfCarriageProfile` 在各 row 内允许两个受审 carriage mode。下表不包含 `RenderTarget`。
 
 | AuthoredInputProfile | CoreCarrierProfile | JocDownmixProfile | SubstreamTopology | CodecRateProfile | EmdfCarriageProfile |
 |---|---|---|---|---|---|
-| selected ADM BWF / PCM24 / 48 kHz；N 个物理行，10 ≤ N ≤ 256，CHNA=N，10 个 bed + N−10 个 object | 5.1 / 六 carrier | mode0 / phase1 / index3 | single independent / zero dependent | 每个显式单值对应下表：6 blocks / 1,536 samples/AU | `deployed_compat` 或 `etsi_emdf` |
+| selected ADM BWF / PCM24 / 48 kHz；N 个物理行，10 ≤ N ≤ 256，CHNA=N，10 个 bed + N−10 个 object | 5.1 / 六 carrier | legacy mode0 / phase1 / index3 composite；语义拆分见下文 | single independent / zero dependent | 每个显式单值对应下表：6 blocks / 1,536 samples/AU | `deployed_compat` 或 `etsi_emdf` |
 
 | data_rate（kbps） | selector code | E-AC-3 `frmsiz` code | AU bytes | 33 AU bytes |
 |---:|---:|---:|---:|---:|
@@ -30,6 +30,36 @@ Production `EncodingProfile` 由六个正交维度组成。Validation 使用独�
 | 1,024 | 5 | 2,047 | 4,096 | 135,168 |
 
 The six size/code pairs are bounded to the selected 48 kHz/5.1 profile and Wash's 33-syncframe observations. Only one explicit XML token is admitted. The schema's optional default and multi-token `xs:list` runtime semantics remain unbound and are not enabled. This row expansion does not establish DEE runtime host dispatch for every setting or full end-to-end six-rate output equivalence.
+
+## 5.1 legacy selector semantic split
+
+The 5.1 row remains unchanged, but `SelectedMode0Phase1Index3` must not be treated as one semantic downmix setting. The approved contract separates its evidence into:
+
+| Legacy component | Contract concept | 5.1 evidence value |
+|---|---|---|
+| `config_mode` | `JocDownmixProfile.mode` | 0 |
+| `phase_flag` | `JocDownmixProfile.algorithm_phase_control` | 1 |
+| reconstruction profile index | `JocReconstructionProfile` | `five_x_phase` / index 3 |
+
+`JocReconstructionProfile` is distinct from the downmix mode, algorithm phase flag, and the wire `phase_signaling` bit. This documents a type/meaning split; it does not claim that the current Rust enum or production resolver has been changed.
+
+## Approved additive target contract: Atmos 7.1 flat7x / 1664
+
+Status: `PROFILE_CONTRACT_APPROVED; PRODUCTION_AUDIO_NOT_READY`. This is a separate target row. It preserves the existing 5.1 production row and does not add automatic fallback. Only currently accepted 36/38-channel inputs are in scope; arbitrary-N expansion is deferred, and a future input identity is not selected.
+
+| Target axis/type | Contract value | Gate/status |
+|---|---|---|
+| `AuthoredInputProfile` | ADM BWF, PCM24, 48 kHz; reuse currently accepted 36/38 physical rows | Arbitrary-N expansion `DEFERRED`; selected input identity `NOT_SELECTED`. |
+| I0 `CoreCarrierProfile` | Independent substream I0; substream ID 0; `acmod=7`, `lfeon=1`; coded `L,C,R,Ls,Rs,LFE`; 6 blocks / 1,536 samples; 640 kbps / 2,560 bytes | Target contract; same-generation AU join required. |
+| D0 `DependentChannelMapProfile` | Dependent substream D0; substream ID 0; `chanmap=0x1A00` (MSB-indexed bits 3,4,6); `acmod=5`, `lfeon=0`; coded `Ls,Rs,Lrs,Rrs`; 6 blocks / 1,536 samples; 1,024 kbps / 4,096 bytes | ADM role → D0 coded-channel join `UNBOUND`; native D0 audio algorithm `UNBOUND`. |
+| `SubstreamTopology` / AU order | One independent I0 plus one dependent D0; order `[I0,D0]`, same source generation, atomic publication | Aggregate 1,664 kbps, 6,656 bytes, 32 ms; not one 1,664 kbps E-AC-3 frame. Partial I0-only publication is rejected. |
+| `PerSubstreamRateAllocation` | I0=640 kbps; D0=1,024 kbps | Target contract; native D0 rate writer/output `NOT_RUN`. |
+| `JocDownmixProfile` | Separate mode and algorithm phase controls | Target mode/phase values `UNBOUND`; do not copy the 5.1 mode0/phase1 values by default. |
+| `JocReconstructionProfile` | `flat7x`, profile index 1; 7 non-LFE reconstruction carriers; 15 coded objects / 15 reconstruction rows; complexity index 16 | Index 1 is not downmix mode or phase flag. `phase_signaling=false` is a separate wire field. |
+| `EmdfCarriageProfile` | One complete EMDF container in D0 audio-block `skipfld`, zero-based block 2; maximum 511 bytes; cross-field fragmentation forbidden | Missing/oversize container fails closed before publishing the AU. All-AU fit `NOT_RUN`; verify block ordinal on a new output. |
+| `ValidationProfile.render_target` | OpenJOC 7.1.4 and separate vendor-compatible / ETSI-strict disposition | Validation only; not part of production profile resolution. |
+
+The approved AU plan requires one I0 and one D0 frame receipt from the same source generation, complete target metadata on D0 block 2, and an integrity receipt before F15 atomically publishes `[I0,D0]`. If any frame, role receipt, metadata bound, integrity receipt, or size check is missing, reject the whole AU; never publish I0 alone. `production_allowed=false`: GTC source-role projection, D0 audio algorithm, all-AU EMDF fit, and a new 7.1 output remain `UNBOUND/NOT_RUN`.
 
 ### 输入行数扩展的边界
 

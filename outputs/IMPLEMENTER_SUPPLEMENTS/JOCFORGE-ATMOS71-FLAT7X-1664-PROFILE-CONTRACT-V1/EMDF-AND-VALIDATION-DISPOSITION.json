@@ -1,0 +1,48 @@
+{
+  "schema": "jocforge-7-1-emdf-validation-disposition.v1",
+  "target_carriage": {
+    "substream": "last_dependent_substream_D0",
+    "block_zero_based": 2,
+    "field": "one complete skipfld container",
+    "maximum_container_bytes": 511,
+    "container_overflow": "fail closed before publishing any part of the AU",
+    "continuation_into_next_skipfld": "forbidden",
+    "target_emdf_fit_for_all_generated_aus": "NOT_RUN"
+  },
+  "observed_official_reference": {
+    "au_count": 23033,
+    "carrier": "D0 audio_block_skipfld",
+    "single_field_parse_errors": 0,
+    "user_target_block_ordinal": 2,
+    "block_ordinal_in_sanitized_structure_summary": "not independently exposed; keep as target requirement and verify on new output",
+    "observed_vendor_compat": "PASS",
+    "etsi_strict": "FAIL_PAYLOAD_CONFIGURATION_FLAGS",
+    "strict_failure_detail": "payload IDs 11 and 14 use codecdatae=0 in the observed official stream"
+  },
+  "standards": {
+    "eac3_channel_map": {
+      "reference": "ETSI TS 102 366 V1.4.1, clauses E.1.3.1.8 and Table E.1.4",
+      "chanmap_bit_numbering": "bit 0 is the MSB",
+      "0x1A00_mapping": "bits 3, 4 and 6 => Left Surround, Right Surround, Left/Right Rear Surround pair",
+      "acmod_reference": "ETSI TS 102 366 V1.4.1 Table 4.3: acmod 5 is 3/1, four full-band channels"
+    },
+    "emdf_location": {
+      "reference": "ETSI TS 103 420 V1.2.1 clause 8.2",
+      "normative_requirement": "when dependent substreams exist, EMDF with OAMD/JOC payloads is carried in the last dependent substream",
+      "exact_block2_skipfld": "observed/user-target-specific; not claimed normative"
+    },
+    "skip_field_capacity": {
+      "reference": "ETSI TS 102 366 V1.4.1 clauses 4.4.3.59-4.4.3.60",
+      "skipl_width_bits": 9,
+      "maximum_bytes": 511,
+      "field_semantics": "dummy bytes to skip"
+    }
+  },
+  "use_constraints": {
+    "mode21_failed_carrier_as_template": false,
+    "mode21_rate_allocation_only": true,
+    "official_sample_media_included": false,
+    "strict_etsi_compliance_claim": false,
+    "future_output_must_report_both_validation_modes": true
+  }
+}

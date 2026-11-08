@@ -1609,3 +1609,11 @@ Wash package `DEE-ADM-DDP-SILENCE-COMPOSITE-SCHEDULE-PARTIAL-V1` (manifest SHA-2
 ## 2026-11-09: DDP output timecode frame-rate partial boundary
 
 Wash package `DEE-ATMOS-DDP-TIMECODE-FRAME-RATE-BOUNDARY-PARTIAL-V1` (manifest SHA-256 `2b12dee6d108cd21f4076730b533159f9063aa696ec5ef0c60c5694bc01f0158`, seal SHA-256 `610bdcfbb40a28fe5488a1a7b3121e0f88735797193d488614d51d48aa0ed0ac`) binds the DDP schema enum/default and static host setter (`+0x188`) / property-reader (`+0x3f8`, map `+0xa0`) candidates. The selected output owner and setter-to-reader transfer remain `UNBOUND`; runtime admission/conversion/output remain `NOT_RUN`. The input field is distinct even though the key string is the same. The E-439 snapshot is historical and grants no launch authority.
+
+## 2026-11-09: additive Atmos 7.1 flat7x / 1664 profile contract
+
+The sealed package `JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1` (manifest SHA-256 `7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714`, seal SHA-256 `2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20`) approves one additive 7.1 target contract while preserving the existing 5.1 row. This is not a production-enabled profile: `production_allowed=false`, no automatic fallback, and arbitrary-N expansion remains deferred.
+
+The contract separates eight axes, including I0 six-channel/640 kbps and D0 `chanmap=0x1A00` four-location/1024 kbps profiles, ordered `[I0,D0]` same-generation AU, distinct downmix controls and `flat7x/index1` reconstruction profile, and a single EMDF container on D0 block 2. The legacy 5.1 `SelectedMode0Phase1Index3` meaning is split into mode0/phase-flag1 and reconstruction `five_x_phase/index3`; target mode/phase controls remain `UNBOUND`. A missing frame/role/metadata/integrity receipt or EMDF over 511 bytes rejects the entire AU before publication; cross-skipfld fragmentation and I0-only partial publication are forbidden by contract.
+
+GTC source-role projection, native D0 audio algorithm, and all-AU EMDF fit remain `UNBOUND/NOT_RUN`. OpenJOC 7.1.4 remains validation-only; the cited reference's vendor-compatible disposition is PASS and ETSI-strict disposition is FAIL for payload configuration flags, not a result for a new JOCForge output.
