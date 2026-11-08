@@ -1,0 +1,49 @@
+{
+  "controlled_field": "dialogue_intelligence",
+  "metering_mode": "1770-4",
+  "outputs_or_effects_in_vector": "NONE",
+  "pairs": [
+    {
+      "arms": [
+        {
+          "dialogue_intelligence": false,
+          "new_run": "NOT_RUN"
+        },
+        {
+          "dialogue_intelligence": true,
+          "new_run": "NOT_RUN"
+        }
+      ],
+      "range": {
+        "end": 2207,
+        "start": 2112,
+        "time_base": "file_position"
+      },
+      "sample_id": "human_is_cat",
+      "source_sha256_from_prior_receipt": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+    },
+    {
+      "arms": [
+        {
+          "dialogue_intelligence": false,
+          "new_run": "NOT_RUN"
+        },
+        {
+          "dialogue_intelligence": true,
+          "new_run": "NOT_RUN"
+        }
+      ],
+      "range": {
+        "end": "",
+        "start": "",
+        "time_base": "file_position"
+      },
+      "sample_id": "my_jealousy",
+      "source_sha256_from_prior_receipt": "479c430a19f205fb83c1476eb30a4f0f763a405068b43222344a1acf87f5cd8d"
+    }
+  ],
+  "schema": "wash-di-bool-measurement-input-only-v1",
+  "source_hash_provenance": "INHERITED_FROM_SEALED_PRIOR_RECEIPT; NO_AUDIO_REREAD_OR_REHASH_THIS_TASK",
+  "speech_threshold": 15,
+  "status": "INPUTS_ONLY; PRIOR_RECEIPT_REFERENCED; NO_NEW_OUTPUTS"
+}

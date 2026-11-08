@@ -8670,11 +8670,11 @@
         },
         {
           "slice_id": "washed-di-measure-only-bool-boundary",
-          "mapping_status": "SETUP_BOOL_CANDIDATE_PLUS94__SCOPED_CONSUMER_READS_PLUS9C_PLUS140__BOOL_USE_UNBOUND",
-          "implementation_status": "WASHED_REFERENCE_ONLY_PRIOR_DIAGNOSTICS_REUSED__NO_NEW_RUN_OR_EFFECT",
+          "mapping_status": "CONDITIONAL_SETUP_BOOL_PLUS94__SCOPED_READS_PLUS9C_PLUS140_AND_DIRECT_HELPER_EDGE_BOUND__TYPED_BOOL_USE_UNBOUND",
+          "implementation_status": "V2_STATIC_DIRECT_HELPER_EDGE_BOUND__PRIOR_DIAGNOSTICS_REUSED__NO_NEW_RUN_OR_EFFECT",
           "implementation_requirement": false,
           "owner": "UNBOUND",
-          "scope": "The washed scoped static trace conditionally writes a Bool candidate to measurement setup +0x94. The scoped first per-record consumer FUN_1801764e0 reads +0x9c and +0x140; this body did not capture a read of +0x94. Earlier measurement-only A/B observations are reused, not new runs, and show sample-dependent diagnostic changes; the measurement unit is unstated. Bool-to-algorithm/result, selected owner/generation, and audio/JOC effect remain UNBOUND/NOT_RUN.",
+          "scope": "The conditional static trace places a Bool candidate at measurement setup +0x94. The scoped first per-record consumer FUN_1801764e0 reads +0x9c/+0x140 and directly calls FUN_180182850 with a per-record source pointer and four pointer arguments; that helper copies inputs into a record-like object and receives no direct setup pointer or +0x94 field on this edge. The typed owner relation to the Bool, Bool-to-result, and algorithm use remain UNBOUND. Earlier DI A/B diagnostics are reused, not new runs; their unit is unstated. Audio/JOC effect remains NOT_INFERRED.",
           "dependencies": [],
           "spec_files": [
             "docs/architecture/adm-to-eac3joc-chain-status.md",
@@ -8699,7 +8699,14 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1/FINDINGS.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1/SOURCE-PACKAGE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V2/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V2/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V2/FINDINGS.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V2/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V2/SOURCE-PACKAGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V2/CHECK.py"
             ],
             "supplement_manifest_sha256": "97b0efcbf4390327f668e784e7d613cb90ae5372661dc2e4ee57da6190546497",
             "supplement_seal_sha256": "c6fedabb3518de4b5062e90a95f5deebdfaeb8077d4dd3297f89a608f4084cce",
@@ -8718,19 +8725,40 @@
               "bool_to_algorithm_or_result": "UNBOUND",
               "owner_generation": "UNBOUND",
               "new_runtime_capture": "NOT_RUN",
-              "audio_or_joc_effect": "NOT_INFERRED"
+              "audio_or_joc_effect": "NOT_INFERRED",
+              "first_direct_helper": "FUN_180182850",
+              "helper_inputs": "per-record source pointer plus four pointer arguments",
+              "helper_action": "copies inputs into a record-like object",
+              "setup_pointer_or_plus_0x94_passed_directly": false,
+              "typed_owner_relation_to_bool": "UNBOUND"
             },
-            "validation_boundary": "The washed scoped static trace conditionally writes a Bool candidate to measurement setup +0x94. The scoped first per-record consumer FUN_1801764e0 reads +0x9c and +0x140; this body did not capture a read of +0x94. Earlier measurement-only A/B observations are reused, not new runs, and show sample-dependent diagnostic changes; the measurement unit is unstated. Bool-to-algorithm/result, selected owner/generation, and audio/JOC effect remain UNBOUND/NOT_RUN."
+            "validation_boundary": "The conditional static trace places a Bool candidate at measurement setup +0x94. The scoped first per-record consumer FUN_1801764e0 reads +0x9c/+0x140 and directly calls FUN_180182850 with a per-record source pointer and four pointer arguments; that helper copies inputs into a record-like object and receives no direct setup pointer or +0x94 field on this edge. The typed owner relation to the Bool, Bool-to-result, and algorithm use remain UNBOUND. Earlier DI A/B diagnostics are reused, not new runs; their unit is unstated. Audio/JOC effect remains NOT_INFERRED.",
+            "current_followup": {
+              "package_id": "DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V2",
+              "manifest_sha256": "c56c0a8fc6a1344bc247625febf395342bb74524a3f93feabeeb69f2f5484277",
+              "package_seal_sha256": "0a40463989d3df4ea003fd3e7a427a389857713752cbc0303e9e6573a72e878b",
+              "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+              "first_per_record_consumer": "FUN_1801764e0",
+              "first_direct_helper": "FUN_180182850",
+              "direct_helper_receives_setup_plus_0x94": false,
+              "typed_owner_relation_to_bool": "UNBOUND",
+              "bool_to_result": "UNBOUND",
+              "new_runtime_capture": "NOT_RUN",
+              "audio_or_joc_effect": "NOT_INFERRED"
+            }
           },
           "vectors": {
             "kind": "WASHED_PRIOR_RECEIPT_INPUTS_ONLY_NO_NEW_RUN",
             "authoritative_vectors": [],
             "case_pointers": [
-              "Two prior DI false/true measurement-only pairs are referenced; both pairs remain NOT_RUN in this supplement."
+              "Two prior DI false/true measurement-only pairs are referenced; both pairs remain NOT_RUN in this supplement.",
+              "V2 adds a direct helper edge only; prior DI A/B inputs remain NOT_RUN in this package and are not new observations."
             ],
             "provider_files": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1/EVIDENCE.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V2/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V2/INPUT-ONLY-VECTORS.json"
             ],
             "expected_outputs_included": false,
             "execution_status": "NO_NEW_RUN_PRIOR_RECEIPTS_REUSED"
@@ -8741,7 +8769,7 @@
             "A read of setup +0x94 by a typed algorithm consumer and Bool-to-result mapping.",
             "New runtime capture, measurement unit, and any audio/JOC effect."
           ],
-          "validation_boundary": "The washed scoped static trace conditionally writes a Bool candidate to measurement setup +0x94. The scoped first per-record consumer FUN_1801764e0 reads +0x9c and +0x140; this body did not capture a read of +0x94. Earlier measurement-only A/B observations are reused, not new runs, and show sample-dependent diagnostic changes; the measurement unit is unstated. Bool-to-algorithm/result, selected owner/generation, and audio/JOC effect remain UNBOUND/NOT_RUN.",
+          "validation_boundary": "The conditional static trace places a Bool candidate at measurement setup +0x94. The scoped first per-record consumer FUN_1801764e0 reads +0x9c/+0x140 and directly calls FUN_180182850 with a per-record source pointer and four pointer arguments; that helper copies inputs into a record-like object and receives no direct setup pointer or +0x94 field on this edge. The typed owner relation to the Bool, Bool-to-result, and algorithm use remain UNBOUND. Earlier DI A/B diagnostics are reused, not new runs; their unit is unstated. Audio/JOC effect remains NOT_INFERRED.",
           "delivery_scope": "MEASUREMENT_ONLY_REFERENCE_NO_BOOL_BEHAVIOR_OR_AUDIO_ENABLEMENT"
         },
         {
@@ -70357,6 +70385,29 @@
       "disposition": "SIX_LINE_RF_STATIC_CANDIDATES_ONLY; SELECTED_XML_OWNER_JOINS_AND_AUDIO_EFFECT_UNBOUND; LINE_PAIR_PROPOSED_NOT_RUN; IMPLEMENTATION_READY=NO",
       "not_run": [
         "Selected XML/owner/runtime joins, proposed minimal Line pair, full six-by-six matrix, and audio/gain effects."
+      ]
+    },
+    {
+      "package_id": "DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V2",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V2",
+      "manifest_sha256": "c56c0a8fc6a1344bc247625febf395342bb74524a3f93feabeeb69f2f5484277",
+      "supplement_seal_sha256": "0a40463989d3df4ea003fd3e7a427a389857713752cbc0303e9e6573a72e878b",
+      "functional_ids": [
+        "F01E"
+      ],
+      "local_verification": {
+        "manifest": "PASS",
+        "supplement_seal": "PASS",
+        "payloads": "PASS",
+        "checker": "PASS_NORMAL_AND_PYTHON_O"
+      },
+      "package_seal_checker_status": "PASS_NORMAL_AND_PYTHON_O",
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "DIRECT_HELPER_EDGE_BOUND_WITHOUT_SETUP_BOOL_TRANSFER; TYPED_OWNER_BOOL_RESULT_AND_EFFECT_UNBOUND; PRIOR_INPUTS_ONLY; IMPLEMENTATION_READY=NO",
+      "not_run": [
+        "Typed owner relation from the helper inputs to setup Bool +0x94.",
+        "Bool-to-result relation, any new runtime capture, and audio/JOC effect.",
+        "New DI A/B run; only prior measurement receipts are referenced."
       ]
     }
   ]

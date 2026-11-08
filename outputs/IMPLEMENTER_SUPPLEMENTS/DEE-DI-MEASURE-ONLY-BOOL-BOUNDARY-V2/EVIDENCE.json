@@ -1,0 +1,90 @@
+{
+  "aggregate_result": {
+    "bool_plus_0x94_to_result": "UNBOUND",
+    "function": "FUN_1801769a0",
+    "per_record_source": "F32 at record+0x14"
+  },
+  "conclusion": {
+    "Bool_first_typed_algorithm_use": "UNBOUND",
+    "Bool_to_F06_result": "UNBOUND",
+    "audio_or_joc_effect": "NOT_INFERRED",
+    "new_runtime_capture": "NOT_RUN",
+    "owner_generation_join": "UNBOUND",
+    "sample_dependent_measurement_diagnostic_change": "OBSERVED_IN_PRIOR_RECEIPT"
+  },
+  "exclusions": {
+    "encoded_payload_read": false,
+    "implementation_contact": false,
+    "key_license_read": false,
+    "pcm_read": false
+  },
+  "first_consumer_boundary": {
+    "Bool_setup_plus_0x94_read": "NOT_CAPTURED_IN_SCOPED_BODY",
+    "first_direct_helper": "FUN_180182850",
+    "first_direct_helper_rva": "0x176592",
+    "first_per_record_consumer": "FUN_1801764e0",
+    "helper_action": "copies inputs into a record-like object",
+    "helper_inputs": "per-record source pointer plus four pointer arguments",
+    "observed_setup_fields": [
+      "+0x9c",
+      "+0x140"
+    ],
+    "setup_pointer_or_plus_0x94_passed_directly": false,
+    "stop_point": "FUN_1801764e0 -> FUN_180182850 direct edge",
+    "typed_owner_relation_to_bool": "UNBOUND"
+  },
+  "implementation_ready": false,
+  "prior_measurement_observations": {
+    "human_is_cat": {
+      "di_false": {
+        "gating": "level",
+        "integrated": -18.605364,
+        "speech_percentage": -1
+      },
+      "di_true": {
+        "gating": "level",
+        "integrated": -18.605364,
+        "speech_percentage": 0
+      },
+      "range": "2112-2207 file_position"
+    },
+    "measurement_mode": "1770-4 measure_only",
+    "measurement_unit": "NOT_STATED_IN_NATIVE_LOG",
+    "my_jealousy": {
+      "di_false": {
+        "gating": "level",
+        "integrated": -16.291187,
+        "speech_percentage": -1
+      },
+      "di_true": {
+        "gating": "dialogue",
+        "integrated": -24.719242,
+        "speech_percentage": 91.47
+      },
+      "range": "full file"
+    },
+    "new_run": "NOT_RUN",
+    "normalized_xml_only_difference": "dialogue_intelligence",
+    "source_receipt_sha256": "5fde217056781608cf43dff97fc4d10baf95e815af98a1cef70bc863694f168d",
+    "speech_threshold": 15
+  },
+  "schema": "washed-implementer-supplement.v2",
+  "source_package": {
+    "checker_normal": "PASS",
+    "checker_python_O": "PASS",
+    "manifest_sha256": "abf2d0f8da3a64871ca89db2d7748e2760b3f022e54706415ad32aa296bec9aa",
+    "package_id": "dialogue_intelligence_bool_measurement_first_consumer_20261108_0851z",
+    "package_seal_sha256": "0c9b02e649a8ff0ce43036ce1b4042938b414d966a400dd5ac8c242fa0ef9bf0",
+    "payloads_verified": 31,
+    "raw_source_or_decompilation_copied": false
+  },
+  "static_input_path": {
+    "bool_candidate": "Priv+0x290 dee::bool",
+    "bool_read_helper": "FUN_180152f30",
+    "measurement_setup_destination": "+0x94",
+    "query_key": "loudness:measure_only:dialogue_intelligence",
+    "query_key_to_selected_bool": "CONDITIONAL_STATIC; ACTUAL_SELECTION_UNBOUND"
+  },
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V2"
+}

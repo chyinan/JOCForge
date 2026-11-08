@@ -1,0 +1,38 @@
+{
+  "file_count": 6,
+  "files": [
+    {
+      "bytes": 3209,
+      "file": "EVIDENCE.json",
+      "sha256": "5cd9540018a1a78f592c3e37ab4640f58a0287283989d9527087ce6443a8d632"
+    },
+    {
+      "bytes": 1385,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "a8d1b251112a434714f7a8584b93bfc55ab402236f46ab8297dc560573c92ede"
+    },
+    {
+      "bytes": 929,
+      "file": "FINDINGS.md",
+      "sha256": "690a7c487da5601db631b7a500c14582fc415d96c842afc9062806fddeb4751a"
+    },
+    {
+      "bytes": 403,
+      "file": "SOURCE-PACKAGE.json",
+      "sha256": "f1f42721de55e59df053d34336d5132469bc3ff76f4597cfdd1d72373d878430"
+    },
+    {
+      "bytes": 1562,
+      "file": "CHECK.py",
+      "sha256": "277061fdc5f3792ac6ab6d3b79c02899574f17bca73c12b99b0a83860d704448"
+    },
+    {
+      "bytes": 1306,
+      "file": "MANIFEST.json",
+      "sha256": "c56c0a8fc6a1344bc247625febf395342bb74524a3f93feabeeb69f2f5484277"
+    }
+  ],
+  "schema": "washed-implementer-supplement-seal.v1",
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V2"
+}

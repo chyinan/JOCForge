@@ -1553,3 +1553,7 @@ Wash package `DEE-TEMP-DIR-CLEAN-FLAG-FIRST-CONSUMER-BOUNDARY-V1` (manifest SHA-
 ## 2026-11-08: DRC Line/RF six-value partial boundary
 
 Wash package `DEE-DRC-LINE-RF-SIX-VALUE-BOUNDARY-V1` (manifest SHA-256 `3a817fb084527f577ded1ca3171c98f9b7b76d1ed25476747a5a920deaa260ba`, seal SHA-256 `08f2adc9c40d22fd45734e7da98b15a02a1feee9e9cbf01bdbec55077555bb0c`) records six Line initializer/DDP_COMPR and six RF workflow/U32/parameter-0x0f candidates. Selected Line XML-to-encoder and RF XML-to-handler/runtime owner joins remain `UNBOUND`; candidate values are not algorithm identities. Bounded short-window observations and one N38 RF pair do not bind audio gain. The minimum Line `film_light`/`none` pair with RF fixed to `film_light` is `PROPOSED_NOT_RUN`; no full 6x6 matrix or gate change is included.
+
+## 2026-11-08: DI measurement-only helper edge V2
+
+Wash package `DEE-DI-MEASURE-ONLY-BOOL-BOUNDARY-V2` (manifest SHA-256 `c56c0a8fc6a1344bc247625febf395342bb74524a3f93feabeeb69f2f5484277`, seal SHA-256 `0a40463989d3df4ea003fd3e7a427a389857713752cbc0303e9e6573a72e878b`) adds the scoped direct edge `FUN_1801764e0` → `FUN_180182850`. The helper copies inputs from a per-record source pointer and four pointer arguments; no setup pointer or `+0x94` field is passed on that edge. Typed owner/Bool use, Bool-to-result, and audio/JOC effects remain `UNBOUND`; the setup read of `+0x94` remains `NOT_CAPTURED` in the scoped body. Prior DI A/B observations are reused, with no new run; the measurement unit remains unstated.
