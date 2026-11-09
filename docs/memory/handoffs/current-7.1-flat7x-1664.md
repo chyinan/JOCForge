@@ -1,24 +1,36 @@
-# Current 7.1 flat7x / 1664 handoff
+---
+status: current
+topic: 7.1-flat7x-1664-handoff
+spec: JOCForge
+confidence: package-backed-target
+tags:
+  - handoff
+  - AU
+  - I0
+  - D0
+---
+
+# 当前 7.1 flat7x / 1664 handoff
 
 ## Target
 
-The approved target has separate I0 and D0 frames: I0 at 640 kbps, then D0 at 1024 kbps. Their 1664 kbps total is two frames in one access unit, not one 1664 kbps frame. The AU target requires same-source-generation validation and complete publication; an I0-only partial result is rejected.
+批准的 target 使用分开的 I0、D0 frames：先 I0 640 kbps，再 D0 1024 kbps。1664 kbps 是一个 AU 中两帧的 aggregate rate，不是单个 1664 kbps frame。AU target 要求同一 source-generation 校验和完整发布；拒绝 I0-only partial result。
 
-## Verified in the isolated checkout
+## 隔离仓库中已验证的内容
 
-- The profile target, rate/frame-size arithmetic, AU composition requirement, and field-local chanmap U16 serialization each have separate sealed Wash supplements. Their identities and exact remaining boundaries are in [evidence-index.md](../shared/evidence-index.md).
-- The target chanmap field rule is numeric only; semantic speaker labels come from the separate profile contract.
-- The prior partial native transaction package does not prove I0/D0 writer identity, target order, same-generation lineage, or atomic publication.
+- Profile target、rate/frame-size arithmetic、AU composition requirement 和 field-local chanmap U16 serialization 各有独立的 sealed Wash supplement。Package identity 和剩余边界见 [evidence-index.md](../shared/evidence-index.md)。
+- Chanmap target rule 只涉及 numeric field serialization；semantic speaker labels 来自分开的 profile contract。
+- 较早的 partial native transaction package 没有证明 I0/D0 writer identity、target order、same-generation lineage 或 atomic publication。
 
-## Open boundaries
+## 开放边界
 
-- D0 source-row-to-semantic-role mapping: `UNBOUND`.
-- Native D0 audio algorithm: `UNBOUND`.
-- Runtime source-generation join: `NOT_CAPTURED`.
-- Legacy durable atomic publication: unproven.
-- Real output and W04 acceptance: `NOT_RUN`.
-- `production_allowed=false`.
+- D0 source-row-to-semantic-role mapping：`UNBOUND`。
+- Native D0 audio algorithm：`UNBOUND`。
+- Runtime source-generation join：`NOT_CAPTURED`。
+- Legacy durable atomic publication：未证明。
+- Real output 和 W04 acceptance：`NOT_RUN`。
+- `production_allowed=false`。
 
-## Next action
+## 下一步
 
-Wait for sanitized Wash material that closes the D0 source-role and processing contracts. Until then, do not infer those rules from chanmap set bits or from the partial legacy transaction package, and do not enable production.
+等待能闭合 D0 source-role 和 processing contract 的 sanitized Wash material。在此之前，不从 chanmap set bits 或 partial legacy transaction package 推断这些规则，也不启用 production。
