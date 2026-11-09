@@ -1,0 +1,29 @@
+{
+  "schema": "wash-supplement-seal.v1",
+  "package_id": "JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1",
+  "manifest_sha256": "0cd5b5e6a1a37961225bfd71bcbf68619baea76c48800449078919acd3499f43",
+  "status": "AU_ORDERING_AND_PUBLICATION_BOUNDARY_ONLY; D0_ROLE_AND_AUDIO_ALGORITHM_UNBOUND; PRODUCTION_NOT_READY",
+  "production_allowed": false,
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 2506,
+      "sha256": "0e07ee3e18b95b5caffad6853b3b562fc9e95f7e70bade4d55bf8f54d9b601ce"
+    },
+    {
+      "path": "RECEIPT.md",
+      "bytes": 1439,
+      "sha256": "ce547547678511df111eaa8963d517102abf1593d6f50bd565fd5bbfe3ffe80b"
+    },
+    {
+      "path": "SOURCE-RECEIPT.json",
+      "bytes": 1503,
+      "sha256": "1bc97b05137873b484de2549132e61b0541dab00038e8c7088749eb1175a9ad4"
+    },
+    {
+      "path": "TARGET-AU-ORDER-VECTOR.json",
+      "bytes": 1041,
+      "sha256": "5b4d54868b6fe06df20956fd2d2258272c00602fbc659adb22964fca1c039550"
+    }
+  ]
+}

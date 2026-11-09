@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.wash-au-composition-source-receipt.v1",
+  "package_id": "JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1",
+  "approved_profile_contract": {
+    "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+    "manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+    "package_seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+    "contribution": "target rates, I0-then-D0 AU order, same-generation/atomic-publish requirements, and separate profile dimensions"
+  },
+  "wash_architecture_review": {
+    "receipt": "outputs/WASH_RECEIPTS/legacy-main-i0-d0-composition-advisory.md",
+    "sha256": "64db2917b2b2aaf671137d86951f37f6d298bcab64b89f0f498710edaa644a9c",
+    "scope": "abstract separate-I0/separate-dependent-input composition shape only",
+    "source_code_or_constants_transferred": false,
+    "audio_algorithm_or_bitstream_layout_transferred": false
+  },
+  "status": {
+    "implementation_scope": "AU_ORDERING_AND_PUBLICATION_BOUNDARY_ONLY",
+    "d0_audio_algorithm": "UNBOUND",
+    "d0_source_role_join": "UNBOUND",
+    "runtime_generation": "NOT_CAPTURED",
+    "execution": "NOT_RUN",
+    "production_allowed": false
+  },
+  "excluded": [
+    "legacy source code or file paths",
+    "legacy rates, frame sizes, channel maps, and byte templates",
+    "FFmpeg or any other encoder/decoder algorithm",
+    "mode21 payload or cross-skipfld behavior",
+    "media, PCM, encoded payload, keys, or licenses"
+  ]
+}

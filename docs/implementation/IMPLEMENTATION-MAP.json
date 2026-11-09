@@ -18473,8 +18473,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2065311,
-              "sha256": "56f0af8d6f204b5fe79e4cbf15ee73dbb9f70c4fdbdd2929a19bbd22fa2ef7b6"
+              "bytes": 2065360,
+              "sha256": "5fb3cff037f49aa2b3b0603189ca0e94b0a6cffa5fb8a29037d9b7eba64b0cc3"
             }
           ],
           "test_modules": [
@@ -22000,8 +22000,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2065311,
-              "sha256": "56f0af8d6f204b5fe79e4cbf15ee73dbb9f70c4fdbdd2929a19bbd22fa2ef7b6"
+              "bytes": 2065360,
+              "sha256": "5fb3cff037f49aa2b3b0603189ca0e94b0a6cffa5fb8a29037d9b7eba64b0cc3"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -54464,8 +54464,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2065311,
-              "sha256": "56f0af8d6f204b5fe79e4cbf15ee73dbb9f70c4fdbdd2929a19bbd22fa2ef7b6"
+              "bytes": 2065360,
+              "sha256": "5fb3cff037f49aa2b3b0603189ca0e94b0a6cffa5fb8a29037d9b7eba64b0cc3"
             }
           ],
           "test_inventory": [
@@ -55721,6 +55721,133 @@
           ],
           "validation_boundary": "One native per-block JOC path has a scoped call order over the same block ordinal/state base. A separate per-unit function writes to a caller-provided in-memory buffer, while another path reaches fwrite with a different buffer and length; no typed join connects those boundaries. The evidence does not type the per-block/per-unit paths as I0 or D0, establish I0-then-D0 AU order, same-source generation, atomic AU commit, or partial-I0 behavior after D0 failure.",
           "delivery_scope": "TRANSACTION_EDGE_REFERENCE_ONLY_NO_I0_D0_ORDER_OR_ATOMICITY_CLAIM"
+        },
+        {
+          "slice_id": "washed-i0-d0-au-composition-boundary-contract",
+          "mapping_status": "WASHED_ABSTRACT_I0_THEN_D0_SAME_GENERATION_WHOLE_AU_TARGET_BOUND__LEGACY_ATOMICITY_UNPROVEN",
+          "implementation_status": "ARCHITECTURE_TARGET_ONLY__ACTUAL_GENERATION_AND_DURABLE_PUBLISH_NOT_RUN",
+          "implementation_requirement": false,
+          "owner": "output",
+          "scope": "The selected flat7x target composes separate typed I0 and D0 frame inputs in the order I0 then D0. Its target rates 640+1024 kbps = 1664 kbps come from the separately approved profile contract and describe two frames, not one 1664 kbps frame. The target requires same-source-generation validation and complete-AU publication as one unit; reject I0-only publication if D0 construction or validation fails. This is an architecture target, not proof that the legacy reference durably published atomically. No concrete Rust type, runtime source-generation receipt, D0 semantic source-role join, D0 algorithm, or real output is supplied.",
+          "dependencies": [
+            "F01E/approved-atmos71-flat7x-1664-profile-contract",
+            "F12/washed-atmos71-i0-d0-rate-frmsiz-boundary-partial"
+          ],
+          "spec_files": [
+            "PIPELINE-AND-INTERFACES.md",
+            "docs/architecture/ARCHITECTURE-DECISIONS.md",
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1/RECEIPT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [
+              "AccessUnit"
+            ],
+            "covered_clauses": [
+              "The target AU has ordered I0 then D0 components from one source generation.",
+              "Runtime generation identity and publication ordering are NOT_CAPTURED by this supplement."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_I0_D0_ABSTRACT_AU_COMPOSITION_AND_PUBLICATION_TARGET",
+            "package_id": "JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1/RECEIPT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1/SOURCE-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1/TARGET-AU-ORDER-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/package_seal.json"
+            ],
+            "supplement_manifest_sha256": "0cd5b5e6a1a37961225bfd71bcbf68619baea76c48800449078919acd3499f43",
+            "supplement_seal_sha256": "584fdd652ce61102f182f34a133fd083e325cfcde2e9674e5cdaf2c36a576e1a",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "validation_boundary": "The I0/D0 order and complete-AU rejection rule are target contract only. They do not prove legacy durable publish atomicity or any runtime source-generation join.",
+            "approved_profile_contract": {
+              "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+              "manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+              "seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+              "rate_values_are_profile_targets_not_legacy_observations": true
+            },
+            "target_access_unit": {
+              "ordered_substreams": [
+                {
+                  "ordinal": 0,
+                  "role": "I0",
+                  "rate_kbps": 640
+                },
+                {
+                  "ordinal": 1,
+                  "role": "D0",
+                  "rate_kbps": 1024
+                }
+              ],
+              "aggregate_rate_kbps": 1664,
+              "single_1664_kbps_frame": false,
+              "same_source_generation_required": true,
+              "publish_complete_access_unit_atomically": true,
+              "partial_i0_only_publish": "REJECT"
+            },
+            "separate_profile_dimensions": {
+              "config_mode": "separate_control",
+              "phase_flag": "separate_control",
+              "joc_reconstruction_profile": "flat7x/index1",
+              "adm_physical_rows_are_chanmap_locations": false,
+              "chanmap_locations_are_joc_carriers": false
+            },
+            "legacy_reference": {
+              "abstract_composition_shape_only": true,
+              "legacy_atomic_publish_proven": false,
+              "runtime_generation_join": "NOT_CAPTURED"
+            },
+            "open_boundaries": {
+              "d0_source_row_to_semantic_role": "UNBOUND",
+              "native_d0_audio_algorithm": "UNBOUND",
+              "real_output": "NOT_RUN",
+              "production_allowed": false
+            }
+          },
+          "vectors": {
+            "kind": "WASH_USER_TARGET_I0_D0_ORDER_AND_ATOMIC_PUBLISH_INPUT_ONLY",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1/TARGET-AU-ORDER-VECTOR.json"
+            ],
+            "case_pointers": [
+              "I0 ordinal 0 at 640 kbps followed by D0 ordinal 1 at 1024 kbps; 1664 kbps is a two-frame aggregate.",
+              "Same-source-generation completion is required by target; partial I0-only publication is REJECT.",
+              "Runtime generation join and real output are not captured/run."
+            ],
+            "local_fixture": {
+              "file": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1/TARGET-AU-ORDER-VECTOR.json",
+              "bytes": 1041,
+              "sha256": "5b4d54868b6fe06df20956fd2d2258272c00602fbc659adb22964fca1c039550"
+            },
+            "expected_outputs_included": true,
+            "execution_status": "USER_TARGET_CONTRACT_INPUT_ONLY_NOT_RUN"
+          },
+          "error_outcomes": [
+            {
+              "outcome": "TARGET_REJECT",
+              "trigger": "D0 construction or validation fails after an I0 candidate exists.",
+              "programme_state_after": "No partial I0-only AU is publishable under the target contract.",
+              "caller_action": "Reject the complete AU candidate before publication; this is a requirement, not legacy runtime evidence."
+            }
+          ],
+          "not_run": [
+            "Runtime source-generation binding and typed producer lineage.",
+            "Legacy durable atomic publication and partial-I0 behavior.",
+            "D0 semantic source-role join and native D0 audio algorithm.",
+            "Real output, W04 validation, and product acceptance."
+          ],
+          "validation_boundary": "Abstract AU target contract only; legacy atomicity is unproven, and the D0 source-role join, native algorithm, runtime generation, and real output remain UNBOUND/NOT_RUN.",
+          "delivery_scope": "ARCHITECTURE_AU_ORDER_AND_PUBLICATION_TARGET_ONLY_NO_LEGACY_ATOMICITY_OR_PRODUCTION_CLAIM"
         }
       ]
     },
@@ -72945,6 +73072,27 @@
         "Absolute bit cursor and final file byte order.",
         "ADM source-row to D0 owner mapping and semantic speaker labels.",
         "Any claim that set-bit count equals channel, ADM-row, or JOC-carrier count."
+      ]
+    },
+    {
+      "package_id": "JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1",
+      "manifest_sha256": "0cd5b5e6a1a37961225bfd71bcbf68619baea76c48800449078919acd3499f43",
+      "supplement_seal_sha256": "584fdd652ce61102f182f34a133fd083e325cfcde2e9674e5cdaf2c36a576e1a",
+      "functional_ids": [
+        "F15"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "ABSTRACT_AU_TARGET_I0_THEN_D0_SAME_GENERATION_COMPLETE_PUBLISH; LEGACY_ATOMICITY_UNPROVEN; D0_SOURCE_ROLE_AND_AUDIO_ALGORITHM_UNBOUND; PRODUCTION_ALLOWED_FALSE",
+      "not_run": [
+        "Runtime source-generation join and concrete typed producer lineage.",
+        "Validation and durable publication of a real complete I0+D0 AU.",
+        "Legacy implementation atomicity and partial-I0 failure behavior.",
+        "D0 source-role mapping, native D0 audio algorithm, real output, and W04 acceptance."
       ]
     }
   ]

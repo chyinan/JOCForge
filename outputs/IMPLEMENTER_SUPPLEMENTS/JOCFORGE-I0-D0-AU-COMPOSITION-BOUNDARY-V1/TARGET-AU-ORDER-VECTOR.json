@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge.i0-d0-au-order-target.v1",
+  "status": "USER_TARGET_CONTRACT_INPUT_ONLY_NOT_RUN",
+  "profile_id": "atmos71_flat7x_i0_640_d0_1024_v1",
+  "access_unit": {
+    "ordered_substreams": [
+      {"ordinal": 0, "role": "I0", "rate_kbps": 640},
+      {"ordinal": 1, "role": "D0", "rate_kbps": 1024}
+    ],
+    "aggregate_rate_kbps": 1664,
+    "single_1664_kbps_frame": false,
+    "same_source_generation_required": true,
+    "publish_complete_access_unit_atomically": true,
+    "partial_i0_only_publish": "REJECT"
+  },
+  "profile_dimensions_remain_separate": {
+    "config_mode": "separate_control",
+    "phase_flag": "separate_control",
+    "joc_reconstruction_profile": "flat7x/index1",
+    "adm_physical_rows_are_chanmap_locations": false,
+    "chanmap_locations_are_joc_carriers": false
+  },
+  "open_boundaries": {
+    "d0_source_row_to_semantic_role": "UNBOUND",
+    "native_d0_audio_algorithm": "UNBOUND",
+    "runtime_generation_join": "NOT_CAPTURED",
+    "real_output": "NOT_RUN",
+    "production_allowed": false
+  }
+}
