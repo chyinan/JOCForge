@@ -21,7 +21,7 @@ tags:
 
 - Profile target、rate/frame-size arithmetic、AU composition requirement 和 field-local chanmap U16 serialization 各有独立的 sealed Wash supplement。Package identity 和剩余边界见 [evidence-index.md](../shared/evidence-index.md)。
 - Chanmap target rule 只涉及 numeric field serialization；semantic speaker labels 来自分开的 profile contract。
-- I0 frame syntax 仍有独立 gap：官方摘要的 `legacy_independent` 未给 exact BSID；selected prefix 当前是 BSID16/`strmtyp=0`，与官方 I0 的关系 `UNBOUND`。OpenJOC parser capability 仅提供 parser 范围信息；selected prefix 保持当前值，直到 official I0 exact BSID 有新证据。
+- I0 reference value is now provided by `OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1`: the user-designated sample uses legacy independent AC-3 BSID6 at 2,560 bytes. The current selected 5.1 prefix remains E-AC-3 BSID16/`strmtyp=0`; the Flat7x profile-specific legacy-core writer and target callsite remain open. The earlier syntax-gap package is historical for the then-available summary, and the 5.1 prefix remains unchanged.
 - 已按新的 partial Wash package，在现有 1024 kbps / 5.1 core profile 上实现 immutable `JocReconstructionLayout::Flat7x` 与 3-bit `joc_dmx_config_idx=1` header field。mode0/phase1/internal index3 和 5.1 coefficient input path保持独立；profile-aware writer 的 field-order 和 baseline byte tests 通过。
 - CLI 可选项 `--joc-layout flat7x` 已接入 resolver 与 JOC header writer；省略该项维持 ExistingSelectedFivePointOne。
 - 较早的 partial native transaction package 没有证明 I0/D0 writer identity、target order、same-generation lineage 或 atomic publication。
@@ -29,7 +29,7 @@ tags:
 ## 开放边界
 
 - D0 source-row-to-semantic-role mapping：`UNBOUND`。
-- Official I0 exact BSID：`NOT_CAPTURED`；selected prefix equivalence：`UNBOUND`。
+- Flat7x I0 writer mapping to the observed legacy AC-3 BSID6 reference：`NOT_IMPLEMENTED`；the existing selected 5.1 E-AC-3 BSID16 path remains separate.
 - Native D0 audio algorithm：`UNBOUND`。
 - Runtime source-generation join：`NOT_CAPTURED`。
 - Legacy durable atomic publication：未证明。
@@ -56,6 +56,35 @@ Wash handoff file `ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF-V1/IMPLEMENTER-HANDOF
 ## 2026-11-11 F15 receipt-pair input-only replay
 
 Wash package `FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1` was checked against manifest SHA-256 `1034ef415113b666acc5aefaa3207230040f05d9ebc05a33933bffc50b4ff088` and package-seal SHA-256 `16d925352e9b197e016b2554f9c2ae609e8f8890e3dca81c4eb591f737b41210`. Its vector drives the `Flat7xAuOutputOwner` receipt gate with synthetic typed F13/I0/D0 values and in-memory CRC-valid I0/D0 frames. The positive pair produces the expected 6,656-byte ledger row; identity mismatch, wrong carrier block and C=512 retire the attempt. The fixture constructs typed test projections without invoking the F13 parser or F12 Integrity owner stage. Parser-valid container acceptance, owner-stage receipt production, runtime callback/source-generation join, GTC registration, final exposure and production remain open; `production_allowed=false`.
+
+## 2026-11-11 D0 skip-field serializer
+
+The approved Flat7x package fixes a single D0 zero-based block-2 skip field, C<=511 bytes, no continuation and whole-AU fail-closed overflow. Wash confirmed ETSI TS 102 366 V1.4.1 §4.4.3.58–60 syntax. The target-only `codec::emdf_skip_field::write_flat7x_d0_block2_skipfld` requires a complete nonempty container and writes the present form `skiple=1`, U9 `skipl=C`, followed by C bytes after delta-bit allocation and before mantissas. Missing/empty target input, C=512, and insufficient capacity all return before changing cursor/frame bytes. Generic ETSI `skiple=0` remains outside this target-required-container API. The helper leaves D0 chanmap, JOC object count and reconstruction carriers separate. Five bit-boundary tests pass.
+
+The caller still owns frame cursor placement and block/frame composition. Native block-2 cursor, D0 BSI/audio owner, source/generation lineage, all-AU fit and product output remain `UNBOUND/NOT_RUN`; `production_allowed=false`.
+
+## 2026-11-11 official Atmos reference structure
+
+Wash package `OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1` passed both checker modes and is registered at manifest `f7f8630c3f18e990324f013e70486c561de6816a844f852f18f03a82ce28fbfc` / seal `2d883e278bb83fa0d617610f94b8a87fa5849ac7bf19bdf08818d8d30d50740e`. Its 23,033 packet summary reports I0 legacy independent AC-3 BSID6 / 2,560 B followed by D0 dependent E-AC-3 BSID16 / 2,560 B, 1,280 kbps aggregate. D0 uses `chanmap=0x1A00`, a two-byte addbsi/CI16 record, and block-2 EMDF IDs 11/14 with observed skip-field lengths 301–377 B. The user target remains I0 640 + D0 1,024 = 1,664 kbps, with a 4,096-byte D0 frame; the sample's 640-kbps D0 and target are distinct. No media/audio bytes are included, and the package keeps `production_allowed=false`.
+
+Wash addendum `OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V2` (manifest `c4104e674a9c3df06ead8f6741a7366e58068602789806d1a91d045c1dfd731a`, seal `0fb4c7f8a7a49488a97586b7e3eb6febc0542cf0044569fe37e65dc07d85757d`) reports `joc_dmx_config_idx=1`, extension index 0 and 15 JOC header objects on all 23,033 AUs. This binds the reference sample's profile index; it does not establish a native target writer or profile-index 1 on a new 1,664-kbps output. Payload IDs 11/14 have `codecdatae=0` while ETSI Table 56 requires 1; vendor-compatible observations and ETSI-strict failure remain separate, and no strict-conformance claim is made.
+
+The new reference identifies the intended Flat7x I0 structural value as legacy AC-3 BSID6. The profile-specific I0 writer path still needs its own implementation; preserve the existing 5.1 E-AC-3 BSID16 path. The D0 skip-field serializer remains a field helper, without a native block cursor or frame builder callsite.
+
+## Flat7x reuse and target-native gap matrix
+
+| Component | Existing reusable structure | Flat7x target-specific requirement | Evidence and status | 5.1 regression gate |
+|---|---|---|---|---|
+| Main sealed reference | Ordered I0→D0 AU shape and `OwnershipPlan` architecture shape | No frame syntax, rate allocation, BSI value, or D0 writer is inherited from the reference | Architecture shape only; runtime/writer identity `UNBOUND` | No 5.1 source is reused or changed |
+| Old map / split-rate / legacy D0 | None for the new target | Old `chanmap=0x0200`, old 1,024+640 split and legacy D0 writer stay out of the Flat7x row | Legacy/reference paths remain separate evidence | Existing 5.1 map and writer behavior stays fixed |
+| Isolated 5.1 path | Six-rate resolver, selected F12 E-AC-3 frame writer, `OutputOwner`, and durable atomic sink remain the independent baseline | Flat7x additions stay additive; no global frame-prefix or rate-row rewrite | Current 5.1 path remains implemented and locally regression-tested | Run `selected_frame_trial::tests::supplied_absent_payload_plan_builds_only_a_complete_keyless_scratch_frame`, `output_owner_rate_profile`, and `prepared_adm_input_preserves_each_washed_rate_through_profile_and_frame_size` |
+| I0 | Existing bitio primitives and profile-independent checksum support only | Legacy independent AC-3 core BSID6, 640 kbps, 2,560 bytes | Official reference package binds the sample structure; target-specific I0 writer/callsite `NOT_IMPLEMENTED` | Keep selected 5.1 E-AC-3 BSID16 path unchanged |
+| D0 | Existing bitio primitives and standalone Flat7x skip-field serializer | Dependent E-AC-3 BSID16, 1,024 kbps, 4,096 bytes, `chanmap=0x1A00`, one block-2 complete EMDF skip field | Profile contract binds the target; official sample D0 is 640 kbps / 2,560 bytes. D0 audio algorithm, row-to-role join and writer owner `UNBOUND` | No D0 field is connected to the 5.1 writer |
+| JOC reconstruction | Existing typed layout/header plumbing remains separate from 5.1 mode0/phase1 controls | Flat7x reconstruction profile index1 is distinct from downmix mode0/phase1; seven reconstruction carriers, 15 dynamic objects plus LFE bed, complexity16 | V2 reports sample index1, extension0 and 15 header objects; target native profile/index writer `UNBOUND`; object height history `NOT_PARSED` | Mode0/phase1 and existing five-carrier path remain unchanged |
+| AU transaction and output | Existing target-specific pair plan/ledger and staging contract | Same-source I0+D0 receipts, GTC projection, final commit/exposure and all-AU EMDF fit | Receipt gate and D0 field helper are locally verified; runtime generation join `UNBOUND`, output/W04 `NOT_RUN` | No new generic assembly/staging slice is part of this increment |
+| EMDF / validation mode | Existing typed keyless CRC/checksum primitives and F15 whole-AU receipt gate | Complete IDs 11/14 container in one D0 block-2 skipfld, C=1..511, no continuation | V1 observes sample C=301..377; V2 reports sample `codecdatae=0` for IDs 11/14 while ETSI Table 56 expects 1. Vendor-compatible observation and ETSI-strict failure stay separate; target 1,664-kbps all-AU fit `NOT_RUN` | EMDF changes stay outside the 5.1 F12 writer |
+
+The official demo sample is 1,280 kbps; the implementation target remains 1,664 kbps. These are separate rows and extents.
 
 ## 下一步
 

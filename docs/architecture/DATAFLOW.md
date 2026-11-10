@@ -93,6 +93,8 @@ flowchart LR
 
 The plan requires one I0 and one D0 frame for the same source generation. EMDF is one complete skipfld container with a 511-byte maximum; cross-skipfld fragmentation is forbidden. Missing/oversize metadata or any missing frame, role, or integrity receipt rejects the whole AU before publication. All-AU fit, runtime output, GTC source-role projection, and native D0 audio remain `NOT_RUN`/`UNBOUND`; no I0-only partial AU is published.
 
+The target-only `domain/codec/emdf_skip_field` helper writes the ETSI audio-block field at a caller-positioned cursor after delta-bit allocation and before mantissas. It requires a complete nonempty container and emits `skiple=1`, U9 `skipl=C`, and exactly `C` bytes. Missing or oversize target input rejects before writing; overflow never continues into another field. Generic ETSI `skiple=0` syntax is outside this required-container Flat7x API. The helper has no frame-builder callsite, native block-cursor binding, or production admission; `production_allowed=false` remains in force.
+
 独立 validation 读取最终发布结果，调用外部工具解码或比较，输出带工具身份的证据。它不能反馈生产算法常数，不能作为编码器主体。FFmpeg 不属于 production 依赖图。
 
 A separate Wash transaction-boundary supplement binds a per-block JOC call order and distinct in-memory/file-writer paths. It does not identify those calls as I0/D0 or join the per-unit buffer to `fwrite`; it therefore does not validate the I0→D0 AU order or atomicity contract above. Stream role, source generation, commit and failure behavior remain `UNBOUND/NOT_RUN`.

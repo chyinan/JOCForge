@@ -19,7 +19,8 @@
 | domain/publication/flat7x_au_output | Target-only F15 staging owner, pair-aware AU ledger entry, and typed append receipt candidate | Validates whole-unit length/hash and per-frame CRC fields; GTC and product binding remain open; selected 5.1 `OutputOwner` is unchanged. |
 | io/flat7x_au_append | Staging-file adapter for one composed I0+D0 proposal | Checks offset, write totals, sync and exact readback, then returns a receipt candidate; failed staging requires attempt abandonment; no final exposure or 5.1 sink connection. |
 | domain/transform | 变换领域规则 | 空壳 |
-| domain/codec/bitio | bounded MSB bit I/O 边界 | 空壳；无 writer |
+| domain/codec/bitio | bounded MSB-first `FrameBitWriter` and `FrameBitCursor` | Preflights compound field capacity and preserves surrounding bits outside each written range. |
+| domain/codec/emdf_skip_field | Flat7x target-scoped D0 block-2 skip-field serializer | Requires a complete nonempty container and writes `skiple=1` + U9 `skipl` + C bytes; C=1..511; missing/oversize input returns before writing. Generic `skiple=0` syntax remains outside this target API. Caller cursor/owner binding and full D0 frame assembly remain open. |
 | domain/codec/frame_syntax | selected E-AC-3 schema 边界 | 空壳；无字段实现 |
 | domain/codec/frame_size | 4,096-byte AU size contract | 空壳；无计算实现 |
 | domain/codec/bap | F12A BAP 边界 | 空壳；无算法 |

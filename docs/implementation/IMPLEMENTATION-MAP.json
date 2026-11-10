@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2097541,
-              "sha256": "acdc9d16aa007aa97455c12aa340906bbe452c1d2c0757584a7f77ac31e6e292"
+              "bytes": 2102860,
+              "sha256": "6a175bb7bbbe3ff9b71e232ec947e8574d9ad825872b19aaa3b6a5d04c06aef7"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2097541,
-              "sha256": "acdc9d16aa007aa97455c12aa340906bbe452c1d2c0757584a7f77ac31e6e292"
+              "bytes": 2102860,
+              "sha256": "6a175bb7bbbe3ff9b71e232ec947e8574d9ad825872b19aaa3b6a5d04c06aef7"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -42348,8 +42348,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 896,
-              "sha256": "55f0e0c32d09e502639e59058556b86f5232bb29908a39b1a4503c9b3ddf4ba1"
+              "bytes": 921,
+              "sha256": "b56e85e9198020612624215b5ac6c0bc52651f95048076841640ad96a2028328"
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
@@ -42482,8 +42482,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 896,
-              "sha256": "55f0e0c32d09e502639e59058556b86f5232bb29908a39b1a4503c9b3ddf4ba1"
+              "bytes": 921,
+              "sha256": "b56e85e9198020612624215b5ac6c0bc52651f95048076841640ad96a2028328"
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
@@ -42659,8 +42659,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 896,
-              "sha256": "55f0e0c32d09e502639e59058556b86f5232bb29908a39b1a4503c9b3ddf4ba1"
+              "bytes": 921,
+              "sha256": "b56e85e9198020612624215b5ac6c0bc52651f95048076841640ad96a2028328"
             },
             {
               "path": "crates/jocforge-domain/src/codec/published_emdf_binding.rs",
@@ -46000,6 +46000,264 @@
           ],
           "validation_boundary": "CLI selectors resolve the immutable Flat7x profile and carry it to the JOC-header writer; real output and independent structural acceptance remain NOT_RUN.",
           "delivery_scope": "PARTIAL_CLI_PROFILE_SELECTION_AND_HEADER_PLUMBING_ONLY"
+        },
+        {
+          "slice_id": "flat7x-d0-block2-skipfld-serializer",
+          "mapping_status": "WASH_APPROVED_FLAT7X_SINGLE_SKIPFLD_TARGET_AND_ETSI_FIELD_SYNTAX",
+          "implementation_status": "LOCALLY_VERIFIED_REQUIRED_CONTAINER_SKIPLE_SKIPL_SKIPFLD_SERIALIZER__NO_FRAME_OR_PRODUCT_BINDING",
+          "implementation_requirement": true,
+          "owner": "codec",
+          "scope": "Additive Flat7x-only field serializer for one D0 zero-based audio block 2 skip-field slot. The target API requires a complete nonempty EMDF container and writes the present ETSI form at the caller-positioned cursor: skiple=1, U9 skipl=C bytes, then exactly C container bytes. Missing input returns MissingContainer before writing. The Flat7x target requires one field, C=1..511 and fail-closed overflow with no continuation. Generic ETSI skiple=0 syntax is outside this target-required-container API. It does not assemble D0 block syntax or a full frame, and does not read the D0 chanmap, JOC object count, or reconstruction-carrier positions.",
+          "dependencies": [
+            "F01E/flat7x-i0-d0-typed-target-plan"
+          ],
+          "spec_files": [
+            "docs/architecture/DATAFLOW.md",
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/PUBLIC-API.md"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
+            "crates/jocforge-domain/src/codec/mod.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/src/codec/emdf_skip_field.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
+              "bytes": 8404,
+              "sha256": "f3ff3a332fdaa6ee03599e1dc01a0c52176a8519a476ea688eb3327f4d8ecf26"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/mod.rs",
+              "bytes": 921,
+              "sha256": "b56e85e9198020612624215b5ac6c0bc52651f95048076841640ad96a2028328"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
+              "bytes": 8404,
+              "sha256": "f3ff3a332fdaa6ee03599e1dc01a0c52176a8519a476ea688eb3327f4d8ecf26"
+            }
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Pure field serialization advances only the caller-provided FrameBitCursor; no callback/source/writer/AU owner clock or generation is minted."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_FLAT7X_D0_SINGLE_SKIPFLD_TARGET",
+            "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+            "supplement_manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+            "supplement_seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/EMDF-AND-VALIDATION-DISPOSITION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/SOURCE-RECEIPTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/CHECK.py"
+            ],
+            "standard_rule": "ETSI TS 102 366 V1.4.1 clauses 4.4.3.58-60",
+            "target": {
+              "substream": "D0",
+              "zero_based_audio_block": 2,
+              "field_count": 1,
+              "skiple_width_bits": 1,
+              "skipl_width_bits": 9,
+              "skipl_unit": "bytes",
+              "present_field_order": [
+                "skiple=1",
+                "skipl=C as U9",
+                "C skipfld bytes"
+              ],
+              "minimum_present_target_container_bytes": 1,
+              "maximum_complete_container_bytes": 511,
+              "fragmentation_allowed": false,
+              "overflow_policy": "REJECT_BEFORE_WRITE_AND_WHOLE_AU_BEFORE_PUBLISH",
+              "caller_cursor_position": "after delta-bit allocation, before mantissas",
+              "separate_domains": {
+                "d0_chanmap": "not consumed",
+                "joc_object_count": "not consumed",
+                "joc_reconstruction_carriers": "not consumed"
+              },
+              "production_allowed": false,
+              "native_block_cursor_bound": false,
+              "runtime_owner_bound": false,
+              "generic_absent_syntax_exposed": false,
+              "missing_container_policy": "MissingContainer before any write"
+            },
+            "validation_boundary": "The target helper requires a complete nonempty EMDF container and serializes the present skip-field syntax at a caller-supplied cursor; runtime block/owner binding remains open."
+          },
+          "vectors": {
+            "kind": "SYNTHETIC_BITIO_BOUNDARY_VECTORS",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "At an unaligned cursor, present C=16 writes skiple=1, U9 byte length, then exactly C bytes MSB-first.",
+              "C=1 and maximum target C=511 write successfully with the expected U9 lengths.",
+              "A missing/empty target container and C=512 reject before changing cursor or frame bytes; no continuation is generated.",
+              "Insufficient capacity for the complete 1+9+8C field rejects before mutation."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "ALL_FIVE_REQUIRED_CONTAINER_BITIO_BOUNDARY_TESTS_PASSED"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "Flat7xD0SkipFieldWriteError::InvalidTargetContract",
+              "category": "target contract",
+              "trigger": "The Flat7x plan does not designate D0 block 2, one field, nonfragmented carriage and the U9-compatible maximum.",
+              "programme_state_after": "No bits are written.",
+              "caller_action": "Do not serialize this target through the Flat7x D0 helper."
+            },
+            {
+              "error_code": "Flat7xD0SkipFieldWriteError::MissingContainer",
+              "category": "required target container",
+              "trigger": "No complete nonempty EMDF container is supplied; generic ETSI skiple=0 exists outside this target-required-container API.",
+              "programme_state_after": "No bits are written.",
+              "caller_action": "Reject the target AU before publication."
+            },
+            {
+              "error_code": "Flat7xD0SkipFieldWriteError::ContainerTooLarge",
+              "category": "single-field capacity",
+              "trigger": "C exceeds the target/U9 maximum of 511 bytes.",
+              "programme_state_after": "No bits are written and no continuation is generated.",
+              "caller_action": "Reject the complete AU before publication."
+            },
+            {
+              "error_code": "Flat7xD0SkipFieldWriteError::BitWriter(BufferTooSmall)",
+              "category": "frame scratch capacity",
+              "trigger": "The entire 1+9+8C field cannot fit from the supplied cursor.",
+              "programme_state_after": "Preflight leaves the cursor and frame bytes unchanged.",
+              "caller_action": "Provide sufficient caller-owned frame scratch or reject the candidate."
+            }
+          ],
+          "not_run": [
+            "No caller writes the Flat7x helper into a complete E-AC-3 D0 block/frame; cursor-to-native-block and source/generation owner join remain UNBOUND.",
+            "No native D0 BSI/audio writer, F13 container parser join, per-AU fit run, 7.1 output, W04 or production acceptance; these remain NOT_RUN."
+          ],
+          "validation_boundary": "The helper serializes only the present ETSI skip-field syntax at a caller-provided cursor under the approved Flat7x target. It requires a complete nonempty container and is not connected to native D0 ownership, F12 complete-frame composition, GTC, the 5.1 resolver/writer/OutputOwner, or product encode. production_allowed=false.",
+          "delivery_scope": "FLAT7X_D0_BLOCK2_PRESENT_SKIPFLD_SYNTAX_SERIALIZER_ONLY_NO_FRAME_BINDING"
+        },
+        {
+          "slice_id": "official-atmos-demo-i0-d0-structure-reference",
+          "mapping_status": "WASH_HASH_BOUND_FULL_TRACK_STRUCTURE_WITH_PROFILE_INDEX_ADDENDUM",
+          "implementation_status": "REFERENCE_ONLY__TARGET_WRITER_AND_STRICT_VALIDATION_GATES_OPEN",
+          "implementation_requirement": false,
+          "owner": "codec",
+          "scope": "Records the Wash-parsed 23,033-packet reference track as I0 legacy independent AC-3 BSID6 / 2,560 bytes followed by D0 dependent E-AC-3 BSID16 / chanmap 0x1A00 / 2,560 bytes. V2 adds full-track JOC profile index 1/extension 0/header object count 15. The reference sample is 1,280 kbps; the Flat7x target remains 1,664 kbps with D0 1,024 kbps / 4,096 bytes. V2's Table 56 codecdatae mismatch is a vendor-compatible observation and ETSI-strict failure, not a compliance claim. The target I0 legacy writer, profile-index writer and output remain separate.",
+          "dependencies": [
+            "F01E/flat7x-i0-d0-typed-target-plan"
+          ],
+          "spec_files": [
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/DATAFLOW.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "implementation_inventory": [],
+          "test_inventory": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The reference has two ordered frames per AU; no target runtime clock or writer identity is inferred."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_OFFICIAL_REFERENCE_STRUCTURE_SUMMARY",
+            "package_id": "OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1",
+            "supplement_manifest_sha256": "f7f8630c3f18e990324f013e70486c561de6816a844f852f18f03a82ce28fbfc",
+            "supplement_seal_sha256": "2d883e278bb83fa0d617610f94b8a87fa5849ac7bf19bdf08818d8d30d50740e",
+            "production_allowed": false,
+            "user_designated_source_sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+            "i0_reference": {
+              "codec_family": "legacy AC-3 core",
+              "bsid": 6,
+              "frame_bytes": 2560,
+              "rate_kbps": 640
+            },
+            "d0_reference": {
+              "codec_family": "dependent E-AC-3",
+              "bsid": 16,
+              "chanmap": "0x1A00",
+              "frame_bytes": 2560,
+              "rate_kbps": 640
+            },
+            "reference_au_rate_kbps": 1280,
+            "target_au_rate_kbps": 1664,
+            "target_d0_frame_bytes": 4096,
+            "joc_profile_index": "1 observed by V2 in the reference sample; target writer binding UNBOUND",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1/PACKAGE-SEAL.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1/IMPLEMENTER-HANDOFF.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1/REFERENCE-STRUCTURE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1/SOURCE-RECEIPTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V2/PACKAGE-SEAL.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V2/IMPLEMENTER-HANDOFF.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V2/REFERENCE-STRUCTURE-ADDENDUM.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V2/SOURCE-RECEIPTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V2/CHECK.py"
+            ],
+            "target_i0_writer_requirement": "legacy AC-3 core BSID6 reference; target writer/callsite NOT_IMPLEMENTED; existing 5.1 E-AC-3 BSID16 path unchanged",
+            "validation_boundary": "Hash-bound Wash summary of a user-designated reference structure; it does not establish target writer behavior, target profile-index 1, target output or production readiness.",
+            "v2_addendum": {
+              "package_id": "OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V2",
+              "manifest_sha256": "c4104e674a9c3df06ead8f6741a7366e58068602789806d1a91d045c1dfd731a",
+              "package_seal_sha256": "0fb4c7f8a7a49488a97586b7e3eb6febc0542cf0044569fe37e65dc07d85757d",
+              "full_track_aus": 23033,
+              "payload14_joc_dmx_config_idx": {
+                "width_bits": 3,
+                "value": 1,
+                "count": 23033,
+                "table47_layout": "7.X / unshifted",
+                "table48_downmix_channels": 7
+              },
+              "joc_extension_idx": 0,
+              "joc_header_object_count": 15,
+              "phase_shift_variant": false,
+              "i0_dmixmod": 1,
+              "i0_dmixmod_meaning": "Lt/Rt preferred",
+              "d0_dmixmod": "absent",
+              "payload_ids_11_14_codecdatae": 0,
+              "etsi_table56_expected_codecdatae": 1,
+              "vendor_compatible_observation": "PASS",
+              "etsi_strict": "FAIL_PAYLOAD_CONFIGURATION_FLAGS",
+              "target_profile_index_writer_binding": "UNBOUND",
+              "target_encode_validation": "NOT_EVALUATED",
+              "production_allowed": false
+            }
+          },
+          "vectors": {
+            "kind": "WASH_FULL_TRACK_REFERENCE_STRUCTURE",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1/REFERENCE-STRUCTURE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V2/REFERENCE-STRUCTURE-ADDENDUM.json"
+            ],
+            "case_pointers": [
+              "23,033 packets each parse as 5,120 bytes: I0 legacy AC-3 BSID6 then D0 dependent E-AC-3 BSID16, 2,560 bytes per frame.",
+              "Every reference AU has D0 chanmap 0x1A00, two-byte addbsi and reported complexity 16.",
+              "Each reference D0 block-2 skipfld carries EMDF payload IDs 11/14 with observed 301..377 byte extents.",
+              "Sample structure is 1,280 kbps; target is separately 1,664 kbps with 4,096-byte D0.",
+              "V2 parses payload-14 joc_dmx_config_idx=1/U3, extension_idx=0 and 15 header objects in all 23,033 reference AUs; Tables 47/48 map the reference index to 7.X/seven downmix channels.",
+              "V2 reports I0 dmixmod=1 as an Lt/Rt preference and D0 dmixmod absent; these are separate from the Flat7x reconstruction profile and D0 chanmap.",
+              "V2 reports codecdatae=0 for payload IDs 11/14 while Table 56 expects 1; vendor-compatible result and ETSI-strict failure remain separate."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "V1_V2_WASH_CHECKERS_NORMAL_AND_OPTIMIZED_PASS__REFERENCE_ONLY"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Flat7x profile-index 1 target writer/target binding, I0 legacy AC-3 BSID6 writer, D0 1,024-kbps writer/audio path, target all-AU EMDF fit and 1,664-kbps output.",
+            "Full object position/height history, strict Table 56 conformance, audio decode, W04 and product acceptance."
+          ],
+          "validation_boundary": "Hash-bound V1/V2 structure summaries for the user-designated sample. V2 supplies a reference profile-index value but does not bind a target writer. Vendor-compatible observation and ETSI-strict Table 56 failure are distinct; no media bytes, PCM or compressed payload are included.",
+          "delivery_scope": "OFFICIAL_REFERENCE_STRUCTURE_AND_JOC_INDEX_ONLY_NO_TARGET_OUTPUT_OR_STRICT_COMPLIANCE_CLAIM"
         }
       ]
     },
@@ -55205,8 +55463,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2097541,
-              "sha256": "acdc9d16aa007aa97455c12aa340906bbe452c1d2c0757584a7f77ac31e6e292"
+              "bytes": 2102860,
+              "sha256": "6a175bb7bbbe3ff9b71e232ec947e8574d9ad825872b19aaa3b6a5d04c06aef7"
             }
           ],
           "test_inventory": [
@@ -59009,8 +59267,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/codec/mod.rs",
-          "bytes": 896,
-          "sha256": "55f0e0c32d09e502639e59058556b86f5232bb29908a39b1a4503c9b3ddf4ba1"
+          "bytes": 921,
+          "sha256": "b56e85e9198020612624215b5ac6c0bc52651f95048076841640ad96a2028328"
         },
         {
           "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",

@@ -1644,11 +1644,11 @@ Wash package `JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1` (manifest SHA-256 `0cd5
 
 This is an architecture requirement, not proof that the legacy reference durably published atomically. The earlier transaction-boundary package remains limited to untyped static writer boundaries and does not prove I0/D0 roles, order, generation, or atomic commit. Runtime generation is `NOT_CAPTURED`; actual output is `NOT_RUN`; D0 source-role mapping and native D0 audio algorithm remain `UNBOUND`; `production_allowed=false`.
 
-## 2026-11-10: Atmos71 I0 frame syntax identity gap
+## 2026-11-10: historical Atmos71 I0 frame syntax gap
 
-Wash package `JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1` (manifest SHA-256 `9f500f0785c569d67b846fa54f121b4e42c6b5b179ace98c4bdf19463c906109`, seal SHA-256 `a5ea37646195925f69cc2d53792b474a882b536cac3b26699ff4aa8679b16b3f`) records that the approved official structure summary labels I0 `legacy_independent` but does not provide its exact BSID. The currently selected isolated frame prefix emits E-AC-3 BSID 16 with `strmtyp=0`; equivalence to official I0 remains `UNBOUND`. Do not infer the missing BSID from the label or alter the current prefix from this notice.
+Wash package `JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1` (manifest SHA-256 `9f500f0785c569d67b846fa54f121b4e42c6b5b179ace98c4bdf19463c906109`, seal SHA-256 `a5ea37646195925f69cc2d53792b474a882b536cac3b26699ff4aa8679b16b3f`) captured the evidence available at that time: I0 was labeled `legacy_independent` without an exact BSID. The 2026-11-11 `OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1` adds a hash-bound user-designated reference structure and reports I0 legacy AC-3 core BSID6. This reference value now informs the Flat7x I0 target; the dedicated legacy-core writer and callsite remain unimplemented.
 
-The cited OpenJOC parser capability distinguishes legacy AC-3 BSID 0..8 from E-AC-3 BSID 16; it is parser/validator capability only, not evidence of official-output syntax or an encoder algorithm. The existing 5.1 profile remains unchanged. Official I0 exact BSID is `NOT_CAPTURED`; runtime and real 7.1 output are `NOT_RUN`; `production_allowed=false`.
+The earlier OpenJOC parser capability describes parser/validator domains only. The new reference does not connect its I0 writer to the Flat7x implementation or establish 1,664-kbps output. The existing 5.1 E-AC-3 BSID16 path remains unchanged; profile index 1, target output and W04 are `NOT_RUN`; `production_allowed=false`.
 
 ## 2026-11-10: Flat7x layout on the selected 1024 kbps / 5.1 core path
 
@@ -1685,3 +1685,23 @@ Wash handoff `ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF-V1/IMPLEMENTER-HANDOFF.md`
 ## 2026-11-11: Flat7x F15 staging transaction contract
 
 Wash supplement `FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1` (manifest SHA-256 `18de94b6b18a13222df8e9eae018f77c49fa735007869b99255b97a1cb5ae0d1`, package seal SHA-256 `8879c0417bf60db4d8dc9dec1fbbeccd884978af6460f304cfb8034052e4d3ee`) was checked locally with normal Python and `python -O`. It binds the implementation to AD-003/005/008/010 attempt and staging rules. Same-pair source-generation labels, `PublishedAuIndex`, F13 source/AU identity, and local owner generation stay separate. Missing required F13/I0/D0 integrity receipts, fatal staging, or incomplete finalize returns an attempt-retirement value; recovery starts from a programme-cold root. The model permits a finalize proposal after expected AU count and ledger checks. Callback-owner join, canonical GTC output projection, positive receipt-bundle integration, profile EOF/final-exposure receipt, and I0/D0 audio/BSI joins remain open.
+
+## 2026-11-11: Flat7x D0 block-two skip-field serializer
+
+The Wash-verified `JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1` (manifest SHA-256 `7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714`, package seal SHA-256 `2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20`) fixes the target at D0 zero-based block 2, one complete field, 511-byte maximum, no continuation, and fail-closed overflow. Wash confirmed ETSI TS 102 366 V1.4.1 §4.4.3.58–60 syntax: `skiple=0` omits the length and payload; `skiple=1` is followed by U9 `skipl` and exactly `skipl` dummy bytes, after delta-bit allocation and before mantissas.
+
+`codec::emdf_skip_field::write_flat7x_d0_block2_skipfld` uses the existing MSB-first `FrameBitWriter`, preflights the complete selected field before writing, and requires a complete nonempty EMDF container for the target present form `skiple=1`, U9 `skipl=C`, followed by C bytes. Missing/empty target input and C=512 reject without changing frame bytes or cursor; the target permits C=1..511 and no continuation. Generic ETSI `skiple=0` syntax remains outside this required-container target API. Five bit-writer boundary tests pass. The helper consumes only the typed skip-field target; D0 chanmap, JOC object count and reconstruction-carrier domains remain separate.
+
+The cursor is still supplied by the caller; this slice does not bind the helper to the native block-2 cursor, D0 BSI/audio owner, F13 source lineage, F12 frame assembler or output transaction. `production_allowed=false`; full 7.1 output, all-AU fit and W04 remain `NOT_RUN`.
+
+## 2026-11-11: official Atmos demo reference structure
+
+Wash package `OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1` (manifest SHA-256 `f7f8630c3f18e990324f013e70486c561de6816a844f852f18f03a82ce28fbfc`, package seal SHA-256 `2d883e278bb83fa0d617610f94b8a87fa5849ac7bf19bdf08818d8d30d50740e`) passed normal and `python -O` checks. The hash-bound summary covers 23,033 packets: each has I0 legacy independent AC-3 BSID6 / 2,560 bytes followed by D0 dependent E-AC-3 BSID16 / 2,560 bytes, for a 1,280-kbps sample. D0 reports `chanmap=0x1A00`, two-byte addbsi/CI16, and block-2 skipfld EMDF IDs 11/14 with extents 301–377 bytes. The Flat7x target remains distinct at 1,664 kbps with a 4,096-byte D0 frame; its all-AU EMDF fit is still `NOT_RUN`.
+
+The reference identifies the Flat7x I0 structural target as legacy AC-3 BSID6. Its profile-specific writer path is a separate open slice; the existing 5.1 E-AC-3 BSID16 path remains unchanged. `joc_dmx_config_idx=1`, height/object-position history, media decoding, target output and W04 remain `NOT_PARSED/NOT_RUN`; `production_allowed=false`.
+
+## 2026-11-11: official Atmos JOC profile-index addendum
+
+Wash package `OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V2` (manifest SHA-256 `c4104e674a9c3df06ead8f6741a7366e58068602789806d1a91d045c1dfd731a`, seal SHA-256 `0fb4c7f8a7a49488a97586b7e3eb6febc0542cf0044569fe37e65dc07d85757d`) extends V1's full-track summary. All 23,033 sample payload-14 headers parse as U3 `joc_dmx_config_idx=1`, extension index 0 and 15 header objects; ETSI Tables 47/48 map that index to 7.X / seven downmix channels. This is reference-file evidence only; a target 1,664-kbps profile/index writer is still unbound. The sample reports I0 `dmixmod=1` (Lt/Rt preference) and no D0 `dmixmod`; these fields remain separate from reconstruction index, D0 chanmap and object counts.
+
+V2 also reports payload IDs 11 and 14 with `codecdatae=0` on all AUs while ETSI Table 56 expects 1. Preserve the vendor-compatible structure observation and the ETSI-strict failure as separate results. The 1,664-kbps target, target all-AU EMDF fit, object height history, audio decoding and W04 remain `NOT_EVALUATED/NOT_RUN`; `production_allowed=false`.

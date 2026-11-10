@@ -1,0 +1,85 @@
+{
+  "schema": "jocforge.wash.official_demo_structure.v1",
+  "package_id": "OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1",
+  "status": "FULL_TRACK_I0_D0_STRUCTURE_BOUND; TARGET_1664_AND_PROFILE_INDEX_NOT_EVALUATED",
+  "production_allowed": false,
+  "source": {
+    "user_designated_basename": "Dolby-Atmos-DD+ 7.1.4.mka",
+    "sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+    "size_bytes": 118008186,
+    "source_attribution": "USER_DESIGNATED; NOT_INDEPENDENTLY_AUTHENTICATED",
+    "wash_package_manifest_sha256": "13b691cc9dfc67667b1f02eb28f2257516d284992a58cc80a14569c5ef5ecd9d"
+  },
+  "container": {
+    "format": "Matroska v4",
+    "audio_track_count": 1,
+    "codec_id": "A_EAC3",
+    "packet_count": 23033,
+    "packet_bytes": 5120,
+    "frames_per_packet": 2,
+    "frame_order": ["I0_LEGACY_INDEPENDENT", "D0_DEPENDENT"],
+    "frame_bytes": [2560, 2560],
+    "au_rate_kbps_reported": 1280,
+    "sample_rate_hz": 48000
+  },
+  "i0": {
+    "stream_type": "legacy_independent",
+    "codec_family": "AC-3 core",
+    "bsid": 6,
+    "substream_id": 0,
+    "acmod": 7,
+    "lfeon": true,
+    "audio_blocks": 6,
+    "samples_per_channel": 1536,
+    "frame_bytes": 2560,
+    "frame_rate_kbps_derived": 640
+  },
+  "d0": {
+    "stream_type": "dependent",
+    "codec_family": "E-AC-3",
+    "bsid": 16,
+    "substream_id": 0,
+    "acmod": 5,
+    "lfeon": false,
+    "chanmap": "0x1A00",
+    "chanmap_coded_locations": ["Ls", "Rs", "Lrs", "Rrs"],
+    "audio_blocks": 6,
+    "samples_per_channel": 1536,
+    "frame_bytes": 2560,
+    "frame_rate_kbps_derived": 640,
+    "addbsi_length_bytes": 2,
+    "joc_complexity_index_reported": 16
+  },
+  "joc_and_emdf": {
+    "assembled_layout": "7.1",
+    "full_band_locations": ["L", "R", "C", "Ls", "Rs", "Lrs", "Rrs"],
+    "separate_lfe": true,
+    "oamd_total_objects_reported": 16,
+    "oamd_dynamic_objects_reported": 15,
+    "oamd_lfe_bed_reported": 1,
+    "d0_block2_skipfld_emdf_aus": 23033,
+    "emdf_payload_ids": [11, 14],
+    "d0_block2_skipfld_bytes_min": 301,
+    "d0_block2_skipfld_bytes_max": 377,
+    "joc_dmx_config_idx": "NOT_PARSED",
+    "full_object_position_history": "NOT_PARSED",
+    "etsi_table_55_56_validation": "NOT_RUN"
+  },
+  "target_comparison": {
+    "target_i0_kbps": 640,
+    "target_d0_kbps": 1024,
+    "target_au_aggregate_kbps": 1664,
+    "sample_d0_kbps": 640,
+    "target_d0_extent_bytes": 4096,
+    "sample_d0_extent_bytes": 2560,
+    "same_profile_index_as_flat7x_index1": "UNBOUND",
+    "target_1664_emdf_fit": "NOT_RUN"
+  },
+  "safety_scope": {
+    "audio_decode": "NOT_RUN",
+    "pcm_generation": "NOT_RUN",
+    "dee_execution": "NOT_RUN",
+    "compressed_packet_or_payload_persisted": false,
+    "private_key_or_license_access": false
+  }
+}

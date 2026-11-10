@@ -1,0 +1,64 @@
+{
+  "schema": "jocforge.wash.official_demo_joc_profile_addendum.v1",
+  "package_id": "OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V2",
+  "production_allowed": false,
+  "source": {
+    "user_designated_basename": "Dolby-Atmos-DD+ 7.1.4.mka",
+    "sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+    "wash_manifest_sha256": "1b1f32a0e311d97b8d9c6676d89ba5660a17c7989d1d0703026269bca9ceefb5",
+    "source_attribution": "USER_DESIGNATED; NOT_INDEPENDENTLY_AUTHENTICATED"
+  },
+  "full_track": {
+    "access_units": 23033,
+    "joc_dmx_config_idx": {
+      "width_bits": 3,
+      "value": 1,
+      "count": 23033,
+      "etsi_table47_layout": "7.X / unshifted",
+      "etsi_table48_downmix_channels": 7
+    },
+    "joc_extension_idx": 0,
+    "joc_object_count": 15,
+    "phase_shift_variant": false,
+    "emdf_payload_pair": {
+      "ids": [11, 14],
+      "one_of_each_per_au": true,
+      "group_ids_equal": true,
+      "group_id": 0
+    },
+    "table56": {
+      "payload_11_codecdatae": 0,
+      "payload_14_codecdatae": 0,
+      "expected_codecdatae": 1,
+      "observed_deviation_count_per_payload": 23033,
+      "other_checked_fields_match": true,
+      "vendor_compatible": true,
+      "etsi_strict": false
+    },
+    "separate_domains": {
+      "i0_eac3_dmixmod": 1,
+      "i0_dmixmod_meaning": "Lt/Rt preferred",
+      "d0_eac3_dmixmod": "absent",
+      "d0_chanmap": "0x1A00",
+      "eac3_complexity_index": 16,
+      "oamd_total_objects": 16,
+      "oamd_dynamic_objects": 15,
+      "oamd_lfe_bed": 1
+    }
+  },
+  "target_comparison": {
+    "target_au_rate_kbps": 1664,
+    "target_i0_rate_kbps": 640,
+    "target_d0_rate_kbps": 1024,
+    "target_encode_validation": "NOT_EVALUATED",
+    "full_object_position_history": "NOT_PARSED"
+  },
+  "safety_scope": {
+    "audio_decode": "NOT_RUN",
+    "pcm": "NOT_CREATED",
+    "raw_compressed_bytes_included": false,
+    "private_key_or_license_included": false,
+    "research_source_code_included": false,
+    "mode21_artifact_included": false
+  }
+}

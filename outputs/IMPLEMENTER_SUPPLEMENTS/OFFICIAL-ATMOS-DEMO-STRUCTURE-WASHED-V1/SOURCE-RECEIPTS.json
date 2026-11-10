@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.wash.implementer_source_receipts.v1",
+  "package_id": "OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1",
+  "audience": "IMPLEMENTER",
+  "sources": [
+    {
+      "kind": "wash_review_receipt",
+      "path": "outputs/WASH_RECEIPTS/official-atmos-mka-sequential-i0-d0-review-receipt.md",
+      "wash_receipt_sha256": "b1ec8446dcf810905b8cf597a7633c1f5cf0802c59255f03ff1bd943fbe7e378",
+      "source_sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+      "wash_package_manifest_sha256": "13b691cc9dfc67667b1f02eb28f2257516d284992a58cc80a14569c5ef5ecd9d",
+      "reviewer_disposition": "FULL_TRACK_I0_D0_STRUCTURE_BOUND; profile-index and height-position checks open"
+    }
+  ],
+  "raw_media_or_payload_included": false,
+  "research_source_code_included": false,
+  "mode21_artifact_included": false
+}

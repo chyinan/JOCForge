@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.implementer_supplement_manifest.v1",
+  "package_id": "OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1",
+  "audience": "IMPLEMENTER",
+  "status": "WASH_REVIEWED_REFERENCE_STRUCTURE_PARTIAL",
+  "production_allowed": false,
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 2975,
+      "sha256": "7b40b06f46c7b77d219fb89a2002ff2a89f658263b92b526af86f9740e57a1a2"
+    },
+    {
+      "path": "IMPLEMENTER-HANDOFF.md",
+      "bytes": 2823,
+      "sha256": "9c8104cf08e1ebd052d008164c9f0448795655ad5f03d7ad60a9c7d43721b08a"
+    },
+    {
+      "path": "REFERENCE-STRUCTURE.json",
+      "bytes": 2744,
+      "sha256": "49f1494bf6359c659e7dd20ac10701bca727b1f68ea1b9b12e09ee7b1bcbb384"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 840,
+      "sha256": "b59b646d6aa7742b2e24259b883dae20dad96f96020014f08bef57e6253cc495"
+    }
+  ]
+}

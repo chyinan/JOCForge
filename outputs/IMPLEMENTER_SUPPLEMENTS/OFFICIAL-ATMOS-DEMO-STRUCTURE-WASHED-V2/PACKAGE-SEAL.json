@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash_package_seal.v1",
+  "package_id": "OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V2",
+  "manifest_sha256": "c4104e674a9c3df06ead8f6741a7366e58068602789806d1a91d045c1dfd731a",
+  "file_paths": [
+    "CHECK.py",
+    "IMPLEMENTER-HANDOFF.md",
+    "REFERENCE-STRUCTURE-ADDENDUM.json",
+    "SOURCE-RECEIPTS.json"
+  ],
+  "seal_excluded_from_own_hash": true
+}
