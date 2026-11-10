@@ -48,7 +48,7 @@ The legacy `SelectedMode0Phase1Index3` value combines distinct meanings. For the
 
 The target access unit contains ordered I0 then D0 receipts from the same source generation. F12 supplies separate I0/D0 frames; F13 binds one complete EMDF container to D0 audio-block skipfld block 2; an integrity receipt is required; F15 publishes the whole AU atomically. A missing frame/role/metadata/integrity receipt or a container above 511 bytes rejects the entire AU; I0-only publication is forbidden. GTC source-role projection, native D0 audio algorithm, and all-AU EMDF fit remain `UNBOUND/NOT_RUN`.
 
-The local `Flat7xI0D0TargetPlan`, candidate validator and byte-sequence composer model this contract outside `resolve_selected_profile`. The composer concatenates CRC-checked I0 and D0 byte slices in target order; it does not parse their syntax or create owner receipts, output proposals or durable publication. The target's `production_allowed=false` gate remains in force.
+The local `Flat7xI0D0TargetPlan`, candidate validator and byte-sequence composer model this contract outside `resolve_selected_profile`. The composer concatenates CRC-checked I0 and D0 byte slices in target order; it does not parse their syntax. An additive F15 target owner stages one complete 6,656-byte AU proposal and pair-aware ledger entry, then validates caller-supplied receipt candidate fields. It has no GTC registration or filesystem adapter, so this staged contract does not attest a real append, rollback, fsync or readback provenance. It remains separate from the selected 5.1 output sink, with `production_allowed=false`.
 
 ## AD-011 Flat7x reconstruction layout as immutable profile configuration
 

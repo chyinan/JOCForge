@@ -12,6 +12,8 @@
 
 `profile::Flat7xI0D0TargetPlan::approved_contract()` exposes the approved I0=640/D0=1024 Flat7x AU contract as a value-only plan. `profile::validate_flat7x_au_candidate` checks the target metadata and supplied generation labels. `profile::compose_flat7x_au_byte_sequence` then checks the two supplied frame extents and per-frame CRCs and concatenates them in I0→D0 order. The returned value does not parse substream syntax, establish runtime owner lineage, or grant output-owner authority; it is not an `EncodingProfile` and cannot enter the production resolver. `production_allowed` remains false.
 
+`publication::Flat7xAuOutputOwner` accepts such a byte-sequence candidate into one whole-AU append proposal, returns a typed pair ledger entry and validates caller-supplied `Flat7xAuAppendReceiptCandidate` fields before exposing an after-owner proposal. This API is target-only: it has no GTC registration, filesystem adapter, write/rollback/readback provenance or product-plan binding, and the selected 5.1 `OutputOwner` stays on its current path.
+
 ## Selected job XML values
 
 `frontend::job_configuration::SelectedJobConfiguration::temp_directory()` 只返回 XML 中可选的 `misc/temp_dir` 字段。`SelectedTempDirectoryConfiguration` 保留可选的 `clean_temp` 布尔值和 `path` 字符串；domain 不解析路径、不访问文件系统，也不执行清理。当前 CLI 会在 Meter、callbacks 和编码前拒绝任何已提供的 `temp_dir` 配置。

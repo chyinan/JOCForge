@@ -13,3 +13,5 @@
 当前另有一个明确限定的 Flat7x 部分实现：CLI 可选项 `--joc-layout flat7x` 在 1024 kbps / 5.1 core path 上选择 immutable `JocReconstructionLayout::Flat7x`，由现有 JOC-header writer 发出 ETSI `joc_dmx_config_idx=1` 的 3-bit 字段。省略此项保留 selected 5.1 profile；原有 downmix control、输入解析、audio-generation、topology 和 publication 行为沿用既有配置。完整 Flat7x 文件与官方演示结构验收仍为 `NOT_RUN`。
 
 1664 kbps I0/D0 目标另有 `Flat7xI0D0TargetPlan` 的 value-only 建模、fail-closed metadata check 和 I0→D0 byte-sequence candidate。后者只拼接调用方提供且逐帧 CRC 通过的 bytes，不解析 substream syntax，也不进入 production resolver、frame writer 或 publication flow；`production_allowed=false` 与 D0 audio algorithm、ADM role join、native writer owner、all-AU EMDF fit 的开放状态保持不变。
+
+F15 另有独立的 Flat7x AU staging owner value，可为一个 I0+D0 aggregate 建立 proposal、pair-aware ledger entry 与 caller-supplied receipt candidate 验收。该值模型不证明真实文件写入、rollback 或 readback，未接入 GTC、文件 adapter 或产品路径；5.1 `OutputOwner` 保持独立。
