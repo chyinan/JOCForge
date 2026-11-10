@@ -387,6 +387,25 @@ impl ParsedCurrentEmdfContainer {
     }
 }
 
+/// Test-only typed shell for exercising downstream receipt predicates.
+///
+/// It deliberately bypasses `parse_current_emdf_container`; callers must keep
+/// the fixture classified as receipt-mechanics coverage, not parser evidence.
+#[cfg(test)]
+pub(crate) fn synthetic_receipt_gate_container_for_test(
+    bytes: Vec<u8>,
+    carrier_block: CarrierBlock,
+    id14_provenance: Id14ProducerProvenance,
+) -> ParsedCurrentEmdfContainer {
+    ParsedCurrentEmdfContainer {
+        bytes,
+        mode: CurrentEmdfCarriageMode::DeployedCompat,
+        carrier_block,
+        id14_provenance,
+        payloads: Vec::new(),
+    }
+}
+
 /// Exact local parser outcomes for the selected framing/configuration boundary.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum CurrentEmdfParserError {

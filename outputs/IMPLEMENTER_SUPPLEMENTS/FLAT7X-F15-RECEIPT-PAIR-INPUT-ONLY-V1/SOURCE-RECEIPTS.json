@@ -1,0 +1,37 @@
+{
+  "schema": "jocforge.wash_input_only_source_receipts.v1",
+  "package_id": "FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1",
+  "verified_at": "2026-11-11",
+  "isolated_commit": "d76a4ad80454a48385ecc78f62955089bb4da1ab",
+  "isolated_remote_ref": "origin/experimental/independent-encoder",
+  "isolated_local_remote_match": true,
+  "source_files": [
+    {
+      "path": "crates/jocforge-domain/src/publication/flat7x_au_output.rs",
+      "sha256": "2d6c3440fe61a3d12eb1266df5b127a960476cf7e1cfdb143e52040ad157b831",
+      "scope": "target-only F13/Integrity receipt relations and paired F15 ledger"
+    },
+    {
+      "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
+      "sha256": "1d8cd308b0463849520bcc9ab800ee20a05815f681c79e3256902564a1880c84",
+      "scope": "I0/D0 extents, caller-provided generation label and EMDF candidate extent"
+    },
+    {
+      "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
+      "sha256": "bab96a268a9a5d171ff8fc2a603eb260d3b9516b9eba7e4b4a55ebd1025e01c1",
+      "scope": "F13 MetadataSourceProposal, receipt identity and parsed container fields"
+    },
+    {
+      "path": "crates/jocforge-domain/src/integrity/programme_owner.rs",
+      "sha256": "36b26525bde6bcc15b2d66d860bb1938150dbf8621d95fa177f731cebe5b6a18",
+      "scope": "IntegrityIdentity, F12 source/dispatch/AU receipt and payload variants"
+    },
+    {
+      "path": "crates/jocforge-io/src/flat7x_au_append.rs",
+      "sha256": "b3309a9d408fa62d7848e9d905a150a26ceb01bba365bbabbe3ea166264cd63a",
+      "scope": "target-only staging receipt candidate and append boundaries"
+    }
+  ],
+  "runtime_or_media_read": false,
+  "production_allowed": false
+}

@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1",
+  "manifest_sha256": "1034ef415113b666acc5aefaa3207230040f05d9ebc05a33933bffc50b4ff088",
+  "seal_file_excluded_from_own_hash": true
+}

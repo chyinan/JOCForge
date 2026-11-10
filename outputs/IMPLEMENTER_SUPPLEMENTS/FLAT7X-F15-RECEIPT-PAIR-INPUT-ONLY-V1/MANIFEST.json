@@ -1,0 +1,30 @@
+{
+  "schema": "wash-sanitized-supplement.v1",
+  "package_id": "FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1",
+  "status": "WASH_APPROVED_SYNTHETIC_INPUT_ONLY",
+  "implementation_scope": "Synthetic F13/I0/D0 receipt identity and rejection vectors only; no media bytes; production disabled; source/callback generation join and GTC/final exposure remain open.",
+  "scope": "Synthetic F13/I0/D0 receipt identity and rejection vectors only; no media bytes; production disabled; source/callback generation join and GTC/final exposure remain open.",
+  "production_allowed": false,
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 3829,
+      "sha256": "c29f86aebcc4368b3f925d3e67423a5b767ed5737aed274efcfc31528c79b0ee"
+    },
+    {
+      "path": "IMPLEMENTER-HANDOFF.md",
+      "bytes": 2535,
+      "sha256": "3f6785b2efe1ee229c8c569640b987ca3dd1b9c412dedfd7025e5f8b5e160ba5"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 4037,
+      "sha256": "dbf02c22de6dac36da5bd2c90234f4add1c04ecb313d0e0fceb611c289ccd537"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 1686,
+      "sha256": "3a8a2d538913f3afb59c2a2d623b16365ab0d14eb060854e22b88974f140e3a9"
+    }
+  ]
+}

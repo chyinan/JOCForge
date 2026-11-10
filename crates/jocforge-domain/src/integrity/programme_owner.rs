@@ -560,6 +560,53 @@ impl IntegrityF12SourceReceipts {
     }
 }
 
+/// Builds typed synthetic receipt values for receipt-gate unit tests only.
+///
+/// This fixture bypasses the Integrity owner stage; it does not establish F12
+/// producer integration or source-generation ownership.
+#[cfg(test)]
+pub(crate) fn synthetic_f12_receipts_for_flat7x_test(
+    identity: IntegrityIdentity,
+    generations: (u64, u64),
+    frame: &[u8],
+    payload: IntegrityPayloadEvidence,
+    emdf_container_start: Option<FrameBitCursor>,
+    source_payload_sha256: Option<IntegritySha256>,
+) -> IntegrityF12SourceReceipts {
+    let frame_sha256 = sha256(frame);
+    let crc16_offset = frame
+        .len()
+        .checked_sub(2)
+        .expect("synthetic receipt frame includes CRC16");
+    let crc16 = u16::from_be_bytes([frame[crc16_offset], frame[crc16_offset + 1]]);
+
+    IntegrityF12SourceReceipts {
+        source: IntegrityF12SourceReceipt {
+            identity: identity.clone(),
+            before_generation: generations.0,
+            proposed_after_generation: generations.1,
+            before_sha256: sha256(&generations.0.to_le_bytes()),
+            proposed_after_sha256: sha256(&generations.1.to_le_bytes()),
+            provider_sha256: sha256(b"wash synthetic receipt-gate provider"),
+            payload,
+        },
+        dispatch: IntegrityF12DispatchReceipt {
+            identity: identity.clone(),
+            frame_sha256,
+            frame_bytes: frame.len(),
+            emdf_container_start,
+            source_payload_sha256,
+        },
+        au: IntegrityF12AuReceipt {
+            identity,
+            frame_sha256,
+            crc16,
+            crc_residual: eac3_crc16(&frame[FRAME_CRC_INPUT_START..]),
+            published: true,
+        },
+    }
+}
+
 #[derive(Debug, Eq, PartialEq)]
 pub struct IntegrityCallResult {
     receipts: [IntegrityStageReceipt; 3],

@@ -194,6 +194,433 @@ fn test_callback_transaction_id(
     .unwrap()
 }
 
+fn flat7x_receipt_pair_vector() -> Value {
+    let path = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join(
+        "../../outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/INPUT-ONLY-VECTORS.json",
+    );
+    serde_json::from_slice(&std::fs::read(path).expect("Wash receipt-pair vector is present"))
+        .expect("Wash receipt-pair vector is valid JSON")
+}
+
+fn write_test_bits(bytes: &mut [u8], start_bit: usize, width: usize, value: u64) {
+    for offset in 0..width {
+        let bit_index = start_bit + offset;
+        let mask = 1_u8 << (7 - bit_index % 8);
+        let set = (value >> (width - offset - 1)) & 1 != 0;
+        if set {
+            bytes[bit_index / 8] |= mask;
+        } else {
+            bytes[bit_index / 8] &= !mask;
+        }
+    }
+}
+
+fn synthetic_receipt_gate_emdf() -> (
+    Vec<u8>,
+    crate::integrity::keyless_checksum::ProtectedEmdfContainer,
+) {
+    let mut zero_slot = vec![0_u8; 16];
+    zero_slot[..2].copy_from_slice(&[0x58, 0x38]);
+    zero_slot[2..4].copy_from_slice(&12_u16.to_be_bytes());
+    write_test_bits(&mut zero_slot, 37, 2, 2);
+    write_test_bits(&mut zero_slot, 39, 2, 1);
+
+    let layout = json!({
+        "bit_order": "MSB-first",
+        "terminal_id": { "value": 0, "start_bit": 32, "width_bits": 5 },
+        "primary_length_code": { "value": 2, "start_bit": 37, "width_bits": 2, "byte_count": 4 },
+        "secondary_length_code": { "value": 1, "start_bit": 39, "width_bits": 2, "byte_count": 1 },
+        "primary_protection_range_bits": [41, 73],
+        "secondary_protection_range_bits": [73, 81],
+        "terminal_padding_range_bits": [81, 128],
+        "terminal_padding_bits": 47,
+        "wire_bytes": 16,
+        "body_bytes": 12
+    });
+    let provider_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("tests/fixtures/integrity_owner/integrity-public-provider.json");
+    let provider_bytes = std::fs::read(provider_path).expect("keyless provider fixture is present");
+    let provider = crate::integrity::keyless_checksum::validate_keyless_provider(&provider_bytes)
+        .expect("selected public keyless provider fixture validates");
+    let protected =
+        crate::integrity::keyless_checksum::protect_emdf_container(&provider, &zero_slot, &layout)
+            .expect("synthetic 16-byte checksum input is protectable");
+    (zero_slot, protected)
+}
+
+fn receipt_gate_crc_valid_frame(frame_bytes: usize, marker: u8) -> Vec<u8> {
+    let size = crate::codec::frame_size::Eac3FrameSize::from_frame_bytes(frame_bytes).unwrap();
+    let mut bytes = vec![0_u8; frame_bytes];
+    bytes[..2].copy_from_slice(&[0x0b, 0x77]);
+    bytes[100] = marker;
+    for offset in 0..11 {
+        let value = (size.code().value() >> (10 - offset)) & 1;
+        if value != 0 {
+            let bit = 21 + offset;
+            bytes[bit / 8] |= 1 << (7 - (bit % 8));
+        }
+    }
+    let crc_offset = bytes.len() - 2;
+    let crc = crate::integrity::crc16::eac3_crc16(&bytes[2..crc_offset]);
+    bytes[crc_offset..].copy_from_slice(&crc.to_be_bytes());
+    assert_eq!(crate::integrity::crc16::eac3_crc16(&bytes[2..]), 0);
+    bytes
+}
+
+fn receipt_gate_sequence(
+    source_generation: u64,
+    container_bytes: usize,
+) -> crate::profile::Flat7xAuByteSequenceCandidate {
+    use crate::profile::{
+        D0EmdfSkipFieldExtent, D0FrameExtent, Flat7xAuCandidate, Flat7xI0D0TargetPlan,
+        Flat7xSourceGeneration, I0FrameExtent, compose_flat7x_au_byte_sequence,
+        validate_flat7x_au_candidate,
+    };
+
+    let generation = Flat7xSourceGeneration::new(source_generation);
+    let candidate = Flat7xAuCandidate::new(
+        Some(I0FrameExtent::new(generation, 2_560)),
+        Some(D0FrameExtent::new(generation, 4_096)),
+        Some(D0EmdfSkipFieldExtent::new(
+            generation,
+            2,
+            1,
+            Some(u16::try_from(container_bytes).unwrap()),
+            false,
+        )),
+    );
+    let validated =
+        validate_flat7x_au_candidate(Flat7xI0D0TargetPlan::approved_contract(), candidate).unwrap();
+    let i0 = receipt_gate_crc_valid_frame(2_560, 0x31);
+    let d0 = receipt_gate_crc_valid_frame(4_096, 0x72);
+    compose_flat7x_au_byte_sequence(&validated, &i0, &d0).unwrap()
+}
+
+struct Flat7xReceiptGateFixture {
+    sequence: crate::profile::Flat7xAuByteSequenceCandidate,
+    metadata: MetadataSourceProposal,
+    i0: crate::integrity::programme_owner::IntegrityF12SourceReceipts,
+    d0: crate::integrity::programme_owner::IntegrityF12SourceReceipts,
+}
+
+fn flat7x_receipt_gate_fixture(
+    vector: &Value,
+    carrier_block: u8,
+    f13_container_bytes: usize,
+    d0_transaction_override: Option<&str>,
+) -> Flat7xReceiptGateFixture {
+    use crate::{
+        codec::bitio::FrameBitCursor,
+        integrity::{
+            keyless_checksum::sha256,
+            programme_owner::{
+                IntegrityIdentity, IntegrityPayloadEvidence, synthetic_f12_receipts_for_flat7x_test,
+            },
+        },
+        profile::Flat7xSourceGeneration,
+        timeline::{CodecSourceIndex, JocDispatchIndex, PublishedAuIndex},
+    };
+
+    let pair = &vector["positive_pair"];
+    let identity = &pair["integrity_identity"];
+    let source_index = CodecSourceIndex::new(identity["source_index"].as_u64().unwrap());
+    let dispatch = JocDispatchIndex::new(identity["dispatch"].as_u64().unwrap());
+    let au_index = PublishedAuIndex::new(identity["published_au_index"].as_u64().unwrap());
+    let transaction_id = identity["transaction_id"].as_str().unwrap();
+    let programme_id = identity["programme_id"].as_str().unwrap();
+    let attempt = identity["attempt"].as_u64().unwrap();
+
+    let (mut zero_slot, protected) = synthetic_receipt_gate_emdf();
+    let mut protected_bytes = protected.bytes().to_vec();
+    if f13_container_bytes != zero_slot.len() {
+        zero_slot.resize(f13_container_bytes, 0);
+        zero_slot[2..4].copy_from_slice(
+            &u16::try_from(f13_container_bytes - 4)
+                .unwrap()
+                .to_be_bytes(),
+        );
+        protected_bytes.resize(f13_container_bytes, 0);
+        protected_bytes[2..4].copy_from_slice(
+            &u16::try_from(f13_container_bytes - 4)
+                .unwrap()
+                .to_be_bytes(),
+        );
+    }
+    let metadata = flat7x_synthetic_metadata_proposal(
+        identity,
+        &pair["f13_metadata"],
+        &zero_slot,
+        &protected_bytes,
+        carrier_block,
+    );
+
+    let generation = pair["f15_candidate"]["i0_source_generation_label"]
+        .as_u64()
+        .unwrap();
+    let sequence = receipt_gate_sequence(generation, 16);
+    let bytes = sequence.bytes();
+    let i0_frame = &bytes[..2_560];
+    let d0_frame = &bytes[2_560..];
+    let i0_input = &pair["i0_integrity_receipt"];
+    let d0_input = &pair["d0_integrity_receipt"];
+
+    let shared_identity = IntegrityIdentity {
+        programme_id: programme_id.to_owned(),
+        attempt,
+        transaction_id: transaction_id.to_owned(),
+        source_index,
+        dispatch,
+        au_index: Some(au_index),
+    };
+    let i0_generation = i0_input["integrity_owner_generation"].as_array().unwrap();
+    let i0_receipt = synthetic_f12_receipts_for_flat7x_test(
+        shared_identity.clone(),
+        (
+            i0_generation[0].as_u64().unwrap(),
+            i0_generation[1].as_u64().unwrap(),
+        ),
+        i0_frame,
+        IntegrityPayloadEvidence::AbsentPublishedPayloadV1,
+        None,
+        None,
+    );
+
+    let mut d0_identity = shared_identity;
+    if let Some(transaction) = d0_transaction_override {
+        d0_identity.transaction_id = transaction.to_owned();
+    }
+    let d0_generation = d0_input["integrity_owner_generation"].as_array().unwrap();
+    let d0_evidence = IntegrityPayloadEvidence::ProtectedEmdf {
+        zero_slot_sha256: protected.input_sha256(),
+        protected_sha256: protected.output_sha256(),
+        message_sha256: sha256(&zero_slot[4..]),
+        primary_crc32: protected.primary_crc32(),
+        secondary_crc8: protected.secondary_crc8(),
+        primary_range: protected.primary_range(),
+        secondary_range: protected.secondary_range(),
+        container_bytes: pair["f13_metadata"]["protected_container_bytes"]
+            .as_u64()
+            .unwrap() as usize,
+    };
+    let d0_receipt = synthetic_f12_receipts_for_flat7x_test(
+        d0_identity,
+        (
+            d0_generation[0].as_u64().unwrap(),
+            d0_generation[1].as_u64().unwrap(),
+        ),
+        d0_frame,
+        d0_evidence,
+        Some(FrameBitCursor::new(512)),
+        Some(protected.output_sha256()),
+    );
+
+    // The target candidate's caller label is sourced from the Wash vector; it
+    // remains distinct from each owner generation and the PublishedAuIndex.
+    assert_eq!(
+        sequence.source_generation(),
+        Flat7xSourceGeneration::new(generation)
+    );
+    Flat7xReceiptGateFixture {
+        sequence,
+        metadata,
+        i0: i0_receipt,
+        d0: d0_receipt,
+    }
+}
+
+fn flat7x_synthetic_metadata_proposal(
+    identity: &Value,
+    f13: &Value,
+    zero_slot_container: &[u8],
+    protected_container: &[u8],
+    carrier_block: u8,
+) -> MetadataSourceProposal {
+    let (_before, mut proposal, _) = source_zero_proposal();
+    let programme_id =
+        crate::transaction::ProgrammeId::new(identity["programme_id"].as_str().unwrap()).unwrap();
+    let attempt = crate::transaction::AttemptId::new(identity["attempt"].as_u64().unwrap());
+    let transaction_id = crate::transaction::CallbackTransactionId::new(
+        identity["transaction_id"].as_str().unwrap(),
+    )
+    .unwrap();
+    let source_index = CodecSourceIndex::new(identity["source_index"].as_u64().unwrap());
+    let dispatch = JocDispatchIndex::new(identity["dispatch"].as_u64().unwrap());
+    let au_index = PublishedAuIndex::new(identity["published_au_index"].as_u64().unwrap());
+    let callback_index = crate::timeline::FrontendCallbackIndex::new(
+        u32::try_from(source_index.value() + 2).unwrap(),
+    );
+    let lineage = crate::transaction::CallbackLineageIdentity::new(
+        programme_id.clone(),
+        attempt,
+        callback_index,
+    );
+
+    let id14_queue = proposal.id14_queue_view().unwrap();
+    let queued_id14 = id14_queue.slots()[1].as_ref().unwrap();
+    let producer = match queued_id14.producer_provenance().unwrap() {
+        MetadataQueueProducerProvenance::Id14(provenance) => provenance.clone(),
+        MetadataQueueProducerProvenance::MetadataBody(_) => {
+            panic!("synthetic F13 proposal retains typed ID14 producer provenance")
+        }
+    };
+    let queue_pop = Id14QueuePopReceipt {
+        producer: producer.clone(),
+        payload: queued_id14.bytes().to_vec().into_boxed_slice(),
+        consumer_programme_id: programme_id.clone(),
+        consumer_attempt: attempt,
+        consumer_transaction_id: transaction_id.clone(),
+        consumer_source_index: source_index,
+        consumer_dispatch: dispatch,
+        consumer_au_index: Some(au_index),
+        disposition: Id14PopDisposition::Published,
+    };
+    let parsed_container =
+        crate::joc::emdf::protected_container::synthetic_receipt_gate_container_for_test(
+            protected_container.to_vec(),
+            crate::joc::emdf::protected_container::CarrierBlock::new(carrier_block).unwrap(),
+            producer,
+        );
+
+    proposal.receipt.programme_id = programme_id.clone();
+    proposal.receipt.attempt = attempt;
+    proposal.receipt.transaction_id = lineage.clone();
+    proposal.receipt.consumer_transaction_id = Some(transaction_id.clone());
+    proposal.receipt.source_index = source_index;
+    proposal.receipt.dispatch = dispatch;
+    proposal.receipt.au_index = Some(au_index);
+    proposal.receipt.before_generation = f13["metadata_owner_generation_before"].as_u64().unwrap();
+    proposal.receipt.proposed_after_generation = f13["metadata_owner_generation_after_candidate"]
+        .as_u64()
+        .unwrap();
+    proposal.receipt.id14_queue_pop = Some(queue_pop.clone());
+    proposal.receipt.emdf = Some(zero_slot_container.to_vec());
+    proposal.emdf = Some(zero_slot_container.to_vec());
+    proposal.consumer_transaction_id = Some(transaction_id.clone());
+    proposal.parsed_container = Some(ParsedMetadataSourceContainer {
+        parsed_container,
+        consumer_programme_id: programme_id,
+        consumer_attempt: attempt,
+        consumer_transaction_id: transaction_id,
+        consumer_source_index: source_index,
+        consumer_dispatch: dispatch,
+        consumer_au_index: au_index,
+        id14_queue_pop: queue_pop,
+        queue_pop_receipts: Vec::new(),
+    });
+    proposal
+}
+
+#[test]
+fn flat7x_f15_wash_pair_vector_checks_receipt_mechanics_only() {
+    let vector = flat7x_receipt_pair_vector();
+    let pair = flat7x_receipt_gate_fixture(&vector, 2, 16, None);
+    let proposal = crate::publication::Flat7xAuOutputOwner::cold("wash-f15-positive", 1)
+        .unwrap()
+        .stage_next_access_unit(
+            pair.sequence,
+            crate::publication::Flat7xAuSourceReceiptInput::new(
+                Some(&pair.metadata),
+                Some(crate::publication::Flat7xAuIntegrityFrameReceipt::independent_i0(&pair.i0)),
+                Some(crate::publication::Flat7xAuIntegrityFrameReceipt::dependent_d0(&pair.d0)),
+            ),
+        )
+        .expect("synthetic Wash pair satisfies the F15 receipt predicates");
+
+    let entry = proposal.ledger_entry();
+    assert_eq!(entry.au_index().value(), 0);
+    assert_eq!(entry.source_generation().value(), 42);
+    assert_eq!(
+        entry.metadata_identity(),
+        (
+            CodecSourceIndex::new(11),
+            JocDispatchIndex::new(12),
+            PublishedAuIndex::new(0)
+        )
+    );
+    assert_eq!(entry.length(), 6_656);
+    assert_eq!(entry.frame_lengths(), (2_560, 4_096));
+    assert_eq!(entry.f13_emdf_receipt().0, (4, 5));
+    assert_eq!(entry.f13_emdf_receipt().2, 16);
+    assert_eq!(entry.integrity_owner_generations(), ((10, 11), (20, 21)));
+    assert_eq!(entry.frame_crc_residuals(), (0, 0));
+    assert!(!proposal.production_allowed());
+}
+
+#[test]
+fn flat7x_f15_wash_rejection_vectors_retire_the_whole_attempt() {
+    use crate::publication::{
+        Flat7xAuAttemptRetirementReason, Flat7xAuIntegrityFrameReceipt, Flat7xAuOutputOwner,
+        Flat7xAuOutputOwnerError, Flat7xAuSourceReceiptInput,
+    };
+
+    let vector = flat7x_receipt_pair_vector();
+    let identity_mismatch =
+        flat7x_receipt_gate_fixture(&vector, 2, 16, Some("wash-synthetic-transaction-mismatch"));
+    let retirement = Flat7xAuOutputOwner::cold("wash-f15-identity-mismatch", 1)
+        .unwrap()
+        .stage_next_access_unit(
+            identity_mismatch.sequence,
+            Flat7xAuSourceReceiptInput::new(
+                Some(&identity_mismatch.metadata),
+                Some(Flat7xAuIntegrityFrameReceipt::independent_i0(
+                    &identity_mismatch.i0,
+                )),
+                Some(Flat7xAuIntegrityFrameReceipt::dependent_d0(
+                    &identity_mismatch.d0,
+                )),
+            ),
+        )
+        .unwrap_err();
+    assert_eq!(
+        retirement.reason(),
+        Flat7xAuAttemptRetirementReason::StageRejected(
+            Flat7xAuOutputOwnerError::IntegritySourceIdentityMismatch
+        )
+    );
+
+    let wrong_carrier = flat7x_receipt_gate_fixture(&vector, 1, 16, None);
+    let retirement = Flat7xAuOutputOwner::cold("wash-f15-wrong-carrier", 1)
+        .unwrap()
+        .stage_next_access_unit(
+            wrong_carrier.sequence,
+            Flat7xAuSourceReceiptInput::new(
+                Some(&wrong_carrier.metadata),
+                Some(Flat7xAuIntegrityFrameReceipt::independent_i0(
+                    &wrong_carrier.i0,
+                )),
+                Some(Flat7xAuIntegrityFrameReceipt::dependent_d0(
+                    &wrong_carrier.d0,
+                )),
+            ),
+        )
+        .unwrap_err();
+    assert_eq!(
+        retirement.reason(),
+        Flat7xAuAttemptRetirementReason::StageRejected(
+            Flat7xAuOutputOwnerError::MetadataCarrierBlockMismatch
+        )
+    );
+
+    let oversized = flat7x_receipt_gate_fixture(&vector, 2, 512, None);
+    let retirement = Flat7xAuOutputOwner::cold("wash-f15-oversized-emdf", 1)
+        .unwrap()
+        .stage_next_access_unit(
+            oversized.sequence,
+            Flat7xAuSourceReceiptInput::new(
+                Some(&oversized.metadata),
+                Some(Flat7xAuIntegrityFrameReceipt::independent_i0(&oversized.i0)),
+                Some(Flat7xAuIntegrityFrameReceipt::dependent_d0(&oversized.d0)),
+            ),
+        )
+        .unwrap_err();
+    assert_eq!(
+        retirement.reason(),
+        Flat7xAuAttemptRetirementReason::StageRejected(
+            Flat7xAuOutputOwnerError::MetadataContainerExtentMismatch
+        )
+    );
+}
+
 #[test]
 fn cold_state_and_five_source_receipts_match_the_complete_vectors() {
     let vectors = vectors();

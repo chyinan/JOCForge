@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2096326,
-              "sha256": "2ecd00381a7a661c56593672ca116be475f532775647fc62ced0971267fcb837"
+              "bytes": 2097541,
+              "sha256": "acdc9d16aa007aa97455c12aa340906bbe452c1d2c0757584a7f77ac31e6e292"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2096326,
-              "sha256": "2ecd00381a7a661c56593672ca116be475f532775647fc62ced0971267fcb837"
+              "bytes": 2097541,
+              "sha256": "acdc9d16aa007aa97455c12aa340906bbe452c1d2c0757584a7f77ac31e6e292"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -44591,8 +44591,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/integrity/programme_owner.rs",
-              "bytes": 54531,
-              "sha256": "36b26525bde6bcc15b2d66d860bb1938150dbf8621d95fa177f731cebe5b6a18"
+              "bytes": 56239,
+              "sha256": "f8d0a9fc1a95e8513fdf34429a6c3db5bfcca995a6c619fd6636b7bbb6247231"
             },
             {
               "path": "crates/jocforge-application/src/codec_source_bridge.rs",
@@ -46612,15 +46612,15 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/protected_container.rs",
-              "bytes": 56798,
-              "sha256": "7837e33b9ad274e191741ae32e11b4de006e6aa4352da74366df9f9d13d88a9c"
+              "bytes": 57424,
+              "sha256": "ebb25ae83219436f85972d3467894beea770e5e8741c7a01fdb3489115c6365e"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-              "bytes": 46840,
-              "sha256": "e8667ec109a8949271d08ec8d92b8f84ee7f208242e3e02bb5e184465b286098"
+              "bytes": 63671,
+              "sha256": "79f6092f228ea7a654764b6510afc6792cfb17666364afd890089d0881990b09"
             },
             {
               "path": "crates/jocforge-domain/src/joc/id14_body.rs",
@@ -46629,8 +46629,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/protected_container.rs",
-              "bytes": 56798,
-              "sha256": "7837e33b9ad274e191741ae32e11b4de006e6aa4352da74366df9f9d13d88a9c"
+              "bytes": 57424,
+              "sha256": "ebb25ae83219436f85972d3467894beea770e5e8741c7a01fdb3489115c6365e"
             }
           ]
         },
@@ -47256,8 +47256,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-              "bytes": 46840,
-              "sha256": "e8667ec109a8949271d08ec8d92b8f84ee7f208242e3e02bb5e184465b286098"
+              "bytes": 63671,
+              "sha256": "79f6092f228ea7a654764b6510afc6792cfb17666364afd890089d0881990b09"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -49951,8 +49951,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-              "bytes": 46840,
-              "sha256": "e8667ec109a8949271d08ec8d92b8f84ee7f208242e3e02bb5e184465b286098"
+              "bytes": 63671,
+              "sha256": "79f6092f228ea7a654764b6510afc6792cfb17666364afd890089d0881990b09"
             }
           ],
           "test_inventory": [
@@ -49973,8 +49973,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-              "bytes": 46840,
-              "sha256": "e8667ec109a8949271d08ec8d92b8f84ee7f208242e3e02bb5e184465b286098"
+              "bytes": 63671,
+              "sha256": "79f6092f228ea7a654764b6510afc6792cfb17666364afd890089d0881990b09"
             }
           ],
           "error_outcomes": [
@@ -54469,8 +54469,8 @@
             },
             {
               "file": "crates/jocforge-domain/src/integrity/programme_owner.rs",
-              "bytes": 54531,
-              "sha256": "36b26525bde6bcc15b2d66d860bb1938150dbf8621d95fa177f731cebe5b6a18"
+              "bytes": 56239,
+              "sha256": "f8d0a9fc1a95e8513fdf34429a6c3db5bfcca995a6c619fd6636b7bbb6247231"
             },
             {
               "file": "crates/jocforge-application/src/integrity_source_bridge.rs",
@@ -54637,8 +54637,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/integrity/programme_owner.rs",
-              "bytes": 54531,
-              "sha256": "36b26525bde6bcc15b2d66d860bb1938150dbf8621d95fa177f731cebe5b6a18"
+              "bytes": 56239,
+              "sha256": "f8d0a9fc1a95e8513fdf34429a6c3db5bfcca995a6c619fd6636b7bbb6247231"
             },
             {
               "path": "crates/jocforge-application/src/integrity_source_bridge.rs",
@@ -55205,8 +55205,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2096326,
-              "sha256": "2ecd00381a7a661c56593672ca116be475f532775647fc62ced0971267fcb837"
+              "bytes": 2097541,
+              "sha256": "acdc9d16aa007aa97455c12aa340906bbe452c1d2c0757584a7f77ac31e6e292"
             }
           ],
           "test_inventory": [
@@ -56593,10 +56593,10 @@
         {
           "slice_id": "flat7x-atomic-au-output-owner-ledger-receipt",
           "mapping_status": "ADDITIVE_FLAT7X_AU_STAGING_OWNER_MODEL__NO_PRODUCTION_BINDING",
-          "implementation_status": "LOCALLY_VERIFIED_REQUIRED_F13_INTEGRITY_RECEIPT_VALIDATION_AND_RETIREMENT_FINALIZE_REJECTIONS__POSITIVE_JOIN_NOT_RUN",
+          "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_RECEIPT_GATE_POSITIVE_AND_REJECTION_VECTORS__F13_F12_OWNER_STAGE_INTEGRATION_NOT_RUN",
           "implementation_requirement": true,
           "owner": "output",
-          "scope": "Additive target-only F15 owner for one complete 6,656-byte I0+D0 AU append. The target owner requires a typed F13 MetadataSourceProposal plus ordered I0/D0 IntegrityF12SourceReceipts. It validates F13 AU/source/dispatch fields, parsed D0 block-2 carrier and C<=511, same receipt identity across F13 and both frames, frame sizes/hashes/CRC residuals, and protected/zero-slot EMDF digests. Source-generation label, PublishedAuIndex, metadata source index, and local owner generation remain separate. The move-only owner consumes its before value; missing receipts or incomplete finalize returns a retirement record. A model finalize proposal is available only after expected AU count and ledger consistency. Positive receipt-bundle integration and callback-owner generation join remain open; production stays disabled.",
+          "scope": "Additive target-only F15 owner for one complete 6,656-byte I0+D0 AU append. The target owner requires a typed F13 MetadataSourceProposal plus ordered I0/D0 IntegrityF12SourceReceipts. It validates F13 AU/source/dispatch fields, parsed D0 block-2 carrier and C<=511, same receipt identity across F13 and both frames, frame sizes/hashes/CRC residuals, and protected/zero-slot EMDF digests. Source-generation label, PublishedAuIndex, metadata source index, and local owner generation remain separate. The move-only owner consumes its before value; missing receipts or incomplete finalize returns a retirement record. A model finalize proposal is available only after expected AU count and ledger consistency. Positive receipt-bundle integration and callback-owner generation join remain open; production stays disabled. A hash-bound Wash input-only vector now exercises this F15 validation path with synthetic typed F13/I0/D0 receipt projections and deterministic in-memory CRC-valid frames. It bypasses the F13 parser and F12 owner stage, so it verifies receipt-gate mechanics only.",
           "spec_files": [
             "docs/architecture/ARCHITECTURE-DECISIONS.md",
             "docs/architecture/DATAFLOW.md",
@@ -56608,7 +56608,10 @@
             "crates/jocforge-domain/src/publication/mod.rs"
           ],
           "test_modules": [
-            "crates/jocforge-domain/src/publication/flat7x_au_output.rs"
+            "crates/jocforge-domain/src/publication/flat7x_au_output.rs",
+            "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
+            "crates/jocforge-domain/src/integrity/programme_owner.rs",
+            "crates/jocforge-domain/src/joc/emdf/protected_container.rs"
           ],
           "implementation_inventory": [
             {
@@ -56627,6 +56630,21 @@
               "path": "crates/jocforge-domain/src/publication/flat7x_au_output.rs",
               "bytes": 37821,
               "sha256": "2d6c3440fe61a3d12eb1266df5b127a960476cf7e1cfdb143e52040ad157b831"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
+              "bytes": 63671,
+              "sha256": "79f6092f228ea7a654764b6510afc6792cfb17666364afd890089d0881990b09"
+            },
+            {
+              "path": "crates/jocforge-domain/src/integrity/programme_owner.rs",
+              "bytes": 56239,
+              "sha256": "f8d0a9fc1a95e8513fdf34429a6c3db5bfcca995a6c619fd6636b7bbb6247231"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/emdf/protected_container.rs",
+              "bytes": 57424,
+              "sha256": "ebb25ae83219436f85972d3467894beea770e5e8741c7a01fdb3489115c6365e"
             }
           ],
           "clock": {
@@ -56675,13 +56693,37 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/IMPLEMENTER-HANDOFF.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/SOURCE-RECEIPTS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/PACKAGE-SEAL.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/IMPLEMENTER-HANDOFF.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/SOURCE-RECEIPTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/CHECK.py"
             ],
             "validation_boundary": "Target-only typed state model. F13 metadata and ordered I0/D0 integrity receipts are required and checked; caller source-generation label remains unjoined to runtime callback ownership. Fatal rejection consumes the staged attempt and returns a retirement record. Finalize proposal is model-only; no GTC commit, final exposure, or production binding is enabled.",
             "profile_target_package": {
               "package_id": "ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF-V1",
               "manifest_sha256": "530867a0e15a82dcb461d540e2d07ef4e53de5fdd66131109b5c0110a7d3b884",
               "seal_sha256": "7ca3956885e570fd5d51aadeea1b74b94e522380c487fd13ee86cdc71e5dcf5a"
+            },
+            "receipt_pair_input_only": {
+              "package_id": "FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1",
+              "manifest_sha256": "1034ef415113b666acc5aefaa3207230040f05d9ebc05a33933bffc50b4ff088",
+              "package_seal_sha256": "16d925352e9b197e016b2554f9c2ae609e8f8890e3dca81c4eb591f737b41210",
+              "production_allowed": false,
+              "runtime_source_generation_join": "UNBOUND",
+              "f13_parser_replay": "NOT_RUN",
+              "f12_integrity_owner_stage_replay": "NOT_RUN",
+              "rust_replay_status": "F15_RECEIPT_GATE_ONLY",
+              "provider_files": [
+                "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/MANIFEST.json",
+                "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/PACKAGE-SEAL.json",
+                "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/IMPLEMENTER-HANDOFF.md",
+                "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/SOURCE-RECEIPTS.json",
+                "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/INPUT-ONLY-VECTORS.json",
+                "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/CHECK.py"
+              ]
             }
           },
           "vectors": {
@@ -56692,10 +56734,13 @@
               "The receipt-presence gate rejects each missing F13, I0-integrity, or D0-integrity input.",
               "F13 consumer AU/source identity and parsed D0 block-2 container C<=511 are checked against ordered I0/D0 integrity receipts.",
               "A 6,655-byte receipt candidate for a 6,656-byte AU is rejected as a whole-AU mismatch.",
-              "Finalize before expected AU count/ledger completion retires the attempt and yields no finalize proposal."
+              "Finalize before expected AU count/ledger completion retires the attempt and yields no finalize proposal.",
+              "Wash synthetic receipt pair: F13/I0/D0 identity, F13 owner generations 4/5, I0 generations 10/11, D0 generations 20/21, source-generation label 42 and PublishedAuIndex zero remain distinct.",
+              "F15 owner stage accepts the consistent typed pair and records 6,656 bytes with 2,560/4,096 frame extents and zero CRC residuals.",
+              "Wash rejection cases for cross-receipt identity mismatch, carrier block 1 and C=512 return whole-attempt retirement."
             ],
             "expected_outputs_included": false,
-            "execution_status": "MISSING_RECEIPT_PARTIAL_APPEND_AND_INCOMPLETE_FINALIZE_REJECTION_TESTS_PASSED"
+            "execution_status": "SYNTHETIC_TYPED_RECEIPT_GATE_POSITIVE_AND_REJECTION_VECTORS_PASSED__F13_PARSER_AND_F12_OWNER_STAGE_NOT_RUN"
           },
           "error_outcomes": [
             {
@@ -56749,9 +56794,9 @@
             }
           ],
           "not_run": [
-            "No positive F13/Integrity pair fixture through the owner stage, source-generation-to-callback-owner join, GTC output projection, profile-specific EOF receipt, final-exposure receipt, production output, W04 or listening acceptance."
+            "No positive F13/Integrity pair fixture through the real F13 parser and F12 Integrity owner stage has run. The Wash vector test bypasses both stages to exercise F15 receipt-gate mechanics only; parser-valid EMDF, owner-stage receipt production, callback/source-generation owner join, GTC projection, final exposure, production output and W04 remain NOT_RUN."
           ],
-          "validation_boundary": "Target-only typed F15 state model. F13 metadata and ordered I0/D0 integrity receipts are required and checked; caller source-generation label remains unjoined to runtime callback ownership. Fatal rejection consumes the staged attempt and returns a retirement record. Finalize proposal is model-only; no GTC commit, final exposure, or production binding is enabled.",
+          "validation_boundary": "The F15 stage validates a Wash input-only synthetic typed receipt pair and deterministic in-memory frames. Its test fixture bypasses F13 parsing and F12 owner-stage receipt production; caller source-generation remains unjoined to runtime callback ownership. The model finalize proposal is not GTC registration, final exposure or production binding.",
           "delivery_scope": "FLAT7X_REQUIRED_SOURCE_RECEIPT_GATE_AND_MODEL_ONLY_RETIREMENT_FINALIZE"
         },
         {
@@ -59048,8 +59093,8 @@
       "test_inventory": [
         {
           "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-          "bytes": 46840,
-          "sha256": "e8667ec109a8949271d08ec8d92b8f84ee7f208242e3e02bb5e184465b286098"
+          "bytes": 63671,
+          "sha256": "79f6092f228ea7a654764b6510afc6792cfb17666364afd890089d0881990b09"
         }
       ],
       "selected_profile_id": "selected-48k-1536-four-queue.v1",
@@ -59401,8 +59446,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-          "bytes": 46840,
-          "sha256": "e8667ec109a8949271d08ec8d92b8f84ee7f208242e3e02bb5e184465b286098"
+          "bytes": 63671,
+          "sha256": "79f6092f228ea7a654764b6510afc6792cfb17666364afd890089d0881990b09"
         },
         {
           "path": "crates/jocforge-application/src/output_publication/plan_admission.rs",
@@ -59458,8 +59503,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-          "bytes": 46840,
-          "sha256": "e8667ec109a8949271d08ec8d92b8f84ee7f208242e3e02bb5e184465b286098"
+          "bytes": 63671,
+          "sha256": "79f6092f228ea7a654764b6510afc6792cfb17666364afd890089d0881990b09"
         },
         {
           "path": "crates/jocforge-domain/src/publication/tests.rs",

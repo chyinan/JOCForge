@@ -1,0 +1,111 @@
+{
+  "schema": "jocforge.flat7x_f15_receipt_pair_input_only.v1",
+  "vector_status": "SYNTHETIC_INPUT_ONLY_NOT_RUN",
+  "raw_frame_bytes_included": false,
+  "raw_emdf_bytes_included": false,
+  "production_allowed": false,
+  "positive_pair": {
+    "integrity_identity": {
+      "programme_id": "wash-synthetic-programme-01",
+      "attempt": 7,
+      "transaction_id": "wash-synthetic-transaction-01",
+      "source_index": 11,
+      "dispatch": 12,
+      "published_au_index": 0
+    },
+    "f13_metadata": {
+      "identity_matches_integrity": true,
+      "consumer_transaction_matches": true,
+      "metadata_owner_generation_before": 4,
+      "metadata_owner_generation_after_candidate": 5,
+      "parsed_carrier_block": 2,
+      "protected_container_bytes": 16,
+      "zero_slot_container_bytes": 16,
+      "protected_digest_token": "SYNTHETIC_PROTECTED_EMDF_DIGEST_A",
+      "zero_slot_digest_token": "SYNTHETIC_ZERO_SLOT_DIGEST_A",
+      "raw_bytes_included": false
+    },
+    "i0_integrity_receipt": {
+      "role": "IndependentI0",
+      "identity_matches_f13_and_d0": true,
+      "integrity_owner_generation": [10, 11],
+      "frame_bytes": 2560,
+      "frame_digest_basis": "computed from synthetic frame bytes generated in memory by test fixture",
+      "crc_residual": 0,
+      "published": true,
+      "source_payload": "AbsentPublishedPayloadV1",
+      "emdf_container_start_present": false
+    },
+    "d0_integrity_receipt": {
+      "role": "DependentD0",
+      "identity_matches_f13_and_i0": true,
+      "integrity_owner_generation": [20, 21],
+      "frame_bytes": 4096,
+      "frame_digest_basis": "computed from synthetic frame bytes generated in memory by test fixture",
+      "crc_residual": 0,
+      "published": true,
+      "source_payload": "ProtectedEmdf",
+      "protected_digest_matches_f13": true,
+      "zero_slot_digest_matches_f13": true,
+      "container_bytes": 16,
+      "emdf_container_start_present": true
+    },
+    "f15_candidate": {
+      "i0_source_generation_label": 42,
+      "d0_source_generation_label": 42,
+      "labels_match_within_pair": true,
+      "label_join_to_runtime_callback_owner": "UNBOUND",
+      "published_au_index": 0,
+      "f15_owner_generation_before": 0,
+      "f15_owner_generation_after_candidate": 1,
+      "i0_then_d0": true,
+      "aggregate_au_bytes": 6656,
+      "production_allowed": false,
+      "expected_model_result": "candidate receipt relationship satisfies the listed identity/extent/CRC predicates; no Rust replay asserted"
+    }
+  },
+  "rejection_vectors": [
+    {
+      "id": "integrity_identity_mismatch",
+      "field": "d0_integrity_receipt.identity.transaction_id",
+      "expected_error": "IntegritySourceIdentityMismatch",
+      "disposition": "reject whole AU"
+    },
+    {
+      "id": "wrong_carrier_block",
+      "field": "f13_metadata.parsed_carrier_block",
+      "value": 1,
+      "expected_error": "MetadataCarrierBlockMismatch",
+      "disposition": "reject whole AU"
+    },
+    {
+      "id": "emdf_container_too_large",
+      "field": "f13_metadata.protected_container_bytes",
+      "value": 512,
+      "expected_error": "MetadataContainerExtentMismatch",
+      "disposition": "reject whole AU; no continuation to another field"
+    },
+    {
+      "id": "missing_receipt",
+      "field": "one of F13 metadata, I0 integrity, or D0 integrity receipt",
+      "expected_error": "receipt-specific missing-receipt error",
+      "disposition": "reject whole AU"
+    },
+    {
+      "id": "partial_staging_append",
+      "expected_au_bytes": 6656,
+      "bytes_written": 6655,
+      "expected_error": "AppendReceiptCandidateMismatch",
+      "disposition": "retire attempt; committed owner unchanged"
+    }
+  ],
+  "not_claimed": [
+    "official demo values",
+    "raw F13/EMDF bytes or a valid parsed-container fixture",
+    "actual frame syntax or audio payload",
+    "source_generation label joined to real callback/source owner",
+    "GTC owner receipt or final file exposure",
+    "runtime or production readiness"
+  ],
+  "replay_status": "NOT_RUN"
+}
