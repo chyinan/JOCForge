@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge.flat7x_f15_input_only_vectors.v1",
+  "vectors_are_runtime_observations": false,
+  "cases": [
+    {
+      "id": "pair_same_source_distinct_indices",
+      "source_generation_i0": 42,
+      "source_generation_d0": 42,
+      "published_au_index": 0,
+      "f15_owner_generation_before": 0,
+      "expected": "candidate pair may enter target-only staging validation",
+      "production_allowed": false
+    },
+    {
+      "id": "pair_source_generation_mismatch",
+      "source_generation_i0": 42,
+      "source_generation_d0": 43,
+      "published_au_index": 0,
+      "expected": "reject the whole AU; do not publish I0 alone",
+      "production_allowed": false
+    },
+    {
+      "id": "partial_staging_write",
+      "expected_au_bytes": 6656,
+      "bytes_written": 6655,
+      "expected": "receipt mismatch; abandon and retire the whole attempt; committed state unchanged",
+      "production_allowed": false
+    },
+    {
+      "id": "complete_target_row_not_official_rate_claim",
+      "i0_rate_kbps": 640,
+      "d0_rate_kbps": 1024,
+      "aggregate_bytes": 6656,
+      "expected": "two-frame target row only; not a measured official-demo rate",
+      "production_allowed": false
+    }
+  ]
+}

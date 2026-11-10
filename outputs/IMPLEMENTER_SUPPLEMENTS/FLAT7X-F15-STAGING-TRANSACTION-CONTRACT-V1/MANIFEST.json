@@ -1,0 +1,30 @@
+{
+  "schema": "wash-sanitized-supplement.v1",
+  "package_id": "FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1",
+  "status": "WASH_APPROVED_ARCHITECTURE_BOUNDARY_ONLY",
+  "implementation_scope": "Target-only F15 paired AU staging, fail-stop and receipt boundary; production disabled; source callback join, GTC projection and final exposure remain open.",
+  "scope": "Target-only F15 paired AU staging, fail-stop and receipt boundary; production disabled; source callback join, GTC projection and final exposure remain open.",
+  "production_allowed": false,
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 2904,
+      "sha256": "08393e370d416312da289dff43ed011d00daf4846177844f7747a96f35ef22ab"
+    },
+    {
+      "path": "IMPLEMENTER-HANDOFF.md",
+      "bytes": 4222,
+      "sha256": "c321407fbc793a6eb89e388071578ee6ad44bbc6e1d71373967c056ce5bec6b4"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1216,
+      "sha256": "694771e6d82e278818b5557318ea44635dbb984eb8dda64337a5f6d3759d980a"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 1890,
+      "sha256": "bef02a957045e6e6d8f8f5da56331445581a7a59a95b23983eadb54b19eea919"
+    }
+  ]
+}

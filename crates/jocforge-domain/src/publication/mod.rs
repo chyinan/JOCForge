@@ -8,8 +8,10 @@ mod output_owner;
 mod tests;
 
 pub use flat7x_au_output::{
-    Flat7xAuAppendProposal, Flat7xAuAppendReceiptCandidate, Flat7xAuOutputAfterProposal,
-    Flat7xAuOutputLedgerEntry, Flat7xAuOutputOwner, Flat7xAuOutputOwnerError,
+    Flat7xAuAppendProposal, Flat7xAuAppendReceiptCandidate, Flat7xAuAttemptRetirement,
+    Flat7xAuAttemptRetirementReason, Flat7xAuFinalizeProposal, Flat7xAuIntegrityFrameReceipt,
+    Flat7xAuOutputAfterProposal, Flat7xAuOutputLedgerEntry, Flat7xAuOutputOwner,
+    Flat7xAuOutputOwnerError, Flat7xAuSourceReceiptInput,
 };
 pub use output_owner::{
     OutputAppendProposal, OutputConfiguration, OutputDurableAppendReceipt,

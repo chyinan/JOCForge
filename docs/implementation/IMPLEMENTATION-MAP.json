@@ -10394,8 +10394,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 30579,
-              "sha256": "13a806a139a4d056f97f7bc5ca76ecce52b7e90721b5a68b76a25439fbe95ef7"
+              "bytes": 30785,
+              "sha256": "1d8cd308b0463849520bcc9ab800ee20a05815f681c79e3256902564a1880c84"
             },
             {
               "path": "crates/jocforge-domain/src/profile/mod.rs",
@@ -10406,8 +10406,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 30579,
-              "sha256": "13a806a139a4d056f97f7bc5ca76ecce52b7e90721b5a68b76a25439fbe95ef7"
+              "bytes": 30785,
+              "sha256": "1d8cd308b0463849520bcc9ab800ee20a05815f681c79e3256902564a1880c84"
             }
           ],
           "clock": {
@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2080580,
-              "sha256": "d3f3ed8da8bed98eac8ad479ba3f3d3dd27acbbf0c3c8d6c8fd479bf390c866c"
+              "bytes": 2096326,
+              "sha256": "2ecd00381a7a661c56593672ca116be475f532775647fc62ced0971267fcb837"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2080580,
-              "sha256": "d3f3ed8da8bed98eac8ad479ba3f3d3dd27acbbf0c3c8d6c8fd479bf390c866c"
+              "bytes": 2096326,
+              "sha256": "2ecd00381a7a661c56593672ca116be475f532775647fc62ced0971267fcb837"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -55205,8 +55205,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2080580,
-              "sha256": "d3f3ed8da8bed98eac8ad479ba3f3d3dd27acbbf0c3c8d6c8fd479bf390c866c"
+              "bytes": 2096326,
+              "sha256": "2ecd00381a7a661c56593672ca116be475f532775647fc62ced0971267fcb837"
             }
           ],
           "test_inventory": [
@@ -56593,10 +56593,10 @@
         {
           "slice_id": "flat7x-atomic-au-output-owner-ledger-receipt",
           "mapping_status": "ADDITIVE_FLAT7X_AU_STAGING_OWNER_MODEL__NO_PRODUCTION_BINDING",
-          "implementation_status": "LOCALLY_VERIFIED_STAGED_AU_PROPOSAL_LEDGER_AND_RECEIPT_CANDIDATE__NO_IO_PROVENANCE",
+          "implementation_status": "LOCALLY_VERIFIED_REQUIRED_F13_INTEGRITY_RECEIPT_VALIDATION_AND_RETIREMENT_FINALIZE_REJECTIONS__POSITIVE_JOIN_NOT_RUN",
           "implementation_requirement": true,
           "owner": "output",
-          "scope": "Additive target-only F15 owner for one complete 6,656-byte I0+D0 access unit per append. It stages the aggregate bytes once, records separate I0/D0 hashes and CRC residuals in one AU ledger entry, and checks a caller-supplied receipt candidate for aggregate length/readback digest, both frame CRC fields, fsync and durability flags. The caller constructor has no IO provenance: no filesystem adapter, rollback, verified readback, canonical GTC registration, callback-source identity, or production binding is present. The selected 5.1 OutputOwner remains unchanged.",
+          "scope": "Additive target-only F15 owner for one complete 6,656-byte I0+D0 AU append. The target owner requires a typed F13 MetadataSourceProposal plus ordered I0/D0 IntegrityF12SourceReceipts. It validates F13 AU/source/dispatch fields, parsed D0 block-2 carrier and C<=511, same receipt identity across F13 and both frames, frame sizes/hashes/CRC residuals, and protected/zero-slot EMDF digests. Source-generation label, PublishedAuIndex, metadata source index, and local owner generation remain separate. The move-only owner consumes its before value; missing receipts or incomplete finalize returns a retirement record. A model finalize proposal is available only after expected AU count and ledger consistency. Positive receipt-bundle integration and callback-owner generation join remain open; production stays disabled.",
           "spec_files": [
             "docs/architecture/ARCHITECTURE-DECISIONS.md",
             "docs/architecture/DATAFLOW.md",
@@ -56613,20 +56613,20 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/publication/flat7x_au_output.rs",
-              "bytes": 17845,
-              "sha256": "582126c64bb6056461e4973c189962a8d640bed12f3287a9cd1f862f728f7477"
+              "bytes": 37821,
+              "sha256": "2d6c3440fe61a3d12eb1266df5b127a960476cf7e1cfdb143e52040ad157b831"
             },
             {
               "path": "crates/jocforge-domain/src/publication/mod.rs",
-              "bytes": 794,
-              "sha256": "dc3b4d75cc291d806f91b7f11dedbcef896178683d9ea364ec2978130338b455"
+              "bytes": 947,
+              "sha256": "8367311c8f4fccaf50b4d348647d82fd50600011c9b38994feabfffda987d2ee"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/publication/flat7x_au_output.rs",
-              "bytes": 17845,
-              "sha256": "582126c64bb6056461e4973c189962a8d640bed12f3287a9cd1f862f728f7477"
+              "bytes": 37821,
+              "sha256": "2d6c3440fe61a3d12eb1266df5b127a960476cf7e1cfdb143e52040ad157b831"
             }
           ],
           "clock": {
@@ -56639,10 +56639,10 @@
             ]
           },
           "parameters": {
-            "kind": "HASH_BOUND_FLAT7X_I0_D0_APPEND_TARGET",
-            "package_id": "ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF-V1",
-            "supplement_manifest_sha256": "530867a0e15a82dcb461d540e2d07ef4e53de5fdd66131109b5c0110a7d3b884",
-            "supplement_seal_sha256": "7ca3956885e570fd5d51aadeea1b74b94e522380c487fd13ee86cdc71e5dcf5a",
+            "kind": "HASH_BOUND_FLAT7X_F15_STAGING_TRANSACTION_CONTRACT",
+            "package_id": "FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1",
+            "supplement_manifest_sha256": "18de94b6b18a13222df8e9eae018f77c49fa735007869b99255b97a1cb5ae0d1",
+            "supplement_seal_sha256": "8879c0417bf60db4d8dc9dec1fbbeccd884978af6460f304cfb8034052e4d3ee",
             "target": {
               "i0_frame_bytes": 2560,
               "d0_frame_bytes": 4096,
@@ -56657,24 +56657,45 @@
               "gtc_registered": false,
               "filesystem_adapter": false,
               "selected_5_1_sink_unchanged": true,
-              "receipt_kind": "CALLER_SUPPLIED_CANDIDATE_NO_IO_PROVENANCE"
+              "receipt_kind": "CALLER_SUPPLIED_CANDIDATE_NO_IO_PROVENANCE",
+              "f13_metadata_receipt_required": true,
+              "i0_integrity_receipt_required": true,
+              "d0_integrity_receipt_required": true,
+              "receipt_identity_joined_to_source_generation": false,
+              "retirement_on_rejection": true,
+              "finalize_proposal_only_after_expected_au_count": true,
+              "final_exposure_enabled": false,
+              "source_generation_separate_from_published_au_index": true,
+              "source_generation_separate_from_owner_generation": true,
+              "source_generation_joined_to_callback_owner": false
             },
             "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF.md"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/PACKAGE-SEAL.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/IMPLEMENTER-HANDOFF.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/SOURCE-RECEIPTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/CHECK.py"
             ],
-            "validation_boundary": "Target-only staging owner; the caller-supplied receipt candidate is field-checked but has no filesystem, rollback, or readback provenance. production_allowed=false."
+            "validation_boundary": "Target-only typed state model. F13 metadata and ordered I0/D0 integrity receipts are required and checked; caller source-generation label remains unjoined to runtime callback ownership. Fatal rejection consumes the staged attempt and returns a retirement record. Finalize proposal is model-only; no GTC commit, final exposure, or production binding is enabled.",
+            "profile_target_package": {
+              "package_id": "ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF-V1",
+              "manifest_sha256": "530867a0e15a82dcb461d540e2d07ef4e53de5fdd66131109b5c0110a7d3b884",
+              "seal_sha256": "7ca3956885e570fd5d51aadeea1b74b94e522380c487fd13ee86cdc71e5dcf5a"
+            }
           },
           "vectors": {
             "kind": "SYNTHETIC_INPUT_OWNER_TRANSITION_CASES",
             "authoritative_vectors": [],
             "case_pointers": [
-              "One append proposal contains exactly one 6,656-byte I0→D0 sequence and one pair-aware ledger record.",
-              "Ledger records frame-specific sizes, digests and CRC residuals beside the aggregate AU digest.",
-              "Receipt candidate mismatch in length, digest, per-frame CRC fields, fsync or durable flag returns no after-owner.",
-              "A rejected completion returns no after-owner; the before-owner remains at its original generation and ledger."
+              "The source-generation label, PublishedAuIndex zero, F13 source index, and local owner generation zero remain separately represented.",
+              "The receipt-presence gate rejects each missing F13, I0-integrity, or D0-integrity input.",
+              "F13 consumer AU/source identity and parsed D0 block-2 container C<=511 are checked against ordered I0/D0 integrity receipts.",
+              "A 6,655-byte receipt candidate for a 6,656-byte AU is rejected as a whole-AU mismatch.",
+              "Finalize before expected AU count/ledger completion retires the attempt and yields no finalize proposal."
             ],
             "expected_outputs_included": false,
-            "execution_status": "TARGET_OWNER_UNIT_TESTS_PASSED"
+            "execution_status": "MISSING_RECEIPT_PARTIAL_APPEND_AND_INCOMPLETE_FINALIZE_REJECTION_TESTS_PASSED"
           },
           "error_outcomes": [
             {
@@ -56692,26 +56713,54 @@
               "caller_action": "Reject the entire AU candidate."
             },
             {
-              "error_code": "Flat7xAuOutputOwnerError::{OutputOffsetMismatch,AppendReceiptCandidateMismatch}",
+              "error_code": "Flat7xAuAttemptRetirementReason::AppendReceiptCandidateMismatch",
               "category": "atomic F15 append receipt",
               "trigger": "The aggregate offset or caller-supplied receipt candidate differs in AU, length, write-call total, readback hash, per-frame CRC fields, fsync, or durable flag.",
-              "programme_state_after": "No after-owner is returned; the before-owner remains unchanged.",
-              "caller_action": "Reject the append result and retain the existing owner root."
+              "programme_state_after": "No after-owner is returned; a retirement receipt records the attempt and unchanged before generation.",
+              "caller_action": "Retire the attempt and recover from a fresh programme-cold root."
+            },
+            {
+              "error_code": "Flat7xAuOutputOwnerError::{F13MetadataReceiptMissing,I0IntegrityReceiptMissing,D0IntegrityReceiptMissing}",
+              "category": "required whole-AU receipts",
+              "trigger": "The F13 metadata proposal or either ordered frame-integrity receipt is absent.",
+              "programme_state_after": "No append proposal is returned; a retirement receipt preserves the before generation and durable length.",
+              "caller_action": "Retire the attempt; do not retry the same owner root."
+            },
+            {
+              "error_code": "Flat7xAuOutputOwnerError::{MetadataSourceReceiptMismatch,MetadataCarrierBlockMismatch,MetadataContainerExtentMismatch,IntegritySourceIdentityMismatch,IntegrityFrameExtentMismatch,IntegrityFrameHashMismatch,IntegrityFrameCrcMismatch,IntegrityPayloadMismatch}",
+              "category": "F13 and per-frame integrity join",
+              "trigger": "F13 AU/identity/container, carrier block, size, or I0/D0 integrity identity/extent/hash/CRC/payload fields disagree.",
+              "programme_state_after": "No append proposal is returned; the whole attempt retires.",
+              "caller_action": "Keep the committed programme owner unchanged and require a new programme-cold attempt."
+            },
+            {
+              "error_code": "Flat7xAuAttemptRetirementReason::FinalizeIncomplete",
+              "category": "whole-attempt finalize count",
+              "trigger": "Expected AU count, append ledger count, or aggregate durable length has not reached the selected target.",
+              "programme_state_after": "No finalize proposal is returned and the attempt is retired.",
+              "caller_action": "Require a fresh programme-cold attempt; no final exposure is authorized."
+            },
+            {
+              "error_code": "Flat7xAuOutputOwnerError::AppendReceiptCandidateMismatch",
+              "category": "staged whole-AU append receipt candidate",
+              "trigger": "The receipt candidate write total, offset, AU index, readback digest, per-frame CRC residuals, fsync flag, or durable flag differs from the proposal ledger entry.",
+              "programme_state_after": "No after-owner is returned; the attempt retirement record retains the before generation and durable length.",
+              "caller_action": "Retire the attempt and restart from programme cold."
             }
           ],
           "not_run": [
-            "No canonical GTC output state, callback/source identity bridge, filesystem adapter, rollback, verified readback provenance, selected-profile sink integration, real Flat7x output, W04, or listening acceptance."
+            "No positive F13/Integrity pair fixture through the owner stage, source-generation-to-callback-owner join, GTC output projection, profile-specific EOF receipt, final-exposure receipt, production output, W04 or listening acceptance."
           ],
-          "validation_boundary": "Target-only typed AU owner and ledger proposal. One caller-supplied receipt candidate covers one aggregate I0+D0 byte sequence while retaining per-frame hashes and CRC fields. No filesystem provenance, rollback, GTC, parent commit, callback identity, or production binding is enabled; production_allowed=false.",
-          "delivery_scope": "ADDITIVE_FLAT7X_AU_OUTPUT_OWNER_LEDGER_AND_RECEIPT_CANDIDATE_MODEL_ONLY"
+          "validation_boundary": "Target-only typed F15 state model. F13 metadata and ordered I0/D0 integrity receipts are required and checked; caller source-generation label remains unjoined to runtime callback ownership. Fatal rejection consumes the staged attempt and returns a retirement record. Finalize proposal is model-only; no GTC commit, final exposure, or production binding is enabled.",
+          "delivery_scope": "FLAT7X_REQUIRED_SOURCE_RECEIPT_GATE_AND_MODEL_ONLY_RETIREMENT_FINALIZE"
         },
         {
           "slice_id": "flat7x-au-staging-append-io-receipt-adapter",
           "mapping_status": "ADDITIVE_FLAT7X_STAGING_FILE_RECEIPT_ADAPTER__PRODUCT_IO_OPEN",
-          "implementation_status": "LOCALLY_VERIFIED_STAGING_FILE_WRITE_SYNC_READBACK_RECEIPT_CANDIDATE__NO_PRODUCT_BINDING",
+          "implementation_status": "LOCALLY_VERIFIED_STAGING_BYTE_IO_HELPER__FULL_RECEIPT_ADAPTER_JOIN_NOT_RUN",
           "implementation_requirement": true,
           "owner": "output",
-          "scope": "An isolated IO adapter appends one already-composed 6,656-byte I0→D0 AU proposal to a caller-owned staging file. It checks the staging offset, writes the aggregate bytes, flushes and syncs the file, reads back the same range, checks the whole-AU digest and both per-frame CRCs, and returns a caller-constructible receipt candidate. It has no final destination, atomic rename, rollback, GTC parent, encode entry or 5.1 sink connection. Any failure after a partial write requires the caller to abandon the staging attempt.",
+          "scope": "An isolated IO adapter appends one already-composed 6,656-byte I0→D0 AU proposal to a caller-owned staging file. Its byte IO helper checks staging offset, writes aggregate bytes, flushes/syncs the file, reads back the same range, and verifies whole-AU equality and both frame CRCs. No positive run supplied the required F13 plus I0/D0 integrity receipt bundle to the public adapter. The adapter consumes proposals on error and carries attempt-retirement evidence; it has no final destination, atomic rename, rollback, GTC parent, encode entry or 5.1 sink connection.",
           "spec_files": [
             "docs/architecture/DATAFLOW.md",
             "docs/architecture/PUBLIC-API.md",
@@ -56727,8 +56776,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-io/src/flat7x_au_append.rs",
-              "bytes": 10702,
-              "sha256": "203de8ed8cccecb2a52e23f10525d142bcbfe3bdc72ee3981a680375cafcf87c"
+              "bytes": 11980,
+              "sha256": "b3309a9d408fa62d7848e9d905a150a26ceb01bba365bbabbe3ea166264cd63a"
             },
             {
               "path": "crates/jocforge-io/src/lib.rs",
@@ -56739,8 +56788,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-io/src/flat7x_au_append.rs",
-              "bytes": 10702,
-              "sha256": "203de8ed8cccecb2a52e23f10525d142bcbfe3bdc72ee3981a680375cafcf87c"
+              "bytes": 11980,
+              "sha256": "b3309a9d408fa62d7848e9d905a150a26ceb01bba365bbabbe3ea166264cd63a"
             }
           ],
           "clock": {
@@ -56752,12 +56801,17 @@
             ]
           },
           "parameters": {
-            "kind": "HASH_BOUND_FLAT7X_I0_D0_STAGING_APPEND_TARGET",
-            "package_id": "ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF-V1",
-            "supplement_manifest_sha256": "530867a0e15a82dcb461d540e2d07ef4e53de5fdd66131109b5c0110a7d3b884",
-            "supplement_seal_sha256": "7ca3956885e570fd5d51aadeea1b74b94e522380c487fd13ee86cdc71e5dcf5a",
+            "kind": "HASH_BOUND_FLAT7X_F15_STAGING_TRANSACTION_CONTRACT",
+            "package_id": "FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1",
+            "supplement_manifest_sha256": "18de94b6b18a13222df8e9eae018f77c49fa735007869b99255b97a1cb5ae0d1",
+            "supplement_seal_sha256": "8879c0417bf60db4d8dc9dec1fbbeccd884978af6460f304cfb8034052e4d3ee",
             "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF.md"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/PACKAGE-SEAL.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/IMPLEMENTER-HANDOFF.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/SOURCE-RECEIPTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/CHECK.py"
             ],
             "validation_boundary": "Temporary staging-file adapter only; readback and sync results are captured in a receipt candidate. No rollback or final exposure is provided. production_allowed=false.",
             "target": {
@@ -56771,18 +56825,23 @@
               "selected_5_1_sink_unchanged": true,
               "production_allowed": false,
               "encode_entry_connected": false
+            },
+            "profile_target_package": {
+              "package_id": "ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF-V1",
+              "manifest_sha256": "530867a0e15a82dcb461d540e2d07ef4e53de5fdd66131109b5c0110a7d3b884",
+              "seal_sha256": "7ca3956885e570fd5d51aadeea1b74b94e522380c487fd13ee86cdc71e5dcf5a"
             }
           },
           "vectors": {
             "kind": "SYNTHETIC_TEMP_FILE_IO_CASES",
             "authoritative_vectors": [],
             "case_pointers": [
-              "A temporary staging file at the expected offset receives the complete aggregate AU and returns per-frame CRC/readback fields.",
+              "A synthetic CRC-valid AU byte slice is written to a temporary staging file, synced, and read back byte-for-byte by the IO helper.",
               "A staging length mismatch rejects before writing.",
-              "A receipt candidate with a changed frame CRC field does not advance the output-owner after-state."
+              "A corrupt I0 frame CRC rejects before writing."
             ],
             "expected_outputs_included": false,
-            "execution_status": "TEMP_FILE_ADAPTER_TESTS_PASSED"
+            "execution_status": "TEMP_FILE_BYTE_IO_HELPER_TESTS_PASSED__FULL_RECEIPT_BUNDLE_ADAPTER_NOT_RUN"
           },
           "error_outcomes": [
             {
@@ -56808,9 +56867,9 @@
             }
           ],
           "not_run": [
-            "No app product binding, selected 5.1 sink connection, final file exposure/rename, rollback, GTC parent commit, real source input, W04, or listening acceptance."
+            "No complete F13/Integrity pair receipt bundle was supplied to exercise the public append adapter; no app product binding, selected 5.1 sink connection, final file exposure/rename, rollback, GTC parent commit, real source input, W04, or listening acceptance."
           ],
-          "validation_boundary": "The adapter performs local staging-file write/flush/sync/readback and returns caller-supplied receipt fields after checking them. This is not an atomic final-file publication claim. production_allowed=false.",
+          "validation_boundary": "The adapter source consumes a typed F15 proposal, while current temporary-file tests exercise its shared byte-write/sync/readback helper with synthetic bytes. End-to-end F13/Integrity receipt binding and product invocation are not run; production_allowed=false.",
           "delivery_scope": "FLAT7X_STAGING_FILE_APPEND_AND_RECEIPT_CANDIDATE_ONLY_NO_PRODUCT_BINDING"
         }
       ]
@@ -59332,8 +59391,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/publication/mod.rs",
-          "bytes": 794,
-          "sha256": "dc3b4d75cc291d806f91b7f11dedbcef896178683d9ea364ec2978130338b455"
+          "bytes": 947,
+          "sha256": "8367311c8f4fccaf50b4d348647d82fd50600011c9b38994feabfffda987d2ee"
         },
         {
           "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",

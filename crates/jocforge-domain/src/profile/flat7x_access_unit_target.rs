@@ -546,6 +546,7 @@ pub struct Flat7xAuByteSequenceCandidate {
     source_generation: Flat7xSourceGeneration,
     i0_frame_bytes: u16,
     d0_frame_bytes: u16,
+    d0_emdf_container_bytes: u16,
     bytes: Box<[u8]>,
 }
 
@@ -560,6 +561,10 @@ impl Flat7xAuByteSequenceCandidate {
 
     pub const fn d0_frame_bytes(&self) -> u16 {
         self.d0_frame_bytes
+    }
+
+    pub const fn d0_emdf_container_bytes(&self) -> u16 {
+        self.d0_emdf_container_bytes
     }
 
     pub fn bytes(&self) -> &[u8] {
@@ -607,6 +612,7 @@ pub fn compose_flat7x_au_byte_sequence(
             .map_err(|_| Flat7xAuByteSequenceError::AggregateExtentOverflow)?,
         d0_frame_bytes: u16::try_from(d0_frame.len())
             .map_err(|_| Flat7xAuByteSequenceError::AggregateExtentOverflow)?,
+        d0_emdf_container_bytes: validation.d0_emdf_container_bytes(),
         bytes: bytes.into_boxed_slice(),
     })
 }

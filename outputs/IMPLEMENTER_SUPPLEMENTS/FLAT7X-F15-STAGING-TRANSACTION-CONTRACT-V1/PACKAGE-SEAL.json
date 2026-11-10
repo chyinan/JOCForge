@@ -1,0 +1,6 @@
+{
+  "schema": "jocforge.wash_supplement_seal.v1",
+  "package_id": "FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1",
+  "manifest_sha256": "18de94b6b18a13222df8e9eae018f77c49fa735007869b99255b97a1cb5ae0d1",
+  "seal_file_excluded_from_own_hash": true
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge.wash_architecture_source_receipts.v1",
+  "package_id": "FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1",
+  "verified_at": "2026-11-11",
+  "isolated_commit": "f82e8e452abcf822913d60976ba730fef01de721",
+  "isolated_remote_ref": "origin/experimental/independent-encoder",
+  "isolated_local_remote_match": true,
+  "source_files": [
+    {
+      "path": "docs/architecture/ARCHITECTURE-DECISIONS.md",
+      "sha256": "7b3c771d319a0f8aa1b636c9d35533f2d1649438a8fe2cd588dee45a093e9ca8",
+      "scope": ["AD-003", "AD-005", "AD-008", "AD-010"]
+    },
+    {
+      "path": "docs/architecture/STATE-OWNERSHIP.md",
+      "sha256": "3f70b7c933f4dd3068eb6da192544ddc81cc757aeec37b80e72b2b6dd2bbb298",
+      "scope": ["F15 output owner", "staged state and receipts", "retirement"]
+    },
+    {
+      "path": "docs/architecture/DATAFLOW.md",
+      "sha256": "686ba765f0c5f8df39621b2e7575d3d7728e1abd2bf144e6f2b65c683c4d0144",
+      "scope": ["Flat7x candidate sequence", "F15 staging adapter", "open production gates"]
+    },
+    {
+      "path": "docs/implementation/CLOCK-MAP.md",
+      "sha256": "840b4fdca4bf2298d60b5f42ee20c2345fcb56814fc6e2daaa83925b53ec4bb2",
+      "scope": ["typed callback, source, dispatch, writer and published-AU index domains"]
+    },
+    {
+      "path": "crates/jocforge-domain/src/publication/flat7x_au_output.rs",
+      "sha256": "582126c64bb6056461e4973c189962a8d640bed12f3287a9cd1f862f728f7477",
+      "scope": ["target-only paired AU owner and receipt-candidate model"]
+    },
+    {
+      "path": "crates/jocforge-io/src/flat7x_au_append.rs",
+      "sha256": "203de8ed8cccecb2a52e23f10525d142bcbfe3bdc72ee3981a680375cafcf87c",
+      "scope": ["caller-owned staging file write, sync and readback candidate"]
+    }
+  ],
+  "evidence_tier": "WASH_REVIEWED_ARCHITECTURE_AND_CURRENT_COMMIT",
+  "media_or_runtime_read": false,
+  "production_allowed": false
+}
