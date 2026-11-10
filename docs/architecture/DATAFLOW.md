@@ -38,7 +38,7 @@ flowchart LR
 
 The architecture-only 1664 kbps I0/D0 target plan is not connected to this production flow. Its validator checks supplied source-generation labels and D0 skip-field metadata; the separate byte-sequence candidate accepts caller-provided CRC-checked frame slices and concatenates I0 then D0. It creates neither frame syntax nor an output-owner receipt, durable append or AU publication.
 
-The additive `Flat7xAuOutputOwner` stages a complete byte-sequence candidate as one F15 proposal and keeps I0/D0 frame hashes and CRC residuals in one AU ledger entry. A caller-supplied `Flat7xAuAppendReceiptCandidate` is checked against aggregate length/hash, both frame CRCs, fsync and durable flags before returning an after-owner proposal. This is a staged value contract; it has no file adapter, rollback or readback provenance, or GTC root and does not alter the selected 5.1 output path.
+The additive `Flat7xAuOutputOwner` stages a complete byte-sequence candidate as one F15 proposal and keeps I0/D0 frame hashes and CRC residuals in one AU ledger entry. The separate IO adapter writes the proposal at the expected staging offset, syncs the file, reads the range back and produces a receipt candidate with the observed write totals and pair CRCs. A failed write may leave bytes in staging; the caller abandons that staging attempt. The adapter does not rename or expose a final file, register a GTC root or alter the selected 5.1 output path.
 
 已物化的 PostWindow fanout capability 位于 F03W `W3072` installed48 输出之后。future renderer 创建一个线性 proposal；`fanout(self)` 生成 CurrentFeatures 和 spatial-audio 两个非 Clone view，并共享同一 immutable `Arc` payload。CurrentFeatures 接收显式 phase。renderer、F04 assembler 和 parent transaction 仍 deferred。
 

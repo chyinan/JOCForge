@@ -3,5 +3,6 @@
 
 pub mod atomic_output;
 pub mod bw64;
+pub mod flat7x_au_append;
 pub mod pcm;
 pub mod provider;

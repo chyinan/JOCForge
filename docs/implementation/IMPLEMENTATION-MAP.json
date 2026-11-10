@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2079770,
-              "sha256": "3fbf0642e681511d9403d9dbcfb2b9640fb2cd3c6e0de133509f7d2ac5a729f1"
+              "bytes": 2080580,
+              "sha256": "d3f3ed8da8bed98eac8ad479ba3f3d3dd27acbbf0c3c8d6c8fd479bf390c866c"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2079770,
-              "sha256": "3fbf0642e681511d9403d9dbcfb2b9640fb2cd3c6e0de133509f7d2ac5a729f1"
+              "bytes": 2080580,
+              "sha256": "d3f3ed8da8bed98eac8ad479ba3f3d3dd27acbbf0c3c8d6c8fd479bf390c866c"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -55205,8 +55205,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2079770,
-              "sha256": "3fbf0642e681511d9403d9dbcfb2b9640fb2cd3c6e0de133509f7d2ac5a729f1"
+              "bytes": 2080580,
+              "sha256": "d3f3ed8da8bed98eac8ad479ba3f3d3dd27acbbf0c3c8d6c8fd479bf390c866c"
             }
           ],
           "test_inventory": [
@@ -56704,6 +56704,114 @@
           ],
           "validation_boundary": "Target-only typed AU owner and ledger proposal. One caller-supplied receipt candidate covers one aggregate I0+D0 byte sequence while retaining per-frame hashes and CRC fields. No filesystem provenance, rollback, GTC, parent commit, callback identity, or production binding is enabled; production_allowed=false.",
           "delivery_scope": "ADDITIVE_FLAT7X_AU_OUTPUT_OWNER_LEDGER_AND_RECEIPT_CANDIDATE_MODEL_ONLY"
+        },
+        {
+          "slice_id": "flat7x-au-staging-append-io-receipt-adapter",
+          "mapping_status": "ADDITIVE_FLAT7X_STAGING_FILE_RECEIPT_ADAPTER__PRODUCT_IO_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_STAGING_FILE_WRITE_SYNC_READBACK_RECEIPT_CANDIDATE__NO_PRODUCT_BINDING",
+          "implementation_requirement": true,
+          "owner": "output",
+          "scope": "An isolated IO adapter appends one already-composed 6,656-byte I0→D0 AU proposal to a caller-owned staging file. It checks the staging offset, writes the aggregate bytes, flushes and syncs the file, reads back the same range, checks the whole-AU digest and both per-frame CRCs, and returns a caller-constructible receipt candidate. It has no final destination, atomic rename, rollback, GTC parent, encode entry or 5.1 sink connection. Any failure after a partial write requires the caller to abandon the staging attempt.",
+          "spec_files": [
+            "docs/architecture/DATAFLOW.md",
+            "docs/architecture/PUBLIC-API.md",
+            "docs/architecture/STATE-OWNERSHIP.md"
+          ],
+          "implementation_files": [
+            "crates/jocforge-io/src/flat7x_au_append.rs",
+            "crates/jocforge-io/src/lib.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-io/src/flat7x_au_append.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-io/src/flat7x_au_append.rs",
+              "bytes": 10702,
+              "sha256": "203de8ed8cccecb2a52e23f10525d142bcbfe3bdc72ee3981a680375cafcf87c"
+            },
+            {
+              "path": "crates/jocforge-io/src/lib.rs",
+              "bytes": 187,
+              "sha256": "c9a031058aa36acb02eaf09138b5389af6cb0db487d428dc3ff143e562c426dd"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-io/src/flat7x_au_append.rs",
+              "bytes": 10702,
+              "sha256": "203de8ed8cccecb2a52e23f10525d142bcbfe3bdc72ee3981a680375cafcf87c"
+            }
+          ],
+          "clock": {
+            "domains": [
+              "PublishedAuIndex"
+            ],
+            "covered_clauses": [
+              "The staging offset is derived from the AU ledger proposal and the receipt candidate binds one aggregate AU range. No callback/source generation join is inferred by the IO adapter."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_FLAT7X_I0_D0_STAGING_APPEND_TARGET",
+            "package_id": "ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF-V1",
+            "supplement_manifest_sha256": "530867a0e15a82dcb461d540e2d07ef4e53de5fdd66131109b5c0110a7d3b884",
+            "supplement_seal_sha256": "7ca3956885e570fd5d51aadeea1b74b94e522380c487fd13ee86cdc71e5dcf5a",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF.md"
+            ],
+            "validation_boundary": "Temporary staging-file adapter only; readback and sync results are captured in a receipt candidate. No rollback or final exposure is provided. production_allowed=false.",
+            "target": {
+              "aggregate_bytes": 6656,
+              "i0_frame_bytes": 2560,
+              "d0_frame_bytes": 4096,
+              "append_order": [
+                "I0",
+                "D0"
+              ],
+              "selected_5_1_sink_unchanged": true,
+              "production_allowed": false,
+              "encode_entry_connected": false
+            }
+          },
+          "vectors": {
+            "kind": "SYNTHETIC_TEMP_FILE_IO_CASES",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "A temporary staging file at the expected offset receives the complete aggregate AU and returns per-frame CRC/readback fields.",
+              "A staging length mismatch rejects before writing.",
+              "A receipt candidate with a changed frame CRC field does not advance the output-owner after-state."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "TEMP_FILE_ADAPTER_TESTS_PASSED"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "Flat7xAuAppendIoError::StagingLengthMismatch",
+              "category": "staging offset",
+              "trigger": "The caller-owned staging file length differs from the proposal offset.",
+              "programme_state_after": "No bytes are appended.",
+              "caller_action": "Reject and inspect the staging owner before retry."
+            },
+            {
+              "error_code": "Flat7xAuAppendIoError::{Io,WriteZero}",
+              "category": "staging write",
+              "trigger": "The write or sync operation fails, including a zero-byte write result.",
+              "programme_state_after": "The staging file may contain a partial AU.",
+              "caller_action": "Abandon the staging attempt; this adapter does not roll back."
+            },
+            {
+              "error_code": "Flat7xAuAppendIoError::{ProposalExtentMismatch,I0FrameCrc,D0FrameCrc,ReadbackMismatch}",
+              "category": "whole-AU receipt evidence",
+              "trigger": "The proposal, per-frame CRC, or readback bytes differ from the expected aggregate.",
+              "programme_state_after": "No receipt candidate is returned; staging may already contain bytes.",
+              "caller_action": "Abandon the staging attempt and retain no after-owner."
+            }
+          ],
+          "not_run": [
+            "No app product binding, selected 5.1 sink connection, final file exposure/rename, rollback, GTC parent commit, real source input, W04, or listening acceptance."
+          ],
+          "validation_boundary": "The adapter performs local staging-file write/flush/sync/readback and returns caller-supplied receipt fields after checking them. This is not an atomic final-file publication claim. production_allowed=false.",
+          "delivery_scope": "FLAT7X_STAGING_FILE_APPEND_AND_RECEIPT_CANDIDATE_ONLY_NO_PRODUCT_BINDING"
         }
       ]
     },

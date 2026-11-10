@@ -654,3 +654,4 @@
 | F15/washed-i0-d0-au-transaction-boundary-partial | F15 | `UNBOUND` |
 | F15/washed-i0-d0-au-composition-boundary-contract | F15 | `output` |
 | F15/flat7x-atomic-au-output-owner-ledger-receipt | F15 | `output` |
+| F15/flat7x-au-staging-append-io-receipt-adapter | F15 | `output` |

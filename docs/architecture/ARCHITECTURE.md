@@ -14,4 +14,6 @@
 
 1664 kbps I0/D0 目标另有 `Flat7xI0D0TargetPlan` 的 value-only 建模、fail-closed metadata check 和 I0→D0 byte-sequence candidate。后者只拼接调用方提供且逐帧 CRC 通过的 bytes，不解析 substream syntax，也不进入 production resolver、frame writer 或 publication flow；`production_allowed=false` 与 D0 audio algorithm、ADM role join、native writer owner、all-AU EMDF fit 的开放状态保持不变。
 
-F15 另有独立的 Flat7x AU staging owner value，可为一个 I0+D0 aggregate 建立 proposal、pair-aware ledger entry 与 caller-supplied receipt candidate 验收。该值模型不证明真实文件写入、rollback 或 readback，未接入 GTC、文件 adapter 或产品路径；5.1 `OutputOwner` 保持独立。
+F15 另有独立的 Flat7x AU staging owner value，可为一个 I0+D0 aggregate 建立 proposal、pair-aware ledger entry 与 caller-supplied receipt candidate 验收。该 owner 尚未接入 GTC 或产品路径；5.1 `OutputOwner` 保持独立。
+
+单独的 IO adapter 已可把此 proposal 写到调用方持有的 staging file，执行 sync 和精确范围 readback 后返回 receipt candidate。失败时由调用方废弃 staging attempt；adapter 不做 rollback、rename 或 final exposure，也不连接 encode entry。

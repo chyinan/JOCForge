@@ -654,3 +654,4 @@
 | F15/washed-i0-d0-au-transaction-boundary-partial | — | `The scoped per-block call order is not mapped to I0/D0 stream roles or a published access-unit clock.` |
 | F15/washed-i0-d0-au-composition-boundary-contract | `AccessUnit` | `The target AU has ordered I0 then D0 components from one source generation.`<br>`Runtime generation identity and publication ordering are NOT_CAPTURED by this supplement.` |
 | F15/flat7x-atomic-au-output-owner-ledger-receipt | `PublishedAuIndex`<br>`Flat7xSourceGeneration` | `Each staged append advances one PublishedAuIndex and covers one I0→D0 sequence. The generation value is carried as a caller-supplied label; no callback-owner join is established.` |
+| F15/flat7x-au-staging-append-io-receipt-adapter | `PublishedAuIndex` | `The staging offset is derived from the AU ledger proposal and the receipt candidate binds one aggregate AU range. No callback/source generation join is inferred by the IO adapter.` |
