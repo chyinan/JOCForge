@@ -45,6 +45,14 @@ tags:
 
 FFprobe 外层 stream metadata、JOC internal index/object-count/EMDF、official-demo structure match 与 listening acceptance 均为 `NOT_RUN`。没有读取或保存 PCM/压缩 payload。Wash 已收到完整 receipt，当前等待其将失败边界加入统一时间线并指明下一条 evidence step；此 attempt 不自动重试。
 
+## CurrentEmdfValidation future diagnostic
+
+F13 `MetadataOwnerError::CurrentEmdfValidation` now carries a non-payload typed predicate reason while preserving its stable error code and fail-closed decision. The E-521 receipt predates this discriminator, so its exact failing guard remains `UNBOUND`; future authorized runs can retain the reason in the source-stage error receipt without recording EMDF bytes or hashes.
+
+## 1664 typed-target handoff
+
+Wash handoff file `ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF-V1/IMPLEMENTER-HANDOFF.md` was independently hash checked at `4c8d964b8a91b67c4158e0141ec8dcfbf91f3245e00a85138188bc5389f104b4`. It defines an architecture-only I0=640 kbps / D0=1024 kbps Flat7x AU plan, with `production_allowed=false`. The next local slice is a separate typed target plan and fail-closed whole-AU admission. Existing 5.1 production resolution stays separate; D0 writer ownership, ADM role join, D0 audio algorithm and all-AU EMDF fit remain `UNBOUND`.
+
 ## 下一步
 
-- 下一动作：等待 Wash 对 `CurrentEmdfValidation` 给出有依据的实现边界和下一步，再按新的授权准备后续执行。当前输出与结构验收状态记录为 `NOT_RUN`；本次 attempt 不自动重启。
+- 下一动作：实现并验证 architecture-only I0/D0 target plan 与 fail-closed AU admission；保持生产路径关闭。任何编码运行需要单独的 input/output/temp preflight、Wash timeline registration 和 GO。

@@ -48,6 +48,55 @@ const CANONICAL_QUEUE_ORDER: [u8; 4] = [1, 2, 11, 14];
 const METADATA_OWNER_ID: &str = "metadata";
 const METADATA_STATE_REF: &str = "owners.metadata";
 
+/// Non-payload discriminator for the first failed F13 protected-container binding predicate.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum CurrentEmdfValidationReason {
+    ProposalAlreadyParsed,
+    SourceBeforePublishedRange,
+    AuIndexMissing,
+    ZeroSlotContainerMissing,
+    ProtectedContainerLengthMismatch,
+    Id14QueuePopMissing,
+    ConsumerTransactionMissing,
+    ConsumerAuIndexMissing,
+    Id14QueuePopBindingMismatch,
+    ParserRejected { parser_code: &'static str },
+    ParsedId14ProvenanceMismatch,
+    ConsumerIdentityMissing,
+    PublicationShapeMismatch,
+    OrdinaryWriterIndexUnderflow,
+    Id14WriterIndexUnderflow,
+    QueuePopReceiptMismatch { queue_id: u8 },
+    ProducerLineageMismatch { queue_id: u8 },
+    WrapperConfigurationMismatch { queue_id: u8 },
+}
+
+impl CurrentEmdfValidationReason {
+    /// Stable non-payload category for an error receipt or diagnostic log.
+    pub const fn code(self) -> &'static str {
+        match self {
+            Self::ProposalAlreadyParsed => "PROPOSAL_ALREADY_PARSED",
+            Self::SourceBeforePublishedRange => "SOURCE_BEFORE_PUBLISHED_RANGE",
+            Self::AuIndexMissing => "AU_INDEX_MISSING",
+            Self::ZeroSlotContainerMissing => "ZERO_SLOT_CONTAINER_MISSING",
+            Self::ProtectedContainerLengthMismatch => "PROTECTED_CONTAINER_LENGTH_MISMATCH",
+            Self::Id14QueuePopMissing => "ID14_QUEUE_POP_MISSING",
+            Self::ConsumerTransactionMissing => "CONSUMER_TRANSACTION_MISSING",
+            Self::ConsumerAuIndexMissing => "CONSUMER_AU_INDEX_MISSING",
+            Self::Id14QueuePopBindingMismatch => "ID14_QUEUE_POP_BINDING_MISMATCH",
+            Self::ParserRejected { .. } => "PROTECTED_CONTAINER_PARSER_REJECTED",
+            Self::ParsedId14ProvenanceMismatch => "PARSED_ID14_PROVENANCE_MISMATCH",
+            Self::ConsumerIdentityMissing => "CONSUMER_IDENTITY_MISSING",
+            Self::PublicationShapeMismatch => "PUBLICATION_SHAPE_MISMATCH",
+            Self::OrdinaryWriterIndexUnderflow => "ORDINARY_WRITER_INDEX_UNDERFLOW",
+            Self::Id14WriterIndexUnderflow => "ID14_WRITER_INDEX_UNDERFLOW",
+            Self::QueuePopReceiptMismatch { .. } => "QUEUE_POP_RECEIPT_MISMATCH",
+            Self::ProducerLineageMismatch { .. } => "PRODUCER_LINEAGE_MISMATCH",
+            Self::WrapperConfigurationMismatch { .. } => "WRAPPER_CONFIGURATION_MISMATCH",
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum MetadataOwnerError {
     ProviderIdentity,
@@ -65,7 +114,7 @@ pub enum MetadataOwnerError {
     Capacity,
     QueueOccupied,
     EmdfSerialization,
-    CurrentEmdfValidation,
+    CurrentEmdfValidation(CurrentEmdfValidationReason),
     EofSourceCount,
     Finalized,
     Retired,
@@ -90,11 +139,18 @@ impl MetadataOwnerError {
             Self::Capacity => "METADATA_CAPACITY",
             Self::QueueOccupied => "METADATA_QUEUE_OCCUPIED",
             Self::EmdfSerialization => "METADATA_EMDF_SERIALIZATION",
-            Self::CurrentEmdfValidation => "METADATA_CURRENT_EMDF_VALIDATION",
+            Self::CurrentEmdfValidation(_) => "METADATA_CURRENT_EMDF_VALIDATION",
             Self::EofSourceCount => "METADATA_EOF_SOURCE_COUNT",
             Self::Finalized => "METADATA_FINALIZED",
             Self::Retired => "METADATA_RETIRED",
             Self::AttemptSequence => "METADATA_ATTEMPT_SEQUENCE",
+        }
+    }
+
+    pub const fn current_emdf_validation_reason(self) -> Option<CurrentEmdfValidationReason> {
+        match self {
+            Self::CurrentEmdfValidation(reason) => Some(reason),
+            _ => None,
         }
     }
 }
@@ -688,35 +744,58 @@ impl MetadataSourceProposal {
         carriage_mode: crate::joc::emdf::protected_container::CurrentEmdfCarriageMode,
         carrier_block: crate::joc::emdf::protected_container::CarrierBlock,
     ) -> Result<(), MetadataOwnerError> {
-        if self.parsed_container.is_some()
-            || self.receipt.source_index().value() < 2
-            || self.receipt.au_index().is_none()
-            || self
-                .emdf
-                .as_deref()
-                .map_or(true, |zero_slot| zero_slot.len() != protected_bytes.len())
-        {
-            return Err(MetadataOwnerError::CurrentEmdfValidation);
+        if self.parsed_container.is_some() {
+            return Err(MetadataOwnerError::CurrentEmdfValidation(
+                CurrentEmdfValidationReason::ProposalAlreadyParsed,
+            ));
         }
-        let queue_pop = self
-            .receipt
-            .id14_queue_pop()
-            .ok_or(MetadataOwnerError::CurrentEmdfValidation)?;
-        let consumer_transaction_id = self
-            .consumer_transaction_id
-            .as_ref()
-            .ok_or(MetadataOwnerError::CurrentEmdfValidation)?;
-        let consumer_au_index = self
-            .receipt
-            .au_index()
-            .ok_or(MetadataOwnerError::CurrentEmdfValidation)?;
+        if self.receipt.source_index().value() < 2 {
+            return Err(MetadataOwnerError::CurrentEmdfValidation(
+                CurrentEmdfValidationReason::SourceBeforePublishedRange,
+            ));
+        }
+        if self.receipt.au_index().is_none() {
+            return Err(MetadataOwnerError::CurrentEmdfValidation(
+                CurrentEmdfValidationReason::AuIndexMissing,
+            ));
+        }
+        let zero_slot = self
+            .emdf
+            .as_deref()
+            .ok_or(MetadataOwnerError::CurrentEmdfValidation(
+                CurrentEmdfValidationReason::ZeroSlotContainerMissing,
+            ))?;
+        if zero_slot.len() != protected_bytes.len() {
+            return Err(MetadataOwnerError::CurrentEmdfValidation(
+                CurrentEmdfValidationReason::ProtectedContainerLengthMismatch,
+            ));
+        }
+        let queue_pop =
+            self.receipt
+                .id14_queue_pop()
+                .ok_or(MetadataOwnerError::CurrentEmdfValidation(
+                    CurrentEmdfValidationReason::Id14QueuePopMissing,
+                ))?;
+        let consumer_transaction_id = self.consumer_transaction_id.as_ref().ok_or(
+            MetadataOwnerError::CurrentEmdfValidation(
+                CurrentEmdfValidationReason::ConsumerTransactionMissing,
+            ),
+        )?;
+        let consumer_au_index =
+            self.receipt
+                .au_index()
+                .ok_or(MetadataOwnerError::CurrentEmdfValidation(
+                    CurrentEmdfValidationReason::ConsumerAuIndexMissing,
+                ))?;
         if queue_pop.disposition() != Id14PopDisposition::Published
             || queue_pop.consumer_transaction_id() != consumer_transaction_id
             || queue_pop.consumer_source_index() != self.receipt.source_index()
             || queue_pop.consumer_dispatch() != self.receipt.dispatch()
             || queue_pop.consumer_au_index() != Some(consumer_au_index)
         {
-            return Err(MetadataOwnerError::CurrentEmdfValidation);
+            return Err(MetadataOwnerError::CurrentEmdfValidation(
+                CurrentEmdfValidationReason::Id14QueuePopBindingMismatch,
+            ));
         }
         let parsed_container = crate::joc::emdf::protected_container::parse_current_emdf_container(
             protected_bytes,
@@ -724,9 +803,15 @@ impl MetadataSourceProposal {
             carrier_block,
             queue_pop.producer(),
         )
-        .map_err(|_| MetadataOwnerError::CurrentEmdfValidation)?;
+        .map_err(|error| {
+            MetadataOwnerError::CurrentEmdfValidation(CurrentEmdfValidationReason::ParserRejected {
+                parser_code: error.code(),
+            })
+        })?;
         if parsed_container.id14_provenance() != queue_pop.producer() {
-            return Err(MetadataOwnerError::CurrentEmdfValidation);
+            return Err(MetadataOwnerError::CurrentEmdfValidation(
+                CurrentEmdfValidationReason::ParsedId14ProvenanceMismatch,
+            ));
         }
         let consumer = MetadataSourceIdentity {
             programme_id: self.receipt.programme_id().clone(),
@@ -742,7 +827,8 @@ impl MetadataSourceProposal {
             &parsed_container,
             &self.receipt.queue_pop_receipts,
             &consumer,
-        )?;
+        )
+        .map_err(MetadataOwnerError::CurrentEmdfValidation)?;
         self.parsed_container = Some(ParsedMetadataSourceContainer {
             parsed_container,
             consumer_programme_id: consumer.programme_id,
@@ -2160,31 +2246,31 @@ fn validate_current_container_pop_bindings(
     parsed: &crate::joc::emdf::protected_container::ParsedCurrentEmdfContainer,
     queue_pops: &[MetadataQueuePopReceipt],
     consumer: &MetadataSourceIdentity,
-) -> Result<(), MetadataOwnerError> {
+) -> Result<(), CurrentEmdfValidationReason> {
     let consumer_transaction_id = consumer
         .transaction_id
         .as_ref()
-        .ok_or(MetadataOwnerError::CurrentEmdfValidation)?;
+        .ok_or(CurrentEmdfValidationReason::ConsumerIdentityMissing)?;
     let consumer_au_index = consumer
         .au_index
-        .ok_or(MetadataOwnerError::CurrentEmdfValidation)?;
+        .ok_or(CurrentEmdfValidationReason::ConsumerIdentityMissing)?;
     if parsed.payloads().len() != PUBLICATION_ORDER.len()
         || queue_pops.len() != PUBLICATION_ORDER.len()
     {
-        return Err(MetadataOwnerError::CurrentEmdfValidation);
+        return Err(CurrentEmdfValidationReason::PublicationShapeMismatch);
     }
     let ordinary_writer = consumer
         .source_index
         .value()
         .checked_sub(2)
         .map(CodecSourceIndex::new)
-        .ok_or(MetadataOwnerError::CurrentEmdfValidation)?;
+        .ok_or(CurrentEmdfValidationReason::OrdinaryWriterIndexUnderflow)?;
     let joc_writer = consumer
         .source_index
         .value()
         .checked_sub(1)
         .map(CodecSourceIndex::new)
-        .ok_or(MetadataOwnerError::CurrentEmdfValidation)?;
+        .ok_or(CurrentEmdfValidationReason::Id14WriterIndexUnderflow)?;
 
     for ((expected_id, parsed_payload), queue_pop) in PUBLICATION_ORDER
         .iter()
@@ -2210,7 +2296,9 @@ fn validate_current_container_pop_bindings(
             || queue_pop.disposition() != Id14PopDisposition::Published
             || queue_pop.producer().producer_transaction_id().is_none()
         {
-            return Err(MetadataOwnerError::CurrentEmdfValidation);
+            return Err(CurrentEmdfValidationReason::QueuePopReceiptMismatch {
+                queue_id: expected_id,
+            });
         }
 
         let producer_identity_matches = match queue_pop.producer() {
@@ -2234,7 +2322,9 @@ fn validate_current_container_pop_bindings(
             }
         };
         if !producer_identity_matches {
-            return Err(MetadataOwnerError::CurrentEmdfValidation);
+            return Err(CurrentEmdfValidationReason::ProducerLineageMismatch {
+                queue_id: expected_id,
+            });
         }
 
         let configuration = parsed_payload.configuration();
@@ -2266,7 +2356,9 @@ fn validate_current_container_pop_bindings(
             _ => true,
         };
         if !wrapper_configuration_matches {
-            return Err(MetadataOwnerError::CurrentEmdfValidation);
+            return Err(CurrentEmdfValidationReason::WrapperConfigurationMismatch {
+                queue_id: expected_id,
+            });
         }
     }
     Ok(())

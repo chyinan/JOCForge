@@ -1269,3 +1269,28 @@ fn per_call_wrapper_configuration_must_match_the_approved_profile() {
     assert_eq!(owner.state.canonical_bytes(), before);
     assert!(owner.is_retired());
 }
+
+#[test]
+fn current_emdf_validation_reason_preserves_the_stable_error_code() {
+    let reason = CurrentEmdfValidationReason::ParserRejected {
+        parser_code: "EMDF_INVALID_SYNC_WORD",
+    };
+    let error = MetadataOwnerError::CurrentEmdfValidation(reason);
+
+    assert_eq!(error.code(), "METADATA_CURRENT_EMDF_VALIDATION");
+    assert_eq!(error.to_string(), "METADATA_CURRENT_EMDF_VALIDATION");
+    assert_eq!(error.current_emdf_validation_reason(), Some(reason));
+    assert_eq!(reason.code(), "PROTECTED_CONTAINER_PARSER_REJECTED");
+    assert!(format!("{error:?}").contains("EMDF_INVALID_SYNC_WORD"));
+}
+
+#[test]
+fn current_emdf_queue_predicate_reason_contains_only_queue_identity() {
+    let reason = CurrentEmdfValidationReason::QueuePopReceiptMismatch { queue_id: 14 };
+
+    assert_eq!(reason.code(), "QUEUE_POP_RECEIPT_MISMATCH");
+    assert_eq!(
+        format!("{reason:?}"),
+        "QueuePopReceiptMismatch { queue_id: 14 }"
+    );
+}

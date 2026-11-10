@@ -42464,8 +42464,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-              "bytes": 93806,
-              "sha256": "4fe4db7e586b57778229eaad9b023a12f53d30df355db43ed0a5af4d09aa3790"
+              "bytes": 98059,
+              "sha256": "bab96a268a9a5d171ff8fc2a603eb260d3b9516b9eba7e4b4a55ebd1025e01c1"
             },
             {
               "path": "crates/jocforge-application/src/output_publication/plan_admission.rs",
@@ -46280,8 +46280,8 @@
         {
           "slice_id": "selected-metadata-owner-source-stage",
           "mapping_status": "MATERIALIZED_SELECTED_SOURCE_STAGE__GLOBAL_CALLBACK_BLOCKED",
-          "implementation_status": "LOCALLY_VERIFIED_TYPED_BODY_BARRIER_TIMER_FOUR_QUEUE_EMDF_AND_NONCOMMITTING_AFTER_PROPOSAL__PARENT_INSTALL_NOT_RUN",
-          "scope": "Selected 48 kHz/1536-sample profile only: lineage-bound ID11/ID2/ID14 body barrier, ID1 configuration with an explicit internal I32-derived value, private timer and four-queue clone, source2+ EMDF proposal, specialized receipt and owned noncommitting after-state. The current ProgrammeMeasurementReceipt has no provider crosswalk for this value; it is not inferred from gating_kind. Programme meter execution, parent root installation, complexity BSI and durable output remain separate. The selected container parser is a partial protected-container admission layer used by the owner proposal; it does not claim full ID1/ID2 body-semantic decoding or a successful real-container KAT.",
+          "implementation_status": "LOCALLY_VERIFIED_TYPED_BODY_BARRIER_TIMER_FOUR_QUEUE_EMDF_NONPAYLOAD_VALIDATION_REASON__PARENT_INSTALL_NOT_RUN",
+          "scope": "Selected 48 kHz/1536-sample profile only: lineage-bound ID11/ID2/ID14 body barrier, ID1 configuration with an explicit internal I32-derived value, private timer and four-queue clone, source2+ EMDF proposal, specialized receipt and owned noncommitting after-state. The current ProgrammeMeasurementReceipt has no provider crosswalk for this value; it is not inferred from gating_kind. Programme meter execution, parent root installation, complexity BSI and durable output remain separate. The selected container parser is a partial protected-container admission layer used by the owner proposal; it does not claim full ID1/ID2 body-semantic decoding or a successful real-container KAT. A typed non-payload CurrentEmdfValidationReason reports the first failed parser, queue-pop, producer-lineage, or wrapper predicate while retaining the stable METADATA_CURRENT_EMDF_VALIDATION code and the existing fail-closed decision.",
           "implementation_files": [
             "crates/jocforge-domain/src/joc/emdf/id1_configuration.rs",
             "crates/jocforge-domain/src/joc/emdf/metadata_bodies.rs",
@@ -46342,7 +46342,15 @@
             },
             "source_manifest_sha256": "94774c412ce8457f3220d84e4b3386c0b48c21837d4a4943570791bb66f034b3"
           },
-          "error_outcomes": [],
+          "error_outcomes": [
+            {
+              "error_code": "METADATA_CURRENT_EMDF_VALIDATION",
+              "category": "F13 protected-container binding",
+              "trigger": "The F13 proposal cannot bind F14K-protected current EMDF bytes to its source receipt, ID14 queue-pop provenance, parser result, or approved wrapper configuration.",
+              "programme_state_after": "No ParsedMetadataSourceContainer is attached to the noncommitting F13 proposal; F12 frame candidate, F14K current-frame receipt, and F15 source/output proposal are not returned for this source.",
+              "caller_action": "Keep the source fail-closed and surface the non-payload CurrentEmdfValidationReason; do not publish a partial AU."
+            }
+          ],
           "not_run": [
             "Positive real-container F13 proposal and same-source F12 application bridge execution remain NOT_RUN because production F13 owner construction requires a finalized ProgrammeMeasurementReceipt."
           ],
@@ -46359,8 +46367,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-              "bytes": 93806,
-              "sha256": "4fe4db7e586b57778229eaad9b023a12f53d30df355db43ed0a5af4d09aa3790"
+              "bytes": 98059,
+              "sha256": "bab96a268a9a5d171ff8fc2a603eb260d3b9516b9eba7e4b4a55ebd1025e01c1"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/timer.rs",
@@ -46396,8 +46404,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-              "bytes": 45889,
-              "sha256": "452f33ef48d64a9539408c97787e26fdffe620f7fe2d2f169b2f4958ef27788f"
+              "bytes": 46840,
+              "sha256": "e8667ec109a8949271d08ec8d92b8f84ee7f208242e3e02bb5e184465b286098"
             },
             {
               "path": "crates/jocforge-domain/src/joc/id14_body.rs",
@@ -47033,8 +47041,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-              "bytes": 45889,
-              "sha256": "452f33ef48d64a9539408c97787e26fdffe620f7fe2d2f169b2f4958ef27788f"
+              "bytes": 46840,
+              "sha256": "e8667ec109a8949271d08ec8d92b8f84ee7f208242e3e02bb5e184465b286098"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -49723,13 +49731,13 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-              "bytes": 93806,
-              "sha256": "4fe4db7e586b57778229eaad9b023a12f53d30df355db43ed0a5af4d09aa3790"
+              "bytes": 98059,
+              "sha256": "bab96a268a9a5d171ff8fc2a603eb260d3b9516b9eba7e4b4a55ebd1025e01c1"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-              "bytes": 45889,
-              "sha256": "452f33ef48d64a9539408c97787e26fdffe620f7fe2d2f169b2f4958ef27788f"
+              "bytes": 46840,
+              "sha256": "e8667ec109a8949271d08ec8d92b8f84ee7f208242e3e02bb5e184465b286098"
             }
           ],
           "test_inventory": [
@@ -49750,8 +49758,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-              "bytes": 45889,
-              "sha256": "452f33ef48d64a9539408c97787e26fdffe620f7fe2d2f169b2f4958ef27788f"
+              "bytes": 46840,
+              "sha256": "e8667ec109a8949271d08ec8d92b8f84ee7f208242e3e02bb5e184465b286098"
             }
           ],
           "error_outcomes": [
@@ -55741,8 +55749,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-              "bytes": 93806,
-              "sha256": "4fe4db7e586b57778229eaad9b023a12f53d30df355db43ed0a5af4d09aa3790"
+              "bytes": 98059,
+              "sha256": "bab96a268a9a5d171ff8fc2a603eb260d3b9516b9eba7e4b4a55ebd1025e01c1"
             },
             {
               "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
@@ -58536,15 +58544,15 @@
       "implementation_inventory": [
         {
           "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-          "bytes": 93806,
-          "sha256": "4fe4db7e586b57778229eaad9b023a12f53d30df355db43ed0a5af4d09aa3790"
+          "bytes": 98059,
+          "sha256": "bab96a268a9a5d171ff8fc2a603eb260d3b9516b9eba7e4b4a55ebd1025e01c1"
         }
       ],
       "test_inventory": [
         {
           "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-          "bytes": 45889,
-          "sha256": "452f33ef48d64a9539408c97787e26fdffe620f7fe2d2f169b2f4958ef27788f"
+          "bytes": 46840,
+          "sha256": "e8667ec109a8949271d08ec8d92b8f84ee7f208242e3e02bb5e184465b286098"
         }
       ],
       "selected_profile_id": "selected-48k-1536-four-queue.v1",
@@ -58891,13 +58899,13 @@
         },
         {
           "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-          "bytes": 93806,
-          "sha256": "4fe4db7e586b57778229eaad9b023a12f53d30df355db43ed0a5af4d09aa3790"
+          "bytes": 98059,
+          "sha256": "bab96a268a9a5d171ff8fc2a603eb260d3b9516b9eba7e4b4a55ebd1025e01c1"
         },
         {
           "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-          "bytes": 45889,
-          "sha256": "452f33ef48d64a9539408c97787e26fdffe620f7fe2d2f169b2f4958ef27788f"
+          "bytes": 46840,
+          "sha256": "e8667ec109a8949271d08ec8d92b8f84ee7f208242e3e02bb5e184465b286098"
         },
         {
           "path": "crates/jocforge-application/src/output_publication/plan_admission.rs",
@@ -58953,8 +58961,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-          "bytes": 45889,
-          "sha256": "452f33ef48d64a9539408c97787e26fdffe620f7fe2d2f169b2f4958ef27788f"
+          "bytes": 46840,
+          "sha256": "e8667ec109a8949271d08ec8d92b8f84ee7f208242e3e02bb5e184465b286098"
         },
         {
           "path": "crates/jocforge-domain/src/publication/tests.rs",
