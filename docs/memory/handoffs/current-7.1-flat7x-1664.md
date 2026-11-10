@@ -3,7 +3,7 @@ status: current
 topic: 7.1-flat7x-1664-handoff
 spec: JOCForge
 confidence: package-backed-target
-last_updated: 2026-11-10
+last_updated: 2026-11-11
 tags:
   - handoff
   - AU
@@ -37,6 +37,14 @@ tags:
 - Flat7x complete stream structure、official-demo acceptance 与 7.X audio rendering：`NOT_RUN`。
 - 1664 kbps I0/D0 AU target 的 `production_allowed=false`。
 
+## 2026-11-10 Love Song Flat7x run
+
+当前实测目标是一个独立的 1024 kbps / selected 5.1 core / Flat7x layout attempt，输入绑定到 E-275 同源的 `D:\Love Song 方大同.wav`，SHA-256 `34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5`，36-channel PCM24 / 48 kHz。E-521 prelaunch 经 Wash 登记并放行；实际命令附加 `--joc-layout flat7x`，运行二进制来自提交 `5431a6812a041562d938314fd4ec2dd2377fad80`。
+
+单次 attempt `1794325737775022700` 于 2026-11-10 15:51:27 UTC 以 exit code 2 结束。日志记录 Meter 完成后，MAIN g=0、g=1 priming 和 source s=0、s=1 suppressed，随后停止于 `F14/F14K source stage: MetadataOwner(CurrentEmdfValidation)`。最终 `.ec3` 不存在，未发现 `.ec3.partial`；receipt SHA-256 为 `f9d73af6b7b1af6c6932f32e5e70d2c793070f3c55f86f7495531bffe574b449`。
+
+FFprobe 外层 stream metadata、JOC internal index/object-count/EMDF、official-demo structure match 与 listening acceptance 均为 `NOT_RUN`。没有读取或保存 PCM/压缩 payload。Wash 已收到完整 receipt，当前等待其将失败边界加入统一时间线并指明下一条 evidence step；此 attempt 不自动重试。
+
 ## 下一步
 
-Love Song 输入沿用已成功收据绑定的 `D:\Love Song 方大同.wav` / SHA `34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5`。Flat7x output/temp 已规划为唯一空路径。启动等待 Wash 将更新后的 selector/parser prelaunch receipt 写入统一时间线并返回 continue；随后只按字段范围核验输出结构。
+- 下一动作：等待 Wash 对 `CurrentEmdfValidation` 给出有依据的实现边界和下一步，再按新的授权准备后续执行。当前输出与结构验收状态记录为 `NOT_RUN`；本次 attempt 不自动重启。
