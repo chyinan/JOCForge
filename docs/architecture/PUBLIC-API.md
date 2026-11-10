@@ -10,7 +10,7 @@
 
 ## Architecture-only 1664 target plan
 
-`profile::Flat7xI0D0TargetPlan::approved_contract()` exposes the approved I0=640/D0=1024 Flat7x AU contract as a value-only plan. `profile::validate_flat7x_au_candidate` fails closed unless both typed frame extents and the single D0 block-2 EMDF field satisfy the target contract and carry equal supplied generation labels. The result has no frame bytes, owner receipts, writer capability, or publication authority; it is not an `EncodingProfile` and cannot enter the production resolver. `production_allowed` remains false.
+`profile::Flat7xI0D0TargetPlan::approved_contract()` exposes the approved I0=640/D0=1024 Flat7x AU contract as a value-only plan. `profile::validate_flat7x_au_candidate` checks the target metadata and supplied generation labels. `profile::compose_flat7x_au_byte_sequence` then checks the two supplied frame extents and per-frame CRCs and concatenates them in I0→D0 order. The returned value does not parse substream syntax, establish runtime owner lineage, or grant output-owner authority; it is not an `EncodingProfile` and cannot enter the production resolver. `production_allowed` remains false.
 
 ## Selected job XML values
 

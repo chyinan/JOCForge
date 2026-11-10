@@ -6,6 +6,7 @@
 //! commit authority, or production admission path.
 
 use super::production::{AuthoredInputProfile, CodecRateProfile, JocReconstructionLayout};
+use crate::integrity::crc16::eac3_crc16;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Flat7xSubstreamRole {
@@ -526,6 +527,90 @@ impl Flat7xAuPlanValidation {
     }
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Flat7xAuByteSequenceError {
+    I0FrameExtentMismatch,
+    D0FrameExtentMismatch,
+    I0FrameCrc,
+    D0FrameCrc,
+    AggregateExtentOverflow,
+}
+
+/// A noncommitting in-memory I0→D0 byte sequence candidate.
+///
+/// Construction checks only the validated target extents and each frame's E-AC-3 CRC. It does
+/// not parse substream syntax, establish runtime source lineage, or grant output-owner authority.
+#[must_use]
+#[derive(Debug, Eq, PartialEq)]
+pub struct Flat7xAuByteSequenceCandidate {
+    source_generation: Flat7xSourceGeneration,
+    i0_frame_bytes: u16,
+    d0_frame_bytes: u16,
+    bytes: Box<[u8]>,
+}
+
+impl Flat7xAuByteSequenceCandidate {
+    pub const fn source_generation(&self) -> Flat7xSourceGeneration {
+        self.source_generation
+    }
+
+    pub const fn i0_frame_bytes(&self) -> u16 {
+        self.i0_frame_bytes
+    }
+
+    pub const fn d0_frame_bytes(&self) -> u16 {
+        self.d0_frame_bytes
+    }
+
+    pub fn bytes(&self) -> &[u8] {
+        &self.bytes
+    }
+
+    pub const fn production_allowed(&self) -> bool {
+        false
+    }
+}
+
+/// Concatenates complete candidate bytes in I0→D0 order after the target metadata gate.
+///
+/// This is a byte-sequence boundary only. The caller-provided metadata validation and CRC checks
+/// do not prove the frame roles, source owner/generation join, or D0 audio syntax.
+pub fn compose_flat7x_au_byte_sequence(
+    validation: &Flat7xAuPlanValidation,
+    i0_frame: &[u8],
+    d0_frame: &[u8],
+) -> Result<Flat7xAuByteSequenceCandidate, Flat7xAuByteSequenceError> {
+    if i0_frame.len() != usize::from(validation.i0().frame_bytes()) {
+        return Err(Flat7xAuByteSequenceError::I0FrameExtentMismatch);
+    }
+    if d0_frame.len() != usize::from(validation.d0().frame_bytes()) {
+        return Err(Flat7xAuByteSequenceError::D0FrameExtentMismatch);
+    }
+    if eac3_crc16(&i0_frame[2..]) != 0 {
+        return Err(Flat7xAuByteSequenceError::I0FrameCrc);
+    }
+    if eac3_crc16(&d0_frame[2..]) != 0 {
+        return Err(Flat7xAuByteSequenceError::D0FrameCrc);
+    }
+
+    let total_bytes = i0_frame
+        .len()
+        .checked_add(d0_frame.len())
+        .ok_or(Flat7xAuByteSequenceError::AggregateExtentOverflow)?;
+    let mut bytes = Vec::with_capacity(total_bytes);
+    bytes.extend_from_slice(i0_frame);
+    bytes.extend_from_slice(d0_frame);
+
+    Ok(Flat7xAuByteSequenceCandidate {
+        source_generation: validation.source_generation(),
+        i0_frame_bytes: u16::try_from(i0_frame.len())
+            .map_err(|_| Flat7xAuByteSequenceError::AggregateExtentOverflow)?,
+        d0_frame_bytes: u16::try_from(d0_frame.len())
+            .map_err(|_| Flat7xAuByteSequenceError::AggregateExtentOverflow)?,
+        bytes: bytes.into_boxed_slice(),
+    })
+}
+
 /// Validates the design-only I0→D0 target pair without inspecting or retaining payload bytes.
 /// This does not admit a production encode or prove a runtime source-generation join.
 pub fn validate_flat7x_au_candidate(
@@ -582,6 +667,26 @@ pub fn validate_flat7x_au_candidate(
 mod tests {
     use super::*;
     use crate::profile::{EncodingProfile, resolve_selected_profile};
+
+    fn crc_valid_frame_extent(frame_bytes: usize, marker: u8) -> Vec<u8> {
+        let frame_size = crate::codec::frame_size::Eac3FrameSize::from_frame_bytes(frame_bytes)
+            .expect("target frame extent");
+        let mut frame = vec![0_u8; frame_bytes];
+        frame[0..2].copy_from_slice(&[0x0b, 0x77]);
+        frame[100] = marker;
+        for offset in 0..11 {
+            let value = (frame_size.code().value() >> (10 - offset)) & 1;
+            if value != 0 {
+                let bit = 21 + offset;
+                frame[bit / 8] |= 1 << (7 - (bit % 8));
+            }
+        }
+        let crc_offset = frame.len() - 2;
+        let crc = eac3_crc16(&frame[2..crc_offset]);
+        frame[crc_offset..].copy_from_slice(&crc.to_be_bytes());
+        assert_eq!(eac3_crc16(&frame[2..]), 0);
+        frame
+    }
 
     #[test]
     fn target_plan_keeps_i0_and_d0_as_distinct_ordered_frames() {
@@ -806,6 +911,45 @@ mod tests {
             let candidate = complete_candidate(7, 7, 7, block, fields, bytes, fragmented);
             assert_eq!(validate_flat7x_au_candidate(plan, candidate), Err(expected));
         }
+    }
+
+    #[test]
+    fn byte_sequence_candidate_concatenates_i0_then_d0_and_keeps_production_closed() {
+        let plan = Flat7xI0D0TargetPlan::approved_contract();
+        let candidate = complete_candidate(7, 7, 7, 2, 1, Some(511), false);
+        let validation = validate_flat7x_au_candidate(plan, candidate).unwrap();
+        let i0 = crc_valid_frame_extent(2_560, 0x31);
+        let d0 = crc_valid_frame_extent(4_096, 0x72);
+
+        let sequence = compose_flat7x_au_byte_sequence(&validation, &i0, &d0).unwrap();
+
+        assert_eq!(sequence.source_generation().value(), 7);
+        assert_eq!(sequence.i0_frame_bytes(), 2_560);
+        assert_eq!(sequence.d0_frame_bytes(), 4_096);
+        assert_eq!(sequence.bytes().len(), 6_656);
+        assert_eq!(&sequence.bytes()[..i0.len()], i0.as_slice());
+        assert_eq!(&sequence.bytes()[i0.len()..], d0.as_slice());
+        assert!(!sequence.production_allowed());
+    }
+
+    #[test]
+    fn byte_sequence_candidate_rejects_frame_extent_or_crc_mismatch() {
+        let plan = Flat7xI0D0TargetPlan::approved_contract();
+        let candidate = complete_candidate(7, 7, 7, 2, 1, Some(16), false);
+        let validation = validate_flat7x_au_candidate(plan, candidate).unwrap();
+        let i0 = crc_valid_frame_extent(2_560, 0x31);
+        let d0 = crc_valid_frame_extent(4_096, 0x72);
+
+        assert_eq!(
+            compose_flat7x_au_byte_sequence(&validation, &i0[..i0.len() - 1], &d0),
+            Err(Flat7xAuByteSequenceError::I0FrameExtentMismatch)
+        );
+        let mut corrupt_d0 = d0.clone();
+        corrupt_d0[100] ^= 1;
+        assert_eq!(
+            compose_flat7x_au_byte_sequence(&validation, &i0, &corrupt_d0),
+            Err(Flat7xAuByteSequenceError::D0FrameCrc)
+        );
     }
 
     #[test]

@@ -10374,10 +10374,10 @@
         {
           "slice_id": "flat7x-i0-d0-typed-target-plan",
           "mapping_status": "MATERIALIZED_ARCHITECTURE_ONLY_TYPED_PLAN__PRODUCTION_FALSE",
-          "implementation_status": "LOCALLY_VERIFIED_TYPED_TARGET_PLAN_AND_FAIL_CLOSED_AU_VALIDATOR__NO_PRODUCTION_PATH",
+          "implementation_status": "LOCALLY_VERIFIED_TYPED_TARGET_AND_I0_D0_BYTE_SEQUENCE_CANDIDATE__NO_PRODUCTION_PATH",
           "implementation_requirement": true,
           "owner": "UNBOUND",
-          "scope": "Value-only Wash-approved I0=640 kbps plus D0=1024 kbps Flat7x AU plan. It preserves the existing 5.1 production row and represents distinct independent I0 and dependent D0 frame contracts, reconstruction layout, and the single D0 block-2 EMDF skip-field cap. The pure validator requires both frames, equal supplied generation labels, exact frame extents, one nonfragmented D0 block-2 EMDF field and a complete container length from 1 through 511 bytes; it returns a noncommitting value and cannot write/publish frames. No conversion into EncodingProfile or production output path exists.",
+          "scope": "Value-only Wash-approved I0=640 kbps plus D0=1024 kbps Flat7x AU plan. It preserves the existing 5.1 production row and models distinct independent I0 and dependent D0 frame contracts, reconstruction layout, and the single D0 block-2 EMDF skip-field cap. The pure validator requires both frames, equal supplied generation labels, exact frame extents, one nonfragmented D0 block-2 EMDF field and a complete container length from 1 through 511 bytes. The noncommitting byte-sequence candidate checks each supplied frame extent and E-AC-3 CRC, then concatenates I0 followed by D0. Neither value parses substream syntax, proves runtime identity, or writes/publishes frames; production remains disabled.",
           "spec_files": [
             "docs/architecture/PROFILE-DIMENSIONS.md",
             "docs/architecture/ARCHITECTURE-DECISIONS.md",
@@ -10394,20 +10394,20 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 25160,
-              "sha256": "37c10a041f23e36d21018a21df3ec8649050f54fccd53910588f042fad41e82a"
+              "bytes": 30579,
+              "sha256": "13a806a139a4d056f97f7bc5ca76ecce52b7e90721b5a68b76a25439fbe95ef7"
             },
             {
               "path": "crates/jocforge-domain/src/profile/mod.rs",
-              "bytes": 1342,
-              "sha256": "080d509309989c9e42b8c9d8ad9a4ee546ac98df525d119f2d56ad77f7013505"
+              "bytes": 1433,
+              "sha256": "54b737e91924fabc2d56b63fac6a7f848e047aca47d838a0cfc15fbd7cde639d"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 25160,
-              "sha256": "37c10a041f23e36d21018a21df3ec8649050f54fccd53910588f042fad41e82a"
+              "bytes": 30579,
+              "sha256": "13a806a139a4d056f97f7bc5ca76ecce52b7e90721b5a68b76a25439fbe95ef7"
             }
           ],
           "clock": {
@@ -10527,10 +10527,12 @@
               "Flat7x reconstruction index1 remains separate from unbound downmix controls.",
               "D0 block2 uses one whole EMDF skip field and rejects absent, fragmented, empty or over-511-byte containers.",
               "Any missing frame or mismatched supplied source-generation label returns no complete-pair validation value.",
-              "The plan type remains production_allowed=false and the existing selected 5.1 resolver is unchanged."
+              "The plan type remains production_allowed=false and the existing selected 5.1 resolver is unchanged.",
+              "CRC-valid frame extents concatenate in I0→D0 order to the 6,656-byte target AU sequence.",
+              "Frame extent and per-frame CRC mismatches reject byte-sequence composition."
             ],
             "expected_outputs_included": false,
-            "execution_status": "TARGET_PLAN_INPUT_ONLY_TESTS_PASSED"
+            "execution_status": "TARGET_PLAN_AND_BYTE_SEQUENCE_INPUT_ONLY_TESTS_PASSED"
           },
           "error_outcomes": [
             {
@@ -10560,14 +10562,29 @@
               "trigger": "The supplied D0 skip-field metadata does not meet block, field-count, fragmentation, presence or C<=511 constraints.",
               "programme_state_after": "No Flat7xAuPlanValidation value is returned.",
               "caller_action": "Reject the entire AU candidate before publication."
+            },
+            {
+              "error_code": "Flat7xAuByteSequenceError::{I0FrameExtentMismatch,D0FrameExtentMismatch}",
+              "category": "I0/D0 byte extent",
+              "trigger": "Either supplied byte slice length differs from its validated target frame extent.",
+              "programme_state_after": "No byte-sequence candidate is returned.",
+              "caller_action": "Reject before output-owner or publication staging."
+            },
+            {
+              "error_code": "Flat7xAuByteSequenceError::{I0FrameCrc,D0FrameCrc}",
+              "category": "per-frame CRC",
+              "trigger": "Either supplied frame has a nonzero E-AC-3 CRC residual.",
+              "programme_state_after": "No byte-sequence candidate is returned.",
+              "caller_action": "Reject the whole I0+D0 candidate."
             }
           ],
           "not_run": [
             "No production EncodingProfile/CLI selection, E-AC-3 frame writer, D0 BSI writer, audio algorithm, ADM role join, integrity receipt, F15 source/output proposal, or AU publication is connected.",
-            "No real Flat7x 1664 output, W04, listening or official-demo structure acceptance; separate preflight/Wash timeline/GO required before any encoder run."
+            "No real Flat7x 1664 output, W04, listening or official-demo structure acceptance; separate preflight/Wash timeline/GO required before any encoder run.",
+            "No substream syntax parsing, role/source-owner join, D0 audio/writer, F15 output-owner pair receipt, durable append, real output, W04, or listening acceptance."
           ],
-          "validation_boundary": "Architecture-only typed target plan and candidate validator. production_allowed=false; returned validation is not a writer capability, committed owner receipt, or output acceptance.",
-          "delivery_scope": "TYPED_FLAT7X_I0_D0_TARGET_PLAN_AND_FAIL_CLOSED_CANDIDATE_VALIDATION_ONLY"
+          "validation_boundary": "Architecture-only typed target plan and noncommitting I0→D0 byte-sequence candidate. Supplied frame extents and CRCs are checked; substream syntax, runtime identity, output-owner authority, and publication are not established. production_allowed=false.",
+          "delivery_scope": "TYPED_FLAT7X_I0_D0_PLAN_AND_NONCOMMITTING_BYTE_SEQUENCE_CANDIDATE_ONLY"
         }
       ]
     },
@@ -18671,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2078490,
-              "sha256": "211cb00cb443b391ea0141afe0133815bc349b487b0a95320498740c57c8ddfa"
+              "bytes": 2078621,
+              "sha256": "fa72f0285238ee78deb0a0a63802263e70fb3c694e515d6fd8285a19227b3aae"
             }
           ],
           "test_modules": [
@@ -22198,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2078490,
-              "sha256": "211cb00cb443b391ea0141afe0133815bc349b487b0a95320498740c57c8ddfa"
+              "bytes": 2078621,
+              "sha256": "fa72f0285238ee78deb0a0a63802263e70fb3c694e515d6fd8285a19227b3aae"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -44509,8 +44526,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/mod.rs",
-              "bytes": 1342,
-              "sha256": "080d509309989c9e42b8c9d8ad9a4ee546ac98df525d119f2d56ad77f7013505"
+              "bytes": 1433,
+              "sha256": "54b737e91924fabc2d56b63fac6a7f848e047aca47d838a0cfc15fbd7cde639d"
             },
             {
               "path": "crates/jocforge-domain/src/profile/production.rs",
@@ -45590,8 +45607,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/profile/mod.rs",
-              "bytes": 1342,
-              "sha256": "080d509309989c9e42b8c9d8ad9a4ee546ac98df525d119f2d56ad77f7013505"
+              "bytes": 1433,
+              "sha256": "54b737e91924fabc2d56b63fac6a7f848e047aca47d838a0cfc15fbd7cde639d"
             },
             {
               "path": "crates/jocforge-domain/src/joc/huffman/id14_header.rs",
@@ -45814,8 +45831,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/profile/mod.rs",
-              "bytes": 1342,
-              "sha256": "080d509309989c9e42b8c9d8ad9a4ee546ac98df525d119f2d56ad77f7013505"
+              "bytes": 1433,
+              "sha256": "54b737e91924fabc2d56b63fac6a7f848e047aca47d838a0cfc15fbd7cde639d"
             },
             {
               "path": "crates/jocforge-domain/src/joc/programme_state.rs",
@@ -55188,8 +55205,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2078490,
-              "sha256": "211cb00cb443b391ea0141afe0133815bc349b487b0a95320498740c57c8ddfa"
+              "bytes": 2078621,
+              "sha256": "fa72f0285238ee78deb0a0a63802263e70fb3c694e515d6fd8285a19227b3aae"
             }
           ],
           "test_inventory": [

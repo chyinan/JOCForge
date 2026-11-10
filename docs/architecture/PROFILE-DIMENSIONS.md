@@ -81,7 +81,7 @@ Status: `PROFILE_CONTRACT_APPROVED; PRODUCTION_AUDIO_NOT_READY`. This is a separ
 
 The approved AU plan requires one I0 and one D0 frame receipt from the same source generation, complete target metadata on D0 block 2, and an integrity receipt before F15 atomically publishes `[I0,D0]`. If any frame, role receipt, metadata bound, integrity receipt, or size check is missing, reject the whole AU; never publish I0 alone. `production_allowed=false`: GTC source-role projection, D0 audio algorithm, all-AU EMDF fit, and a new 7.1 output remain `UNBOUND/NOT_RUN`.
 
-The local `profile::Flat7xI0D0TargetPlan` models this handoff as an immutable value-only plan. `validate_flat7x_au_candidate` checks I0/D0 extents, equality of supplied source-generation labels, and one complete nonfragmented D0 block-2 EMDF container with `C<=511`; it returns no writer input or publication authority. The plan remains outside `EncodingProfile` resolution and retains `production_allowed=false`. Equality of candidate labels does not establish a runtime owner/generation join.
+The local `profile::Flat7xI0D0TargetPlan` models this handoff as an immutable value-only plan. `validate_flat7x_au_candidate` checks I0/D0 extents, equality of supplied source-generation labels, and one complete nonfragmented D0 block-2 EMDF container with `C<=511`. `compose_flat7x_au_byte_sequence` checks the two supplied extents and their E-AC-3 CRC residuals, then returns an in-memory I0→D0 byte sequence candidate. It does not parse substream syntax, prove runtime owner lineage, or provide publication authority. The plan remains outside `EncodingProfile` resolution and retains `production_allowed=false`.
 
 ### 输入行数扩展的边界
 
