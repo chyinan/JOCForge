@@ -8,6 +8,10 @@
 
 `RenderTarget` 只存在于独立 `ValidationProfile`。Production encode 不接收 `RenderTarget`，render target 的变化不得影响 production profile resolution。
 
+## Architecture-only 1664 target plan
+
+`profile::Flat7xI0D0TargetPlan::approved_contract()` exposes the approved I0=640/D0=1024 Flat7x AU contract as a value-only plan. `profile::validate_flat7x_au_candidate` fails closed unless both typed frame extents and the single D0 block-2 EMDF field satisfy the target contract and carry equal supplied generation labels. The result has no frame bytes, owner receipts, writer capability, or publication authority; it is not an `EncodingProfile` and cannot enter the production resolver. `production_allowed` remains false.
+
 ## Selected job XML values
 
 `frontend::job_configuration::SelectedJobConfiguration::temp_directory()` 只返回 XML 中可选的 `misc/temp_dir` 字段。`SelectedTempDirectoryConfiguration` 保留可选的 `clean_temp` 布尔值和 `path` 字符串；domain 不解析路径、不访问文件系统，也不执行清理。当前 CLI 会在 Meter、callbacks 和编码前拒绝任何已提供的 `temp_dir` 配置。

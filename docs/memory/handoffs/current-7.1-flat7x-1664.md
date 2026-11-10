@@ -51,8 +51,8 @@ F13 `MetadataOwnerError::CurrentEmdfValidation` now carries a non-payload typed 
 
 ## 1664 typed-target handoff
 
-Wash handoff file `ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF-V1/IMPLEMENTER-HANDOFF.md` was independently hash checked at `4c8d964b8a91b67c4158e0141ec8dcfbf91f3245e00a85138188bc5389f104b4`. It defines an architecture-only I0=640 kbps / D0=1024 kbps Flat7x AU plan, with `production_allowed=false`. The next local slice is a separate typed target plan and fail-closed whole-AU admission. Existing 5.1 production resolution stays separate; D0 writer ownership, ADM role join, D0 audio algorithm and all-AU EMDF fit remain `UNBOUND`.
+Wash handoff file `ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF-V1/IMPLEMENTER-HANDOFF.md` was independently hash checked at `4c8d964b8a91b67c4158e0141ec8dcfbf91f3245e00a85138188bc5389f104b4`. It defines an architecture-only I0=640 kbps / D0=1024 kbps Flat7x AU plan, with `production_allowed=false`. The local value-only `Flat7xI0D0TargetPlan` and `validate_flat7x_au_candidate` now encode the approved two-frame order, target extents, reconstruction metadata, single D0 block-2 EMDF field cap, and whole-AU rejection policy. Candidate generation values are compared as caller-supplied labels; this does not create runtime source lineage. Seven focused domain tests pass, including the unchanged 5.1 resolver check. No frame bytes, writer, production admission, or publication capability is present. D0 writer ownership, ADM role join, D0 audio algorithm and all-AU EMDF fit remain `UNBOUND`.
 
 ## 下一步
 
-- 下一动作：实现并验证 architecture-only I0/D0 target plan 与 fail-closed AU admission；保持生产路径关闭。任何编码运行需要单独的 input/output/temp preflight、Wash timeline registration 和 GO。
+- 后续实现须等待开放 owner、source-role、D0 audio/writer 和 all-AU fit gates 的批准证据；保持 1664 target 的生产路径关闭。任何编码运行需要单独的 input/output/temp preflight、Wash timeline registration 和 GO。

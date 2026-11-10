@@ -81,6 +81,8 @@ Status: `PROFILE_CONTRACT_APPROVED; PRODUCTION_AUDIO_NOT_READY`. This is a separ
 
 The approved AU plan requires one I0 and one D0 frame receipt from the same source generation, complete target metadata on D0 block 2, and an integrity receipt before F15 atomically publishes `[I0,D0]`. If any frame, role receipt, metadata bound, integrity receipt, or size check is missing, reject the whole AU; never publish I0 alone. `production_allowed=false`: GTC source-role projection, D0 audio algorithm, all-AU EMDF fit, and a new 7.1 output remain `UNBOUND/NOT_RUN`.
 
+The local `profile::Flat7xI0D0TargetPlan` models this handoff as an immutable value-only plan. `validate_flat7x_au_candidate` checks I0/D0 extents, equality of supplied source-generation labels, and one complete nonfragmented D0 block-2 EMDF container with `C<=511`; it returns no writer input or publication authority. The plan remains outside `EncodingProfile` resolution and retains `production_allowed=false`. Equality of candidate labels does not establish a runtime owner/generation join.
+
 ### 输入行数扩展的边界
 
 以上 ADM 行数范围是输入/profile 准入维度，不重写 `APPROVAL.md` 中记录的 38-channel 历史基线，也不表示 end-to-end encoder 已接受 N=10..256。CLI 的选定路径使用动态 `NormalControlAdmInputSnapshot`、PCM cursor 与物理行映射；固定的 `NormalControlPreparedSnapshot`、detached primary projection 与 exact-extent map API 仍分别保留 38-row 约束，不应与 CLI 动态路径混称。

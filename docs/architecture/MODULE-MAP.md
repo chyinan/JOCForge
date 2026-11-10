@@ -15,6 +15,7 @@
 | domain/joc/oamd/reader_target | F05R56 marker/history、Type11 wire roundtrip、reader56 和 callback-local target receipt proposal | selected producer locally verified；不得本地 commit，不包含 F05L queue/body、F05JC/J05 或 parent transaction |
 | domain/joc/coefficient_payload、coefficient_fitting、dispatch_state、programme_state | F05JC/F05JL fit、retry、sequence、ID14 proposal 与 selected JOC owner root | J05 projection feeds temporal/geometry/180-cell fit and deterministic retry. Exact `JOCSEL01` canonical bytes bind only true JOC-owned persistent state; cold and nonzero structural vectors pass. Sequence advances only after a complete body and uses the explicit same-callback F04D index. Parent install and real-audio validation remain open. |
 | domain/meter | 计量规则和 immutable programme measurement receipt | Narrow meter primitives plus the exact receipt value schema and case-sensitive public gating meanings exist. ID1 nine-field projection passes the approved half-dB/gating cases; the whole meter prepass/finalize producer is not connected and fixture receipts cannot grant READY. |
+| domain/profile/flat7x_access_unit_target | 1664 kbps Flat7x I0/D0 value-only target plan and fail-closed candidate check | Models the sanitized I0=640/D0=1024 pair and D0 block-2 single-field EMDF cap; remains outside production profile resolution with `production_allowed=false`. |
 | domain/transform | 变换领域规则 | 空壳 |
 | domain/codec/bitio | bounded MSB bit I/O 边界 | 空壳；无 writer |
 | domain/codec/frame_syntax | selected E-AC-3 schema 边界 | 空壳；无字段实现 |

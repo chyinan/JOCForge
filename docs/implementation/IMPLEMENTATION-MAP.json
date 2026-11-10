@@ -10370,6 +10370,204 @@
           ],
           "validation_boundary": "Additive approved 7.1 flat7x/1664 profile contract only. It preserves the existing 5.1 production row, separates I0 and D0 carrier/rate roles, splits downmix controls from reconstruction profile, and requires an ordered same-generation I0+D0 AU with fail-closed atomic publication. Production remains disabled: GTC source-role projection, native D0 audio algorithm, and all-AU EMDF fit are UNBOUND/NOT_RUN.",
           "delivery_scope": "APPROVED_TARGET_PROFILE_CONTRACT_ONLY_PRODUCTION_AUDIO_NOT_READY"
+        },
+        {
+          "slice_id": "flat7x-i0-d0-typed-target-plan",
+          "mapping_status": "MATERIALIZED_ARCHITECTURE_ONLY_TYPED_PLAN__PRODUCTION_FALSE",
+          "implementation_status": "LOCALLY_VERIFIED_TYPED_TARGET_PLAN_AND_FAIL_CLOSED_AU_VALIDATOR__NO_PRODUCTION_PATH",
+          "implementation_requirement": true,
+          "owner": "UNBOUND",
+          "scope": "Value-only Wash-approved I0=640 kbps plus D0=1024 kbps Flat7x AU plan. It preserves the existing 5.1 production row and represents distinct independent I0 and dependent D0 frame contracts, reconstruction layout, and the single D0 block-2 EMDF skip-field cap. The pure validator requires both frames, equal supplied generation labels, exact frame extents, one nonfragmented D0 block-2 EMDF field and a complete container length from 1 through 511 bytes; it returns a noncommitting value and cannot write/publish frames. No conversion into EncodingProfile or production output path exists.",
+          "spec_files": [
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/ARCHITECTURE-DECISIONS.md",
+            "docs/architecture/PUBLIC-API.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF.md"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
+            "crates/jocforge-domain/src/profile/mod.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
+              "bytes": 25160,
+              "sha256": "37c10a041f23e36d21018a21df3ec8649050f54fccd53910588f042fad41e82a"
+            },
+            {
+              "path": "crates/jocforge-domain/src/profile/mod.rs",
+              "bytes": 1342,
+              "sha256": "080d509309989c9e42b8c9d8ad9a4ee546ac98df525d119f2d56ad77f7013505"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
+              "bytes": 25160,
+              "sha256": "37c10a041f23e36d21018a21df3ec8649050f54fccd53910588f042fad41e82a"
+            }
+          ],
+          "clock": {
+            "domains": [
+              "Flat7xSourceGeneration"
+            ],
+            "covered_clauses": [
+              "The target contract requires I0, D0 and D0 EMDF metadata to share a source generation; local validation compares supplied generation labels only and creates no runtime owner receipt."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_ARCHITECTURE_ONLY_FLAT7X_I0_D0_HANDOFF",
+            "package_id": "ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF-V1",
+            "supplement_manifest_sha256": "530867a0e15a82dcb461d540e2d07ef4e53de5fdd66131109b5c0110a7d3b884",
+            "supplement_seal_sha256": "7ca3956885e570fd5d51aadeea1b74b94e522380c487fd13ee86cdc71e5dcf5a",
+            "handoff_sha256": "4c8d964b8a91b67c4158e0141ec8dcfbf91f3245e00a85138188bc5389f104b4",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF.md"
+            ],
+            "production_allowed": false,
+            "implementation_ready_for_audio": false,
+            "target": {
+              "input_channel_counts": [
+                36,
+                38
+              ],
+              "sample_rate_hz": 48000,
+              "audio_blocks_per_frame": 6,
+              "samples_per_frame": 1536,
+              "i0": {
+                "role": "independent",
+                "substream_id": 0,
+                "acmod": 7,
+                "lfeon": true,
+                "coded_channels": [
+                  "L",
+                  "C",
+                  "R",
+                  "Ls",
+                  "Rs",
+                  "LFE"
+                ],
+                "rate_kbps": 640,
+                "frame_bytes": 2560
+              },
+              "d0": {
+                "role": "dependent",
+                "substream_id": 0,
+                "acmod": 5,
+                "lfeon": false,
+                "chanmap": 6656,
+                "chanmap_hex": "0x1A00",
+                "chanmap_msb_indexed_bits": [
+                  3,
+                  4,
+                  6
+                ],
+                "coded_channels": [
+                  "Ls",
+                  "Rs",
+                  "Lrs",
+                  "Rrs"
+                ],
+                "rate_kbps": 1024,
+                "frame_bytes": 4096
+              },
+              "au": {
+                "order": [
+                  "I0",
+                  "D0"
+                ],
+                "aggregate_rate_kbps": 1664,
+                "aggregate_bytes": 6656,
+                "same_source_generation_required": true,
+                "atomic_pair_publication_required": true,
+                "partial_i0_publication_allowed": false
+              },
+              "reconstruction": {
+                "layout": "Flat7x",
+                "joc_dmx_config_idx": 1,
+                "carriers": [
+                  "L",
+                  "R",
+                  "C",
+                  "Ls",
+                  "Rs",
+                  "Lrs",
+                  "Rrs"
+                ],
+                "coded_objects": 15,
+                "complexity_index_type_a": 16
+              },
+              "d0_emdf_skipfld": {
+                "zero_based_audio_block": 2,
+                "field_count": 1,
+                "maximum_complete_container_bytes": 511,
+                "fragmentation_allowed": false,
+                "overflow_policy": "reject whole AU before publish"
+              },
+              "unbound_gates": [
+                "I0 exact BSID",
+                "ADM source-row to D0 role join",
+                "downmix mode and phase",
+                "runtime source-generation owner join",
+                "native D0 audio algorithm",
+                "native D0 writer owner",
+                "all-AU EMDF fit"
+              ]
+            },
+            "validation_boundary": "Value-only target plan and candidate gate; no production resolver, frame writer, native owner, source-role join, D0 audio algorithm or durable AU output is enabled."
+          },
+          "vectors": {
+            "kind": "HANDOFF_CONTRACT_VALUE_ASSERTIONS",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "I0 and D0 retain distinct roles/rates/frame extents and order.",
+              "Flat7x reconstruction index1 remains separate from unbound downmix controls.",
+              "D0 block2 uses one whole EMDF skip field and rejects absent, fragmented, empty or over-511-byte containers.",
+              "Any missing frame or mismatched supplied source-generation label returns no complete-pair validation value.",
+              "The plan type remains production_allowed=false and the existing selected 5.1 resolver is unchanged."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "TARGET_PLAN_INPUT_ONLY_TESTS_PASSED"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "Flat7xAuPlanValidationError::{I0FrameMissing,D0FrameMissing,D0EmdfFieldMissing}",
+              "category": "complete AU pair shape",
+              "trigger": "Either frame or the D0 skip-field metadata is absent.",
+              "programme_state_after": "No Flat7xAuPlanValidation value is returned.",
+              "caller_action": "Reject before any writer or publication stage."
+            },
+            {
+              "error_code": "Flat7xAuPlanValidationError::SourceGenerationMismatch",
+              "category": "same-target-plan candidate binding",
+              "trigger": "Supplied I0, D0 or EMDF generation labels differ.",
+              "programme_state_after": "No Flat7xAuPlanValidation value is returned.",
+              "caller_action": "Reject the complete pair; no partial I0 result is returned."
+            },
+            {
+              "error_code": "Flat7xAuPlanValidationError::{I0FrameExtentMismatch,D0FrameExtentMismatch}",
+              "category": "target frame extent",
+              "trigger": "A supplied frame byte extent differs from the contract frame size.",
+              "programme_state_after": "No Flat7xAuPlanValidation value is returned.",
+              "caller_action": "Reject before any writer or publication stage."
+            },
+            {
+              "error_code": "Flat7xAuPlanValidationError::{D0EmdfBlockMismatch,D0EmdfFieldCountMismatch,D0EmdfFragmented,D0EmdfContainerMissing,D0EmdfContainerEmpty,D0EmdfContainerTooLarge}",
+              "category": "D0 block-2 single-field EMDF target",
+              "trigger": "The supplied D0 skip-field metadata does not meet block, field-count, fragmentation, presence or C<=511 constraints.",
+              "programme_state_after": "No Flat7xAuPlanValidation value is returned.",
+              "caller_action": "Reject the entire AU candidate before publication."
+            }
+          ],
+          "not_run": [
+            "No production EncodingProfile/CLI selection, E-AC-3 frame writer, D0 BSI writer, audio algorithm, ADM role join, integrity receipt, F15 source/output proposal, or AU publication is connected.",
+            "No real Flat7x 1664 output, W04, listening or official-demo structure acceptance; separate preflight/Wash timeline/GO required before any encoder run."
+          ],
+          "validation_boundary": "Architecture-only typed target plan and candidate validator. production_allowed=false; returned validation is not a writer capability, committed owner receipt, or output acceptance.",
+          "delivery_scope": "TYPED_FLAT7X_I0_D0_TARGET_PLAN_AND_FAIL_CLOSED_CANDIDATE_VALIDATION_ONLY"
         }
       ]
     },
@@ -18473,8 +18671,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2077670,
-              "sha256": "85d633675e8a789e72825d24dc45fe3120e77dfd40a3e687408355b12546a55c"
+              "bytes": 2078490,
+              "sha256": "211cb00cb443b391ea0141afe0133815bc349b487b0a95320498740c57c8ddfa"
             }
           ],
           "test_modules": [
@@ -22000,8 +22198,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2077670,
-              "sha256": "85d633675e8a789e72825d24dc45fe3120e77dfd40a3e687408355b12546a55c"
+              "bytes": 2078490,
+              "sha256": "211cb00cb443b391ea0141afe0133815bc349b487b0a95320498740c57c8ddfa"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -44311,8 +44509,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/mod.rs",
-              "bytes": 819,
-              "sha256": "1789266c17d5c3e4e783f8f71cdfbb99bffa8787f17739ee969dad68a11ef132"
+              "bytes": 1342,
+              "sha256": "080d509309989c9e42b8c9d8ad9a4ee546ac98df525d119f2d56ad77f7013505"
             },
             {
               "path": "crates/jocforge-domain/src/profile/production.rs",
@@ -45392,8 +45590,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/profile/mod.rs",
-              "bytes": 819,
-              "sha256": "1789266c17d5c3e4e783f8f71cdfbb99bffa8787f17739ee969dad68a11ef132"
+              "bytes": 1342,
+              "sha256": "080d509309989c9e42b8c9d8ad9a4ee546ac98df525d119f2d56ad77f7013505"
             },
             {
               "path": "crates/jocforge-domain/src/joc/huffman/id14_header.rs",
@@ -45616,8 +45814,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/profile/mod.rs",
-              "bytes": 819,
-              "sha256": "1789266c17d5c3e4e783f8f71cdfbb99bffa8787f17739ee969dad68a11ef132"
+              "bytes": 1342,
+              "sha256": "080d509309989c9e42b8c9d8ad9a4ee546ac98df525d119f2d56ad77f7013505"
             },
             {
               "path": "crates/jocforge-domain/src/joc/programme_state.rs",
@@ -54990,8 +55188,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2077670,
-              "sha256": "85d633675e8a789e72825d24dc45fe3120e77dfd40a3e687408355b12546a55c"
+              "bytes": 2078490,
+              "sha256": "211cb00cb443b391ea0141afe0133815bc349b487b0a95320498740c57c8ddfa"
             }
           ],
           "test_inventory": [

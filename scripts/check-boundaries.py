@@ -12520,7 +12520,7 @@ def check_partial_root_and_new_slice_mappings(root, d):
 
         "F03F": ["current-features-approved-math-asset-pair", "main-current-features-source-callback-candidate"],
 
-        "F01E": ["same-attempt-normal-sampler-source-geometry-stage", "selected-adm-riff-to-prepared-job-input", "prepared-input-to-f01e-snapshot-binding", "dynamic-adm-input-row-admission", "process-frame-channel-count-candidates"],
+        "F01E": ["same-attempt-normal-sampler-source-geometry-stage", "selected-adm-riff-to-prepared-job-input", "prepared-input-to-f01e-snapshot-binding", "dynamic-adm-input-row-admission", "process-frame-channel-count-candidates", "flat7x-i0-d0-typed-target-plan"],
 
         "F05JL": ["authorized-main-g2-joc-id14-candidate"],
 
@@ -12615,6 +12615,10 @@ def check_partial_root_and_new_slice_mappings(root, d):
                     ck(local.is_file() and local.stat().st_size == record["bytes"] and hashlib.sha256(local.read_bytes()).hexdigest() == record["sha256"], "new direct slice file inventory " + record["path"])
 
 
+
+    flat7x_i0_d0_plan = next(item for item in entries["F01E"]["direct_slices"] if item["slice_id"] == "flat7x-i0-d0-typed-target-plan")
+    flat7x_open_gates = set(flat7x_i0_d0_plan.get("parameters", {}).get("target", {}).get("unbound_gates", []))
+    ck(flat7x_i0_d0_plan.get("implementation_status") == "LOCALLY_VERIFIED_TYPED_TARGET_PLAN_AND_FAIL_CLOSED_AU_VALIDATOR__NO_PRODUCTION_PATH" and flat7x_i0_d0_plan.get("parameters", {}).get("production_allowed") is False and flat7x_i0_d0_plan.get("parameters", {}).get("implementation_ready_for_audio") is False and {"ADM source-row to D0 role join", "native D0 audio algorithm", "native D0 writer owner", "all-AU EMDF fit"}.issubset(flat7x_open_gates), "Flat7x I0/D0 typed plan stays architecture-only with its audio/role gates open")
 
     ck(len(entries["F06OF"].get("direct_slices", [])) >= 38 and any(item.get("slice_id") == "adm-physical-row-u16-layout-map" and item.get("implementation_requirement") is False and item.get("parameters", {}).get("supplement_manifest_sha256") == "9c1e53e93a34f9b66172bc217c7cbc0aef54a9208c32db3cc588537b8737ee97" for item in entries["F06OF"]["direct_slices"]) and any(item.get("slice_id") == "prepared-adm-physical-pcm-row-cursor-binding" for item in entries["F06OF"]["direct_slices"]) and any(item.get("slice_id") == "fresh-zero-meter-drain-frontend-stage" for item in entries["F06OF"]["direct_slices"]), "F06OF keeps its mapped direct slices with separate physical-row binding and fresh-zero drain stages")
 

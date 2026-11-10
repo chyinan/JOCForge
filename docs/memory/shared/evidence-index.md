@@ -3,7 +3,7 @@ status: current
 topic: washed-evidence-index
 spec: JOCForge
 confidence: package-hash-verified
-last_updated: 2026-11-10
+last_updated: 2026-11-11
 tags:
   - evidence
   - Wash
@@ -24,3 +24,4 @@ tags:
 | `JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1` | `9f500f0785c569d67b846fa54f121b4e42c6b5b179ace98c4bdf19463c906109` | `a5ea37646195925f69cc2d53792b474a882b536cac3b26699ff4aa8679b16b3f` | Official I0 exact BSID `NOT_CAPTURED`；BSID16/strmtyp0 prefix equivalence `UNBOUND`；no prefix change authorized；production disabled | `outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1` |
 | `JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1` | `509a4d61dbc0b20a0044a05043a99e83a7b60224aefd3df144cb394d1b30048b` | `bcce271fa5cfc7d725e4833337111c0a882a0dc09a9ebba3dfe2aeac7749b4dd` | Partial profile/header implementation authorized；`joc_dmx_config_idx=1`；full stream and official-demo acceptance `NOT_RUN` | `outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1` |
 | `JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1` | `a212684b565f93ca23ce5dbab458d6ee74cfb8e231b0ce7210db1da4e098aefa` | `abb4f166ed720bd0c0a90e393e0b74216fe40b72ee77d1d813446371a82cbe6b` | Optional `--joc-layout flat7x` routes immutable profile configuration to the JOC header；real output waits for Wash timeline continue receipt | `outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1` |
+| `ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF-V1` | `530867a0e15a82dcb461d540e2d07ef4e53de5fdd66131109b5c0110a7d3b884` | `7ca3956885e570fd5d51aadeea1b74b94e522380c487fd13ee86cdc71e5dcf5a` | Hash-checked target handoff；value-only I0/D0 plan and candidate validator are locally materialized；`production_allowed=false`；runtime owner join, D0 audio/writer and all-AU fit remain open | `outputs/IMPLEMENTER_SUPPLEMENTS/ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF.md` |

@@ -48,6 +48,8 @@ The legacy `SelectedMode0Phase1Index3` value combines distinct meanings. For the
 
 The target access unit contains ordered I0 then D0 receipts from the same source generation. F12 supplies separate I0/D0 frames; F13 binds one complete EMDF container to D0 audio-block skipfld block 2; an integrity receipt is required; F15 publishes the whole AU atomically. A missing frame/role/metadata/integrity receipt or a container above 511 bytes rejects the entire AU; I0-only publication is forbidden. GTC source-role projection, native D0 audio algorithm, and all-AU EMDF fit remain `UNBOUND/NOT_RUN`.
 
+The local `Flat7xI0D0TargetPlan` and its candidate validator model this contract as values only. They are not consumed by `resolve_selected_profile`, create no frame bytes or owner receipts, and retain the target's `production_allowed=false` gate.
+
 ## AD-011 Flat7x reconstruction layout as immutable profile configuration
 
 The selected 1024 kbps / 5.1 core path gains the optional CLI selector `--joc-layout flat7x` and the separate `JocReconstructionLayout::Flat7x` value, resolved to ETSI `joc_dmx_config_idx=1` in the 3-bit JOC header field. Omitting the selector preserves the current 5.1 profile. `JocDownmixProfile::SelectedMode0Phase1Index3` remains the independent mode0 / phase1 / internal index3 control. The resolved profile passes both values to the existing JOC-header writer boundary; header order remains the layout index, 6-bit object-count field, then 3-bit extension index.

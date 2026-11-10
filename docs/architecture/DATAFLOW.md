@@ -36,6 +36,8 @@ flowchart LR
 
 `JocDownmixProfile::SelectedMode0Phase1Index3` remains separate from `JocReconstructionLayout::Flat7x`. The coefficient input continues to use its current 5.1 downmix control, while the resolved layout selects the header's 3-bit index. The selected 5.1 profile follows the legacy writer path. The layout is an immutable profile value, so this slice adds no GTC mutable owner or commit stage. Complete-file output and official-demo structure acceptance remain `NOT_RUN`.
 
+The architecture-only 1664 kbps I0/D0 target plan is not connected to this production flow. Its validator checks supplied frame extents, source-generation labels and D0 skip-field metadata only; it creates no frame bytes, integrity receipt or AU publication.
+
 已物化的 PostWindow fanout capability 位于 F03W `W3072` installed48 输出之后。future renderer 创建一个线性 proposal；`fanout(self)` 生成 CurrentFeatures 和 spatial-audio 两个非 Clone view，并共享同一 immutable `Arc` payload。CurrentFeatures 接收显式 phase。renderer、F04 assembler 和 parent transaction 仍 deferred。
 
 F04C 的 E2 component stage 和 E3 Direct-LFE ring stage 分别消费同代受限输入，并返回不可提交的 proposal。E3 在 `g>=2` 提供 provenance 为 `g-2` 的 Type10 row0。rows1..15 来自当前 callback 的 E2 component15。E4 将两个 proposal 组装为只读的 16×1536 packet。
