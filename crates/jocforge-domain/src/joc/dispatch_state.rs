@@ -9,6 +9,7 @@ use crate::{
         },
         id14_body::Id14BodyProposal,
     },
+    profile::ResolvedEncodingProfile,
     spatial::{
         source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
         spatial_audio_state::SelectedJocQmfProjection,
@@ -284,6 +285,26 @@ pub fn stage_joc_payload(
     input: &JocPayloadInput,
     retry_provider: &RepresentationRetryProvider,
 ) -> Result<JocPayloadProposal, JocDispatchError> {
+    stage_joc_payload_inner(before, fit, input, retry_provider, None)
+}
+
+pub fn stage_joc_payload_for_profile(
+    before: &JocDispatchState,
+    fit: &CoefficientFitProposal,
+    input: &JocPayloadInput,
+    retry_provider: &RepresentationRetryProvider,
+    profile: ResolvedEncodingProfile,
+) -> Result<JocPayloadProposal, JocDispatchError> {
+    stage_joc_payload_inner(before, fit, input, retry_provider, Some(profile))
+}
+
+fn stage_joc_payload_inner(
+    before: &JocDispatchState,
+    fit: &CoefficientFitProposal,
+    input: &JocPayloadInput,
+    retry_provider: &RepresentationRetryProvider,
+    profile: Option<ResolvedEncodingProfile>,
+) -> Result<JocPayloadProposal, JocDispatchError> {
     if before.retired {
         return Err(JocDispatchError::Retired);
     }
@@ -308,14 +329,22 @@ pub fn stage_joc_payload(
         }
         _ => return Err(JocDispatchError::Sequence),
     };
-    let representation = fit
-        .write_payload_with_retry(
+    let representation = match profile {
+        Some(profile) => fit.write_payload_with_resolved_profile(
+            profile,
             retry_provider,
             input.clip_gain_index,
             sequence_count,
             SELECTED_CAPACITY_BYTES,
-        )
-        .map_err(JocDispatchError::Retry)?;
+        ),
+        None => fit.write_payload_with_retry(
+            retry_provider,
+            input.clip_gain_index,
+            sequence_count,
+            SELECTED_CAPACITY_BYTES,
+        ),
+    }
+    .map_err(JocDispatchError::Retry)?;
     let mut after = before.clone();
     after.next_dispatch = JocDispatchIndex::new(
         input

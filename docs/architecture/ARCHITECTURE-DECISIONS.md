@@ -50,7 +50,7 @@ The target access unit contains ordered I0 then D0 receipts from the same source
 
 ## AD-011 Flat7x reconstruction layout as immutable profile configuration
 
-The selected 1024 kbps / 5.1 core path gains the separate `JocReconstructionLayout::Flat7x` value, resolved to ETSI `joc_dmx_config_idx=1` in the 3-bit JOC header field. `JocDownmixProfile::SelectedMode0Phase1Index3` remains the independent mode0 / phase1 / internal index3 control. The resolved profile passes both values to the existing JOC-header writer boundary; header order remains the layout index, 6-bit object-count field, then 3-bit extension index.
+The selected 1024 kbps / 5.1 core path gains the optional CLI selector `--joc-layout flat7x` and the separate `JocReconstructionLayout::Flat7x` value, resolved to ETSI `joc_dmx_config_idx=1` in the 3-bit JOC header field. Omitting the selector preserves the current 5.1 profile. `JocDownmixProfile::SelectedMode0Phase1Index3` remains the independent mode0 / phase1 / internal index3 control. The resolved profile passes both values to the existing JOC-header writer boundary; header order remains the layout index, 6-bit object-count field, then 3-bit extension index.
 
 The Flat7x layout is immutable per-attempt profile configuration projected through the existing GTC/profile-resolution boundary. It adds no mutable owner or commit stage. The existing 5.1 profile row and its audio-generation behavior stay stable. This decision covers profile resolution and this header field; complete Flat7x stream structure and official-demo acceptance remain `NOT_RUN`.
 

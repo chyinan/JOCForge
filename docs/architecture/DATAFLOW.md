@@ -24,7 +24,8 @@ encode 不读取路径、不启动进程、不打开文件。其余 domain 模�
 
 ```mermaid
 flowchart LR
-  P[EncodingProfile: 1024 kbps / 5.1 core / Flat7x] --> R[resolve_selected_profile]
+  CLI[--joc-layout flat7x] --> P[EncodingProfile: 1024 kbps / 5.1 core / Flat7x]
+  P --> R[resolve_selected_profile]
   R --> V[ResolvedEncodingProfile]
   C[CoefficientPayloadInput: downmix_index 3] --> A[Existing 5.1 coefficient path]
   V --> H[profile-aware JOC header writer]

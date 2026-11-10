@@ -22,4 +22,5 @@ tags:
 - 较早的 partial transaction package 只观察到不同的 static writer boundaries，未确认它们属于 I0/D0，也未证明 AU 顺序、generation 或 atomic commit。证据：`DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1`。
 - I0 syntax identity 尚未闭合：官方结构摘要只标注 `legacy_independent`，exact BSID 为 `NOT_CAPTURED`；隔离仓库当前 selected prefix 写 E-AC-3 BSID 16/`strmtyp=0`，与官方 I0 的等价性为 `UNBOUND`。OpenJOC parser capability 只描述 validator/parser 能力，不证明官方输出格式或 encoder 行为；此 gap notice 不授权修改 prefix。证据：`JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1`。
 - Wash partial package 批准 1024 kbps / 5.1 core 上的 Flat7x reconstruction layout：`JocDownmixProfile` mode0/phase1/internal index3 保持独立，Flat7x 通过 3-bit `joc_dmx_config_idx=1` 表示；profile configuration immutable，不增加 mutable owner。证据：`JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1`。
+- Wash CLI-selection addendum 批准可选 `--joc-layout flat7x`，省略时保留既有 1024 kbps / 5.1 profile；Flat7x 的 immutable layout 经 profile resolution 到现有 JOC-header writer。证据：`JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1`。
 - Old main：reference-only，不作为实现来源。

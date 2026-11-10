@@ -1,5 +1,9 @@
 // pattern: Functional Core
 use jocforge_domain::{
+    joc::coefficient_payload::{
+        CoefficientPayloadInput, CoefficientPayloadObject, write_selected_id14_coefficient_payload,
+        write_selected_id14_coefficient_payload_for_profile,
+    },
     joc::huffman::{
         HuffmanBitCount, Id14HeaderInput, Id14ObjectDescriptor, Id14Presence, Id14WriterReturnCode,
         Id14WriterState, write_id14_header, write_id14_header_for_profile,
@@ -174,6 +178,45 @@ fn flat7x_profile_writes_index_one_before_object_and_extension_fields() {
     assert_eq!(input.downmix_index, 3);
     assert_eq!(input.object_count, 3);
     assert_eq!(input.extension_config, 0);
+}
+
+#[test]
+fn profile_aware_payload_writer_keeps_the_coefficient_control_and_wire_layout_separate() {
+    let input = CoefficientPayloadInput {
+        downmix_index: 3,
+        extension_config: 0,
+        clip_gain_index: 0,
+        sequence_count: 1,
+        time_slot_limit: 24,
+        capacity_bytes: 256,
+        objects: vec![CoefficientPayloadObject {
+            present: false,
+            band_enum: 0,
+            mode: 0,
+            points: Vec::new(),
+            offsets: None,
+        }],
+    };
+
+    let selected_five_point_one = write_selected_id14_coefficient_payload(&input).unwrap();
+    let flat7x =
+        write_selected_id14_coefficient_payload_for_profile(&input, resolved_flat7x_profile())
+            .unwrap();
+
+    assert_eq!(input.downmix_index, 3);
+    assert_eq!(
+        selected_five_point_one.writer_return_code(),
+        Some(Id14WriterReturnCode::Success)
+    );
+    assert_eq!(
+        flat7x.writer_return_code(),
+        Some(Id14WriterReturnCode::Success)
+    );
+    assert_eq!(
+        first_bits(selected_five_point_one.payload().unwrap(), 3),
+        "011"
+    );
+    assert_eq!(first_bits(flat7x.payload().unwrap(), 3), "001");
 }
 
 #[test]

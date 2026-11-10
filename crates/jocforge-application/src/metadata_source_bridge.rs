@@ -11,10 +11,11 @@ use jocforge_domain::{
         fit_score::FitScoreProvider,
         programme_state::{
             SelectedJocAfterProposal, SelectedJocStateError,
-            stage_selected_joc_source_with_transaction,
+            stage_selected_joc_source_with_transaction_for_profile,
         },
     },
     meter::measurement_dependents::MeasurementDependentOwnerInputs,
+    profile::ResolvedEncodingProfile,
     spatial::{QmfReceiverFunctionalProvider, SpatialAudioCallbackOutcome},
     timeline::{
         AdmSampleCount, ClockError, PublicationDisposition, programme_counts,
@@ -107,6 +108,7 @@ pub enum MetadataSourceBridgeError {
 /// Typed providers and owner before-state for one source-scoped JOC/F13 body proposal.
 pub struct MainMetadataBodiesInput<'a> {
     pub prepared: &'a PreparedJobInput,
+    pub joc_profile: ResolvedEncodingProfile,
     pub spatial_callback: &'a MainSpatialCallbackCandidate,
     pub joc_before: &'a SelectedJocState,
     pub source_transaction_id: CallbackTransactionId,
@@ -237,6 +239,7 @@ pub fn prepare_main_metadata_bodies_for_callback(
 ) -> Result<MainMetadataBodiesCandidate, MetadataSourceBridgeError> {
     let MainMetadataBodiesInput {
         prepared,
+        joc_profile,
         spatial_callback,
         joc_before,
         source_transaction_id,
@@ -261,13 +264,14 @@ pub fn prepare_main_metadata_bodies_for_callback(
         .spatial_control_after_proposal()
         .reader_target_receipt()
         .ok_or(MetadataSourceBridgeError::ReaderTargetReceiptMissing)?;
-    let joc_after = stage_selected_joc_source_with_transaction(
+    let joc_after = stage_selected_joc_source_with_transaction_for_profile(
         joc_before,
         projection,
         source_transaction_id.clone(),
         qmf_functional,
         fit_score,
         retry,
+        joc_profile,
     )
     .map_err(MetadataSourceBridgeError::Joc)?;
     let producer_provenance = joc_after.id14_body().provenance();

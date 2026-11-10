@@ -9,7 +9,10 @@ use crate::{
             stage_coefficient_fit_from_qmf,
         },
         coefficient_representation::{RepresentationRetryError, RepresentationRetryProvider},
-        dispatch_state::{JocDispatchError, JocDispatchState, JocPayloadInput, stage_joc_payload},
+        dispatch_state::{
+            JocDispatchError, JocDispatchState, JocPayloadInput, stage_joc_payload,
+            stage_joc_payload_for_profile,
+        },
         emdf::metadata_bodies::{
             MetadataBodiesError, MetadataBodiesProposal, assemble_metadata_bodies,
         },
@@ -17,6 +20,7 @@ use crate::{
         id14_body::Id14BodyProposal,
         oamd::reader_target::ReaderTargetUpdateReceipt,
     },
+    profile::ResolvedEncodingProfile,
     spatial::{QmfReceiverFunctionalProvider, spatial_audio_state::SelectedJocQmfProjection},
     transaction::CallbackTransactionId,
 };
@@ -134,6 +138,7 @@ pub fn stage_joc_source(
         score_provider,
         retry_provider,
         None,
+        None,
     )
 }
 
@@ -159,6 +164,31 @@ pub fn stage_joc_source_with_transaction(
         score_provider,
         retry_provider,
         Some(producer_transaction_id),
+        None,
+    )
+}
+
+/// Parent-bound profile-aware entry that carries the immutable layout selection through the
+/// existing JOC header writer for one source proposal.
+pub fn stage_joc_source_with_transaction_for_profile(
+    fit_before: &CoefficientFitState,
+    dispatch_before: &JocDispatchState,
+    projection: &SelectedJocQmfProjection,
+    producer_transaction_id: CallbackTransactionId,
+    qmf_provider: &QmfReceiverFunctionalProvider,
+    score_provider: &FitScoreProvider,
+    retry_provider: &RepresentationRetryProvider,
+    profile: ResolvedEncodingProfile,
+) -> Result<JocSourceProposal, JocSourceStageError> {
+    stage_joc_source_inner(
+        fit_before,
+        dispatch_before,
+        projection,
+        qmf_provider,
+        score_provider,
+        retry_provider,
+        Some(producer_transaction_id),
+        Some(profile),
     )
 }
 
@@ -170,6 +200,7 @@ fn stage_joc_source_inner(
     score_provider: &FitScoreProvider,
     retry_provider: &RepresentationRetryProvider,
     producer_transaction_id: Option<CallbackTransactionId>,
+    profile: Option<ResolvedEncodingProfile>,
 ) -> Result<JocSourceProposal, JocSourceStageError> {
     let fit = stage_coefficient_fit_from_qmf(fit_before, projection, qmf_provider, score_provider)
         .map_err(JocSourceStageError::Fit)?;
@@ -180,7 +211,13 @@ fn stage_joc_source_inner(
         None => JocPayloadInput::from_projection(projection),
     }
     .map_err(JocSourceStageError::Payload)?;
-    assemble_staged_source(dispatch_before, fit, &payload_input, retry_provider)
+    assemble_staged_source(
+        dispatch_before,
+        fit,
+        &payload_input,
+        retry_provider,
+        profile,
+    )
 }
 
 pub(crate) fn assemble_staged_source(
@@ -188,13 +225,23 @@ pub(crate) fn assemble_staged_source(
     fit: CoefficientFitProposal,
     payload_input: &JocPayloadInput,
     retry_provider: &RepresentationRetryProvider,
+    profile: Option<ResolvedEncodingProfile>,
 ) -> Result<JocSourceProposal, JocSourceStageError> {
     let lineage = fit
         .source_lineage()
         .cloned()
         .ok_or(JocSourceStageError::MissingFitLineage)?;
-    let payload = stage_joc_payload(dispatch_before, &fit, payload_input, retry_provider)
-        .map_err(JocSourceStageError::Payload)?;
+    let payload = match profile {
+        Some(profile) => stage_joc_payload_for_profile(
+            dispatch_before,
+            &fit,
+            payload_input,
+            retry_provider,
+            profile,
+        ),
+        None => stage_joc_payload(dispatch_before, &fit, payload_input, retry_provider),
+    }
+    .map_err(JocSourceStageError::Payload)?;
     let fit_after = fit.into_after();
     let (dispatch_after, id14_body) = payload.into_parts().map_err(JocSourceStageError::Payload)?;
     if id14_body.body().writer_generation != lineage.source_index()

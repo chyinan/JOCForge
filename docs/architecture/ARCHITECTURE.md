@@ -10,4 +10,4 @@
 
 架构批准允许按既有 selected 5.1 profile 分阶段实现，并另行保留 Atmos 7.1 flat7x/1664 的 additive profile contract；该新增 contract 尚非 production-enabled（`production_allowed=false`）。GTC source-role projection、native D0 audio algorithm 和 all-AU EMDF fit 仍未闭合。独立实现验证、W04 产品验收和用户试听仍未运行。禁止从可编译或测试通过推导功能完成。
 
-当前另有一个明确限定的 Flat7x 部分实现：在 1024 kbps / 5.1 core path 上，用 immutable `JocReconstructionLayout::Flat7x` 选择 ETSI `joc_dmx_config_idx=1`，并由现有 JOC-header writer 发出 3-bit 字段。原有 downmix control、输入解析、audio-generation、topology 和 publication 行为沿用 selected profile；完整 Flat7x 文件与官方演示结构验收仍为 `NOT_RUN`。
+当前另有一个明确限定的 Flat7x 部分实现：CLI 可选项 `--joc-layout flat7x` 在 1024 kbps / 5.1 core path 上选择 immutable `JocReconstructionLayout::Flat7x`，由现有 JOC-header writer 发出 ETSI `joc_dmx_config_idx=1` 的 3-bit 字段。省略此项保留 selected 5.1 profile；原有 downmix control、输入解析、audio-generation、topology 和 publication 行为沿用既有配置。完整 Flat7x 文件与官方演示结构验收仍为 `NOT_RUN`。

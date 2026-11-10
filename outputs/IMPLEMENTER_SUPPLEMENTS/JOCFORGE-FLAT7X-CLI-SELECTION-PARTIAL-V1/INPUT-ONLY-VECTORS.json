@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.flat7x.cli-selector-input-only.v1",
+  "vectors": [
+    {
+      "argv": ["--data-rate", "1024"],
+      "expected_profile": "existing_selected_1024_5_1",
+      "expected_layout": "existing 5.1 reconstruction layout",
+      "status": "INPUT_ONLY_NOT_RUN"
+    },
+    {
+      "argv": ["--data-rate", "1024", "--joc-layout", "flat7x"],
+      "expected_profile": "flat7x_1024_5_1_core",
+      "expected_layout": "JocReconstructionLayout::Flat7x",
+      "expected_joc_dmx_config_idx": 1,
+      "status": "INPUT_ONLY_NOT_RUN"
+    },
+    {
+      "argv": ["--data-rate", "1024", "--joc-layout", "unsupported"],
+      "expected_result": "reject before encoder execution",
+      "status": "INPUT_ONLY_NOT_RUN"
+    },
+    {
+      "argv": ["--data-rate", "448", "--joc-layout", "flat7x"],
+      "expected_result": "reject as incompatible with approved profile row",
+      "status": "INPUT_ONLY_NOT_RUN"
+    }
+  ],
+  "contains_media": false,
+  "contains_pcm": false,
+  "contains_payload": false,
+  "contains_keys": false
+}

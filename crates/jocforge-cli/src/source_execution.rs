@@ -19,6 +19,7 @@ use jocforge_application::{
     meter_finalization_bridge::{
         ProgrammeMeasurementReceipt, StandaloneMeterRoot, unchanged_meter_root_receipt,
     },
+    meter_source_bridge::ResolvedEncodingProfile,
     output_publication::{
         AdmittedProductionPlan, OutputDurableAppendReceipt, OutputSourceAfterProposal,
         ProgrammeOutputBinding, prepare_output_source_from_candidate,
@@ -78,6 +79,7 @@ pub(crate) struct SourceFrameAdvance {
 #[allow(clippy::too_many_arguments)]
 pub(crate) fn stage_source_frame(
     prepared: &PreparedJobInput,
+    joc_profile: ResolvedEncodingProfile,
     attempt: AttemptId,
     callback_index: FrontendCallbackIndex,
     source_index: CodecSourceIndex,
@@ -141,6 +143,7 @@ pub(crate) fn stage_source_frame(
     let metadata_bodies = prepare_main_metadata_bodies_for_callback(
         MainMetadataBodiesInput {
             prepared,
+            joc_profile,
             spatial_callback: &spatial_callback,
             joc_before,
             source_transaction_id: source_transaction_id.clone(),

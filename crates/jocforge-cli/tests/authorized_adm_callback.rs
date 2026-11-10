@@ -54,7 +54,7 @@ use jocforge_domain::{
         coefficient_representation::RepresentationRetryProvider, fit_score::FitScoreProvider,
         programme_state::SelectedJocState,
     },
-    profile::EncodingProfile,
+    profile::{EncodingProfile, resolve_selected_profile},
     spatial::{
         SpatialControlMachine, ValidatedComponentParameterProvider, ValidatedWindowQ15Provider,
         diffusion_filter::{
@@ -1245,6 +1245,7 @@ fn stage_authorized_main_g2_receiver_candidate(
     let metadata_bodies =
         prepare_main_metadata_bodies_from_spatial_callback(MainMetadataBodiesInput {
             prepared,
+            joc_profile: resolve_selected_profile(&EncodingProfile::selected()).unwrap(),
             spatial_callback: &g2_proposal,
             joc_before: &joc_before,
             source_transaction_id: source_transaction_id.clone(),

@@ -11,8 +11,12 @@ use crate::{
         dispatch_state::JocDispatchState,
         fit_score::FitScoreProvider,
         id14_body::Id14BodyProposal,
-        source_stage::{JocSourceStageError, stage_joc_source, stage_joc_source_with_transaction},
+        source_stage::{
+            JocSourceStageError, stage_joc_source, stage_joc_source_with_transaction,
+            stage_joc_source_with_transaction_for_profile,
+        },
     },
+    profile::ResolvedEncodingProfile,
     spatial::{QmfReceiverFunctionalProvider, spatial_audio_state::SelectedJocQmfProjection},
     transaction::{
         CallbackTransactionId, GtcOwnerId, GtcOwnerReceipt, GtcOwnerReceiptError,
@@ -333,16 +337,70 @@ pub fn stage_selected_joc_source_with_transaction(
     score_provider: &FitScoreProvider,
     retry_provider: &RepresentationRetryProvider,
 ) -> Result<SelectedJocAfterProposal, SelectedJocStateError> {
-    let before_sha256 = before.state_sha256()?;
-    let source = stage_joc_source_with_transaction(
-        before.fit(),
-        before.dispatch(),
+    stage_selected_joc_source_with_transaction_inner(
+        before,
         projection,
         producer_transaction_id,
         qmf_provider,
         score_provider,
         retry_provider,
+        None,
     )
+}
+
+/// Parent-bound profile-aware entry that carries the immutable reconstruction layout through the
+/// JOC header writer while leaving the committed JOC owner schema unchanged.
+pub fn stage_selected_joc_source_with_transaction_for_profile(
+    before: &SelectedJocState,
+    projection: &SelectedJocQmfProjection,
+    producer_transaction_id: CallbackTransactionId,
+    qmf_provider: &QmfReceiverFunctionalProvider,
+    score_provider: &FitScoreProvider,
+    retry_provider: &RepresentationRetryProvider,
+    profile: ResolvedEncodingProfile,
+) -> Result<SelectedJocAfterProposal, SelectedJocStateError> {
+    stage_selected_joc_source_with_transaction_inner(
+        before,
+        projection,
+        producer_transaction_id,
+        qmf_provider,
+        score_provider,
+        retry_provider,
+        Some(profile),
+    )
+}
+
+fn stage_selected_joc_source_with_transaction_inner(
+    before: &SelectedJocState,
+    projection: &SelectedJocQmfProjection,
+    producer_transaction_id: CallbackTransactionId,
+    qmf_provider: &QmfReceiverFunctionalProvider,
+    score_provider: &FitScoreProvider,
+    retry_provider: &RepresentationRetryProvider,
+    profile: Option<ResolvedEncodingProfile>,
+) -> Result<SelectedJocAfterProposal, SelectedJocStateError> {
+    let before_sha256 = before.state_sha256()?;
+    let source = match profile {
+        Some(profile) => stage_joc_source_with_transaction_for_profile(
+            before.fit(),
+            before.dispatch(),
+            projection,
+            producer_transaction_id,
+            qmf_provider,
+            score_provider,
+            retry_provider,
+            profile,
+        ),
+        None => stage_joc_source_with_transaction(
+            before.fit(),
+            before.dispatch(),
+            projection,
+            producer_transaction_id,
+            qmf_provider,
+            score_provider,
+            retry_provider,
+        ),
+    }
     .map_err(|error| map_source_error(&error))?;
     let (fit_after, dispatch_after, id14_body, lineage) = source.into_parts();
     let after = SelectedJocState::from_staged(fit_after, dispatch_after)?;

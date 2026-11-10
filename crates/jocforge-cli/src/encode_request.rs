@@ -26,7 +26,10 @@ use jocforge_application::{
     metadata_source_bridge::{
         MetadataOwnerPreparationError, SelectedJocState, prepare_metadata_owner_from_measurement,
     },
-    meter_source_bridge::{CodecRateProfile, EncodingProfile, FrontendControlReplacementCandidate},
+    meter_source_bridge::{
+        CodecRateProfile, EncodingProfile, FrontendControlReplacementCandidate,
+        JocReconstructionLayout, resolve_selected_profile,
+    },
     output_publication::{AttemptId, OutputStagingOwnerId},
     parse_selected_job_file_references, prepare_selected_job_input,
     reader_eof_callback::{
@@ -65,6 +68,7 @@ pub enum EncodeRequestError {
     UnsupportedJobXmlOption(&'static str),
     OutputAlreadyExists,
     UnsupportedDataRate,
+    UnsupportedJocLayout,
     InputFile(RiffPcm24FileReadError),
     Riff(jocforge_io::pcm::riff_pcm24::RiffPcm24Error),
     PreparedInput(PreparedJobInputError),
@@ -109,6 +113,9 @@ impl std::fmt::Display for EncodeRequestError {
             Self::UnsupportedDataRate => formatter.write_str(
                 "data_rate must be one explicit value: 384, 448, 576, 640, 768, or 1024",
             ),
+            Self::UnsupportedJocLayout => {
+                formatter.write_str("joc-layout flat7x requires the selected 1024 kbps profile row")
+            }
             Self::InputFile(error) => write!(formatter, "{error}"),
             Self::Riff(error) => write!(formatter, "selected RIFF input rejected: {error:?}"),
             Self::PreparedInput(error) => write!(formatter, "selected ADM input rejected: {error}"),
@@ -173,10 +180,29 @@ pub fn run_with_data_rate(
     output_path: &Path,
     codec_rate: CodecRateProfile,
 ) -> Result<(), EncodeRequestError> {
+    run_with_data_rate_and_joc_layout(
+        input_path,
+        output_path,
+        codec_rate,
+        JocReconstructionLayout::ExistingSelectedFivePointOne,
+    )
+}
+
+/// Runs the selected full-file pipeline with one immutable JOC reconstruction layout.
+pub fn run_with_data_rate_and_joc_layout(
+    input_path: &Path,
+    output_path: &Path,
+    codec_rate: CodecRateProfile,
+    joc_layout: JocReconstructionLayout,
+) -> Result<(), EncodeRequestError> {
     if codec_rate.kbps().is_none() {
         return Err(EncodeRequestError::UnsupportedDataRate);
     }
-    run_worker(input_path, output_path, Some(codec_rate), None)
+    let selected_profile = EncodingProfile::selected_with_codec_rate(codec_rate)
+        .with_joc_reconstruction_layout(joc_layout);
+    resolve_selected_profile(&selected_profile)
+        .map_err(|_| EncodeRequestError::UnsupportedJocLayout)?;
+    run_worker(input_path, output_path, Some(codec_rate), None, joc_layout)
 }
 
 /// Reads an external job XML and runs the existing selected-profile CLI pipeline.
@@ -190,6 +216,7 @@ pub fn run_from_job_xml(job_xml_path: &Path) -> Result<(), EncodeRequestError> {
         &request.output_path,
         None,
         Some(request.job_xml),
+        JocReconstructionLayout::ExistingSelectedFivePointOne,
     )
 }
 
@@ -428,13 +455,20 @@ fn run_worker(
     output_path: &Path,
     codec_rate: Option<CodecRateProfile>,
     authored_job_xml: Option<Vec<u8>>,
+    joc_layout: JocReconstructionLayout,
 ) -> Result<(), EncodeRequestError> {
     thread::scope(|scope| {
         let worker = thread::Builder::new()
             .name("jocforge-encode-request".to_owned())
             .stack_size(ENCODE_REQUEST_STACK_BYTES)
             .spawn_scoped(scope, move || {
-                run_inner(input_path, output_path, codec_rate, authored_job_xml)
+                run_inner(
+                    input_path,
+                    output_path,
+                    codec_rate,
+                    authored_job_xml,
+                    joc_layout,
+                )
             })
             .map_err(|_| EncodeRequestError::WorkerUnavailable)?;
         worker
@@ -448,6 +482,7 @@ fn run_inner(
     output_path: &Path,
     codec_rate_override: Option<CodecRateProfile>,
     authored_job_xml: Option<Vec<u8>>,
+    joc_layout: JocReconstructionLayout,
 ) -> Result<(), EncodeRequestError> {
     eprintln!("Preparing selected ADM input and owner plan...");
     let input_path = normalize_existing_input(input_path)?;
@@ -503,6 +538,14 @@ fn run_inner(
         .bind_primary_control_rows(data_bytes)
         .map_err(EncodeRequestError::PreparedInput)?;
     let selected_profile = prepared.configuration().selected_profile();
+    let resolved_joc_profile = resolve_selected_profile(
+        &EncodingProfile::selected_with_rate_and_carriage(
+            selected_profile.codec_rate(),
+            selected_profile.carriage(),
+        )
+        .with_joc_reconstruction_layout(joc_layout),
+    )
+    .map_err(|_| EncodeRequestError::UnsupportedJocLayout)?;
     let frame_bytes = selected_profile
         .codec_rate()
         .frame_bytes()
@@ -510,7 +553,7 @@ fn run_inner(
     let config_sha256 = prepared.config_sha256();
 
     eprintln!(
-        "prepared input: attempt={} programme={} sha256={} bytes={} sample_rate_hz={} channels={} pcm_bits=24 samples_per_channel={} data_rate_kbps={} frame_bytes={} config_sha256={} output={}",
+        "prepared input: attempt={} programme={} sha256={} bytes={} sample_rate_hz={} channels={} pcm_bits=24 samples_per_channel={} data_rate_kbps={} frame_bytes={} joc_reconstruction_layout={:?} joc_dmx_config_idx={:?} config_sha256={} output={}",
         run_identity.attempt.value(),
         run_identity.programme.as_str(),
         hex_lower(&parsed.source_sha256()),
@@ -520,6 +563,8 @@ fn run_inner(
         parsed.total_samples(),
         data_rate_kbps,
         frame_bytes,
+        resolved_joc_profile.joc_reconstruction_layout(),
+        resolved_joc_profile.joc_dmx_config_idx(),
         hex_lower(&config_sha256),
         output_path.display(),
     );
@@ -678,6 +723,7 @@ fn run_inner(
             if let Some(source_index) = pending.source_index {
                 let advance = crate::source_execution::stage_source_frame(
                     &prepared,
+                    resolved_joc_profile,
                     run_identity.attempt,
                     callback_index,
                     source_index,
@@ -1198,9 +1244,10 @@ mod tests {
     use super::{
         EncodeRequestError, FileReferenceParts, ensure_ec3_output_container,
         ensure_no_temp_directory_configuration, ensure_selected_metering_mode, run_with_data_rate,
-        selected_full_file_job_xml,
+        run_with_data_rate_and_joc_layout, selected_full_file_job_xml,
     };
     use jocforge_application::meter_source_bridge::CodecRateProfile;
+    use jocforge_application::meter_source_bridge::JocReconstructionLayout;
     use std::path::Path;
 
     #[test]
@@ -1243,6 +1290,19 @@ mod tests {
                 CodecRateProfile::Unsupported,
             ),
             Err(EncodeRequestError::UnsupportedDataRate)
+        ));
+    }
+
+    #[test]
+    fn flat7x_rate_constraint_rejects_before_input_or_output_io() {
+        assert!(matches!(
+            run_with_data_rate_and_joc_layout(
+                Path::new("missing-input.wav"),
+                Path::new("unused-output.ec3"),
+                CodecRateProfile::Kbps448,
+                JocReconstructionLayout::Flat7x,
+            ),
+            Err(EncodeRequestError::UnsupportedJocLayout)
         ));
     }
 

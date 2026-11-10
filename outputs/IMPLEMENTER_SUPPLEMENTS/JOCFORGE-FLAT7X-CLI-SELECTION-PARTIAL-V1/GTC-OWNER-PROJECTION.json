@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.flat7x.cli-selector-owner-projection.v1",
+  "package_id": "JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1",
+  "producer": "CLI argument parser / existing invocation configuration",
+  "typed_cross_boundary_value": "immutable JocReconstructionLayout selection",
+  "consumer": "existing profile resolver",
+  "writer_consumer": "existing JOC-header writer",
+  "new_mutable_owner": false,
+  "new_commit_stage": false,
+  "production_allowed": false
+}

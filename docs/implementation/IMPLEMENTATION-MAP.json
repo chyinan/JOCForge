@@ -2612,8 +2612,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 67203,
-              "sha256": "4c6d1571332c152bcdd6e8bc41fc16611ae88c422098169dfcd79088dcc4b929"
+              "bytes": 67321,
+              "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
             }
           ],
           "error_outcomes": [
@@ -2897,8 +2897,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 67203,
-              "sha256": "4c6d1571332c152bcdd6e8bc41fc16611ae88c422098169dfcd79088dcc4b929"
+              "bytes": 67321,
+              "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
             }
           ],
           "parameters.validation_boundary": "One user-authorized real BWF plus the selected-profile XML vector is admitted and identity-checked; this does not verify arbitrary job XML or complete encoding."
@@ -2976,8 +2976,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 67203,
-              "sha256": "4c6d1571332c152bcdd6e8bc41fc16611ae88c422098169dfcd79088dcc4b929"
+              "bytes": 67321,
+              "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
             }
           ],
           "parameters.validation_boundary": "Unit mismatch cases plus one real-resource g0 selected-extent snapshot probe pass. The probe is noncommitting and uses the repository selected-profile XML vector."
@@ -3312,8 +3312,8 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35455,
-              "sha256": "8e39aa842708070f2f8771e531cab8d3890114ff02fc9334f920651557cf9ec9"
+              "bytes": 35529,
+              "sha256": "e48d9419efd3842713fd61681a20e9a59a697eef674f44556e6bf66939cb9895"
             },
             {
               "path": "crates/jocforge-application/src/meter_source_admission.rs",
@@ -3369,8 +3369,8 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35455,
-              "sha256": "8e39aa842708070f2f8771e531cab8d3890114ff02fc9334f920651557cf9ec9"
+              "bytes": 35529,
+              "sha256": "e48d9419efd3842713fd61681a20e9a59a697eef674f44556e6bf66939cb9895"
             }
           ]
         },
@@ -4847,8 +4847,8 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35455,
-              "sha256": "8e39aa842708070f2f8771e531cab8d3890114ff02fc9334f920651557cf9ec9"
+              "bytes": 35529,
+              "sha256": "e48d9419efd3842713fd61681a20e9a59a697eef674f44556e6bf66939cb9895"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/provider.rs",
@@ -4877,13 +4877,13 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 54529,
-              "sha256": "cd5bf36ffd82b0ce39d0904a0cd3f15a82ac31171cc1b8a748412c67f3e5ab70"
+              "bytes": 56864,
+              "sha256": "382c51acb8ad6743a9f3722b8c3eb77ce56a016a5dcd2da25ce9339d26091102"
             },
             {
               "path": "crates/jocforge-cli/src/main.rs",
-              "bytes": 3753,
-              "sha256": "1a50ff33e398824b93fa4481c63286a92ad7211ce52c26d6a3bd1230c629bc69"
+              "bytes": 6627,
+              "sha256": "689aca2e8e8d564cd18ac5d24d1638790f3dffdc491cd97685d98271ed74b611"
             }
           ],
           "test_inventory": [
@@ -12741,8 +12741,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 67203,
-              "sha256": "4c6d1571332c152bcdd6e8bc41fc16611ae88c422098169dfcd79088dcc4b929"
+              "bytes": 67321,
+              "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
             }
           ],
           "clock": {
@@ -15060,8 +15060,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 67203,
-              "sha256": "4c6d1571332c152bcdd6e8bc41fc16611ae88c422098169dfcd79088dcc4b929"
+              "bytes": 67321,
+              "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
             }
           ],
           "actual_execution": {
@@ -15217,8 +15217,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 67203,
-              "sha256": "4c6d1571332c152bcdd6e8bc41fc16611ae88c422098169dfcd79088dcc4b929"
+              "bytes": 67321,
+              "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
             }
           ]
         },
@@ -15411,8 +15411,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 54529,
-              "sha256": "cd5bf36ffd82b0ce39d0904a0cd3f15a82ac31171cc1b8a748412c67f3e5ab70"
+              "bytes": 56864,
+              "sha256": "382c51acb8ad6743a9f3722b8c3eb77ce56a016a5dcd2da25ce9339d26091102"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
@@ -15488,8 +15488,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 67203,
-              "sha256": "4c6d1571332c152bcdd6e8bc41fc16611ae88c422098169dfcd79088dcc4b929"
+              "bytes": 67321,
+              "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
@@ -18473,8 +18473,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2071397,
-              "sha256": "36a7a8575d3b721bec27aa2c5f917b9bde938904ed02d8120b524521f7af6b7a"
+              "bytes": 2077670,
+              "sha256": "85d633675e8a789e72825d24dc45fe3120e77dfd40a3e687408355b12546a55c"
             }
           ],
           "test_modules": [
@@ -18513,8 +18513,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 67203,
-              "sha256": "4c6d1571332c152bcdd6e8bc41fc16611ae88c422098169dfcd79088dcc4b929"
+              "bytes": 67321,
+              "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
             }
           ],
           "clock": {
@@ -18671,8 +18671,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 67203,
-              "sha256": "4c6d1571332c152bcdd6e8bc41fc16611ae88c422098169dfcd79088dcc4b929"
+              "bytes": 67321,
+              "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
             }
           ],
           "clock": {
@@ -19778,23 +19778,23 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/metadata_source_bridge.rs",
-              "bytes": 12505,
-              "sha256": "98f198149054a865af9b4d841cd7167e3b783a5734781af56b6b429e085c3132"
+              "bytes": 12655,
+              "sha256": "81e0e7621a5a3d7a28fedb03eced0286e42a2c69e96e2f8cf60ba44076f8d6df"
             },
             {
               "path": "crates/jocforge-domain/src/joc/programme_state.rs",
-              "bytes": 23854,
-              "sha256": "0702081d1b508dd442648226f14ed5ba36d2224a119342000bdd0d21af150e58"
+              "bytes": 25822,
+              "sha256": "0cda0c6687ca0e2e091c30b6b79882659596e4dd7f251be3fd7a730e9734060e"
             },
             {
               "path": "crates/jocforge-domain/src/joc/source_stage.rs",
-              "bytes": 7525,
-              "sha256": "720e13dda29b4175d83a73171d11b99b63147b10405ae0414c1875ba597e9e6c"
+              "bytes": 8871,
+              "sha256": "18f57247ca647cd4ec95787ff172e0a622cbcf93194d11a14d16922b9983ed76"
             },
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_fitting.rs",
-              "bytes": 32212,
-              "sha256": "7c6c758188115015d66deed72953b858d7df86d7549d8157036288d8bc8ea47f"
+              "bytes": 33181,
+              "sha256": "ca17ec188840ae0f4375385bec7b877e8c92e21ed336dbc82c76923bbdfab4f1"
             },
             {
               "path": "crates/jocforge-domain/src/joc/fit_score.rs",
@@ -19803,8 +19803,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_representation.rs",
-              "bytes": 12320,
-              "sha256": "0f41a355b37ab1ab6004822dea3a54a1a5628b2fd4b3992d4e0eb3d230ed4cda"
+              "bytes": 13529,
+              "sha256": "c2f4b754d9aa846b2945e538b8b147ef2984ee37992b5eb9305cce8f68f47e64"
             }
           ],
           "test_modules": [
@@ -19814,13 +19814,13 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/joc/programme_state.rs",
-              "bytes": 23854,
-              "sha256": "0702081d1b508dd442648226f14ed5ba36d2224a119342000bdd0d21af150e58"
+              "bytes": 25822,
+              "sha256": "0cda0c6687ca0e2e091c30b6b79882659596e4dd7f251be3fd7a730e9734060e"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 67203,
-              "sha256": "4c6d1571332c152bcdd6e8bc41fc16611ae88c422098169dfcd79088dcc4b929"
+              "bytes": 67321,
+              "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
             }
           ],
           "clock": {
@@ -21230,8 +21230,8 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35455,
-              "sha256": "8e39aa842708070f2f8771e531cab8d3890114ff02fc9334f920651557cf9ec9"
+              "bytes": 35529,
+              "sha256": "e48d9419efd3842713fd61681a20e9a59a697eef674f44556e6bf66939cb9895"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -21257,8 +21257,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 67203,
-              "sha256": "4c6d1571332c152bcdd6e8bc41fc16611ae88c422098169dfcd79088dcc4b929"
+              "bytes": 67321,
+              "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
             }
           ],
           "validation_boundary": "Focused local tests assert dynamic schedule derivation and 36-row Meter identity. They do not execute the full normal-plus-drain schedule on the real source, connect graph-sized F01E/Spatial owners or wider-than-38 source axis consumers, or claim a terminal production receipt, READY root, AU output, or product acceptance."
@@ -22000,8 +22000,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2071397,
-              "sha256": "36a7a8575d3b721bec27aa2c5f917b9bde938904ed02d8120b524521f7af6b7a"
+              "bytes": 2077670,
+              "sha256": "85d633675e8a789e72825d24dc45fe3120e77dfd40a3e687408355b12546a55c"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -22021,8 +22021,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 67203,
-              "sha256": "4c6d1571332c152bcdd6e8bc41fc16611ae88c422098169dfcd79088dcc4b929"
+              "bytes": 67321,
+              "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
             }
           ],
           "clock": {
@@ -22263,8 +22263,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 67203,
-              "sha256": "4c6d1571332c152bcdd6e8bc41fc16611ae88c422098169dfcd79088dcc4b929"
+              "bytes": 67321,
+              "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
             }
           ],
           "not_run": [
@@ -22725,8 +22725,8 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35455,
-              "sha256": "8e39aa842708070f2f8771e531cab8d3890114ff02fc9334f920651557cf9ec9"
+              "bytes": 35529,
+              "sha256": "e48d9419efd3842713fd61681a20e9a59a697eef674f44556e6bf66939cb9895"
             }
           ],
           "test_modules": [
@@ -22885,8 +22885,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 67203,
-              "sha256": "4c6d1571332c152bcdd6e8bc41fc16611ae88c422098169dfcd79088dcc4b929"
+              "bytes": 67321,
+              "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
             }
           ],
           "local_mapping_files": [
@@ -23029,8 +23029,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 67203,
-              "sha256": "4c6d1571332c152bcdd6e8bc41fc16611ae88c422098169dfcd79088dcc4b929"
+              "bytes": 67321,
+              "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
             }
           ],
           "local_mapping_files": [],
@@ -25724,8 +25724,8 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35455,
-              "sha256": "8e39aa842708070f2f8771e531cab8d3890114ff02fc9334f920651557cf9ec9"
+              "bytes": 35529,
+              "sha256": "e48d9419efd3842713fd61681a20e9a59a697eef674f44556e6bf66939cb9895"
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
@@ -25796,8 +25796,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 67203,
-              "sha256": "4c6d1571332c152bcdd6e8bc41fc16611ae88c422098169dfcd79088dcc4b929"
+              "bytes": 67321,
+              "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
             }
           ]
         },
@@ -26519,8 +26519,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35455,
-              "sha256": "8e39aa842708070f2f8771e531cab8d3890114ff02fc9334f920651557cf9ec9"
+              "bytes": 35529,
+              "sha256": "e48d9419efd3842713fd61681a20e9a59a697eef674f44556e6bf66939cb9895"
             },
             {
               "path": "crates/jocforge-cli/src/meter_source_bridge.rs",
@@ -26568,8 +26568,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35455,
-              "sha256": "8e39aa842708070f2f8771e531cab8d3890114ff02fc9334f920651557cf9ec9"
+              "bytes": 35529,
+              "sha256": "e48d9419efd3842713fd61681a20e9a59a697eef674f44556e6bf66939cb9895"
             },
             {
               "path": "crates/jocforge-cli/tests/meter_source_bridge.rs",
@@ -37847,8 +37847,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 67203,
-              "sha256": "4c6d1571332c152bcdd6e8bc41fc16611ae88c422098169dfcd79088dcc4b929"
+              "bytes": 67321,
+              "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
             }
           ]
         },
@@ -42474,8 +42474,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 54529,
-              "sha256": "cd5bf36ffd82b0ce39d0904a0cd3f15a82ac31171cc1b8a748412c67f3e5ab70"
+              "bytes": 56864,
+              "sha256": "382c51acb8ad6743a9f3722b8c3eb77ce56a016a5dcd2da25ce9339d26091102"
             },
             {
               "path": "crates/jocforge-cli/src/lib.rs",
@@ -44396,8 +44396,8 @@
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
-              "bytes": 35455,
-              "sha256": "8e39aa842708070f2f8771e531cab8d3890114ff02fc9334f920651557cf9ec9"
+              "bytes": 35529,
+              "sha256": "e48d9419efd3842713fd61681a20e9a59a697eef674f44556e6bf66939cb9895"
             },
             {
               "path": "crates/jocforge-application/src/output_publication.rs",
@@ -44451,13 +44451,13 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 54529,
-              "sha256": "cd5bf36ffd82b0ce39d0904a0cd3f15a82ac31171cc1b8a748412c67f3e5ab70"
+              "bytes": 56864,
+              "sha256": "382c51acb8ad6743a9f3722b8c3eb77ce56a016a5dcd2da25ce9339d26091102"
             },
             {
               "path": "crates/jocforge-cli/src/main.rs",
-              "bytes": 3753,
-              "sha256": "1a50ff33e398824b93fa4481c63286a92ad7211ce52c26d6a3bd1230c629bc69"
+              "bytes": 6627,
+              "sha256": "689aca2e8e8d564cd18ac5d24d1638790f3dffdc491cd97685d98271ed74b611"
             },
             {
               "path": "crates/jocforge-cli/src/meter_prepass.rs",
@@ -44558,8 +44558,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 54529,
-              "sha256": "cd5bf36ffd82b0ce39d0904a0cd3f15a82ac31171cc1b8a748412c67f3e5ab70"
+              "bytes": 56864,
+              "sha256": "382c51acb8ad6743a9f3722b8c3eb77ce56a016a5dcd2da25ce9339d26091102"
             },
             {
               "path": "crates/jocforge-io/src/provider/spatial_audio.rs",
@@ -45417,8 +45417,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/joc_reconstruction_layout.rs",
-              "bytes": 7259,
-              "sha256": "473fd476b4de9634aaae4ba7a821b61dc31e96134d600fb22c929db6d13d6aaa"
+              "bytes": 8636,
+              "sha256": "18e43344ab2507ce278ebc4840251d6f2ba3105d9503b26f5b1675383797e6d6"
             }
           ],
           "clock": {
@@ -45547,6 +45547,244 @@
           ],
           "validation_boundary": "The immutable Flat7x profile maps to the ETSI index 1 header field on the existing 1024 kbps / 5.1 core path; complete output acceptance remains NOT_RUN.",
           "delivery_scope": "PARTIAL_IMMUTABLE_PROFILE_AND_JOC_HEADER_FIELD_ONLY"
+        },
+        {
+          "slice_id": "flat7x-cli-selector-profile-and-header-plumbing",
+          "mapping_status": "MATERIALIZED_OPTIONAL_CLI_FLAT7X_SELECTOR_TO_IMMUTABLE_RESOLVED_PROFILE_AND_JOC_HEADER",
+          "implementation_status": "LOCALLY_VERIFIED_CLI_SELECTOR_TO_JOC_HEADER_PROFILE_PATH__REAL_OUTPUT_WAITING_WASH_TIMELINE",
+          "implementation_requirement": true,
+          "owner": "codec",
+          "scope": "Adds optional --joc-layout flat7x on the full-file CLI path and passes the resulting immutable ResolvedEncodingProfile through each source-stage call to the existing JOC-header writer. Omission preserves ExistingSelectedFivePointOne; Flat7x resolves only with data_rate 1024 and writes joc_dmx_config_idx=1. Invalid layout tokens and Flat7x with other rate rows reject before input admission. Job XML fields, DRC/DI/timebase controls, audio algorithms, ADM mapping, object count, complexity, EMDF carriage and AU publication remain unchanged. No mutable owner or commit stage is added.",
+          "dependencies": [
+            "F12/flat7x-reconstruction-layout-profile-and-header-index"
+          ],
+          "spec_files": [
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/ARCHITECTURE-DECISIONS.md",
+            "docs/architecture/PUBLIC-API.md",
+            "docs/architecture/DATAFLOW.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1/IMPLEMENTATION-SCOPE.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1/GTC-OWNER-PROJECTION.json"
+          ],
+          "implementation_files": [
+            "crates/jocforge-cli/src/main.rs",
+            "crates/jocforge-cli/src/encode_request.rs",
+            "crates/jocforge-cli/src/source_execution.rs",
+            "crates/jocforge-application/src/meter_source_bridge.rs",
+            "crates/jocforge-application/src/metadata_source_bridge.rs",
+            "crates/jocforge-domain/src/profile/production.rs",
+            "crates/jocforge-domain/src/profile/mod.rs",
+            "crates/jocforge-domain/src/joc/programme_state.rs",
+            "crates/jocforge-domain/src/joc/source_stage.rs",
+            "crates/jocforge-domain/src/joc/dispatch_state.rs",
+            "crates/jocforge-domain/src/joc/coefficient_fitting.rs",
+            "crates/jocforge-domain/src/joc/coefficient_representation.rs",
+            "crates/jocforge-domain/src/joc/coefficient_payload.rs",
+            "crates/jocforge-domain/src/joc/huffman.rs",
+            "crates/jocforge-domain/src/joc/huffman/id14_header.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-cli/src/main.rs",
+              "bytes": 6627,
+              "sha256": "689aca2e8e8d564cd18ac5d24d1638790f3dffdc491cd97685d98271ed74b611"
+            },
+            {
+              "path": "crates/jocforge-cli/src/encode_request.rs",
+              "bytes": 56864,
+              "sha256": "382c51acb8ad6743a9f3722b8c3eb77ce56a016a5dcd2da25ce9339d26091102"
+            },
+            {
+              "path": "crates/jocforge-cli/src/source_execution.rs",
+              "bytes": 18415,
+              "sha256": "f4d4a307d42f5dde109ce368922cc596b2c13e649df48dd9fd27c63d1149ba48"
+            },
+            {
+              "path": "crates/jocforge-application/src/meter_source_bridge.rs",
+              "bytes": 35529,
+              "sha256": "e48d9419efd3842713fd61681a20e9a59a697eef674f44556e6bf66939cb9895"
+            },
+            {
+              "path": "crates/jocforge-application/src/metadata_source_bridge.rs",
+              "bytes": 12655,
+              "sha256": "81e0e7621a5a3d7a28fedb03eced0286e42a2c69e96e2f8cf60ba44076f8d6df"
+            },
+            {
+              "path": "crates/jocforge-domain/src/profile/production.rs",
+              "bytes": 11476,
+              "sha256": "0914633c0c628cef2cdbec6c71758c4489ef3d3183d1de0d8fac88059c97a83f"
+            },
+            {
+              "path": "crates/jocforge-domain/src/profile/mod.rs",
+              "bytes": 819,
+              "sha256": "1789266c17d5c3e4e783f8f71cdfbb99bffa8787f17739ee969dad68a11ef132"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/programme_state.rs",
+              "bytes": 25822,
+              "sha256": "0cda0c6687ca0e2e091c30b6b79882659596e4dd7f251be3fd7a730e9734060e"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/source_stage.rs",
+              "bytes": 8871,
+              "sha256": "18f57247ca647cd4ec95787ff172e0a622cbcf93194d11a14d16922b9983ed76"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/dispatch_state.rs",
+              "bytes": 12116,
+              "sha256": "30e22fc2d6b70df6bf46c5cf6e24c4f0ab6cc9de6ae16ff772e109066b14619e"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/coefficient_fitting.rs",
+              "bytes": 33181,
+              "sha256": "ca17ec188840ae0f4375385bec7b877e8c92e21ed336dbc82c76923bbdfab4f1"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/coefficient_representation.rs",
+              "bytes": 13529,
+              "sha256": "c2f4b754d9aa846b2945e538b8b147ef2984ee37992b5eb9305cce8f68f47e64"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/coefficient_payload.rs",
+              "bytes": 22421,
+              "sha256": "f047023111be6523bace1423407c0f682eb6c3cecdec970b64a804406fe1d32d"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/huffman.rs",
+              "bytes": 29954,
+              "sha256": "b52583e123cc25d91f23715fd4d83ae5b0ac818b37023ab3bb017b4e966f1f76"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/huffman/id14_header.rs",
+              "bytes": 13748,
+              "sha256": "86af19e83e894b14f9da2e5c07e492df49e090a9e20b9b9343462bc102d11b66"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-cli/tests/joc_layout_selection.rs",
+            "crates/jocforge-cli/src/encode_request.rs",
+            "crates/jocforge-cli/tests/authorized_adm_callback.rs",
+            "crates/jocforge-domain/tests/joc_reconstruction_layout.rs"
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-cli/tests/joc_layout_selection.rs",
+              "bytes": 2722,
+              "sha256": "8e5cc4e50c7d622f3af4c39cd6c24f2893b152b9a54ed52e2268018f1168a7ef"
+            },
+            {
+              "path": "crates/jocforge-cli/src/encode_request.rs",
+              "bytes": 56864,
+              "sha256": "382c51acb8ad6743a9f3722b8c3eb77ce56a016a5dcd2da25ce9339d26091102"
+            },
+            {
+              "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
+              "bytes": 67321,
+              "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/joc_reconstruction_layout.rs",
+              "bytes": 8636,
+              "sha256": "18e43344ab2507ce278ebc4840251d6f2ba3105d9503b26f5b1675383797e6d6"
+            }
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The selected JocReconstructionLayout is immutable per invocation and is passed with the source callback profile context.",
+              "The profile value adds no writer, callback or mutable-owner clock."
+            ]
+          },
+          "parameters": {
+            "kind": "WASH_CLI_FLAT7X_PROFILE_SELECTION_AND_HEADER_CARRY",
+            "package_id": "JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1/PACKAGE-SEAL.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1/IMPLEMENTATION-SCOPE.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1/GTC-OWNER-PROJECTION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1/PROFILE-SELECTOR-DELTA.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1/SOURCE-RECEIPTS.json"
+            ],
+            "supplement_manifest_sha256": "a212684b565f93ca23ce5dbab458d6ee74cfb8e231b0ce7210db1da4e098aefa",
+            "supplement_seal_sha256": "abb4f166ed720bd0c0a90e393e0b74216fe40b72ee77d1d813446371a82cbe6b",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "selector": {
+              "option": "--joc-layout",
+              "accepted_value": "flat7x",
+              "omitted_behavior": "ExistingSelectedFivePointOne",
+              "compatible_rate_kbps": 1024,
+              "xml_option_added": false
+            },
+            "profile_resolution": {
+              "type": "JocReconstructionLayout",
+              "variant": "Flat7x",
+              "joc_dmx_config_idx": 1,
+              "wire_width_bits": 3,
+              "resolved_profile_is_immutable": true
+            },
+            "header_writer_path": [
+              "CLI selector",
+              "EncodingProfile and resolve_selected_profile",
+              "SourceFrameAdvance invocation profile",
+              "MainMetadataBodiesInput",
+              "SelectedJocState profile-aware stage",
+              "JOC source/retry profile carry",
+              "write_id14_header_for_profile"
+            ],
+            "rejections_before_input_admission": {
+              "unsupported_layout_token": "REJECT",
+              "flat7x_rate_not_1024": "UNSUPPORTED_PROFILE"
+            },
+            "gtc_owner_projection": {
+              "mutable_owner_added": false,
+              "commit_stage_added": false,
+              "configuration_lifecycle": "immutable per invocation"
+            },
+            "complete_output_acceptance": "NOT_RUN",
+            "validation_boundary": "The selector-to-profile-to-header field path is implemented and input-only tests pass. A real Flat7x output and independent field parser review remain separately gated."
+          },
+          "vectors": {
+            "kind": "WASHED_FLAT7X_CLI_SELECTOR_INPUT_ONLY",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "Omitted layout retains the existing 1024/5.1 profile.",
+              "Explicit Flat7x selects profile row flat7x_1024_5_1_core and header index1.",
+              "Unknown layout tokens reject before encoder input admission.",
+              "A non-1024 rate with Flat7x rejects as incompatible."
+            ],
+            "local_fixture": {
+              "file": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 1031,
+              "sha256": "f28ebaac0a345febb57796af17f0fb3c8b0ff8074d36f1fb627e5d11dfc00284"
+            },
+            "expected_outputs_included": false,
+            "execution_status": "CLI_INPUT_ONLY_BOUNDARY_TESTS_PASSED"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "InvalidJocLayout",
+              "trigger": "--joc-layout supplies a token other than flat7x.",
+              "programme_state_after": "Argument selection returns before source admission or encoder execution.",
+              "caller_action": "Reject CLI selection."
+            },
+            {
+              "error_code": "UnsupportedJocLayout",
+              "trigger": "Flat7x is selected with a codec rate other than 1024 kbps.",
+              "programme_state_after": "Profile resolution returns no resolved profile before source admission.",
+              "caller_action": "Reject profile selection."
+            }
+          ],
+          "not_run": [
+            "Full-file Love Song Flat7x encode; await the Wash unified-timeline continue receipt.",
+            "Independent parser verification of syncframes, JOC fields, complexity addbsi, EMDF/container boundaries and official-demo equivalence."
+          ],
+          "validation_boundary": "CLI selectors resolve the immutable Flat7x profile and carry it to the JOC-header writer; real output and independent structural acceptance remain NOT_RUN.",
+          "delivery_scope": "PARTIAL_CLI_PROFILE_SELECTION_AND_HEADER_PLUMBING_ONLY"
         }
       ]
     },
@@ -46146,8 +46384,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/source_stage.rs",
-              "bytes": 7525,
-              "sha256": "720e13dda29b4175d83a73171d11b99b63147b10405ae0414c1875ba597e9e6c"
+              "bytes": 8871,
+              "sha256": "18f57247ca647cd4ec95787ff172e0a622cbcf93194d11a14d16922b9983ed76"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/protected_container.rs",
@@ -46764,8 +47002,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/metadata_source_bridge.rs",
-              "bytes": 12505,
-              "sha256": "98f198149054a865af9b4d841cd7167e3b783a5734781af56b6b429e085c3132"
+              "bytes": 12655,
+              "sha256": "81e0e7621a5a3d7a28fedb03eced0286e42a2c69e96e2f8cf60ba44076f8d6df"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_bodies.rs",
@@ -46784,8 +47022,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/programme_state.rs",
-              "bytes": 23854,
-              "sha256": "0702081d1b508dd442648226f14ed5ba36d2224a119342000bdd0d21af150e58"
+              "bytes": 25822,
+              "sha256": "0cda0c6687ca0e2e091c30b6b79882659596e4dd7f251be3fd7a730e9734060e"
             }
           ],
           "test_modules": [
@@ -46800,8 +47038,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 67203,
-              "sha256": "4c6d1571332c152bcdd6e8bc41fc16611ae88c422098169dfcd79088dcc4b929"
+              "bytes": 67321,
+              "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
             }
           ],
           "clock": {
@@ -46876,8 +47114,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/metadata_source_bridge.rs",
-              "bytes": 12505,
-              "sha256": "98f198149054a865af9b4d841cd7167e3b783a5734781af56b6b429e085c3132"
+              "bytes": 12655,
+              "sha256": "81e0e7621a5a3d7a28fedb03eced0286e42a2c69e96e2f8cf60ba44076f8d6df"
             },
             {
               "path": "crates/jocforge-io/src/provider/metadata_owner.rs",
@@ -46897,8 +47135,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 67203,
-              "sha256": "4c6d1571332c152bcdd6e8bc41fc16611ae88c422098169dfcd79088dcc4b929"
+              "bytes": 67321,
+              "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
             },
             {
               "path": "crates/jocforge-io/src/provider/metadata_owner.rs",
@@ -49606,18 +49844,18 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/joc/source_stage.rs",
-              "bytes": 7525,
-              "sha256": "720e13dda29b4175d83a73171d11b99b63147b10405ae0414c1875ba597e9e6c"
+              "bytes": 8871,
+              "sha256": "18f57247ca647cd4ec95787ff172e0a622cbcf93194d11a14d16922b9983ed76"
             },
             {
               "path": "crates/jocforge-domain/src/joc/dispatch_state.rs",
-              "bytes": 11129,
-              "sha256": "092d79388987bfe0689aefc34d76d23d6d1769a8187d0e881affcc3d7901ddff"
+              "bytes": 12116,
+              "sha256": "30e22fc2d6b70df6bf46c5cf6e24c4f0ab6cc9de6ae16ff772e109066b14619e"
             },
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_fitting.rs",
-              "bytes": 32212,
-              "sha256": "7c6c758188115015d66deed72953b858d7df86d7549d8157036288d8bc8ea47f"
+              "bytes": 33181,
+              "sha256": "ca17ec188840ae0f4375385bec7b877e8c92e21ed336dbc82c76923bbdfab4f1"
             },
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_payload.rs",
@@ -49626,8 +49864,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_representation.rs",
-              "bytes": 12320,
-              "sha256": "0f41a355b37ab1ab6004822dea3a54a1a5628b2fd4b3992d4e0eb3d230ed4cda"
+              "bytes": 13529,
+              "sha256": "c2f4b754d9aa846b2945e538b8b147ef2984ee37992b5eb9305cce8f68f47e64"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_bodies.rs",
@@ -49653,8 +49891,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_fitting.rs",
-              "bytes": 32212,
-              "sha256": "7c6c758188115015d66deed72953b858d7df86d7549d8157036288d8bc8ea47f"
+              "bytes": 33181,
+              "sha256": "ca17ec188840ae0f4375385bec7b877e8c92e21ed336dbc82c76923bbdfab4f1"
             }
           ],
           "verification": {
@@ -54744,8 +54982,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2071397,
-              "sha256": "36a7a8575d3b721bec27aa2c5f917b9bde938904ed02d8120b524521f7af6b7a"
+              "bytes": 2077670,
+              "sha256": "85d633675e8a789e72825d24dc45fe3120e77dfd40a3e687408355b12546a55c"
             }
           ],
           "test_inventory": [
@@ -55518,8 +55756,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 54529,
-              "sha256": "cd5bf36ffd82b0ce39d0904a0cd3f15a82ac31171cc1b8a748412c67f3e5ab70"
+              "bytes": 56864,
+              "sha256": "382c51acb8ad6743a9f3722b8c3eb77ce56a016a5dcd2da25ce9339d26091102"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -56783,8 +57021,8 @@
         },
         {
           "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-          "bytes": 67203,
-          "sha256": "4c6d1571332c152bcdd6e8bc41fc16611ae88c422098169dfcd79088dcc4b929"
+          "bytes": 67321,
+          "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
         },
         {
           "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
@@ -57676,8 +57914,8 @@
       "implementation_inventory": [
         {
           "path": "crates/jocforge-domain/src/joc/programme_state.rs",
-          "bytes": 23854,
-          "sha256": "0702081d1b508dd442648226f14ed5ba36d2224a119342000bdd0d21af150e58"
+          "bytes": 25822,
+          "sha256": "0cda0c6687ca0e2e091c30b6b79882659596e4dd7f251be3fd7a730e9734060e"
         },
         {
           "path": "crates/jocforge-domain/src/transaction/mod.rs",
@@ -57688,8 +57926,8 @@
       "test_inventory": [
         {
           "path": "crates/jocforge-domain/src/joc/programme_state.rs",
-          "bytes": 23854,
-          "sha256": "0702081d1b508dd442648226f14ed5ba36d2224a119342000bdd0d21af150e58"
+          "bytes": 25822,
+          "sha256": "0cda0c6687ca0e2e091c30b6b79882659596e4dd7f251be3fd7a730e9734060e"
         }
       ]
     },
@@ -58668,8 +58906,8 @@
         },
         {
           "path": "crates/jocforge-cli/src/encode_request.rs",
-          "bytes": 54529,
-          "sha256": "cd5bf36ffd82b0ce39d0904a0cd3f15a82ac31171cc1b8a748412c67f3e5ab70"
+          "bytes": 56864,
+          "sha256": "382c51acb8ad6743a9f3722b8c3eb77ce56a016a5dcd2da25ce9339d26091102"
         },
         {
           "path": "crates/jocforge-cli/src/lib.rs",
@@ -73412,6 +73650,25 @@
       "not_run": [
         "Complete Flat7x file structure and official-demo acceptance.",
         "7.X audio rendering, full-output validation, and listening acceptance."
+      ]
+    },
+    {
+      "package_id": "JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1",
+      "manifest_sha256": "a212684b565f93ca23ce5dbab458d6ee74cfb8e231b0ce7210db1da4e098aefa",
+      "supplement_seal_sha256": "abb4f166ed720bd0c0a90e393e0b74216fe40b72ee77d1d813446371a82cbe6b",
+      "functional_ids": [
+        "F12"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "PARTIAL_CLI_FLAT7X_SELECTOR_TO_IMMUTABLE_PROFILE_AND_HEADER_IMPLEMENTED; FULL_OUTPUT_ACCEPTANCE_NOT_RUN",
+      "not_run": [
+        "A complete Love Song Flat7x output until a Wash-timeline continue receipt arrives.",
+        "Independent parsing of JOC header, complexity, EMDF/container, and complete official-demo structure."
       ]
     }
   ]

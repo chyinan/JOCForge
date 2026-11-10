@@ -12,12 +12,14 @@ use crate::{
         },
         coefficient_representation::{
             FitRepresentationInput, RepresentationRetryError, RepresentationRetryProvider,
-            RepresentationWriteResult, write_fit_representation_with_retry,
+            RepresentationWriteResult, write_fit_representation_with_resolved_profile,
+            write_fit_representation_with_retry,
         },
         coefficient_search::{CoefficientSearchError, search_selected_coefficient_cell},
         fit_score::FitScoreProvider,
         temporal_weights::{TemporalWeightError, TemporalWeightProposal, TemporalWeightState},
     },
+    profile::ResolvedEncodingProfile,
     spatial::{
         QmfReceiverFunctionalProvider,
         source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
@@ -275,6 +277,29 @@ impl CoefficientFitProposal {
             clip_gain_index,
             sequence_count,
             capacity_bytes,
+        )
+    }
+
+    pub(crate) fn write_payload_with_resolved_profile(
+        &self,
+        profile: ResolvedEncodingProfile,
+        provider: &RepresentationRetryProvider,
+        clip_gain_index: u8,
+        sequence_count: u16,
+        capacity_bytes: u16,
+    ) -> Result<RepresentationWriteResult, RepresentationRetryError> {
+        write_fit_representation_with_resolved_profile(
+            provider,
+            FitRepresentationInput {
+                full_words: &self.full_words,
+                sparse_words: &self.sparse_words,
+                selected_channels: &self.selected_channels,
+                representation_offset: self.representation_offset,
+            },
+            clip_gain_index,
+            sequence_count,
+            capacity_bytes,
+            profile,
         )
     }
 
@@ -689,9 +714,14 @@ mod tests {
             }
             score_calls += u64::from(proposal.score_call_count());
             rows = *proposal.row_states_after();
-            let source =
-                assemble_staged_source(&dispatch_state, proposal, &payload_input, &retry_provider)
-                    .unwrap();
+            let source = assemble_staged_source(
+                &dispatch_state,
+                proposal,
+                &payload_input,
+                &retry_provider,
+                None,
+            )
+            .unwrap();
             assert_eq!(source.id14_body().body().bytes, metadata_body.bytes);
             assert_eq!(source.id14_body().body().writer_generation, source_index);
             assert_eq!(source.lineage().source_index(), source_index);

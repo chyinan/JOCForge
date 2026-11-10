@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.flat7x.cli-selector-delta.v1",
+  "package_id": "JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1",
+  "status": "PARTIAL_IMPLEMENTATION_AUTHORIZED",
+  "cli_selector": {
+    "option": "--joc-layout",
+    "accepted_value": "flat7x",
+    "omitted_value_behavior": "preserve existing selected 1024 kbps / 5.1 profile",
+    "invalid_value_behavior": "reject before encoder execution",
+    "compatible_profile_row": "flat7x_1024_5_1_core"
+  },
+  "resolved_profile_field": {
+    "type": "JocReconstructionLayout",
+    "variant": "Flat7x",
+    "joc_dmx_config_idx": 1,
+    "width_bits": 3,
+    "writer_boundary": "existing JOC-header writer"
+  },
+  "separate_fields": {
+    "JocDownmixProfile": "mode0 / phase1 / internal index3 remains unchanged",
+    "joc_num_objects_bits": "separate 6-bit field",
+    "complexity_index_type_a": "separate 8-bit addbsi field",
+    "adm_rows": "not equated to object or carrier count",
+    "eac3_chanmap_locations": "not equated to reconstruction channels"
+  },
+  "execution_status": "NOT_RUN",
+  "production_allowed": false
+}

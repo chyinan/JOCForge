@@ -1,0 +1,27 @@
+{
+  "schema": "wash-implementation-supplement-sources.v1",
+  "sources": [
+    {
+      "kind": "sealed_wash_package",
+      "package_id": "JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1",
+      "manifest_sha256": "509a4d61dbc0b20a0044a05043a99e83a7b60224aefd3df144cb394d1b30048b",
+      "seal_sha256": "bcce271fa5cfc7d725e4833337111c0a882a0dc09a9ebba3dfe2aeac7749b4dd",
+      "scope": "immutable Flat7x profile value and joc_dmx_config_idx=1 header serialization"
+    },
+    {
+      "kind": "user_authorized_goal",
+      "scope": "make the official-demo flat7x structure selectable and generate an output while preserving current 5.1 default"
+    },
+    {
+      "kind": "implementer_report",
+      "status": "IMPLEMENTER_REPORTED_NOT_INDEPENDENTLY_VERIFIED",
+      "claim": "current CLI exposes data-rate but no Flat7x layout selector; run_with_data_rate uses existing selected profile"
+    }
+  ],
+  "excluded_sources": [
+    "research executables",
+    "mode21 failure artifacts",
+    "historical main source",
+    "FFmpeg or other product audio algorithms"
+  ]
+}

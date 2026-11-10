@@ -4,13 +4,14 @@
 use crate::joc::coefficient_payload::{
     CoefficientPayloadInput, CoefficientPayloadObject, CoefficientPayloadOutcome,
     CoefficientPayloadPoint, CoefficientPayloadWriterFailure,
-    write_selected_id14_coefficient_payload,
+    write_selected_id14_coefficient_payload, write_selected_id14_coefficient_payload_for_profile,
 };
 use crate::{
     joc::{
         coefficient_fitting::FitSourceLineage, emdf::metadata_owner::MetadataPayloadBody,
         id14_body::Id14BodyProposal,
     },
+    profile::ResolvedEncodingProfile,
     timeline::{CodecSourceIndex, JocDispatchIndex},
     transaction::CallbackTransactionId,
 };
@@ -191,6 +192,42 @@ pub fn write_fit_representation_with_retry(
     sequence_count: u16,
     capacity_bytes: u16,
 ) -> Result<RepresentationWriteResult, RepresentationRetryError> {
+    write_fit_representation_with_profile(
+        provider,
+        fit,
+        clip_gain_index,
+        sequence_count,
+        capacity_bytes,
+        None,
+    )
+}
+
+pub fn write_fit_representation_with_resolved_profile(
+    provider: &RepresentationRetryProvider,
+    fit: FitRepresentationInput<'_>,
+    clip_gain_index: u8,
+    sequence_count: u16,
+    capacity_bytes: u16,
+    profile: ResolvedEncodingProfile,
+) -> Result<RepresentationWriteResult, RepresentationRetryError> {
+    write_fit_representation_with_profile(
+        provider,
+        fit,
+        clip_gain_index,
+        sequence_count,
+        capacity_bytes,
+        Some(profile),
+    )
+}
+
+fn write_fit_representation_with_profile(
+    provider: &RepresentationRetryProvider,
+    fit: FitRepresentationInput<'_>,
+    clip_gain_index: u8,
+    sequence_count: u16,
+    capacity_bytes: u16,
+    profile: Option<ResolvedEncodingProfile>,
+) -> Result<RepresentationWriteResult, RepresentationRetryError> {
     if !(1..=543).contains(&capacity_bytes) {
         return Err(RepresentationRetryError::CapacityDomain);
     }
@@ -209,8 +246,11 @@ pub fn write_fit_representation_with_retry(
                 .map(ObjectRepresentation::payload_object)
                 .collect(),
         };
-        let outcome = write_selected_id14_coefficient_payload(&input)
-            .map_err(RepresentationRetryError::Writer)?;
+        let outcome = match profile {
+            Some(profile) => write_selected_id14_coefficient_payload_for_profile(&input, profile),
+            None => write_selected_id14_coefficient_payload(&input),
+        }
+        .map_err(RepresentationRetryError::Writer)?;
         let required_bits = outcome
             .header_bit_count()
             .checked_add(outcome.body_bit_count().value())

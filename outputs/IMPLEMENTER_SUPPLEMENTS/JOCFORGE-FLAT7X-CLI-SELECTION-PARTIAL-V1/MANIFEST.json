@@ -1,0 +1,37 @@
+{
+  "files": [
+    {
+      "bytes": 1917,
+      "path": "CHECK.py",
+      "sha256": "c454505df5caa0c8561f2858a4088129f4ddf461edb2682e1fdd8631db1168a0"
+    },
+    {
+      "bytes": 463,
+      "path": "GTC-OWNER-PROJECTION.json",
+      "sha256": "2273b497748b7eb54e3557ffe1a9244f476168de49bd8d33d97282f8faaf1574"
+    },
+    {
+      "bytes": 1523,
+      "path": "IMPLEMENTATION-SCOPE.md",
+      "sha256": "6695f05e126a2494ea02274e6d92a49f8f1fbfea1d440de613eda11c007e743c"
+    },
+    {
+      "bytes": 1031,
+      "path": "INPUT-ONLY-VECTORS.json",
+      "sha256": "f28ebaac0a345febb57796af17f0fb3c8b0ff8074d36f1fb627e5d11dfc00284"
+    },
+    {
+      "bytes": 1069,
+      "path": "PROFILE-SELECTOR-DELTA.json",
+      "sha256": "af775da05d88bfe4e4735801dc6b8c7ffacd84c9bdc02d2ef13c50f01a63db36"
+    },
+    {
+      "bytes": 1059,
+      "path": "SOURCE-RECEIPTS.json",
+      "sha256": "dc84556d695cf6ef203d65603fdb47d5d897154c4ac2a5a6e471913884b97c78"
+    }
+  ],
+  "package_id": "JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1",
+  "schema": "jocforge.wash-implementation-supplement.v1",
+  "status": "PARTIAL_IMPLEMENTATION_AUTHORIZED"
+}

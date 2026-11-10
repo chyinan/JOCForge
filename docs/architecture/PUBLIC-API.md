@@ -4,7 +4,7 @@
 
 ## Profile API
 
-调用者提交含 input、core carrier、JOC downmix control、JOC reconstruction layout、topology、rate 和 EMDF carriage 的 immutable `EncodingProfile`。现有构造器保持 `ExistingSelectedFivePointOne` layout；`selected_with_joc_reconstruction_layout(Flat7x)` 创建 1024 kbps additive profile。resolver 返回 `ResolvedEncodingProfile`，其中分别保留 `JocDownmixProfile` 与 `JocReconstructionLayout`；profile-aware JOC-header writer 从后者取得 `joc_dmx_config_idx`。其他未登记组合返回类型化 `UNSUPPORTED_PROFILE`。
+调用者提交含 input、core carrier、JOC downmix control、JOC reconstruction layout、topology、rate 和 EMDF carriage 的 immutable `EncodingProfile`。现有构造器保持 `ExistingSelectedFivePointOne` layout；`selected_with_joc_reconstruction_layout(Flat7x)` 创建 1024 kbps additive profile。CLI 的可选 `--joc-layout flat7x` 通过同一 profile resolver 选择该值；省略参数沿用现有 5.1 layout。resolver 返回 `ResolvedEncodingProfile`，其中分别保留 `JocDownmixProfile` 与 `JocReconstructionLayout`；profile-aware JOC-header writer 从后者取得 `joc_dmx_config_idx`。其他未登记组合返回类型化 `UNSUPPORTED_PROFILE`。
 
 `RenderTarget` 只存在于独立 `ValidationProfile`。Production encode 不接收 `RenderTarget`，render target 的变化不得影响 production profile resolution。
 
