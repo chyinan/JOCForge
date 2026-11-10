@@ -3,6 +3,7 @@ status: current
 topic: washed-evidence-index
 spec: JOCForge
 confidence: package-hash-verified
+last_updated: 2026-11-10
 tags:
   - evidence
   - Wash
@@ -20,3 +21,4 @@ tags:
 | `JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1` | `0cd5b5e6a1a37961225bfd71bcbf68619baea76c48800449078919acd3499f43` | `584fdd652ce61102f182f34a133fd083e325cfcde2e9674e5cdaf2c36a576e1a` | Abstract AU target only；legacy atomicity 未证明；D0 role/algorithm `UNBOUND`；runtime `NOT_CAPTURED`；production disabled | `outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1` |
 | `JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1` | `470fa9830a7937fcd1d5169c980f139669011e766e136ce2dc9bf7498103f787` | `aaeb22108dac10742ad410e624d9a3dae6cf9d5707b56b58697a4068d335bf81` | Numeric field-slot mapping 和 input-only vectors；semantic labels/source-role join 未绑定；native execution `NOT_RUN` | `outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1` |
 | `DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1` | `98697c0b352bb11379d0cc942911ad34b23350a554b2432cf9e9b8405f4523a6` | `fbec0caef75f1fd2f49d6e390b090127979b189861d0482381c337d511dfa61e` | Partial static writer boundaries；I0/D0 role、AU order、source generation 和 atomic commit 未绑定；vectors `NOT_RUN` | `outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1` |
+| `JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1` | `9f500f0785c569d67b846fa54f121b4e42c6b5b179ace98c4bdf19463c906109` | `a5ea37646195925f69cc2d53792b474a882b536cac3b26699ff4aa8679b16b3f` | Official I0 exact BSID `NOT_CAPTURED`；BSID16/strmtyp0 prefix equivalence `UNBOUND`；no prefix change authorized；production disabled | `outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1` |

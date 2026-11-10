@@ -1,0 +1,29 @@
+{
+  "schema": "wash-sanitized-supplement.v1",
+  "package_id": "JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1",
+  "status": "OFFICIAL_I0_SYNTAX_NOT_CAPTURED; PREFIX_EQUIVALENCE_UNBOUND; PRODUCTION_NOT_READY",
+  "implementation_scope": "I0_SYNTAX_GAP_NOTICE_ONLY",
+  "production_allowed": false,
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 1946,
+      "sha256": "72991298e2fc830dbeb0e6ef83e01a45f99827f98f515a331b8a1f85dec72954"
+    },
+    {
+      "path": "I0-SYNTAX-BOUNDARY.json",
+      "bytes": 1244,
+      "sha256": "d866354770d6c3abe0d97bb463f1fc3854df89737f077542c893b11f1b876909"
+    },
+    {
+      "path": "RECEIPT.md",
+      "bytes": 1214,
+      "sha256": "9fd505e9a70f9a17b7fda3146421ef144281b41bce2921f8691e5efa57882312"
+    },
+    {
+      "path": "SOURCE-RECEIPT.json",
+      "bytes": 1455,
+      "sha256": "4ad5f791c089a779be7f2aed4474bf8c18ba6c2685f4d2eb2f87af67b3eed716"
+    }
+  ]
+}

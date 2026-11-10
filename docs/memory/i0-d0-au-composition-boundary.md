@@ -3,6 +3,7 @@ status: verified
 topic: i0-d0-au-composition-boundary
 spec: JOCForge
 confidence: sealed-wash-package
+last_updated: 2026-11-10
 tags:
   - AU
   - I0
@@ -24,6 +25,10 @@ tags:
 - 不要把这个抽象 target 与 `DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1` 合并理解。后者没有识别其 writer paths 为 I0 或 D0，也没有证明 AU 顺序、source generation 或 atomic commit。
 - 不要从 chanmap bit count、ADM row count 或 JOC carrier count 推导 D0 source-row 或 speaker-role mapping。
 - 不要把 target atomic publication 当成 runtime evidence，也不要据此启用 production。
+
+## I0 syntax gap
+
+Wash package `JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1`（manifest `9f500f0785c569d67b846fa54f121b4e42c6b5b179ace98c4bdf19463c906109`，seal `a5ea37646195925f69cc2d53792b474a882b536cac3b26699ff4aa8679b16b3f`）记录：官方结构摘要的 `legacy_independent` 分类未提供 exact BSID；当前隔离 prefix 为 E-AC-3 BSID16/`strmtyp=0`，其与官方 I0 的 equivalence 是 `UNBOUND`。OpenJOC parser 的 BSID 能力不证明官方输出语法或 encoder 行为。该 notice 不授权修改现有 prefix，5.1 profile 保持不变。
 
 ## 未闭合边界与交接
 

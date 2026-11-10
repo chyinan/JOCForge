@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge.wash-i0-syntax-gap-source-receipt.v1",
+  "package_id": "JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1",
+  "inputs": [
+    {
+      "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+      "manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+      "package_seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+      "role": "approved target profile and source summary; exact official I0 BSID not present"
+    },
+    {
+      "package_id": "OPENJOC-EAC3-STRUCTURE-MATRIX-WASH-V1",
+      "manifest_sha256": "e496dbc5a3f9e30ffaf1de145017508ee85f9ec957adc0da7db85eb890af47fa",
+      "zip_sha256": "094f95190f0f0928764f9747239c5de7270cc1c4d494d4cfc6148fdee6281265",
+      "role": "static parser capability cross-check; not official stream evidence"
+    },
+    {
+      "isolated_file": "crates/jocforge-domain/src/codec/frame_builder.rs",
+      "sha256": "911a9d0bf2f05bdb8510359bdc10f2a37230890fd556f6ca99d44f11bce2674a",
+      "role": "selected isolated prefix uses E-AC-3 BSID 16 / strmtyp=0; identity checked read-only"
+    }
+  ],
+  "excluded": [
+    "official media or elementary-stream bytes",
+    "OpenJOC source files or implementation snippets",
+    "legacy main source code",
+    "mode21 payload, PCM, private key, or license"
+  ],
+  "wash_disposition": "I0 syntax equivalence is unresolved; do not infer or change BSID from the legacy_independent label."
+}

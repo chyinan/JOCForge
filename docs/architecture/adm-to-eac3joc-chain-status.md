@@ -1644,6 +1644,12 @@ Wash package `JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1` (manifest SHA-256 `0cd5
 
 This is an architecture requirement, not proof that the legacy reference durably published atomically. The earlier transaction-boundary package remains limited to untyped static writer boundaries and does not prove I0/D0 roles, order, generation, or atomic commit. Runtime generation is `NOT_CAPTURED`; actual output is `NOT_RUN`; D0 source-role mapping and native D0 audio algorithm remain `UNBOUND`; `production_allowed=false`.
 
+## 2026-11-10: Atmos71 I0 frame syntax identity gap
+
+Wash package `JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1` (manifest SHA-256 `9f500f0785c569d67b846fa54f121b4e42c6b5b179ace98c4bdf19463c906109`, seal SHA-256 `a5ea37646195925f69cc2d53792b474a882b536cac3b26699ff4aa8679b16b3f`) records that the approved official structure summary labels I0 `legacy_independent` but does not provide its exact BSID. The currently selected isolated frame prefix emits E-AC-3 BSID 16 with `strmtyp=0`; equivalence to official I0 remains `UNBOUND`. Do not infer the missing BSID from the label or alter the current prefix from this notice.
+
+The cited OpenJOC parser capability distinguishes legacy AC-3 BSID 0..8 from E-AC-3 BSID 16; it is parser/validator capability only, not evidence of official-output syntax or an encoder algorithm. The existing 5.1 profile remains unchanged. Official I0 exact BSID is `NOT_CAPTURED`; runtime and real 7.1 output are `NOT_RUN`; `production_allowed=false`.
+
 ## 2026-11-09: JOC downmix index versus reconstruction profile
 
 Wash package `DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1` (manifest SHA-256 `507b7b495812fa7df491c843e21f169fb822745ca5e653b7d25453c9abc03ce6`, seal SHA-256 `9f316ded705debd959de7dd67d6cd54766a7458afeb444f911d82f43d3ab6c3d`) cross-checks 5.1 mode0/phase-flag1, contract downmix_index=3, and separate reconstruction `five_x_phase`/profile_index3. Numeric equality does not establish field identity; the legacy enum Index3 serializer relation remains `UNBOUND`. The official flat7x profile_index1 is a reconstruction-profile value; target mode/phase and serializer joins remain `UNBOUND`.

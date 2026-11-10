@@ -3,7 +3,7 @@ status: awaiting-wash-review
 topic: implementation-agent-status
 spec: JOCForge
 confidence: repository-status
-last_updated: 2026-11-09
+last_updated: 2026-11-10
 tags:
   - implementation
   - handoff
@@ -18,6 +18,7 @@ tags:
 - 最近的 I0/D0 composition 工作只登记 Wash 材料并整理文档，没有更改 production algorithm。
 - 项目指引记载 product encode entry 仍不可用；独立 validation 和 W04 acceptance 为 `NOT_RUN`。
 - 选定的 7.1 profile 仍为 `production_allowed=false`。
+- I0 frame syntax gap 已登记：官方 exact BSID `NOT_CAPTURED`；当前 selected prefix BSID16/`strmtyp=0` 与官方 I0 的 equivalence 为 `UNBOUND`。没有授权更改 prefix；production 仍关闭。
 
 ## 下一步
 

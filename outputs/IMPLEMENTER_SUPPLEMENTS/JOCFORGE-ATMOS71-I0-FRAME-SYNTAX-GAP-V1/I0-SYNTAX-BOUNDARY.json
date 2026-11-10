@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge.atmos71.i0-frame-syntax-boundary.v1",
+  "status": "OFFICIAL_I0_EXACT_BSID_NOT_CAPTURED; ISOLATED_PREFIX_EQUIVALENCE_UNBOUND",
+  "profile_id": "atmos71_flat7x_i0_640_d0_1024_v1",
+  "official_structure_receipt": {
+    "classification": "legacy_independent",
+    "exact_bsid": "NOT_CAPTURED",
+    "media_or_elementary_stream_read_in_wash_review": false
+  },
+  "isolated_selected_prefix_source": {
+    "file_role": "selected E-AC-3 frame prefix writer",
+    "sha256": "911a9d0bf2f05bdb8510359bdc10f2a37230890fd556f6ca99d44f11bce2674a",
+    "syntax": "E-AC-3 BSID 16; strmtyp=0",
+    "source_generation": "D:\\Programs\\JOCForge-isolated",
+    "implementation_equivalence_to_official_i0": "UNBOUND"
+  },
+  "openjoc_validator_capability_summary": {
+    "receipt_status": "WASH_REVIEWED_STATIC_SOURCE_MATRIX_ONLY",
+    "legacy_bsid_range": "0..8",
+    "eac3_bsid": 16,
+    "role": "validator/parser capability only; not official-output evidence and not an encoder algorithm source"
+  },
+  "profile_boundaries": {
+    "existing_5_1_profile": "PRESERVE_UNCHANGED",
+    "new_7_1_profile_production_allowed": false,
+    "d0_source_role": "UNBOUND",
+    "native_d0_audio_algorithm": "UNBOUND",
+    "runtime_output": "NOT_RUN"
+  }
+}

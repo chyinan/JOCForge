@@ -18473,8 +18473,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2065360,
-              "sha256": "5fb3cff037f49aa2b3b0603189ca0e94b0a6cffa5fb8a29037d9b7eba64b0cc3"
+              "bytes": 2066240,
+              "sha256": "1a06c8c1539252f5f0d84d61bbf6407a598c2b0acb2f926e07db9fcf3b534e57"
             }
           ],
           "test_modules": [
@@ -22000,8 +22000,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2065360,
-              "sha256": "5fb3cff037f49aa2b3b0603189ca0e94b0a6cffa5fb8a29037d9b7eba64b0cc3"
+              "bytes": 2066240,
+              "sha256": "1a06c8c1539252f5f0d84d61bbf6407a598c2b0acb2f926e07db9fcf3b534e57"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -45267,6 +45267,97 @@
           ],
           "validation_boundary": "Numeric U16 field serialization only; semantic profile labels are sourced independently, source-row owner remains UNBOUND, and native execution is NOT_RUN.",
           "delivery_scope": "EAC3_CHANMAP_NUMERIC_FIELD_SERIALIZATION_ONLY_NO_SEMANTIC_OR_PRODUCTION_CLAIM"
+        },
+        {
+          "slice_id": "washed-atmos71-i0-frame-syntax-equivalence-gap",
+          "mapping_status": "OFFICIAL_I0_EXACT_BSID_NOT_CAPTURED__ISOLATED_PREFIX_EQUIVALENCE_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_SYNTAX_GAP_NOTICE__NO_PREFIX_CHANGE_AUTHORIZED",
+          "implementation_requirement": false,
+          "owner": "codec",
+          "scope": "The approved official structure summary classifies I0 as legacy_independent but does not provide its exact BSID. The selected isolated frame-prefix writer currently emits E-AC-3 BSID 16 with strmtyp=0; equivalence to the official I0 syntax remains UNBOUND. OpenJOC parser capability distinguishes legacy AC-3 BSID 0..8 from E-AC-3 BSID 16, but this is parser capability only, not evidence of the official output syntax or an encoder algorithm. Do not infer the missing BSID from the legacy_independent label or alter the existing prefix based on this notice. The existing 5.1 profile remains unchanged and 7.1 production remains disabled.",
+          "dependencies": [
+            "F01E/approved-atmos71-flat7x-1664-profile-contract",
+            "F12/selected-fixed-profile-header-prefix"
+          ],
+          "spec_files": [
+            "specs/12-codec-and-wire.md",
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1/RECEIPT.md"
+          ],
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [
+              "Eac3Frame"
+            ],
+            "covered_clauses": [
+              "This package reports a frame-syntax identity gap only; it establishes no AU or runtime clock behavior."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_ATMOS71_I0_FRAME_SYNTAX_EQUIVALENCE_GAP",
+            "package_id": "JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1/I0-SYNTAX-BOUNDARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1/RECEIPT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1/SOURCE-RECEIPT.json"
+            ],
+            "supplement_manifest_sha256": "9f500f0785c569d67b846fa54f121b4e42c6b5b179ace98c4bdf19463c906109",
+            "supplement_seal_sha256": "a5ea37646195925f69cc2d53792b474a882b536cac3b26699ff4aa8679b16b3f",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_ready": false,
+            "official_structure_classification": "legacy_independent",
+            "official_i0_exact_bsid": "NOT_CAPTURED",
+            "selected_isolated_prefix": {
+              "file_role": "selected E-AC-3 frame prefix writer",
+              "sha256": "911a9d0bf2f05bdb8510359bdc10f2a37230890fd556f6ca99d44f11bce2674a",
+              "syntax": "E-AC-3 BSID 16; strmtyp=0"
+            },
+            "isolated_prefix_equivalence_to_official_i0": "UNBOUND",
+            "openjoc_validator_capability": {
+              "receipt_status": "WASH_REVIEWED_STATIC_SOURCE_MATRIX_ONLY",
+              "legacy_bsid_range": "0..8",
+              "eac3_bsid": 16,
+              "scope": "Parser/validator capability only; not official-output evidence and not an encoder algorithm source."
+            },
+            "implementation_disposition": "NO_PREFIX_CHANGE_AUTHORIZED",
+            "existing_5_1_profile": "PRESERVE_UNCHANGED",
+            "new_7_1_profile_production_allowed": false,
+            "runtime_generation": "NOT_CAPTURED",
+            "real_output": "NOT_RUN",
+            "validation_boundary": "The official I0 exact BSID is missing. The current isolated prefix is known to emit E-AC-3 BSID 16/strmtyp=0, but equivalence to official I0 is UNBOUND. OpenJOC parser capability does not establish official output syntax."
+          },
+          "vectors": {
+            "kind": "WASHED_I0_FRAME_SYNTAX_IDENTITY_GAP",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1/I0-SYNTAX-BOUNDARY.json"
+            ],
+            "case_pointers": [
+              "Official summary says legacy_independent but exact BSID is NOT_CAPTURED.",
+              "Current isolated prefix emits E-AC-3 BSID 16/strmtyp=0; profile equivalence is UNBOUND.",
+              "Parser capability is not official-output or encoder evidence."
+            ],
+            "local_fixture": {
+              "file": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1/I0-SYNTAX-BOUNDARY.json",
+              "bytes": 1244,
+              "sha256": "d866354770d6c3abe0d97bb463f1fc3854df89737f077542c893b11f1b876909"
+            },
+            "expected_outputs_included": false,
+            "execution_status": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Official I0 exact BSID and equivalence to the selected isolated prefix.",
+            "Any official-output parser or encoder run and real 7.1 output.",
+            "Any code or prefix change; this notice authorizes none."
+          ],
+          "validation_boundary": "Syntax-identity gap notice only; official exact BSID is NOT_CAPTURED and selected prefix equivalence remains UNBOUND.",
+          "delivery_scope": "WASHED_I0_SYNTAX_GAP_ONLY_NO_PREFIX_CHANGE_OR_PRODUCTION_CLAIM"
         }
       ]
     },
@@ -54464,8 +54555,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2065360,
-              "sha256": "5fb3cff037f49aa2b3b0603189ca0e94b0a6cffa5fb8a29037d9b7eba64b0cc3"
+              "bytes": 2066240,
+              "sha256": "1a06c8c1539252f5f0d84d61bbf6407a598c2b0acb2f926e07db9fcf3b534e57"
             }
           ],
           "test_inventory": [
@@ -73093,6 +73184,26 @@
         "Validation and durable publication of a real complete I0+D0 AU.",
         "Legacy implementation atomicity and partial-I0 failure behavior.",
         "D0 source-role mapping, native D0 audio algorithm, real output, and W04 acceptance."
+      ]
+    },
+    {
+      "package_id": "JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1",
+      "manifest_sha256": "9f500f0785c569d67b846fa54f121b4e42c6b5b179ace98c4bdf19463c906109",
+      "supplement_seal_sha256": "a5ea37646195925f69cc2d53792b474a882b536cac3b26699ff4aa8679b16b3f",
+      "functional_ids": [
+        "F12"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "OFFICIAL_I0_EXACT_BSID_NOT_CAPTURED; ISOLATED_BSID16_PREFIX_EQUIVALENCE_UNBOUND; NO_CODE_CHANGE_AUTHORIZED; PRODUCTION_ALLOWED_FALSE",
+      "not_run": [
+        "Official I0 exact BSID capture and syntax-to-profile equivalence.",
+        "Any official-output parser or encoder execution.",
+        "Any I0 prefix mutation or real 7.1 output validation."
       ]
     }
   ]
