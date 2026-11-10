@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.profile-layout-gtc-projection.v1",
+  "package_id": "JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1",
+  "projection_status": "BOUND_FOR_IMMUTABLE_PROFILE_CONFIGURATION",
+  "new_mutable_owner": false,
+  "field_group": "encoding_profile.joc_reconstruction_layout",
+  "value_lifecycle": "immutable per encode attempt",
+  "producer_boundary": "existing profile-resolution boundary",
+  "cross_boundary_value": "resolved profile typed value or existing profile-resolution receipt",
+  "consumer_boundary": "existing JOC-header writer",
+  "derived_wire_operation": "write joc_dmx_config_idx as the profile-selected 3-bit value",
+  "attempt_identity": "inherit the existing encode-attempt identity and generation",
+  "commit_owner_change": false,
+  "audio_state_mutation": false,
+  "implementation_rule": "Keep layout selection in the resolved profile; do not add a mutable global or independent runtime state owner."
+}

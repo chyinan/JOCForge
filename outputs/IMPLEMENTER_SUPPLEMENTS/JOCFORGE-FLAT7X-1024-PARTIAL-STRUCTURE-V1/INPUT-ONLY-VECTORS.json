@@ -1,0 +1,46 @@
+{
+  "schema": "jocforge.flat7x-profile-input-only-vectors.v1",
+  "package_id": "JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1",
+  "contains_media_or_bitstream": false,
+  "vectors": [
+    {
+      "id": "flat7x-index1",
+      "input": {"joc_reconstruction_layout": "Flat7x"},
+      "expected": {
+        "joc_dmx_config_idx": {"width_bits": 3, "value": 1},
+        "layout": "7.X Lb/Rb",
+        "joc_num_channels": 7
+      }
+    },
+    {
+      "id": "tfl_tfr-distinguishing-index2",
+      "input": {"joc_dmx_config_idx": 2},
+      "expected": {"layout": "5.X+2 Tfl/Tfr", "joc_num_channels": 7},
+      "purpose": "Verify index 2 remains distinct from Flat7x index 1; this package does not add a new production row for index 2."
+    },
+    {
+      "id": "reserved-index-rejection",
+      "input": {"joc_dmx_config_idx": 5},
+      "expected": {"profile_resolution": "UNSUPPORTED_PROFILE"}
+    },
+    {
+      "id": "dimension-separation",
+      "input": {
+        "JocDownmixProfile": {"mode": 0, "phase": 1, "internal_index": 3},
+        "JocReconstructionLayout": "Flat7x"
+      },
+      "expected": {
+        "JocDownmixProfile": {"mode": 0, "phase": 1, "internal_index": 3},
+        "joc_dmx_config_idx": 1
+      }
+    },
+    {
+      "id": "object-count-complexity-domain-separation",
+      "input": {
+        "joc_num_objects_bits": {"width_bits": 6, "semantic_rule": "object_count = bits + 1"},
+        "complexity_index_type_a": {"width_bits": 8}
+      },
+      "expected": {"fields_are_independent": true, "derive_one_from_the_other": false}
+    }
+  ]
+}

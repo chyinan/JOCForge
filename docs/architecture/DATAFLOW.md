@@ -18,6 +18,23 @@ encode 不读取路径、不启动进程、不打开文件。其余 domain 模�
 
 批准后的职责流：CLI 收集有界输入 → io 产生输入字节 → frontend 生成不可变语义输入 → application 按 GTC 协调 owner → 各 domain 产生 staged result → publication 产生完整发布提案 → CLI 调用 atomic_output 提交。本轮只物化边界，不启用这条生产路径。
 
+## 1024 kbps Flat7x profile/header slice
+
+本 slice 将 reconstruction layout 作为 immutable attempt configuration 从 profile resolution 传到已有 JOC-header writer：
+
+```mermaid
+flowchart LR
+  P[EncodingProfile: 1024 kbps / 5.1 core / Flat7x] --> R[resolve_selected_profile]
+  R --> V[ResolvedEncodingProfile]
+  C[CoefficientPayloadInput: downmix_index 3] --> A[Existing 5.1 coefficient path]
+  V --> H[profile-aware JOC header writer]
+  H --> I[U3 joc_dmx_config_idx = 1]
+  I --> O[U6 object-count bits]
+  O --> X[U3 extension index]
+```
+
+`JocDownmixProfile::SelectedMode0Phase1Index3` remains separate from `JocReconstructionLayout::Flat7x`. The coefficient input continues to use its current 5.1 downmix control, while the resolved layout selects the header's 3-bit index. The selected 5.1 profile follows the legacy writer path. The layout is an immutable profile value, so this slice adds no GTC mutable owner or commit stage. Complete-file output and official-demo structure acceptance remain `NOT_RUN`.
+
 已物化的 PostWindow fanout capability 位于 F03W `W3072` installed48 输出之后。future renderer 创建一个线性 proposal；`fanout(self)` 生成 CurrentFeatures 和 spatial-audio 两个非 Clone view，并共享同一 immutable `Arc` payload。CurrentFeatures 接收显式 phase。renderer、F04 assembler 和 parent transaction 仍 deferred。
 
 F04C 的 E2 component stage 和 E3 Direct-LFE ring stage 分别消费同代受限输入，并返回不可提交的 proposal。E3 在 `g>=2` 提供 provenance 为 `g-2` 的 Type10 row0。rows1..15 来自当前 callback 的 E2 component15。E4 将两个 proposal 组装为只读的 16×1536 packet。

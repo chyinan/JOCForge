@@ -8,6 +8,7 @@ pub mod id14_header;
 pub use id14_header::{
     Id14HeaderInput, Id14InputShapeError, Id14ObjectDescriptor, Id14OutputLength, Id14Presence,
     Id14WriterOutcome, Id14WriterReturnCode, Id14WriterState, write_id14_header,
+    write_id14_header_for_profile,
 };
 
 const SELECTED_CODEBOOKS: &str = include_str!("huffman/codebooks.json");

@@ -1650,6 +1650,12 @@ Wash package `JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1` (manifest SHA-256 `9f500f
 
 The cited OpenJOC parser capability distinguishes legacy AC-3 BSID 0..8 from E-AC-3 BSID 16; it is parser/validator capability only, not evidence of official-output syntax or an encoder algorithm. The existing 5.1 profile remains unchanged. Official I0 exact BSID is `NOT_CAPTURED`; runtime and real 7.1 output are `NOT_RUN`; `production_allowed=false`.
 
+## 2026-11-10: Flat7x layout on the selected 1024 kbps / 5.1 core path
+
+Wash package `JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1` (manifest SHA-256 `509a4d61dbc0b20a0044a05043a99e83a7b60224aefd3df144cb394d1b30048b`, seal SHA-256 `bcce271fa5cfc7d725e4833337111c0a882a0dc09a9ebba3dfe2aeac7749b4dd`) authorizes a partial profile/header slice. `JocReconstructionLayout::Flat7x` is resolved as ETSI `joc_dmx_config_idx=1` in the 3-bit JOC header field before the 6-bit object-count field and 3-bit extension index. The selected mode0/phase1/internal-index3 control remains independent; the existing 1024 kbps / 5.1 coefficient path, audio-generation inputs, topology, and publication rules are retained. The layout passes as immutable resolved-profile configuration and creates no mutable GTC owner.
+
+Local implementation and input-only boundary tests cover this field-level slice. Complete Flat7x stream structure, 7.X audio output, official-demo acceptance, independent validation, and listening acceptance remain `NOT_RUN`.
+
 ## 2026-11-09: JOC downmix index versus reconstruction profile
 
 Wash package `DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1` (manifest SHA-256 `507b7b495812fa7df491c843e21f169fb822745ca5e653b7d25453c9abc03ce6`, seal SHA-256 `9f316ded705debd959de7dd67d6cd54766a7458afeb444f911d82f43d3ab6c3d`) cross-checks 5.1 mode0/phase-flag1, contract downmix_index=3, and separate reconstruction `five_x_phase`/profile_index3. Numeric equality does not establish field identity; the legacy enum Index3 serializer relation remains `UNBOUND`. The official flat7x profile_index1 is a reconstruction-profile value; target mode/phase and serializer joins remain `UNBOUND`.
@@ -1657,3 +1663,9 @@ Wash package `DEE-JOC-DOWNMIX-RECONSTRUCTION-PROFILE-BOUNDARY-PARTIAL-V1` (manif
 ## 2026-11-09: flat7x reconstruction geometry first break
 
 Wash package `DEE-FLAT7X-RECONSTRUCTION-GEOMETRY-BOUNDARY-PARTIAL-V1` (manifest SHA-256 `a0852e041c393681b24fe7576f1b7cf84c6cb45b32611a3bc7bf53dc961e494e`, seal SHA-256 `5505ede14712e6a14c5f98ff6cc1b013ed5f419e5e09deb186e7fca852c2927e`) records flat7x/index1 and seven contract carrier positions, 15 objects/rows, complexity 16. A bounded exact-string query had zero `flat7x` matches in two images; it did not inspect bodies/branches and is not global absence evidence. Native selector, carrier-to-row/object mapping, matrix/BSI consumer, and runtime remain `UNBOUND/NOT_RUN`. No JOC geometry algorithm is supplied.
+
+## 2026-11-10: Flat7x layout on the selected 1024 kbps / 5.1 core path
+
+Wash package `JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1` (manifest SHA-256 `509a4d61dbc0b20a0044a05043a99e83a7b60224aefd3df144cb394d1b30048b`, seal SHA-256 `bcce271fa5cfc7d725e4833337111c0a882a0dc09a9ebba3dfe2aeac7749b4dd`) authorizes a partial profile/header slice. `JocReconstructionLayout::Flat7x` resolves to ETSI `joc_dmx_config_idx=1` in the 3-bit JOC header field, before the 6-bit object-count field and 3-bit extension index. The selected mode0/phase1/internal-index3 control remains independent; the 1024 kbps / 5.1 coefficient path and its inputs remain stable. GTC projects the layout as immutable profile configuration with no new mutable owner or commit stage.
+
+The profile resolver, profile-aware header field writer, and input-only boundary tests are locally implemented. Complete Flat7x stream structure, 7.X audio rendering, official-demo acceptance, independent validation and listening acceptance remain `NOT_RUN`.

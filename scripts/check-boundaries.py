@@ -11599,7 +11599,7 @@ def check_f13c_r138_record_list_reporting(root,d):
 
 def check_f12_fixed_prefix_slice(root,d):
 
- entry=next(e for e in d['functional_entries']if e['functional_id']=='F12');direct=entry.get('direct_slices',[]);s=next((x for x in direct if x['slice_id']=='selected-fixed-profile-header-prefix'),None);frame_trial=next((x for x in direct if x['slice_id']=='selected-q-frame-trial-and-keyless-crc'),None);main_search=next((x for x in direct if x['slice_id']=='selected-main-q-search'),None);writer=next((x for x in direct if x['slice_id']=='same-source-frame-candidate-writer'),None);carrier_rate=next((x for x in direct if x.get('slice_id')=='washed-data-rate-to-carrier-writer-boundary'),None);header_observation=next((x for x in direct if x.get('slice_id')=='washed-two-rate-eac3-frame-header-observation'),None);six_rate=next((x for x in direct if x.get('slice_id')=='selected-six-rate-profile-frame-size-through-output'),None);rate_frmsiz=next((x for x in direct if x.get('slice_id')=='washed-atmos71-i0-d0-rate-frmsiz-boundary-partial'),None);chanmap_u16=next((x for x in direct if x.get('slice_id')=='washed-eac3-chanmap-u16-msb-first-serialization'),None);i0_syntax=next((x for x in direct if x.get('slice_id')=='washed-atmos71-i0-frame-syntax-equivalence-gap'),None);ck(entry['implementation_status']=='DEFERRED_DETAILED_MAPPING'and len(direct)==27 and any(x['slice_id']=='selected-codec-owner-generation-previous-short-stage'for x in direct)and s is not None and frame_trial is not None and main_search is not None and writer is not None and carrier_rate is not None and header_observation is not None and six_rate is not None and rate_frmsiz is not None and rate_frmsiz.get('implementation_requirement')is False and rate_frmsiz.get('owner')=='codec' and rate_frmsiz.get('parameters',{}).get('supplement_manifest_sha256')=='f62ff1854f0b690501fe9dab5c61ed7b67b6f911f9cb7290b95715e2b1fa475f' and rate_frmsiz.get('parameters',{}).get('native_writer_boundary',{}).get('second_word_frmsiz_producer')=='UNBOUND' and rate_frmsiz.get('parameters',{}).get('native_writer_boundary',{}).get('bsi_bitrate_field')=='UNBOUND' and rate_frmsiz.get('parameters',{}).get('native_writer_boundary',{}).get('actual_output_rate')=='NOT_RUN' and rate_frmsiz.get('parameters',{}).get('production_gates',{}).get('production_allowed')is False and rate_frmsiz.get('vectors',{}).get('execution_status')=='NOT_RUN' and chanmap_u16 is not None and chanmap_u16.get('implementation_requirement')is False and chanmap_u16.get('owner')=='codec' and chanmap_u16.get('implementation_files')==[] and chanmap_u16.get('test_modules')==[] and chanmap_u16.get('parameters',{}).get('supplement_manifest_sha256')=='470fa9830a7937fcd1d5169c980f139669011e766e136ce2dc9bf7498103f787' and chanmap_u16.get('parameters',{}).get('field_width_bits')==16 and chanmap_u16.get('parameters',{}).get('emitted_slot_formula')=='15 - numeric_bit_index' and chanmap_u16.get('parameters',{}).get('one_hot_vector_count')==16 and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('mask_hex')=='0x1A00' and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('expected_emitted_slots')==[3,4,6] and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('expected_field_bits')=='0001101000000000' and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('ADM_source_role_join')=='UNBOUND' and chanmap_u16.get('parameters',{}).get('production_allowed')is False and chanmap_u16.get('vectors',{}).get('execution_status')=='INPUT_ONLY_NOT_RUN' and i0_syntax is not None and i0_syntax.get('implementation_requirement')is False and i0_syntax.get('owner')=='codec' and i0_syntax.get('implementation_files')==[] and i0_syntax.get('test_modules')==[] and i0_syntax.get('parameters',{}).get('supplement_manifest_sha256')=='9f500f0785c569d67b846fa54f121b4e42c6b5b179ace98c4bdf19463c906109' and i0_syntax.get('parameters',{}).get('official_i0_exact_bsid')=='NOT_CAPTURED' and i0_syntax.get('parameters',{}).get('isolated_prefix_equivalence_to_official_i0')=='UNBOUND' and i0_syntax.get('parameters',{}).get('implementation_disposition')=='NO_PREFIX_CHANGE_AUTHORIZED' and i0_syntax.get('parameters',{}).get('new_7_1_profile_production_allowed')is False and i0_syntax.get('vectors',{}).get('execution_status')=='NOT_RUN' and six_rate['implementation_status']=='LOCALLY_VERIFIED_SIX_RATE_ADMISSION_F12_F14_F15_IO__ALL_SIX_FULL_FILE_RATE_OUTPUTS_PUBLISHED__DEE_PARITY_PENDING'and writer['implementation_status']=='LOCALLY_COMPILED_F12_CANDIDATE_AND_PRODUCTION_F15_STAGING__REAL_SOURCE_CANDIDATE_NOT_RUN'and any('Direct positive-path application bridge test' in item for item in writer['not_run'])and any('finalized ProgrammeMeasurementReceipt' in item for item in writer['not_run'])and any(path.endswith('/source_frame_bridge.rs') for path in writer['implementation_files'])and any('durable output' in item for item in writer['not_run'])and any('Continuous multi-source output' in item for item in writer['not_run']),'F12 keeps washed rate evidence, local six-rate frame staging, and whole codec source gaps as separate slices')
+ entry=next(e for e in d['functional_entries']if e['functional_id']=='F12');direct=entry.get('direct_slices',[]);s=next((x for x in direct if x['slice_id']=='selected-fixed-profile-header-prefix'),None);frame_trial=next((x for x in direct if x['slice_id']=='selected-q-frame-trial-and-keyless-crc'),None);main_search=next((x for x in direct if x['slice_id']=='selected-main-q-search'),None);writer=next((x for x in direct if x['slice_id']=='same-source-frame-candidate-writer'),None);carrier_rate=next((x for x in direct if x.get('slice_id')=='washed-data-rate-to-carrier-writer-boundary'),None);header_observation=next((x for x in direct if x.get('slice_id')=='washed-two-rate-eac3-frame-header-observation'),None);six_rate=next((x for x in direct if x.get('slice_id')=='selected-six-rate-profile-frame-size-through-output'),None);rate_frmsiz=next((x for x in direct if x.get('slice_id')=='washed-atmos71-i0-d0-rate-frmsiz-boundary-partial'),None);chanmap_u16=next((x for x in direct if x.get('slice_id')=='washed-eac3-chanmap-u16-msb-first-serialization'),None);i0_syntax=next((x for x in direct if x.get('slice_id')=='washed-atmos71-i0-frame-syntax-equivalence-gap'),None);ck(entry['implementation_status']=='DEFERRED_DETAILED_MAPPING'and len(direct)==28 and any(x['slice_id']=='selected-codec-owner-generation-previous-short-stage'for x in direct)and s is not None and frame_trial is not None and main_search is not None and writer is not None and carrier_rate is not None and header_observation is not None and six_rate is not None and rate_frmsiz is not None and rate_frmsiz.get('implementation_requirement')is False and rate_frmsiz.get('owner')=='codec' and rate_frmsiz.get('parameters',{}).get('supplement_manifest_sha256')=='f62ff1854f0b690501fe9dab5c61ed7b67b6f911f9cb7290b95715e2b1fa475f' and rate_frmsiz.get('parameters',{}).get('native_writer_boundary',{}).get('second_word_frmsiz_producer')=='UNBOUND' and rate_frmsiz.get('parameters',{}).get('native_writer_boundary',{}).get('bsi_bitrate_field')=='UNBOUND' and rate_frmsiz.get('parameters',{}).get('native_writer_boundary',{}).get('actual_output_rate')=='NOT_RUN' and rate_frmsiz.get('parameters',{}).get('production_gates',{}).get('production_allowed')is False and rate_frmsiz.get('vectors',{}).get('execution_status')=='NOT_RUN' and chanmap_u16 is not None and chanmap_u16.get('implementation_requirement')is False and chanmap_u16.get('owner')=='codec' and chanmap_u16.get('implementation_files')==[] and chanmap_u16.get('test_modules')==[] and chanmap_u16.get('parameters',{}).get('supplement_manifest_sha256')=='470fa9830a7937fcd1d5169c980f139669011e766e136ce2dc9bf7498103f787' and chanmap_u16.get('parameters',{}).get('field_width_bits')==16 and chanmap_u16.get('parameters',{}).get('emitted_slot_formula')=='15 - numeric_bit_index' and chanmap_u16.get('parameters',{}).get('one_hot_vector_count')==16 and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('mask_hex')=='0x1A00' and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('expected_emitted_slots')==[3,4,6] and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('expected_field_bits')=='0001101000000000' and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('ADM_source_role_join')=='UNBOUND' and chanmap_u16.get('parameters',{}).get('production_allowed')is False and chanmap_u16.get('vectors',{}).get('execution_status')=='INPUT_ONLY_NOT_RUN' and i0_syntax is not None and i0_syntax.get('implementation_requirement')is False and i0_syntax.get('owner')=='codec' and i0_syntax.get('implementation_files')==[] and i0_syntax.get('test_modules')==[] and i0_syntax.get('parameters',{}).get('supplement_manifest_sha256')=='9f500f0785c569d67b846fa54f121b4e42c6b5b179ace98c4bdf19463c906109' and i0_syntax.get('parameters',{}).get('official_i0_exact_bsid')=='NOT_CAPTURED' and i0_syntax.get('parameters',{}).get('isolated_prefix_equivalence_to_official_i0')=='UNBOUND' and i0_syntax.get('parameters',{}).get('implementation_disposition')=='NO_PREFIX_CHANGE_AUTHORIZED' and i0_syntax.get('parameters',{}).get('new_7_1_profile_production_allowed')is False and i0_syntax.get('vectors',{}).get('execution_status')=='NOT_RUN' and six_rate['implementation_status']=='LOCALLY_VERIFIED_SIX_RATE_ADMISSION_F12_F14_F15_IO__ALL_SIX_FULL_FILE_RATE_OUTPUTS_PUBLISHED__DEE_PARITY_PENDING'and writer['implementation_status']=='LOCALLY_COMPILED_F12_CANDIDATE_AND_PRODUCTION_F15_STAGING__REAL_SOURCE_CANDIDATE_NOT_RUN'and any('Direct positive-path application bridge test' in item for item in writer['not_run'])and any('finalized ProgrammeMeasurementReceipt' in item for item in writer['not_run'])and any(path.endswith('/source_frame_bridge.rs') for path in writer['implementation_files'])and any('durable output' in item for item in writer['not_run'])and any('Continuous multi-source output' in item for item in writer['not_run']),'F12 keeps washed rate evidence, local six-rate frame staging, and whole codec source gaps as separate slices')
 
  rate_header_root='outputs/IMPLEMENTER_SUPPLEMENTS/DEE-EC3-DATA-RATE-FRAME-HEADER-OBSERVATION-V1';rate_header_files=[rate_header_root+'/'+name for name in ('MANIFEST.json','package_seal.json','REPORT.md','INPUT-ONLY-VECTORS.json','OBSERVED-FRAME-HEADERS.json','PROVENANCE.json')]
 
@@ -11651,6 +11651,109 @@ def check_f12_fixed_prefix_slice(root,d):
 
  ck('F12S7-FIXED-PREFIX-45-BITS'in prefix_test and 'PREFIX_INPUTS_SHA256'in prefix_test and 'write_selected_eac3_fixed_prefix(&mut writer, default_frame_size_code())'in prefix_test and 'manual_codec_fixture_values_match_selected_drc_field_positions'in syntax_test and 'write_selected_eac3_fixed_prefix(&mut bit_writer, default_frame_size_code())'in syntax_test and 'fixed_prefix_writes_the_selected_rate_frame_size_code'in syntax_test,'F12 prefix input-only, default compatibility, and per-rate header-field tests')
 
+
+
+def check_f12_flat7x_layout_slice(root, d):
+    entry = next(item for item in d["functional_entries"] if item["functional_id"] == "F12")
+    rows = [item for item in entry.get("direct_slices", []) if item.get("slice_id") == "flat7x-reconstruction-layout-profile-and-header-index"]
+    ck(len(rows) == 1, "F12 has one Flat7x profile/header slice")
+    if not rows:
+        return
+    row = rows[0]
+    package_id = "JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1"
+    expected_manifest = "509a4d61dbc0b20a0044a05043a99e83a7b60224aefd3df144cb394d1b30048b"
+    expected_files = [
+        "crates/jocforge-domain/src/profile/production.rs",
+        "crates/jocforge-domain/src/profile/mod.rs",
+        "crates/jocforge-domain/src/joc/huffman/id14_header.rs",
+        "crates/jocforge-domain/src/joc/huffman.rs",
+        "crates/jocforge-domain/src/joc/coefficient_payload.rs",
+    ]
+    expected_tests = ["crates/jocforge-domain/tests/joc_reconstruction_layout.rs"]
+    params = row.get("parameters", {})
+    profile = params.get("profile_delta", {})
+    layout = profile.get("added_layout", {})
+    header = params.get("joc_header_field_sequence", [])
+    ck(
+        row.get("mapping_status") == "MATERIALIZED_IMMUTABLE_FLAT7X_LAYOUT_AND_ETSI_INDEX1_HEADER_FIELD"
+        and row.get("implementation_requirement") is True
+        and row.get("owner") == "codec"
+        and row.get("implementation_files") == expected_files
+        and row.get("test_modules") == expected_tests,
+        "F12 Flat7x slice is a scoped profile/header implementation",
+    )
+    ck(
+        params.get("package_id") == package_id
+        and params.get("supplement_manifest_sha256") == expected_manifest
+        and params.get("local_verification") == "PASS_NORMAL_AND_PYTHON_O",
+        "F12 Flat7x slice binds the approved Wash package",
+    )
+    ck(
+        profile.get("baseline_rate_kbps") == 1024
+        and profile.get("core_layout") == "5.1"
+        and profile.get("existing_5_1_row") == "PRESERVED"
+        and profile.get("add_mutable_owner") is False,
+        "Flat7x is additive over the existing 1024/5.1 core path",
+    )
+    ck(
+        profile.get("joc_downmix_control") == {
+            "type": "JocDownmixProfile",
+            "value": "SelectedMode0Phase1Index3",
+            "mode": 0,
+            "phase": 1,
+            "internal_index": 3,
+            "change": "preserve",
+        }
+        and layout == {
+            "type": "JocReconstructionLayout",
+            "variant": "Flat7x",
+            "joc_dmx_config_idx": 1,
+            "width_bits": 3,
+            "standard_semantics": "7.X Lb/Rb",
+            "joc_num_channels": 7,
+        },
+        "downmix controls and Flat7x reconstruction layout remain separate",
+    )
+    ck(
+        [(item.get("field"), item.get("width_bits")) for item in header]
+        == [("joc_dmx_config_idx", 3), ("joc_num_objects_bits", 6), ("joc_ext_config_idx", 3)]
+        and params.get("gtc_owner_projection", {}).get("new_mutable_owner") is False
+        and params.get("gtc_owner_projection", {}).get("new_commit_owner") is False,
+        "GTC carries immutable profile config to the ordered JOC header",
+    )
+    ck(
+        row.get("implementation_status")
+        == "LOCALLY_VERIFIED_1024_KBPS_PROFILE_RESOLUTION_AND_U3_HEADER_WRITE__FULL_OUTPUT_ACCEPTANCE_NOT_RUN"
+        and params.get("complete_output_acceptance") == "NOT_RUN"
+        and row.get("not_run"),
+        "full Flat7x output remains a separate acceptance gate",
+    )
+    for key, expected in (("implementation_inventory", expected_files), ("test_inventory", expected_tests)):
+        records = row.get(key, [])
+        ck([record.get("path") for record in records] == expected, "F12 Flat7x " + key + " paths")
+        for record in records:
+            path = root / record["path"]
+            ck(
+                path.is_file()
+                and path.stat().st_size == record["bytes"]
+                and hashlib.sha256(path.read_bytes()).hexdigest() == record["sha256"],
+                "F12 Flat7x " + key + " hash " + record["path"],
+            )
+    profile_source = rust_code_without_comments((root / expected_files[0]).read_text(encoding="utf-8"))
+    header_source = rust_code_without_comments((root / expected_files[2]).read_text(encoding="utf-8"))
+    ck(
+        "pub enum JocReconstructionLayout" in profile_source
+        and "Flat7x" in profile_source
+        and "Some(1)" in profile_source
+        and "pub const fn joc_dmx_config_idx" in profile_source,
+        "Flat7x resolves to the typed ETSI index 1 field value",
+    )
+    ck(
+        "pub fn write_id14_header_for_profile" in header_source
+        and "write_field" in header_source
+        and "joc_dmx_config_idx" in header_source,
+        "resolved profile is consumed by the existing JOC-header writer",
+    )
 
 
 def check_f12_selected_rate_append_guard(root, d):
@@ -14234,7 +14337,7 @@ def run(root=ROOT):
  six_rate=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='selected-six-rate-profile-frame-size-through-output');six_rate_profile=rust_code_without_comments((root/'crates/jocforge-domain/src/profile/production.rs').read_text(encoding='utf-8'));six_rate_job=rust_code_without_comments((root/'crates/jocforge-domain/src/frontend/job_configuration.rs').read_text(encoding='utf-8'));six_rate_trial=rust_code_without_comments((root/'crates/jocforge-domain/src/codec/selected_frame_trial.rs').read_text(encoding='utf-8'));six_rate_output=rust_code_without_comments((root/'crates/jocforge-application/src/output_publication.rs').read_text(encoding='utf-8'));six_rate_owner=rust_code_without_comments((root/'crates/jocforge-domain/src/publication/output_owner.rs').read_text(encoding='utf-8'));six_rate_integrity=rust_code_without_comments((root/'crates/jocforge-domain/src/integrity/programme_owner.rs').read_text(encoding='utf-8'));six_rate_io=rust_code_without_comments((root/'crates/jocforge-io/src/atomic_output/mod.rs').read_text(encoding='utf-8'));six_rate_cli_raw=(root/'crates/jocforge-cli/src/encode_request.rs').read_text(encoding='utf-8');six_rate_cli=rust_code_without_comments(six_rate_cli_raw);six_rate_cli_main_raw=(root/'crates/jocforge-cli/src/main.rs').read_text(encoding='utf-8');six_rate_frame_tests=(root/'crates/jocforge-domain/src/codec/selected_frame_trial.rs').read_text(encoding='utf-8');six_rate_owner_tests=(root/'crates/jocforge-domain/tests/output_owner_rate_profile.rs').read_text(encoding='utf-8');six_rate_integrity_tests=(root/'crates/jocforge-domain/src/integrity/programme_owner/tests.rs').read_text(encoding='utf-8');six_rate_io_tests=(root/'crates/jocforge-io/src/atomic_output/tests.rs').read_text(encoding='utf-8')
  six_rate_verified=(six_rate['implementation_status']=='LOCALLY_VERIFIED_SIX_RATE_ADMISSION_F12_F14_F15_IO__ALL_SIX_FULL_FILE_RATE_OUTPUTS_PUBLISHED__DEE_PARITY_PENDING'and len(six_rate['vectors']['case_pointers'])==6 and six_rate['parameters']['package_id']=='DEE-EC3-SIX-BITRATE-FRAME-HEADER-OBSERVATION-V1'and all(pathlib.Path(item).is_file()for item in six_rate['spec_files']+six_rate['implementation_files']+six_rate['test_modules']+six_rate['parameters']['provider_files']+six_rate['vectors']['authoritative_vectors'])and all(rate in six_rate_profile for rate in('Kbps384','Kbps448','Kbps576','Kbps640','Kbps768','Kbps1024'))and 'from_xml_token' in six_rate_job and 'SELECTED_BIT_RATE_KBPS' not in six_rate_job and 'write_selected_eac3_fixed_prefix(writer, plan.frame_size.code())' in six_rate_trial and 'canonical_template' in six_rate_output and '.frame_bytes()' in six_rate_output and 'self.configuration.frame_bytes' in six_rate_owner and 'integrity_profile_id(codec_rate)' in six_rate_integrity and 'proposal.frame_bytes()' in six_rate_io and 'pub fn run_with_data_rate(' in six_rate_cli and '<data_rate>{}</data_rate>' in six_rate_cli_raw and '--data-rate' in six_rate_cli_main_raw and 'generated_job_xml_preserves_each_explicit_carrier_rate' in six_rate_cli_raw and '135_168' in six_rate_frame_tests and 'output_owner_keeps_each_selected_rate_frame_extent' in six_rate_owner_tests and 'integrity_owner_rate_identity_and_crc_window_follow_each_f12_frame_extent' in six_rate_integrity_tests and 'selected_append_reads_back_and_finalizes_each_supported_frame_extent' in six_rate_io_tests)
  ck(six_rate_verified,'six explicit single-rate rows reach F12/F14/F15 sizing and variable durable output while other dimensions and end-to-end encoding remain open')
- verified_scopes+=six_rate_verified;ck(verified_scopes==77,'locally verified scoped-task count including selected six-rate profile through variable-length output staging')
+ verified_scopes+=six_rate_verified;flat7x=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-reconstruction-layout-profile-and-header-index');verified_scopes+=(flat7x['implementation_status']=='LOCALLY_VERIFIED_1024_KBPS_PROFILE_RESOLUTION_AND_U3_HEADER_WRITE__FULL_OUTPUT_ACCEPTANCE_NOT_RUN');ck(verified_scopes==78,'locally verified scoped-task count including the Flat7x profile/header field slice')
 
  dep=d['approved_dependencies']['sha2']
 
@@ -14730,6 +14833,7 @@ def run(root=ROOT):
  check_f07_f08_parent_lifecycle_gap(root,d)
 
  check_f12_fixed_prefix_slice(root,d)
+ check_f12_flat7x_layout_slice(root,d)
 
  check_f12_selected_rate_append_guard(root,d)
 

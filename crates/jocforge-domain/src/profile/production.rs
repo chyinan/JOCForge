@@ -1,5 +1,5 @@
 // pattern: Functional Core
-//! Six-dimensional production profile. It has no validation render target.
+//! Selected production-profile values. Validation render targets stay in a separate type.
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum AuthoredInputProfile {
@@ -17,6 +17,35 @@ pub enum CoreCarrierProfile {
 pub enum JocDownmixProfile {
     SelectedMode0Phase1Index3,
     Unsupported,
+}
+
+/// JOC decoder reconstruction layout, independent from internal downmix controls.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum JocReconstructionLayout {
+    /// Preserve the currently selected 5.1 header behavior.
+    ExistingSelectedFivePointOne,
+    /// ETSI 7.X Lb/Rb layout, serialized as `joc_dmx_config_idx=1`.
+    Flat7x,
+    Unsupported,
+}
+
+impl JocReconstructionLayout {
+    /// Maps an explicitly supplied ETSI layout index to the one additive row supported here.
+    pub const fn from_joc_dmx_config_idx(value: u8) -> Option<Self> {
+        match value {
+            1 => Some(Self::Flat7x),
+            _ => None,
+        }
+    }
+
+    /// Returns an explicit wire index for additive layouts; the existing 5.1 row keeps its
+    /// established writer input unchanged.
+    pub const fn joc_dmx_config_idx(self) -> Option<u8> {
+        match self {
+            Self::Flat7x => Some(1),
+            Self::ExistingSelectedFivePointOne | Self::Unsupported => None,
+        }
+    }
 }
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum SubstreamTopology {
@@ -137,6 +166,7 @@ pub struct EncodingProfile {
     authored_input: AuthoredInputProfile,
     core_carrier: CoreCarrierProfile,
     joc_downmix: JocDownmixProfile,
+    joc_reconstruction_layout: JocReconstructionLayout,
     substream_topology: SubstreamTopology,
     codec_rate: CodecRateProfile,
     emdf_carriage: EmdfCarriageProfile,
@@ -162,9 +192,30 @@ impl EncodingProfile {
             authored_input: AuthoredInputProfile::SelectedAdmBwfPcm24At48Khz,
             core_carrier: CoreCarrierProfile::SelectedFivePointOneSixCarrier,
             joc_downmix: JocDownmixProfile::SelectedMode0Phase1Index3,
+            joc_reconstruction_layout: JocReconstructionLayout::ExistingSelectedFivePointOne,
             substream_topology: SubstreamTopology::SelectedSingleIndependentZeroDependent,
             codec_rate,
             emdf_carriage,
+        }
+    }
+
+    /// Selects one reconstruction-layout row while preserving the current 1024 kbps profile
+    /// defaults for all other dimensions.
+    pub const fn selected_with_joc_reconstruction_layout(
+        joc_reconstruction_layout: JocReconstructionLayout,
+    ) -> Self {
+        Self::selected().with_joc_reconstruction_layout(joc_reconstruction_layout)
+    }
+
+    /// Returns this immutable profile with a different reconstruction-layout selection.
+    #[must_use]
+    pub const fn with_joc_reconstruction_layout(
+        self,
+        joc_reconstruction_layout: JocReconstructionLayout,
+    ) -> Self {
+        Self {
+            joc_reconstruction_layout,
+            ..self
         }
     }
 
@@ -180,6 +231,7 @@ impl EncodingProfile {
             authored_input,
             core_carrier,
             joc_downmix,
+            joc_reconstruction_layout: JocReconstructionLayout::ExistingSelectedFivePointOne,
             substream_topology,
             codec_rate,
             emdf_carriage,
@@ -192,6 +244,7 @@ impl EncodingProfile {
         self.authored_input == other.authored_input
             && self.core_carrier == other.core_carrier
             && self.joc_downmix == other.joc_downmix
+            && self.joc_reconstruction_layout == other.joc_reconstruction_layout
             && self.substream_topology == other.substream_topology
             && self.emdf_carriage == other.emdf_carriage
     }
@@ -205,6 +258,8 @@ pub enum ProfileError {
 pub struct ResolvedEncodingProfile {
     carriage: EmdfCarriageProfile,
     codec_rate: CodecRateProfile,
+    joc_downmix: JocDownmixProfile,
+    joc_reconstruction_layout: JocReconstructionLayout,
 }
 
 impl ResolvedEncodingProfile {
@@ -215,12 +270,31 @@ impl ResolvedEncodingProfile {
     pub const fn codec_rate(self) -> CodecRateProfile {
         self.codec_rate
     }
+
+    pub const fn joc_downmix(self) -> JocDownmixProfile {
+        self.joc_downmix
+    }
+
+    pub const fn joc_reconstruction_layout(self) -> JocReconstructionLayout {
+        self.joc_reconstruction_layout
+    }
+
+    pub const fn joc_dmx_config_idx(self) -> Option<u8> {
+        self.joc_reconstruction_layout.joc_dmx_config_idx()
+    }
 }
 
-/// Accepts exactly the approved six-dimensional production row.
+/// Accepts the existing selected rows and the additive 1024 kbps Flat7x layout row.
 pub const fn resolve_selected_profile(
     profile: &EncodingProfile,
 ) -> Result<ResolvedEncodingProfile, ProfileError> {
+    let reconstruction_layout_supported = match profile.joc_reconstruction_layout {
+        JocReconstructionLayout::ExistingSelectedFivePointOne => true,
+        JocReconstructionLayout::Flat7x => {
+            matches!(profile.codec_rate, CodecRateProfile::Kbps1024)
+        }
+        JocReconstructionLayout::Unsupported => false,
+    };
     if !matches!(
         profile.authored_input,
         AuthoredInputProfile::SelectedAdmBwfPcm24At48Khz
@@ -231,10 +305,12 @@ pub const fn resolve_selected_profile(
     ) || !matches!(
         profile.joc_downmix,
         JocDownmixProfile::SelectedMode0Phase1Index3
-    ) || !matches!(
-        profile.substream_topology,
-        SubstreamTopology::SelectedSingleIndependentZeroDependent
-    ) || profile.codec_rate.kbps().is_none()
+    ) || !reconstruction_layout_supported
+        || !matches!(
+            profile.substream_topology,
+            SubstreamTopology::SelectedSingleIndependentZeroDependent
+        )
+        || profile.codec_rate.kbps().is_none()
         || profile.codec_rate.selector_code().is_none()
         || profile.codec_rate.frame_size_code().is_none()
         || profile.codec_rate.frame_bytes().is_none()
@@ -246,6 +322,8 @@ pub const fn resolve_selected_profile(
             Ok(ResolvedEncodingProfile {
                 carriage: profile.emdf_carriage,
                 codec_rate: profile.codec_rate,
+                joc_downmix: profile.joc_downmix,
+                joc_reconstruction_layout: profile.joc_reconstruction_layout,
             })
         }
         EmdfCarriageProfile::Unsupported => Err(ProfileError::UnsupportedProfile),

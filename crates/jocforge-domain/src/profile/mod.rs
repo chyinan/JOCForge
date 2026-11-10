@@ -6,8 +6,8 @@ mod validation;
 
 pub use production::{
     AuthoredInputProfile, CodecRateProfile, CoreCarrierProfile, EmdfCarriageProfile,
-    EncodingProfile, JocDownmixProfile, ProfileError, ResolvedEncodingProfile, SelectedDataRate,
-    SubstreamTopology, resolve_selected_profile,
+    EncodingProfile, JocDownmixProfile, JocReconstructionLayout, ProfileError,
+    ResolvedEncodingProfile, SelectedDataRate, SubstreamTopology, resolve_selected_profile,
 };
 pub use validation::{RenderTarget, ValidationProfile};
 

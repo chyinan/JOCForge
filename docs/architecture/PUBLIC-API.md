@@ -4,7 +4,7 @@
 
 ## Profile API
 
-Production 调用者提交六维 `EncodingProfile`。入口先验证完整组合。只有 `PROFILE-DIMENSIONS.md` 的 supported row 可进入后续协调。拒绝结果为类型化 `UNSUPPORTED_PROFILE`，不得产生 staged state、临时 AU 或输出文件。
+调用者提交含 input、core carrier、JOC downmix control、JOC reconstruction layout、topology、rate 和 EMDF carriage 的 immutable `EncodingProfile`。现有构造器保持 `ExistingSelectedFivePointOne` layout；`selected_with_joc_reconstruction_layout(Flat7x)` 创建 1024 kbps additive profile。resolver 返回 `ResolvedEncodingProfile`，其中分别保留 `JocDownmixProfile` 与 `JocReconstructionLayout`；profile-aware JOC-header writer 从后者取得 `joc_dmx_config_idx`。其他未登记组合返回类型化 `UNSUPPORTED_PROFILE`。
 
 `RenderTarget` 只存在于独立 `ValidationProfile`。Production encode 不接收 `RenderTarget`，render target 的变化不得影响 production profile resolution。
 

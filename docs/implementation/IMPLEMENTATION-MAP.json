@@ -3257,8 +3257,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/profile/production.rs",
-              "bytes": 8458,
-              "sha256": "4f5e746ff2dfc616b2817049f8400b9548fdd6cd8fdef6f82223cca3392a4619"
+              "bytes": 11476,
+              "sha256": "0914633c0c628cef2cdbec6c71758c4489ef3d3183d1de0d8fac88059c97a83f"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
@@ -18473,8 +18473,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2066240,
-              "sha256": "1a06c8c1539252f5f0d84d61bbf6407a598c2b0acb2f926e07db9fcf3b534e57"
+              "bytes": 2071397,
+              "sha256": "36a7a8575d3b721bec27aa2c5f917b9bde938904ed02d8120b524521f7af6b7a"
             }
           ],
           "test_modules": [
@@ -22000,8 +22000,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2066240,
-              "sha256": "1a06c8c1539252f5f0d84d61bbf6407a598c2b0acb2f926e07db9fcf3b534e57"
+              "bytes": 2071397,
+              "sha256": "36a7a8575d3b721bec27aa2c5f917b9bde938904ed02d8120b524521f7af6b7a"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -44311,13 +44311,13 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/mod.rs",
-              "bytes": 794,
-              "sha256": "266545597e156818691b7e0f99cda803316674cc6569204050595eb707521f51"
+              "bytes": 819,
+              "sha256": "1789266c17d5c3e4e783f8f71cdfbb99bffa8787f17739ee969dad68a11ef132"
             },
             {
               "path": "crates/jocforge-domain/src/profile/production.rs",
-              "bytes": 8458,
-              "sha256": "4f5e746ff2dfc616b2817049f8400b9548fdd6cd8fdef6f82223cca3392a4619"
+              "bytes": 11476,
+              "sha256": "0914633c0c628cef2cdbec6c71758c4489ef3d3183d1de0d8fac88059c97a83f"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/job_configuration.rs",
@@ -45358,6 +45358,195 @@
           ],
           "validation_boundary": "Syntax-identity gap notice only; official exact BSID is NOT_CAPTURED and selected prefix equivalence remains UNBOUND.",
           "delivery_scope": "WASHED_I0_SYNTAX_GAP_ONLY_NO_PREFIX_CHANGE_OR_PRODUCTION_CLAIM"
+        },
+        {
+          "slice_id": "flat7x-reconstruction-layout-profile-and-header-index",
+          "mapping_status": "MATERIALIZED_IMMUTABLE_FLAT7X_LAYOUT_AND_ETSI_INDEX1_HEADER_FIELD",
+          "implementation_status": "LOCALLY_VERIFIED_1024_KBPS_PROFILE_RESOLUTION_AND_U3_HEADER_WRITE__FULL_OUTPUT_ACCEPTANCE_NOT_RUN",
+          "implementation_requirement": true,
+          "owner": "codec",
+          "scope": "Adds JocReconstructionLayout::Flat7x as an immutable dimension on EncodingProfile and ResolvedEncodingProfile. The additive row reuses the selected 1024 kbps / 5.1 core dimensions. The selected JOC-header writer receives the ResolvedEncodingProfile and writes its 3-bit joc_dmx_config_idx=1 before the independent 6-bit joc_num_objects_bits and 3-bit joc_ext_config_idx. JocDownmixProfile::SelectedMode0Phase1Index3 and coefficient-input downmix_index=3 remain unchanged and independent; the Flat7x header selector does not change coefficient generation. ExistingSelectedFivePointOne preserves the current header input and byte output. ADM row count, E-AC-3 channel-map locations, JOC layout channel count, object count and complexity remain distinct domains. The GTC projection is immutable profile configuration with no added mutable owner or commit.",
+          "dependencies": [
+            "existing selected 1024 kbps / 5.1 core profile"
+          ],
+          "spec_files": [
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/ARCHITECTURE-DECISIONS.md",
+            "docs/architecture/PUBLIC-API.md",
+            "docs/architecture/DATAFLOW.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1/ARCHITECTURE-DECISION-DELTA.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1/IMPLEMENTATION-SCOPE.md"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/profile/production.rs",
+            "crates/jocforge-domain/src/profile/mod.rs",
+            "crates/jocforge-domain/src/joc/huffman/id14_header.rs",
+            "crates/jocforge-domain/src/joc/huffman.rs",
+            "crates/jocforge-domain/src/joc/coefficient_payload.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/profile/production.rs",
+              "bytes": 11476,
+              "sha256": "0914633c0c628cef2cdbec6c71758c4489ef3d3183d1de0d8fac88059c97a83f"
+            },
+            {
+              "path": "crates/jocforge-domain/src/profile/mod.rs",
+              "bytes": 819,
+              "sha256": "1789266c17d5c3e4e783f8f71cdfbb99bffa8787f17739ee969dad68a11ef132"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/huffman/id14_header.rs",
+              "bytes": 13748,
+              "sha256": "86af19e83e894b14f9da2e5c07e492df49e090a9e20b9b9343462bc102d11b66"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/huffman.rs",
+              "bytes": 29954,
+              "sha256": "b52583e123cc25d91f23715fd4d83ae5b0ac818b37023ab3bb017b4e966f1f76"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/coefficient_payload.rs",
+              "bytes": 22421,
+              "sha256": "f047023111be6523bace1423407c0f682eb6c3cecdec970b64a804406fe1d32d"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/joc_reconstruction_layout.rs"
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/tests/joc_reconstruction_layout.rs",
+              "bytes": 7259,
+              "sha256": "473fd476b4de9634aaae4ba7a821b61dc31e96134d600fb22c929db6d13d6aaa"
+            }
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The layout is immutable per encode attempt and adds no mutable-state clock.",
+              "The JOC header emits the 3-bit layout index before the 6-bit object-count field and 3-bit extension index."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_PARTIAL_FLAT7X_1024_PROFILE_AND_JOC_HEADER_FIELD",
+            "package_id": "JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1/ARCHITECTURE-DECISION-DELTA.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1/IMPLEMENTATION-SCOPE.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1/PROFILE-DELTA.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1/GTC-OWNER-PROJECTION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1/SOURCE-RECEIPTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1/REPORT.md"
+            ],
+            "supplement_manifest_sha256": "509a4d61dbc0b20a0044a05043a99e83a7b60224aefd3df144cb394d1b30048b",
+            "supplement_seal_sha256": "bcce271fa5cfc7d725e4833337111c0a882a0dc09a9ebba3dfe2aeac7749b4dd",
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "implementation_status": "PARTIAL_IMPLEMENTATION_READY",
+            "validation_boundary": "Profile resolution and the 3-bit Flat7x layout header field only. Complete Flat7x structure and official-demo acceptance are NOT_RUN.",
+            "profile_delta": {
+              "target_profile_id": "flat7x_1024_5_1_core",
+              "baseline_rate_kbps": 1024,
+              "core_layout": "5.1",
+              "joc_downmix_control": {
+                "type": "JocDownmixProfile",
+                "value": "SelectedMode0Phase1Index3",
+                "mode": 0,
+                "phase": 1,
+                "internal_index": 3,
+                "change": "preserve"
+              },
+              "added_layout": {
+                "type": "JocReconstructionLayout",
+                "variant": "Flat7x",
+                "joc_dmx_config_idx": 1,
+                "width_bits": 3,
+                "standard_semantics": "7.X Lb/Rb",
+                "joc_num_channels": 7
+              },
+              "existing_5_1_row": "PRESERVED",
+              "add_mutable_owner": false
+            },
+            "joc_header_field_sequence": [
+              {
+                "field": "joc_dmx_config_idx",
+                "width_bits": 3,
+                "value": 1
+              },
+              {
+                "field": "joc_num_objects_bits",
+                "width_bits": 6,
+                "semantic_rule": "object_count = bits + 1"
+              },
+              {
+                "field": "joc_ext_config_idx",
+                "width_bits": 3
+              }
+            ],
+            "gtc_owner_projection": {
+              "field_group": "encoding_profile.joc_reconstruction_layout",
+              "value_lifecycle": "immutable per encode attempt",
+              "producer_boundary": "existing profile-resolution boundary",
+              "consumer_boundary": "existing JOC-header writer",
+              "new_mutable_owner": false,
+              "new_commit_owner": false
+            },
+            "separate_domains": {
+              "adm_row_count": "independent input domain",
+              "eac3_chanmap_locations": "independent coded-channel domain",
+              "joc_reconstruction_channels": 7,
+              "joc_num_objects_bits": "separate 6-bit field",
+              "complexity_index_type_a": "separate 8-bit additional-BSI field"
+            },
+            "complete_output_acceptance": "NOT_RUN"
+          },
+          "vectors": {
+            "kind": "WASHED_FLAT7X_PROFILE_AND_JOC_HEADER_INPUT_ONLY",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "Flat7x resolves to index 1; the 1024 kbps / 5.1 core row is preserved.",
+              "Index 2 stays distinct from Flat7x and receives no production row in this slice.",
+              "Reserved index 5 maps to UNSUPPORTED_PROFILE.",
+              "Mode0/phase1/internal index3 remains separate from reconstruction index1.",
+              "Object-count bits and complexity_index_type_a remain separate fields."
+            ],
+            "local_fixture": {
+              "file": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 1553,
+              "sha256": "c86f7c452384a2bed28c6ba80be8425a920aaf4e83f1f193e78d77d8364df0d2"
+            },
+            "expected_outputs_included": true,
+            "execution_status": "INPUT_ONLY_BOUNDARY_TESTS_PASSED"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "UNSUPPORTED_PROFILE",
+              "category": "profile resolution",
+              "trigger": "A JOC reconstruction layout index without a registered row is selected, including index 2 or reserved index 5.",
+              "programme_state_after": "Profile resolution returns no resolved value.",
+              "caller_action": "Reject profile resolution."
+            },
+            {
+              "error_code": "UNSUPPORTED_PROFILE",
+              "category": "profile resolution",
+              "trigger": "Flat7x is combined with a rate other than 1024 kbps.",
+              "programme_state_after": "Profile resolution returns no resolved value.",
+              "caller_action": "Reject profile resolution."
+            }
+          ],
+          "not_run": [
+            "Complete Flat7x elementary-stream structure and official-demo acceptance.",
+            "7.X audio rendering, full output, independent validation and W04 acceptance."
+          ],
+          "validation_boundary": "The immutable Flat7x profile maps to the ETSI index 1 header field on the existing 1024 kbps / 5.1 core path; complete output acceptance remains NOT_RUN.",
+          "delivery_scope": "PARTIAL_IMMUTABLE_PROFILE_AND_JOC_HEADER_FIELD_ONLY"
         }
       ]
     },
@@ -49432,8 +49621,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_payload.rs",
-              "bytes": 21328,
-              "sha256": "34497b4c130a874410d6469141e9b4cb9a9ba68c43a9589587050b0c608e0dc3"
+              "bytes": 22421,
+              "sha256": "f047023111be6523bace1423407c0f682eb6c3cecdec970b64a804406fe1d32d"
             },
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_representation.rs",
@@ -54555,8 +54744,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2066240,
-              "sha256": "1a06c8c1539252f5f0d84d61bbf6407a598c2b0acb2f926e07db9fcf3b534e57"
+              "bytes": 2071397,
+              "sha256": "36a7a8575d3b721bec27aa2c5f917b9bde938904ed02d8120b524521f7af6b7a"
             }
           ],
           "test_inventory": [
@@ -73204,6 +73393,25 @@
         "Official I0 exact BSID capture and syntax-to-profile equivalence.",
         "Any official-output parser or encoder execution.",
         "Any I0 prefix mutation or real 7.1 output validation."
+      ]
+    },
+    {
+      "package_id": "JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1",
+      "relative_path": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1",
+      "manifest_sha256": "509a4d61dbc0b20a0044a05043a99e83a7b60224aefd3df144cb394d1b30048b",
+      "supplement_seal_sha256": "bcce271fa5cfc7d725e4833337111c0a882a0dc09a9ebba3dfe2aeac7749b4dd",
+      "functional_ids": [
+        "F12"
+      ],
+      "local_verification": {
+        "python": "PASS",
+        "python_optimized": "PASS"
+      },
+      "evidence_class": "WASHED_SUPPLEMENT_EVIDENCE_ONLY",
+      "disposition": "PARTIAL_FLAT7X_1024_5_1_PROFILE_AND_JOC_HEADER_INDEX1_IMPLEMENTED; COMPLETE_OUTPUT_ACCEPTANCE_NOT_RUN",
+      "not_run": [
+        "Complete Flat7x file structure and official-demo acceptance.",
+        "7.X audio rendering, full-output validation, and listening acceptance."
       ]
     }
   ]

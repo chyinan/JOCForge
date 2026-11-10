@@ -1,0 +1,49 @@
+{
+  "audience": "implementation",
+  "files": [
+    {
+      "bytes": 1320,
+      "path": "ARCHITECTURE-DECISION-DELTA.md",
+      "sha256": "a41567b1f47e1ce544da6fb869f120765d190faeab2fafb53ea1b6cab1db1d1a"
+    },
+    {
+      "bytes": 2625,
+      "path": "CHECK.py",
+      "sha256": "6a51aeb5ac70efbbf9aff54b3e31d47f63c1987e000eb59efb0d51f411350ace"
+    },
+    {
+      "bytes": 929,
+      "path": "GTC-OWNER-PROJECTION.json",
+      "sha256": "7736a9a7fa97256ffb14cd8f71bf74e8a0365cbf7986e9686272f4b7d34b6c5a"
+    },
+    {
+      "bytes": 3060,
+      "path": "IMPLEMENTATION-SCOPE.md",
+      "sha256": "0ec765fe5d42b5ba80798a9d53c9ec56556f0996ea03dd322601fe0edf29a9ac"
+    },
+    {
+      "bytes": 1553,
+      "path": "INPUT-ONLY-VECTORS.json",
+      "sha256": "c86f7c452384a2bed28c6ba80be8425a920aaf4e83f1f193e78d77d8364df0d2"
+    },
+    {
+      "bytes": 1804,
+      "path": "PROFILE-DELTA.json",
+      "sha256": "2da2efc1760b4e62901e2d182a998768a039a9cebf4e8c6a930e64d8f59fd000"
+    },
+    {
+      "bytes": 1586,
+      "path": "REPORT.md",
+      "sha256": "1a4c679fe2a79783bb3503f12602fcb49a2ddbd6104b208392633b79256e69d7"
+    },
+    {
+      "bytes": 2936,
+      "path": "SOURCE-RECEIPTS.json",
+      "sha256": "7c9081b66561c4f11f2367560d881fbffba4e54aafed834442b96408ad2b0ee6"
+    }
+  ],
+  "package_id": "JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1",
+  "schema": "wash-implementer-supplement.v1",
+  "scope": "flat7x profile model and JOC header field only",
+  "status": "PARTIAL_IMPLEMENTATION_READY"
+}

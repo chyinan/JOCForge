@@ -1,6 +1,8 @@
 // pattern: Functional Core
 //! The selected ID14 header/body bit writer. Parent retry and section-header meanings remain external.
 
+use crate::profile::ResolvedEncodingProfile;
+
 /// Values observed for the one-bit `present` field.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Id14Presence {
@@ -42,6 +44,8 @@ pub struct Id14ObjectDescriptor {
 /// Header controls, optional descriptor list, and a body bitstream to append without alignment.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Id14HeaderInput {
+    /// Established first-field input for the current selected profile. Profile-aware Flat7x
+    /// writing selects its header value from `ResolvedEncodingProfile` instead.
     pub downmix_index: u32,
     pub object_count: u32,
     pub extension_config: u32,
@@ -152,6 +156,26 @@ pub fn write_id14_header(
     input: &Id14HeaderInput,
     writer: &mut Id14WriterState,
 ) -> Result<Id14WriterOutcome, Id14InputShapeError> {
+    write_id14_header_with_layout_index(input, None, writer)
+}
+
+/// Writes the selected JOC header using its immutable resolved profile layout.
+///
+/// `ExistingSelectedFivePointOne` preserves the input's current first-field value. `Flat7x`
+/// writes its profile-owned `joc_dmx_config_idx` while leaving the input's downmix control intact.
+pub fn write_id14_header_for_profile(
+    input: &Id14HeaderInput,
+    profile: ResolvedEncodingProfile,
+    writer: &mut Id14WriterState,
+) -> Result<Id14WriterOutcome, Id14InputShapeError> {
+    write_id14_header_with_layout_index(input, profile.joc_dmx_config_idx(), writer)
+}
+
+fn write_id14_header_with_layout_index(
+    input: &Id14HeaderInput,
+    layout_index: Option<u8>,
+    writer: &mut Id14WriterState,
+) -> Result<Id14WriterOutcome, Id14InputShapeError> {
     let body_capacity_bits = u64::try_from(input.body.len())
         .unwrap_or(u64::MAX)
         .saturating_mul(8);
@@ -185,13 +209,17 @@ pub fn write_id14_header(
     if input.downmix_index > 7 {
         fail!(Id14WriterReturnCode::FieldOutOfRange);
     }
-    if input.downmix_index > 4 {
+    let joc_dmx_config_idx = layout_index.map_or(input.downmix_index, u32::from);
+    if joc_dmx_config_idx > 7 {
+        fail!(Id14WriterReturnCode::FieldOutOfRange);
+    }
+    if joc_dmx_config_idx > 4 {
         writer.status_word = 0;
     }
     if !write_field(
         writer,
         &mut bit_cursor,
-        input.downmix_index,
+        joc_dmx_config_idx,
         3,
         capacity_bits,
     ) {

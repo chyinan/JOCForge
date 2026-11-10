@@ -1,0 +1,58 @@
+{
+  "schema": "jocforge.wash-source-receipts.v1",
+  "package_id": "JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1",
+  "sources": [
+    {
+      "kind": "approved_implementation_baseline",
+      "path": "outputs/IMPLEMENTER_PACKAGE/MANIFEST.json",
+      "sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+      "scope": "approved selected-profile baseline"
+    },
+    {
+      "kind": "architecture_approval",
+      "path": "docs/architecture/APPROVAL.md",
+      "sha256": "83d2d9afb206ef692cfab848d2b35a343890528ccbb1ff04d467217fca556346",
+      "scope": "current 1024 kbps / 5.1 profile approval and readiness gates"
+    },
+    {
+      "kind": "profile_dimensions",
+      "path": "docs/architecture/PROFILE-DIMENSIONS.md",
+      "sha256": "3946d83d245c7acac13aff36d32e14ece5debf9051bada07ee0b1214f912ed4b",
+      "scope": "current input, core carrier, control profile, rate, topology, and EMDF dimensions"
+    },
+    {
+      "kind": "architecture_decisions",
+      "path": "docs/architecture/ARCHITECTURE-DECISIONS.md",
+      "sha256": "e800865edf12f42dfb7c5a6a2a9c6155336638c7d7dd89616af065d342c7c014",
+      "scope": "immutable typed boundaries and owner rules"
+    },
+    {
+      "kind": "wash_verified_etsi_joc_header_crosswalk",
+      "path": "outputs/WASH_RECEIPTS/dee-71-joc-header-object-count-crosswalk-receipt.md",
+      "sha256": "da8ac8f6b75300313b1d93b1b8d5de26aed685bdf73e68484079e847e21dc0fb",
+      "manifest_sha256": "75d72dd44c16bac1ad52d33d776d3accf6ae12ab0772336cdabf73d67457abf6",
+      "seal_sha256": "b8add4c0aee87d8a9145357e8b23c00db74435570159dd3669b7dbaa3f0f60b2",
+      "scope": "joc_header field width/order and index 1 / index 2 mapping"
+    },
+    {
+      "kind": "wash_verified_complexity_object_count_separation",
+      "path": "outputs/WASH_RECEIPTS/dee-71-joc-complexity-index-type-a-crosswalk-receipt.md",
+      "sha256": "f53881ef7a89c7850f44af82791ab6e0ba68861e857fb4b4dd8a0bce681df773",
+      "manifest_sha256": "0ad960f36d9cd5d30a8300249ebac5a3c9c1e1dc93a6670cea9c678c1130f04c",
+      "checksum_sha256": "81312caaf2bb93a8228ab8e735880dade3b2f7d7c2e6ad546cfc7d559fca3c13",
+      "scope": "separate joc_num_objects_bits and complexity_index_type_a fields"
+    },
+    {
+      "kind": "normative_public_reference",
+      "title": "ETSI TS 103 420 V1.2.1 (2018-10), Backwards-compatible object audio carriage using Enhanced AC-3",
+      "url": "https://www.etsi.org/deliver/etsi_ts/103400_103499/103420/01.02.01_60/ts_103420v010201p.pdf",
+      "sections": ["6.2.2", "6.3.2.2 Table 47", "6.3.2.3 Table 48"]
+    },
+    {
+      "kind": "user_authorized_partial_scope",
+      "source": "Current Wash conversation goal update",
+      "statement": "Keep the existing 1024 kbps / 5.1 path and begin partial implementation of the official-demo flat7x structure before all reverse evidence is closed.",
+      "scope": "profile model and normative JOC header layout field only"
+    }
+  ]
+}

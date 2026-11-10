@@ -6,7 +6,7 @@
 
 ## AD-002 当前 production profile 与 additive contract 分离
 
-当前 Rust production resolver 仅接受 `PROFILE-DIMENSIONS.md` 中既有 5.1 row；`EncodingProfile` 有六个 production 字段。此前关于七个 profile dimensions 的概括不适用于该 struct。另一个已批准的 Atmos 7.1 flat7x / 1664 row 是 additive profile contract，尚未 materialize 为 production path，`production_allowed=false`。不自动 fallback 到 5.1。
+Rust `EncodingProfile` 现在以七个 immutable fields 表达现有六个 profile dimensions 加 reconstruction layout。既有 5.1 rows 保持原解析与 header bytes；1024 kbps / 5.1 core 的 Flat7x partial row 由新 typed layout 选择。另一个已批准的 Atmos 7.1 flat7x / 1664 I0/D0 row 是独立 AU contract，完整输出验收仍为 `NOT_RUN`。Profile resolution 不做自动 fallback。
 
 ## AD-003 唯一状态 owner
 
@@ -47,3 +47,11 @@ The sealed `JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1` defines one additi
 The legacy `SelectedMode0Phase1Index3` value combines distinct meanings. For the contract, downmix mode, algorithm phase control, and the contract-level downmix-index candidate are separate from `JocReconstructionProfile`. The 5.1 receipts independently show mode0/phase-flag1, derived downmix_index 3, and a separate full-file reconstruction profile `five_x_phase`/index3. Equal numeric 3 does not establish typed identity; the legacy enum's `Index3` serializer relation remains `UNBOUND`. The DDP XML `preferred_downmix_mode` MixMode is also separate, with effective storage and relation to reconstruction profile `UNBOUND`. The target reconstruction is `flat7x`/index1. Never interpret profile index as mode/phase, or wire `phase_signaling` as the algorithm phase flag; target mode/phase controls remain `UNBOUND`.
 
 The target access unit contains ordered I0 then D0 receipts from the same source generation. F12 supplies separate I0/D0 frames; F13 binds one complete EMDF container to D0 audio-block skipfld block 2; an integrity receipt is required; F15 publishes the whole AU atomically. A missing frame/role/metadata/integrity receipt or a container above 511 bytes rejects the entire AU; I0-only publication is forbidden. GTC source-role projection, native D0 audio algorithm, and all-AU EMDF fit remain `UNBOUND/NOT_RUN`.
+
+## AD-011 Flat7x reconstruction layout as immutable profile configuration
+
+The selected 1024 kbps / 5.1 core path gains the separate `JocReconstructionLayout::Flat7x` value, resolved to ETSI `joc_dmx_config_idx=1` in the 3-bit JOC header field. `JocDownmixProfile::SelectedMode0Phase1Index3` remains the independent mode0 / phase1 / internal index3 control. The resolved profile passes both values to the existing JOC-header writer boundary; header order remains the layout index, 6-bit object-count field, then 3-bit extension index.
+
+The Flat7x layout is immutable per-attempt profile configuration projected through the existing GTC/profile-resolution boundary. It adds no mutable owner or commit stage. The existing 5.1 profile row and its audio-generation behavior stay stable. This decision covers profile resolution and this header field; complete Flat7x stream structure and official-demo acceptance remain `NOT_RUN`.
+
+The separate 1664 kbps I0/D0 AU contract remains its own target row and publication plan. This 1024 kbps partial slice changes only the reconstruction-layout profile value and its ordered JOC header field.

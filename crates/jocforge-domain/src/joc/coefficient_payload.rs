@@ -10,12 +10,16 @@ use super::huffman::{
     F05QConsumerError, F05QConsumerInput, F05QConsumerPointInput, HuffmanBitCount,
     HuffmanCodebooks, HuffmanError, Id14HeaderInput, Id14InputShapeError, Id14ObjectDescriptor,
     Id14Presence, Id14WriterReturnCode, Id14WriterState, write_id14_header,
+    write_id14_header_for_profile,
 };
 use super::{
     coefficient_fitting::FitSourceLineage,
     id14_body::{Id14BodyProposal, Id14ObjectCount},
 };
-use crate::{timeline::JocDispatchIndex, transaction::CallbackTransactionId};
+use crate::{
+    profile::ResolvedEncodingProfile, timeline::JocDispatchIndex,
+    transaction::CallbackTransactionId,
+};
 
 const BAND_COEFFICIENT_COUNTS: [usize; 8] = [1, 3, 5, 7, 9, 12, 15, 23];
 const COEFFICIENT_BODY_SCRATCH_LIMIT_BITS: u64 = 4_344;
@@ -23,6 +27,8 @@ const COEFFICIENT_BODY_SCRATCH_LIMIT_BITS: u64 = 4_344;
 /// Inputs to the controlled selected ID14 coefficient-payload writer.
 #[derive(Clone, Debug, PartialEq)]
 pub struct CoefficientPayloadInput {
+    /// Existing coefficient-control selector; this remains independent from the profile's
+    /// reconstruction-layout header index.
     pub downmix_index: u8,
     pub extension_config: u8,
     pub clip_gain_index: u8,
@@ -251,6 +257,22 @@ impl CoefficientPayloadOutcome {
 pub fn write_selected_id14_coefficient_payload(
     input: &CoefficientPayloadInput,
 ) -> Result<CoefficientPayloadOutcome, CoefficientPayloadWriterFailure> {
+    write_selected_id14_coefficient_payload_inner(input, None)
+}
+
+/// Writes the selected ID14 payload with a layout taken from the immutable resolved profile.
+/// The coefficient-control `downmix_index` remains an independent input to audio generation.
+pub fn write_selected_id14_coefficient_payload_for_profile(
+    input: &CoefficientPayloadInput,
+    profile: ResolvedEncodingProfile,
+) -> Result<CoefficientPayloadOutcome, CoefficientPayloadWriterFailure> {
+    write_selected_id14_coefficient_payload_inner(input, Some(profile))
+}
+
+fn write_selected_id14_coefficient_payload_inner(
+    input: &CoefficientPayloadInput,
+    profile: Option<ResolvedEncodingProfile>,
+) -> Result<CoefficientPayloadOutcome, CoefficientPayloadWriterFailure> {
     let channel_count = selected_channel_count(input.downmix_index)?;
     validate_input(input, channel_count)?;
     let header_bit_count = count_header_bits(input);
@@ -304,7 +326,10 @@ pub fn write_selected_id14_coefficient_payload(
         .map_err(|_| CoefficientPayloadWriterFailure::OutputCapacityAllocation)?;
     buffer.resize(capacity, 0);
     let mut writer = Id14WriterState::new(buffer);
-    let writer_outcome = write_id14_header(&header_input, &mut writer)?;
+    let writer_outcome = match profile {
+        Some(profile) => write_id14_header_for_profile(&header_input, profile, &mut writer)?,
+        None => write_id14_header(&header_input, &mut writer)?,
+    };
     let writer_return_code = writer_outcome.return_code();
     let mut payload = None;
     let mut descriptor_copy = None;

@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge.partial-profile-delta.v1",
+  "package_id": "JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1",
+  "status": "PARTIAL_IMPLEMENTATION_AUTHORIZED",
+  "target_profile_id": "flat7x_1024_5_1_core",
+  "baseline": {
+    "profile_id": "existing_selected_1024_5_1",
+    "core_layout": "5.1",
+    "core_rate_kbps": 1024,
+    "input_resolution": "inherit existing accepted ADM profile set",
+    "substream_topology": "inherit existing selected profile",
+    "joc_downmix_control": {
+      "domain_type": "JocDownmixProfile",
+      "mode": 0,
+      "phase": 1,
+      "internal_index": 3,
+      "change": "preserve"
+    }
+  },
+  "added_dimension": {
+    "domain_type": "JocReconstructionLayout",
+    "variant": "Flat7x",
+    "wire_field": "joc_dmx_config_idx",
+    "wire_width_bits": 3,
+    "wire_value": 1,
+    "standard_semantics": "7.X Lb/Rb",
+    "derived_joc_num_channels": 7
+  },
+  "joc_header_field_order": [
+    {"field": "joc_dmx_config_idx", "width_bits": 3},
+    {"field": "joc_num_objects_bits", "width_bits": 6},
+    {"field": "joc_ext_config_idx", "width_bits": 3}
+  ],
+  "unchanged_domains": {
+    "joc_num_objects_bits": "separate 6-bit field; value plus one gives object count",
+    "complexity_index_type_a": "separate 8-bit addbsi decoding-complexity field",
+    "adm_row_count": "independent input-topology domain",
+    "eac3_chanmap_locations": "independent coded-channel-location domain",
+    "substream_rate_split": "inherit existing 1024 kbps profile; no new split",
+    "emdf_carriage": "inherit existing selected profile"
+  },
+  "production_profile_delta": {
+    "add_flat7x_row": true,
+    "keep_existing_5_1_row": true,
+    "change_default_profile": false,
+    "fallback_to_legacy_encoder": false,
+    "add_mutable_state": false
+  },
+  "full_output_acceptance": "NOT_RUN"
+}
