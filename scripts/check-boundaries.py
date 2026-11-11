@@ -13152,6 +13152,79 @@ def check_f06_authorized_meter_g0_g1_probe(root,d):
 
 
 
+def check_f15_flat7x_elementary_stream_stage(root, d):
+    entry = next(item for item in d["functional_entries"] if item["functional_id"] == "F15")
+    rows = [
+        item
+        for item in entry.get("direct_slices", [])
+        if item.get("slice_id") == "flat7x-elementary-stream-staged-file-adapter"
+    ]
+    ck(len(rows) == 1, "F15 has one Flat7x elementary-stream staged-file adapter slice")
+    if not rows:
+        return
+
+    row = rows[0]
+    domain_path = root / "crates/jocforge-domain/src/publication/flat7x_elementary_stream_stage.rs"
+    io_path = root / "crates/jocforge-io/src/flat7x_elementary_stream_stage.rs"
+    test_path = root / "crates/jocforge-io/src/flat7x_elementary_stream_stage/tests.rs"
+    fixture_path = root / "crates/jocforge-io/tests/fixtures/flat7x_elementary_stream_stage/INPUT-ONLY-VECTORS.json"
+    domain_source = rust_code_without_comments(domain_path.read_text(encoding="utf-8"))
+    io_source = rust_code_without_comments(io_path.read_text(encoding="utf-8"))
+    test_source = test_path.read_text(encoding="utf-8")
+    vectors = json.loads(fixture_path.read_bytes())
+    production_sources = [
+        path
+        for path in (root / "crates").glob("jocforge-*/src/**/*.rs")
+        if path not in {domain_path, io_path, test_path}
+    ]
+    no_product_caller = all(
+        "stage_flat7x_elementary_stream_to_file" not in path.read_text(encoding="utf-8")
+        for path in production_sources
+    )
+    ck(
+        "Flat7xElementaryStreamStageProposal" in domain_source
+        and "measure_flat7x_elementary_stream" in domain_source
+        and "stream_bytes.len() != expected_byte_length" in domain_source
+        and "pub fn stage_flat7x_elementary_stream_to_file(" in io_source
+        and "file.seek(SeekFrom::End(0))" in io_source
+        and "file.write(remaining)" in io_source
+        and "file.flush()" in io_source
+        and "file.sync_all()" in io_source
+        and "file.read_exact(&mut read_buffer[..chunk_length])" in io_source
+        and "eac3_crc16" not in io_source
+        and "AtomicOutputStaging" not in io_source
+        and "rename_file" not in io_source
+        and "pub fn finalize(" not in io_source
+        and "finalize_with_parent_sync" not in io_source
+        and "rename_file_no_replace" not in io_source
+        and "std::fs::rename(" not in io_source
+        and no_product_caller,
+        "Flat7x staged-file adapter performs exact write/flush/sync/readback with no final exposure path",
+    )
+    ck(
+        row["implementation_status"]
+        == "LOCALLY_VERIFIED_TEMP_EXTENT_WRITE_FLUSH_SYNC_READBACK__FINAL_EXPOSURE_CLOSED"
+        and row["implementation_requirement"] is True
+        and row["owner"] == "output"
+        and row["parameters"]["production_allowed"] is False
+        and row["parameters"]["final_rename_or_exposure"] is False
+        and row["parameters"]["gtc_connected"] is False
+        and row["vectors"]["expected_outputs_included"] is True
+        and vectors["status"] == "SYNTHETIC_NOT_REAL_OUTPUT"
+        and vectors["contains_audio_or_frame_bytes"] is False
+        and all(
+            marker in test_source
+            for marker in (
+                "stages_exact_stream_to_unique_temp_file_and_preserves_existing_final_destination",
+                "proposal_extent_and_nonempty_temp_destination_reject_without_changing_final_file",
+                "helper_completes_short_writes_and_returns_exact_readback_receipt",
+                "zero_progress_flush_sync_and_readback_failures_return_no_receipt",
+            )
+        ),
+        "Flat7x staged-file vectors bind synthetic bytes, IO failure gates and unchanged final sentinel",
+    )
+
+
 def check_partial_root_and_new_slice_mappings(root, d):
 
     entries = {entry["functional_id"]: entry for entry in d["functional_entries"]}
@@ -13194,7 +13267,7 @@ def check_partial_root_and_new_slice_mappings(root, d):
 
         "F13C": ["programme-output-identity-and-preflight-binding", "fit-to-id14-writer-metadata-body-join", "informational-native-count-observation-frames-0-48", "informational-native-count-first-consumer-edge-0", "informational-native-count-reader-writer-status", "informational-native-count-same-run-field-subchain", "informational-explicit-byte-boundary-windows", "informational-serializer-refill-writer-alias-status", "informational-provider-prefix-runtime-pointer-chain", "informational-serializer-consumer-single-parent-generation-binding", "informational-consumer-writer-temporal-boundary", "informational-higher-invocation-root-history-record-join", "informational-root-history-single-element-stop", "informational-contiguous-destination-direct-consumer-identity", "informational-au-token-equality-not-au", "informational-transport-publication-entry-not-observed", "informational-encoded-output-publication-owner-binding", "id14-model-parser-and-native-bsi-source-clarification", "user-config-data-rate-to-native-complexity-entry-boundary", "host-ddp-and-atmos-plugin-data-rate-owner-boundary", "native-code13-low-byte-to-f12-complexity-field", "informational-r138-record-list-reporting-branch-non-gating"],
 
-        "F15": ["informational-production-ingress-readiness-audit", "gtc-owner-state-ref-convention", "gtc-owner-receipt-from-canonical-state-views", "source-clock-publication-au-projection", "atomic-output-no-replace-finalization", "native-reference-output-file-sink", "plan-bound-output-owner-admission-crosswalk", "washed-i0-d0-au-composition-boundary-contract", "flat7x-atomic-au-output-owner-ledger-receipt", "flat7x-au-staging-append-io-receipt-adapter"],
+        "F15": ["informational-production-ingress-readiness-audit", "gtc-owner-state-ref-convention", "gtc-owner-receipt-from-canonical-state-views", "source-clock-publication-au-projection", "atomic-output-no-replace-finalization", "native-reference-output-file-sink", "plan-bound-output-owner-admission-crosswalk", "washed-i0-d0-au-composition-boundary-contract", "flat7x-atomic-au-output-owner-ledger-receipt", "flat7x-au-staging-append-io-receipt-adapter", "flat7x-elementary-stream-staged-file-adapter"],
 
         "F04A": ["informational-diffusion-gate-to-prefix-consumer-identity-unbound", "informational-f04-descriptor-map-source-join"],
 
@@ -15059,7 +15132,7 @@ def run(root=ROOT):
 
  d0_frame_assembler=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-d0-frame-bit-assembler');verified_scopes+=(d0_frame_assembler['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_EXACT_FRAME_ASSEMBLY_AND_FAILURE_ATOMICITY__PRODUCTION_OPEN');ck(verified_scopes==84,'locally verified scoped-task count including caller-supplied D0 frame assembly')
 
- opaque_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-d0-opaque-au-byte-composer');verified_scopes+=(opaque_au['implementation_status']=='LOCALLY_VERIFIED_TARGET_EXTENTS_ORDER_AND_ATOMIC_COMMIT__NO_CRC_OR_GENERATION');sequence_composer=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-sequence-composer');verified_scopes+=(sequence_composer['implementation_status']=='LOCALLY_VERIFIED_SEQUENCE_AND_D0_TO_AU_TO_STREAM_CHAIN__NO_PRODUCTION');ck(verified_scopes==86,'locally verified scoped-task count including opaque I0/D0 AU and elementary-stream composition')
+ opaque_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-d0-opaque-au-byte-composer');verified_scopes+=(opaque_au['implementation_status']=='LOCALLY_VERIFIED_TARGET_EXTENTS_ORDER_AND_ATOMIC_COMMIT__NO_CRC_OR_GENERATION');sequence_composer=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-sequence-composer');verified_scopes+=(sequence_composer['implementation_status']=='LOCALLY_VERIFIED_SEQUENCE_AND_D0_TO_AU_TO_STREAM_CHAIN__NO_PRODUCTION');stream_stage=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F15')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-staged-file-adapter');verified_scopes+=(stream_stage['implementation_status']=='LOCALLY_VERIFIED_TEMP_EXTENT_WRITE_FLUSH_SYNC_READBACK__FINAL_EXPOSURE_CLOSED');ck(verified_scopes==87,'locally verified scoped-task count including Flat7x elementary-stream temp staging')
 
  dep=d['approved_dependencies']['sha2']
 
@@ -15562,6 +15635,7 @@ def run(root=ROOT):
  check_f12_d0_frame_bit_assembler_slice(root,d)
  check_f12_flat7x_i0_d0_opaque_au_composer_slice(root,d)
  check_f12_flat7x_elementary_stream_sequence_composer(root,d)
+ check_f15_flat7x_elementary_stream_stage(root,d)
  check_f12_flat7x_layout_slice(root,d)
 
  check_f12_flat7x_cli_selector_slice(root,d)

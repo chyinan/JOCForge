@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge.flat7x_elementary_stream_stage.synthetic_input_only.v1",
+  "status": "SYNTHETIC_NOT_REAL_OUTPUT",
+  "contains_audio_or_frame_bytes": false,
+  "stream_bytes_are_test_fill_patterns_only": true,
+  "cases": [
+    {
+      "id": "stage-two-access-unit-stream",
+      "access_unit_count": 2,
+      "bytes_per_access_unit": 6656,
+      "stream_test_fill_hex": "31",
+      "expected_stream_bytes": 13312,
+      "final_sentinel_hex": "46494e414c"
+    },
+    {
+      "id": "reject-stream-byte-extent-mismatch",
+      "declared_stream_bytes": 13311,
+      "actual_stream_bytes": 13312,
+      "expected_error": "BYTE_LENGTH_MISMATCH"
+    },
+    {
+      "id": "reject-nonempty-temporary-destination",
+      "existing_temporary_bytes_hex": "737461676564",
+      "expected_error": "STAGING_LENGTH_MISMATCH"
+    },
+    {
+      "id": "complete-short-writes",
+      "maximum_bytes_per_write_call": 17,
+      "expected_receipt_bytes": 13312
+    },
+    {
+      "id": "reject-zero-progress-after-partial-stage",
+      "maximum_bytes_per_write_call": 17,
+      "zero_progress_after_bytes": 4096,
+      "expected_error": "WRITE_ZERO"
+    },
+    {
+      "id": "reject-flush-sync-and-readback-failures",
+      "expected_errors": ["IO_FLUSH", "IO_FILE_SYNC", "READBACK_MISMATCH"]
+    }
+  ]
+}

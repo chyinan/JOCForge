@@ -1781,3 +1781,7 @@ Wash 包 `EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1`（manifest SHA-256 `e8f1908d
 `codec::elementary_stream_composer::compose_flat7x_elementary_stream` 接受调用方按序提供的 opaque、已组合 AU byte spans。它拒绝空序列和非 6656-byte AU，使用 checked count/byte/bit arithmetic 测量总长，要求 byte-aligned writer cursor，并在私有 staging 前预检完整容量与 writer cursor range；所有输入按原顺序进入精确大小的 private staging，最终通过一次 writer call 追加，并返回仅描述 byte range/extent 的 noncommitting receipt。合成向量覆盖双 AU 顺序、空序列、尺寸溢出、错误 AU 长度、短容量与未对齐游标的原子拒绝。`production_allowed=false`；文件 I/O、GTC、production encode、BSID/CRC/source-generation、音频生成与 W04 保持独立。
 
 结构串接回归进一步将 `assemble_flat7x_d0_frame_bits` 的 4096-byte synthetic frame 经 `write_flat7x_i0_d0_access_unit_bytes` 放入 I0→D0 AU，再经 stream composer 放入两个序列位置。测试从 AU receipt 和 stream receipt 的 start/count/extent 推导 D0 偏移，验证 D0 的 4096 bytes 与调用方 CRC2 尾部在 AU/stream 两层逐字节保持。所有输入仍为 `SYNTHETIC_NOT_REAL_OUTPUT`。
+
+## 2026-11-12：Flat7x elementary-stream temporary staging boundary
+
+`Flat7xElementaryStreamStageProposal` 以 approved target、measured extent 和完整 opaque stream bytes 创建不可变 staging proposal。独立 `jocforge-io::flat7x_elementary_stream_stage` adapter 只接受调用方用 create-new 方式创建的空临时 `File`，校验准确 extent 与文件起始长度，循环处理 short write、拒绝 zero progress，随后 flush、`sync_all` 并分块逐字节 readback，成功后返回包含 extent、写调用计数和 readback SHA-256 的 staged receipt。adapter 不接收 final path、不执行 rename/finalize/GTC，也不计算 CRC；失败后临时文件可含部分写入，caller 必须废弃该 staging attempt。合成测试包含独立 final-path sentinel，在成功、提案 extent 错误、已有临时内容以及注入的写/flush/sync/readback失败后都验证最终路径字节不变。`production_allowed=false`。
