@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2154999,
-              "sha256": "149e4e2c7cab076f24e0472c872732b5481bae8c80832e332a7edec5d1fbe084"
+              "bytes": 2154994,
+              "sha256": "1f65707f0c8589df969a9b569d2e97707ec143a217fb41a243f9983d24c003ed"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2154999,
-              "sha256": "149e4e2c7cab076f24e0472c872732b5481bae8c80832e332a7edec5d1fbe084"
+              "bytes": 2154994,
+              "sha256": "1f65707f0c8589df969a9b569d2e97707ec143a217fb41a243f9983d24c003ed"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -57208,8 +57208,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2154999,
-              "sha256": "149e4e2c7cab076f24e0472c872732b5481bae8c80832e332a7edec5d1fbe084"
+              "bytes": 2154994,
+              "sha256": "1f65707f0c8589df969a9b569d2e97707ec143a217fb41a243f9983d24c003ed"
             }
           ],
           "test_inventory": [
