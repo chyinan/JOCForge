@@ -1,0 +1,132 @@
+{
+  "schema": "jocforge.flat7x.i0_ac3_bsi_continuation.v1",
+  "package_id": "FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1",
+  "classification": "ETSI_STRUCTURAL_SYNTAX_CONTRACT",
+  "production_allowed": false,
+  "target": {
+    "role": "I0",
+    "codec": "legacy_ac3_core",
+    "sample_rate_hz": 48000,
+    "frame_size_bytes": 2560,
+    "frame_size_bits": 20480,
+    "audio_blocks": 6,
+    "samples_per_channel": 1536,
+    "header_contract_package": "flat7x-i0-ac3-header-segment-v1",
+    "header_contract_manifest_sha256": "285bff275095c945a3f6f4b5040de20111779cec466602fb1aea29ca8c4ad8e1",
+    "header_contract_package_seal_sha256": "19a1923a4ec264eca0f55c63eaab3065d6587ef1e86ef0e6af2d288f950acc9d",
+    "header_end_bits": {
+      "without_compr": 62,
+      "with_compr": 70
+    },
+    "acmod": 7,
+    "lfeon": 1,
+    "frmsizecod_allowed": [
+      36,
+      37
+    ]
+  },
+  "frame_part_order": [
+    "syncinfo",
+    "bsi",
+    "audblk[0]",
+    "audblk[1]",
+    "audblk[2]",
+    "audblk[3]",
+    "audblk[4]",
+    "audblk[5]",
+    "auxdata",
+    "errorcheck"
+  ],
+  "bsi_tail_after_compr": [
+    {
+      "name": "langcode",
+      "width_bits": 1,
+      "optional_payload": "langcod",
+      "payload_width_bits": 8
+    },
+    {
+      "name": "audprodie",
+      "width_bits": 1,
+      "optional_payload": "mixlevel+roomtyp",
+      "payload_width_bits": 7
+    },
+    {
+      "name": "dual_mono_ch2_fields",
+      "condition": "acmod == 0",
+      "target_acmod7": "OMITTED"
+    },
+    {
+      "name": "copyrightb",
+      "width_bits": 1
+    },
+    {
+      "name": "origbs",
+      "width_bits": 1
+    },
+    {
+      "name": "timecod1e",
+      "width_bits": 1,
+      "optional_payload": "timecod1",
+      "payload_width_bits": 14
+    },
+    {
+      "name": "timecod2e",
+      "width_bits": 1,
+      "optional_payload": "timecod2",
+      "payload_width_bits": 14
+    },
+    {
+      "name": "addbsie",
+      "width_bits": 1,
+      "optional_payload": "addbsil+addbsi",
+      "addbsil_width_bits": 6,
+      "addbsi_bytes": "addbsil+1"
+    }
+  ],
+  "auxdata": {
+    "fields_in_order": [
+      "auxbits[nauxbits]",
+      "optional auxdatal U14 when auxdatae=1",
+      "auxdatae U1"
+    ],
+    "caller_owns_payload_and_span": true
+  },
+  "errorcheck": {
+    "fields_in_order": [
+      "crcrsv U1",
+      "crc2 U16"
+    ],
+    "crc2_end_bit": 20480,
+    "crc2_start_bit": 20464
+  },
+  "crc_contract": {
+    "polynomial": "x^16+x^15+x^2+1",
+    "polynomial_hex": "0x8005",
+    "initial_register": 0,
+    "bit_order": "MSB_FIRST",
+    "syncword_excluded_from_crc_coverage": true,
+    "crc1": {
+      "field_start_bit": 16,
+      "field_width_bits": 16,
+      "coverage_end_bytes_for_2560B_frame": 1600,
+      "residual_at_5_8_boundary": 0,
+      "generated_value": "CALLER_OWNED_NOT_VALIDATED_BY_THIS_CONTRACT"
+    },
+    "crc2": {
+      "field_start_bit": 20464,
+      "field_width_bits": 16,
+      "coverage": "whole syncframe excluding syncword",
+      "residual_at_frame_end": 0,
+      "generated_value": "CALLER_OWNED_NOT_VALIDATED_BY_THIS_CONTRACT",
+      "crcrsv_may_be_inverted_if_value_equals_syncword": true
+    }
+  },
+  "scope": {
+    "audio_block_bytes": "NOT_PROVIDED",
+    "AC3_audio_algorithm": "NOT_PROVIDED",
+    "xml_mapping": "UNBOUND",
+    "source_generation": "UNBOUND",
+    "actual_I0_frame_parse": "NOT_RUN",
+    "real_output": "NOT_RUN"
+  }
+}

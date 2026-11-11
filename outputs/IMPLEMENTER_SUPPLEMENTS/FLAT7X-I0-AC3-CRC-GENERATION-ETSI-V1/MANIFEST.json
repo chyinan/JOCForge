@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.wash_implementer_supplement.v1",
+  "package_id": "FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1",
+  "scope": "ETSI-derived AC-3 CRC field generation for caller-provided I0 frame bytes; synthetic vectors only",
+  "files": [
+    {
+      "path": "CRC-GENERATION-CONTRACT.json",
+      "bytes": 2105,
+      "sha256": "c549936a08b44c7c61b7b434d0e931537238f57f0a349e0a7cf47dbaeece4f4d"
+    },
+    {
+      "path": "FINDINGS.md",
+      "bytes": 1822,
+      "sha256": "a896e2e4c0c43e2fee2d27698aea55008d1aeefc7b61efbd1647c5278fa43f6d"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1701,
+      "sha256": "81e2ced5481937604fac3d9d153b13c89187528ea9abe120565f28be3cbf6fc4"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 1138,
+      "sha256": "0658ef4f79703cf84de8f692b669202d1a895290e9a5a1012597eb436192db35"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 2978,
+      "sha256": "276648fb4fe9af21cd1e0dcf27ebee3f1f9231eee4d776d60c8d5533fd728e15"
+    }
+  ]
+}

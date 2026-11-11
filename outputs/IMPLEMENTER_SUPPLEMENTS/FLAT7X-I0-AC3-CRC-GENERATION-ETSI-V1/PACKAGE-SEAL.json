@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge.wash_implementer_supplement_seal.v1",
+  "package_id": "FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1",
+  "manifest_sha256": "07ad2b60bd22a1312ff15107cf35e836a12a763c764b3fbaa74e02b4f2d9dc2d",
+  "payload_count": 5,
+  "file_paths": [
+    "CRC-GENERATION-CONTRACT.json",
+    "FINDINGS.md",
+    "INPUT-ONLY-VECTORS.json",
+    "SOURCE-RECEIPTS.json",
+    "verify_package.py"
+  ]
+}

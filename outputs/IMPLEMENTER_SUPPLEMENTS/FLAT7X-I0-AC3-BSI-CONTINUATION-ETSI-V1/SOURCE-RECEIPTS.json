@@ -1,0 +1,34 @@
+{
+  "schema": "jocforge.wash.source_receipts.v1",
+  "package_id": "FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1",
+  "primary_standard": {
+    "title": "ETSI TS 102 366 V1.4.1 (2017-09)",
+    "url": "https://www.etsi.org/deliver/etsi_ts/102300_102399/102366/01.04.01_60/ts_102366v010401p.pdf",
+    "clauses": [
+      "4.3.0",
+      "4.3.1",
+      "4.3.2",
+      "4.3.3",
+      "4.3.4",
+      "4.3.5",
+      "4.4.2.11-4.4.2.31",
+      "4.4.5.1-4.4.5.2",
+      "6.10.1"
+    ],
+    "source_tier": "ETSI official standard",
+    "retrieved_by_wash": true
+  },
+  "approved_header_segment": {
+    "package_id": "flat7x-i0-ac3-header-segment-v1",
+    "manifest_sha256": "285bff275095c945a3f6f4b5040de20111779cec466602fb1aea29ca8c4ad8e1",
+    "package_seal_sha256": "19a1923a4ec264eca0f55c63eaab3065d6587ef1e86ef0e6af2d288f950acc9d",
+    "normal_checker": "PASS",
+    "python_optimized_checker": "PASS"
+  },
+  "access": {
+    "DEE_or_encoder_run": false,
+    "media_pcm_payload_key_license_access": false,
+    "source_code_copied": false,
+    "audio_algorithm_included": false
+  }
+}

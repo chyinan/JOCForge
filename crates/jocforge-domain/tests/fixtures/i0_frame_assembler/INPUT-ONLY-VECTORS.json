@@ -1,0 +1,97 @@
+{
+  "schema": "jocforge.flat7x.i0_ac3_frame_assembler.input_only.v1",
+  "classification": "SYNTHETIC_NOT_REAL_OUTPUT",
+  "contains_pcm_or_real_audio_bytes": false,
+  "header_package_manifest_sha256": "285bff275095c945a3f6f4b5040de20111779cec466602fb1aea29ca8c4ad8e1",
+  "bsi_continuation_package_manifest_sha256": "cddad099b557617ab6f4aa73d3c40d87f75f12a55c141e14bff6573bdc891787",
+  "crc_generation_package_manifest_sha256": "07ad2b60bd22a1312ff15107cf35e836a12a763c764b3fbaa74e02b4f2d9dc2d",
+  "production_allowed": false,
+  "cases": [
+    {
+      "id": "synthetic-no-compr-absent-auxdata",
+      "header_vector_id": "i0-640-frmsizecod36-no-compr",
+      "bsi_tail_bits": 7,
+      "bsi_test_pattern_hex": "a8",
+      "audio_block_bit_lengths": [
+        3399,
+        3399,
+        3399,
+        3399,
+        3399,
+        3398
+      ],
+      "audio_block_test_byte_patterns_hex": [
+        "11",
+        "22",
+        "33",
+        "44",
+        "55",
+        "66"
+      ],
+      "auxdata": null,
+      "integrity_fields": {
+        "crcrsv_initial": false
+      },
+      "expected": {
+        "header_end_bit": 62,
+        "bsi_tail_span": [62, 69],
+        "first_audio_block_start_bit": 69,
+        "last_audio_block_end_bit": 20462,
+        "auxdatae_span": [20462, 20463],
+        "auxdata_span": [20462, 20463],
+        "errorcheck_span": [20463, 20480],
+        "crc1_span": [16, 32],
+        "crc2_span": [20464, 20480],
+        "total_frame_bytes": 2560,
+        "total_frame_bits": 20480,
+        "crc1_residual": 0,
+        "crc2_residual": 0,
+        "crcrsv_toggled": false
+      }
+    },
+    {
+      "id": "synthetic-with-compr-present-auxdata",
+      "header_vector_id": "i0-640-frmsizecod37-with-compr",
+      "bsi_tail_bits": 7,
+      "bsi_test_pattern_hex": "a8",
+      "audio_block_bit_lengths": [
+        3397,
+        3397,
+        3397,
+        3397,
+        3397,
+        3397
+      ],
+      "audio_block_test_byte_patterns_hex": [
+        "17",
+        "28",
+        "39",
+        "4a",
+        "5b",
+        "6c"
+      ],
+      "auxdata": {
+        "payload_bits": 3,
+        "test_pattern_hex": "60"
+      },
+      "integrity_fields": {
+        "crcrsv_initial": true
+      },
+      "expected": {
+        "header_end_bit": 70,
+        "bsi_tail_span": [70, 77],
+        "first_audio_block_start_bit": 77,
+        "last_audio_block_end_bit": 20459,
+        "auxdata_span": [20459, 20463],
+        "errorcheck_span": [20463, 20480],
+        "crc1_span": [16, 32],
+        "crc2_span": [20464, 20480],
+        "total_frame_bytes": 2560,
+        "total_frame_bits": 20480,
+        "crc1_residual": 0,
+        "crc2_residual": 0,
+        "crcrsv_toggled": false
+      }
+    }
+  ]
+}

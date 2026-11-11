@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.wash_implementer_supplement.v1",
+  "package_id": "FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1",
+  "scope": "ETSI-derived I0 AC-3 BSI continuation order and caller-owned frame-part seam",
+  "files": [
+    {
+      "path": "FINDINGS.md",
+      "bytes": 2504,
+      "sha256": "720443f9effa749928932ca90ac897964c88ca04a1986863c0e75f943e619726"
+    },
+    {
+      "path": "I0-AC3-BSI-CONTINUATION.json",
+      "bytes": 3479,
+      "sha256": "982ebec236bb223984734224da94e2b67d9006ce017d58753e0ae017d1f4d7a4"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 1101,
+      "sha256": "464159e85fc5f9542d9c804661a0a684c1d00d4bb8420c8e85549e91104fd176"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 2742,
+      "sha256": "13d5729b797d4ac1325854d8a71cc85d33b3b59ccb875632e12b6f580ac6b833"
+    }
+  ]
+}

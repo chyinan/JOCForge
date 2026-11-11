@@ -550,6 +550,7 @@
 | F12/flat7x-d0-fixed-prefix-writer | F12 | `codec` |
 | F12/flat7x-d0-bsi-segment-through-chanmap | F12 | `codec` |
 | F12/flat7x-i0-ac3-header-segment | F12 | `codec` |
+| F12/flat7x-i0-frame-bit-assembler | F12 | `codec` |
 | F12/flat7x-d0-mixing-metadata-segment | F12 | `codec` |
 | F12/flat7x-d0-information-addbsi-suffix | F12 | `codec` |
 | F12/flat7x-d0-bsi-structure-composition | F12 | `codec` |

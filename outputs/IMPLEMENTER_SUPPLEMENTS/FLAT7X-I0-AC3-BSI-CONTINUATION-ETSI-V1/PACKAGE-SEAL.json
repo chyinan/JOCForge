@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash_implementer_supplement_seal.v1",
+  "package_id": "FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1",
+  "manifest_sha256": "cddad099b557617ab6f4aa73d3c40d87f75f12a55c141e14bff6573bdc891787",
+  "payload_count": 4,
+  "file_paths": [
+    "FINDINGS.md",
+    "I0-AC3-BSI-CONTINUATION.json",
+    "SOURCE-RECEIPTS.json",
+    "verify_package.py"
+  ]
+}

@@ -25,11 +25,13 @@
 | domain/codec/frame_size | 4,096-byte AU size contract | 空壳；无计算实现 |
 | domain/codec/bap | F12A BAP 边界 | 空壳；无算法 |
 | domain/codec/mantissa | mantissa production 边界 | 空壳；无算法 |
-| domain/codec/frame_builder | validated receipt 消费边界 | 空壳；不计算上游值 |
+| domain/codec/frame_builder | Flat7x I0 AC-3 header segment | Writes the approved 62/70-bit header through optional `compr` and returns before caller-owned BSI tail; no audio or CRC generation. |
+| domain/codec/i0_frame_assembler | Flat7x I0 AC-3 structural frame assembly | Copies caller-owned BSI and six audio-block spans, emits optional auxdata, generates CRC1/CRC2 and verifies synthetic zero residuals; audio production and product admission remain open. |
 | domain/codec/core_layout | 5.1 六 carrier 边界 | 空壳；无 sample mapping |
 | domain/codec/substream_topology | 1 independent / 0 dependent 边界 | 空壳；无 writer |
 | domain/codec/rate_profile | 1,024 kbps / 6 blocks / 1,536 samples / 4,096 bytes 边界 | 空壳；无 rate plan |
 | domain/integrity/crc16 | E-AC-3 CRC16 生成和 residual 检查 | 多项式 `0x8005`、初值 0、MSB-first；当前由 F14K keyless root 使用 |
+| domain/integrity/ac3_crc16 | ETSI-derived AC-3 CRC1/CRC2 generation | Reuses the polynomial/bitwise primitive, derives CRC1 from the suffix, applies the crcrsv collision adjustment and verifies residuals for the production-disabled I0 assembler. |
 | domain/integrity/keyless_checksum | 公共 keyless profile 校验、CRC32 和 CRC8 | 仅接受 `keyless-crc32-crc8-crc16.v1`；拒绝其他 profile，不接触认证材料 |
 | domain/integrity/programme_owner | F14K 单 owner 状态、SOURCE/DISPATCH/AU stages 和局部提交 | keyless root 局部验证；全局 CallbackTransaction、私有认证和 native receipt 格式仍未实现 |
 | domain/timeline | 已批准 callback/source/writer/AU 时钟类型边界 | Typed g/q/s/d/writer/j indices and selected conversion rules are implemented and used by J05/F05/F13 boundaries；不得用裸 `usize` 跨域。 |

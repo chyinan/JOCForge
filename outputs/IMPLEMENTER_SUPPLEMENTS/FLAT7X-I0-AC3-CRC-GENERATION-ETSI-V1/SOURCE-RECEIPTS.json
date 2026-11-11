@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.wash.source_receipts.v1",
+  "package_id": "FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1",
+  "source_package": {
+    "package_id": "etsi_ac3_crc_generation_wash_v1",
+    "path": "C:/Users/chyinan/Documents/Codex/2026-10-12/files-pasted-by-the-user-agent/outputs/etsi_ac3_crc_generation_wash_v1",
+    "manifest_sha256": "2b6bf1d0c8af1287b5da6f1e723ffb26c7e43f08360783fb5766e8183f84dde7",
+    "package_seal_sha256": "820fdbddf13bee0a87220177c8eebde82abb90fe2e0268d7b78e00029d6f2ab8",
+    "normal_checker": "PASS",
+    "python_optimized_checker": "PASS",
+    "reference_summary_sha256": "64dd0cb011b7a76f0664420d06bc5caf1d4c6a1f87a64b42ba13648582c9140b"
+  },
+  "related_header_contract": {
+    "package_id": "flat7x-i0-ac3-header-segment-v1",
+    "manifest_sha256": "285bff275095c945a3f6f4b5040de20111779cec466602fb1aea29ca8c4ad8e1",
+    "package_seal_sha256": "19a1923a4ec264eca0f55c63eaab3065d6587ef1e86ef0e6af2d288f950acc9d"
+  },
+  "access": {
+    "source_code_copied": false,
+    "raw_frame_bytes_included": false,
+    "media_or_pcm_read": false,
+    "private_key_or_license_accessed": false
+  }
+}

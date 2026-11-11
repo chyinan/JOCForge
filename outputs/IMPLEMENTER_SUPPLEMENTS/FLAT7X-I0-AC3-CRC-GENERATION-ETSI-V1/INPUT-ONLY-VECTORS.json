@@ -1,0 +1,57 @@
+{
+  "schema": "jocforge.flat7x.i0_ac3_crc_input_only_vectors.v1",
+  "evidence_class": "SYNTHETIC_CRC_GEOMETRY_ONLY_NOT_VALIDATED_AC3_BITSTREAM",
+  "raw_frame_bytes_included": false,
+  "frame_pattern": "byte[i]=(i*37+11+seed*29+(i>>3)*13)&0xff; overwrite syncword and CRC fields deterministically",
+  "vectors": [
+    {
+      "id": "target_2560_byte_48khz_i0_geometry",
+      "frame_bytes": 2560,
+      "seed": 17,
+      "boundary_bytes": 1600,
+      "crc1": "0x6837",
+      "crc1_suffix_crc": "0x0AD2",
+      "crc1_shift_factor": "0x6E87",
+      "crc1_naive_suffix_value": "0x0AD2",
+      "crc1_naive_residue": "0x29EA",
+      "crc1_residue": "0x0000",
+      "crc2": "0xADE9",
+      "crc2_residue": "0x0000",
+      "crcrsv_toggled": false
+    },
+    {
+      "id": "word_aligned_short_boundary",
+      "frame_bytes": 128,
+      "seed": 7,
+      "boundary_bytes": 80,
+      "crc1": "0x8860",
+      "crc1_residue": "0x0000",
+      "crc2": "0x0558",
+      "crc2_residue": "0x0000",
+      "crcrsv_toggled": false
+    },
+    {
+      "id": "synthetic_odd_word_count_truncation_boundary",
+      "frame_bytes": 66,
+      "seed": 11,
+      "boundary_bytes": 40,
+      "crc1": "0x08AD",
+      "crc1_residue": "0x0000",
+      "crc2": "0xFFFD",
+      "crc2_residue": "0x0000",
+      "crcrsv_toggled": false
+    },
+    {
+      "id": "crcrsv_crc2_equals_syncword_collision",
+      "frame_bytes": 128,
+      "seed": 23,
+      "boundary_bytes": 80,
+      "pre_adjustment_crc2": "0x0B77",
+      "crcrsv_toggled": true,
+      "crc2": "0x8B72",
+      "crc2_residue": "0x0000"
+    }
+  ],
+  "dee_or_encoder_run": "NOT_RUN",
+  "product_validation": "NOT_VALIDATED"
+}

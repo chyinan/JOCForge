@@ -23,6 +23,7 @@ pub mod frame_builder;
 pub mod frame_size;
 pub mod frame_syntax;
 pub mod grouped_quantizer;
+pub mod i0_frame_assembler;
 pub mod lfe_coefficient_exponent;
 pub mod mantissa;
 pub mod owner;
