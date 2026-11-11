@@ -1,0 +1,55 @@
+{
+  "schema": "jocforge.implementer_provenance.v1",
+  "package_id": "eac3-dependent-d0-fixed-prefix-v1",
+  "evidence_sources": [
+    {
+      "kind": "official-standard",
+      "title": "ETSI TS 102 366 V1.4.1 (2017-09)",
+      "url": "https://www.etsi.org/deliver/etsi_ts/102300_102399/102366/01.04.01_60/ts_102366v010401p.pdf",
+      "clauses": ["E.1.2.2", "E.1.3.1.3", "E.1.3.1.4", "E.1.3.1.5", "E.1.3.1.6"],
+      "claims": [
+        "Dependent BSI field order starts strmtyp(2), substreamid(3), frmsiz(11), fscod(2), numblkscod(2), acmod(3), lfeon(1), bsid(5).",
+        "frmsiz is one less than the syncframe size in 16-bit words.",
+        "fscod=0 is 48 kHz; numblkscod=3 is six audio blocks; E-AC-3 bsid is 16."
+      ]
+    },
+    {
+      "kind": "wash-approved-profile-contract",
+      "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+      "manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+      "seal_file_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+      "target_row": {"role": "D0", "sample_rate_hz": 48000, "audio_blocks": 6, "acmod": 5, "lfeon": false, "frame_bytes": 4096, "chanmap": "0x1A00"}
+    },
+    {
+      "kind": "prior-limited-chanmap-field-supplement-context-correction",
+      "package_id": "eac3-dependent-chanmap-field-writer-v1",
+      "manifest_sha256": "fe364375e3a4ac4ae7a7959807d10d48f1f745e43077f4629fe2a16718702c43",
+      "prior_acmod_6_vector": "standalone validation context only; not the Flat7x D0 target tuple",
+      "target_acmod": 5,
+      "writer_scope_effect": "The 17-bit helper does not consume acmod; this prefix follows the approved target row at acmod=5."
+    },
+    {
+      "kind": "implementation-source-snapshot",
+      "repository_head": "c067750a94a1e02b5c880bf002f9c90a7bfc8f50",
+      "file_hashes": {
+        "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs": "ac239a7920c752123801bf9726cda0d8639e04e42f39008732a0b12f740ba9ef",
+        "crates/jocforge-domain/src/codec/frame_size.rs": "a806a1d87d3f3f5bea8c334a8b6f7e4f93de1ce8d5f85b3d851c3b3777c5dc3c",
+        "crates/jocforge-domain/src/codec/frame_builder.rs": "911a9d0bf2f05bdb8510359bdc10f2a37230890fd556f6ca99d44f11bce2674a"
+      }
+    },
+    {
+      "kind": "native-static-boundary",
+      "package_id": "d0_bsi_header_branch_wash_v1",
+      "manifest_sha256": "228406305930484813ede6b661b7e70a1c9c40e3ebeb5bdaffbb5a31dca3e380b",
+      "seal_file_sha256": "cac1024429284c7d7d0633f21fd3f709686b94bd9d26e4ed6b6de49f4c8c3592",
+      "disposition": "candidate header-to-serializer edge and 14-bit fragment observed; semantic mapping to target D0 tuple remains UNBOUND"
+    }
+  ],
+  "constraints": {
+    "no_dee_or_encoder_run": true,
+    "no_media_pcm_payload_key_license": true,
+    "no_ffmpeg_or_other_product_audio_algorithm": true,
+    "preserve_5_1_path": true,
+    "production_allowed": false
+  }
+}

@@ -65,6 +65,50 @@ pub fn write_selected_eac3_fixed_prefix(
     Ok(writer.cursor())
 }
 
+const FLAT7X_D0_FIXED_PREFIX_BITS: u32 = 45;
+const FLAT7X_D0_FIXED_PREFIX_FIELDS: [(u32, u8); 9] = [
+    (0x0b77, 16),
+    (1, 2),
+    (0, 3),
+    (2_047, 11),
+    (0, 2),
+    (3, 2),
+    (5, 3),
+    (0, 1),
+    (16, 5),
+];
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Flat7xD0FixedPrefixError {
+    CursorMismatch { actual: u32 },
+    BitWriter(FrameBitWriterError),
+}
+
+impl From<FrameBitWriterError> for Flat7xD0FixedPrefixError {
+    fn from(error: FrameBitWriterError) -> Self {
+        Self::BitWriter(error)
+    }
+}
+
+/// Writes the 45-bit Flat7x dependent E-AC-3 D0 syncframe prefix.
+///
+/// The writer must be positioned at bit zero. The complete prefix is
+/// preflighted before mutation; the caller owns `dialnorm` and subsequent BSI.
+/// The later dependent `chanmape`/`chanmap` field pair is a separate BSI group.
+pub fn write_flat7x_d0_fixed_prefix(
+    writer: &mut FrameBitWriter<'_>,
+) -> Result<FrameBitCursor, Flat7xD0FixedPrefixError> {
+    let actual = writer.cursor().bit_offset();
+    if actual != 0 {
+        return Err(Flat7xD0FixedPrefixError::CursorMismatch { actual });
+    }
+    writer.preflight_capacity(FLAT7X_D0_FIXED_PREFIX_BITS)?;
+    for (value, width) in FLAT7X_D0_FIXED_PREFIX_FIELDS {
+        writer.write_unsigned(value, width)?;
+    }
+    Ok(writer.cursor())
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum SelectedComplexityFieldWriteError {
     CursorMismatch { actual: u32 },

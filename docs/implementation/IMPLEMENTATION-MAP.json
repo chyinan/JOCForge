@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2104046,
-              "sha256": "16371ac90afd64d15b1301fbd21d9c5902d7294400391751c526e378848d18a9"
+              "bytes": 2104088,
+              "sha256": "742c3cd90ba4f8533efa535665454eed0ab545fbaa9513b662d420751a7dde73"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2104046,
-              "sha256": "16371ac90afd64d15b1301fbd21d9c5902d7294400391751c526e378848d18a9"
+              "bytes": 2104088,
+              "sha256": "742c3cd90ba4f8533efa535665454eed0ab545fbaa9513b662d420751a7dde73"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -43596,8 +43596,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 16228,
-              "sha256": "911a9d0bf2f05bdb8510359bdc10f2a37230890fd556f6ca99d44f11bce2674a"
+              "bytes": 17538,
+              "sha256": "4a215c32c14bcf09feb9125ed9a07f890835b66e9b97e97271a6425c79eb0ee3"
             }
           ],
           "test_modules": [
@@ -43606,8 +43606,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 16228,
-              "sha256": "911a9d0bf2f05bdb8510359bdc10f2a37230890fd556f6ca99d44f11bce2674a"
+              "bytes": 17538,
+              "sha256": "4a215c32c14bcf09feb9125ed9a07f890835b66e9b97e97271a6425c79eb0ee3"
             }
           ],
           "local_mapping_files": [],
@@ -44556,8 +44556,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 16228,
-              "sha256": "911a9d0bf2f05bdb8510359bdc10f2a37230890fd556f6ca99d44f11bce2674a"
+              "bytes": 17538,
+              "sha256": "4a215c32c14bcf09feb9125ed9a07f890835b66e9b97e97271a6425c79eb0ee3"
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_syntax.rs",
@@ -45491,7 +45491,7 @@
                 "acmod": 5,
                 "lfeon": 0
               },
-              "context_reconciliation": "OPEN; FIELD_WRITER_DOES_NOT_CONSUME_ACMOD_OR_LFEON",
+              "context_reconciliation": "SEPARATE_VALIDATION_VECTOR_CONTEXT; TARGET_D0_PREFIX_ACMOD5",
               "production_allowed": false
             }
           },
@@ -45534,7 +45534,6 @@
           "not_run": [
             "Native D0 BSI owner and runtime chanmape source join.",
             "D0 audio encoding, frame composition, and AU output.",
-            "Reconcile the supplement's acmod=6 validation context with the current target profile acmod=5 before BSI integration.",
             "ADM source-row to D0 semantic role join and production output."
           ],
           "validation_boundary": "Local verification covers only the target-scoped 17-bit chanmape+chanmap field pair and input-only vectors. Source owner, full D0 BSI/frame composition, AU output and production remain open; the acmod context conflict is recorded.",
@@ -46339,6 +46338,130 @@
           ],
           "validation_boundary": "Hash-bound V1/V2 structure summaries for the user-designated sample. V2 supplies a reference profile-index value but does not bind a target writer. Vendor-compatible observation and ETSI-strict Table 56 failure are distinct; no media bytes, PCM or compressed payload are included.",
           "delivery_scope": "OFFICIAL_REFERENCE_STRUCTURE_AND_JOC_INDEX_ONLY_NO_TARGET_OUTPUT_OR_STRICT_COMPLIANCE_CLAIM"
+        },
+        {
+          "slice_id": "flat7x-d0-fixed-prefix-writer",
+          "mapping_status": "WASHED_ETSI_D0_FIXED_PREFIX_FIELDS_BOUND__D0_BODY_AND_PRODUCTION_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_FLAT7X_D0_45_BIT_PREFIX_WRITER__FRAME_BODY_AND_PRODUCTION_OPEN",
+          "implementation_requirement": true,
+          "owner": "codec",
+          "scope": "Writes only the approved Flat7x dependent D0 fixed 45-bit E-AC-3 prefix at cursor zero: syncword 0x0B77, strmtyp=1, substreamid=0, frmsiz=2047, fscod=0, numblkscod=3, acmod=5, lfeon=0, bsid=16. It preflights the full prefix before writing. Caller owns dialnorm and remaining BSI; chanmape/chanmap is a separate later field group. No complete D0 frame or AU is assembled.",
+          "dependencies": [
+            "F01E/flat7x-i0-d0-typed-target-plan",
+            "F12/washed-eac3-chanmap-u16-msb-first-serialization"
+          ],
+          "spec_files": [
+            "specs/12-codec-and-wire.md",
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-FIXED-PREFIX-V1/CONTRACT.md"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/frame_builder.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
+              "bytes": 17538,
+              "sha256": "4a215c32c14bcf09feb9125ed9a07f890835b66e9b97e97271a6425c79eb0ee3"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/flat7x_d0_fixed_prefix.rs"
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_d0_fixed_prefix.rs",
+              "bytes": 3332,
+              "sha256": "c6d56a0ca01a2811473b47106ac0cd353f069ee95dcef804a173f2677b0d296e"
+            }
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "One synchronous helper emits a 45-bit structural prefix at caller cursor zero."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_FLAT7X_D0_FIXED_PREFIX",
+            "package_id": "eac3-dependent-d0-fixed-prefix-v1",
+            "supplement_manifest_sha256": "686a51ef28e480d313e39c8d977faaa3e998214b87606fca7544596e913ccd24",
+            "supplement_seal_sha256": "11fe6023706236c6d1c1050dcb1b0139f5c63a12767d87e313e6eca6212d4687",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-FIXED-PREFIX-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-FIXED-PREFIX-V1/PACKAGE-SEAL.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-FIXED-PREFIX-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-FIXED-PREFIX-V1/CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-FIXED-PREFIX-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-FIXED-PREFIX-V1/PROVENANCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-FIXED-PREFIX-V1/verify_package.py"
+            ],
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "start_bit_offset": 0,
+            "prefix_width_bits": 45,
+            "target": {
+              "strmtyp": 1,
+              "substreamid": 0,
+              "frame_bytes": 4096,
+              "frmsiz": 2047,
+              "fscod": 0,
+              "numblkscod": 3,
+              "acmod": 5,
+              "lfeon": 0,
+              "bsid": 16,
+              "production_allowed": false
+            },
+            "expected_bit_string": "000010110111011101000111111111110011101010000",
+            "expected_bytes_hex_zero_initialized": "0b7747ff3a80",
+            "following_fields_owned_by_caller": [
+              "dialnorm",
+              "compre",
+              "dependent chanmape/chanmap at its ETSI position"
+            ],
+            "chanmap_pair_is_separate_from_prefix": true,
+            "validation_boundary": "45-bit structural prefix only; no D0 BSI body, audio block, EMDF, complete frame/AU, output or production."
+          },
+          "vectors": {
+            "kind": "WASHED_FLAT7X_D0_FIXED_PREFIX_INPUT_ONLY_VECTORS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-FIXED-PREFIX-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "The exact 45-bit target prefix is checked against its field-wise bit string and zero-initialized bytes.",
+              "The insufficient-capacity vector uses its explicit 5-byte buffer at cursor zero and verifies no bytes/cursor mutation."
+            ],
+            "local_fixture": {
+              "file": "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-FIXED-PREFIX-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 1748,
+              "sha256": "1f33b9a7f8ecdc2744150a00212923d247284840afe378326f8562fb85a2689e"
+            },
+            "expected_outputs_included": true,
+            "execution_status": "LOCALLY_VERIFIED_INPUT_ONLY_PREFIX_AND_CAPACITY"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "PREFIX_CURSOR_MISMATCH",
+              "category": "caller cursor",
+              "trigger": "The caller positions the prefix writer at a bit offset other than zero.",
+              "result": "Flat7xD0FixedPrefixError::CursorMismatch; no prefix bits are written.",
+              "caller_action": "Correct the frame-header start cursor before retrying the helper."
+            },
+            {
+              "error_code": "FRAME_BIT_WRITER_BUFFER_TOO_SMALL",
+              "category": "prefix capacity",
+              "trigger": "The caller buffer has fewer than 45 bits available at cursor zero.",
+              "result": "Flat7xD0FixedPrefixError::BitWriter(BufferTooSmall); preflight leaves bytes/cursor unchanged.",
+              "caller_action": "Reject the frame candidate; the caller owns remaining frame composition."
+            }
+          ],
+          "not_run": [
+            "Complete D0 BSI and fields following the fixed prefix.",
+            "D0 audio-block, EMDF, full-frame, AU and output production.",
+            "Native record +0x5c owner and complete source-role mapping.",
+            "5.1 profile/writer mutation and production gate opening."
+          ],
+          "validation_boundary": "Local structural prefix writer only; caller retains BSI/body composition, D0 frame/AU output remains NOT_RUN, production_allowed=false.",
+          "delivery_scope": "FLAT7X_D0_FIXED_PREFIX_ONLY_NO_COMPLETE_BSI_FRAME_AU_OR_PRODUCTION_CLAIM"
         }
       ]
     },
@@ -55544,8 +55667,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2104046,
-              "sha256": "16371ac90afd64d15b1301fbd21d9c5902d7294400391751c526e378848d18a9"
+              "bytes": 2104088,
+              "sha256": "742c3cd90ba4f8533efa535665454eed0ab545fbaa9513b662d420751a7dde73"
             }
           ],
           "test_inventory": [

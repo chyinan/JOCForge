@@ -1,0 +1,7 @@
+{
+  "manifest_sha256": "686a51ef28e480d313e39c8d977faaa3e998214b87606fca7544596e913ccd24",
+  "package_id": "eac3-dependent-d0-fixed-prefix-v1",
+  "payload_count": 6,
+  "production_allowed": false,
+  "schema": "jocforge.wash_implementer_supplement_seal.v1"
+}

@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "sha256": "e7451a10fef23f11c013ecee5aa957941ee899f757d4d060ae664645c99f657e",
+      "size_bytes": 2697
+    },
+    {
+      "path": "CONTRACT.json",
+      "sha256": "8cbebcfe72c743b83291184603cce4e6ad43ded917b2e189f3ae5203600e4ed1",
+      "size_bytes": 2302
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "sha256": "1f33b9a7f8ecdc2744150a00212923d247284840afe378326f8562fb85a2689e",
+      "size_bytes": 1748
+    },
+    {
+      "path": "PROVENANCE.json",
+      "sha256": "94a553e9e8f7aac518496ace200f1e8bbbb7935df58c4b964289ded9fdaa88d8",
+      "size_bytes": 2922
+    },
+    {
+      "path": "build_manifest.py",
+      "sha256": "31e9c1f8b40907a2860abfd182ba548463a942ee2933cc0c00e96b5307da3f37",
+      "size_bytes": 1458
+    },
+    {
+      "path": "verify_package.py",
+      "sha256": "a0c798535e461fa644838046e3c57ec62675fc629df6bf798c4cc64326a3bf86",
+      "size_bytes": 3750
+    }
+  ],
+  "package_id": "eac3-dependent-d0-fixed-prefix-v1",
+  "production_allowed": false,
+  "schema": "jocforge.wash_implementer_supplement.v1",
+  "status": "IMPLEMENTER_READY_LIMITED_DEPENDENT_PREFIX"
+}

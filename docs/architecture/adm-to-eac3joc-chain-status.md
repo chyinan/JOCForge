@@ -26,7 +26,13 @@ Wash 包 `JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1` 的 one-hot 与 `0x1A00` i
 
 Wash 包 `eac3-dependent-chanmap-field-writer-v1`（manifest `fe364375e3a4ac4ae7a7959807d10d48f1f745e43077f4629fe2a16718702c43`，package seal `8d845b829d5a4488674953235df6c32ac7e8c9fd87b1cebdd32e80e64ff807b2`）将 `chanmape=1` 和后续 U16 map 合为一个需预检的 17-bit group。`codec::eac3_channel_map::write_flat7x_d0_chanmap_fields` 保留原 numeric-field helper，并先预检 group capacity，再依次写 flag 与 typed map；本地 tests 覆盖 one-hot masks、`0x1A00`、misaligned start bit 5 和不足 17 bits 的 no-partial-write case。
 
-包声明 target validation context `acmod=6,lfeon=0`，而当前 Flat7x profile contract/target plan记录 D0 `acmod=5,lfeon=0`。字段 writer 不消费该 context；D0 BSI/frame integration 前需 Wash 复核并统一该差异。D0 frame/AU production、native record `+0x5c` owner 和完整 source-role join 均保持开放，`production_allowed=false`。
+Chanmap supplement's `acmod=6,lfeon=0` is a separate validation-vector context. The fixed-prefix contract binds the actual Flat7x D0 target to `acmod=5,lfeon=0`; the field-pair writer consumes neither context. D0 frame/AU production, native record `+0x5c` owner and complete source-role join remain open, with `production_allowed=false`.
+
+## 2026-11-11：Flat7x D0 固定 E-AC-3 前缀
+
+Wash supplement `eac3-dependent-d0-fixed-prefix-v1` 的 manifest `686a51ef28e480d313e39c8d977faaa3e998214b87606fca7544596e913ccd24` / seal `11fe6023706236c6d1c1050dcb1b0139f5c63a12767d87e313e6eca6212d4687` 已在隔离仓库通过 normal 与 `python -O` 校验。`codec::frame_builder::write_flat7x_d0_fixed_prefix` 只在 cursor zero 写 45-bit target prefix，并在写入前预检完整容量；测试覆盖精确 bit string、zero-initialized bytes、end bit 45 与容量不足无部分写入。
+
+该固定前缀在 bit 45 结束，不含 `dialnorm`；后续 BSI 由 caller 负责，其中 `chanmape`/`chanmap` 在 ETSI 指定位置作为独立字段组写入。Target row values 为 `acmod=5,lfeon=0,bsid=16`；完整 D0 BSI、frame/AU assembly、native record owner、audio encoder 与 production remain open。修订后的容量向量使用 5-byte / 40-bit buffer，writer 不产生部分前缀。
 
 ## 2026-11-06：authored silence duration admission gate
 

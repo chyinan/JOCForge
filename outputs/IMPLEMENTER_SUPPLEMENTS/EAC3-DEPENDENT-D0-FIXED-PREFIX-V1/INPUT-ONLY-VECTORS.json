@@ -1,0 +1,49 @@
+{
+  "schema": "eac3-dependent-d0-fixed-prefix-input-only.v1",
+  "status": "INPUT_ONLY; NOT_RUN",
+  "execution": "NOT_RUN",
+  "source": "ETSI TS 102 366 V1.4.1 field syntax plus Wash-approved Flat7x D0 profile row",
+  "vectors": [
+    {
+      "id": "flat7x-d0-fixed-prefix",
+      "profile": {
+        "strmtyp": 1,
+        "substreamid": 0,
+        "frame_bytes": 4096,
+        "fscod": 0,
+        "numblkscod": 3,
+        "acmod": 5,
+        "lfeon": 0,
+        "bsid": 16
+      },
+      "frmsiz_formula": "frame_bytes / 2 - 1",
+      "frmsiz": 2047,
+      "field_bits": [
+        {"field": "syncword", "bits": "0000101101110111"},
+        {"field": "strmtyp", "bits": "01"},
+        {"field": "substreamid", "bits": "000"},
+        {"field": "frmsiz", "bits": "11111111111"},
+        {"field": "fscod", "bits": "00"},
+        {"field": "numblkscod", "bits": "11"},
+        {"field": "acmod", "bits": "101"},
+        {"field": "lfeon", "bits": "0"},
+        {"field": "bsid", "bits": "10000"}
+      ],
+      "expected_bit_string": "000010110111011101000111111111110011101010000",
+      "expected_bytes_hex_zero_initialized": "0b7747ff3a80",
+      "expected_end_bit_offset": 45,
+      "following_fields_owned_by_caller": ["dialnorm", "compre", "dependent chanmape/chanmap at its ETSI position"]
+    },
+    {
+      "id": "capacity-preflight-40-bits",
+      "buffer_bytes": 5,
+      "available_bits": 40,
+      "start_bit_offset": 0,
+      "expected": "reject before mutating bytes or cursor"
+    }
+  ],
+  "explicit_non_claims": [
+    "This vector does not describe the complete D0 BSI, syncframe, audio block, EMDF insertion, AU, or output file.",
+    "The target chanmap helper is a later, separate field group and is not written at bit 45."
+  ]
+}

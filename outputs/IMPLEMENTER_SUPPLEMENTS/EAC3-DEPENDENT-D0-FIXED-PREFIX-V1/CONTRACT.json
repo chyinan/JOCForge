@@ -1,0 +1,59 @@
+{
+  "schema": "jocforge.implementer_contract.v1",
+  "package_id": "eac3-dependent-d0-fixed-prefix-v1",
+  "status": "IMPLEMENTER_READY_LIMITED_DEPENDENT_PREFIX",
+  "production_allowed": false,
+  "implementation_scope": {
+    "responsibility": "write the Flat7x D0 fixed E-AC-3 syncframe prefix",
+    "existing_module": "crates/jocforge-domain/src/codec/frame_builder.rs",
+    "proposed_function": "write_flat7x_d0_fixed_prefix",
+    "caller_cursor_bit_offset": 0,
+    "preflight_bits": 45,
+    "fields": [
+      {"name": "syncword", "value": "0x0B77", "width_bits": 16},
+      {"name": "strmtyp", "value": 1, "width_bits": 2},
+      {"name": "substreamid", "value": 0, "width_bits": 3},
+      {"name": "frmsiz", "value": 2047, "width_bits": 11},
+      {"name": "fscod", "value": 0, "width_bits": 2},
+      {"name": "numblkscod", "value": 3, "width_bits": 2},
+      {"name": "acmod", "value": 5, "width_bits": 3},
+      {"name": "lfeon", "value": 0, "width_bits": 1},
+      {"name": "bsid", "value": 16, "width_bits": 5}
+    ],
+    "end_cursor_bit_offset": 45,
+    "next_caller_owned_field": "dialnorm",
+    "chanmape_and_chanmap": "separate later dependent-BSI field group; not written by this prefix helper",
+    "target_d0_frame_bytes": 4096,
+    "production_allowed": false
+  },
+  "target_profile": {
+    "role": "dependent D0",
+    "substream_id": 0,
+    "sample_rate_hz": 48000,
+    "audio_blocks": 6,
+    "acmod": 5,
+    "lfeon": false,
+    "bsid": 16,
+    "chanmap_hex": "0x1A00"
+  },
+  "expected_vector": {
+    "bit_string_45": "000010110111011101000111111111110011101010000",
+    "bytes_hex_zero_initialized": "0b7747ff3a80",
+    "end_cursor_bit_offset": 45
+  },
+  "evidence_classes": {
+    "field_order_and_widths": "ETSI_BOUND",
+    "D0_target_values": "USER_APPROVED_PROFILE_CONTRACT",
+    "frmsiz_from_4096_bytes": "ETSI_BOUND",
+    "DEE_6_7_candidate_header_to_serializer_edge": "NATIVE_BOUND_STATIC",
+    "native_semantics_for_candidate_plus_0x5c_and_14_bit_branch": "UNBOUND",
+    "D0_audio_algorithm": "UNBOUND",
+    "full_D0_frame_and_AU_output": "NOT_RUN"
+  },
+  "compatibility_constraints": {
+    "existing_5_1_fixed_prefix_unchanged": true,
+    "existing_5_1_multirate_rows_unchanged": true,
+    "no_production_frame_or_AU_wiring": true,
+    "no_audio_or_JOC_algorithm": true
+  }
+}
