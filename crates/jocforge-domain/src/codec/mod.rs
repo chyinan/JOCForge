@@ -10,6 +10,7 @@ pub mod converter_header_cost;
 pub mod converter_search;
 pub mod core_layout;
 pub mod db_selector;
+pub mod eac3_channel_map;
 pub mod emdf_skip_field;
 pub mod exponent_normalization;
 pub mod exponent_packing;

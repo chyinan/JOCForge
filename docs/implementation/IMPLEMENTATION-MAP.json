@@ -10394,8 +10394,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 30785,
-              "sha256": "1d8cd308b0463849520bcc9ab800ee20a05815f681c79e3256902564a1880c84"
+              "bytes": 31011,
+              "sha256": "ac239a7920c752123801bf9726cda0d8639e04e42f39008732a0b12f740ba9ef"
             },
             {
               "path": "crates/jocforge-domain/src/profile/mod.rs",
@@ -10406,8 +10406,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 30785,
-              "sha256": "1d8cd308b0463849520bcc9ab800ee20a05815f681c79e3256902564a1880c84"
+              "bytes": 31011,
+              "sha256": "ac239a7920c752123801bf9726cda0d8639e04e42f39008732a0b12f740ba9ef"
             }
           ],
           "clock": {
@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2102860,
-              "sha256": "6a175bb7bbbe3ff9b71e232ec947e8574d9ad825872b19aaa3b6a5d04c06aef7"
+              "bytes": 2103157,
+              "sha256": "3dfb8b01f9c79d3193bfdbeb937755d0ac605195867e7244cfc1161c9282b55f"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2102860,
-              "sha256": "6a175bb7bbbe3ff9b71e232ec947e8574d9ad825872b19aaa3b6a5d04c06aef7"
+              "bytes": 2103157,
+              "sha256": "3dfb8b01f9c79d3193bfdbeb937755d0ac605195867e7244cfc1161c9282b55f"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -42348,8 +42348,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 921,
-              "sha256": "b56e85e9198020612624215b5ac6c0bc52651f95048076841640ad96a2028328"
+              "bytes": 947,
+              "sha256": "64dea5ceb14a1ebaa1db07278a114a13b8d7450df05deeffbd11c0115b4b9d0b"
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
@@ -42482,8 +42482,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 921,
-              "sha256": "b56e85e9198020612624215b5ac6c0bc52651f95048076841640ad96a2028328"
+              "bytes": 947,
+              "sha256": "64dea5ceb14a1ebaa1db07278a114a13b8d7450df05deeffbd11c0115b4b9d0b"
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
@@ -42659,8 +42659,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 921,
-              "sha256": "b56e85e9198020612624215b5ac6c0bc52651f95048076841640ad96a2028328"
+              "bytes": 947,
+              "sha256": "64dea5ceb14a1ebaa1db07278a114a13b8d7450df05deeffbd11c0115b4b9d0b"
             },
             {
               "path": "crates/jocforge-domain/src/codec/published_emdf_binding.rs",
@@ -45388,8 +45388,8 @@
         {
           "slice_id": "washed-eac3-chanmap-u16-msb-first-serialization",
           "mapping_status": "WASHED_U16_CHANMAP_MSB_FIRST_NUMERIC_FIELD_SERIALIZATION_BOUND__SEMANTIC_SOURCE_MAPPING_UNBOUND",
-          "implementation_status": "EVIDENCE_ONLY_16_ONE_HOT_AND_TARGET_ARITHMETIC_VECTORS__NATIVE_WRITER_NOT_RUN",
-          "implementation_requirement": false,
+          "implementation_status": "LOCALLY_VERIFIED_U16_MSB_FIRST_FIELD_WRITER__D0_FRAME_COMPOSITION_OPEN",
+          "implementation_requirement": true,
           "owner": "codec",
           "scope": "For a 16-bit E-AC-3 chanmap numeric field emitted MSB-first, LSB-indexed numeric bit n occupies field slot 15-n. The target value 0x1A00 therefore emits field bits 0001101000000000 with set positions in emitted slots 3, 4, and 6. This is a field-local numeric serialization contract only. It does not establish an absolute bit cursor or final file byte order, does not derive speaker meanings or map ADM source rows to D0 coded locations, and does not make the set-bit count a channel, ADM-row, or JOC-carrier count.",
           "dependencies": [
@@ -45401,8 +45401,13 @@
             "docs/architecture/adm-to-eac3joc-chain-status.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1/RECEIPT.md"
           ],
-          "implementation_files": [],
-          "test_modules": [],
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/eac3_channel_map.rs",
+            "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/eac3_channel_map.rs"
+          ],
           "clock": {
             "domains": [],
             "covered_clauses": [
@@ -45453,7 +45458,7 @@
             "final_file_byte_order": "OUTSIDE_SCOPE",
             "set_bit_count_semantic": "NOT_A_CHANNEL_ADM_ROW_OR_JOC_CARRIER_COUNT",
             "production_allowed": false,
-            "validation_boundary": "Only the 16-bit numeric field-slot mapping and input-only vectors are bound. Absolute cursor, final byte order, semantic D0 labels, source-row owner, and native output remain outside scope or UNBOUND/NOT_RUN.",
+            "validation_boundary": "The local writer is replayed against all 16 one-hot masks and target 0x1A00 at the numeric field boundary. Absolute cursor placement, final file byte order, semantic D0 labels, source-row owner, and native output remain outside scope or UNBOUND/NOT_RUN.",
             "one_hot_vector_count": 16
           },
           "vectors": {
@@ -45471,17 +45476,44 @@
               "sha256": "7ecf381a9ead372e46a8e004671a68fc78735dbc0f87bc3c4937a9952eb7a8ff"
             },
             "expected_outputs_included": true,
-            "execution_status": "INPUT_ONLY_NOT_RUN"
+            "execution_status": "LOCALLY_VERIFIED_INPUT_ONLY"
           },
-          "error_outcomes": [],
+          "error_outcomes": [
+            {
+              "error_code": "FRAME_BIT_WRITER_BUFFER_TOO_SMALL",
+              "category": "field capacity",
+              "trigger": "The caller-provided cursor has fewer than 16 available bits.",
+              "result": "FrameBitWriterError::BufferTooSmall; the focused vector test verifies the field bytes and cursor remain unchanged.",
+              "caller_action": "Reject the enclosing frame candidate; frame composition remains owned by the caller."
+            }
+          ],
           "not_run": [
-            "Native writer and real output validation.",
+            "Native encoder execution and real output validation.",
             "Absolute bit cursor, final file byte order, and D0 source role owner join.",
             "Derivation of semantic speaker labels from the numeric mask.",
             "Any inference of channel, ADM-row, or JOC-carrier count from set-bit count."
           ],
-          "validation_boundary": "Numeric U16 field serialization only; semantic profile labels are sourced independently, source-row owner remains UNBOUND, and native execution is NOT_RUN.",
-          "delivery_scope": "EAC3_CHANMAP_NUMERIC_FIELD_SERIALIZATION_ONLY_NO_SEMANTIC_OR_PRODUCTION_CLAIM"
+          "validation_boundary": "Local verification covers numeric U16 field bits only; semantic profile labels are sourced independently, source-row owner remains UNBOUND, and D0 frame/native execution is NOT_RUN.",
+          "delivery_scope": "EAC3_CHANMAP_NUMERIC_FIELD_WRITER_ONLY_NO_SEMANTIC_OR_D0_FRAME_CLAIM",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/codec/eac3_channel_map.rs",
+              "bytes": 796,
+              "sha256": "c0dffe6e01e2b6a4c9bef6792d333c7af20902e3663dc1c22d491ef593e86474"
+            },
+            {
+              "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
+              "bytes": 31011,
+              "sha256": "ac239a7920c752123801bf9726cda0d8639e04e42f39008732a0b12f740ba9ef"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/tests/eac3_channel_map.rs",
+              "bytes": 3701,
+              "sha256": "c14bec0342f9beb0cffe540e15881893143de487475ce5b0e4cb99580fe6f1e6"
+            }
+          ]
         },
         {
           "slice_id": "washed-atmos71-i0-frame-syntax-equivalence-gap",
@@ -46031,8 +46063,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 921,
-              "sha256": "b56e85e9198020612624215b5ac6c0bc52651f95048076841640ad96a2028328"
+              "bytes": 947,
+              "sha256": "64dea5ceb14a1ebaa1db07278a114a13b8d7450df05deeffbd11c0115b4b9d0b"
             }
           ],
           "test_inventory": [
@@ -55463,8 +55495,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2102860,
-              "sha256": "6a175bb7bbbe3ff9b71e232ec947e8574d9ad825872b19aaa3b6a5d04c06aef7"
+              "bytes": 2103157,
+              "sha256": "3dfb8b01f9c79d3193bfdbeb937755d0ac605195867e7244cfc1161c9282b55f"
             }
           ],
           "test_inventory": [
@@ -59267,8 +59299,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/codec/mod.rs",
-          "bytes": 921,
-          "sha256": "b56e85e9198020612624215b5ac6c0bc52651f95048076841640ad96a2028328"
+          "bytes": 947,
+          "sha256": "64dea5ceb14a1ebaa1db07278a114a13b8d7450df05deeffbd11c0115b4b9d0b"
         },
         {
           "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",

@@ -18,6 +18,10 @@ Wash 补包 `OFFICIAL-ATMOS-DEMO-OAMD-POSITION-WASHED-V1` 的 manifest SHA-256 �
 
 该路径对应现有 selected 1024-kbps profile；1,664-kbps `Flat7xI0D0TargetPlan`、F15 pair staging 与 I/O adapter是分别建立的 target components。target D0 侧已有独立的 `d0_emdf_skip_field` helper；下一连接点是 D0 frame composition 调用 profile-aware ID14 metadata producer，并传入 1024-kbps D0 target context。现有 selected 5.1 path 与 D0 composition 保持分离。
 
+## 2026-11-11：Flat7x D0 chanmap 数值字段 writer
+
+Wash 包 `JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1` 的 one-hot 与 `0x1A00` input-only vectors 已在 `codec::eac3_channel_map::write_flat7x_d0_chanmap_field` 中本地重放。writer 接受 typed `DependentChannelMap`，用既有 high-bit-first `FrameBitWriter` 写恰好 16 个 numeric field bits，并返回 caller cursor。该 slice 保留 `chanmap` numeric field boundary；D0 frame composition、周边语法、source-row role mapping 与最终输出属于独立开放边界，`production_allowed=false`。
+
 ## 2026-11-06：authored silence duration admission gate
 
 Wash 包 `ATMOS-SILENCE-DURATION-SAMPLE-BOUNDARY-V1` 已物化到隔离仓。manifest SHA-256 `1295151443daca741c7ca0477b91bdf84d88eae76065d7b861ca4125f895980c`、seal SHA-256 `47f5b8c8538894acdecad538f0537056b3ec216b5894943addf0d490b67f6852`，REPORT、INPUT-ONLY-VECTORS 与 PROVENANCE 三个 payload 本地逐项校验通过；普通 Python 与 `python -O` 均 PASS。向量只列 zero/fractional 两个输入，标为 `PROPOSED_NOT_RUN`。

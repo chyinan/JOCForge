@@ -59,6 +59,13 @@ impl Eac3Acmod {
 pub struct DependentChannelMap(u16);
 
 impl DependentChannelMap {
+    /// Creates a typed 16-bit numeric channel-map field value.
+    ///
+    /// This value carries no speaker-label or source-row semantics.
+    pub const fn from_numeric_value(value: u16) -> Self {
+        Self(value)
+    }
+
     pub const fn value(self) -> u16 {
         self.0
     }
