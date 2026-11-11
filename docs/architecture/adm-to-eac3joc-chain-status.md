@@ -22,6 +22,12 @@ Wash 补包 `OFFICIAL-ATMOS-DEMO-OAMD-POSITION-WASHED-V1` 的 manifest SHA-256 �
 
 Wash 包 `JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1` 的 one-hot 与 `0x1A00` input-only vectors 已在 `codec::eac3_channel_map::write_flat7x_d0_chanmap_field` 中本地重放。writer 接受 typed `DependentChannelMap`，用既有 high-bit-first `FrameBitWriter` 写恰好 16 个 numeric field bits，并返回 caller cursor。该 slice 保留 `chanmap` numeric field boundary；D0 frame composition、周边语法、source-row role mapping 与最终输出属于独立开放边界，`production_allowed=false`。
 
+## 2026-11-11：Flat7x D0 `chanmape` 与 `chanmap` 字段对
+
+Wash 包 `eac3-dependent-chanmap-field-writer-v1`（manifest `fe364375e3a4ac4ae7a7959807d10d48f1f745e43077f4629fe2a16718702c43`，package seal `8d845b829d5a4488674953235df6c32ac7e8c9fd87b1cebdd32e80e64ff807b2`）将 `chanmape=1` 和后续 U16 map 合为一个需预检的 17-bit group。`codec::eac3_channel_map::write_flat7x_d0_chanmap_fields` 保留原 numeric-field helper，并先预检 group capacity，再依次写 flag 与 typed map；本地 tests 覆盖 one-hot masks、`0x1A00`、misaligned start bit 5 和不足 17 bits 的 no-partial-write case。
+
+包声明 target validation context `acmod=6,lfeon=0`，而当前 Flat7x profile contract/target plan记录 D0 `acmod=5,lfeon=0`。字段 writer 不消费该 context；D0 BSI/frame integration 前需 Wash 复核并统一该差异。D0 frame/AU production、native record `+0x5c` owner 和完整 source-role join 均保持开放，`production_allowed=false`。
+
 ## 2026-11-06：authored silence duration admission gate
 
 Wash 包 `ATMOS-SILENCE-DURATION-SAMPLE-BOUNDARY-V1` 已物化到隔离仓。manifest SHA-256 `1295151443daca741c7ca0477b91bdf84d88eae76065d7b861ca4125f895980c`、seal SHA-256 `47f5b8c8538894acdecad538f0537056b3ec216b5894943addf0d490b67f6852`，REPORT、INPUT-ONLY-VECTORS 与 PROVENANCE 三个 payload 本地逐项校验通过；普通 Python 与 `python -O` 均 PASS。向量只列 zero/fractional 两个输入，标为 `PROPOSED_NOT_RUN`。

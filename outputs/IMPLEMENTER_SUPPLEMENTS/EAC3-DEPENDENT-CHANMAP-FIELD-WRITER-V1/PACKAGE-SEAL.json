@@ -1,0 +1,7 @@
+{
+  "manifest_sha256": "fe364375e3a4ac4ae7a7959807d10d48f1f745e43077f4629fe2a16718702c43",
+  "package_id": "eac3-dependent-chanmap-field-writer-v1",
+  "payload_count": 6,
+  "production_allowed": false,
+  "schema": "jocforge.wash_implementer_supplement_seal.v1"
+}

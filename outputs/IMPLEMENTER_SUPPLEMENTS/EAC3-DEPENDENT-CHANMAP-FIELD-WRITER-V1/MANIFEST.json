@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "sha256": "509d974d3d04b4ff8bac95926f58de98e476fb5438917252986ce4dfc9c29e6f",
+      "size_bytes": 2648
+    },
+    {
+      "path": "CONTRACT.json",
+      "sha256": "4f67c97ea6e5a14f2f3223b639532977aa2ea24ebc1dde4534b4480e3a01d41c",
+      "size_bytes": 2012
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "sha256": "681103b4cbdd68634c9a40da4fd03bc219f87357847e526366097c7db9e00a6f",
+      "size_bytes": 2826
+    },
+    {
+      "path": "PROVENANCE.json",
+      "sha256": "c4e62e2740ab01fa1d825bf7c194a6016dc8daec4ae64bfb8af89c1e7e6bb183",
+      "size_bytes": 1710
+    },
+    {
+      "path": "build_manifest.py",
+      "sha256": "e83a7c079d1a4dfc642695b67ea783c014e20f62edf3d616fbc387174dd115de",
+      "size_bytes": 1451
+    },
+    {
+      "path": "verify_package.py",
+      "sha256": "b06e6483d14399b627081251c75b260caeb8e64a92248da0cc6388fbc7b8776d",
+      "size_bytes": 2653
+    }
+  ],
+  "package_id": "eac3-dependent-chanmap-field-writer-v1",
+  "production_allowed": false,
+  "schema": "jocforge.wash_implementer_supplement.v1",
+  "status": "IMPLEMENTER_READY_LIMITED_FIELD_SERIALIZER"
+}

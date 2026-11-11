@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2103157,
-              "sha256": "3dfb8b01f9c79d3193bfdbeb937755d0ac605195867e7244cfc1161c9282b55f"
+              "bytes": 2104046,
+              "sha256": "16371ac90afd64d15b1301fbd21d9c5902d7294400391751c526e378848d18a9"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2103157,
-              "sha256": "3dfb8b01f9c79d3193bfdbeb937755d0ac605195867e7244cfc1161c9282b55f"
+              "bytes": 2104046,
+              "sha256": "16371ac90afd64d15b1301fbd21d9c5902d7294400391751c526e378848d18a9"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -45387,11 +45387,11 @@
         },
         {
           "slice_id": "washed-eac3-chanmap-u16-msb-first-serialization",
-          "mapping_status": "WASHED_U16_CHANMAP_MSB_FIRST_NUMERIC_FIELD_SERIALIZATION_BOUND__SEMANTIC_SOURCE_MAPPING_UNBOUND",
-          "implementation_status": "LOCALLY_VERIFIED_U16_MSB_FIRST_FIELD_WRITER__D0_FRAME_COMPOSITION_OPEN",
+          "mapping_status": "WASHED_DEPENDENT_CHANMAPE_AND_U16_MSB_FIRST_FIELD_PAIR_BOUND__SEMANTIC_SOURCE_MAPPING_UNBOUND",
+          "implementation_status": "LOCALLY_VERIFIED_DEPENDENT_CHANMAPE_U16_FIELD_PAIR__D0_FRAME_COMPOSITION_OPEN",
           "implementation_requirement": true,
           "owner": "codec",
-          "scope": "For a 16-bit E-AC-3 chanmap numeric field emitted MSB-first, LSB-indexed numeric bit n occupies field slot 15-n. The target value 0x1A00 therefore emits field bits 0001101000000000 with set positions in emitted slots 3, 4, and 6. This is a field-local numeric serialization contract only. It does not establish an absolute bit cursor or final file byte order, does not derive speaker meanings or map ADM source rows to D0 coded locations, and does not make the set-bit count a channel, ADM-row, or JOC-carrier count.",
+          "scope": "The target-scoped helper preflights one complete 17-bit dependent-substream field group, writes chanmape=1, then emits the typed 16-bit chanmap in MSB-first order. The target map is 0x1A00 with field bits 0001101000000000. This is a pure field-pair serializer at the caller-provided cursor; D0 frame composition, surrounding BSI syntax, source-role ownership and production remain separate.",
           "dependencies": [
             "F01E/approved-atmos71-flat7x-1664-profile-contract"
           ],
@@ -45403,6 +45403,7 @@
           ],
           "implementation_files": [
             "crates/jocforge-domain/src/codec/eac3_channel_map.rs",
+            "crates/jocforge-domain/src/codec/mod.rs",
             "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs"
           ],
           "test_modules": [
@@ -45424,7 +45425,15 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1/CHECK.py",
               "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1/RECEIPT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1/SOURCE-RECEIPT.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1/SOURCE-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-CHANMAP-FIELD-WRITER-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-CHANMAP-FIELD-WRITER-V1/PACKAGE-SEAL.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-CHANMAP-FIELD-WRITER-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-CHANMAP-FIELD-WRITER-V1/CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-CHANMAP-FIELD-WRITER-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-CHANMAP-FIELD-WRITER-V1/PROVENANCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-CHANMAP-FIELD-WRITER-V1/build_manifest.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-CHANMAP-FIELD-WRITER-V1/verify_package.py"
             ],
             "supplement_manifest_sha256": "470fa9830a7937fcd1d5169c980f139669011e766e136ce2dc9bf7498103f787",
             "supplement_seal_sha256": "aaeb22108dac10742ad410e624d9a3dae6cf9d5707b56b58697a4068d335bf81",
@@ -45458,17 +45467,47 @@
             "final_file_byte_order": "OUTSIDE_SCOPE",
             "set_bit_count_semantic": "NOT_A_CHANNEL_ADM_ROW_OR_JOC_CARRIER_COUNT",
             "production_allowed": false,
-            "validation_boundary": "The local writer is replayed against all 16 one-hot masks and target 0x1A00 at the numeric field boundary. Absolute cursor placement, final file byte order, semantic D0 labels, source-row owner, and native output remain outside scope or UNBOUND/NOT_RUN.",
-            "one_hot_vector_count": 16
+            "validation_boundary": "Local writer vectors cover chanmape=1 plus the following 16-bit MSB-first map, aligned/misaligned cursors, and 17-bit capacity preflight. The caller owns cursor/surrounding syntax. D0 frame composition, native record owner, source-role mapping and production remain open.",
+            "one_hot_vector_count": 16,
+            "required_field_pair_bits": 17,
+            "chanmape_value": 1,
+            "pair_addendum": {
+              "package_id": "eac3-dependent-chanmap-field-writer-v1",
+              "supplement_manifest_sha256": "fe364375e3a4ac4ae7a7959807d10d48f1f745e43077f4629fe2a16718702c43",
+              "supplement_seal_sha256": "8d845b829d5a4488674953235df6c32ac7e8c9fd87b1cebdd32e80e64ff807b2",
+              "target_map_u16": "0x1A00",
+              "target_field_pair_bits": "10001101000000000",
+              "target_location_indexes": [
+                3,
+                4,
+                6
+              ],
+              "target_coded_location_count": 4,
+              "declared_validation_context": {
+                "acmod": 6,
+                "lfeon": 0
+              },
+              "current_profile_contract_context": {
+                "acmod": 5,
+                "lfeon": 0
+              },
+              "context_reconciliation": "OPEN; FIELD_WRITER_DOES_NOT_CONSUME_ACMOD_OR_LFEON",
+              "production_allowed": false
+            }
           },
           "vectors": {
-            "kind": "WASHED_CHANMAP_U16_MSB_FIRST_INPUT_ONLY_VECTORS",
+            "kind": "WASHED_CHANMAP_U16_AND_DEPENDENT_CHANMAPE_FIELD_PAIR_INPUT_ONLY_VECTORS",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1/INPUT-ONLY-VECTORS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-CHANMAP-FIELD-WRITER-V1/INPUT-ONLY-VECTORS.json"
             ],
             "case_pointers": [
               "Sixteen one-hot numeric input masks map bit n to emitted slot 15-n.",
-              "The 0x1A00 target composite emits set positions [3,4,6] and field bits 0001101000000000; semantic labels come from the separate approved profile contract."
+              "The 0x1A00 target composite emits set positions [3,4,6] and field bits 0001101000000000; semantic labels come from the separate approved profile contract.",
+              "Sixteen one-hot map masks are written after chanmape=1 and match their emitted field bits.",
+              "The target pair is chanmape=1 followed by U16 0x1A00, producing 10001101000000000.",
+              "The same 17-bit pair is replayed at start bit 5 with end bit 22 and surrounding bits preserved.",
+              "A 16-bit buffer rejects the 17-bit pair before changing any byte or cursor."
             ],
             "local_fixture": {
               "file": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1/INPUT-ONLY-VECTORS.json",
@@ -45476,30 +45515,40 @@
               "sha256": "7ecf381a9ead372e46a8e004671a68fc78735dbc0f87bc3c4937a9952eb7a8ff"
             },
             "expected_outputs_included": true,
-            "execution_status": "LOCALLY_VERIFIED_INPUT_ONLY"
+            "execution_status": "LOCALLY_VERIFIED_U16_AND_DEPENDENT_FIELD_PAIR_INPUT_ONLY",
+            "pair_local_fixture": {
+              "file": "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-CHANMAP-FIELD-WRITER-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 2826,
+              "sha256": "681103b4cbdd68634c9a40da4fd03bc219f87357847e526366097c7db9e00a6f"
+            }
           },
           "error_outcomes": [
             {
               "error_code": "FRAME_BIT_WRITER_BUFFER_TOO_SMALL",
-              "category": "field capacity",
-              "trigger": "The caller-provided cursor has fewer than 16 available bits.",
-              "result": "FrameBitWriterError::BufferTooSmall; the focused vector test verifies the field bytes and cursor remain unchanged.",
-              "caller_action": "Reject the enclosing frame candidate; frame composition remains owned by the caller."
+              "category": "field-pair capacity",
+              "trigger": "The caller-provided cursor has fewer than 17 available bits.",
+              "result": "FrameBitWriterError::BufferTooSmall before chanmape or chanmap bits are written; vectors verify unchanged bytes and cursor.",
+              "caller_action": "Reject the enclosing D0 frame candidate; frame composition remains owned by the caller."
             }
           ],
           "not_run": [
-            "Native encoder execution and real output validation.",
-            "Absolute bit cursor, final file byte order, and D0 source role owner join.",
-            "Derivation of semantic speaker labels from the numeric mask.",
-            "Any inference of channel, ADM-row, or JOC-carrier count from set-bit count."
+            "Native D0 BSI owner and runtime chanmape source join.",
+            "D0 audio encoding, frame composition, and AU output.",
+            "Reconcile the supplement's acmod=6 validation context with the current target profile acmod=5 before BSI integration.",
+            "ADM source-row to D0 semantic role join and production output."
           ],
-          "validation_boundary": "Local verification covers numeric U16 field bits only; semantic profile labels are sourced independently, source-row owner remains UNBOUND, and D0 frame/native execution is NOT_RUN.",
-          "delivery_scope": "EAC3_CHANMAP_NUMERIC_FIELD_WRITER_ONLY_NO_SEMANTIC_OR_D0_FRAME_CLAIM",
+          "validation_boundary": "Local verification covers only the target-scoped 17-bit chanmape+chanmap field pair and input-only vectors. Source owner, full D0 BSI/frame composition, AU output and production remain open; the acmod context conflict is recorded.",
+          "delivery_scope": "EAC3_DEPENDENT_CHANMAPE_U16_FIELD_PAIR_WRITER_ONLY_NO_D0_FRAME_OR_PRODUCTION_CLAIM",
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/eac3_channel_map.rs",
-              "bytes": 796,
-              "sha256": "c0dffe6e01e2b6a4c9bef6792d333c7af20902e3663dc1c22d491ef593e86474"
+              "bytes": 1560,
+              "sha256": "dec7cb83b35d1c7b7ce0633d2fd4eb1af45e7db5b82afc411fd5e0246b979ead"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/mod.rs",
+              "bytes": 947,
+              "sha256": "64dea5ceb14a1ebaa1db07278a114a13b8d7450df05deeffbd11c0115b4b9d0b"
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
@@ -45510,8 +45559,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/eac3_channel_map.rs",
-              "bytes": 3701,
-              "sha256": "c14bec0342f9beb0cffe540e15881893143de487475ce5b0e4cb99580fe6f1e6"
+              "bytes": 8630,
+              "sha256": "13fd3dcd1cbffb0776e5fac2c5e1760b9e7976a434c1596c84d23f09748c605f"
             }
           ]
         },
@@ -55495,8 +55544,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2103157,
-              "sha256": "3dfb8b01f9c79d3193bfdbeb937755d0ac605195867e7244cfc1161c9282b55f"
+              "bytes": 2104046,
+              "sha256": "16371ac90afd64d15b1301fbd21d9c5902d7294400391751c526e378848d18a9"
             }
           ],
           "test_inventory": [

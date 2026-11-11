@@ -1,0 +1,36 @@
+{
+  "schema": "wash-implementer-provenance.v1",
+  "package_id": "eac3-dependent-chanmap-field-writer-v1",
+  "sources": [
+    {
+      "kind": "Wash-reviewed-standard-mapping",
+      "package": "candidate_dee_chanmap_1a00_etsi_inference_candidate_wash_v1",
+      "manifest_sha256": "0c429c3a6f4da005458e8e951351b77008e900db9509cd0bb9f916dd411ef6d4",
+      "package_seal_file_sha256": "38a3a7ad9facfc9e11aca5066b416205853c7b0a230c44cc90cd5a37132c20d9",
+      "status": "ETSI_BOUND; DEE_FIELD_JOIN_UNBOUND"
+    },
+    {
+      "kind": "Wash-reviewed-user-target-profile",
+      "package": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+      "manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+      "status": "USER_TARGET; production_allowed=false"
+    },
+    {
+      "kind": "primary-standard",
+      "name": "ETSI TS 102 366 V1.4.1 (2017-09)",
+      "url": "https://www.etsi.org/deliver/etsi_ts/102300_102399/102366/01.04.01_60/ts_102366v010401p.pdf",
+      "clauses": ["4.3.2", "E.1.3.1.7", "E.1.3.1.8", "E.2.8"],
+      "verified_claims": [
+        "chanmape is a dependent-substream BSI flag",
+        "when chanmape is 1, the following field is 16-bit chanmap",
+        "chanmap bit 0 is the MSB and enabled bit order defines dependent-substream coded-channel order",
+        "chanmap bit 6 denotes the Lrs/Rrs pair"
+      ]
+    }
+  ],
+  "candidate_image": {
+    "sha256": "2b7da4835d60fc538caf49cd0ef27a4a10d2486bc03b754b41b5bea4bb51fead",
+    "identity": "USER_PROVIDED_UNVERIFIED_CANDIDATE; native field mapping not claimed"
+  },
+  "excluded_material": ["DEE binary", "Ghidra project", "raw logs", "audio media", "PCM", "codec payload", "license", "private keys"]
+}

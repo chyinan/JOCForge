@@ -4,7 +4,7 @@
 use jocforge_domain::{
     codec::{
         bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError},
-        eac3_channel_map::write_flat7x_d0_chanmap_field,
+        eac3_channel_map::{write_flat7x_d0_chanmap_field, write_flat7x_d0_chanmap_fields},
     },
     profile::{DependentChannelMap, Flat7xI0D0TargetPlan},
 };
@@ -12,6 +12,9 @@ use serde_json::Value;
 
 const INPUT_ONLY_VECTORS: &[u8] = include_bytes!(
     "../../../outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-EAC3-CHANMAP-U16-SERIALIZATION-V1/INPUT-ONLY-VECTORS.json"
+);
+const DEPENDENT_FIELD_VECTORS: &[u8] = include_bytes!(
+    "../../../outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-CHANMAP-FIELD-WRITER-V1/INPUT-ONLY-VECTORS.json"
 );
 
 fn written_field_bits(bytes: &[u8]) -> String {
@@ -108,4 +111,146 @@ fn insufficient_capacity_preserves_the_caller_cursor_and_bytes() {
     assert_eq!(error, FrameBitWriterError::BufferTooSmall);
     assert_eq!(cursor.bit_offset(), 0);
     assert_eq!(bytes, [0xa5]);
+}
+
+fn written_bits_at(bytes: &[u8], start_bit: u32, width: u32) -> String {
+    (0..width)
+        .map(|offset| {
+            let bit = start_bit + offset;
+            if bytes[(bit / 8) as usize] & (1_u8 << (7 - bit % 8)) != 0 {
+                '1'
+            } else {
+                '0'
+            }
+        })
+        .collect()
+}
+
+#[test]
+fn dependent_chanmape_and_chanmap_writer_matches_wash_vectors() {
+    let vectors: Value = serde_json::from_slice(DEPENDENT_FIELD_VECTORS).unwrap();
+    assert_eq!(
+        vectors["schema"],
+        "eac3-dependent-chanmap-field-writer-input-only.v1"
+    );
+
+    let one_hot = vectors["vectors"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|vector| vector["id"] == "one-hot-map-bits")
+        .unwrap();
+    for case in one_hot["cases"].as_array().unwrap() {
+        let bit_index = case["bit_index"].as_u64().unwrap();
+        let mask_hex = case["mask"].as_str().unwrap();
+        let mask = u16::from_str_radix(mask_hex.trim_start_matches("0x"), 16).unwrap();
+        assert_eq!(mask, 1_u16 << (15 - bit_index));
+
+        let mut bytes = [0_u8; 3];
+        let end;
+        {
+            let mut writer = FrameBitWriter::new(&mut bytes, FrameBitCursor::new(0)).unwrap();
+            end = write_flat7x_d0_chanmap_fields(
+                &mut writer,
+                DependentChannelMap::from_numeric_value(mask),
+            )
+            .unwrap();
+        }
+        assert_eq!(end.bit_offset(), 17);
+        assert_eq!(written_bits_at(&bytes, 0, 17), format!("1{mask:016b}"));
+    }
+
+    let target_vector = vectors["vectors"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|vector| vector["id"] == "flat7x-target-1a00")
+        .unwrap();
+    assert_eq!(target_vector["chanmape"], 1);
+    let target_map = Flat7xI0D0TargetPlan::approved_contract()
+        .d0()
+        .channel_map()
+        .unwrap();
+    assert_eq!(target_map.value(), 0x1a00);
+    let mut target_bytes = [0_u8; 3];
+    let target_end;
+    {
+        let mut writer = FrameBitWriter::new(&mut target_bytes, FrameBitCursor::new(0)).unwrap();
+        target_end = write_flat7x_d0_chanmap_fields(&mut writer, target_map).unwrap();
+    }
+    assert_eq!(target_end.bit_offset(), target_vector["expected_end_bit"]);
+    assert_eq!(
+        written_bits_at(&target_bytes, 0, 17),
+        target_vector["field_bits"]
+    );
+}
+
+#[test]
+fn dependent_chanmap_writer_handles_misalignment_and_preflights_all_17_bits() {
+    let vectors: Value = serde_json::from_slice(DEPENDENT_FIELD_VECTORS).unwrap();
+    let vector_list = vectors["vectors"].as_array().unwrap();
+    let misaligned = vector_list
+        .iter()
+        .find(|vector| vector["id"] == "target-map-misaligned-start")
+        .unwrap();
+    let start_bit = misaligned["start_bit"].as_u64().unwrap() as u32;
+    let target_bits = vector_list
+        .iter()
+        .find(|vector| vector["id"] == "flat7x-target-1a00")
+        .unwrap()["field_bits"]
+        .as_str()
+        .unwrap();
+    let initial = [0xa5_u8, 0x5a, 0xc3];
+    let mut bytes = initial;
+    let end;
+    {
+        let mut writer = FrameBitWriter::new(&mut bytes, FrameBitCursor::new(start_bit)).unwrap();
+        end = write_flat7x_d0_chanmap_fields(
+            &mut writer,
+            Flat7xI0D0TargetPlan::approved_contract()
+                .d0()
+                .channel_map()
+                .unwrap(),
+        )
+        .unwrap();
+    }
+    assert_eq!(end.bit_offset(), misaligned["expected_end_bit"]);
+    assert_eq!(written_bits_at(&bytes, start_bit, 17), target_bits);
+    for bit in 0..24_u32 {
+        if !(start_bit..end.bit_offset()).contains(&bit) {
+            let mask = 1_u8 << (7 - bit % 8);
+            assert_eq!(
+                bytes[(bit / 8) as usize] & mask,
+                initial[(bit / 8) as usize] & mask
+            );
+        }
+    }
+
+    let capacity = vector_list
+        .iter()
+        .find(|vector| vector["id"] == "capacity-insufficient-by-one-bit")
+        .unwrap();
+    let mut short_bytes = [0x5a_u8; 2];
+    let original_bytes = short_bytes;
+    let error;
+    let cursor;
+    {
+        let mut writer = FrameBitWriter::new(
+            &mut short_bytes,
+            FrameBitCursor::new(capacity["start_bit"].as_u64().unwrap() as u32),
+        )
+        .unwrap();
+        error = write_flat7x_d0_chanmap_fields(
+            &mut writer,
+            Flat7xI0D0TargetPlan::approved_contract()
+                .d0()
+                .channel_map()
+                .unwrap(),
+        )
+        .unwrap_err();
+        cursor = writer.cursor();
+    }
+    assert_eq!(error, FrameBitWriterError::BufferTooSmall);
+    assert_eq!(cursor.bit_offset(), 0);
+    assert_eq!(short_bytes, original_bytes);
 }

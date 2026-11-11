@@ -1,0 +1,65 @@
+{
+  "schema": "eac3-dependent-chanmap-field-writer-input-only.v1",
+  "execution": "NOT_RUN",
+  "vectors": [
+    {
+      "id": "flat7x-target-1a00",
+      "start_bit": 0,
+      "chanmape": 1,
+      "chanmap_u16": "0x1A00",
+      "map_bits_msb_first": "0001101000000000",
+      "field_bits": "10001101000000000",
+      "expected_end_bit": 17,
+      "set_location_indexes": [3, 4, 6],
+      "decoded_order": ["Left Surround", "Right Surround", "Lrs", "Rrs"],
+      "weighted_location_count": 4,
+      "context": {"acmod": 6, "lfeon": 0},
+      "status": "ETSI_BOUND_SYNTAX; USER_TARGET_VALUE"
+    },
+    {
+      "id": "target-map-misaligned-start",
+      "start_bit": 5,
+      "chanmape": 1,
+      "chanmap_u16": "0x1A00",
+      "expected_end_bit": 22,
+      "status": "INPUT_ONLY"
+    },
+    {
+      "id": "capacity-insufficient-by-one-bit",
+      "buffer_bits": 16,
+      "start_bit": 0,
+      "required_bits": 17,
+      "expected": "reject before write; cursor and bytes unchanged",
+      "status": "INPUT_ONLY"
+    },
+    {
+      "id": "one-hot-map-bits",
+      "formula": "mask(bit_index) = 1 << (15 - bit_index)",
+      "cases": [
+        {"bit_index": 0, "mask": "0x8000", "location": "Left", "coded_channels": 1},
+        {"bit_index": 1, "mask": "0x4000", "location": "Centre", "coded_channels": 1},
+        {"bit_index": 2, "mask": "0x2000", "location": "Right", "coded_channels": 1},
+        {"bit_index": 3, "mask": "0x1000", "location": "Left Surround", "coded_channels": 1},
+        {"bit_index": 4, "mask": "0x0800", "location": "Right Surround", "coded_channels": 1},
+        {"bit_index": 5, "mask": "0x0400", "location": "Lc/Rc pair", "coded_channels": 2},
+        {"bit_index": 6, "mask": "0x0200", "location": "Lrs/Rrs pair", "coded_channels": 2},
+        {"bit_index": 7, "mask": "0x0100", "location": "Cs", "coded_channels": 1},
+        {"bit_index": 8, "mask": "0x0080", "location": "Ts", "coded_channels": 1},
+        {"bit_index": 9, "mask": "0x0040", "location": "Lsd/Rsd pair", "coded_channels": 2},
+        {"bit_index": 10, "mask": "0x0020", "location": "Lw/Rw pair", "coded_channels": 2},
+        {"bit_index": 11, "mask": "0x0010", "location": "Vhl/Vhr pair", "coded_channels": 2},
+        {"bit_index": 12, "mask": "0x0008", "location": "Vhc", "coded_channels": 1},
+        {"bit_index": 13, "mask": "0x0004", "location": "Lts/Rts pair", "coded_channels": 2},
+        {"bit_index": 14, "mask": "0x0002", "location": "LFE2", "coded_channels": 1},
+        {"bit_index": 15, "mask": "0x0001", "location": "LFE", "coded_channels": 1}
+      ],
+      "status": "ETSI_BOUND_TABLE; EXECUTION_NOT_RUN"
+    }
+  ],
+  "unbound_checks": [
+    "native record +0x5c to chanmape mapping",
+    "native D0 BSI header owner/cursor",
+    "D0 block ordinal and frame integration",
+    "complete 7.1 AU emission"
+  ]
+}

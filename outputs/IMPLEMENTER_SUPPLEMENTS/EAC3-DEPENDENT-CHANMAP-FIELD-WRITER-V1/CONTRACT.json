@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.implementer_contract.v1",
+  "package_id": "eac3-dependent-chanmap-field-writer-v1",
+  "status": "IMPLEMENTER_READY_LIMITED_FIELD_SERIALIZER",
+  "implementation_scope": {
+    "responsibility": "E-AC-3 dependent-substream chanmape plus chanmap field group",
+    "existing_module": "crates/jocforge-domain/src/codec/eac3_channel_map.rs",
+    "operation": "preflight 17 bits; write chanmape=1; write typed 16-bit map MSB-first",
+    "target_map_u16": "0x1A00",
+    "target_map_bits_msb_indexed": [3, 4, 6],
+    "target_coded_channel_order": ["Left Surround", "Right Surround", "Lrs", "Rrs"],
+    "target_coded_channel_count": 4,
+    "validation_context": {"acmod": 6, "lfeon": 0},
+    "bit_sequence_at_offset_zero": "10001101000000000",
+    "limited_field_serializer_allowed": true
+  },
+  "end_to_end_production_allowed": false,
+  "evidence_classes": {
+    "dependent_stream_chanmape_and_following_16_bit_map": "ETSI_BOUND",
+    "msb_indexed_location_order_and_pair_expansion": "ETSI_BOUND",
+    "numeric_map_0x1A00_and_target_role": "USER_TARGET",
+    "DEE_record_5c_to_writer_join": "UNBOUND",
+    "runtime_value_and_generation": "NOT_CAPTURED",
+    "D0_audio_encoder_and_full_frame_assembly": "UNBOUND",
+    "Flat7x_end_to_end_output": "NOT_RUN"
+  },
+  "source_bindings": {
+    "chanmap_inference_wash_manifest_sha256": "0c429c3a6f4da005458e8e951351b77008e900db9509cd0bb9f916dd411ef6d4",
+    "chanmap_inference_wash_seal_file_sha256": "38a3a7ad9facfc9e11aca5066b416205853c7b0a230c44cc90cd5a37132c20d9",
+    "flat7x_profile_contract_manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+    "standard": "ETSI TS 102 366 V1.4.1 (2017-09), clauses 4.3.2, E.1.3.1.7, E.1.3.1.8, E.2.8"
+  },
+  "compatibility_constraints": {
+    "existing_5_1_rate_profile_rows_unchanged": true,
+    "existing_numeric_16_bit_chanmap_helper_preserved": true,
+    "no_automatic_5_1_fallback_for_flat7x": true,
+    "no_ADM_row_count_to_chanmap_or_JOC_carrier_count_join": true
+  }
+}
