@@ -1,0 +1,52 @@
+{
+  "schema": "jocforge.implementer_provenance.v1",
+  "package_id": "eac3-dependent-d0-bsi-segment-v1",
+  "evidence_sources": [
+    {
+      "kind": "official-standard",
+      "title": "ETSI TS 102 366 V1.4.1 (2017-09)",
+      "url": "https://www.etsi.org/deliver/etsi_ts/102300_102399/102366/01.04.01_60/ts_102366v010401p.pdf",
+      "clauses": ["E.1.2.2", "E.1.3.1.3", "E.1.3.1.4", "E.1.3.1.5", "E.1.3.1.6", "E.1.3.1.7", "E.1.3.1.8"],
+      "claims": [
+        "Dependent BSI field order places chanmape and conditional chanmap after common fields dialnorm/compre and after acmod==0 dual-mono syntax, which is absent for target acmod=5.",
+        "dialnorm is 5 bits with valid values 1 through 31; value 0 is reserved. compre indicates the presence of the following 8-bit compr word.",
+        "frmsiz is one less than the syncframe size in 16-bit words; 4096 bytes maps to 2047.",
+        "chanmape=1 selects the following 16-bit chanmap field."
+      ]
+    },
+    {
+      "kind": "wash-approved-profile-contract",
+      "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+      "manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+      "seal_file_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+      "target_d0": {"strmtyp": 1, "substreamid": 0, "frame_bytes": 4096, "fscod": 0, "numblkscod": 3, "acmod": 5, "lfeon": false, "bsid": 16, "chanmape": 1, "chanmap": "0x1A00"}
+    },
+    {
+      "kind": "limited-chanmap-helper",
+      "package_id": "eac3-dependent-chanmap-field-writer-v1",
+      "manifest_sha256": "fe364375e3a4ac4ae7a7959807d10d48f1f745e43077f4629fe2a16718702c43",
+      "seal_file_sha256": "8d845b829d5a4488674953235df6c32ac7e8c9fd87b1cebdd32e80e64ff807b2",
+      "use": "The later chanmape+map field group only; not the D0 prefix or XML DRC mapper."
+    },
+    {
+      "kind": "limited-fixed-prefix-helper",
+      "package_id": "eac3-dependent-d0-fixed-prefix-v1",
+      "manifest_sha256": "686a51ef28e480d313e39c8d977faaa3e998214b87606fca7544596e913ccd24",
+      "seal_file_sha256": "11fe6023706236c6d1c1050dcdb1b0139f5c63a12767d87e313e6eca6212d4687",
+      "use": "The first 45 bits only; D0 target acmod=5."
+    },
+    {
+      "kind": "native-static-boundary",
+      "package_id": "d0_bsi_header_branch_wash_v1",
+      "manifest_sha256": "228406305930484813ede6b661b7e70a1c9c40e3ebeb5bdaffbb5a31dca3e380b",
+      "seal_file_sha256": "cac1024429284c7d7d0633f21fd3f709686b94bd9d26e4ed6b6de49f4c8c3592",
+      "disposition": "Candidate serializer field identity is unbound; the implementation uses ETSI syntax and target contract rather than copying its 14-bit fragment."
+    }
+  ],
+  "constraints": {
+    "xml_drc_mapping": "UNBOUND; values are caller-supplied",
+    "audio_algorithm": "UNBOUND; not implemented here",
+    "production_allowed": false,
+    "preserve_5_1_multirate_path": true
+  }
+}

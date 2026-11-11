@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2104088,
-              "sha256": "742c3cd90ba4f8533efa535665454eed0ab545fbaa9513b662d420751a7dde73"
+              "bytes": 2104788,
+              "sha256": "e791ec20451d6c4e4bd966eca83ae5002eb97cd10360ec5c70faff38e781a6b6"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2104088,
-              "sha256": "742c3cd90ba4f8533efa535665454eed0ab545fbaa9513b662d420751a7dde73"
+              "bytes": 2104788,
+              "sha256": "e791ec20451d6c4e4bd966eca83ae5002eb97cd10360ec5c70faff38e781a6b6"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -43596,8 +43596,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 17538,
-              "sha256": "4a215c32c14bcf09feb9125ed9a07f890835b66e9b97e97271a6425c79eb0ee3"
+              "bytes": 19996,
+              "sha256": "3b589986a6f838f51ac946d179d7a1acd640e8c81541f1d8276e498755c1be27"
             }
           ],
           "test_modules": [
@@ -43606,8 +43606,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 17538,
-              "sha256": "4a215c32c14bcf09feb9125ed9a07f890835b66e9b97e97271a6425c79eb0ee3"
+              "bytes": 19996,
+              "sha256": "3b589986a6f838f51ac946d179d7a1acd640e8c81541f1d8276e498755c1be27"
             }
           ],
           "local_mapping_files": [],
@@ -44556,8 +44556,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 17538,
-              "sha256": "4a215c32c14bcf09feb9125ed9a07f890835b66e9b97e97271a6425c79eb0ee3"
+              "bytes": 19996,
+              "sha256": "3b589986a6f838f51ac946d179d7a1acd640e8c81541f1d8276e498755c1be27"
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_syntax.rs",
@@ -46362,8 +46362,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 17538,
-              "sha256": "4a215c32c14bcf09feb9125ed9a07f890835b66e9b97e97271a6425c79eb0ee3"
+              "bytes": 19996,
+              "sha256": "3b589986a6f838f51ac946d179d7a1acd640e8c81541f1d8276e498755c1be27"
             }
           ],
           "test_modules": [
@@ -46462,6 +46462,142 @@
           ],
           "validation_boundary": "Local structural prefix writer only; caller retains BSI/body composition, D0 frame/AU output remains NOT_RUN, production_allowed=false.",
           "delivery_scope": "FLAT7X_D0_FIXED_PREFIX_ONLY_NO_COMPLETE_BSI_FRAME_AU_OR_PRODUCTION_CLAIM"
+        },
+        {
+          "slice_id": "flat7x-d0-bsi-segment-through-chanmap",
+          "mapping_status": "WASHED_LIMITED_D0_BSI_SEGMENT_FIELDS_BOUND__AUDIO_AND_FRAME_BODY_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_D0_BSI_SEGMENT_THROUGH_CHANMAP__COMPLETE_FRAME_OPEN",
+          "implementation_requirement": true,
+          "owner": "codec",
+          "scope": "From cursor zero, preflight and serialize the approved D0 fixed prefix, caller-supplied dialnorm U5 (1..31), compre presence from compr Option, optional caller-supplied compr U8, and the approved target chanmape=1 plus typed U16 chanmap pair. Return the cursor before mixmdate. This serializes explicit field values only and derives no XML DRC mapping or compression behavior.",
+          "dependencies": [
+            "F01E/flat7x-i0-d0-typed-target-plan",
+            "F12/flat7x-d0-fixed-prefix-writer",
+            "F12/washed-eac3-chanmap-u16-msb-first-serialization"
+          ],
+          "spec_files": [
+            "specs/12-codec-and-wire.md",
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-BSI-SEGMENT-V1/CONTRACT.md"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/frame_builder.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
+              "bytes": 19996,
+              "sha256": "3b589986a6f838f51ac946d179d7a1acd640e8c81541f1d8276e498755c1be27"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/flat7x_d0_bsi_segment.rs"
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_d0_bsi_segment.rs",
+              "bytes": 4718,
+              "sha256": "d5cd1eb75495774831aa0d975c8e0640625743c57caaa80b8b74125e82b4072d"
+            }
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "One non-streaming helper serializes a bounded BSI segment from cursor zero."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_LIMITED_D0_BSI_SEGMENT_THROUGH_CHANMAP",
+            "package_id": "eac3-dependent-d0-bsi-segment-v1",
+            "supplement_manifest_sha256": "cf24050c7539262f53f220366f3c4328d766147a39daeb37e3e89f27817b88db",
+            "supplement_seal_sha256": "5af97a494b53190ce7014f47829352fc71dc58d9bdf3354554469ed1676f7be2",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-BSI-SEGMENT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-BSI-SEGMENT-V1/PACKAGE-SEAL.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-BSI-SEGMENT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-BSI-SEGMENT-V1/CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-BSI-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-BSI-SEGMENT-V1/PROVENANCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-BSI-SEGMENT-V1/verify_package.py"
+            ],
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "cursor_start_bit": 0,
+            "fixed_prefix_bits": 45,
+            "dialnorm": {
+              "width_bits": 5,
+              "accepted_values": [
+                1,
+                31
+              ],
+              "reserved_value": 0
+            },
+            "compre": {
+              "width_bits": 1,
+              "value_source": "compr Option presence"
+            },
+            "compr": {
+              "width_bits": 8,
+              "value_source": "caller supplied Option<U8>"
+            },
+            "chanmap": {
+              "chanmape": 1,
+              "width_bits": 16,
+              "target_map_u16": "0x1A00"
+            },
+            "returned_cursor": "before mixmdate",
+            "segment_bits": {
+              "without_compr": 68,
+              "with_compr": 76
+            },
+            "xml_drc_mapping": "NOT_IMPLEMENTED_BY_THIS_SERIALIZER",
+            "compression_behavior": "NOT_IMPLEMENTED_BY_THIS_SERIALIZER",
+            "production_allowed": false,
+            "validation_boundary": "Only the structural BSI segment through chanmap is serialized; mixmdate, remaining BSI, audio blocks, EMDF, CRC, complete frame/AU and production remain outside scope."
+          },
+          "vectors": {
+            "kind": "WASHED_D0_BSI_SEGMENT_INPUT_ONLY_VECTORS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-BSI-SEGMENT-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "No-compr case emits 68 bits through chanmap and returns before mixmdate.",
+              "With-compr case emits 76 bits through chanmap and returns before mixmdate.",
+              "The 64-bit capacity vector rejects the 68-bit no-compr segment before mutation.",
+              "Dialnorm values 0 and 32 reject before mutation."
+            ],
+            "local_fixture": {
+              "file": "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-BSI-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 2112,
+              "sha256": "cb00b726ae9776eae8f715a51c3643d3a3437ceb328ed43dfecae800a4968e8d"
+            },
+            "expected_outputs_included": true,
+            "execution_status": "LOCALLY_VERIFIED_INPUT_ONLY_D0_BSI_SEGMENT"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "DIALNORM_OUT_OF_RANGE",
+              "category": "caller-supplied field range",
+              "trigger": "dialnorm is reserved zero or exceeds the U5 range.",
+              "result": "Flat7xD0BsiSegmentError::DialnormOutOfRange; no bytes or cursor are changed.",
+              "caller_action": "Reject the segment candidate and supply dialnorm in 1..31."
+            },
+            {
+              "error_code": "FRAME_BIT_WRITER_BUFFER_TOO_SMALL",
+              "category": "whole-segment capacity",
+              "trigger": "The caller buffer has fewer than 68 or 76 bits available for the selected option.",
+              "result": "BufferTooSmall before the fixed prefix or any BSI field is written.",
+              "caller_action": "Reject the segment candidate; the caller owns full frame composition."
+            }
+          ],
+          "not_run": [
+            "XML DRC profile to dialnorm/compre/compr mapping and any audio compression behavior.",
+            "mixmdate, later BSI, D0 audio blocks, EMDF, CRC, complete frame, AU and file output.",
+            "Native record +0x5c owner and runtime generation/source-role joins.",
+            "Production admission and end-to-end acceptance."
+          ],
+          "validation_boundary": "Input-only vectors verify serialization of explicit fields through chanmap; caller-owned later BSI and complete D0 frame/AU production remain open.",
+          "delivery_scope": "FLAT7X_D0_BSI_SEGMENT_THROUGH_CHANMAP_ONLY_NO_AUDIO_MAPPING_OR_FRAME_AU_PRODUCTION"
         }
       ]
     },
@@ -55667,8 +55803,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2104088,
-              "sha256": "742c3cd90ba4f8533efa535665454eed0ab545fbaa9513b662d420751a7dde73"
+              "bytes": 2104788,
+              "sha256": "e791ec20451d6c4e4bd966eca83ae5002eb97cd10360ec5c70faff38e781a6b6"
             }
           ],
           "test_inventory": [

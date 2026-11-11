@@ -1,0 +1,53 @@
+{
+  "schema": "eac3-dependent-d0-bsi-segment-input-only.v1",
+  "status": "INPUT_ONLY; NOT_RUN",
+  "execution": "NOT_RUN",
+  "vectors": [
+    {
+      "id": "d0-bsi-through-chanmap-no-compr",
+      "inputs": {"dialnorm": 16, "compr": null, "chanmap": "0x1A00"},
+      "field_bits": [
+        {"field": "fixed_prefix", "bits": "000010110111011101000111111111110011101010000"},
+        {"field": "dialnorm", "bits": "10000"},
+        {"field": "compre", "bits": "0"},
+        {"field": "chanmape", "bits": "1"},
+        {"field": "chanmap", "bits": "0001101000000000"}
+      ],
+      "expected_bit_string": "00001011011101110100011111111111001110101000010000010001101000000000",
+      "expected_bytes_hex_zero_initialized": "0b7747ff3a8411a000",
+      "expected_end_bit_offset": 68
+    },
+    {
+      "id": "d0-bsi-through-chanmap-with-compr",
+      "inputs": {"dialnorm": 21, "compr": 165, "chanmap": "0x1A00"},
+      "field_bits": [
+        {"field": "fixed_prefix", "bits": "000010110111011101000111111111110011101010000"},
+        {"field": "dialnorm", "bits": "10101"},
+        {"field": "compre", "bits": "1"},
+        {"field": "compr", "bits": "10100101"},
+        {"field": "chanmape", "bits": "1"},
+        {"field": "chanmap", "bits": "0001101000000000"}
+      ],
+      "expected_bit_string": "0000101101110111010001111111111100111010100001010111010010110001101000000000",
+      "expected_bytes_hex_zero_initialized": "0b7747ff3a8574b1a000",
+      "expected_end_bit_offset": 76
+    },
+    {
+      "id": "full-segment-capacity-preflight",
+      "buffer_bytes": 8,
+      "available_bits": 64,
+      "required_bits": 68,
+      "expected": "reject before mutating bytes or cursor"
+    },
+    {
+      "id": "invalid-dialnorm",
+      "dialnorm_values": [0, 32],
+      "expected": "reject before mutation"
+    }
+  ],
+  "explicit_non_claims": [
+    "dialnorm/compre/compr inputs are synthetic field values and do not validate XML mapping or audio effect.",
+    "mixmdate and all later BSI syntax are caller-owned.",
+    "No complete frame, AU, EMDF, CRC, audio block, or file is produced by these vectors."
+  ]
+}

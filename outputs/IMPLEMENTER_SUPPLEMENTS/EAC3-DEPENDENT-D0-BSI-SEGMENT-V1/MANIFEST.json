@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "sha256": "c46927b902b8745a206ed972aaf02dd991e9edc82dcd193095c1696336050f2c",
+      "size_bytes": 2485
+    },
+    {
+      "path": "CONTRACT.json",
+      "sha256": "841234a74cbb42b345f5fce54c72850b5fa30325a853eb49a77748eb64abd70b",
+      "size_bytes": 2043
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "sha256": "cb00b726ae9776eae8f715a51c3643d3a3437ceb328ed43dfecae800a4968e8d",
+      "size_bytes": 2112
+    },
+    {
+      "path": "PROVENANCE.json",
+      "sha256": "cc414294773beb99917630bb104f9b0ede1722d4c94121593ba583b1eae5d479",
+      "size_bytes": 2899
+    },
+    {
+      "path": "build_manifest.py",
+      "sha256": "4856102d5e997d16ce38b64a4c925d4c887ecd0d867be646cecc0ad06a2b9cb2",
+      "size_bytes": 1454
+    },
+    {
+      "path": "verify_package.py",
+      "sha256": "76ef539555dd96bf8e89e2f0d45a81e4490612c0213ae579dc70bfd5e54855f5",
+      "size_bytes": 3759
+    }
+  ],
+  "package_id": "eac3-dependent-d0-bsi-segment-v1",
+  "production_allowed": false,
+  "schema": "jocforge.wash_implementer_supplement.v1",
+  "status": "IMPLEMENTER_READY_LIMITED_D0_BSI_SEGMENT"
+}

@@ -2,11 +2,13 @@
 //! Boundary that assembles validated typed receipts. It cannot calculate upstream values.
 
 use crate::codec::bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError};
+use crate::codec::eac3_channel_map::write_flat7x_d0_chanmap_fields;
 use crate::codec::frame_size::Eac3FrameSizeCode;
 use crate::codec::frame_syntax::{
     CodecBlockIndex, SelectedBsiDrcFields, SelectedBsiMixingInformationValues,
     SelectedComplexityIndexTypeA,
 };
+use crate::profile::Flat7xI0D0TargetPlan;
 use crate::timeline::CodecSourceIndex;
 
 const DIALNORM_BIT_OFFSET: u32 = 45;
@@ -106,6 +108,71 @@ pub fn write_flat7x_d0_fixed_prefix(
     for (value, width) in FLAT7X_D0_FIXED_PREFIX_FIELDS {
         writer.write_unsigned(value, width)?;
     }
+    Ok(writer.cursor())
+}
+
+const D0_DIALNORM_WIDTH_BITS: u8 = 5;
+const D0_COMPRE_WIDTH_BITS: u8 = 1;
+const D0_COMPR_WIDTH_BITS: u8 = 8;
+const D0_BSI_THROUGH_CHANMAP_BITS_WITHOUT_COMPR: u32 = 68;
+const D0_BSI_THROUGH_CHANMAP_BITS_WITH_COMPR: u32 = 76;
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Flat7xD0BsiSegmentError {
+    CursorMismatch { actual: u32 },
+    DialnormOutOfRange { value: u8 },
+    TargetChannelMapMissing,
+    FixedPrefix(Flat7xD0FixedPrefixError),
+    BitWriter(FrameBitWriterError),
+}
+
+impl From<Flat7xD0FixedPrefixError> for Flat7xD0BsiSegmentError {
+    fn from(error: Flat7xD0FixedPrefixError) -> Self {
+        Self::FixedPrefix(error)
+    }
+}
+
+impl From<FrameBitWriterError> for Flat7xD0BsiSegmentError {
+    fn from(error: FrameBitWriterError) -> Self {
+        Self::BitWriter(error)
+    }
+}
+
+/// Writes the selected Flat7x D0 BSI segment through the dependent chanmap pair.
+///
+/// `dialnorm` and optional `compr` are explicit caller inputs. This function
+/// serializes those fields only; it does not map XML DRC profiles or derive a
+/// compression value. It stops before caller-owned `mixmdate` and later fields.
+pub fn write_flat7x_d0_bsi_through_chanmap(
+    writer: &mut FrameBitWriter<'_>,
+    dialnorm: u8,
+    compr: Option<u8>,
+) -> Result<FrameBitCursor, Flat7xD0BsiSegmentError> {
+    let actual = writer.cursor().bit_offset();
+    if actual != 0 {
+        return Err(Flat7xD0BsiSegmentError::CursorMismatch { actual });
+    }
+    if !(1..=31).contains(&dialnorm) {
+        return Err(Flat7xD0BsiSegmentError::DialnormOutOfRange { value: dialnorm });
+    }
+    let channel_map = Flat7xI0D0TargetPlan::approved_contract()
+        .d0()
+        .channel_map()
+        .ok_or(Flat7xD0BsiSegmentError::TargetChannelMapMissing)?;
+    let required_bits = if compr.is_some() {
+        D0_BSI_THROUGH_CHANMAP_BITS_WITH_COMPR
+    } else {
+        D0_BSI_THROUGH_CHANMAP_BITS_WITHOUT_COMPR
+    };
+    writer.preflight_capacity(required_bits)?;
+
+    write_flat7x_d0_fixed_prefix(writer)?;
+    writer.write_unsigned(u32::from(dialnorm), D0_DIALNORM_WIDTH_BITS)?;
+    writer.write_unsigned(u32::from(compr.is_some()), D0_COMPRE_WIDTH_BITS)?;
+    if let Some(compr) = compr {
+        writer.write_unsigned(u32::from(compr), D0_COMPR_WIDTH_BITS)?;
+    }
+    write_flat7x_d0_chanmap_fields(writer, channel_map)?;
     Ok(writer.cursor())
 }
 

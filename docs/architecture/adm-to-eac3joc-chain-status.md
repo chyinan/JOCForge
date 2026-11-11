@@ -34,6 +34,12 @@ Wash supplement `eac3-dependent-d0-fixed-prefix-v1` 的 manifest `686a51ef28e480
 
 该固定前缀在 bit 45 结束，不含 `dialnorm`；后续 BSI 由 caller 负责，其中 `chanmape`/`chanmap` 在 ETSI 指定位置作为独立字段组写入。Target row values 为 `acmod=5,lfeon=0,bsid=16`；完整 D0 BSI、frame/AU assembly、native record owner、audio encoder 与 production remain open。修订后的容量向量使用 5-byte / 40-bit buffer，writer 不产生部分前缀。
 
+## 2026-11-11：Flat7x D0 BSI segment through chanmap
+
+Wash supplement `eac3-dependent-d0-bsi-segment-v1` (manifest `cf24050c7539262f53f220366f3c4328d766147a39daeb37e3e89f27817b88db`, seal `5af97a494b53190ce7014f47829352fc71dc58d9bdf3354554469ed1676f7be2`) authorizes a structural segment from cursor zero through the target chanmap pair. `codec::frame_builder::write_flat7x_d0_bsi_through_chanmap` composes the 45-bit prefix, caller-supplied dialnorm U5, compre presence, optional caller-supplied compr U8, then `chanmape=1` and typed U16 map. It preflights 68 bits without compr or 76 bits with compr and returns before mixmdate. Input-only vectors pass for both segment forms, insufficient capacity, and dialnorm 0/32 rejection.
+
+The helper maps no XML DRC profile and implements no compression effect. `mixmdate`, later BSI, audio blocks, EMDF, CRC, full D0 frame/AU and output remain outside this segment; `production_allowed=false`.
+
 ## 2026-11-06：authored silence duration admission gate
 
 Wash 包 `ATMOS-SILENCE-DURATION-SAMPLE-BOUNDARY-V1` 已物化到隔离仓。manifest SHA-256 `1295151443daca741c7ca0477b91bdf84d88eae76065d7b861ca4125f895980c`、seal SHA-256 `47f5b8c8538894acdecad538f0537056b3ec216b5894943addf0d490b67f6852`，REPORT、INPUT-ONLY-VECTORS 与 PROVENANCE 三个 payload 本地逐项校验通过；普通 Python 与 `python -O` 均 PASS。向量只列 zero/fractional 两个输入，标为 `PROPOSED_NOT_RUN`。
