@@ -138,3 +138,7 @@ The synthetic structural integration test feeds `assemble_flat7x_d0_frame_bits` 
 ## 2026-11-12 Flat7x elementary-stream temp staging
 
 `Flat7xElementaryStreamStageProposal` now consumes typed F15 `Flat7xAuFinalizeProposal` and verifies ordered AU ledger offsets, extents and I0/D0/AU hashes before staging. The IO receipt candidate echoes the same attempt ID/owner generation; proposal completion checks those identities and exact readback SHA. The separate `jocforge-io` adapter writes only to a caller-owned create-new temp `File`, loops over short writes, rejects zero progress, flushes/syncs and performs bounded readback. It has no final path, rename, GTC or product connection; caller abandons partial staging on error. A synthetic F15 ledger test verifies the structural typed join, while live F13/Integrity receipt production, source callback, parent commit and public File-adapter invocation remain `NOT_RUN`; `production_allowed=false`.
+
+## 2026-11-12 E-591 first-output preflight target
+
+Wash预检将目标ADM身份绑定为 `D:\Love Song 方大同.wav`，size `1,396,237,802` bytes，SHA-256 `34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5`。candidate output为 `D:\Programs\JOCForge-isolated\.test-tmp\love-song-flat7x-1664-20261112-0139.ec3`，temp目录为 `D:\Programs\JOCForge-isolated\.test-tmp\love-song-flat7x-1664-20261112-0139-tmp`；timeline entry `E-591` 记录预检时两个destination均不存在。此绑定只供未来Fresh preflight使用：当前 `Fresh GO=NOT_RECEIVED`、`production_allowed=false`、编码未启动；复用前需重核路径/hash和destination空闲状态。

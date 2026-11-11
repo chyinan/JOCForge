@@ -3,7 +3,7 @@ status: partial-implementation-locally-verified
 topic: implementation-agent-status
 spec: JOCForge
 confidence: repository-status
-last_updated: 2026-11-11
+last_updated: 2026-11-12
 tags:
   - implementation
   - handoff
@@ -18,6 +18,7 @@ tags:
 - 新增 `codec::access_unit_composer::write_flat7x_i0_d0_access_unit_bytes`：固定 I0→D0 opaque byte composition，校验 2560/4096/6656-byte extents、zero cursor 和整段容量后一次写入；synthetic-only、`production_allowed=false`，未连接生产路径。
 - 新增 `codec::elementary_stream_composer::compose_flat7x_elementary_stream`：按序组合 caller-supplied opaque 6656-byte AUs，checked size、byte-aligned cursor 与整段容量预检后 private staging 并一次写入；空序列拒绝，synthetic-only、`production_allowed=false`，未连接文件/GTC/product encode。结构测试已串接 D0 frame→AU→双 AU stream 并验证 receipt-derived D0 offsets 与 CRC2尾部保持。
 - 新增 `Flat7xElementaryStreamStageProposal`→F15 `Flat7xAuFinalizeProposal` ledger join：逐 AU 核对index/offset/extents与frame/AU hashes；IO receipt candidate绑定同一attempt/owner generation并仅在flush/sync/readback一致后生成stage-after proposal。caller-owned temp file失败需废弃；final path/rename/GTC/product仍关闭。F15 finalize-ledger join用synthetic model通过；真实F13/Integrity正向owner产物、source callback及public File-adapter调用仍 `NOT_RUN`，`production_allowed=false`。
+- Wash E-591已把 first-output preflight target绑定到 Love Song 方大同.wav（1,396,237,802 bytes，SHA-256 `34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5`）及候选 `.ec3`/temp路径；两目标当时均不存在。Fresh GO仍未收到，当前不启动编码；因I0/D0真实帧与F13/F12→F15 finalize owner链未闭合，12:00前输出不可信。
 - 项目指引记载 product encode entry 仍不可用；独立 validation 和 W04 acceptance 为 `NOT_RUN`。
 - 1664 kbps I0/D0 AU profile 保持 `production_allowed=false`；1024 kbps / 5.1 Flat7x profile/header partial slice 已进入 resolver 和 writer API，完整文件验收为 `NOT_RUN`。
 - `OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1` now provides a user-designated reference I0 of legacy AC-3 BSID6 / 2,560 bytes. The Flat7x-specific I0 legacy-core writer and callsite remain unimplemented; the existing selected 5.1 E-AC-3 BSID16 prefix stays unchanged.
