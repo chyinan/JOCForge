@@ -1775,3 +1775,7 @@ Wash 包 `EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1`（manifest SHA-256 `e8f1908d
 ## 2026-11-11：opaque I0→D0 AU byte composer
 
 `codec::access_unit_composer::write_flat7x_i0_d0_access_unit_bytes` 是与 CRC/source-generation-aware `Flat7xAuByteSequenceCandidate` 分离的纯字节顺序模型。它只接受 typed opaque I0/D0 byte spans，校验 approved target 的 I0=2560、D0=4096、aggregate=6656 bytes、zero cursor 与整段 writer capacity，将 I0 放在前、D0 放在后；完整 candidate 先 staging，成功后一次提交 caller writer，并返回只含 byte spans/extent 的非提交 composition-layout receipt。BSID/CRC/source generation 和 AU semantic metadata 仍由后续边界处理；此 slice 不连接现有 5.1 sink、GTC 或 production。测试输入标记 `SYNTHETIC_NOT_REAL_OUTPUT`。
+
+## 2026-11-12：Flat7x opaque elementary-stream sequence composer
+
+`codec::elementary_stream_composer::compose_flat7x_elementary_stream` 接受调用方按序提供的 opaque、已组合 AU byte spans。它拒绝空序列和非 6656-byte AU，使用 checked count/byte/bit arithmetic 测量总长，要求 byte-aligned writer cursor，并在私有 staging 前预检完整容量与 writer cursor range；所有输入按原顺序进入精确大小的 private staging，最终通过一次 writer call 追加，并返回仅描述 byte range/extent 的 noncommitting receipt。合成向量覆盖双 AU 顺序、空序列、尺寸溢出、错误 AU 长度、短容量与未对齐游标的原子拒绝。`production_allowed=false`；文件 I/O、GTC、production encode、BSID/CRC/source-generation、音频生成与 W04 保持独立。

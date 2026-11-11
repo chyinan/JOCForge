@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2139259,
-              "sha256": "e82422076c58fc86ab7cd42dbe6f67e001994b48b5c15674229f3f5b483b11a7"
+              "bytes": 2143981,
+              "sha256": "35e4f56aca5d41027dacc2199f3f646c673ea6a05a9f6fe1d223b560e3581aeb"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2139259,
-              "sha256": "e82422076c58fc86ab7cd42dbe6f67e001994b48b5c15674229f3f5b483b11a7"
+              "bytes": 2143981,
+              "sha256": "35e4f56aca5d41027dacc2199f3f646c673ea6a05a9f6fe1d223b560e3581aeb"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -42348,8 +42348,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1030,
-              "sha256": "7f91856977ece01924ca80212cbb48b0375e7c997c059fc0b4c131e8456b802c"
+              "bytes": 1066,
+              "sha256": "7cae3681855252de5b8b16a44621012b502bdb6746fdd634e467c0e90d27585e"
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
@@ -42482,8 +42482,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1030,
-              "sha256": "7f91856977ece01924ca80212cbb48b0375e7c997c059fc0b4c131e8456b802c"
+              "bytes": 1066,
+              "sha256": "7cae3681855252de5b8b16a44621012b502bdb6746fdd634e467c0e90d27585e"
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
@@ -42659,8 +42659,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1030,
-              "sha256": "7f91856977ece01924ca80212cbb48b0375e7c997c059fc0b4c131e8456b802c"
+              "bytes": 1066,
+              "sha256": "7cae3681855252de5b8b16a44621012b502bdb6746fdd634e467c0e90d27585e"
             },
             {
               "path": "crates/jocforge-domain/src/codec/published_emdf_binding.rs",
@@ -45546,8 +45546,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1030,
-              "sha256": "7f91856977ece01924ca80212cbb48b0375e7c997c059fc0b4c131e8456b802c"
+              "bytes": 1066,
+              "sha256": "7cae3681855252de5b8b16a44621012b502bdb6746fdd634e467c0e90d27585e"
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
@@ -46111,8 +46111,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1030,
-              "sha256": "7f91856977ece01924ca80212cbb48b0375e7c997c059fc0b4c131e8456b802c"
+              "bytes": 1066,
+              "sha256": "7cae3681855252de5b8b16a44621012b502bdb6746fdd634e467c0e90d27585e"
             }
           ],
           "test_inventory": [
@@ -47293,8 +47293,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1030,
-              "sha256": "7f91856977ece01924ca80212cbb48b0375e7c997c059fc0b4c131e8456b802c"
+              "bytes": 1066,
+              "sha256": "7cae3681855252de5b8b16a44621012b502bdb6746fdd634e467c0e90d27585e"
             }
           ],
           "test_modules": [
@@ -47570,8 +47570,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1030,
-              "sha256": "7f91856977ece01924ca80212cbb48b0375e7c997c059fc0b4c131e8456b802c"
+              "bytes": 1066,
+              "sha256": "7cae3681855252de5b8b16a44621012b502bdb6746fdd634e467c0e90d27585e"
             }
           ],
           "test_modules": [
@@ -47693,7 +47693,7 @@
           ],
           "implementation_inventory": [
             {"path": "crates/jocforge-domain/src/codec/access_unit_composer.rs", "bytes": 5122, "sha256": "98f37f91c3957b424d21763615cbdc9ce04ff835dc65f4f78784285930f15df2"},
-            {"path": "crates/jocforge-domain/src/codec/mod.rs", "bytes": 1030, "sha256": "7f91856977ece01924ca80212cbb48b0375e7c997c059fc0b4c131e8456b802c"}
+            {"path": "crates/jocforge-domain/src/codec/mod.rs", "bytes": 1066, "sha256": "7cae3681855252de5b8b16a44621012b502bdb6746fdd634e467c0e90d27585e"}
           ],
           "test_modules": [
             "crates/jocforge-domain/tests/flat7x_access_unit_composer.rs"
@@ -47786,6 +47786,142 @@
           ],
           "validation_boundary": "Synthetic opaque byte sequence only, fixed I0→D0 order, production_allowed=false.",
           "delivery_scope": "FLAT7X_OPAQUE_I0_D0_BYTE_COMPOSITION_ONLY_NO_CRC_SOURCE_JOIN_OR_AU_SEMANTIC_RECEIPT_OR_PRODUCTION_CLAIM"
+        },
+        {
+          "slice_id": "flat7x-elementary-stream-sequence-composer",
+          "mapping_status": "MATERIALIZED_PROFILE_SCOPED_OPAQUE_FLAT7X_AU_SEQUENCE_COMPOSITION",
+          "implementation_status": "LOCALLY_VERIFIED_SEQUENCE_ORDER_EXTENT_OVERFLOW_AND_ATOMIC_REJECTION__NO_PRODUCTION",
+          "implementation_requirement": true,
+          "owner": "codec",
+          "scope": "Accepts an ordered caller sequence of already-composed opaque Flat7x I0→D0 AU byte spans. Empty sequences reject. Each AU must match the approved 6656-byte extent; checked multiplication, total bit length, byte-aligned writer cursor and complete writer capacity are validated before exact private staging. The sequence is appended in input order with one writer call and returns a noncommitting layout receipt. It does not inspect BSID/CRC/source generation, generate audio, write files, or connect GTC/product encode.",
+          "dependencies": [
+            "F01E/flat7x-i0-d0-typed-target-plan",
+            "F12/flat7x-i0-d0-opaque-au-byte-composer"
+          ],
+          "spec_files": [
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF.md"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/elementary_stream_composer.rs",
+            "crates/jocforge-domain/src/codec/mod.rs"
+          ],
+          "implementation_inventory": [
+            {"path": "crates/jocforge-domain/src/codec/elementary_stream_composer.rs", "bytes": 6042, "sha256": "db285669b52bb78f0cb7b0196a9dc3207171916c32391ccfe9a5d75797f53fdd"},
+            {"path": "crates/jocforge-domain/src/codec/mod.rs", "bytes": 1066, "sha256": "7cae3681855252de5b8b16a44621012b502bdb6746fdd634e467c0e90d27585e"}
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/flat7x_elementary_stream_composer.rs"
+          ],
+          "test_inventory": [
+            {"path": "crates/jocforge-domain/tests/flat7x_elementary_stream_composer.rs", "bytes": 7866, "sha256": "883eb1f6ac72cac6972ba6b0fb6225d4fa628bbe958f2f10486a4ebe6b39adbc"}
+          ],
+          "vector_inventory": [
+            {"path": "crates/jocforge-domain/tests/fixtures/flat7x_elementary_stream/INPUT-ONLY-VECTORS.json", "bytes": 1588, "sha256": "8573c6a3a7d29f91ac8704265dde35d169bac10304788b535927c8d015a0e88b"}
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The sequence retains caller AU order and composes a measured byte extent; no media clock or source identity is inferred."
+            ]
+          },
+          "parameters": {
+            "kind": "APPROVED_FLAT7X_TARGET_SEQUENCE_EXTENTS",
+            "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+            "supplement_manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+            "supplement_seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json"
+            ],
+            "access_unit_bytes": 6656,
+            "order": "CALLER_SEQUENCE_ORDER_PRESERVED",
+            "empty_sequence_policy": "REJECT",
+            "extent_arithmetic": "CHECKED_COUNT_MULTIPLICATION_AND_U32_BIT_LENGTH",
+            "staging": "EXACT_PRIVATE_STAGING_BOUNDED_BY_MEASURED_EXTENT_AND_WRITER_CAPACITY",
+            "crc_bsid_source_generation": "NOT_INSPECTED_OR_INFERRED",
+            "production_allowed": false,
+            "validation_boundary": "Synthetic opaque AU extent/order/capacity composition only; no audio, source join, file, GTC, product encode or W04 validation."
+          },
+          "vectors": {
+            "kind": "SYNTHETIC_NOT_REAL_OUTPUT_OPAQUE_AU_SEQUENCE_COMPOSITION",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/flat7x_elementary_stream/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "Two distinct opaque fill patterns occupy consecutive 6656-byte AU spans in caller order.",
+              "Empty sequence, usize count overflow, wrong AU extent, one-byte-short writer capacity, and non-byte-aligned cursor reject without caller mutation.",
+              "All bytes are synthetic fill patterns; no audio, BSID, CRC or source identity is asserted."
+            ],
+            "expected_outputs_included": true,
+            "execution_status": "LOCALLY_VERIFIED_MULTI_AU_ORDER_AND_ATOMIC_REJECTION"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "EMPTY_ACCESS_UNIT_SEQUENCE",
+              "category": "elementary-stream sequence cardinality",
+              "trigger": "The caller supplies zero access units.",
+              "result": "Typed rejection before caller bytes or cursor change.",
+              "caller_action": "Provide one or more complete opaque AU spans."
+            },
+            {
+              "error_code": "ACCESS_UNIT_EXTENT_MISMATCH",
+              "category": "per-AU byte extent",
+              "trigger": "Any caller AU span differs from the approved 6656-byte extent.",
+              "result": "Typed rejection before private staging or caller mutation.",
+              "caller_action": "Provide complete AU byte spans with the approved extent."
+            },
+            {
+              "error_code": "SEQUENCE_EXTENT_OVERFLOW",
+              "category": "checked sequence size",
+              "trigger": "AU count multiplication, total bit length or target integer conversion overflows.",
+              "result": "Typed rejection before staging or caller mutation.",
+              "caller_action": "Reduce the AU sequence to a representable measured extent."
+            },
+            {
+              "error_code": "FRAME_BIT_WRITER_BUFFER_TOO_SMALL",
+              "category": "complete elementary-stream capacity",
+              "trigger": "The caller writer cannot hold the entire measured sequence from its aligned cursor.",
+              "result": "BufferTooSmall before staging or caller mutation.",
+              "caller_action": "Provide a writer with capacity for the complete sequence."
+            },
+            {
+              "error_code": "UNSUPPORTED_TARGET_CONTEXT",
+              "category": "approved Flat7x target",
+              "trigger": "The supplied target differs from the approved immutable I0/D0 plan.",
+              "result": "Typed rejection before staging or caller mutation.",
+              "caller_action": "Resolve the approved Flat7x I0/D0 target plan before measuring."
+            },
+            {
+              "error_code": "WRITER_CURSOR_NOT_BYTE_ALIGNED",
+              "category": "elementary-stream start position",
+              "trigger": "The caller writer cursor is not byte-aligned.",
+              "result": "Typed rejection before staging or caller mutation.",
+              "caller_action": "Provide a byte-aligned caller writer cursor."
+            },
+            {
+              "error_code": "STAGING_ALLOCATION_FAILED",
+              "category": "bounded private staging allocation",
+              "trigger": "The runtime cannot reserve the measured sequence length after capacity preflight.",
+              "result": "Typed rejection before caller bytes or cursor change.",
+              "caller_action": "Retry with a smaller sequence or available memory."
+            },
+            {
+              "error_code": "FRAME_BIT_WRITER_CURSOR_OVERFLOW",
+              "category": "writer bit cursor range",
+              "trigger": "The aligned start cursor plus measured sequence bit length exceeds the representable writer cursor.",
+              "result": "Typed rejection before staging or caller mutation.",
+              "caller_action": "Start composition at a lower writer cursor or reduce the sequence length."
+            }
+          ],
+          "not_run": [
+            "No CRC, BSID, frame syntax, audio payload, source generation or semantic AU receipt is validated or produced.",
+            "No file I/O, GTC transaction, product encode, final output or W04 acceptance is connected."
+          ],
+          "validation_boundary": "SYNTHETIC_NOT_REAL_OUTPUT; opaque AU byte sequence only; production_allowed=false.",
+          "delivery_scope": "FLAT7X_OPAQUE_AU_SEQUENCE_COMPOSITION_ONLY_NO_AUDIO_SOURCE_JOIN_FILE_GTC_OR_PRODUCTION_CLAIM"
         }
       ]
     },
@@ -56991,8 +57127,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2139259,
-              "sha256": "e82422076c58fc86ab7cd42dbe6f67e001994b48b5c15674229f3f5b483b11a7"
+              "bytes": 2143981,
+              "sha256": "35e4f56aca5d41027dacc2199f3f646c673ea6a05a9f6fe1d223b560e3581aeb"
             }
           ],
           "test_inventory": [
@@ -60795,8 +60931,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/codec/mod.rs",
-          "bytes": 1030,
-          "sha256": "7f91856977ece01924ca80212cbb48b0375e7c997c059fc0b4c131e8456b802c"
+          "bytes": 1066,
+          "sha256": "7cae3681855252de5b8b16a44621012b502bdb6746fdd634e467c0e90d27585e"
         },
         {
           "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",

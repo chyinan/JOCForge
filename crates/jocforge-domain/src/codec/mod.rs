@@ -14,6 +14,7 @@ pub mod d0_frame_assembler;
 pub mod d0_frame_layout;
 pub mod db_selector;
 pub mod eac3_channel_map;
+pub mod elementary_stream_composer;
 pub mod emdf_skip_field;
 pub mod exponent_normalization;
 pub mod exponent_packing;

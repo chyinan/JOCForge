@@ -557,6 +557,7 @@
 | F12/flat7x-target-id14-header | — | `The staged ID14 header advances only its local bit cursor; it creates no source/callback/AU generation or owner receipt.` |
 | F12/flat7x-d0-frame-bit-assembler | — | `The caller writer starts at bit zero and advances exactly 32768 frame bits only after the staged frame is complete.` |
 | F12/flat7x-i0-d0-opaque-au-byte-composer | — | `The composer stages one I0→D0 byte range at the caller writer's zero cursor and returns a noncommitting layout receipt; no source/AU generation is inferred.` |
+| F12/flat7x-elementary-stream-sequence-composer | — | `The sequence retains caller AU order and composes a measured byte extent; no media clock or source identity is inferred.` |
 | F12S/mantissa-quantizer | — | `The quantizer is stateless and has no callback, source, AU, or trial-search clock ownership.` |
 | F12A/selected-f12a-public-bap-network | — | `F12A has no persistent cross-row/block state; BapFrame carries candidate q but source-generation identity remains caller-owned.` |
 | F13/selected-metadata-owner-source-stage | `CodecSourceIndex`<br>`JocDispatchIndex`<br>`PublishedAuIndex` | `source s`<br>`dispatch s+1`<br>`AU absent for s<2 else s-2`<br>`ordinary writer s-2`<br>`ID14 writer s-1` |

@@ -128,3 +128,7 @@ Wash package `EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1` (manifest `e8f1908d35725
 ## 2026-11-11 opaque I0→D0 AU byte composer
 
 `write_flat7x_i0_d0_access_unit_bytes` accepts typed opaque I0/D0 frame byte spans, checks the approved 2560/4096/6656-byte extents, requires writer cursor zero and preflights all 6656 bytes. It stages I0 followed by D0 and commits once, then returns a noncommitting composition-layout receipt containing only byte spans/extents. BSID, CRC, source-generation identity and AU semantic metadata remain outside this slice. The vector uses synthetic fill bytes marked `SYNTHETIC_NOT_REAL_OUTPUT`; the selected 5.1 path is unchanged.
+
+## 2026-11-12 opaque Flat7x elementary-stream sequence composer
+
+`codec::elementary_stream_composer::compose_flat7x_elementary_stream` takes caller-provided, already-composed opaque AU byte spans in sequence order. It rejects empty input and any AU not exactly 6656 bytes, checks count/byte/bit arithmetic, requires a byte-aligned writer cursor and preflights the complete extent/cursor range before exact private staging. One writer call appends all AUs in order and returns a noncommitting composition-layout receipt. The input-only vectors use synthetic fills to verify two-AU ordering, overflow/empty/extent/capacity/alignment rejection, and no caller mutation. `production_allowed=false`; no file/GTC/product encode/audio path is connected.

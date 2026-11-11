@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge.flat7x_elementary_stream.synthetic_input_only.v1",
+  "status": "SYNTHETIC_NOT_REAL_OUTPUT",
+  "contains_audio_or_frame_bytes": false,
+  "access_unit_bytes_are_test_fill_patterns_only": true,
+  "crc_bsid_or_source_generation_validation": false,
+  "cases": [
+    {
+      "id": "compose-two-ordered-access-units",
+      "access_unit_count": 2,
+      "bytes_per_access_unit": 6656,
+      "test_fill_hex_by_access_unit": ["31", "72"],
+      "expected": {
+        "first_access_unit_start_byte": 0,
+        "first_access_unit_end_byte": 6656,
+        "second_access_unit_start_byte": 6656,
+        "second_access_unit_end_byte": 13312,
+        "elementary_stream_bytes": 13312,
+        "elementary_stream_bits": 106496
+      }
+    },
+    {
+      "id": "reject-empty-sequence",
+      "access_unit_count": 0,
+      "expected_error": "EMPTY_ACCESS_UNIT_SEQUENCE"
+    },
+    {
+      "id": "reject-checked-size-overflow",
+      "access_unit_count": "usize::MAX",
+      "expected_error": "SEQUENCE_EXTENT_OVERFLOW"
+    },
+    {
+      "id": "reject-one-byte-short-writer-capacity",
+      "access_unit_count": 2,
+      "writer_capacity_bytes": 13311,
+      "expected_error": "BUFFER_TOO_SMALL"
+    },
+    {
+      "id": "reject-wrong-access-unit-extent",
+      "access_unit_count": 2,
+      "wrong_access_unit_index": 1,
+      "actual_access_unit_bytes": 6655,
+      "expected_error": "ACCESS_UNIT_EXTENT_MISMATCH"
+    },
+    {
+      "id": "reject-non-byte-aligned-writer-cursor",
+      "start_bit_offset": 1,
+      "expected_error": "WRITER_CURSOR_NOT_BYTE_ALIGNED"
+    }
+  ]
+}
