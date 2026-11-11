@@ -68,7 +68,11 @@ Wash package `FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1` was checked against manifes
 
 The approved Flat7x package fixes a single D0 zero-based block-2 skip field, C<=511 bytes, no continuation and whole-AU fail-closed overflow. Wash confirmed ETSI TS 102 366 V1.4.1 §4.4.3.58–60 syntax. The target-only `codec::emdf_skip_field::write_flat7x_d0_block2_skipfld` requires a complete nonempty container and writes the present form `skiple=1`, U9 `skipl=C`, followed by C bytes after delta-bit allocation and before mantissas. Missing/empty target input, C=512, and insufficient capacity all return before changing cursor/frame bytes. Generic ETSI `skiple=0` remains outside this target-required-container API. The helper leaves D0 chanmap, JOC object count and reconstruction carriers separate. Five bit-boundary tests pass.
 
-The caller still owns frame cursor placement and block/frame composition. Native block-2 cursor, D0 BSI/audio owner, source/generation lineage, all-AU fit and product output remain `UNBOUND/NOT_RUN`; `production_allowed=false`.
+The caller owns the block-two insertion offset through `CallerOwnedUnboundD0Block2InsertionPoint`. `D0FrameBitAssembler` now consumes the helper at the layout-computed block-2 field span for a synthetic exact-size frame; that connects the field writer to a caller-owned block/frame interface while the native block-2 cursor, D0 BSI/audio owner, source/generation lineage, all-AU fit and product output remain `UNBOUND/NOT_RUN`; `production_allowed=false`.
+
+## 2026-11-12 Flat7x D0 skipfld structure addendum
+
+Wash package `FLAT7X-D0-SKIPFLD-STRUCTURE-V1` was independently checked normal and with `python -O`; manifest SHA-256 `1b14343db4128bda45c254a024de2662ac59516e2e83aa7d3191e3c4d80ca1c3`, seal-file SHA-256 `7c31c485368c3755de23f7fee981a141c3607eef86d7110a4cdf1661c6a15024`. It reiterates one D0 block-2 skip field: `skiple=1`, U9 `skipl=C` bytes, then exact opaque container bytes; C must be 1..511, no fragmentation, whole-target fail-closed overflow. The official 1,280-kbps sample observes C_total/skipl 301..377; target remains 640+1024=1664 kbps. The existing helper already writes the exact field, and the synthetic D0 frame assembler passes it the caller-owned block-2 container at its layout-computed insertion span. C511 is `FIT_EXACT` arithmetic/writer evidence only; OpenJOC full-container C511 acceptance remains `NOT_RUN`, and native block cursor/source owner remain unbound.
 
 ## 2026-11-11 official Atmos reference structure
 
@@ -76,7 +80,7 @@ Wash package `OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1` passed both checker modes
 
 Wash addendum `OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V2` (manifest `c4104e674a9c3df06ead8f6741a7366e58068602789806d1a91d045c1dfd731a`, seal `0fb4c7f8a7a49488a97586b7e3eb6febc0542cf0044569fe37e65dc07d85757d`) reports `joc_dmx_config_idx=1`, extension index 0 and 15 JOC header objects on all 23,033 AUs. This binds the reference sample's profile index; it does not establish a native target writer or profile-index 1 on a new 1,664-kbps output. Payload IDs 11/14 have `codecdatae=0` while ETSI Table 56 requires 1; vendor-compatible observations and ETSI-strict failure remain separate, and no strict-conformance claim is made.
 
-The new reference identifies the intended Flat7x I0 structural value as legacy AC-3 BSID6. The profile-specific I0 writer path still needs its own implementation; preserve the existing 5.1 E-AC-3 BSID16 path. The D0 skip-field serializer remains a field helper, without a native block cursor or frame builder callsite.
+The new reference identifies the intended Flat7x I0 structural value as legacy AC-3 BSID6. The profile-specific I0 writer path still needs its own implementation; preserve the existing 5.1 E-AC-3 BSID16 path. The D0 skip-field helper is called by the synthetic caller-span frame assembler; native block-cursor and runtime owner binding remain unbound.
 
 ## 2026-11-11 official Atmos OAMD position reference
 

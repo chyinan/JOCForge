@@ -13237,6 +13237,97 @@ def check_f15_flat7x_elementary_stream_stage(root, d):
     )
 
 
+def check_wash_flat7x_d0_skipfld_structure_package(root, row):
+    package = root / "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1"
+    manifest_path = package / "MANIFEST.json"
+    seal_path = package / "package_seal.json"
+    manifest_bytes = manifest_path.read_bytes()
+    seal_bytes = seal_path.read_bytes()
+    manifest = json.loads(manifest_bytes)
+    seal = json.loads(seal_bytes)
+    expected_manifest = "1b14343db4128bda45c254a024de2662ac59516e2e83aa7d3191e3c4d80ca1c3"
+    expected_seal_file = "7c31c485368c3755de23f7fee981a141c3607eef86d7110a4cdf1661c6a15024"
+    ck(
+        hashlib.sha256(manifest_bytes).hexdigest() == expected_manifest
+        and hashlib.sha256(seal_bytes).hexdigest() == expected_seal_file
+        and manifest.get("supplement_id") == "FLAT7X-D0-SKIPFLD-STRUCTURE-V1"
+        and manifest.get("implementation_ready_for_scoped_helper") is True
+        and manifest.get("full_product_output_ready") is False
+        and manifest.get("production_allowed") is False
+        and seal.get("manifest_sha256") == expected_manifest
+        and seal.get("supplement_id") == manifest.get("supplement_id"),
+        "Flat7x D0 skipfld structure supplement manifest and seal identity",
+    )
+    for member in manifest.get("payloads", []):
+        content = (package / member["file"]).read_bytes()
+        ck(
+            len(content) == member["bytes"]
+            and hashlib.sha256(content).hexdigest() == member["sha256"],
+            "Flat7x D0 skipfld supplement member " + member["file"],
+        )
+
+    vectors = json.loads((package / "INPUT-ONLY-VECTOR.json").read_bytes())
+    cases = {item["id"]: item for item in vectors.get("vectors", [])}
+    official = cases.get("official-mka-d0-block2-summary", {})
+    target = cases.get("target-rate-and-extent", {})
+    c511 = cases.get("synthetic-c511-fit-policy", {})
+    ck(
+        vectors.get("raw_payload_bytes_included") is False
+        and official.get("access_units") == 23_033
+        and official.get("skipl_and_c_total_bytes") == {
+            "minimum": 301,
+            "maximum": 377,
+            "distinct_lengths": 69,
+        }
+        and target.get("i0_kbps") == 640
+        and target.get("d0_kbps") == 1024
+        and target.get("aggregate_kbps") == 1664
+        and c511.get("disposition") == "FIT_EXACT"
+        and c511.get("openjoc_exact_container_parse") == "NOT_RUN",
+        "Flat7x D0 skipfld supplement separates observed rates from target and C511 arithmetic from parser acceptance",
+    )
+
+    addendum = row.get("parameters", {}).get("structure_addendum", {})
+    ck(
+        addendum.get("package_id") == manifest.get("supplement_id")
+        and addendum.get("manifest_sha256") == expected_manifest
+        and addendum.get("seal_file_sha256") == expected_seal_file
+        and addendum.get("c511") == "FIT_EXACT_ARITHMETIC_ONLY"
+        and addendum.get("openjoc_c511_full_container_parse") == "NOT_RUN",
+        "Flat7x skipfld map binds the new structure addendum without promoting parser acceptance",
+    )
+
+    assembler_path = root / "crates/jocforge-domain/src/codec/d0_frame_assembler.rs"
+    test_path = root / "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs"
+    assembler = rust_code_without_comments(assembler_path.read_text(encoding="utf-8"))
+    tests = test_path.read_text(encoding="utf-8")
+    ck(
+        "CallerOwnedUnboundD0Block2InsertionPoint" in assembler
+        and "block_two_input.skip_fields[0].insertion_point" in assembler
+        and "FrameBitCursor::new(skip_span.start_bit())" in assembler
+        and "write_flat7x_d0_block2_skipfld(" in assembler
+        and "block_two_input.skip_fields[0].complete_emdf_container" in assembler
+        and "synthetic_assembler_copies_opaque_spans_and_caller_crc2_into_exact_target_extent" in tests
+        and "block_two_skipfield_start_bit" in tests,
+        "caller-owned block-two insertion feeds the skipfld helper through synthetic D0 frame assembly",
+    )
+
+    for optimized in (False, True):
+        command = [sys.executable] + (["-O"] if optimized else []) + ["-B", str(package / "CHECK.py")]
+        result = subprocess.run(
+            command,
+            cwd=package,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        ck(
+            result.returncode == 0
+            and "PASS: sealed Flat7x D0 skipfld structural contract" in result.stdout,
+            "Flat7x D0 skipfld package checker " + ("optimized" if optimized else "normal"),
+        )
+
+
 def check_partial_root_and_new_slice_mappings(root, d):
 
     entries = {entry["functional_id"]: entry for entry in d["functional_entries"]}
@@ -13365,7 +13456,10 @@ def check_partial_root_and_new_slice_mappings(root, d):
     flat7x_skip_other_paths = ["crates/jocforge-domain/src/codec/frame_builder.rs", "crates/jocforge-domain/src/codec/selected_frame_trial.rs", "crates/jocforge-domain/src/publication/output_owner.rs"]
     flat7x_skip_test_names = ["writes_skiple_then_u9_byte_count_and_container_at_an_unaligned_cursor", "accepts_the_one_byte_length_boundary", "accepts_the_511_byte_boundary_and_encodes_its_u9_length", "rejects_missing_container_and_512_byte_container_before_writing", "preflights_the_complete_field_before_mutating_frame_bits", "target_skip_field_length_covers_one_through_511_payload_bytes"]
     ck("pub fn flat7x_d0_block2_skipfld_bit_length(" in flat7x_skip_code and "payload_bytes > target.maximum_complete_container_bytes()" in flat7x_skip_code and "SKIPLE_WIDTH_BITS + SKIPL_WIDTH_BITS" in flat7x_skip_code, "skip-field composer shares the exact target length validator")
-    ck(flat7x_skip.get("owner") == "codec" and flat7x_skip.get("implementation_status") == "LOCALLY_VERIFIED_REQUIRED_CONTAINER_SKIPLE_SKIPL_SKIPFLD_SERIALIZER__NO_FRAME_OR_PRODUCT_BINDING" and flat7x_skip_target.get("skiple_width_bits") == 1 and flat7x_skip_target.get("skipl_width_bits") == 9 and flat7x_skip_target.get("maximum_complete_container_bytes") == 511 and flat7x_skip_target.get("fragmentation_allowed") is False and flat7x_skip_target.get("generic_absent_syntax_exposed") is False and flat7x_skip_target.get("production_allowed") is False and "complete_emdf_container: &[u8]" in flat7x_skip_code and "MissingContainer" in flat7x_skip_code and "writer.write_bit(true)" in flat7x_skip_code and "writer.write_bit(false)" not in flat7x_skip_code and all(token in flat7x_skip_code for token in ("writer.write_unsigned(u32::from(payload_bytes), SKIPL_WIDTH_BITS)", "writer.write_bytes(complete_emdf_container)", "writer.preflight_capacity(field_bits)")) and all(token not in flat7x_skip_code for token in ("DependentChannelMap", "coded_object_count", "reconstruction_carriers")) and all("write_flat7x_d0_block2_skipfld" not in rust_code_without_comments((root / path).read_text(encoding="utf-8")) for path in flat7x_skip_other_paths) and all(name in flat7x_skip_code for name in flat7x_skip_test_names) and all("NOT_RUN" in item or "UNBOUND" in item for item in flat7x_skip.get("not_run", [])), "Flat7x skip-field serializer requires a container and writes the ETSI present-field syntax in an isolated target domain")
+    ck(flat7x_skip.get("owner") == "codec" and flat7x_skip.get("implementation_status") == "LOCALLY_VERIFIED_REQUIRED_CONTAINER_SKIPFIELD_WRITER_AND_CALLER_BLOCK2_FRAME_ASSEMBLER__PRODUCTION_OPEN" and flat7x_skip_target.get("skiple_width_bits") == 1 and flat7x_skip_target.get("skipl_width_bits") == 9 and flat7x_skip_target.get("maximum_complete_container_bytes") == 511 and flat7x_skip_target.get("fragmentation_allowed") is False and flat7x_skip_target.get("generic_absent_syntax_exposed") is False and flat7x_skip_target.get("production_allowed") is False and "complete_emdf_container: &[u8]" in flat7x_skip_code and "MissingContainer" in flat7x_skip_code and "writer.write_bit(true)" in flat7x_skip_code and "writer.write_bit(false)" not in flat7x_skip_code and all(token in flat7x_skip_code for token in ("writer.write_unsigned(u32::from(payload_bytes), SKIPL_WIDTH_BITS)", "writer.write_bytes(complete_emdf_container)", "writer.preflight_capacity(field_bits)")) and all(token not in flat7x_skip_code for token in ("DependentChannelMap", "coded_object_count", "reconstruction_carriers")) and all("write_flat7x_d0_block2_skipfld" not in rust_code_without_comments((root / path).read_text(encoding="utf-8")) for path in flat7x_skip_other_paths) and all(name in flat7x_skip_code for name in flat7x_skip_test_names) and all("NOT_RUN" in item or "UNBOUND" in item for item in flat7x_skip.get("not_run", [])), "Flat7x skip-field serializer keeps the ETSI present-field model and caller D0 assembler as separate mapped boundaries")
+    check_wash_flat7x_d0_skipfld_structure_package(root, flat7x_skip)
+
+
 
     flat7x_reference = next(item for item in entries["F12"]["direct_slices"] if item["slice_id"] == "official-atmos-demo-i0-d0-structure-reference")
     flat7x_reference_parameters = flat7x_reference.get("parameters", {})

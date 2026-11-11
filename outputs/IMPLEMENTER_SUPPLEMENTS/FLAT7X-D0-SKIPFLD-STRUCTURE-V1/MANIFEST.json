@@ -1,0 +1,46 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "supplement_id": "FLAT7X-D0-SKIPFLD-STRUCTURE-V1",
+  "status": "SCOPED_HELPER_MATERIAL_READY; FULL_PRODUCT_OUTPUT_NOT_READY",
+  "scope": "D0 block-2 single-field skipfld U9 length and exact-byte writer only; no audio generation or source-owner integration",
+  "implementation_ready_for_scoped_helper": true,
+  "full_product_output_ready": false,
+  "production_allowed": false,
+  "parent_sources": [
+    {
+      "package_id": "OPENJOC-OFFICIAL-MKA-STRUCTURE-WASH-V1",
+      "manifest_sha256": "394406989cf724c29ee5f8c31677ff135f92552e54945a48a3733001d1a4bc54"
+    },
+    {
+      "package_id": "OPENJOC-SKIPFLD-EMDF-LENGTH-UNIT-SEMANTICS-WASH-V1",
+      "manifest_sha256": "2c1b9327c914b0e0dc8543e89e8f7ec64f1b56c11e80e9cde9711ec9f5d3ab69"
+    }
+  ],
+  "payloads": [
+    {
+      "file": "FINDINGS.md",
+      "bytes": 2725,
+      "sha256": "bddf8493ec9ea9fc908b9f4ba6094bdabea27642815d8b36de50be3365c0c23f"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 1750,
+      "sha256": "356916e6ed58189bd2bd33962d1dd43280d8a87485df71621e452ef8e05f6bee"
+    },
+    {
+      "file": "SOURCE-PACKAGE.json",
+      "bytes": 1497,
+      "sha256": "bd765fe29dfcd24e98f1098b820b68f42f06f84ff12a3f6f9d9dc257f9ddbc95"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2155,
+      "sha256": "5616c29a5c2a354ca0096f9b411c2b30ecb5a9efb02ebad251c7c6aa411ea1ff"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 2251,
+      "sha256": "dd5995ca9842adf81197d506f85226ec1c441ead87ac669af937fd3594986d4c"
+    }
+  ]
+}

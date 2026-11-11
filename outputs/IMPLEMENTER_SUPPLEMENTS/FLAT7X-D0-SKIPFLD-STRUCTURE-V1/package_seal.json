@@ -1,0 +1,39 @@
+{
+  "schema": "washed-implementer-supplement-seal.v1",
+  "supplement_id": "FLAT7X-D0-SKIPFLD-STRUCTURE-V1",
+  "status": "SEALED_PARTIAL",
+  "manifest_sha256": "1b14343db4128bda45c254a024de2662ac59516e2e83aa7d3191e3c4d80ca1c3",
+  "file_count": 6,
+  "files": [
+    {
+      "file": "FINDINGS.md",
+      "bytes": 2725,
+      "sha256": "bddf8493ec9ea9fc908b9f4ba6094bdabea27642815d8b36de50be3365c0c23f"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 1750,
+      "sha256": "356916e6ed58189bd2bd33962d1dd43280d8a87485df71621e452ef8e05f6bee"
+    },
+    {
+      "file": "SOURCE-PACKAGE.json",
+      "bytes": 1497,
+      "sha256": "bd765fe29dfcd24e98f1098b820b68f42f06f84ff12a3f6f9d9dc257f9ddbc95"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2155,
+      "sha256": "5616c29a5c2a354ca0096f9b411c2b30ecb5a9efb02ebad251c7c6aa411ea1ff"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 2251,
+      "sha256": "dd5995ca9842adf81197d506f85226ec1c441ead87ac669af937fd3594986d4c"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1623,
+      "sha256": "1b14343db4128bda45c254a024de2662ac59516e2e83aa7d3191e3c4d80ca1c3"
+    }
+  ]
+}

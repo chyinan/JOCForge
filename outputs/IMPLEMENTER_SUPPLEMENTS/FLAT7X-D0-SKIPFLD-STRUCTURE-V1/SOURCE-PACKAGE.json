@@ -1,0 +1,33 @@
+{
+  "schema": "washed-implementer-supplement-sources.v1",
+  "supplement_id": "FLAT7X-D0-SKIPFLD-STRUCTURE-V1",
+  "source_packages": [
+    {
+      "package_id": "OPENJOC-OFFICIAL-MKA-STRUCTURE-WASH-V1",
+      "manifest_sha256": "394406989cf724c29ee5f8c31677ff135f92552e54945a48a3733001d1a4bc54",
+      "sha256sums_sha256": "6affcaaae42e3ebdf894eb3dac8a0d90a83db37929444b0bfb624665a3399eab",
+      "source_file_size_bytes": 118008186,
+      "source_file_sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+      "scope": "aggregate structure counts only; raw frame/payload bytes excluded"
+    },
+    {
+      "package_id": "OPENJOC-SKIPFLD-EMDF-LENGTH-UNIT-SEMANTICS-WASH-V1",
+      "manifest_sha256": "2c1b9327c914b0e0dc8543e89e8f7ec64f1b56c11e80e9cde9711ec9f5d3ab69",
+      "sha256sums_sha256": "24b9c469131e71e34b5178c1f644f5984444dc00170e478aabb9dcd569785776",
+      "scope": "skipl byte units, EMDF total-length semantics, exact-carrier parse condition, synthetic boundary classifications"
+    }
+  ],
+  "implementation_reference": {
+    "repository": "D:/Programs/JOCForge-isolated",
+    "verified_commit": "a7805ad16e4366b02a5f55d5434040e403cad224",
+    "implementation_map_sha256": "ef2b85e339e8b5af41c3a57b3833de127e5f4733bd372da1014543ae845d1107"
+  },
+  "exclusions": {
+    "raw_mka_bytes": false,
+    "ec3_frame_bytes": false,
+    "emdf_payload_bytes": false,
+    "pcm": false,
+    "mode21_failure_payload": false,
+    "foreign_implementation_source": false
+  }
+}

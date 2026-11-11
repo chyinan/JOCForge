@@ -1,0 +1,53 @@
+{
+  "schema": "jocforge.input-only-structure-vectors.v1",
+  "official_aggregate_vectors_included": true,
+  "raw_payload_bytes_included": false,
+  "vectors": [
+    {
+      "id": "official-mka-d0-block2-summary",
+      "kind": "aggregate-observation",
+      "access_units": 23033,
+      "d0_block_index": 2,
+      "field_count": 23033,
+      "complete_emdf_field_count": 23033,
+      "skipl_and_c_total_bytes": {"minimum": 301, "maximum": 377, "distinct_lengths": 69},
+      "joc_header": {"downmix_index": 1, "channel_count": 7, "object_count": 15},
+      "rate_kbps": {"i0": 640, "d0": 640, "aggregate": 1280},
+      "status": "WASH_VERIFIED_OFFICIAL_SOURCE_STRUCTURE"
+    },
+    {
+      "id": "target-rate-and-extent",
+      "kind": "approved-target-contract",
+      "i0_kbps": 640,
+      "d0_kbps": 1024,
+      "aggregate_kbps": 1664,
+      "i0_bytes_per_32ms": 2560,
+      "d0_bytes_per_32ms": 4096,
+      "status": "USER_APPROVED_TARGET"
+    },
+    {
+      "id": "synthetic-skipl-u9-limit",
+      "kind": "input-only-boundary",
+      "skipl_width_bits": 9,
+      "maximum_representable_data_bytes": 511,
+      "skipl_512_disposition": "REJECT_BEFORE_PARSER",
+      "status": "WASH_VERIFIED_SYNTHETIC_PARSER_GUARD"
+    },
+    {
+      "id": "synthetic-c511-fit-policy",
+      "kind": "fit-arithmetic-only",
+      "container_total_bytes": 511,
+      "field_data_capacity_bytes": 511,
+      "disposition": "FIT_EXACT",
+      "openjoc_exact_container_parse": "NOT_RUN"
+    },
+    {
+      "id": "synthetic-c542-prefix",
+      "kind": "negative-parser-vector",
+      "declared_container_total_bytes": 542,
+      "carrier_prefix_bytes": 511,
+      "disposition": "MALFORMED_TRUNCATED_CONTAINER",
+      "cross_field_continuation": "REJECTED"
+    }
+  ]
+}

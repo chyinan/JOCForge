@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2149299,
-              "sha256": "36f16a35e1262be62282c236defd36d0ae33d0ef5d7f27d71bf03c08febf1617"
+              "bytes": 2153995,
+              "sha256": "7016916279e8504ffbf48933519234bcd4c94759dd2cb0709506928e6dd789d3"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2149299,
-              "sha256": "36f16a35e1262be62282c236defd36d0ae33d0ef5d7f27d71bf03c08febf1617"
+              "bytes": 2153995,
+              "sha256": "7016916279e8504ffbf48933519234bcd4c94759dd2cb0709506928e6dd789d3"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -46083,25 +46083,30 @@
         },
         {
           "slice_id": "flat7x-d0-block2-skipfld-serializer",
-          "mapping_status": "WASH_APPROVED_FLAT7X_SINGLE_SKIPFLD_TARGET_AND_ETSI_FIELD_SYNTAX",
-          "implementation_status": "LOCALLY_VERIFIED_REQUIRED_CONTAINER_SKIPLE_SKIPL_SKIPFLD_SERIALIZER__NO_FRAME_OR_PRODUCT_BINDING",
+          "mapping_status": "WASH_APPROVED_FLAT7X_SINGLE_SKIPFLD_SYNTAX_AND_CALLER_BLOCK2_ASSEMBLER_INTEGRATION",
+          "implementation_status": "LOCALLY_VERIFIED_REQUIRED_CONTAINER_SKIPFIELD_WRITER_AND_CALLER_BLOCK2_FRAME_ASSEMBLER__PRODUCTION_OPEN",
           "implementation_requirement": true,
           "owner": "codec",
-          "scope": "Additive Flat7x-only field serializer for one D0 zero-based audio block 2 skip-field slot. The target API requires a complete nonempty EMDF container and writes the present ETSI form at the caller-positioned cursor: skiple=1, U9 skipl=C bytes, then exactly C container bytes. Missing input returns MissingContainer before writing. The Flat7x target requires one field, C=1..511 and fail-closed overflow with no continuation. Generic ETSI skiple=0 syntax is outside this target-required-container API. It does not assemble D0 block syntax or a full frame, and does not read the D0 chanmap, JOC object count, or reconstruction-carrier positions.",
+          "scope": "Additive Flat7x-only field serializer for one D0 zero-based audio block 2 skip-field slot. It requires a complete nonempty EMDF container and writes skiple=1, U9 skipl=C bytes, then exactly C container bytes at the caller-positioned cursor. `D0FrameBitAssembler` now passes its caller-supplied block-two container through this helper at the layout-computed field start using the separately caller-owned/unbound insertion offset; this is a synthetic structural interface join, not a native block-cursor binding. C=1..511, checked extent/capacity preflight and failure atomicity are covered; C=511 remains arithmetic/writer evidence only, not OpenJOC full-container parser acceptance. Generic ETSI skiple=0 stays outside the target-required API, and the helper does not consume chanmap/object/carrier domains.",
           "dependencies": [
-            "F01E/flat7x-i0-d0-typed-target-plan"
+            "F01E/flat7x-i0-d0-typed-target-plan",
+            "F12/flat7x-d0-frame-bit-assembler"
           ],
           "spec_files": [
             "docs/architecture/DATAFLOW.md",
             "docs/architecture/PROFILE-DIMENSIONS.md",
-            "docs/architecture/PUBLIC-API.md"
+            "docs/architecture/PUBLIC-API.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/FINDINGS.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/INPUT-ONLY-VECTOR.json"
           ],
           "implementation_files": [
             "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
-            "crates/jocforge-domain/src/codec/mod.rs"
+            "crates/jocforge-domain/src/codec/mod.rs",
+            "crates/jocforge-domain/src/codec/d0_frame_assembler.rs"
           ],
           "test_modules": [
-            "crates/jocforge-domain/src/codec/emdf_skip_field.rs"
+            "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
+            "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs"
           ],
           "implementation_inventory": [
             {
@@ -46113,6 +46118,11 @@
               "path": "crates/jocforge-domain/src/codec/mod.rs",
               "bytes": 1066,
               "sha256": "7cae3681855252de5b8b16a44621012b502bdb6746fdd634e467c0e90d27585e"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/d0_frame_assembler.rs",
+              "bytes": 15759,
+              "sha256": "93cc399322acc29ae7130769a9c385dd899108cdeeb23851a90ea94d57f1ad5d"
             }
           ],
           "test_inventory": [
@@ -46120,7 +46130,16 @@
               "path": "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
               "bytes": 9194,
               "sha256": "0daca3a9401ec1728c8a30297a53dec874902778bda134c9b454765294e097f9"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs",
+              "bytes": 18400,
+              "sha256": "46f0235a5d17a5fa6a13b472c7a91a88f8c5611724695bf823ae5157e1e28cfd"
             }
+          ],
+          "vector_inventory": [
+            {"path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/INPUT-ONLY-VECTOR.json", "bytes": 1750, "sha256": "356916e6ed58189bd2bd33962d1dd43280d8a87485df71621e452ef8e05f6bee"},
+            {"path": "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json", "bytes": 2183, "sha256": "6688fbde255872b8108b333554467d7a3a840e5012db3f7e53aba9c46a5a5ed1"}
           ],
           "clock": {
             "domains": [],
@@ -46133,13 +46152,30 @@
             "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
             "supplement_manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
             "supplement_seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+            "structure_addendum": {
+              "package_id": "FLAT7X-D0-SKIPFLD-STRUCTURE-V1",
+              "manifest_sha256": "1b14343db4128bda45c254a024de2662ac59516e2e83aa7d3191e3c4d80ca1c3",
+              "seal_file_sha256": "7c31c485368c3755de23f7fee981a141c3607eef86d7110a4cdf1661c6a15024",
+              "checker_normal": "PASS",
+              "checker_optimized": "PASS",
+              "official_mka_c_total_bytes": {"minimum": 301, "maximum": 377},
+              "official_mka_rate_kbps": {"i0": 640, "d0": 640, "aggregate": 1280},
+              "approved_target_rate_kbps": {"i0": 640, "d0": 1024, "aggregate": 1664},
+              "c511": "FIT_EXACT_ARITHMETIC_ONLY",
+              "openjoc_c511_full_container_parse": "NOT_RUN"
+            },
             "provider_files": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/MANIFEST.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/package_seal.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/EMDF-AND-VALIDATION-DISPOSITION.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/SOURCE-RECEIPTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/FINDINGS.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/INPUT-ONLY-VECTOR.json"
             ],
             "standard_rule": "ETSI TS 102 366 V1.4.1 clauses 4.4.3.58-60",
             "target": {
@@ -46165,25 +46201,30 @@
                 "joc_reconstruction_carriers": "not consumed"
               },
               "production_allowed": false,
-              "native_block_cursor_bound": false,
+              "caller_block2_layout_assembly": "LOCALLY_VERIFIED_SYNTHETIC_D0_FRAME; INSERTION_OFFSET_CALLER_OWNED_UNBOUND",
+            "native_block_cursor_bound": false,
               "runtime_owner_bound": false,
               "generic_absent_syntax_exposed": false,
               "missing_container_policy": "MissingContainer before any write"
             },
-            "validation_boundary": "The target helper requires a complete nonempty EMDF container and serializes the present skip-field syntax at a caller-supplied cursor; runtime block/owner binding remains open."
+            "validation_boundary": "The field helper is connected to synthetic D0FrameBitAssembler layout output through a caller-owned block-two insertion offset; the native block cursor and runtime owner remain unbound."
           },
           "vectors": {
-            "kind": "SYNTHETIC_BITIO_BOUNDARY_VECTORS",
-            "authoritative_vectors": [],
+            "kind": "WASHED_SKIPFLD_STRUCTURE_SUMMARY_PLUS_LOCAL_CALLER_BLOCK2_BOUNDARIES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/INPUT-ONLY-VECTOR.json",
+              "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json"
+            ],
             "case_pointers": [
               "At an unaligned cursor, present C=16 writes skiple=1, U9 byte length, then exactly C bytes MSB-first.",
               "C=1 and maximum target C=511 write successfully with the expected U9 lengths.",
               "The shared pure length helper maps C=1 to 18 bits and C=511 to 4098 bits; C=0 and C=512 reject.",
               "A missing/empty target container and C=512 reject before changing cursor or frame bytes; no continuation is generated.",
-              "Insufficient capacity for the complete 1+9+8C field rejects before mutation."
+              "Insufficient capacity for the complete 1+9+8C field rejects before mutation.",
+              "The new Wash package reports official MKA block-2 C_total/skipl=301..377; target-rate context remains I0/D0=640/1024, and C511 is arithmetic FIT_EXACT only."
             ],
             "expected_outputs_included": false,
-            "execution_status": "ALL_SIX_REQUIRED_CONTAINER_BITIO_BOUNDARY_TESTS_PASSED"
+            "execution_status": "LOCAL_SKIPFLD_AND_CALLER_BLOCK2_TESTS_PASS__WASH_CHECKERS_NORMAL_AND_OPTIMIZED_PASS"
           },
           "error_outcomes": [
             {
@@ -46216,11 +46257,11 @@
             }
           ],
           "not_run": [
-            "No caller writes the Flat7x helper into a complete E-AC-3 D0 block/frame; cursor-to-native-block and source/generation owner join remain UNBOUND.",
-            "No native D0 BSI/audio writer, F13 container parser join, per-AU fit run, 7.1 output, W04 or production acceptance; these remain NOT_RUN."
+            "Caller-owned block-two spans and insertion offset are connected only in the synthetic D0 frame assembler; native block-2 cursor, source/generation owner and F13 container-parser joins remain UNBOUND/NOT_RUN.",
+            "OpenJOC exact full-container acceptance at C511, native D0 BSI/audio writer, per-AU fit run, 7.1 output, W04 and production acceptance remain NOT_RUN."
           ],
-          "validation_boundary": "The helper serializes only the present ETSI skip-field syntax at a caller-provided cursor under the approved Flat7x target. It requires a complete nonempty container and is not connected to native D0 ownership, F12 complete-frame composition, GTC, the 5.1 resolver/writer/OutputOwner, or product encode. production_allowed=false.",
-          "delivery_scope": "FLAT7X_D0_BLOCK2_PRESENT_SKIPFLD_SYNTAX_SERIALIZER_ONLY_NO_FRAME_BINDING"
+          "validation_boundary": "The helper serializes one required-present ETSI skip-field and the local D0 frame assembler places it at the caller-declared block-two layout span. Native D0 cursor/owner/source joins, audio generation, GTC and product encode remain outside scope; production_allowed=false.",
+          "delivery_scope": "FLAT7X_D0_BLOCK2_SKIPFLD_SERIALIZER_AND_CALLER_LAYOUT_ASSEMBLY_ONLY_NO_NATIVE_CURSOR_OR_PRODUCTION_CLAIM"
         },
         {
           "slice_id": "official-atmos-demo-i0-d0-structure-reference",
@@ -47580,8 +47621,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs",
-              "bytes": 13647,
-              "sha256": "bafbb7887978063d21aedf82c99df17365cce2ea6c7132c3546b3377eef1f4d4"
+              "bytes": 18400,
+              "sha256": "46f0235a5d17a5fa6a13b472c7a91a88f8c5611724695bf823ae5157e1e28cfd"
             },
             {
               "path": "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json",
@@ -57132,8 +57173,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2149299,
-              "sha256": "36f16a35e1262be62282c236defd36d0ae33d0ef5d7f27d71bf03c08febf1617"
+              "bytes": 2153995,
+              "sha256": "7016916279e8504ffbf48933519234bcd4c94759dd2cb0709506928e6dd789d3"
             }
           ],
           "test_inventory": [

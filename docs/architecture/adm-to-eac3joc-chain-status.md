@@ -1738,7 +1738,11 @@ The Wash-verified `JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1` (manifest S
 
 `codec::emdf_skip_field::write_flat7x_d0_block2_skipfld` uses the existing MSB-first `FrameBitWriter`, preflights the complete selected field before writing, and requires a complete nonempty EMDF container for the target present form `skiple=1`, U9 `skipl=C`, followed by C bytes. The shared length helper returns `10+8C` bits for C=1..511; missing/empty target input and C=512 reject without changing frame bytes or cursor, with no continuation. Generic ETSI `skiple=0` syntax remains outside this required-container target API. Six bit-writer/length boundary tests pass. The helper consumes only the typed skip-field target; D0 chanmap, JOC object count and reconstruction-carrier domains remain separate.
 
-The cursor is still supplied by the caller; this slice does not bind the helper to the native block-2 cursor, D0 BSI/audio owner, F13 source lineage, F12 frame assembler or output transaction. `production_allowed=false`; full 7.1 output, all-AU fit and W04 remain `NOT_RUN`.
+The caller supplies the block-2 insertion offset through `CallerOwnedUnboundD0Block2InsertionPoint`. `D0FrameBitAssembler` passes the complete caller container to this helper at the layout-computed block-two field span and verifies the assembled 4096-byte synthetic frame. This connects the field writer to the caller-owned frame-assembly interface; the native block cursor, D0 BSI/audio owner, F13 source lineage and output transaction remain unbound. `production_allowed=false`; full 7.1 output, all-AU fit and W04 remain `NOT_RUN`.
+
+## 2026-11-12: Wash D0 skipfld structure supplement
+
+`FLAT7X-D0-SKIPFLD-STRUCTURE-V1` passed its normal and optimized checkers (manifest SHA-256 `1b14343db4128bda45c254a024de2662ac59516e2e83aa7d3191e3c4d80ca1c3`; seal-file SHA-256 `7c31c485368c3755de23f7fee981a141c3607eef86d7110a4cdf1661c6a15024`). It confirms the one-field `skiple=1`, U9 byte-count `C`, exact-copy rule; C=1..511, no field fragmentation. Its official MKA summary reports D0 block-2 C_total/skipl 301..377 at I0/D0=640/640 kbps; the implementation target remains 640/1024=1664 kbps. C511 is a FIT_EXACT arithmetic vector only; OpenJOC full-container C511 parsing remains `NOT_RUN`. The existing helper is already called by the synthetic D0 frame assembler at the caller-owned/layout-derived block-two span; native block cursor/owner and production remain open.
 
 ## 2026-11-11: official Atmos demo reference structure
 

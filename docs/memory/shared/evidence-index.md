@@ -3,7 +3,7 @@ status: current
 topic: washed-evidence-index
 spec: JOCForge
 confidence: package-hash-verified
-last_updated: 2026-11-11
+last_updated: 2026-11-12
 tags:
   - evidence
   - Wash
@@ -36,3 +36,4 @@ tags:
 | `OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1` | `f7f8630c3f18e990324f013e70486c561de6816a844f852f18f03a82ce28fbfc` | `2d883e278bb83fa0d617610f94b8a87fa5849ac7bf19bdf08818d8d30d50740e` | Hash-bound reference summary: I0 legacy AC-3 BSID6 2,560 B then D0 dependent E-AC-3 BSID16 2,560 B, 1,280 kbps sample; target 1,664 kbps / 4,096 B D0 remains separate; profile index and target output gates remain open; `production_allowed=false` | `outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1` |
 | `OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V2` | `c4104e674a9c3df06ead8f6741a7366e58068602789806d1a91d045c1dfd731a` | `0fb4c7f8a7a49488a97586b7e3eb6febc0542cf0044569fe37e65dc07d85757d` | V1 addendum: all 23,033 payload-14 headers report `joc_dmx_config_idx=1`/extension0/15 objects; IDs 11/14 have `codecdatae=0` while ETSI Table 56 expects 1, so vendor-compatible observation and strict failure stay distinct; 1,664-kbps target remains `NOT_EVALUATED`; `production_allowed=false` | `outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V2` |
 | `OFFICIAL-ATMOS-DEMO-OAMD-POSITION-WASHED-V1` | `c550a0536ed4752b46872c674fcabc8ad8828b7eb69e17e6fb4a0d082ee52ef8` | `906f48f17f47ef372d339bebe598931a933e6dc132452862ab630fce4582c5f5` | 23,033 reference AUs preserve absolute room-position/Z, elevation-zone constraint, and object-size index/resolved height as distinct fields; 1,664-kbps target remains `NOT_EVALUATED`; `production_allowed=false` | `outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-OAMD-POSITION-WASHED-V1` |
+| `FLAT7X-D0-SKIPFLD-STRUCTURE-V1` | `1b14343db4128bda45c254a024de2662ac59516e2e83aa7d3191e3c4d80ca1c3` | `7c31c485368c3755de23f7fee981a141c3607eef86d7110a4cdf1661c6a15024` | Normal and optimized checker pass; one D0 block-2 present skipfld, C=1..511, no fragmentation; caller-owned synthetic D0 frame assembler integration is locally verified; C511 full-container parse and production remain `NOT_RUN` | `outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1` |

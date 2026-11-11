@@ -1,0 +1,55 @@
+{
+  "schema": "washed-implementer-structural-evidence.v1",
+  "supplement_id": "FLAT7X-D0-SKIPFLD-STRUCTURE-V1",
+  "status": "SKIPFLD_UNIT_AND_SINGLE_FIELD_RULE_WASHED; D0_INSERTION_OWNER_AND_AUDIO_SOURCE_UNBOUND; PRODUCTION_ALLOWED_FALSE",
+  "target_contract": {
+    "i0_kbps": 640,
+    "d0_kbps": 1024,
+    "aggregate_kbps": 1664,
+    "au_order": ["I0", "D0"],
+    "d0_chanmap": "0x1A00",
+    "joc_layout": "flat7x",
+    "joc_dmx_config_idx": 1,
+    "joc_objects": 15,
+    "complexity_index_type_a": 16,
+    "d0_emdf_block_index": 2,
+    "d0_emdf_skipfld_count": 1,
+    "emdf_c_total_max_bytes": 511,
+    "overflow": "FAIL_CLOSED_NO_SPLIT"
+  },
+  "wash_rules": {
+    "skiple_width_bits": 1,
+    "skipl_width_bits": 9,
+    "skipl_unit": "bytes following the skipl field",
+    "skipfld_data_bytes": "exactly skipl",
+    "emdf_total_bytes": "4-byte sync prefix plus declared body bytes",
+    "complete_single_field_condition": "EMDF bytes_consumed equals the full skipfld data slice",
+    "field_wire_bits_from_skiple": "1 + 9 + 8*skipl",
+    "field_wire_bits_from_skipl": "9 + 8*skipl"
+  },
+  "official_reference": {
+    "d0_block2_fields": 23033,
+    "all_fields_complete_emdf_joc": true,
+    "observed_skipl_equals_emdf_c_total": true,
+    "skipl_c_total_min_bytes": 301,
+    "skipl_c_total_max_bytes": 377,
+    "rate_is_target_1664": false
+  },
+  "separate_statuses": {
+    "c511_fit_policy": "FIT_EXACT_ARITHMETIC_ONLY",
+    "openjoc_exact_c511_container_acceptance": "NOT_RUN",
+    "skipl512": "REJECT_BEFORE_PARSER_INVOCATION",
+    "c542_511_byte_prefix": "MALFORMED_TRUNCATED_CONTAINER",
+    "audio_payload_generation": "UNBOUND",
+    "d0_block2_insertion_owner": "UNBOUND",
+    "source_row_to_d0_role_mapping": "UNBOUND",
+    "full_product_output": "NOT_READY"
+  },
+  "implementation_contract": {
+    "scoped_helper_may_write": "one caller-supplied block-2 skipfld header and exact opaque data slice",
+    "required_preflight": "entire bit capacity, checked arithmetic, and 1..511 byte data length before any destination mutation",
+    "partial_write_on_failure": false,
+    "container_fragmentation": false,
+    "production_allowed": false
+  }
+}
