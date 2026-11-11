@@ -12,6 +12,12 @@ Wash 补包 `OFFICIAL-ATMOS-DEMO-OAMD-POSITION-WASHED-V1` 的 manifest SHA-256 �
 
 隔离实现的 target metadata reference fixture 位于 `crates/jocforge-domain/tests/fixtures/flat7x_metadata/official_demo_oamd_position_reference.json`。fixture 仅含聚合观察值，不包含坐标列表或编码配方。样本码率为 1,280 kbps，1,664-kbps target 仍 `NOT_EVALUATED`，`production_allowed=false`；现有 5.1 默认与生产路径未变。
 
+## 2026-11-11：Flat7x reconstruction index 的现有 ID14 writer 路径
+
+源码调用链已核对为：`run_with_data_rate_and_joc_layout` → `run_worker`/`run_inner` profile resolution → callback `stage_source_frame` → `prepare_main_metadata_bodies_for_callback` → `stage_selected_joc_source_with_transaction_for_profile` → `stage_joc_source_with_transaction_for_profile` → `stage_joc_payload_for_profile` → `write_id14_header_for_profile`。在现有 selected 1024-kbps full-file CLI 路径中，`--joc-layout flat7x` 会把 profile-owned `joc_dmx_config_idx=1` 传至 ID14 header；省略参数仍使用 selected 5.1 profile，profile writer 输出与既有 header bytes 完全一致。定向 `joc_reconstruction_layout` suite 覆盖 index1 header、profile-aware coefficient payload 和 5.1 byte equality。
+
+该路径对应现有 selected 1024-kbps profile；1,664-kbps `Flat7xI0D0TargetPlan`、F15 pair staging 与 I/O adapter是分别建立的 target components。target D0 侧已有独立的 `d0_emdf_skip_field` helper；下一连接点是 D0 frame composition 调用 profile-aware ID14 metadata producer，并传入 1024-kbps D0 target context。现有 selected 5.1 path 与 D0 composition 保持分离。
+
 ## 2026-11-06：authored silence duration admission gate
 
 Wash 包 `ATMOS-SILENCE-DURATION-SAMPLE-BOUNDARY-V1` 已物化到隔离仓。manifest SHA-256 `1295151443daca741c7ca0477b91bdf84d88eae76065d7b861ca4125f895980c`、seal SHA-256 `47f5b8c8538894acdecad538f0537056b3ec216b5894943addf0d490b67f6852`，REPORT、INPUT-ONLY-VECTORS 与 PROVENANCE 三个 payload 本地逐项校验通过；普通 Python 与 `python -O` 均 PASS。向量只列 zero/fractional 两个输入，标为 `PROPOSED_NOT_RUN`。
