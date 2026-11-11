@@ -11705,20 +11705,24 @@ def check_f12_d0_info_addbsi_slice(root, d):
 
     builder_path = root / "crates/jocforge-domain/src/codec/frame_builder.rs"
     test_path = root / "crates/jocforge-domain/tests/flat7x_d0_info_addbsi.rs"
+    target_test_path = root / "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs"
     builder = rust_code_without_comments(builder_path.read_text(encoding="utf-8"))
     test_source = test_path.read_text(encoding="utf-8")
+    target_test_source = target_test_path.read_text(encoding="utf-8")
     function_start = builder.index("pub fn append_flat7x_d0_info_and_addbsi(")
     function_end = builder.index("pub enum SelectedComplexityFieldWriteError", function_start)
     function = builder[function_start:function_end]
     production_sources = [
         path
         for path in (root / "crates").glob("jocforge-*/src/**/*.rs")
-        if path != builder_path
+        if path not in (builder_path, target_test_path)
     ]
     no_production_call = all(
         "append_flat7x_d0_info_and_addbsi" not in path.read_text(encoding="utf-8")
         for path in production_sources
-    )
+    ) and "append_flat7x_d0_info_and_addbsi" not in target_test_source.split(
+        "#[cfg(test)]", 1
+    )[0]
     ck(
         "D0_MAX_ADDBSI_BYTES: usize = 64" in builder
         and "writer.preflight_capacity(total_bits)?" in function
@@ -11732,6 +11736,7 @@ def check_f12_d0_info_addbsi_slice(root, d):
                 "AddbsiLengthOutOfRange",
                 "Flat7xSubstreamRole::DependentD0",
                 "target.sample_rate_hz() != 48_000",
+                "d0.channel_map() != Some(DependentChannelMap::from_numeric_value(0x1a00))",
             )
         )
         and no_production_call,
@@ -11748,7 +11753,13 @@ def check_f12_d0_info_addbsi_slice(root, d):
         and row["vectors"]["execution_status"]
         == "LOCALLY_VERIFIED_INPUT_ONLY_D0_INFORMATION_AND_ADDBSI_SUFFIX"
         and row["implementation_files"] == ["crates/jocforge-domain/src/codec/frame_builder.rs"]
-        and row["test_modules"] == ["crates/jocforge-domain/tests/flat7x_d0_info_addbsi.rs"]
+        and row["parameters"]["channel_map_presence_required"] is True
+        and row["parameters"]["target_context"]["chanmap"] == "0x1A00"
+        and row["test_modules"]
+        == [
+            "crates/jocforge-domain/tests/flat7x_d0_info_addbsi.rs",
+            "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
+        ]
         and all(
             marker in test_source
             for marker in (
@@ -11758,8 +11769,10 @@ def check_f12_d0_info_addbsi_slice(root, d):
                 "addbsi_length_endpoints_fit_the_six_bit_length_field",
                 "insufficient_suffix_capacity_is_rejected_atomically",
             )
-        ),
-        "D0 suffix mapping and vector/rejection tests are registered",
+        )
+        and "d0_information_suffix_rejects_missing_or_wrong_chanmap_atomically" in target_test_source
+        and "target.d0.channel_map = channel_map" in target_test_source,
+        "D0 suffix mapping and exact target chanmap rejection tests are registered",
     )
 
 

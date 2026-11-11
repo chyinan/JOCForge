@@ -8,7 +8,7 @@ use crate::codec::frame_syntax::{
     CodecBlockIndex, SelectedBsiDrcFields, SelectedBsiMixingInformationValues,
     SelectedComplexityIndexTypeA,
 };
-use crate::profile::{Flat7xI0D0TargetPlan, Flat7xSubstreamRole};
+use crate::profile::{DependentChannelMap, Flat7xI0D0TargetPlan, Flat7xSubstreamRole};
 use crate::timeline::CodecSourceIndex;
 
 const DIALNORM_BIT_OFFSET: u32 = 45;
@@ -477,6 +477,7 @@ pub fn append_flat7x_d0_info_and_addbsi(
     if d0.role() != Flat7xSubstreamRole::DependentD0
         || d0.acmod().value() != 5
         || d0.lfeon()
+        || d0.channel_map() != Some(DependentChannelMap::from_numeric_value(0x1a00))
         || target.sample_rate_hz() != 48_000
         || target.audio_blocks_per_frame() != D0_BLOCK_MIX_COUNT
     {

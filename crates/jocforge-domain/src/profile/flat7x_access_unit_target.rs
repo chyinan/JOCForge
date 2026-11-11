@@ -679,6 +679,10 @@ pub fn validate_flat7x_au_candidate(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::codec::{
+        bitio::{FrameBitCursor, FrameBitWriter},
+        frame_builder::{Flat7xD0InfoAddbsiError, append_flat7x_d0_info_and_addbsi},
+    };
     use crate::profile::{EncodingProfile, resolve_selected_profile};
 
     fn crc_valid_frame_extent(frame_bytes: usize, marker: u8) -> Vec<u8> {
@@ -975,5 +979,27 @@ mod tests {
             JocReconstructionLayout::ExistingSelectedFivePointOne
         );
         assert_eq!(resolved.codec_rate(), CodecRateProfile::Kbps1024);
+    }
+
+    #[test]
+    fn d0_information_suffix_rejects_missing_or_wrong_chanmap_atomically() {
+        let approved = Flat7xI0D0TargetPlan::approved_contract();
+        for channel_map in [None, Some(DependentChannelMap::from_numeric_value(0x0200))] {
+            let mut target = approved;
+            target.d0.channel_map = channel_map;
+            let mut bytes = [0xa5_u8; 16];
+            let original = bytes;
+            let error;
+            let cursor;
+            {
+                let mut writer = FrameBitWriter::new(&mut bytes, FrameBitCursor::new(71)).unwrap();
+                error = append_flat7x_d0_info_and_addbsi(&mut writer, target, false, None, None)
+                    .unwrap_err();
+                cursor = writer.cursor();
+            }
+            assert_eq!(error, Flat7xD0InfoAddbsiError::UnsupportedTargetContext);
+            assert_eq!(cursor.bit_offset(), 71);
+            assert_eq!(bytes, original);
+        }
     }
 }

@@ -10394,8 +10394,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 31011,
-              "sha256": "ac239a7920c752123801bf9726cda0d8639e04e42f39008732a0b12f740ba9ef"
+              "bytes": 32124,
+              "sha256": "2477bd38686bc1ea360e672c2efa709c6ac1ee5107f56346968d14f6c43d8f1a"
             },
             {
               "path": "crates/jocforge-domain/src/profile/mod.rs",
@@ -10406,8 +10406,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 31011,
-              "sha256": "ac239a7920c752123801bf9726cda0d8639e04e42f39008732a0b12f740ba9ef"
+              "bytes": 32124,
+              "sha256": "2477bd38686bc1ea360e672c2efa709c6ac1ee5107f56346968d14f6c43d8f1a"
             }
           ],
           "clock": {
@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2112527,
-              "sha256": "788530bb01c81f6e86a681828e893861a23096c9c2089572ecc531bcf708d365"
+              "bytes": 2113370,
+              "sha256": "c276af2a7109021755c6584b298d5d9086dc957448a0045421adb1701a46b9c3"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2112527,
-              "sha256": "788530bb01c81f6e86a681828e893861a23096c9c2089572ecc531bcf708d365"
+              "bytes": 2113370,
+              "sha256": "c276af2a7109021755c6584b298d5d9086dc957448a0045421adb1701a46b9c3"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -43596,8 +43596,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 33951,
-              "sha256": "c683912328c412579ca1b5334015b14563e99990fe05d692c6b857d1683cfe4f"
+              "bytes": 34057,
+              "sha256": "085b70fa6fd7861fc000944a3213a71aaf815699952d71cbb7902fde99bf9700"
             }
           ],
           "test_modules": [
@@ -43606,8 +43606,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 33951,
-              "sha256": "c683912328c412579ca1b5334015b14563e99990fe05d692c6b857d1683cfe4f"
+              "bytes": 34057,
+              "sha256": "085b70fa6fd7861fc000944a3213a71aaf815699952d71cbb7902fde99bf9700"
             }
           ],
           "local_mapping_files": [],
@@ -44556,8 +44556,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 33951,
-              "sha256": "c683912328c412579ca1b5334015b14563e99990fe05d692c6b857d1683cfe4f"
+              "bytes": 34057,
+              "sha256": "085b70fa6fd7861fc000944a3213a71aaf815699952d71cbb7902fde99bf9700"
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_syntax.rs",
@@ -45551,8 +45551,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 31011,
-              "sha256": "ac239a7920c752123801bf9726cda0d8639e04e42f39008732a0b12f740ba9ef"
+              "bytes": 32124,
+              "sha256": "2477bd38686bc1ea360e672c2efa709c6ac1ee5107f56346968d14f6c43d8f1a"
             }
           ],
           "test_inventory": [
@@ -46362,8 +46362,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 33951,
-              "sha256": "c683912328c412579ca1b5334015b14563e99990fe05d692c6b857d1683cfe4f"
+              "bytes": 34057,
+              "sha256": "085b70fa6fd7861fc000944a3213a71aaf815699952d71cbb7902fde99bf9700"
             }
           ],
           "test_modules": [
@@ -46487,8 +46487,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 33951,
-              "sha256": "c683912328c412579ca1b5334015b14563e99990fe05d692c6b857d1683cfe4f"
+              "bytes": 34057,
+              "sha256": "085b70fa6fd7861fc000944a3213a71aaf815699952d71cbb7902fde99bf9700"
             }
           ],
           "test_modules": [
@@ -46622,8 +46622,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 33951,
-              "sha256": "c683912328c412579ca1b5334015b14563e99990fe05d692c6b857d1683cfe4f"
+              "bytes": 34057,
+              "sha256": "085b70fa6fd7861fc000944a3213a71aaf815699952d71cbb7902fde99bf9700"
             }
           ],
           "test_modules": [
@@ -46763,8 +46763,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 33951,
-              "sha256": "c683912328c412579ca1b5334015b14563e99990fe05d692c6b857d1683cfe4f"
+              "bytes": 34057,
+              "sha256": "085b70fa6fd7861fc000944a3213a71aaf815699952d71cbb7902fde99bf9700"
             }
           ],
           "test_modules": [
@@ -46930,7 +46930,7 @@
           "implementation_status": "LOCALLY_VERIFIED_D0_INFORMATION_AND_ADDBSI_SUFFIX__FULL_FRAME_OPEN",
           "implementation_requirement": true,
           "owner": "codec",
-          "scope": "Continues at the cursor returned by the parent mixing/infomdate helper. The caller supplies infomdate plus matching optional information values; the helper emits bsmod, copyrightb, origbs, audprodie, optional mixlevel/roomtyp/convtyp, sourcefscod, addbsie, and optional addbsil plus opaque caller bytes. It validates target context, presence agreement, field ranges, byte count 1..64, and complete suffix capacity before writing. Dependent strmtyp=1 omits conversion syntax. The helper does not interpret addbsi, map XML, calculate CRC, create audio, or assemble a frame/AU.",
+          "scope": "Continues at the cursor returned by the parent mixing/infomdate helper. The caller supplies infomdate plus matching optional information values; the helper emits bsmod, copyrightb, origbs, audprodie, optional mixlevel/roomtyp/convtyp, sourcefscod, addbsie, and optional addbsil plus opaque caller bytes. It validates the exact D0 target including present chanmap=0x1A00, presence agreement, field ranges, byte count 1..64, and complete suffix capacity before writing. Dependent strmtyp=1 omits conversion syntax. The helper does not interpret addbsi, map XML, calculate CRC, create audio, or assemble a frame/AU.",
           "dependencies": [
             "F01E/flat7x-i0-d0-typed-target-plan",
             "F12/flat7x-d0-mixing-metadata-segment"
@@ -46947,18 +46947,24 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 33951,
-              "sha256": "c683912328c412579ca1b5334015b14563e99990fe05d692c6b857d1683cfe4f"
+              "bytes": 34057,
+              "sha256": "085b70fa6fd7861fc000944a3213a71aaf815699952d71cbb7902fde99bf9700"
             }
           ],
           "test_modules": [
-            "crates/jocforge-domain/tests/flat7x_d0_info_addbsi.rs"
+            "crates/jocforge-domain/tests/flat7x_d0_info_addbsi.rs",
+            "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs"
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/flat7x_d0_info_addbsi.rs",
               "bytes": 11626,
               "sha256": "79a90fa6c8a191b2416246f79be915bd3c87309300a7fffc0face2f4f85d7144"
+            },
+            {
+              "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
+              "bytes": 32124,
+              "sha256": "2477bd38686bc1ea360e672c2efa709c6ac1ee5107f56346968d14f6c43d8f1a"
             }
           ],
           "clock": {
@@ -46993,6 +46999,7 @@
               "lfeon": 0,
               "chanmap": "0x1A00"
             },
+            "channel_map_presence_required": true,
             "infomdate_input_matches_information_presence": true,
             "information_fields_when_present": [
               {
@@ -47076,6 +47083,7 @@
               "Explicit informational BSI fields plus synthetic opaque bytes 0x12 0x34 encode addbsil=1 and return at bit101.",
               "Optional audio production fields encode mixlevel U5, roomtyp U2 and convtyp U1 before sourcefscod.",
               "Range gates cover bsmod, mixlevel, roomtyp, convtyp, sourcefscod and addbsi lengths 0/65.",
+              "Missing or wrong D0 chanmap rejects before bytes or cursor change.",
               "Capacity input has 25 available bits for a 30-bit suffix and rejects atomically."
             ],
             "local_fixture": {
@@ -47097,7 +47105,7 @@
             {
               "error_code": "D0_INFO_FIELD_OR_ADDBSI_LENGTH_OUT_OF_RANGE",
               "category": "caller-supplied field validation",
-              "trigger": "An informational value exceeds its encoded field width or addbsi length is outside 1..64 bytes.",
+              "trigger": "An informational value exceeds its encoded field width, addbsi length is outside 1..64 bytes, or the D0 target chanmap is absent or differs from 0x1A00.",
               "result": "Typed rejection before bytes or cursor change.",
               "caller_action": "Reject the suffix candidate and provide explicit values within the declared ranges."
             },
@@ -56320,8 +56328,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2112527,
-              "sha256": "788530bb01c81f6e86a681828e893861a23096c9c2089572ecc531bcf708d365"
+              "bytes": 2113370,
+              "sha256": "c276af2a7109021755c6584b298d5d9086dc957448a0045421adb1701a46b9c3"
             }
           ],
           "test_inventory": [
