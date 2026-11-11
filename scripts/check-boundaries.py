@@ -12239,9 +12239,10 @@ def check_f12_flat7x_elementary_stream_sequence_composer(root, d):
     row = rows[0]
     module_path = root / "crates/jocforge-domain/src/codec/elementary_stream_composer.rs"
     test_path = root / "crates/jocforge-domain/tests/flat7x_elementary_stream_composer.rs"
+    d0_test_path = root / "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs"
     fixture_path = root / "crates/jocforge-domain/tests/fixtures/flat7x_elementary_stream/INPUT-ONLY-VECTORS.json"
     module = rust_code_without_comments(module_path.read_text(encoding="utf-8"))
-    test_source = test_path.read_text(encoding="utf-8")
+    test_source = test_path.read_text(encoding="utf-8") + d0_test_path.read_text(encoding="utf-8")
     vectors = json.loads(fixture_path.read_bytes())
     function_start = module.index("pub fn compose_flat7x_elementary_stream(")
     function = module[function_start:]
@@ -12273,7 +12274,7 @@ def check_f12_flat7x_elementary_stream_sequence_composer(root, d):
     )
     ck(
         row["implementation_status"]
-        == "LOCALLY_VERIFIED_SEQUENCE_ORDER_EXTENT_OVERFLOW_AND_ATOMIC_REJECTION__NO_PRODUCTION"
+        == "LOCALLY_VERIFIED_SEQUENCE_AND_D0_TO_AU_TO_STREAM_CHAIN__NO_PRODUCTION"
         and row["implementation_requirement"] is True
         and row["owner"] == "codec"
         and row["parameters"]["production_allowed"] is False
@@ -12291,6 +12292,7 @@ def check_f12_flat7x_elementary_stream_sequence_composer(root, d):
                 "rejects_empty_sequence_and_bad_au_extent_without_mutation",
                 "rejects_size_overflow_and_short_capacity_without_mutation",
                 "rejects_non_byte_aligned_cursor_without_mutation",
+                "synthetic_d0_frame_composes_into_au_and_two_au_stream_with_crc2_preserved",
             )
         ),
         "Flat7x sequence maps synthetic multi-AU order, overflow, empty and atomic rejection vectors",
@@ -15057,7 +15059,7 @@ def run(root=ROOT):
 
  d0_frame_assembler=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-d0-frame-bit-assembler');verified_scopes+=(d0_frame_assembler['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_EXACT_FRAME_ASSEMBLY_AND_FAILURE_ATOMICITY__PRODUCTION_OPEN');ck(verified_scopes==84,'locally verified scoped-task count including caller-supplied D0 frame assembly')
 
- opaque_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-d0-opaque-au-byte-composer');verified_scopes+=(opaque_au['implementation_status']=='LOCALLY_VERIFIED_TARGET_EXTENTS_ORDER_AND_ATOMIC_COMMIT__NO_CRC_OR_GENERATION');sequence_composer=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-sequence-composer');verified_scopes+=(sequence_composer['implementation_status']=='LOCALLY_VERIFIED_SEQUENCE_ORDER_EXTENT_OVERFLOW_AND_ATOMIC_REJECTION__NO_PRODUCTION');ck(verified_scopes==86,'locally verified scoped-task count including opaque I0/D0 AU and elementary-stream composition')
+ opaque_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-d0-opaque-au-byte-composer');verified_scopes+=(opaque_au['implementation_status']=='LOCALLY_VERIFIED_TARGET_EXTENTS_ORDER_AND_ATOMIC_COMMIT__NO_CRC_OR_GENERATION');sequence_composer=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-sequence-composer');verified_scopes+=(sequence_composer['implementation_status']=='LOCALLY_VERIFIED_SEQUENCE_AND_D0_TO_AU_TO_STREAM_CHAIN__NO_PRODUCTION');ck(verified_scopes==86,'locally verified scoped-task count including opaque I0/D0 AU and elementary-stream composition')
 
  dep=d['approved_dependencies']['sha2']
 

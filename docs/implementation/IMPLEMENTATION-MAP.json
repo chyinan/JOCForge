@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2143981,
-              "sha256": "35e4f56aca5d41027dacc2199f3f646c673ea6a05a9f6fe1d223b560e3581aeb"
+              "bytes": 2144177,
+              "sha256": "cb6e5e91816edc68e61f99fed4c3235ea55e3625db13ffe2e9dc864868ea905b"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2143981,
-              "sha256": "35e4f56aca5d41027dacc2199f3f646c673ea6a05a9f6fe1d223b560e3581aeb"
+              "bytes": 2144177,
+              "sha256": "cb6e5e91816edc68e61f99fed4c3235ea55e3625db13ffe2e9dc864868ea905b"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -47790,7 +47790,7 @@
         {
           "slice_id": "flat7x-elementary-stream-sequence-composer",
           "mapping_status": "MATERIALIZED_PROFILE_SCOPED_OPAQUE_FLAT7X_AU_SEQUENCE_COMPOSITION",
-          "implementation_status": "LOCALLY_VERIFIED_SEQUENCE_ORDER_EXTENT_OVERFLOW_AND_ATOMIC_REJECTION__NO_PRODUCTION",
+          "implementation_status": "LOCALLY_VERIFIED_SEQUENCE_AND_D0_TO_AU_TO_STREAM_CHAIN__NO_PRODUCTION",
           "implementation_requirement": true,
           "owner": "codec",
           "scope": "Accepts an ordered caller sequence of already-composed opaque Flat7x I0→D0 AU byte spans. Empty sequences reject. Each AU must match the approved 6656-byte extent; checked multiplication, total bit length, byte-aligned writer cursor and complete writer capacity are validated before exact private staging. The sequence is appended in input order with one writer call and returns a noncommitting layout receipt. It does not inspect BSID/CRC/source generation, generate audio, write files, or connect GTC/product encode.",
@@ -47813,13 +47813,16 @@
             {"path": "crates/jocforge-domain/src/codec/mod.rs", "bytes": 1066, "sha256": "7cae3681855252de5b8b16a44621012b502bdb6746fdd634e467c0e90d27585e"}
           ],
           "test_modules": [
-            "crates/jocforge-domain/tests/flat7x_elementary_stream_composer.rs"
+            "crates/jocforge-domain/tests/flat7x_elementary_stream_composer.rs",
+            "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs"
           ],
           "test_inventory": [
-            {"path": "crates/jocforge-domain/tests/flat7x_elementary_stream_composer.rs", "bytes": 7866, "sha256": "883eb1f6ac72cac6972ba6b0fb6225d4fa628bbe958f2f10486a4ebe6b39adbc"}
+            {"path": "crates/jocforge-domain/tests/flat7x_elementary_stream_composer.rs", "bytes": 7866, "sha256": "883eb1f6ac72cac6972ba6b0fb6225d4fa628bbe958f2f10486a4ebe6b39adbc"},
+            {"path": "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs", "bytes": 18400, "sha256": "46f0235a5d17a5fa6a13b472c7a91a88f8c5611724695bf823ae5157e1e28cfd"}
           ],
           "vector_inventory": [
-            {"path": "crates/jocforge-domain/tests/fixtures/flat7x_elementary_stream/INPUT-ONLY-VECTORS.json", "bytes": 1588, "sha256": "8573c6a3a7d29f91ac8704265dde35d169bac10304788b535927c8d015a0e88b"}
+            {"path": "crates/jocforge-domain/tests/fixtures/flat7x_elementary_stream/INPUT-ONLY-VECTORS.json", "bytes": 1588, "sha256": "8573c6a3a7d29f91ac8704265dde35d169bac10304788b535927c8d015a0e88b"},
+            {"path": "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json", "bytes": 2183, "sha256": "6688fbde255872b8108b333554467d7a3a840e5012db3f7e53aba9c46a5a5ed1"}
           ],
           "clock": {
             "domains": [],
@@ -47848,15 +47851,17 @@
           "vectors": {
             "kind": "SYNTHETIC_NOT_REAL_OUTPUT_OPAQUE_AU_SEQUENCE_COMPOSITION",
             "authoritative_vectors": [
-              "crates/jocforge-domain/tests/fixtures/flat7x_elementary_stream/INPUT-ONLY-VECTORS.json"
+              "crates/jocforge-domain/tests/fixtures/flat7x_elementary_stream/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json"
             ],
             "case_pointers": [
               "Two distinct opaque fill patterns occupy consecutive 6656-byte AU spans in caller order.",
               "Empty sequence, usize count overflow, wrong AU extent, one-byte-short writer capacity, and non-byte-aligned cursor reject without caller mutation.",
-              "All bytes are synthetic fill patterns; no audio, BSID, CRC or source identity is asserted."
+              "The D0 assembler's 4096-byte synthetic frame is copied into I0→D0 AU bytes and then two stream positions; D0 offsets are derived from AU receipts and the stream receipt's start/count/extent.",
+              "The caller-supplied CRC2 bytes remain the final two bytes of each D0 span through both compositions; these are fill-pattern structural checks, not audio, CRC validity, BSID or source identity claims."
             ],
             "expected_outputs_included": true,
-            "execution_status": "LOCALLY_VERIFIED_MULTI_AU_ORDER_AND_ATOMIC_REJECTION"
+            "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_D0_AU_STREAM_OFFSETS_AND_CRC2_PRESERVATION"
           },
           "error_outcomes": [
             {
@@ -57127,8 +57132,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2143981,
-              "sha256": "35e4f56aca5d41027dacc2199f3f646c673ea6a05a9f6fe1d223b560e3581aeb"
+              "bytes": 2144177,
+              "sha256": "cb6e5e91816edc68e61f99fed4c3235ea55e3625db13ffe2e9dc864868ea905b"
             }
           ],
           "test_inventory": [

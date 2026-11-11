@@ -3,6 +3,10 @@
 
 use jocforge_domain::{
     codec::{
+        access_unit_composer::{
+            Flat7xI0D0OpaqueFrameSpans, OpaqueD0FrameBytes, OpaqueI0FrameBytes,
+            write_flat7x_i0_d0_access_unit_bytes,
+        },
         bitio::{FrameBitCursor, FrameBitWriter},
         d0_frame_assembler::{
             D0Block2SkipFieldInput, D0BlockTwoAudioSpans, D0FrameAudioBlockInput,
@@ -10,6 +14,9 @@ use jocforge_domain::{
             assemble_flat7x_d0_frame_bits,
         },
         d0_frame_layout::{CallerOwnedUnboundD0Block2InsertionPoint, D0SixBlockLayoutError},
+        elementary_stream_composer::{
+            Flat7xOpaqueAccessUnitBytes, compose_flat7x_elementary_stream,
+        },
         frame_builder::Flat7xD0BsiStructure,
     },
     profile::Flat7xI0D0TargetPlan,
@@ -286,6 +293,124 @@ fn synthetic_assembler_copies_opaque_spans_and_caller_crc2_into_exact_target_ext
         0,
         lengths[5],
     );
+}
+
+#[test]
+fn synthetic_d0_frame_composes_into_au_and_two_au_stream_with_crc2_preserved() {
+    let case = frame_case();
+    let data = synthetic_frame_data(&case);
+    let lengths = bit_lengths(&case);
+    let insertion_offset = case["block_two_insertion_offset_bits"].as_u64().unwrap() as u32;
+    let crc2 = u16::from_str_radix(
+        case["crc2_u16"].as_str().unwrap().trim_start_matches("0x"),
+        16,
+    )
+    .unwrap();
+    let crc2_bytes = crc2.to_be_bytes();
+    let skipfield_fields = [D0Block2SkipFieldInput {
+        insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(insertion_offset),
+        complete_emdf_container: &data.skipfield_container,
+    }];
+    let d0_input = frame_input(
+        &data,
+        lengths,
+        [0; 6],
+        insertion_offset,
+        &skipfield_fields,
+        crc2,
+        2,
+    );
+    let mut d0_frame = vec![0xa5; 4_096];
+    let d0_assembly_receipt;
+    {
+        let mut writer = FrameBitWriter::new(&mut d0_frame, FrameBitCursor::new(0)).unwrap();
+        d0_assembly_receipt = assemble_flat7x_d0_frame_bits(
+            Flat7xI0D0TargetPlan::approved_contract(),
+            baseline_bsi_structure(),
+            d0_input,
+            &mut writer,
+        )
+        .unwrap();
+    }
+    assert_eq!(d0_assembly_receipt.target_frame_bytes(), 4_096);
+    assert_eq!(d0_assembly_receipt.crc2_span().start_bit(), 32_752);
+    assert_eq!(d0_frame[4_094..], crc2_bytes);
+    assert!(!d0_assembly_receipt.production_allowed());
+
+    let first_i0 = vec![0x31; 2_560];
+    let second_i0 = vec![0x52; 2_560];
+    let mut first_au = vec![0xa5; 6_656];
+    let mut second_au = vec![0xa5; 6_656];
+    let first_au_receipt;
+    let second_au_receipt;
+    {
+        let mut writer = FrameBitWriter::new(&mut first_au, FrameBitCursor::new(0)).unwrap();
+        first_au_receipt = write_flat7x_i0_d0_access_unit_bytes(
+            Flat7xI0D0TargetPlan::approved_contract(),
+            Flat7xI0D0OpaqueFrameSpans {
+                i0: OpaqueI0FrameBytes::new(&first_i0),
+                d0: OpaqueD0FrameBytes::new(&d0_frame),
+            },
+            &mut writer,
+        )
+        .unwrap();
+    }
+    {
+        let mut writer = FrameBitWriter::new(&mut second_au, FrameBitCursor::new(0)).unwrap();
+        second_au_receipt = write_flat7x_i0_d0_access_unit_bytes(
+            Flat7xI0D0TargetPlan::approved_contract(),
+            Flat7xI0D0OpaqueFrameSpans {
+                i0: OpaqueI0FrameBytes::new(&second_i0),
+                d0: OpaqueD0FrameBytes::new(&d0_frame),
+            },
+            &mut writer,
+        )
+        .unwrap();
+    }
+    assert_eq!(first_au_receipt.d0_span().start_byte(), 2_560);
+    assert_eq!(second_au_receipt.d0_span().byte_length(), 4_096);
+    assert_eq!(&first_au[2_560..], &d0_frame);
+    assert_eq!(&second_au[2_560..], &d0_frame);
+
+    let access_units = [
+        Flat7xOpaqueAccessUnitBytes::new(&first_au),
+        Flat7xOpaqueAccessUnitBytes::new(&second_au),
+    ];
+    let mut stream = vec![0xa5; 2 * 6_656];
+    let stream_receipt;
+    {
+        let mut writer = FrameBitWriter::new(&mut stream, FrameBitCursor::new(0)).unwrap();
+        stream_receipt = compose_flat7x_elementary_stream(
+            Flat7xI0D0TargetPlan::approved_contract(),
+            &access_units,
+            &mut writer,
+        )
+        .unwrap();
+    }
+    assert_eq!(stream_receipt.start_byte(), 0);
+    assert_eq!(stream_receipt.extent().access_unit_count(), 2);
+    assert_eq!(stream_receipt.extent().byte_length(), 13_312);
+    assert!(!stream_receipt.production_allowed());
+
+    for (index, (access_unit, composition_receipt)) in [
+        (&first_au, first_au_receipt),
+        (&second_au, second_au_receipt),
+    ]
+    .into_iter()
+    .enumerate()
+    {
+        let stream_au_start = stream_receipt.start_byte()
+            + u32::try_from(index).unwrap() * composition_receipt.total_byte_length();
+        let stream_au_end = stream_au_start + composition_receipt.total_byte_length();
+        let d0_start = stream_au_start + u32::from(composition_receipt.d0_span().start_byte());
+        let d0_end = d0_start + u32::from(composition_receipt.d0_span().byte_length());
+        assert_eq!(
+            &stream[stream_au_start as usize..stream_au_end as usize],
+            access_unit
+        );
+        assert_eq!(&stream[d0_start as usize..d0_end as usize], &d0_frame);
+        assert_eq!(&stream[d0_end as usize - 2..d0_end as usize], &crc2_bytes);
+    }
 }
 
 #[test]
