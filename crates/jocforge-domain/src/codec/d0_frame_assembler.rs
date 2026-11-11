@@ -13,11 +13,13 @@ use super::{
         Flat7xD0BsiStructure, Flat7xD0BsiStructureError, write_flat7x_d0_bsi_structure,
     },
 };
-use crate::profile::Flat7xI0D0TargetPlan;
+use crate::{integrity::crc16::eac3_crc16, profile::Flat7xI0D0TargetPlan};
 
 const D0_TARGET_FRAME_BYTES: usize = 4_096;
 const D0_TARGET_FRAME_BITS: u32 = 32_768;
 const D0_CRC2_FIELD_BITS: u32 = 16;
+const D0_CRC2_FIELD_BYTES: usize = 2;
+const D0_CRC2_COVERAGE_START_BYTE: usize = 2;
 const D0_BLOCK_TWO_INDEX: usize = 2;
 const D0_AUDIO_BLOCK_COUNT: usize = 6;
 
@@ -71,7 +73,6 @@ pub enum D0FrameAudioBlockInput<'a> {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Flat7xD0FrameBitInput<'a> {
     pub audio_blocks: [D0FrameAudioBlockInput<'a>; D0_AUDIO_BLOCK_COUNT],
-    pub crc2: u16,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -93,10 +94,32 @@ impl D0Crc2BitSpan {
     }
 }
 
+/// Generated E-AC-3 CRC2 and its completed-frame residual check.
+///
+/// Coverage follows the approved keyless frame contract: generate over
+/// `frame[2..4094]`, store big-endian at `frame[4094..4096]`, then verify
+/// `frame[2..4096]` with a zero residual.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct D0Crc2IntegrityReceipt {
+    generated_value: u16,
+    verified_residual: u16,
+}
+
+impl D0Crc2IntegrityReceipt {
+    pub const fn generated_value(self) -> u16 {
+        self.generated_value
+    }
+
+    pub const fn verified_residual(self) -> u16 {
+        self.verified_residual
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Flat7xD0FrameAssemblyReceipt {
     layout: Flat7xD0SixBlockLayout,
     crc2_span: D0Crc2BitSpan,
+    crc2_integrity: D0Crc2IntegrityReceipt,
 }
 
 impl Flat7xD0FrameAssemblyReceipt {
@@ -106,6 +129,10 @@ impl Flat7xD0FrameAssemblyReceipt {
 
     pub const fn crc2_span(self) -> D0Crc2BitSpan {
         self.crc2_span
+    }
+
+    pub const fn crc2_integrity(self) -> D0Crc2IntegrityReceipt {
+        self.crc2_integrity
     }
 
     pub const fn total_frame_span_bits(self) -> u32 {
@@ -147,6 +174,12 @@ pub enum Flat7xD0FrameAssemblyError {
         actual_bits: u32,
         required_bits: u32,
     },
+    Crc2FieldNotByteAligned {
+        start_bit: u32,
+    },
+    Crc2Residual {
+        residual: u16,
+    },
     Layout(D0SixBlockLayoutError),
     BsiStructure(Flat7xD0BsiStructureError),
     SkipField(D0EmdfSkipFieldWriteError),
@@ -181,9 +214,10 @@ impl From<FrameBitWriterError> for Flat7xD0FrameAssemblyError {
 ///
 /// The six block inputs are ordered by array position. Only block two may use the split-span
 /// input with one complete skip-field container and an explicit caller-owned/unbound insertion
-/// point. Audio spans are copied bit-for-bit as opaque data; the caller supplies CRC2 U16 and no
-/// CRC algorithm is run. All shapes, source extents, skip-field length, exact 32768-bit frame
-/// extent, and writer capacity are checked before caller writer bytes or cursor change.
+/// point. Audio spans are copied bit-for-bit as opaque data. After the complete 4096-byte frame
+/// body is staged, the approved E-AC-3 CRC16 rule generates CRC2 and checks the completed-frame
+/// residual. All shapes, source extents, skip-field length, exact 32768-bit frame extent, CRC
+/// integrity, and writer capacity are checked before caller writer bytes or cursor change.
 pub fn assemble_flat7x_d0_frame_bits(
     target: Flat7xI0D0TargetPlan,
     bsi_structure: Flat7xD0BsiStructure<'_>,
@@ -362,10 +396,35 @@ pub fn assemble_flat7x_d0_frame_bits(
     }
 
     let crc2_start_bit = layout.total_frame_span_bits();
+    if crc2_start_bit % 8 != 0 {
+        return Err(Flat7xD0FrameAssemblyError::Crc2FieldNotByteAligned {
+            start_bit: crc2_start_bit,
+        });
+    }
+    let crc2_start_byte = usize::try_from(crc2_start_bit / 8).map_err(|_| {
+        Flat7xD0FrameAssemblyError::FrameSpanMismatch {
+            actual_bits: crc2_start_bit,
+            required_bits: required_frame_bits,
+        }
+    })?;
+    let crc2_end_byte = crc2_start_byte.checked_add(D0_CRC2_FIELD_BYTES).ok_or(
+        Flat7xD0FrameAssemblyError::FrameSpanMismatch {
+            actual_bits: crc2_start_bit,
+            required_bits: required_frame_bits,
+        },
+    )?;
+    if crc2_end_byte != staging.len() {
+        return Err(Flat7xD0FrameAssemblyError::FrameSpanMismatch {
+            actual_bits: crc2_start_bit + D0_CRC2_FIELD_BITS,
+            required_bits: required_frame_bits,
+        });
+    }
+
+    let crc2_value = eac3_crc16(&staging[D0_CRC2_COVERAGE_START_BYTE..crc2_start_byte]);
     let crc2_end_bit = {
         let mut crc_writer =
             FrameBitWriter::new(&mut staging, FrameBitCursor::new(crc2_start_bit))?;
-        crc_writer.write_unsigned(u32::from(input.crc2), 16)?;
+        crc_writer.write_unsigned(u32::from(crc2_value), D0_CRC2_FIELD_BITS as u8)?;
         crc_writer.cursor().bit_offset()
     };
     if crc2_end_bit != required_frame_bits {
@@ -374,12 +433,22 @@ pub fn assemble_flat7x_d0_frame_bits(
             required_bits: required_frame_bits,
         });
     }
+    let verified_residual = eac3_crc16(&staging[D0_CRC2_COVERAGE_START_BYTE..]);
+    if verified_residual != 0 {
+        return Err(Flat7xD0FrameAssemblyError::Crc2Residual {
+            residual: verified_residual,
+        });
+    }
 
     writer.write_bytes(&staging)?;
     Ok(Flat7xD0FrameAssemblyReceipt {
         layout,
         crc2_span: D0Crc2BitSpan {
             start_bit: crc2_start_bit,
+        },
+        crc2_integrity: D0Crc2IntegrityReceipt {
+            generated_value: crc2_value,
+            verified_residual,
         },
     })
 }

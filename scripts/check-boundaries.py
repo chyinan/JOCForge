@@ -12109,22 +12109,30 @@ def check_f12_d0_frame_bit_assembler_slice(root, d):
         < function.index("writer.write_bytes(&staging)?")
         and "write_flat7x_d0_bsi_structure(&mut staging_writer, target, bsi_structure)?" in function
         and "write_flat7x_d0_block2_skipfld(" in function
-        and "crc_writer.write_unsigned(u32::from(input.crc2), 16)?" in function
-        and "eac3_crc16" not in module
+        and "eac3_crc16(&staging[D0_CRC2_COVERAGE_START_BYTE..crc2_start_byte])" in function
+        and "eac3_crc16(&staging[D0_CRC2_COVERAGE_START_BYTE..])" in function
+        and "D0Crc2IntegrityReceipt" in module
+        and "input.crc2" not in module
+        and function.index("if verified_residual != 0") < function.index("writer.write_bytes(&staging)?")
         and "Flat7xD0FrameAssemblyReceipt" in module
         and "pub const fn production_allowed(self) -> bool" in module
         and no_production_call,
-        "D0 frame assembler preflights exact target, copies opaque spans, writes caller CRC2 and has no product callsite",
+        "D0 frame assembler preflights exact target, generates and verifies CRC2 in scratch, and has no product callsite",
     )
     ck(
         row["implementation_status"]
-        == "LOCALLY_VERIFIED_SYNTHETIC_EXACT_FRAME_ASSEMBLY_AND_FAILURE_ATOMICITY__PRODUCTION_OPEN"
+        == "LOCALLY_VERIFIED_SYNTHETIC_EXACT_FRAME_ASSEMBLY_CRC2_AND_FAILURE_ATOMICITY__PRODUCTION_OPEN"
         and row["implementation_requirement"] is True
         and row["owner"] == "codec"
         and row["parameters"]["production_allowed"] is False
         and row["parameters"]["target_context"]["frame_bytes"] == 4096
         and row["parameters"]["target_context"]["frame_bits"] == 32768
         and row["parameters"]["target_context"]["crc2_width_bits"] == 16
+        and row["parameters"]["crc2_contract"]["package_id"] == "CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1"
+        and row["parameters"]["crc2_contract"]["manifest_sha256"] == "d9085785d5484d236d4b24925a52954fc0bb01153c2e173e2d07d8f6e1b4a5f6"
+        and row["parameters"]["crc2_contract"]["generate_coverage"] == "frame[2:4094]"
+        and row["parameters"]["crc2_contract"]["placement"] == "big-endian frame[4094:4096]"
+        and row["parameters"]["crc2_contract"]["verify_coverage"] == "frame[2:4096]"
         and row["parameters"]["block_two_skipfield"]["payload_bytes"] == [1, 511]
         and row["parameters"]["block_two_skipfield"]["insertion_authority"]
         == "CALLER_OWNED_UNBOUND_OFFSET"
@@ -12132,15 +12140,18 @@ def check_f12_d0_frame_bit_assembler_slice(root, d):
         == [
             "crates/jocforge-domain/src/codec/d0_frame_assembler.rs",
             "crates/jocforge-domain/src/codec/mod.rs",
+            "crates/jocforge-domain/src/integrity/crc16.rs",
         ]
         and row["test_modules"]
         == ["crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs"]
         and vectors["status"] == "SYNTHETIC_NOT_REAL_OUTPUT"
         and vectors["contains_pcm_or_real_audio_bytes"] is False
+        and vectors["crc2_contract"]["package_id"] == "CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1"
+        and vectors["cases"][0]["expected"]["crc2_value_hex"] == "e0b0"
         and all(
             marker in test_source
             for marker in (
-                "synthetic_assembler_copies_opaque_spans_and_caller_crc2_into_exact_target_extent",
+                "synthetic_assembler_copies_opaque_spans_and_generates_crc2_for_exact_target_extent",
                 "assembler_errors_leave_caller_bytes_and_cursor_unchanged",
                 "SYNTHETIC_NOT_REAL_OUTPUT",
             )
@@ -13307,7 +13318,7 @@ def check_wash_flat7x_d0_skipfld_structure_package(root, row):
         and "FrameBitCursor::new(skip_span.start_bit())" in assembler
         and "write_flat7x_d0_block2_skipfld(" in assembler
         and "block_two_input.skip_fields[0].complete_emdf_container" in assembler
-        and "synthetic_assembler_copies_opaque_spans_and_caller_crc2_into_exact_target_extent" in tests
+        and "synthetic_assembler_copies_opaque_spans_and_generates_crc2_for_exact_target_extent" in tests
         and "block_two_skipfield_start_bit" in tests,
         "caller-owned block-two insertion feeds the skipfld helper through synthetic D0 frame assembly",
     )

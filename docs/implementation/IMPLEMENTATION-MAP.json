@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2153995,
-              "sha256": "7016916279e8504ffbf48933519234bcd4c94759dd2cb0709506928e6dd789d3"
+              "bytes": 2154999,
+              "sha256": "149e4e2c7cab076f24e0472c872732b5481bae8c80832e332a7edec5d1fbe084"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2153995,
-              "sha256": "7016916279e8504ffbf48933519234bcd4c94759dd2cb0709506928e6dd789d3"
+              "bytes": 2154999,
+              "sha256": "149e4e2c7cab076f24e0472c872732b5481bae8c80832e332a7edec5d1fbe084"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -46121,8 +46121,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/d0_frame_assembler.rs",
-              "bytes": 15759,
-              "sha256": "93cc399322acc29ae7130769a9c385dd899108cdeeb23851a90ea94d57f1ad5d"
+              "bytes": 18172,
+              "sha256": "4cfd1fdeb420ce408b7a6a315eaac6d05f5bd7feb273cdec31cca4bdabcbcfef"
             }
           ],
           "test_inventory": [
@@ -46133,13 +46133,13 @@
             },
             {
               "path": "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs",
-              "bytes": 18400,
-              "sha256": "46f0235a5d17a5fa6a13b472c7a91a88f8c5611724695bf823ae5157e1e28cfd"
+              "bytes": 18597,
+              "sha256": "51ce3cc5d1db171b256339b7165d363b934ba41b0a5736d072706694aa0d218e"
             }
           ],
           "vector_inventory": [
             {"path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/INPUT-ONLY-VECTOR.json", "bytes": 1750, "sha256": "356916e6ed58189bd2bd33962d1dd43280d8a87485df71621e452ef8e05f6bee"},
-            {"path": "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json", "bytes": 2183, "sha256": "6688fbde255872b8108b333554467d7a3a840e5012db3f7e53aba9c46a5a5ed1"}
+            {"path": "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json", "bytes": 2542, "sha256": "fddc65f1a52c325347029cc272f24122f9b6ed501d99130a42051b7d7aa8fbee"}
           ],
           "clock": {
             "domains": [],
@@ -47584,35 +47584,43 @@
         {
           "slice_id": "flat7x-d0-frame-bit-assembler",
           "mapping_status": "MATERIALIZED_CALLER_SUPPLIED_D0_FRAME_BIT_ASSEMBLY_MODEL",
-          "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_EXACT_FRAME_ASSEMBLY_AND_FAILURE_ATOMICITY__PRODUCTION_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_EXACT_FRAME_ASSEMBLY_CRC2_AND_FAILURE_ATOMICITY__PRODUCTION_OPEN",
           "implementation_requirement": true,
           "owner": "codec",
-          "scope": "Consumes one approved D0 BSI structure, six ordered caller-supplied opaque audio bit spans, exactly one block-two split span with a caller-supplied complete skipfield container and caller-owned/unbound insertion point, plus caller-supplied CRC2 U16. It stages the 4096-byte target frame, copies audio bits verbatim without decoding them, writes the one complete skiple=1/U9 skipl/payload field, writes CRC2 as supplied without calculating it, and commits the frame plus cursor only after all source bounds, block/skipfield placement, exact 32768-bit extent and writer capacity checks pass. It generates no audio/mantissas/BAP, performs no CRC algorithm, and does not call AU/GTC/production.",
+          "scope": "Consumes one approved D0 BSI structure, six ordered caller-supplied opaque audio bit spans, and exactly one block-two split span with a caller-supplied complete skipfield container and caller-owned/unbound insertion point. It stages the 4096-byte target frame, copies audio bits verbatim without decoding them, writes the one complete skiple=1/U9 skipl/payload field, then generates CRC2 with the approved E-AC-3 CRC16 rule over frame[2:4094], stores it big-endian at frame[4094:4096], and requires zero residual over frame[2:4096]. It commits the frame plus cursor only after all source bounds, block/skipfield placement, exact 32768-bit extent, CRC integrity and writer capacity checks pass. It generates no audio/mantissas/BAP and does not call AU/GTC/production.",
           "dependencies": [
             "F12/flat7x-d0-bsi-structure-composition",
             "F12/flat7x-d0-six-block-layout-proposal",
-            "F12/flat7x-d0-block2-skipfld-serializer"
+            "F12/flat7x-d0-block2-skipfld-serializer",
+            "F12/selected-q-frame-trial-and-keyless-crc"
           ],
           "spec_files": [
             "docs/architecture/PROFILE-DIMENSIONS.md",
             "docs/architecture/adm-to-eac3joc-chain-status.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/EMDF-AND-VALIDATION-DISPOSITION.json"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/EMDF-AND-VALIDATION-DISPOSITION.json",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/EMDF-INTEGRITY-EMBED.json"
           ],
           "implementation_files": [
             "crates/jocforge-domain/src/codec/d0_frame_assembler.rs",
-            "crates/jocforge-domain/src/codec/mod.rs"
+            "crates/jocforge-domain/src/codec/mod.rs",
+            "crates/jocforge-domain/src/integrity/crc16.rs"
           ],
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/d0_frame_assembler.rs",
-              "bytes": 15759,
-              "sha256": "93cc399322acc29ae7130769a9c385dd899108cdeeb23851a90ea94d57f1ad5d"
+              "bytes": 18172,
+              "sha256": "4cfd1fdeb420ce408b7a6a315eaac6d05f5bd7feb273cdec31cca4bdabcbcfef"
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
               "bytes": 1066,
               "sha256": "7cae3681855252de5b8b16a44621012b502bdb6746fdd634e467c0e90d27585e"
+            },
+            {
+              "path": "crates/jocforge-domain/src/integrity/crc16.rs",
+              "bytes": 478,
+              "sha256": "c642d8bc8bf8a75e736ab7f7c7468d6ede85c25fc70811be4206016333cad8c6"
             }
           ],
           "test_modules": [
@@ -47621,13 +47629,13 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs",
-              "bytes": 18400,
-              "sha256": "46f0235a5d17a5fa6a13b472c7a91a88f8c5611724695bf823ae5157e1e28cfd"
+              "bytes": 18597,
+              "sha256": "51ce3cc5d1db171b256339b7165d363b934ba41b0a5736d072706694aa0d218e"
             },
             {
               "path": "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json",
-              "bytes": 2183,
-              "sha256": "6688fbde255872b8108b333554467d7a3a840e5012db3f7e53aba9c46a5a5ed1"
+              "bytes": 2542,
+              "sha256": "fddc65f1a52c325347029cc272f24122f9b6ed501d99130a42051b7d7aa8fbee"
             }
           ],
           "clock": {
@@ -47641,7 +47649,8 @@
             "provider_files": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/EMDF-AND-VALIDATION-DISPOSITION.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/EMDF-INTEGRITY-EMBED.json"
             ],
             "target_context": {
               "substream": "D0",
@@ -47670,8 +47679,20 @@
               "fragmentation_allowed": false,
               "insertion_authority": "CALLER_OWNED_UNBOUND_OFFSET"
             },
-            "crc2_source": "caller-supplied U16; no checksum calculation",
-            "preflight_extent": "BSI + all six opaque spans + one complete block-two skipfield + CRC2 must equal 32768 bits",
+            "crc2_source": "generated by approved eac3_crc16 after full D0 frame body staging",
+            "integrity_receipt": "D0Crc2IntegrityReceipt carries the generated U16 and verified zero residual",
+            "crc2_contract": {
+              "package_id": "CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1",
+              "manifest_sha256": "d9085785d5484d236d4b24925a52954fc0bb01153c2e173e2d07d8f6e1b4a5f6",
+              "contract_file": "EMDF-INTEGRITY-EMBED.json",
+              "profile": "E-AC-3 CRC16; init=0; polynomial=0x8005; MSB-first; xorout=0",
+              "generate_coverage": "frame[2:4094]",
+              "placement": "big-endian frame[4094:4096]",
+              "verify_coverage": "frame[2:4096]",
+              "required_residual": 0
+            },
+            "integrity_receipt": "D0Crc2IntegrityReceipt carries generated CRC16 U16 and verified residual",
+            "preflight_extent": "BSI + all six opaque spans + one complete block-two skipfield + generated CRC2 must equal 32768 bits",
             "production_allowed": false,
             "validation_boundary": "Synthetic caller-span assembly into a caller writer; no real audio, frame acceptance, playback, AU/GTC or production claim."
           },
@@ -47682,12 +47703,12 @@
               "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/INPUT-ONLY-VECTORS.json"
             ],
             "case_pointers": [
-              "Synthetic opaque spans occupy the exact target extent; block-two pre/skip/post locations and caller CRC2 U16 are checked.",
+              "Synthetic opaque spans occupy the exact target extent; block-two pre/skip/post locations, generated CRC2 value, coverage and zero residual are checked.",
               "A one-bit-short span, short writer capacity, out-of-bounds source span, insertion mismatch, missing/duplicate/misplaced field and C=512 reject without caller byte/cursor mutation.",
               "All output vectors are SYNTHETIC_NOT_REAL_OUTPUT and do not establish a playable frame or audio equivalence."
             ],
             "expected_outputs_included": true,
-            "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_FRAME_LAYOUT_COPY_AND_FAIL_BEFORE_MUTATION"
+            "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_FRAME_LAYOUT_CRC2_AND_FAIL_BEFORE_MUTATION"
           },
           "error_outcomes": [
             {
@@ -47700,13 +47721,27 @@
             {
               "error_code": "D0_FRAME_SPAN_MISMATCH",
               "category": "fixed target extent",
-              "trigger": "BSI, six spans, block-two skipfield and caller CRC2 do not total exactly 32768 bits.",
+              "trigger": "BSI, six spans, block-two skipfield and CRC2 do not total exactly 32768 bits.",
               "result": "Typed failure before caller frame bytes or cursor change.",
-              "caller_action": "Reject the candidate; no padding, continuation or CRC repair is synthesized."
+              "caller_action": "Reject the candidate; no padding, continuation or frame-span correction is synthesized."
+            },
+            {
+              "error_code": "D0_CRC2_FIELD_NOT_BYTE_ALIGNED",
+              "category": "CRC2 field placement",
+              "trigger": "The complete frame layout places CRC2 at a bit offset that is not byte-aligned.",
+              "result": "Typed failure before caller frame bytes or cursor change.",
+              "caller_action": "Reject the frame candidate and preserve the approved byte-aligned CRC2 placement."
+            },
+            {
+              "error_code": "D0_CRC2_RESIDUAL_NONZERO",
+              "category": "completed-frame CRC16 verification",
+              "trigger": "The generated CRC2 field leaves a nonzero CRC16 residual over frame[2:4096].",
+              "result": "Typed failure before caller frame bytes or cursor change.",
+              "caller_action": "Reject the frame candidate and preserve the approved frame CRC2 coverage."
             }
           ],
           "not_run": [
-            "No PCM/audio generation, decode, mantissa/BAP fill, CRC algorithm or real media/payload input is used.",
+            "No PCM/audio generation, decode, mantissa/BAP fill or real media/payload input is used.",
             "No playable/full conformance claim, block3 continuation, AU/GTC, production path, encoder or W04 is run."
           ],
           "validation_boundary": "Caller-supplied opaque-bit assembly into an exact target-sized scratch frame; SYNTHETIC_NOT_REAL_OUTPUT, production_allowed=false.",
@@ -47859,11 +47894,11 @@
           ],
           "test_inventory": [
             {"path": "crates/jocforge-domain/tests/flat7x_elementary_stream_composer.rs", "bytes": 7866, "sha256": "883eb1f6ac72cac6972ba6b0fb6225d4fa628bbe958f2f10486a4ebe6b39adbc"},
-            {"path": "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs", "bytes": 18400, "sha256": "46f0235a5d17a5fa6a13b472c7a91a88f8c5611724695bf823ae5157e1e28cfd"}
+            {"path": "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs", "bytes": 18597, "sha256": "51ce3cc5d1db171b256339b7165d363b934ba41b0a5736d072706694aa0d218e"}
           ],
           "vector_inventory": [
             {"path": "crates/jocforge-domain/tests/fixtures/flat7x_elementary_stream/INPUT-ONLY-VECTORS.json", "bytes": 1588, "sha256": "8573c6a3a7d29f91ac8704265dde35d169bac10304788b535927c8d015a0e88b"},
-            {"path": "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json", "bytes": 2183, "sha256": "6688fbde255872b8108b333554467d7a3a840e5012db3f7e53aba9c46a5a5ed1"}
+            {"path": "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json", "bytes": 2542, "sha256": "fddc65f1a52c325347029cc272f24122f9b6ed501d99130a42051b7d7aa8fbee"}
           ],
           "clock": {
             "domains": [],
@@ -57173,8 +57208,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2153995,
-              "sha256": "7016916279e8504ffbf48933519234bcd4c94759dd2cb0709506928e6dd789d3"
+              "bytes": 2154999,
+              "sha256": "149e4e2c7cab076f24e0472c872732b5481bae8c80832e332a7edec5d1fbe084"
             }
           ],
           "test_inventory": [

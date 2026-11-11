@@ -19,6 +19,7 @@ use jocforge_domain::{
         },
         frame_builder::Flat7xD0BsiStructure,
     },
+    integrity::crc16::eac3_crc16,
     profile::Flat7xI0D0TargetPlan,
 };
 use serde_json::Value;
@@ -116,7 +117,6 @@ fn frame_input<'a>(
     source_start_bits: [u32; 6],
     insertion_offset_bits: u32,
     skipfield_fields: &'a [D0Block2SkipFieldInput<'a>],
-    crc2: u16,
     block_two_at_index: usize,
 ) -> Flat7xD0FrameBitInput<'a> {
     assert_eq!(
@@ -152,7 +152,7 @@ fn frame_input<'a>(
             ))
         }
     });
-    Flat7xD0FrameBitInput { audio_blocks, crc2 }
+    Flat7xD0FrameBitInput { audio_blocks }
 }
 
 fn read_bit(bytes: &[u8], bit_offset: u32) -> bool {
@@ -175,16 +175,11 @@ fn assert_span_copied(
 }
 
 #[test]
-fn synthetic_assembler_copies_opaque_spans_and_caller_crc2_into_exact_target_extent() {
+fn synthetic_assembler_copies_opaque_spans_and_generates_crc2_for_exact_target_extent() {
     let case = frame_case();
     let data = synthetic_frame_data(&case);
     let lengths = bit_lengths(&case);
     let insertion_offset = case["block_two_insertion_offset_bits"].as_u64().unwrap() as u32;
-    let crc2 = u16::from_str_radix(
-        case["crc2_u16"].as_str().unwrap().trim_start_matches("0x"),
-        16,
-    )
-    .unwrap();
     let skipfield_fields = [D0Block2SkipFieldInput {
         insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(insertion_offset),
         complete_emdf_container: &data.skipfield_container,
@@ -195,7 +190,6 @@ fn synthetic_assembler_copies_opaque_spans_and_caller_crc2_into_exact_target_ext
         [0; 6],
         insertion_offset,
         &skipfield_fields,
-        crc2,
         2,
     );
     let mut output = vec![0xa5; 4096];
@@ -239,7 +233,18 @@ fn synthetic_assembler_copies_opaque_spans_and_caller_crc2_into_exact_target_ext
     );
     assert_eq!(receipt.crc2_span().start_bit(), 32_752);
     assert_eq!(receipt.crc2_span().end_bit(), 32_768);
-    assert_eq!(&output[4094..], &[0xbe, 0xef]);
+    assert_eq!(receipt.crc2_integrity().verified_residual(), 0);
+    assert_eq!(
+        receipt.crc2_integrity().generated_value(),
+        eac3_crc16(&output[2..4094])
+    );
+    let generated_crc2 = receipt.crc2_integrity().generated_value().to_be_bytes();
+    assert_eq!(
+        format!("{:02x}{:02x}", generated_crc2[0], generated_crc2[1]),
+        expected["crc2_value_hex"].as_str().unwrap()
+    );
+    assert_eq!(&output[4094..], &generated_crc2);
+    assert_eq!(eac3_crc16(&output[2..]), 0);
     assert!(!receipt.production_allowed());
 
     let block_layouts = receipt.layout().audio_blocks();
@@ -296,17 +301,11 @@ fn synthetic_assembler_copies_opaque_spans_and_caller_crc2_into_exact_target_ext
 }
 
 #[test]
-fn synthetic_d0_frame_composes_into_au_and_two_au_stream_with_crc2_preserved() {
+fn synthetic_d0_frame_composes_into_au_and_two_au_stream_with_generated_crc2_preserved() {
     let case = frame_case();
     let data = synthetic_frame_data(&case);
     let lengths = bit_lengths(&case);
     let insertion_offset = case["block_two_insertion_offset_bits"].as_u64().unwrap() as u32;
-    let crc2 = u16::from_str_radix(
-        case["crc2_u16"].as_str().unwrap().trim_start_matches("0x"),
-        16,
-    )
-    .unwrap();
-    let crc2_bytes = crc2.to_be_bytes();
     let skipfield_fields = [D0Block2SkipFieldInput {
         insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(insertion_offset),
         complete_emdf_container: &data.skipfield_container,
@@ -317,7 +316,6 @@ fn synthetic_d0_frame_composes_into_au_and_two_au_stream_with_crc2_preserved() {
         [0; 6],
         insertion_offset,
         &skipfield_fields,
-        crc2,
         2,
     );
     let mut d0_frame = vec![0xa5; 4_096];
@@ -332,8 +330,14 @@ fn synthetic_d0_frame_composes_into_au_and_two_au_stream_with_crc2_preserved() {
         )
         .unwrap();
     }
+    let crc2_bytes = d0_assembly_receipt
+        .crc2_integrity()
+        .generated_value()
+        .to_be_bytes();
     assert_eq!(d0_assembly_receipt.target_frame_bytes(), 4_096);
     assert_eq!(d0_assembly_receipt.crc2_span().start_bit(), 32_752);
+    assert_eq!(d0_assembly_receipt.crc2_integrity().verified_residual(), 0);
+    assert_eq!(eac3_crc16(&d0_frame[2..]), 0);
     assert_eq!(d0_frame[4_094..], crc2_bytes);
     assert!(!d0_assembly_receipt.production_allowed());
 
@@ -418,8 +422,6 @@ fn assembler_errors_leave_caller_bytes_and_cursor_unchanged() {
     let case = frame_case();
     let data = synthetic_frame_data(&case);
     let lengths = bit_lengths(&case);
-    let crc2 = 0xbeef;
-
     let field = D0Block2SkipFieldInput {
         insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(4096),
         complete_emdf_container: &data.skipfield_container,
@@ -434,7 +436,6 @@ fn assembler_errors_leave_caller_bytes_and_cursor_unchanged() {
         [0; 6],
         4096,
         &one_field,
-        crc2,
         2,
         4096,
         0,
@@ -450,7 +451,6 @@ fn assembler_errors_leave_caller_bytes_and_cursor_unchanged() {
         [0; 6],
         4096,
         &[],
-        crc2,
         2,
         4096,
         0,
@@ -464,7 +464,6 @@ fn assembler_errors_leave_caller_bytes_and_cursor_unchanged() {
         [0; 6],
         4096,
         &duplicate_fields,
-        crc2,
         2,
         4096,
         0,
@@ -477,7 +476,6 @@ fn assembler_errors_leave_caller_bytes_and_cursor_unchanged() {
         [0; 6],
         4096,
         &one_field,
-        crc2,
         1,
         4096,
         0,
@@ -496,7 +494,6 @@ fn assembler_errors_leave_caller_bytes_and_cursor_unchanged() {
         [0; 6],
         4096,
         &oversized_field,
-        crc2,
         2,
         4096,
         0,
@@ -511,7 +508,6 @@ fn assembler_errors_leave_caller_bytes_and_cursor_unchanged() {
         [0, 0, 0, 0, 0, 4],
         4096,
         &one_field,
-        crc2,
         2,
         4096,
         0,
@@ -532,7 +528,6 @@ fn assembler_errors_leave_caller_bytes_and_cursor_unchanged() {
         [0; 6],
         4095,
         &wrong_insertion,
-        crc2,
         2,
         4096,
         0,
@@ -548,7 +543,6 @@ fn assembler_errors_leave_caller_bytes_and_cursor_unchanged() {
         [0; 6],
         4096,
         &one_field,
-        crc2,
         2,
         4095,
         0,
@@ -563,7 +557,6 @@ fn assembler_errors_leave_caller_bytes_and_cursor_unchanged() {
         [0; 6],
         4096,
         &one_field,
-        crc2,
         2,
         4096,
         1,
@@ -577,7 +570,6 @@ fn assert_rejected_unchanged(
     source_starts: [u32; 6],
     insertion_offset: u32,
     skip_fields: &[D0Block2SkipFieldInput<'_>],
-    crc2: u16,
     block_two_at_index: usize,
     output_bytes: usize,
     start_cursor: u32,
@@ -589,7 +581,6 @@ fn assert_rejected_unchanged(
         source_starts,
         insertion_offset,
         skip_fields,
-        crc2,
         block_two_at_index,
     );
     let mut output = vec![0x5a; output_bytes];
