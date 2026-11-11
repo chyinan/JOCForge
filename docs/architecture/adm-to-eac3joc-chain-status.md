@@ -1755,3 +1755,7 @@ V2 also reports payload IDs 11 and 14 with `codecdatae=0` on all AUs while ETSI 
 ## 2026-11-11：Flat7x D0 informational BSI/addbsi suffix
 
 Wash 包 `EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1`（manifest SHA-256 `e8f1908d3572571c4dcb19aedd898b0e068464d6921ed54569fd8df4cb3a7cdb`，seal SHA-256 `d94fd72b890c522849cca6380f7630eddf1637764fda09807a61aa8ce3385f5d`）通过 normal 与 `python -O` verifier。`codec::frame_builder::append_flat7x_d0_info_and_addbsi` 从父级 mixing/`infomdate` helper 返回的 bit cursor 继续，序列化 caller 提供的 informational BSI、`addbsie`，以及可选 `addbsil` 与不解释的 caller bytes；target gate 精确要求 Dependent D0、`acmod=5`、六 blocks、48 kHz 和存在的 typed `chanmap=0x1A00`，字段范围、`infomdate`/信息值对应关系和整段容量也在写入前校验。本地成功向量、字段/长度拒绝、缺失/错误 chanmap、长度端点和 no-partial-write 容量测试通过。`0x12 0x34` 仅作为合成 opaque vector bytes。该 slice 不解析 JOC payload，不产生音频或完整 D0 frame/AU，`production_allowed=false`；现有 5.1 writer 保持独立。
+
+## 2026-11-11：D0 BSI typed composition entry
+
+`codec::frame_builder::write_flat7x_d0_bsi_structure` 以一个 typed request 按已登记顺序组合 fixed prefix/BSI、mixing/infomdate 和 information/addbsi 片段。组件在 83-byte 私有 scratch 中完整校验并序列化；caller writer 只在获得最终 cursor 并通过全段容量预检后接收位串。测试将组合输出与三个现有组件 writer 的顺序输出逐字节比较，并覆盖 invalid component、96-bit 不足容量及非零起点的 no-partial-write。Wash 没有提供复合后的 expected-byte vector，因此本地结果是组件等价性与失败原子性的验证。该入口不接真实 audio、完整 D0 frame/AU、GTC 或 production，`production_allowed=false`。

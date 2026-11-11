@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2113370,
-              "sha256": "c276af2a7109021755c6584b298d5d9086dc957448a0045421adb1701a46b9c3"
+              "bytes": 2117844,
+              "sha256": "37d54233a5069e59091916be9401579a4efa1fa8f7e556b5ad8ce6d167ef8dbf"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2113370,
-              "sha256": "c276af2a7109021755c6584b298d5d9086dc957448a0045421adb1701a46b9c3"
+              "bytes": 2117844,
+              "sha256": "37d54233a5069e59091916be9401579a4efa1fa8f7e556b5ad8ce6d167ef8dbf"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -43596,8 +43596,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 34057,
-              "sha256": "085b70fa6fd7861fc000944a3213a71aaf815699952d71cbb7902fde99bf9700"
+              "bytes": 37612,
+              "sha256": "59d2441d04236c3027569e539858e5f50ee1bf0c085ad6b522684e364e818105"
             }
           ],
           "test_modules": [
@@ -43606,8 +43606,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 34057,
-              "sha256": "085b70fa6fd7861fc000944a3213a71aaf815699952d71cbb7902fde99bf9700"
+              "bytes": 37612,
+              "sha256": "59d2441d04236c3027569e539858e5f50ee1bf0c085ad6b522684e364e818105"
             }
           ],
           "local_mapping_files": [],
@@ -44556,8 +44556,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 34057,
-              "sha256": "085b70fa6fd7861fc000944a3213a71aaf815699952d71cbb7902fde99bf9700"
+              "bytes": 37612,
+              "sha256": "59d2441d04236c3027569e539858e5f50ee1bf0c085ad6b522684e364e818105"
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_syntax.rs",
@@ -46362,8 +46362,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 34057,
-              "sha256": "085b70fa6fd7861fc000944a3213a71aaf815699952d71cbb7902fde99bf9700"
+              "bytes": 37612,
+              "sha256": "59d2441d04236c3027569e539858e5f50ee1bf0c085ad6b522684e364e818105"
             }
           ],
           "test_modules": [
@@ -46487,8 +46487,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 34057,
-              "sha256": "085b70fa6fd7861fc000944a3213a71aaf815699952d71cbb7902fde99bf9700"
+              "bytes": 37612,
+              "sha256": "59d2441d04236c3027569e539858e5f50ee1bf0c085ad6b522684e364e818105"
             }
           ],
           "test_modules": [
@@ -46622,8 +46622,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 34057,
-              "sha256": "085b70fa6fd7861fc000944a3213a71aaf815699952d71cbb7902fde99bf9700"
+              "bytes": 37612,
+              "sha256": "59d2441d04236c3027569e539858e5f50ee1bf0c085ad6b522684e364e818105"
             }
           ],
           "test_modules": [
@@ -46763,8 +46763,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 34057,
-              "sha256": "085b70fa6fd7861fc000944a3213a71aaf815699952d71cbb7902fde99bf9700"
+              "bytes": 37612,
+              "sha256": "59d2441d04236c3027569e539858e5f50ee1bf0c085ad6b522684e364e818105"
             }
           ],
           "test_modules": [
@@ -46947,8 +46947,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 34057,
-              "sha256": "085b70fa6fd7861fc000944a3213a71aaf815699952d71cbb7902fde99bf9700"
+              "bytes": 37612,
+              "sha256": "59d2441d04236c3027569e539858e5f50ee1bf0c085ad6b522684e364e818105"
             }
           ],
           "test_modules": [
@@ -47123,6 +47123,138 @@
           ],
           "validation_boundary": "Wash input-only field vectors replay locally, including atomic rejection. This remains a suffix serializer and production_allowed=false.",
           "delivery_scope": "FLAT7X_D0_INFORMATION_AND_OPAQUE_ADDBSI_SUFFIX_ONLY_NO_JOC_INTERPRETATION_AUDIO_FRAME_OR_PRODUCTION_CLAIM"
+        },
+        {
+          "slice_id": "flat7x-d0-bsi-structure-composition",
+          "mapping_status": "MATERIALIZED_D0_BSI_STRUCTURE_FROM_THREE_WASHED_SEGMENTS",
+          "implementation_status": "LOCALLY_VERIFIED_TYPED_D0_BSI_COMPOSITION_AND_ATOMIC_PREFLIGHT__FULL_FRAME_OPEN",
+          "implementation_requirement": true,
+          "owner": "codec",
+          "scope": "From cursor zero, accepts one typed Flat7xD0BsiStructure and composes the approved fixed prefix, caller BSI fields through chanmap, mixing/block metadata, infomdate-selected information, and opaque addbsi suffix in the existing component order. It admits only the exact approved D0 target row, serializes all components into bounded private scratch to validate values and obtain the total bit extent, preflights caller capacity once, then copies the complete bit range. Any invalid component, unsupported target, nonzero start cursor, or short caller buffer leaves caller bytes and cursor unchanged. This is a BSI structure entry only; it creates no audio, CRC, JOC interpretation, full D0 frame/AU, production, GTC, or encoder call.",
+          "dependencies": [
+            "F01E/flat7x-i0-d0-typed-target-plan",
+            "F12/flat7x-d0-bsi-segment-through-chanmap",
+            "F12/flat7x-d0-mixing-metadata-segment",
+            "F12/flat7x-d0-information-addbsi-suffix"
+          ],
+          "spec_files": [
+            "specs/12-codec-and-wire.md",
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-BSI-SEGMENT-V1/CONTRACT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-MIXING-METADATA-V1/CONTRACT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/CONTRACT.md"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/frame_builder.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
+              "bytes": 37612,
+              "sha256": "59d2441d04236c3027569e539858e5f50ee1bf0c085ad6b522684e364e818105"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/flat7x_d0_bsi_structure.rs"
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_d0_bsi_structure.rs",
+              "bytes": 6404,
+              "sha256": "53217974c51403671ae7801e01f2d679adfba66b9214cbf5524188a4e43c736d"
+            }
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The composed BSI starts at frame bit zero and returns the cursor after opaque addbsi or addbsie=0."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_D0_BSI_MIXING_AND_INFORMATION_COMPONENTS",
+            "component_packages": [
+              {
+                "package_id": "eac3-dependent-d0-bsi-segment-v1",
+                "manifest_sha256": "cf24050c7539262f53f220366f3c4328d766147a39daeb37e3e89f27817b88db",
+                "seal_sha256": "5af97a494b53190ce7014f47829352fc71dc58d9bdf3354554469ed1676f7be2"
+              },
+              {
+                "package_id": "eac3-dependent-d0-mixing-metadata-v1",
+                "manifest_sha256": "a7d8bb0e724dd94b9a31fa860c4296daecc957e4570dfdb9f32bf5ef17c3aa12",
+                "seal_sha256": "a7fcace5ab491fb3f7f82927146a6c9e33f7fa6321bf875d0bb4c11b7c004a7e"
+              },
+              {
+                "package_id": "eac3-dependent-d0-info-addbsi-segment-v1",
+                "manifest_sha256": "e8f1908d3572571c4dcb19aedd898b0e068464d6921ed54569fd8df4cb3a7cdb",
+                "seal_sha256": "d94fd72b890c522849cca6380f7630eddf1637764fda09807a61aa8ce3385f5d"
+              }
+            ],
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-BSI-SEGMENT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-BSI-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-MIXING-METADATA-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-MIXING-METADATA-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "target_context": {
+              "strmtyp": 1,
+              "substream_id": 0,
+              "sample_rate_hz": 48000,
+              "audio_blocks_per_frame": 6,
+              "acmod": 5,
+              "lfeon": 0,
+              "chanmap": "0x1A00",
+              "bit_rate_kbps": 1024,
+              "frame_bytes": 4096
+            },
+            "start_cursor_bits": 0,
+            "maximum_staged_bits": 664,
+            "maximum_staging_bytes": 83,
+            "complete_caller_capacity_preflight": true,
+            "production_allowed": false,
+            "validation_boundary": "Local component composition and atomic caller-buffer admission only; no Wash composite expected bytes or full D0 frame/AU acceptance is claimed."
+          },
+          "vectors": {
+            "kind": "INPUT_ONLY_COMPONENT_EQUIVALENCE_AND_ATOMIC_REJECTION_CASES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-BSI-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-MIXING-METADATA-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "Two typed requests compare the combined entry byte-for-byte with the three approved component writers in order.",
+              "Dialnorm, mixing, information, and addbsi length failures preserve caller bytes and cursor.",
+              "A 101-bit composed request in a 96-bit buffer rejects before caller mutation.",
+              "A nonzero caller cursor rejects before caller mutation.",
+              "Expected composite bytes are locally compared only; Wash supplied no composite expected-output vector."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "LOCALLY_VERIFIED_COMPONENT_EQUIVALENCE_AND_ATOMIC_CALLER_PREFLIGHT"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "D0_BSI_STRUCTURE_COMPONENT_REJECTED",
+              "category": "component parameter validation",
+              "trigger": "Any fixed-prefix/BSI, mixing/block, informational field, or addbsi component rejects its input.",
+              "result": "Typed component error before caller bytes or cursor change.",
+              "caller_action": "Reject the whole structure candidate and provide values admitted by the selected component contracts."
+            },
+            {
+              "error_code": "FRAME_BIT_WRITER_BUFFER_TOO_SMALL",
+              "category": "whole-structure capacity",
+              "trigger": "The caller buffer cannot hold the staged complete BSI bit extent.",
+              "result": "BufferTooSmall before any composed bit is copied to caller storage.",
+              "caller_action": "Reject the whole structure candidate; caller retains buffer ownership."
+            }
+          ],
+          "not_run": [
+            "No real frame, audio blocks, CRC, JOC payload interpretation, AU/GTC integration, encoder call, production path, or W04 is run.",
+            "No Wash-provided expected composite byte vector exists; test compares the combined entry with the already-tested component writer sequence."
+          ],
+          "validation_boundary": "Typed structural BSI composition across the three registered Wash fragments; production_allowed=false.",
+          "delivery_scope": "FLAT7X_D0_BSI_STRUCTURE_COMPOSITION_ONLY_NO_AUDIO_FRAME_AU_GTC_OR_PRODUCTION_CLAIM"
         }
       ]
     },
@@ -56328,8 +56460,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2113370,
-              "sha256": "c276af2a7109021755c6584b298d5d9086dc957448a0045421adb1701a46b9c3"
+              "bytes": 2117844,
+              "sha256": "37d54233a5069e59091916be9401579a4efa1fa8f7e556b5ad8ce6d167ef8dbf"
             }
           ],
           "test_inventory": [

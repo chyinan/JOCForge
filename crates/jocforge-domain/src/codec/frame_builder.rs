@@ -413,6 +413,7 @@ const D0_SOURCEFSCOD_WIDTH_BITS: u8 = 1;
 const D0_ADDBSIE_WIDTH_BITS: u8 = 1;
 const D0_ADDBSIL_WIDTH_BITS: u8 = 6;
 const D0_MAX_ADDBSI_BYTES: usize = 64;
+const D0_BSI_STRUCTURE_STAGING_BYTES: usize = 83;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Flat7xD0AudioProductionMetadata {
@@ -428,6 +429,50 @@ pub struct Flat7xD0InformationMetadata {
     pub origbs: bool,
     pub audio_production: Option<Flat7xD0AudioProductionMetadata>,
     pub sourcefscod: u8,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Flat7xD0BsiStructure<'a> {
+    pub dialnorm: u8,
+    pub compr: Option<u8>,
+    pub mixing: Option<Flat7xD0MixingMetadataValues>,
+    pub block_mix: [Option<u8>; 6],
+    pub information: Option<Flat7xD0InformationMetadata>,
+    pub addbsi: Option<&'a [u8]>,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Flat7xD0BsiStructureError {
+    CursorMismatch { actual: u32 },
+    UnsupportedTargetContext,
+    BsiSegment(Flat7xD0BsiSegmentError),
+    MixingMetadata(Flat7xD0MixingMetadataError),
+    InfoAddbsi(Flat7xD0InfoAddbsiError),
+    BitWriter(FrameBitWriterError),
+}
+
+impl From<Flat7xD0BsiSegmentError> for Flat7xD0BsiStructureError {
+    fn from(error: Flat7xD0BsiSegmentError) -> Self {
+        Self::BsiSegment(error)
+    }
+}
+
+impl From<Flat7xD0MixingMetadataError> for Flat7xD0BsiStructureError {
+    fn from(error: Flat7xD0MixingMetadataError) -> Self {
+        Self::MixingMetadata(error)
+    }
+}
+
+impl From<Flat7xD0InfoAddbsiError> for Flat7xD0BsiStructureError {
+    fn from(error: Flat7xD0InfoAddbsiError) -> Self {
+        Self::InfoAddbsi(error)
+    }
+}
+
+impl From<FrameBitWriterError> for Flat7xD0BsiStructureError {
+    fn from(error: FrameBitWriterError) -> Self {
+        Self::BitWriter(error)
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -573,6 +618,62 @@ pub fn append_flat7x_d0_info_and_addbsi(
         }
     }
 
+    Ok(writer.cursor())
+}
+
+/// Writes the complete selected D0 BSI structure from the fixed prefix through opaque addbsi.
+///
+/// All component writers first validate and serialize into bounded private scratch. The caller's
+/// writer is preflighted for the resulting complete bit extent before those staged bits are
+/// copied, so any invalid component or insufficient capacity leaves caller bytes and cursor intact.
+/// The only accepted plan is the approved Flat7x D0 row; this is a structural BSI entry, not a
+/// frame/AU, audio, CRC, JOC interpretation, or production encoder.
+pub fn write_flat7x_d0_bsi_structure(
+    writer: &mut FrameBitWriter<'_>,
+    target: Flat7xI0D0TargetPlan,
+    structure: Flat7xD0BsiStructure<'_>,
+) -> Result<FrameBitCursor, Flat7xD0BsiStructureError> {
+    let actual = writer.cursor().bit_offset();
+    if actual != 0 {
+        return Err(Flat7xD0BsiStructureError::CursorMismatch { actual });
+    }
+    if target != Flat7xI0D0TargetPlan::approved_contract() {
+        return Err(Flat7xD0BsiStructureError::UnsupportedTargetContext);
+    }
+
+    // Maximum extent: 76 BSI bits + 54 mixing bits + 534 information/addbsi bits.
+    let mut staging = [0_u8; D0_BSI_STRUCTURE_STAGING_BYTES];
+    let end;
+    {
+        let mut staging_writer = FrameBitWriter::new(&mut staging, FrameBitCursor::new(0))?;
+        write_flat7x_d0_bsi_through_chanmap(
+            &mut staging_writer,
+            structure.dialnorm,
+            structure.compr,
+        )?;
+        append_flat7x_d0_mixing_metadata_and_infomdate(
+            &mut staging_writer,
+            target,
+            structure.mixing,
+            structure.block_mix,
+            structure.information.is_some(),
+        )?;
+        append_flat7x_d0_info_and_addbsi(
+            &mut staging_writer,
+            target,
+            structure.information.is_some(),
+            structure.information,
+            structure.addbsi,
+        )?;
+        end = staging_writer.cursor().bit_offset();
+    }
+
+    writer.preflight_capacity(end)?;
+    for bit_offset in 0..end {
+        let byte = staging[(bit_offset / 8) as usize];
+        let value = byte & (1_u8 << (7 - bit_offset % 8)) != 0;
+        writer.write_bit(value)?;
+    }
     Ok(writer.cursor())
 }
 
