@@ -1,6 +1,6 @@
 # JOCForge
 
-The selected 48 kHz / 5.1 six-carrier E-AC-3 JOC CLI path is implemented for explicit rates of 384, 448, 576, 640, 768, and 1024 kbps. Local verification covers input/profile admission, frame sizing, keyless integrity, and a full-file output at each rate. These outputs are not equivalent to DEE; DEE parity and W04 acceptance are not established.
+**5.1 多码率 CLI：可用。** The selected 48 kHz / 5.1 six-carrier E-AC-3 JOC CLI path supports explicit rates of 384, 448, 576, 640, 768, and 1024 kbps. Local verification covers input/profile admission, frame sizing, keyless integrity, and a full-file output at each rate. These outputs are not equivalent to DEE; DEE parity and W04 acceptance are not established.
 
 Example: encode the selected 5.1 profile at 1024 kbps.
 
@@ -8,7 +8,7 @@ Example: encode the selected 5.1 profile at 1024 kbps.
 jocforge encode "D:\input.adm.wav" "D:\output.ec3" --data-rate 1024
 ```
 
-The next profile under development is the Flat7.1 structure matching the official demo:
+**详细结构 Flat7.1：开发中。** The target follows the official demo structure:
 
 - I0: 640 kbps legacy AC-3; D0: 1024 kbps E-AC-3 with `chanmap=0x1A00` (1,664 kbps aggregate target).
 - Flat7x/JOC reconstruction index 1, 15 JOC objects/reconstruction rows, and complexity 16. These reconstruction rows are separate from ADM physical input rows.
