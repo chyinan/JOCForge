@@ -12303,7 +12303,7 @@ def check_f12_flat7x_elementary_stream_sequence_composer(root, d):
                 "rejects_empty_sequence_and_bad_au_extent_without_mutation",
                 "rejects_size_overflow_and_short_capacity_without_mutation",
                 "rejects_non_byte_aligned_cursor_without_mutation",
-                "synthetic_d0_frame_composes_into_au_and_two_au_stream_with_crc2_preserved",
+                "synthetic_d0_frame_composes_into_au_and_two_au_stream_with_generated_crc2_preserved",
             )
         ),
         "Flat7x sequence maps synthetic multi-AU order, overflow, empty and atomic rejection vectors",
