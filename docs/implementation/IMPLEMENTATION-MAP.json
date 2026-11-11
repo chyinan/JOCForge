@@ -10394,8 +10394,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 32124,
-              "sha256": "2477bd38686bc1ea360e672c2efa709c6ac1ee5107f56346968d14f6c43d8f1a"
+              "bytes": 33107,
+              "sha256": "aca730c6908ab37288b62dfe9e9287269d5e694b861668ed4bf838951daac960"
             },
             {
               "path": "crates/jocforge-domain/src/profile/mod.rs",
@@ -10406,8 +10406,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 32124,
-              "sha256": "2477bd38686bc1ea360e672c2efa709c6ac1ee5107f56346968d14f6c43d8f1a"
+              "bytes": 33107,
+              "sha256": "aca730c6908ab37288b62dfe9e9287269d5e694b861668ed4bf838951daac960"
             }
           ],
           "clock": {
@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2124183,
-              "sha256": "edfca3efb6260025a378934ba744633f4fa32e6a07ea27fa654ac31e92c1f7b7"
+              "bytes": 2129700,
+              "sha256": "ab3c3fed158034c3264e6ad26c572705c603f76c0ab944ad16b99de5e91e2840"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2124183,
-              "sha256": "edfca3efb6260025a378934ba744633f4fa32e6a07ea27fa654ac31e92c1f7b7"
+              "bytes": 2129700,
+              "sha256": "ab3c3fed158034c3264e6ad26c572705c603f76c0ab944ad16b99de5e91e2840"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -45551,8 +45551,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 32124,
-              "sha256": "2477bd38686bc1ea360e672c2efa709c6ac1ee5107f56346968d14f6c43d8f1a"
+              "bytes": 33107,
+              "sha256": "aca730c6908ab37288b62dfe9e9287269d5e694b861668ed4bf838951daac960"
             }
           ],
           "test_inventory": [
@@ -45692,13 +45692,13 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/huffman/id14_header.rs",
-              "bytes": 13748,
-              "sha256": "86af19e83e894b14f9da2e5c07e492df49e090a9e20b9b9343462bc102d11b66"
+              "bytes": 18168,
+              "sha256": "46302ebb0c2b320c51b1fc6e3101bb0f31238294344ebc6aedec504cb747eb1f"
             },
             {
               "path": "crates/jocforge-domain/src/joc/huffman.rs",
-              "bytes": 29954,
-              "sha256": "b52583e123cc25d91f23715fd4d83ae5b0ac818b37023ab3bb017b4e966f1f76"
+              "bytes": 30053,
+              "sha256": "ca17e4f2ea81ace02ea52c09f6275be7076e70c87b8df466aaf858cc7d82bdcd"
             },
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_payload.rs",
@@ -45712,8 +45712,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/joc_reconstruction_layout.rs",
-              "bytes": 8636,
-              "sha256": "18e43344ab2507ce278ebc4840251d6f2ba3105d9503b26f5b1675383797e6d6"
+              "bytes": 11304,
+              "sha256": "0c3d8513628eb46ff9880d430f4b222e31ced15790dc8c0937208d3d641bfad5"
             }
           ],
           "clock": {
@@ -45946,13 +45946,13 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/huffman.rs",
-              "bytes": 29954,
-              "sha256": "b52583e123cc25d91f23715fd4d83ae5b0ac818b37023ab3bb017b4e966f1f76"
+              "bytes": 30053,
+              "sha256": "ca17e4f2ea81ace02ea52c09f6275be7076e70c87b8df466aaf858cc7d82bdcd"
             },
             {
               "path": "crates/jocforge-domain/src/joc/huffman/id14_header.rs",
-              "bytes": 13748,
-              "sha256": "86af19e83e894b14f9da2e5c07e492df49e090a9e20b9b9343462bc102d11b66"
+              "bytes": 18168,
+              "sha256": "46302ebb0c2b320c51b1fc6e3101bb0f31238294344ebc6aedec504cb747eb1f"
             }
           ],
           "test_modules": [
@@ -45979,8 +45979,8 @@
             },
             {
               "path": "crates/jocforge-domain/tests/joc_reconstruction_layout.rs",
-              "bytes": 8636,
-              "sha256": "18e43344ab2507ce278ebc4840251d6f2ba3105d9503b26f5b1675383797e6d6"
+              "bytes": 11304,
+              "sha256": "0c3d8513628eb46ff9880d430f4b222e31ced15790dc8c0937208d3d641bfad5"
             }
           ],
           "clock": {
@@ -46964,8 +46964,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 32124,
-              "sha256": "2477bd38686bc1ea360e672c2efa709c6ac1ee5107f56346968d14f6c43d8f1a"
+              "bytes": 33107,
+              "sha256": "aca730c6908ab37288b62dfe9e9287269d5e694b861668ed4bf838951daac960"
             }
           ],
           "clock": {
@@ -47401,6 +47401,144 @@
           ],
           "validation_boundary": "Synthetic input-only span layout and rejection model; no frame emission or native insertion binding.",
           "delivery_scope": "FLAT7X_D0_SIX_BLOCK_LAYOUT_PROPOSAL_ONLY_NO_AUDIO_FRAME_AU_GTC_OR_PRODUCTION_CLAIM"
+        },
+        {
+          "slice_id": "flat7x-target-id14-header",
+          "mapping_status": "MATERIALIZED_WASHED_TARGET_PLAN_TO_PROFILE_AWARE_ID14_HEADER_BOUNDARY",
+          "implementation_status": "LOCALLY_VERIFIED_FLAT7X_TARGET_INDEX1_OBJECT_COUNT15_HEADER_ONLY__PRODUCTION_OPEN",
+          "implementation_requirement": true,
+          "owner": "codec",
+          "scope": "Adds a separate header-only API from an optional approved Flat7xI0D0TargetPlan to the existing profile-aware ID14 writer. It requires the exact approved target, profile-owned joc_dmx_config_idx=1, and caller object_count=15 matching the target's coded object count. The existing writer encodes semantic object_count 15 as the ETSI U6 value 14. The typed header-only input contains no body or complexity field; the adapter preserves the caller downmix input, serializes only ID14 header/descriptors, stages the write, and commits caller writer bytes only on success. Mode0/phase1/internal index3, complexity_index_type_a=16, seven reconstruction carriers, 15 reconstruction rows, and ADM physical rows remain distinct domains. No D0 audio, EMDF, AU, GTC, or production connection is added.",
+          "dependencies": [
+            "F01E/flat7x-i0-d0-typed-target-plan",
+            "F12/flat7x-reconstruction-layout-profile-and-header-index"
+          ],
+          "spec_files": [
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/PUBLIC-API.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1/ARCHITECTURE-DECISION-ADDENDUM.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1/INPUT-ONLY-VECTORS.json"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/joc/huffman/id14_header.rs",
+            "crates/jocforge-domain/src/joc/huffman.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/joc/huffman/id14_header.rs",
+              "bytes": 18168,
+              "sha256": "46302ebb0c2b320c51b1fc6e3101bb0f31238294344ebc6aedec504cb747eb1f"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/huffman.rs",
+              "bytes": 30053,
+              "sha256": "ca17e4f2ea81ace02ea52c09f6275be7076e70c87b8df466aaf858cc7d82bdcd"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/joc_reconstruction_layout.rs",
+            "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs"
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/tests/joc_reconstruction_layout.rs",
+              "bytes": 11304,
+              "sha256": "0c3d8513628eb46ff9880d430f4b222e31ced15790dc8c0937208d3d641bfad5"
+            },
+            {
+              "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
+              "bytes": 33107,
+              "sha256": "aca730c6908ab37288b62dfe9e9287269d5e694b861668ed4bf838951daac960"
+            }
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The staged ID14 header advances only its local bit cursor; it creates no source/callback/AU generation or owner receipt."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_FLAT7X_TARGET_ID14_HEADER_FIELDS_AND_COUNT_DOMAINS",
+            "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+            "supplement_manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+            "supplement_seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+            "supporting_profile_package_manifest_sha256": "509a4d61dbc0b20a0044a05043a99e83a7b60224aefd3df144cb394d1b30048b",
+            "official_reference_addendum_manifest_sha256": "c4104e674a9c3df06ead8f6741a7366e58068602789806d1a91d045c1dfd731a",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/COUNT-DOMAINS-AND-GTC-PROJECTION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V2/REFERENCE-STRUCTURE-ADDENDUM.json"
+            ],
+            "header_fields": {
+              "joc_dmx_config_idx": {
+                "width_bits": 3,
+                "value": 1
+              },
+              "semantic_object_count": 15,
+              "joc_num_objects_bits": {
+                "width_bits": 6,
+                "value": 14,
+                "formula": "object_count - 1"
+              },
+              "complexity_index_type_a": {
+                "value": 16,
+                "serialized_in_id14_header": false
+              }
+            },
+            "separate_domains": {
+              "downmix": "SelectedMode0Phase1Index3 and caller downmix_index remain separate from reconstruction index 1",
+              "reconstruction_carriers": 7,
+              "reconstruction_rows": 15,
+              "ADM_physical_rows": "N, currently 36/38 supported input scope; not object_count"
+            },
+            "header_only": true,
+            "body_included": false,
+            "production_allowed": false,
+            "validation_boundary": "Local header/index/count serialization and pre-write target/count gates; no D0 audio/AU, native writer, production output or W04 validation."
+          },
+          "vectors": {
+            "kind": "WASHED_INPUT_ONLY_FLAT7X_INDEX_AND_COUNT_DOMAIN_CASES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/COUNT-DOMAINS-AND-GTC-PROJECTION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V2/REFERENCE-STRUCTURE-ADDENDUM.json"
+            ],
+            "case_pointers": [
+              "Target index 1 emits U3 001; semantic object_count 15 emits U6 count bits 001110 (15 - 1).",
+              "Downmix mode0/phase1/internal index3 remains separate from header reconstruction index 1.",
+              "Complexity16, seven carriers, 15 reconstruction rows and ADM physical input rows are separate domains; complexity is not serialized as object_count.",
+              "Missing/invalid target contract and object_count mismatch reject with caller writer state unchanged.",
+              "Existing 5.1 profile header remains byte-equal to its previous writer path; target wrapper omits body bytes."
+            ],
+            "expected_outputs_included": true,
+            "execution_status": "LOCALLY_VERIFIED_FLAT7X_HEADER_FIELDS_DOMAIN_SEPARATION_AND_5_1_BYTE_EQUALITY"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "FLAT7X_ID14_TARGET_CONTRACT_REJECTED",
+              "category": "target contract admission",
+              "trigger": "The target contract is absent or differs from the approved Flat7x profile/object-count/carrier row.",
+              "result": "Typed rejection before staging or caller writer mutation.",
+              "caller_action": "Supply the exact approved Flat7xI0D0TargetPlan."
+            },
+            {
+              "error_code": "FLAT7X_ID14_OBJECT_COUNT_MISMATCH",
+              "category": "header object-count agreement",
+              "trigger": "Caller semantic object_count differs from the target count 15.",
+              "result": "Typed rejection before writer mutation.",
+              "caller_action": "Use the target's semantic object count; the writer encodes U6 count-minus-one."
+            }
+          ],
+          "not_run": [
+            "No target 1,664-kbps full-file output, D0 frame/AU composition, metadata/source join, GTC, production or W04 acceptance is run.",
+            "No complexity field is added to ID14; target complexity remains separately represented by the approved target plan."
+          ],
+          "validation_boundary": "Target-specific ID14 header/descriptors only; full Flat7.1 output remains open and production_allowed=false.",
+          "delivery_scope": "FLAT7X_TARGET_ID14_HEADER_ONLY_NO_D0_AUDIO_AU_GTC_OR_PRODUCTION_CLAIM"
         }
       ]
     },
@@ -56606,8 +56744,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2124183,
-              "sha256": "edfca3efb6260025a378934ba744633f4fa32e6a07ea27fa654ac31e92c1f7b7"
+              "bytes": 2129700,
+              "sha256": "ab3c3fed158034c3264e6ad26c572705c603f76c0ab944ad16b99de5e91e2840"
             }
           ],
           "test_inventory": [

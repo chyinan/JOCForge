@@ -683,6 +683,10 @@ mod tests {
         bitio::{FrameBitCursor, FrameBitWriter},
         frame_builder::{Flat7xD0InfoAddbsiError, append_flat7x_d0_info_and_addbsi},
     };
+    use crate::joc::huffman::{
+        Flat7xTargetId14HeaderError, Flat7xTargetId14HeaderInput, Id14WriterState,
+        write_id14_header_for_flat7x_target,
+    };
     use crate::profile::{EncodingProfile, resolve_selected_profile};
 
     fn crc_valid_frame_extent(frame_bytes: usize, marker: u8) -> Vec<u8> {
@@ -791,6 +795,29 @@ mod tests {
         assert!(!plan.partial_i0_publication_allowed());
         assert!(!plan.production_allowed());
         assert_eq!(plan.open_gates().len(), 7);
+    }
+
+    #[test]
+    fn flat7x_target_id14_header_rejects_invalid_target_before_writer_mutation() {
+        let mut target = Flat7xI0D0TargetPlan::approved_contract();
+        target.coded_object_count = 14;
+        let input = Flat7xTargetId14HeaderInput {
+            downmix_index: 3,
+            object_count: 15,
+            extension_config: 0,
+            clip_gain_index: 0,
+            sequence_count: 1,
+            channel_limit: 24,
+            descriptors: None,
+        };
+        let mut writer = Id14WriterState::new(vec![0xa5; 32]);
+        let original = writer.clone();
+
+        assert_eq!(
+            write_id14_header_for_flat7x_target(&input, Some(target), &mut writer),
+            Err(Flat7xTargetId14HeaderError::UnsupportedTargetContract)
+        );
+        assert_eq!(writer, original);
     }
 
     fn complete_candidate(

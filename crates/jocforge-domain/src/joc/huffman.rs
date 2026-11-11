@@ -6,8 +6,9 @@ use std::fmt;
 
 pub mod id14_header;
 pub use id14_header::{
-    Id14HeaderInput, Id14InputShapeError, Id14ObjectDescriptor, Id14OutputLength, Id14Presence,
-    Id14WriterOutcome, Id14WriterReturnCode, Id14WriterState, write_id14_header,
+    Flat7xTargetId14HeaderError, Flat7xTargetId14HeaderInput, Id14HeaderInput, Id14InputShapeError,
+    Id14ObjectDescriptor, Id14OutputLength, Id14Presence, Id14WriterOutcome, Id14WriterReturnCode,
+    Id14WriterState, write_id14_header, write_id14_header_for_flat7x_target,
     write_id14_header_for_profile,
 };
 

@@ -1,7 +1,10 @@
 // pattern: Functional Core
 //! The selected ID14 header/body bit writer. Parent retry and section-header meanings remain external.
 
-use crate::profile::ResolvedEncodingProfile;
+use crate::profile::{
+    EncodingProfile, Flat7xI0D0TargetPlan, JocReconstructionLayout, ProfileError,
+    ResolvedEncodingProfile, resolve_selected_profile,
+};
 
 /// Values observed for the one-bit `present` field.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -55,6 +58,35 @@ pub struct Id14HeaderInput {
     pub descriptors: Option<Vec<Id14ObjectDescriptor>>,
     pub body: Vec<u8>,
     pub body_valid_bits: super::HuffmanBitCount,
+}
+
+/// Header-only caller fields for the approved Flat7x D0/JOC target.
+///
+/// Object count is the semantic count; the existing writer serializes the
+/// approved ETSI count-bits value (`object_count - 1`) into its U6 field.
+/// This type carries no body or complexity field, keeping those domains out of
+/// the ID14 header adapter.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Flat7xTargetId14HeaderInput {
+    pub downmix_index: u32,
+    pub object_count: u32,
+    pub extension_config: u32,
+    pub clip_gain_index: u32,
+    pub sequence_count: u32,
+    pub channel_limit: u32,
+    pub descriptors: Option<Vec<Id14ObjectDescriptor>>,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Flat7xTargetId14HeaderError {
+    MissingTargetContract,
+    UnsupportedTargetContract,
+    ObjectCountMismatch { expected: u8, actual: u32 },
+    MissingDescriptorList,
+    DescriptorCountMismatch { expected: u8, actual: usize },
+    ProfileResolution(ProfileError),
+    InputShape(Id14InputShapeError),
+    WriterRejected(Id14WriterOutcome),
 }
 
 /// The writer's separate native return-code class.
@@ -169,6 +201,80 @@ pub fn write_id14_header_for_profile(
     writer: &mut Id14WriterState,
 ) -> Result<Id14WriterOutcome, Id14InputShapeError> {
     write_id14_header_with_layout_index(input, profile.joc_dmx_config_idx(), writer)
+}
+
+/// Writes only the ID14 header/descriptors for the approved Flat7x target.
+///
+/// The target contract supplies reconstruction index 1 and object count 15;
+/// the existing profile-aware writer serializes the U3 layout index and the
+/// ETSI U6 count-bits value `15 - 1`. Caller downmix fields remain separate,
+/// and the target's complexity, reconstruction-carrier and ADM-row counts are
+/// not added to or derived from the object-count field. The adapter omits the
+/// input body and commits its staged header bytes only after a successful write.
+pub fn write_id14_header_for_flat7x_target(
+    input: &Flat7xTargetId14HeaderInput,
+    target: Option<Flat7xI0D0TargetPlan>,
+    writer: &mut Id14WriterState,
+) -> Result<Id14WriterOutcome, Flat7xTargetId14HeaderError> {
+    let target = target.ok_or(Flat7xTargetId14HeaderError::MissingTargetContract)?;
+    let approved = Flat7xI0D0TargetPlan::approved_contract();
+    if target != approved
+        || target.joc_dmx_config_idx() != 1
+        || target.coded_object_count() != 15
+        || target.complexity_index_type_a() != 16
+        || target.reconstruction_carriers().len() != 7
+    {
+        return Err(Flat7xTargetId14HeaderError::UnsupportedTargetContract);
+    }
+
+    let expected_object_count = target.coded_object_count();
+    if input.object_count != u32::from(expected_object_count) {
+        return Err(Flat7xTargetId14HeaderError::ObjectCountMismatch {
+            expected: expected_object_count,
+            actual: input.object_count,
+        });
+    }
+    let descriptors = input
+        .descriptors
+        .as_ref()
+        .ok_or(Flat7xTargetId14HeaderError::MissingDescriptorList)?;
+    if descriptors.len() != usize::from(expected_object_count) {
+        return Err(Flat7xTargetId14HeaderError::DescriptorCountMismatch {
+            expected: expected_object_count,
+            actual: descriptors.len(),
+        });
+    }
+
+    let flat7x_profile = resolve_selected_profile(
+        &EncodingProfile::selected_with_joc_reconstruction_layout(JocReconstructionLayout::Flat7x),
+    )
+    .map_err(Flat7xTargetId14HeaderError::ProfileResolution)?;
+    if flat7x_profile.joc_dmx_config_idx() != Some(target.joc_dmx_config_idx()) {
+        return Err(Flat7xTargetId14HeaderError::UnsupportedTargetContract);
+    }
+
+    let header_input = Id14HeaderInput {
+        downmix_index: input.downmix_index,
+        object_count: input.object_count,
+        extension_config: input.extension_config,
+        clip_gain_index: input.clip_gain_index,
+        sequence_count: input.sequence_count,
+        channel_limit: input.channel_limit,
+        descriptors: Some(descriptors.clone()),
+        body: Vec::new(),
+        body_valid_bits: super::HuffmanBitCount::new(0),
+    };
+    let mut candidate = writer.clone();
+    let outcome = write_id14_header_for_profile(&header_input, flat7x_profile, &mut candidate)
+        .map_err(Flat7xTargetId14HeaderError::InputShape)?;
+    if outcome.return_code() != Id14WriterReturnCode::Success {
+        return Err(Flat7xTargetId14HeaderError::WriterRejected(outcome));
+    }
+
+    writer.buffer.clone_from_slice(&candidate.buffer);
+    writer.output_length = candidate.output_length;
+    writer.status_word = candidate.status_word;
+    Ok(outcome)
 }
 
 fn write_id14_header_with_layout_index(
