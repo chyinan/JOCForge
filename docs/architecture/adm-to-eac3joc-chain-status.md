@@ -1767,3 +1767,7 @@ Wash 包 `EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1`（manifest SHA-256 `e8f1908d
 ## 2026-11-11：D0 typed six-block layout proposal
 
 `codec::d0_frame_layout::propose_flat7x_d0_six_block_layout` 在纯 model 层以固定六个 bit-length spans 建立 block 顺序与位置。仅 zero-based block 2 可有一个 skip-field layout descriptor；其 insertion offset 使用 `CallerOwnedUnboundD0Block2InsertionPoint`，明示 caller-owned/unbound。payload 长度由 skip-field 共享校验器限定为 1..511，C=512、缺失/重复/错 block、插入 offset 越界、总 span 超过 target 4096 bytes 和 checked arithmetic overflow 均返回错误，不产生布局结果。synthetic vectors/测试只含 bit lengths 与合成 skipfield 测试字节，不含音频数据；此 proposal 不写帧字节、不读取或生成 PCM/audio，不填充 mantissas、不计算 CRC、不延续至 block 3，也不连接 AU/GTC/production。
+
+## 2026-11-11：caller-supplied D0 frame bit assembler
+
+`codec::d0_frame_assembler::assemble_flat7x_d0_frame_bits` 在已批准的 4096-byte D0 target 上，组合六个 caller-supplied opaque audio bit spans、block 2 pre/skipfield/post spans 和 caller-supplied CRC2 U16。block-two insertion offset 保持 `CallerOwnedUnboundD0Block2InsertionPoint`；所有 source ranges、唯一完整 skipfield、exact 32768-bit extent 及 writer capacity 均在一次 caller write 前完成校验。函数只逐位原样复制 opaque spans，不解析或产生 PCM/audio、mantissas/BAP，也不计算 CRC；crc2按 caller值写入尾部。固定 output shape 与 synthetic vectors 标记为 `SYNTHETIC_NOT_REAL_OUTPUT`，不能用作可播放帧、native cursor闭合或 production/AU/GTC 证据。

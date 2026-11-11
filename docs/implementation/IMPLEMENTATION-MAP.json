@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2129700,
-              "sha256": "ab3c3fed158034c3264e6ad26c572705c603f76c0ab944ad16b99de5e91e2840"
+              "bytes": 2135219,
+              "sha256": "0db89868443ecdee7b8c3b3a8bda59bc97bf76ffb40b2231e68f37ee13bc3ef9"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2129700,
-              "sha256": "ab3c3fed158034c3264e6ad26c572705c603f76c0ab944ad16b99de5e91e2840"
+              "bytes": 2135219,
+              "sha256": "0db89868443ecdee7b8c3b3a8bda59bc97bf76ffb40b2231e68f37ee13bc3ef9"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -42348,8 +42348,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 972,
-              "sha256": "f34e16cf413e59426db636efd4a39008ab2450583a2eb059d600da8029950681"
+              "bytes": 1000,
+              "sha256": "1320e5efccac99003c6669ad149d5d129fb0c09b48925a5ae213e0aad0717c30"
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
@@ -42482,8 +42482,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 972,
-              "sha256": "f34e16cf413e59426db636efd4a39008ab2450583a2eb059d600da8029950681"
+              "bytes": 1000,
+              "sha256": "1320e5efccac99003c6669ad149d5d129fb0c09b48925a5ae213e0aad0717c30"
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
@@ -42659,8 +42659,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 972,
-              "sha256": "f34e16cf413e59426db636efd4a39008ab2450583a2eb059d600da8029950681"
+              "bytes": 1000,
+              "sha256": "1320e5efccac99003c6669ad149d5d129fb0c09b48925a5ae213e0aad0717c30"
             },
             {
               "path": "crates/jocforge-domain/src/codec/published_emdf_binding.rs",
@@ -45546,8 +45546,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 972,
-              "sha256": "f34e16cf413e59426db636efd4a39008ab2450583a2eb059d600da8029950681"
+              "bytes": 1000,
+              "sha256": "1320e5efccac99003c6669ad149d5d129fb0c09b48925a5ae213e0aad0717c30"
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
@@ -46111,8 +46111,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 972,
-              "sha256": "f34e16cf413e59426db636efd4a39008ab2450583a2eb059d600da8029950681"
+              "bytes": 1000,
+              "sha256": "1320e5efccac99003c6669ad149d5d129fb0c09b48925a5ae213e0aad0717c30"
             }
           ],
           "test_inventory": [
@@ -47293,8 +47293,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 972,
-              "sha256": "f34e16cf413e59426db636efd4a39008ab2450583a2eb059d600da8029950681"
+              "bytes": 1000,
+              "sha256": "1320e5efccac99003c6669ad149d5d129fb0c09b48925a5ae213e0aad0717c30"
             }
           ],
           "test_modules": [
@@ -47539,6 +47539,137 @@
           ],
           "validation_boundary": "Target-specific ID14 header/descriptors only; full Flat7.1 output remains open and production_allowed=false.",
           "delivery_scope": "FLAT7X_TARGET_ID14_HEADER_ONLY_NO_D0_AUDIO_AU_GTC_OR_PRODUCTION_CLAIM"
+        },
+        {
+          "slice_id": "flat7x-d0-frame-bit-assembler",
+          "mapping_status": "MATERIALIZED_CALLER_SUPPLIED_D0_FRAME_BIT_ASSEMBLY_MODEL",
+          "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_EXACT_FRAME_ASSEMBLY_AND_FAILURE_ATOMICITY__PRODUCTION_OPEN",
+          "implementation_requirement": true,
+          "owner": "codec",
+          "scope": "Consumes one approved D0 BSI structure, six ordered caller-supplied opaque audio bit spans, exactly one block-two split span with a caller-supplied complete skipfield container and caller-owned/unbound insertion point, plus caller-supplied CRC2 U16. It stages the 4096-byte target frame, copies audio bits verbatim without decoding them, writes the one complete skiple=1/U9 skipl/payload field, writes CRC2 as supplied without calculating it, and commits the frame plus cursor only after all source bounds, block/skipfield placement, exact 32768-bit extent and writer capacity checks pass. It generates no audio/mantissas/BAP, performs no CRC algorithm, and does not call AU/GTC/production.",
+          "dependencies": [
+            "F12/flat7x-d0-bsi-structure-composition",
+            "F12/flat7x-d0-six-block-layout-proposal",
+            "F12/flat7x-d0-block2-skipfld-serializer"
+          ],
+          "spec_files": [
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/EMDF-AND-VALIDATION-DISPOSITION.json"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/d0_frame_assembler.rs",
+            "crates/jocforge-domain/src/codec/mod.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/codec/d0_frame_assembler.rs",
+              "bytes": 15759,
+              "sha256": "93cc399322acc29ae7130769a9c385dd899108cdeeb23851a90ea94d57f1ad5d"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/mod.rs",
+              "bytes": 1000,
+              "sha256": "1320e5efccac99003c6669ad149d5d129fb0c09b48925a5ae213e0aad0717c30"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs"
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs",
+              "bytes": 13647,
+              "sha256": "bafbb7887978063d21aedf82c99df17365cce2ea6c7132c3546b3377eef1f4d4"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json",
+              "bytes": 2183,
+              "sha256": "6688fbde255872b8108b333554467d7a3a840e5012db3f7e53aba9c46a5a5ed1"
+            }
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The caller writer starts at bit zero and advances exactly 32768 frame bits only after the staged frame is complete."
+            ]
+          },
+          "parameters": {
+            "kind": "APPROVED_D0_FRAME_TARGET_AND_BLOCK2_SKIPFIELD_LAYOUT",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/EMDF-AND-VALIDATION-DISPOSITION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/CHECK.py"
+            ],
+            "target_context": {
+              "substream": "D0",
+              "acmod": 5,
+              "lfeon": 0,
+              "chanmap": "0x1A00",
+              "sample_rate_hz": 48000,
+              "audio_blocks": 6,
+              "frame_bytes": 4096,
+              "frame_bits": 32768,
+              "crc2_width_bits": 16
+            },
+            "audio_inputs": "six ordered opaque caller bit spans copied verbatim",
+            "block_two_skipfield": {
+              "zero_based_block": 2,
+              "field_count": 1,
+              "syntax": [
+                "skiple=1",
+                "U9 skipl=C bytes",
+                "C caller bytes"
+              ],
+              "payload_bytes": [
+                1,
+                511
+              ],
+              "fragmentation_allowed": false,
+              "insertion_authority": "CALLER_OWNED_UNBOUND_OFFSET"
+            },
+            "crc2_source": "caller-supplied U16; no checksum calculation",
+            "preflight_extent": "BSI + all six opaque spans + one complete block-two skipfield + CRC2 must equal 32768 bits",
+            "production_allowed": false,
+            "validation_boundary": "Synthetic caller-span assembly into a caller writer; no real audio, frame acceptance, playback, AU/GTC or production claim."
+          },
+          "vectors": {
+            "kind": "SYNTHETIC_NOT_REAL_OUTPUT_FRAME_ASSEMBLY_CASES",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "Synthetic opaque spans occupy the exact target extent; block-two pre/skip/post locations and caller CRC2 U16 are checked.",
+              "A one-bit-short span, short writer capacity, out-of-bounds source span, insertion mismatch, missing/duplicate/misplaced field and C=512 reject without caller byte/cursor mutation.",
+              "All output vectors are SYNTHETIC_NOT_REAL_OUTPUT and do not establish a playable frame or audio equivalence."
+            ],
+            "expected_outputs_included": true,
+            "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_FRAME_LAYOUT_COPY_AND_FAIL_BEFORE_MUTATION"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "D0_FRAME_ASSEMBLY_INPUT_REJECTED",
+              "category": "block span and skipfield placement",
+              "trigger": "A source bit span is out of bounds, block two/field placement is invalid, skipfield length is outside 1..511, or insertion point differs from the caller-supplied split.",
+              "result": "Typed failure before caller frame bytes or cursor change.",
+              "caller_action": "Reject the frame candidate and provide six in-bounds opaque spans plus one complete block-two field."
+            },
+            {
+              "error_code": "D0_FRAME_SPAN_MISMATCH",
+              "category": "fixed target extent",
+              "trigger": "BSI, six spans, block-two skipfield and caller CRC2 do not total exactly 32768 bits.",
+              "result": "Typed failure before caller frame bytes or cursor change.",
+              "caller_action": "Reject the candidate; no padding, continuation or CRC repair is synthesized."
+            }
+          ],
+          "not_run": [
+            "No PCM/audio generation, decode, mantissa/BAP fill, CRC algorithm or real media/payload input is used.",
+            "No playable/full conformance claim, block3 continuation, AU/GTC, production path, encoder or W04 is run."
+          ],
+          "validation_boundary": "Caller-supplied opaque-bit assembly into an exact target-sized scratch frame; SYNTHETIC_NOT_REAL_OUTPUT, production_allowed=false.",
+          "delivery_scope": "FLAT7X_D0_FRAME_BIT_ASSEMBLY_ONLY_NO_AUDIO_ALGORITHM_AU_GTC_OR_PRODUCTION_CLAIM"
         }
       ]
     },
@@ -56744,8 +56875,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2129700,
-              "sha256": "ab3c3fed158034c3264e6ad26c572705c603f76c0ab944ad16b99de5e91e2840"
+              "bytes": 2135219,
+              "sha256": "0db89868443ecdee7b8c3b3a8bda59bc97bf76ffb40b2231e68f37ee13bc3ef9"
             }
           ],
           "test_inventory": [
@@ -60548,8 +60679,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/codec/mod.rs",
-          "bytes": 972,
-          "sha256": "f34e16cf413e59426db636efd4a39008ab2450583a2eb059d600da8029950681"
+          "bytes": 1000,
+          "sha256": "1320e5efccac99003c6669ad149d5d129fb0c09b48925a5ae213e0aad0717c30"
         },
         {
           "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
