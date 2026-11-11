@@ -15,7 +15,7 @@ tags:
 ## 当前状态
 
 - 隔离分支为 `experimental/independent-encoder`。本 slice 之前的远端基线包含 Flat7x CLI selector/profile/header plumbing 与 F13 typed validation reason；本次 target-plan 变化单独交付。
-- 最近的 I0/D0 composition 工作只登记 Wash 材料并整理文档，没有更改 production algorithm。
+- 新增 `codec::access_unit_composer::write_flat7x_i0_d0_access_unit_bytes`：固定 I0→D0 opaque byte composition，校验 2560/4096/6656-byte extents、zero cursor 和整段容量后一次写入；synthetic-only、`production_allowed=false`，未连接生产路径。
 - 项目指引记载 product encode entry 仍不可用；独立 validation 和 W04 acceptance 为 `NOT_RUN`。
 - 1664 kbps I0/D0 AU profile 保持 `production_allowed=false`；1024 kbps / 5.1 Flat7x profile/header partial slice 已进入 resolver 和 writer API，完整文件验收为 `NOT_RUN`。
 - `OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1` now provides a user-designated reference I0 of legacy AC-3 BSID6 / 2,560 bytes. The Flat7x-specific I0 legacy-core writer and callsite remain unimplemented; the existing selected 5.1 E-AC-3 BSID16 prefix stays unchanged.

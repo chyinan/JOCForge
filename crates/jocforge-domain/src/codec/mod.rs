@@ -1,6 +1,7 @@
 // pattern: Functional Core
 //! Codec boundaries consume approved immutable receipts; local F12 helper slices are explicitly scoped.
 
+pub mod access_unit_composer;
 pub mod authenticated_bit_compaction;
 pub mod bap;
 pub mod bitio;

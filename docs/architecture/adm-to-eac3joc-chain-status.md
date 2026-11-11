@@ -1771,3 +1771,7 @@ Wash 包 `EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1`（manifest SHA-256 `e8f1908d
 ## 2026-11-11：caller-supplied D0 frame bit assembler
 
 `codec::d0_frame_assembler::assemble_flat7x_d0_frame_bits` 在已批准的 4096-byte D0 target 上，组合六个 caller-supplied opaque audio bit spans、block 2 pre/skipfield/post spans 和 caller-supplied CRC2 U16。block-two insertion offset 保持 `CallerOwnedUnboundD0Block2InsertionPoint`；所有 source ranges、唯一完整 skipfield、exact 32768-bit extent 及 writer capacity 均在一次 caller write 前完成校验。函数只逐位原样复制 opaque spans，不解析或产生 PCM/audio、mantissas/BAP，也不计算 CRC；crc2按 caller值写入尾部。固定 output shape 与 synthetic vectors 标记为 `SYNTHETIC_NOT_REAL_OUTPUT`，不能用作可播放帧、native cursor闭合或 production/AU/GTC 证据。
+
+## 2026-11-11：opaque I0→D0 AU byte composer
+
+`codec::access_unit_composer::write_flat7x_i0_d0_access_unit_bytes` 是与 CRC/source-generation-aware `Flat7xAuByteSequenceCandidate` 分离的纯字节顺序模型。它只接受 typed opaque I0/D0 byte spans，校验 approved target 的 I0=2560、D0=4096、aggregate=6656 bytes、zero cursor 与整段 writer capacity，将 I0 放在前、D0 放在后；完整 candidate 先 staging，成功后一次提交 caller writer，并返回只含 byte spans/extent 的非提交 composition-layout receipt。BSID/CRC/source generation 和 AU semantic metadata 仍由后续边界处理；此 slice 不连接现有 5.1 sink、GTC 或 production。测试输入标记 `SYNTHETIC_NOT_REAL_OUTPUT`。

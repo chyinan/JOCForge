@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge.flat7x_i0_d0_opaque_au_bytes.synthetic_input_only.v1",
+  "status": "SYNTHETIC_NOT_REAL_OUTPUT",
+  "contains_audio_or_frame_bytes": false,
+  "frame_bytes_are_test_fill_patterns_only": true,
+  "crc_or_source_generation_validation": false,
+  "cases": [
+    {
+      "id": "synthetic-i0-then-d0-exact-target-extents",
+      "i0_frame_bytes": 2560,
+      "d0_frame_bytes": 4096,
+      "i0_test_fill_hex": "31",
+      "d0_test_fill_hex": "72",
+      "expected": {
+        "i0_start_byte": 0,
+        "i0_byte_length": 2560,
+        "d0_start_byte": 2560,
+        "d0_byte_length": 4096,
+        "total_access_unit_bytes": 6656,
+        "total_access_unit_bits": 53248
+      }
+    },
+    {
+      "id": "reject-i0-wrong-extent",
+      "i0_frame_bytes": 2559,
+      "d0_frame_bytes": 4096,
+      "expected_error": "I0_FRAME_EXTENT_MISMATCH"
+    },
+    {
+      "id": "reject-d0-wrong-extent",
+      "i0_frame_bytes": 2560,
+      "d0_frame_bytes": 4095,
+      "expected_error": "D0_FRAME_EXTENT_MISMATCH"
+    },
+    {
+      "id": "reject-caller-writer-capacity",
+      "i0_frame_bytes": 2560,
+      "d0_frame_bytes": 4096,
+      "output_writer_bytes": 6655,
+      "expected_error": "BUFFER_TOO_SMALL"
+    }
+  ]
+}
