@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge.flat7x.i0_ac3_header_segment.input_only.v1",
+  "execution": "NOT_RUN",
+  "vectors": [
+    {
+      "id": "i0-640-frmsizecod36-no-compr",
+      "inputs": {
+        "crc1": 4660,
+        "frmsizecod": 36,
+        "bsmod": 5,
+        "cmixlev": 2,
+        "surmixlev": 1,
+        "dialnorm": 27,
+        "compr": null
+      },
+      "expected_bits": "00001011011101110001001000110100001001000011010111110011110110",
+      "expected_bytes_hex_zero_padded": "0b7712342435f3d8",
+      "expected_end_bit_offset": 62,
+      "derived_frame_bytes_at_48khz": 2560
+    },
+    {
+      "id": "i0-640-frmsizecod37-with-compr",
+      "inputs": {
+        "crc1": 43981,
+        "frmsizecod": 37,
+        "bsmod": 3,
+        "cmixlev": 1,
+        "surmixlev": 3,
+        "dialnorm": 1,
+        "compr": 165
+      },
+      "expected_bits": "0000101101110111101010111100110100100101001100111110111100001110100101",
+      "expected_bytes_hex_zero_padded": "0b77abcd2533ef0e94",
+      "expected_end_bit_offset": 70,
+      "derived_frame_bytes_at_48khz": 2560
+    },
+    {
+      "id": "preflight-and-range-rejections",
+      "available_bits": 64,
+      "required_bits_with_compr": 70,
+      "invalid_frmsizecod": [35, 38],
+      "invalid_bsmod": [8],
+      "invalid_cmixlev": [4],
+      "invalid_surmixlev": [4],
+      "invalid_dialnorm": [0, 32],
+      "expected": "REJECT_BEFORE_WRITING_ANY_BIT"
+    }
+  ],
+  "contains_media_or_audio_payload": false
+}

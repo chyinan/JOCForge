@@ -1,0 +1,7 @@
+{
+  "manifest_sha256": "285bff275095c945a3f6f4b5040de20111779cec466602fb1aea29ca8c4ad8e1",
+  "package_id": "flat7x-i0-ac3-header-segment-v1",
+  "payload_count": 6,
+  "production_allowed": false,
+  "schema": "jocforge.wash_implementer_supplement_seal.v1"
+}

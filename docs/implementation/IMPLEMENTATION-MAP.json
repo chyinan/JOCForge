@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2104788,
-              "sha256": "e791ec20451d6c4e4bd966eca83ae5002eb97cd10360ec5c70faff38e781a6b6"
+              "bytes": 2105692,
+              "sha256": "5feafd554f67813a471c21fe5892caddd931fd7825c9a267f14317d0d5fd5a19"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2104788,
-              "sha256": "e791ec20451d6c4e4bd966eca83ae5002eb97cd10360ec5c70faff38e781a6b6"
+              "bytes": 2105692,
+              "sha256": "5feafd554f67813a471c21fe5892caddd931fd7825c9a267f14317d0d5fd5a19"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -43596,8 +43596,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 19996,
-              "sha256": "3b589986a6f838f51ac946d179d7a1acd640e8c81541f1d8276e498755c1be27"
+              "bytes": 23252,
+              "sha256": "683cbcccff80ad0daefe9ed875bdd8f60109dd24e2ab61915fb3fa34cfbabc43"
             }
           ],
           "test_modules": [
@@ -43606,8 +43606,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 19996,
-              "sha256": "3b589986a6f838f51ac946d179d7a1acd640e8c81541f1d8276e498755c1be27"
+              "bytes": 23252,
+              "sha256": "683cbcccff80ad0daefe9ed875bdd8f60109dd24e2ab61915fb3fa34cfbabc43"
             }
           ],
           "local_mapping_files": [],
@@ -44556,8 +44556,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 19996,
-              "sha256": "3b589986a6f838f51ac946d179d7a1acd640e8c81541f1d8276e498755c1be27"
+              "bytes": 23252,
+              "sha256": "683cbcccff80ad0daefe9ed875bdd8f60109dd24e2ab61915fb3fa34cfbabc43"
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_syntax.rs",
@@ -46362,8 +46362,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 19996,
-              "sha256": "3b589986a6f838f51ac946d179d7a1acd640e8c81541f1d8276e498755c1be27"
+              "bytes": 23252,
+              "sha256": "683cbcccff80ad0daefe9ed875bdd8f60109dd24e2ab61915fb3fa34cfbabc43"
             }
           ],
           "test_modules": [
@@ -46487,8 +46487,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 19996,
-              "sha256": "3b589986a6f838f51ac946d179d7a1acd640e8c81541f1d8276e498755c1be27"
+              "bytes": 23252,
+              "sha256": "683cbcccff80ad0daefe9ed875bdd8f60109dd24e2ab61915fb3fa34cfbabc43"
             }
           ],
           "test_modules": [
@@ -46598,6 +46598,147 @@
           ],
           "validation_boundary": "Input-only vectors verify serialization of explicit fields through chanmap; caller-owned later BSI and complete D0 frame/AU production remain open.",
           "delivery_scope": "FLAT7X_D0_BSI_SEGMENT_THROUGH_CHANMAP_ONLY_NO_AUDIO_MAPPING_OR_FRAME_AU_PRODUCTION"
+        },
+        {
+          "slice_id": "flat7x-i0-ac3-header-segment",
+          "mapping_status": "WASHED_FLAT7X_I0_AC3_HEADER_SEGMENT_FIELDS_BOUND__FULL_I0_FRAME_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_FLAT7X_I0_AC3_HEADER_SEGMENT_THROUGH_COMPR__FULL_FRAME_OPEN",
+          "implementation_requirement": true,
+          "owner": "codec",
+          "scope": "Writes the selected Flat7x I0 AC-3 header segment from cursor zero: syncword, caller-supplied crc1, fscod=0, frmsizecod 36/37, bsid=6, caller-supplied bsmod, acmod=7, caller-supplied cmixlev/surmixlev, lfeon=1, caller-supplied dialnorm and optional compr. It prevalidates field ranges and preflights 62/70 bits before mutation, then returns immediately before langcode. It computes no CRC and emits no audio blocks or full frame.",
+          "dependencies": [
+            "F01E/flat7x-i0-d0-typed-target-plan",
+            "F12/official-atmos-demo-i0-d0-structure-reference"
+          ],
+          "spec_files": [
+            "specs/12-codec-and-wire.md",
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/CONTRACT.md"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/frame_builder.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
+              "bytes": 23252,
+              "sha256": "683cbcccff80ad0daefe9ed875bdd8f60109dd24e2ab61915fb3fa34cfbabc43"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/flat7x_i0_ac3_header_segment.rs"
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_i0_ac3_header_segment.rs",
+              "bytes": 6389,
+              "sha256": "cbc304077c0eecb51206d30741c4982daaa9f54c1f45e579cf232963f7de0f5d"
+            }
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "One synchronous helper serializes an authored-value header segment at caller cursor zero."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_FLAT7X_I0_AC3_HEADER_SEGMENT",
+            "package_id": "flat7x-i0-ac3-header-segment-v1",
+            "supplement_manifest_sha256": "285bff275095c945a3f6f4b5040de20111779cec466602fb1aea29ca8c4ad8e1",
+            "supplement_seal_sha256": "19a1923a4ec264eca0f55c63eaab3065d6587ef1e86ef0e6af2d288f950acc9d",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/PACKAGE-SEAL.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/PROVENANCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/verify_package.py"
+            ],
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "cursor_start_bit": 0,
+            "syncword": "0x0B77",
+            "crc1": "CALLER_SUPPLIED_U16_NO_CRC_COMPUTATION",
+            "fscod": 0,
+            "frmsizecod_allowed": [
+              36,
+              37
+            ],
+            "frmsizecod_frame_bytes_at_48khz": 2560,
+            "bsid": 6,
+            "bsmod": "CALLER_SUPPLIED_U3",
+            "acmod": 7,
+            "cmixlev": "CALLER_SUPPLIED_U2",
+            "surmixlev": "CALLER_SUPPLIED_U2",
+            "lfeon": 1,
+            "dialnorm": {
+              "width_bits": 5,
+              "accepted_values": [
+                1,
+                31
+              ],
+              "reserved_value": 0
+            },
+            "compre": {
+              "width_bits": 1,
+              "value_source": "compr Option presence"
+            },
+            "compr": {
+              "width_bits": 8,
+              "value_source": "caller supplied Option<U8>"
+            },
+            "segment_bits": {
+              "without_compr": 62,
+              "with_compr": 70
+            },
+            "return_boundary": "before langcode",
+            "production_allowed": false,
+            "validation_boundary": "Header segment fields only; caller supplies all variable values; no CRC calculation, DRC/XML mapping, audio block, complete I0 frame, AU, D0 or production."
+          },
+          "vectors": {
+            "kind": "WASHED_FLAT7X_I0_AC3_HEADER_SEGMENT_INPUT_ONLY_VECTORS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "frmsizecod 36 / no compr emits 62 bits and returns before langcode.",
+              "frmsizecod 37 / compr 165 emits 70 bits and returns before langcode.",
+              "The capacity vector rejects a 70-bit segment with 64 available bits before mutation.",
+              "Invalid frmsizecod, bsmod, cmixlev, surmixlev and dialnorm values reject before mutation."
+            ],
+            "local_fixture": {
+              "file": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 1454,
+              "sha256": "7dd7064bd6c98ae1c35ae6fbe33fe0c8ae5d8ea739a94a69a4a6bf54282ef35c"
+            },
+            "expected_outputs_included": true,
+            "execution_status": "LOCALLY_VERIFIED_INPUT_ONLY_I0_HEADER_SEGMENT"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "I0_AC3_HEADER_VALUE_OUT_OF_RANGE",
+              "category": "caller-supplied field range",
+              "trigger": "frmsizecod is outside 36/37; bsmod exceeds U3; cmixlev/surmixlev exceed U2; or dialnorm is reserved zero/outside U5.",
+              "result": "A typed range error is returned before any header bits are written.",
+              "caller_action": "Reject the I0 header segment and provide allowed explicit field values."
+            },
+            {
+              "error_code": "FRAME_BIT_WRITER_BUFFER_TOO_SMALL",
+              "category": "whole-segment capacity",
+              "trigger": "Fewer than 62 or 70 bits are available for the selected compr Option.",
+              "result": "BufferTooSmall is returned before syncword or any following field is written.",
+              "caller_action": "Reject the I0 frame candidate; complete I0 frame construction remains separate."
+            }
+          ],
+          "not_run": [
+            "CRC1 computation and any CRC algorithm.",
+            "XML DRC mapping to bsmod/cmixlev/surmixlev/dialnorm/compr and audio compression behavior.",
+            "langcode and later BSI, auxiliary data, audio blocks, CRC2 and complete I0 frame.",
+            "I0/D0 AU assembly, output publication, native source-role joins and production."
+          ],
+          "validation_boundary": "Locally verified field serialization only; no source mapping, audio/CRC algorithm, complete I0 frame, AU or production.",
+          "delivery_scope": "FLAT7X_I0_AC3_HEADER_SEGMENT_THROUGH_COMPR_ONLY_NO_AUDIO_OR_COMPLETE_FRAME_CLAIM"
         }
       ]
     },
@@ -55803,8 +55944,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2104788,
-              "sha256": "e791ec20451d6c4e4bd966eca83ae5002eb97cd10360ec5c70faff38e781a6b6"
+              "bytes": 2105692,
+              "sha256": "5feafd554f67813a471c21fe5892caddd931fd7825c9a267f14317d0d5fd5a19"
             }
           ],
           "test_inventory": [

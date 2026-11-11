@@ -40,6 +40,12 @@ Wash supplement `eac3-dependent-d0-bsi-segment-v1` (manifest `cf24050c7539262f53
 
 The helper maps no XML DRC profile and implements no compression effect. `mixmdate`, later BSI, audio blocks, EMDF, CRC, full D0 frame/AU and output remain outside this segment; `production_allowed=false`.
 
+## 2026-11-11：Flat7x I0 AC-3 header segment
+
+Wash supplement `flat7x-i0-ac3-header-segment-v1` (manifest `285bff275095c945a3f6f4b5040de20111779cec466602fb1aea29ca8c4ad8e1`, seal `19a1923a4ec264eca0f55c63eaab3065d6587ef1e86ef0e6af2d288f950acc9d`) authorizes the target's legacy independent AC-3 I0 header segment. `codec::frame_builder::write_flat7x_i0_ac3_header_through_compression` writes syncword, caller-supplied CRC1, fixed 48-kHz `fscod=0`, allowed `frmsizecod` 36/37, `bsid=6`, caller-supplied `bsmod`, fixed `acmod=7`/`lfeon=1`, caller-supplied mix levels and dialnorm, and optional caller-supplied compr. It prevalidates all field ranges and preflights the complete 62/70-bit segment, then returns before `langcode`.
+
+The segment writer computes no CRC, maps no XML DRC profile and creates no AC-3 audio blocks or full I0 frame. The selected 5.1 E-AC-3 prefix and rate path remain unchanged. Complete I0 body/frame composition, source binding, I0/D0 AU and production remain open.
+
 ## 2026-11-06：authored silence duration admission gate
 
 Wash 包 `ATMOS-SILENCE-DURATION-SAMPLE-BOUNDARY-V1` 已物化到隔离仓。manifest SHA-256 `1295151443daca741c7ca0477b91bdf84d88eae76065d7b861ca4125f895980c`、seal SHA-256 `47f5b8c8538894acdecad538f0537056b3ec216b5894943addf0d490b67f6852`，REPORT、INPUT-ONLY-VECTORS 与 PROVENANCE 三个 payload 本地逐项校验通过；普通 Python 与 `python -O` 均 PASS。向量只列 zero/fractional 两个输入，标为 `PROPOSED_NOT_RUN`。

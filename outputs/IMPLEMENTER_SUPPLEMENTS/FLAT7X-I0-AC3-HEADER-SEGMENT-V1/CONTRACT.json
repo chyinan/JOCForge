@@ -1,0 +1,60 @@
+{
+  "schema": "jocforge.flat7x.i0_ac3_header_segment.v1",
+  "package_id": "flat7x-i0-ac3-header-segment-v1",
+  "status": "IMPLEMENTER_READY_LIMITED_I0_AC3_HEADER_SEGMENT",
+  "production_allowed": false,
+  "target": {
+    "profile_id": "atmos71_flat7x_i0_640_d0_1024_v1",
+    "role": "I0",
+    "codec": "legacy_ac3_core",
+    "sample_rate_hz": 48000,
+    "audio_blocks": 6,
+    "samples_per_channel_per_frame": 1536,
+    "nominal_rate_kbps": 640,
+    "frame_bytes": 2560,
+    "fixed_fields": {
+      "syncword": "0x0B77",
+      "fscod": 0,
+      "bsid": 6,
+      "acmod": 7,
+      "lfeon": 1
+    },
+    "allowed_frmsizecod": [36, 37],
+    "reference_sample_frmsizecod": "NOT_PARSED"
+  },
+  "syntax": {
+    "bit_order": "MSB_FIRST",
+    "fields": [
+      {"name": "syncword", "width": 16, "source": "target"},
+      {"name": "crc1", "width": 16, "source": "caller"},
+      {"name": "fscod", "width": 2, "source": "target"},
+      {"name": "frmsizecod", "width": 6, "source": "caller_enum_36_or_37"},
+      {"name": "bsid", "width": 5, "source": "target"},
+      {"name": "bsmod", "width": 3, "source": "caller"},
+      {"name": "acmod", "width": 3, "source": "target"},
+      {"name": "cmixlev", "width": 2, "source": "caller"},
+      {"name": "surmixlev", "width": 2, "source": "caller"},
+      {"name": "lfeon", "width": 1, "source": "target"},
+      {"name": "dialnorm", "width": 5, "source": "caller", "valid_range": [1, 31]},
+      {"name": "compre", "width": 1, "source": "compr_presence"},
+      {"name": "compr", "width": 8, "source": "caller_if_present"}
+    ],
+    "end_bit_without_compr": 62,
+    "end_bit_with_compr": 70,
+    "next_field": "langcode",
+    "preflight_required": true
+  },
+  "implementation_scope": {
+    "proposed_function": "write_flat7x_i0_ac3_header_through_compression",
+    "writes_full_frame": false,
+    "computes_crc": false,
+    "maps_xml_or_audio_algorithm": false,
+    "modifies_existing_5_1_writer": false
+  },
+  "gates": {
+    "crc_source": "CALLER_REQUIRED",
+    "xml_drc_mapping": "UNBOUND",
+    "full_i0_ac3_frame": "NOT_IMPLEMENTED",
+    "production_allowed": false
+  }
+}

@@ -67,6 +67,102 @@ pub fn write_selected_eac3_fixed_prefix(
     Ok(writer.cursor())
 }
 
+const FLAT7X_I0_AC3_SEGMENT_BITS_WITHOUT_COMPR: u32 = 62;
+const FLAT7X_I0_AC3_SEGMENT_BITS_WITH_COMPR: u32 = 70;
+const FLAT7X_I0_AC3_DIALNORM_WIDTH_BITS: u8 = 5;
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Flat7xI0Ac3HeaderSegmentError {
+    CursorMismatch { actual: u32 },
+    InvalidFrameSizeCode { value: u8 },
+    InvalidBsmod { value: u8 },
+    InvalidCmixlev { value: u8 },
+    InvalidSurmixlev { value: u8 },
+    InvalidDialnorm { value: u8 },
+    BitWriter(FrameBitWriterError),
+}
+
+impl From<FrameBitWriterError> for Flat7xI0Ac3HeaderSegmentError {
+    fn from(error: FrameBitWriterError) -> Self {
+        Self::BitWriter(error)
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Flat7xI0Ac3HeaderValues {
+    pub crc1: u16,
+    pub frmsizecod: u8,
+    pub bsmod: u8,
+    pub cmixlev: u8,
+    pub surmixlev: u8,
+    pub dialnorm: u8,
+    pub compr: Option<u8>,
+}
+
+/// Writes the selected Flat7x I0 AC-3 header segment through optional `compr`.
+///
+/// All non-fixed syntax values are caller supplied. This helper validates their
+/// field domains, preflights the complete 62- or 70-bit segment, and returns at
+/// the caller-owned `langcode` boundary. It derives no DRC mapping and computes
+/// no CRC or audio payload.
+pub fn write_flat7x_i0_ac3_header_through_compression(
+    writer: &mut FrameBitWriter<'_>,
+    values: Flat7xI0Ac3HeaderValues,
+) -> Result<FrameBitCursor, Flat7xI0Ac3HeaderSegmentError> {
+    let Flat7xI0Ac3HeaderValues {
+        crc1,
+        frmsizecod,
+        bsmod,
+        cmixlev,
+        surmixlev,
+        dialnorm,
+        compr,
+    } = values;
+    let actual = writer.cursor().bit_offset();
+    if actual != 0 {
+        return Err(Flat7xI0Ac3HeaderSegmentError::CursorMismatch { actual });
+    }
+    if !matches!(frmsizecod, 36 | 37) {
+        return Err(Flat7xI0Ac3HeaderSegmentError::InvalidFrameSizeCode { value: frmsizecod });
+    }
+    if bsmod > 7 {
+        return Err(Flat7xI0Ac3HeaderSegmentError::InvalidBsmod { value: bsmod });
+    }
+    if cmixlev > 3 {
+        return Err(Flat7xI0Ac3HeaderSegmentError::InvalidCmixlev { value: cmixlev });
+    }
+    if surmixlev > 3 {
+        return Err(Flat7xI0Ac3HeaderSegmentError::InvalidSurmixlev { value: surmixlev });
+    }
+    if !(1..=31).contains(&dialnorm) {
+        return Err(Flat7xI0Ac3HeaderSegmentError::InvalidDialnorm { value: dialnorm });
+    }
+
+    let required_bits = if compr.is_some() {
+        FLAT7X_I0_AC3_SEGMENT_BITS_WITH_COMPR
+    } else {
+        FLAT7X_I0_AC3_SEGMENT_BITS_WITHOUT_COMPR
+    };
+    writer.preflight_capacity(required_bits)?;
+
+    writer.write_unsigned(0x0b77, 16)?;
+    writer.write_unsigned(u32::from(crc1), 16)?;
+    writer.write_unsigned(0, 2)?;
+    writer.write_unsigned(u32::from(frmsizecod), 6)?;
+    writer.write_unsigned(6, 5)?;
+    writer.write_unsigned(u32::from(bsmod), 3)?;
+    writer.write_unsigned(7, 3)?;
+    writer.write_unsigned(u32::from(cmixlev), 2)?;
+    writer.write_unsigned(u32::from(surmixlev), 2)?;
+    writer.write_bit(true)?;
+    writer.write_unsigned(u32::from(dialnorm), FLAT7X_I0_AC3_DIALNORM_WIDTH_BITS)?;
+    writer.write_bit(compr.is_some())?;
+    if let Some(compr) = compr {
+        writer.write_unsigned(u32::from(compr), 8)?;
+    }
+    Ok(writer.cursor())
+}
+
 const FLAT7X_D0_FIXED_PREFIX_BITS: u32 = 45;
 const FLAT7X_D0_FIXED_PREFIX_FIELDS: [(u32, u8); 9] = [
     (0x0b77, 16),

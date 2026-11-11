@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge.flat7x.i0_ac3_header_segment.provenance.v1",
+  "package_id": "flat7x-i0-ac3-header-segment-v1",
+  "status": "WASH_REVIEWED_LIMITED_STRUCTURE",
+  "sources": [
+    {
+      "kind": "wash_implementer_package",
+      "package_id": "OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1",
+      "manifest_sha256": "f7f8630c3f18e990324f013e70486c561de6816a844f852f18f03a82ce28fbfc",
+      "seal_sha256": "2d883e278bb83fa0d617610f94b8a87fa5849ac7bf19bdf08818d8d30d50740e",
+      "used_claims": ["I0 AC-3 core", "bsid=6", "acmod=7", "lfeon=1", "48 kHz", "six blocks", "1536 samples", "2560 bytes", "640 kbps derived"]
+    },
+    {
+      "kind": "wash_implementer_package",
+      "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+      "manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+      "seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+      "used_claims": ["additive Flat7x profile", "I0 640 kbps", "I0 2560-byte frame", "existing 5.1 writer preserved"]
+    },
+    {
+      "kind": "official_standard",
+      "identifier": "ETSI TS 102 366 V1.4.1 (2017-09)",
+      "url": "https://www.etsi.org/deliver/etsi_ts/102300_102399/102366/01.04.01_60/ts_102366v010401p.pdf",
+      "clauses": ["4.3.1 syncinfo", "4.3.2 bsi", "Table 4.13"],
+      "used_claims": ["MSB-first fields", "AC-3 syncinfo and BSI field order", "frmsizecod 36/37 both encode 640 kbps and 1280 words at 48 kHz"],
+      "document_sha256": "NOT_CALCULATED; ETSI download returned HTTP 403 in this environment"
+    }
+  ],
+  "inferences": [
+    "Choosing caller-supplied frmsizecod 36 or 37 for the Flat7x 640-kbps target is standards-supported; the reference sample frmsizecod itself was not parsed.",
+    "BSI values that are not bound by the target row remain explicit caller inputs. The vector values are serializer fixtures, not reference-stream values."
+  ],
+  "excluded": ["DEE execution", "reference MKA payload", "EC-3 payload", "PCM", "private key/license", "audio algorithm"],
+  "production_allowed": false
+}
