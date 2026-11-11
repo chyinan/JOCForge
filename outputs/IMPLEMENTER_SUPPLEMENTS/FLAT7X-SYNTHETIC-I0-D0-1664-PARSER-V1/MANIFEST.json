@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.wash_implementer_supplement.v1",
+  "package_id": "FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1",
+  "scope": "Synthetic structural parser compatibility receipt for 1664-kbps I0+D0 target-size AU",
+  "files": [
+    {
+      "path": "FINDINGS.md",
+      "bytes": 1960,
+      "sha256": "3c09ba6a79dd730a27fe35857b1ac3d65125b019ce705bf414ba4cfabb30fc88"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 1862,
+      "sha256": "474763e8fc15c66fc3396f0c10b02b13d22d49dbae955e7f9fb7c2bc8ab1b82d"
+    },
+    {
+      "path": "STRUCTURAL-CONTRACT.json",
+      "bytes": 2137,
+      "sha256": "9a0a1f3cf5ce6342ddf98846169cc8a8c11bbd5e8b5705540432c7db8786cebd"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 4719,
+      "sha256": "46d2eede40da5d573e96ee424cb950ee7bcd4f1292717927c8c93f61b92d8b7f"
+    }
+  ]
+}

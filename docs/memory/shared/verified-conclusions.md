@@ -3,7 +3,7 @@ status: verified
 topic: washed-7.1-flat7x-conclusions
 spec: JOCForge
 confidence: sealed-package-backed
-last_updated: 2026-11-11
+last_updated: 2026-11-12
 tags:
   - Wash
   - AU
@@ -38,3 +38,5 @@ tags:
 - `OFFICIAL-ATMOS-DEMO-OAMD-POSITION-WASHED-V1` supplements the same 23,033-AU reference with full-track metadata counts: each of 15 dynamic objects has an absolute room-position/Z update per AU; nine objects use room Z code 0 and six use positive ceiling code 15. `b_enable_elevation`, `object_size_idx`, and resolved object-size height are separate fields. The sanitized fixture is metadata-only; 1,664-kbps target behavior remains `NOT_EVALUATED` and `production_allowed=false`.
 - V2 reports payload IDs 11 and 14 with `codecdatae=0`, while ETSI Table 56 requires 1. Keep vendor-compatible observation separate from ETSI-strict conformance; no strict-compliance claim follows.
 - Old main：reference-only，不作为实现来源。
+- `FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1` 记录 OpenJOC 0.20.1 对独立合成的 ID6/C=511 EMDF 容器 `Parsed`、消费 511/511 bytes，并记录 U9 skipl=512 在 frame build 前拒绝。该包未提供 raw bytes，局部 writer 测试与 parser 输入不是同字节回放；真实 JOC 语义和产品输出仍未验证。
+- `FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1` 记录独立合成的 6656-byte I0 2560 + D0 4096 AU 结构、D0 BSI 和 block-2 C=511 ID11/ID14/JOC15 parser shape。OpenJOC parser 结果是结构参考，不是本地 composer 输出的同字节验证；I0 CRC、音频块 parser、decode、PCM 和 production 均 `NOT_RUN`，`production_allowed=false`。

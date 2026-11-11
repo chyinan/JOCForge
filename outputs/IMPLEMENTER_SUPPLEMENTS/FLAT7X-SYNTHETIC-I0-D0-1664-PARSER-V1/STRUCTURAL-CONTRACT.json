@@ -1,0 +1,75 @@
+{
+  "schema": "jocforge.flat7x.synthetic_parser_structure.v1",
+  "package_id": "FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1",
+  "classification": "SYNTHETIC_NOT_REAL_OUTPUT",
+  "production_allowed": false,
+  "vector_replay_scope": "EXPECTED_STRUCTURE_ONLY_NO_RAW_FRAME_BYTES",
+  "target_access_unit": {
+    "composition_order": [
+      "I0",
+      "D0"
+    ],
+    "frame_count": 2,
+    "total_bytes": 6656,
+    "sample_rate_hz": 48000,
+    "samples": 1536,
+    "duration_ms": 32,
+    "aggregate_bitrate_bps": 1664000
+  },
+  "i0": {
+    "kind": "LegacyIndependent",
+    "bsid": 6,
+    "frame_size_bytes": 2560,
+    "frmsizecod": 36,
+    "acmod": 7,
+    "lfeon": true,
+    "bsi_parse": "PASS",
+    "crc_validation": "NOT_RUN"
+  },
+  "d0": {
+    "kind": "Dependent",
+    "substreamid": 0,
+    "bsid": 16,
+    "frame_size_bytes": 4096,
+    "audio_blocks": 6,
+    "chanmap": "0x1A00",
+    "bsi_parse": "PASS",
+    "block2_skipfld": {
+      "field_count": 1,
+      "skipl_bytes": 511,
+      "C_total_bytes": 511,
+      "exact_carrier_result": "Parsed",
+      "bytes_consumed": 511,
+      "payload_ids": [
+        11,
+        14
+      ],
+      "id11_bytes": 466,
+      "id11_semantics": "OPAQUE_SYNTHETIC_NOT_PARSED",
+      "id14_bytes": 32,
+      "joc_downmix_index": 1,
+      "joc_channel_count": 7,
+      "joc_objects_present": 15,
+      "joc_parser": "PASS"
+    }
+  },
+  "official_reference": {
+    "package_id": "OPENJOC-OFFICIAL-MKA-STRUCTURE-WASH-V1",
+    "manifest_sha256": "394406989cf724c29ee5f8c31677ff135f92552e54945a48a3733001d1a4bc54",
+    "observed_i0_bitrate_bps": 640000,
+    "observed_d0_bitrate_bps": 640000,
+    "observed_aggregate_bitrate_bps": 1280000,
+    "used_to_construct_vector": false
+  },
+  "open_boundaries": {
+    "complexity16": "NOT_INFERRED",
+    "semantic_owner": "UNBOUND",
+    "source_generation": "UNBOUND",
+    "i0_crc_validation": "NOT_RUN",
+    "full_frame_audio_block_parser": "NOT_RUN",
+    "audio_decoder": "NOT_RUN",
+    "pcm": "NOT_RUN",
+    "real_product_output": "NOT_RUN",
+    "C512_guard": "NOT_COVERED_BY_THIS_VECTOR"
+  }
+}

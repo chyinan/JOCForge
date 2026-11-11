@@ -1,0 +1,36 @@
+{
+  "schema": "washed-implementer-structural-evidence.v1",
+  "supplement_id": "FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1",
+  "status": "SYNTHETIC_EXACT_C511_PARSE_BOUND; REAL_JOC_AND_OUTPUT_NOT_ESTABLISHED",
+  "synthetic_c511": {
+    "emdf_total_bytes": 511,
+    "body_bytes": 507,
+    "payload_id": 6,
+    "skipl": 511,
+    "block_index": 2,
+    "parser_result": "Parsed",
+    "bytes_consumed": 511,
+    "carrier_bytes": 511
+  },
+  "target_scope": {
+    "single_complete_field": true,
+    "block_index": 2,
+    "maximum_total_bytes": 511,
+    "overflow": "FAIL_CLOSED_NO_FRAGMENTATION"
+  },
+  "separate_boundaries": {
+    "skipl512": "REJECTED_BEFORE_FRAME_BUILD",
+    "c542_prefix": "MALFORMED_TRUNCATED_CONTAINER_REFERENCE_ONLY",
+    "joc_payload_semantics": "NOT_TESTED",
+    "real_audio_payload": "UNBOUND",
+    "real_file_output": "NOT_RUN",
+    "production_allowed": false
+  },
+  "exclusions": {
+    "official_mka_bytes": false,
+    "raw_ec3_or_emdf_bytes": false,
+    "pcm": false,
+    "mode21_failure_payload": false,
+    "ffmpeg_audio_algorithm": false
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge.input-only-structure-vectors.v1",
+  "classification": "SYNTHETIC_INPUT_ONLY",
+  "raw_bytes_included": false,
+  "cases": [
+    {
+      "id": "synthetic-c511-exact-container",
+      "payload_id": 6,
+      "opaque_synthetic_body_bytes": 507,
+      "emdf_total_bytes": 511,
+      "d0_block_index": 2,
+      "skipl": 511,
+      "parser_classification": "Parsed",
+      "bytes_consumed": 511,
+      "carrier_bytes": 511,
+      "trailing_bytes": 0,
+      "real_joc_semantics": "NOT_TESTED"
+    },
+    {
+      "id": "synthetic-skipl512-guard",
+      "skipl": 512,
+      "disposition": "REJECTED_BEFORE_FRAME_BUILD"
+    },
+    {
+      "id": "synthetic-c542-prefix",
+      "emdf_total_bytes": 542,
+      "carrier_prefix_bytes": 511,
+      "parser_classification": "Malformed_TruncatedContainer",
+      "field_fragmentation": "REJECTED_REFERENCE_ONLY"
+    }
+  ]
+}

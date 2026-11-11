@@ -1,0 +1,22 @@
+{
+  "schema": "washed-implementer-supplement-sources.v1",
+  "supplement_id": "FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1",
+  "parents": [
+    {
+      "supplement_id": "FLAT7X-D0-SKIPFLD-STRUCTURE-V1",
+      "manifest_sha256": "1b14343db4128bda45c254a024de2662ac59516e2e83aa7d3191e3c4d80ca1c3",
+      "seal_sha256": "7c31c485368c3755de23f7fee981a141c3607eef86d7110a4cdf1661c6a15024"
+    },
+    {
+      "package_id": "OPENJOC-EC3-D0-BLOCK2-C511-EXACT-EMDF-SKIPFLD-SYNTHETIC-WASH-V1",
+      "manifest_sha256": "beaa9529459fab4e2704e78bf2707512ee1036033c4e53ca4976a62aa6b2d099",
+      "sha256sums_sha256": "2b79366683767fe0422fe954574e0c47fbcb1049b64f1f4ffbca4645ce600e5d"
+    },
+    {
+      "package_id": "OPENJOC-SKIPFLD-EMDF-LENGTH-UNIT-SEMANTICS-WASH-V1",
+      "manifest_sha256": "2c1b9327c914b0e0dc8543e89e8f7ec64f1b56c11e80e9cde9711ec9f5d3ab69"
+    }
+  ],
+  "openjoc_revision": "9654475f10ea9ead020b9ae148dae8b01ab2bef3",
+  "media_or_payload_bytes_included": false
+}

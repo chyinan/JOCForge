@@ -1,0 +1,44 @@
+{
+  "schema": "jocforge.wash.source_receipts.v1",
+  "package_id": "FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1",
+  "source_package": {
+    "package_id": "OPENJOC-TARGET-SIZE-AU-PARSER-SYNTHETIC-WASH-V1",
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-01/jocforge-reverse-agent-8-f13c-preferred-source/outputs/OPENJOC-TARGET-SIZE-AU-PARSER-SYNTHETIC-WASH-V1",
+    "manifest_sha256": "1ab53a27fd3f632c2579c6dea2830638ce0f9b99cddc957564f38086671eecde",
+    "sha256sums_sha256": "2a1a4a815717b3c0f97844d3a0c512c6301e46be21ce9a62772d28e2aa84a404",
+    "wash_verification": {
+      "normal_checker": "PASS",
+      "python_optimized_checker": "PASS",
+      "payloads": 9,
+      "checksums": 10
+    }
+  },
+  "parser_source": {
+    "project": "OpenJOC",
+    "version": "0.20.1",
+    "git_revision": "9654475f10ea9ead020b9ae148dae8b01ab2bef3",
+    "working_tree": "CLEAN",
+    "use_scope": "Header, BSI, AU grouping, EMDF/JOC parsing only",
+    "source_code_copied": false,
+    "audio_encoder_algorithm_used_or_copied": false
+  },
+  "parent_evidence": [
+    {
+      "package_id": "OPENJOC-EC3-D0-BLOCK2-C511-ID11-ID14-JOC15-FULL-SHAPE-SYNTHETIC-WASH-V1",
+      "manifest_sha256": "f8160b1cfef130a9dedcd7f55e6f6e8b61e733fb259fe53b278d9ae7207a2b04",
+      "sha256sums_sha256": "61637052060f74998e38917cf6790b8159d957b252169ca75e7bae2695ac9094"
+    },
+    {
+      "package_id": "OPENJOC-OFFICIAL-MKA-STRUCTURE-WASH-V1",
+      "manifest_sha256": "394406989cf724c29ee5f8c31677ff135f92552e54945a48a3733001d1a4bc54",
+      "sha256sums_sha256": "6affcaaae42e3ebdf894eb3dac8a0d90a83db37929444b0bfb624665a3399eab"
+    }
+  ],
+  "access": {
+    "real_media_opened": false,
+    "raw_frame_or_payload_bytes_included": false,
+    "pcm_read_or_saved": false,
+    "private_key_or_license_accessed": false,
+    "dee_or_encoder_run": false
+  }
+}

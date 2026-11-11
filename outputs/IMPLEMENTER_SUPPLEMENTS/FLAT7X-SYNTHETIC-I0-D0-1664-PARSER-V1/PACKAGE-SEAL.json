@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash_implementer_supplement_seal.v1",
+  "package_id": "FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1",
+  "manifest_sha256": "f949141aee93432e4dc27e126ee03e318dc86d8e2dbc9555c1052e9848e5d09f",
+  "payload_count": 4,
+  "file_paths": [
+    "FINDINGS.md",
+    "SOURCE-RECEIPTS.json",
+    "STRUCTURAL-CONTRACT.json",
+    "verify_package.py"
+  ]
+}

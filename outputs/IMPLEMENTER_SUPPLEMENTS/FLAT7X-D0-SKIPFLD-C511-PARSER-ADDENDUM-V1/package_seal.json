@@ -1,0 +1,39 @@
+{
+  "schema": "washed-implementer-supplement-seal.v1",
+  "supplement_id": "FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1",
+  "status": "SEALED_PARTIAL",
+  "manifest_sha256": "cdc12af971b2da49f0a1d21fef783b0d6c195003ce25683c21ad51e4e39a8678",
+  "file_count": 6,
+  "files": [
+    {
+      "file": "FINDINGS.md",
+      "bytes": 1298,
+      "sha256": "f734694b2c0c5bb07c3b3099fa3d921ceca6018e93472328009f537bc8571ad7"
+    },
+    {
+      "file": "INPUT-ONLY-VECTOR.json",
+      "bytes": 878,
+      "sha256": "1ad223f37900fa3ae356658b65e75e41488b96012805a6c9ad3d1392f06e0a1c"
+    },
+    {
+      "file": "SOURCE-PACKAGE.json",
+      "bytes": 970,
+      "sha256": "f442394332de9f9083f02d78190963d5c293a07369e0e72bef5b4cc32f543302"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1070,
+      "sha256": "56cd6402a0349e84c6f30c973e9d5ed6a3a09a5bc7bea29680c71e76d99da375"
+    },
+    {
+      "file": "CHECK.py",
+      "bytes": 1855,
+      "sha256": "a23b5c48b6d07510007b9ef1bb2dbedf0c932aa49812d4262c329427ee399931"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1242,
+      "sha256": "cdc12af971b2da49f0a1d21fef783b0d6c195003ce25683c21ad51e4e39a8678"
+    }
+  ]
+}

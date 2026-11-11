@@ -12308,6 +12308,7 @@ def check_f12_flat7x_elementary_stream_sequence_composer(root, d):
         ),
         "Flat7x sequence maps synthetic multi-AU order, overflow, empty and atomic rejection vectors",
     )
+    check_wash_flat7x_synthetic_au_parser_package(root, row)
 
 
 def check_f12_flat7x_layout_slice(root, d):
@@ -13299,13 +13300,23 @@ def check_wash_flat7x_d0_skipfld_structure_package(root, row):
     )
 
     addendum = row.get("parameters", {}).get("structure_addendum", {})
+    c511_reference = row.get("parameters", {}).get("c511_parser_addendum", {})
+    c511_vector_path = "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/INPUT-ONLY-VECTOR.json"
     ck(
         addendum.get("package_id") == manifest.get("supplement_id")
         and addendum.get("manifest_sha256") == expected_manifest
         and addendum.get("seal_file_sha256") == expected_seal_file
         and addendum.get("c511") == "FIT_EXACT_ARITHMETIC_ONLY"
-        and addendum.get("openjoc_c511_full_container_parse") == "NOT_RUN",
-        "Flat7x skipfld map binds the new structure addendum without promoting parser acceptance",
+        and addendum.get("openjoc_c511_full_container_parse") == "NOT_RUN_IN_THIS_PACKAGE"
+        and c511_reference.get("package_id") == "FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1"
+        and c511_reference.get("manifest_sha256") == "cdc12af971b2da49f0a1d21fef783b0d6c195003ce25683c21ad51e4e39a8678"
+        and c511_reference.get("seal_file_sha256") == "d2b31ba1427dd470d9b26f84751ab0ca5465ea6605800f559149da8da537ff41"
+        and c511_reference.get("parser_result") == "Parsed"
+        and c511_reference.get("real_joc_semantics") == "NOT_TESTED"
+        and c511_reference.get("production_allowed") is False
+        and c511_vector_path in row.get("parameters", {}).get("provider_files", [])
+        and c511_vector_path in row.get("vectors", {}).get("authoritative_vectors", []),
+        "Flat7x skipfld map keeps structure arithmetic and separate C511 parser receipt distinct",
     )
 
     assembler_path = root / "crates/jocforge-domain/src/codec/d0_frame_assembler.rs"
@@ -13336,6 +13347,160 @@ def check_wash_flat7x_d0_skipfld_structure_package(root, row):
             result.returncode == 0
             and "PASS: sealed Flat7x D0 skipfld structural contract" in result.stdout,
             "Flat7x D0 skipfld package checker " + ("optimized" if optimized else "normal"),
+        )
+
+    parser_package = root / "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1"
+    parser_manifest_bytes = (parser_package / "MANIFEST.json").read_bytes()
+    parser_seal_bytes = (parser_package / "package_seal.json").read_bytes()
+    parser_manifest = json.loads(parser_manifest_bytes)
+    parser_seal = json.loads(parser_seal_bytes)
+    parser_vector = json.loads((parser_package / "INPUT-ONLY-VECTOR.json").read_bytes())
+    parser_cases = {item["id"]: item for item in parser_vector.get("cases", [])}
+    exact_c511 = parser_cases.get("synthetic-c511-exact-container", {})
+    map_c511 = row.get("parameters", {}).get("c511_parser_addendum", {})
+    expected_parser_manifest = "cdc12af971b2da49f0a1d21fef783b0d6c195003ce25683c21ad51e4e39a8678"
+    expected_parser_seal = "d2b31ba1427dd470d9b26f84751ab0ca5465ea6605800f559149da8da537ff41"
+    ck(
+        hashlib.sha256(parser_manifest_bytes).hexdigest() == expected_parser_manifest
+        and hashlib.sha256(parser_seal_bytes).hexdigest() == expected_parser_seal
+        and parser_manifest.get("supplement_id") == "FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1"
+        and parser_manifest.get("production_allowed") is False
+        and parser_manifest.get("full_product_output_ready") is False
+        and parser_seal.get("manifest_sha256") == expected_parser_manifest
+        and parser_vector.get("raw_bytes_included") is False
+        and exact_c511.get("payload_id") == 6
+        and exact_c511.get("opaque_synthetic_body_bytes") == 507
+        and exact_c511.get("emdf_total_bytes") == 511
+        and exact_c511.get("skipl") == 511
+        and exact_c511.get("parser_classification") == "Parsed"
+        and exact_c511.get("bytes_consumed") == 511
+        and exact_c511.get("real_joc_semantics") == "NOT_TESTED"
+        and map_c511.get("manifest_sha256") == expected_parser_manifest
+        and map_c511.get("seal_file_sha256") == expected_parser_seal
+        and map_c511.get("parser_result") == "Parsed"
+        and map_c511.get("production_allowed") is False,
+        "Flat7x C511 parser addendum records independent synthetic acceptance without raw-byte or production claims",
+    )
+    for optimized in (False, True):
+        command = [sys.executable] + (["-O"] if optimized else []) + ["-B", str(parser_package / "CHECK.py")]
+        result = subprocess.run(
+            command,
+            cwd=parser_package,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        ck(
+            result.returncode == 0 and "PASS: synthetic exact-C511 parser receipt" in result.stdout,
+            "Flat7x C511 parser addendum checker " + ("optimized" if optimized else "normal"),
+        )
+
+
+def check_wash_flat7x_synthetic_au_parser_package(root, row):
+    package = root / "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1"
+    manifest_path = package / "MANIFEST.json"
+    seal_path = package / "PACKAGE-SEAL.json"
+    manifest_bytes = manifest_path.read_bytes()
+    seal_bytes = seal_path.read_bytes()
+    manifest = json.loads(manifest_bytes)
+    seal = json.loads(seal_bytes)
+    expected_manifest = "f949141aee93432e4dc27e126ee03e318dc86d8e2dbc9555c1052e9848e5d09f"
+    expected_seal_file = "cf28d44ea8e5d6dc6ebe714f4da4f988f33112fcded79d55616a7a1710a51ddf"
+    ck(
+        hashlib.sha256(manifest_bytes).hexdigest() == expected_manifest
+        and hashlib.sha256(seal_bytes).hexdigest() == expected_seal_file
+        and manifest.get("package_id") == "FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1"
+        and seal.get("manifest_sha256") == expected_manifest
+        and manifest.get("scope") == "Synthetic structural parser compatibility receipt for 1664-kbps I0+D0 target-size AU"
+        and len(manifest.get("files", [])) == 4,
+        "Flat7x synthetic I0+D0 parser package manifest and seal identity",
+    )
+    for member in manifest.get("files", []):
+        content = (package / member["path"]).read_bytes()
+        ck(
+            len(content) == member["bytes"]
+            and hashlib.sha256(content).hexdigest() == member["sha256"],
+            "Flat7x synthetic I0+D0 parser package member " + member["path"],
+        )
+
+    contract = json.loads((package / "STRUCTURAL-CONTRACT.json").read_bytes())
+    receipts = json.loads((package / "SOURCE-RECEIPTS.json").read_bytes())
+    target = contract.get("target_access_unit", {})
+    official = contract.get("official_reference", {})
+    i0 = contract.get("i0", {})
+    d0 = contract.get("d0", {})
+    skip = d0.get("block2_skipfld", {})
+    access = receipts.get("access", {})
+    parser = receipts.get("parser_source", {})
+    reference = row.get("parameters", {}).get("wash_parser_reference", {})
+    contract_path = "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/STRUCTURAL-CONTRACT.json"
+    ck(
+        contract.get("classification") == "SYNTHETIC_NOT_REAL_OUTPUT"
+        and contract.get("production_allowed") is False
+        and contract.get("vector_replay_scope") == "EXPECTED_STRUCTURE_ONLY_NO_RAW_FRAME_BYTES"
+        and target.get("composition_order") == ["I0", "D0"]
+        and target.get("total_bytes") == 6656
+        and target.get("sample_rate_hz") == 48000
+        and target.get("samples") == 1536
+        and target.get("aggregate_bitrate_bps") == 1664000
+        and official.get("observed_aggregate_bitrate_bps") == 1280000
+        and official.get("used_to_construct_vector") is False
+        and i0.get("frame_size_bytes") == 2560
+        and i0.get("bsid") == 6
+        and i0.get("crc_validation") == "NOT_RUN"
+        and d0.get("frame_size_bytes") == 4096
+        and d0.get("chanmap") == "0x1A00"
+        and skip.get("C_total_bytes") == 511
+        and skip.get("exact_carrier_result") == "Parsed"
+        and skip.get("bytes_consumed") == 511
+        and skip.get("id11_semantics") == "OPAQUE_SYNTHETIC_NOT_PARSED"
+        and skip.get("joc_downmix_index") == 1
+        and skip.get("joc_channel_count") == 7
+        and skip.get("joc_objects_present") == 15
+        and contract.get("open_boundaries", {}).get("full_frame_audio_block_parser") == "NOT_RUN"
+        and contract.get("open_boundaries", {}).get("real_product_output") == "NOT_RUN"
+        and contract.get("open_boundaries", {}).get("complexity16") == "NOT_INFERRED"
+        and contract.get("open_boundaries", {}).get("semantic_owner") == "UNBOUND"
+        and contract.get("open_boundaries", {}).get("source_generation") == "UNBOUND"
+        and contract.get("open_boundaries", {}).get("C512_guard") == "NOT_COVERED_BY_THIS_VECTOR"
+        and receipts.get("source_package", {}).get("manifest_sha256") == "1ab53a27fd3f632c2579c6dea2830638ce0f9b99cddc957564f38086671eecde"
+        and parser.get("version") == "0.20.1"
+        and parser.get("git_revision") == "9654475f10ea9ead020b9ae148dae8b01ab2bef3"
+        and parser.get("source_code_copied") is False
+        and access.get("real_media_opened") is False
+        and access.get("raw_frame_or_payload_bytes_included") is False
+        and access.get("dee_or_encoder_run") is False
+        and reference.get("package_id") == manifest.get("package_id")
+        and reference.get("manifest_sha256") == expected_manifest
+        and reference.get("seal_file_sha256") == expected_seal_file
+        and reference.get("target_aggregate_bitrate_bps") == 1664000
+        and reference.get("official_reference_aggregate_bitrate_bps") == 1280000
+        and reference.get("official_reference_used_to_construct_vector") is False
+        and reference.get("local_composer_same_byte_parse") == "NOT_ESTABLISHED"
+        and reference.get("complexity16") == "NOT_INFERRED"
+        and reference.get("semantic_owner") == "UNBOUND"
+        and reference.get("source_generation") == "UNBOUND"
+        and reference.get("production_allowed") is False
+        and contract_path in row.get("vectors", {}).get("authoritative_vectors", [])
+        and contract_path in row.get("parameters", {}).get("provider_files", [])
+        and any("does not parse this local composer output" in item for item in row.get("vectors", {}).get("case_pointers", [])),
+        "Flat7x OpenJOC reference remains expected-structure-only and separate from local output bytes",
+    )
+
+    for optimized in (False, True):
+        command = [sys.executable] + (["-O"] if optimized else []) + ["-B", str(package / "verify_package.py")]
+        result = subprocess.run(
+            command,
+            cwd=package,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        ck(
+            result.returncode == 0
+            and "PACKAGE_CHECK=PASS" in result.stdout
+            and "PRODUCTION_ALLOWED=NO" in result.stdout,
+            "Flat7x synthetic I0+D0 parser package checker " + ("optimized" if optimized else "normal"),
         )
 
 

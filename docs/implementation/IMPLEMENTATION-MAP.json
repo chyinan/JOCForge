@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2155004,
-              "sha256": "c6829396315c800ef369a709f12d369fc40862bf7365750dc6884c7596ad7259"
+              "bytes": 2164973,
+              "sha256": "4c83328285099b03976d447e744143cea09cc8ae65bae124529a0c353560e5d0"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2155004,
-              "sha256": "c6829396315c800ef369a709f12d369fc40862bf7365750dc6884c7596ad7259"
+              "bytes": 2164973,
+              "sha256": "4c83328285099b03976d447e744143cea09cc8ae65bae124529a0c353560e5d0"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -46087,7 +46087,7 @@
           "implementation_status": "LOCALLY_VERIFIED_REQUIRED_CONTAINER_SKIPFIELD_WRITER_AND_CALLER_BLOCK2_FRAME_ASSEMBLER__PRODUCTION_OPEN",
           "implementation_requirement": true,
           "owner": "codec",
-          "scope": "Additive Flat7x-only field serializer for one D0 zero-based audio block 2 skip-field slot. It requires a complete nonempty EMDF container and writes skiple=1, U9 skipl=C bytes, then exactly C container bytes at the caller-positioned cursor. `D0FrameBitAssembler` now passes its caller-supplied block-two container through this helper at the layout-computed field start using the separately caller-owned/unbound insertion offset; this is a synthetic structural interface join, not a native block-cursor binding. C=1..511, checked extent/capacity preflight and failure atomicity are covered; C=511 remains arithmetic/writer evidence only, not OpenJOC full-container parser acceptance. Generic ETSI skiple=0 stays outside the target-required API, and the helper does not consume chanmap/object/carrier domains.",
+          "scope": "Additive Flat7x-only field serializer for one D0 zero-based audio block 2 skip-field slot. It requires a complete nonempty EMDF container and writes skiple=1, U9 skipl=C bytes, then exactly C container bytes at the caller-positioned cursor. `D0FrameBitAssembler` passes its caller-supplied block-two container through this helper at the layout-computed field start using the separately caller-owned/unbound insertion offset; this is a synthetic structural interface join, not a native block-cursor binding. Local writer coverage includes C=1..511, checked extent/capacity preflight and failure atomicity. Wash separately verified exact-C511 parsing using its own synthetic input; that receipt does not share raw bytes with the local writer test. Generic ETSI skiple=0 stays outside the target-required API, and the helper does not consume chanmap/object/carrier domains.",
           "dependencies": [
             "F01E/flat7x-i0-d0-typed-target-plan",
             "F12/flat7x-d0-frame-bit-assembler"
@@ -46097,7 +46097,9 @@
             "docs/architecture/PROFILE-DIMENSIONS.md",
             "docs/architecture/PUBLIC-API.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/FINDINGS.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/INPUT-ONLY-VECTOR.json"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/INPUT-ONLY-VECTOR.json",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/FINDINGS.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/INPUT-ONLY-VECTOR.json"
           ],
           "implementation_files": [
             "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
@@ -46139,6 +46141,7 @@
           ],
           "vector_inventory": [
             {"path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/INPUT-ONLY-VECTOR.json", "bytes": 1750, "sha256": "356916e6ed58189bd2bd33962d1dd43280d8a87485df71621e452ef8e05f6bee"},
+            {"path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/INPUT-ONLY-VECTOR.json", "bytes": 878, "sha256": "1ad223f37900fa3ae356658b65e75e41488b96012805a6c9ad3d1392f06e0a1c"},
             {"path": "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json", "bytes": 2542, "sha256": "fddc65f1a52c325347029cc272f24122f9b6ed501d99130a42051b7d7aa8fbee"}
           ],
           "clock": {
@@ -46162,7 +46165,25 @@
               "official_mka_rate_kbps": {"i0": 640, "d0": 640, "aggregate": 1280},
               "approved_target_rate_kbps": {"i0": 640, "d0": 1024, "aggregate": 1664},
               "c511": "FIT_EXACT_ARITHMETIC_ONLY",
-              "openjoc_c511_full_container_parse": "NOT_RUN"
+              "openjoc_c511_full_container_parse": "NOT_RUN_IN_THIS_PACKAGE"
+            },
+            "c511_parser_addendum": {
+              "package_id": "FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1",
+              "manifest_sha256": "cdc12af971b2da49f0a1d21fef783b0d6c195003ce25683c21ad51e4e39a8678",
+              "seal_file_sha256": "d2b31ba1427dd470d9b26f84751ab0ca5465ea6605800f559149da8da537ff41",
+              "checker_normal": "PASS",
+              "checker_optimized": "PASS",
+              "parser": "OpenJOC 0.20.1 revision 9654475f10ea9ead020b9ae148dae8b01ab2bef3",
+              "input_classification": "SYNTHETIC_INPUT_ONLY",
+              "payload_id": 6,
+              "opaque_synthetic_body_bytes": 507,
+              "container_bytes": 511,
+              "block_index": 2,
+              "skipl": 511,
+              "parser_result": "Parsed",
+              "bytes_consumed": 511,
+              "real_joc_semantics": "NOT_TESTED",
+              "production_allowed": false
             },
             "provider_files": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/MANIFEST.json",
@@ -46175,7 +46196,12 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/package_seal.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/CHECK.py",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/FINDINGS.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/INPUT-ONLY-VECTOR.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/INPUT-ONLY-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/INPUT-ONLY-VECTOR.json"
             ],
             "standard_rule": "ETSI TS 102 366 V1.4.1 clauses 4.4.3.58-60",
             "target": {
@@ -46213,6 +46239,7 @@
             "kind": "WASHED_SKIPFLD_STRUCTURE_SUMMARY_PLUS_LOCAL_CALLER_BLOCK2_BOUNDARIES",
             "authoritative_vectors": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/INPUT-ONLY-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/INPUT-ONLY-VECTOR.json",
               "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json"
             ],
             "case_pointers": [
@@ -46221,7 +46248,8 @@
               "The shared pure length helper maps C=1 to 18 bits and C=511 to 4098 bits; C=0 and C=512 reject.",
               "A missing/empty target container and C=512 reject before changing cursor or frame bytes; no continuation is generated.",
               "Insufficient capacity for the complete 1+9+8C field rejects before mutation.",
-              "The new Wash package reports official MKA block-2 C_total/skipl=301..377; target-rate context remains I0/D0=640/1024, and C511 is arithmetic FIT_EXACT only."
+              "The original Wash package reports official MKA block-2 C_total/skipl=301..377; target-rate context remains I0/D0=640/1024.",
+              "The C511 parser addendum reports one separately synthesized ID6 container: C_total=skipl=511, Parsed, bytes_consumed=511; it does not parse local Rust output or establish real JOC semantics."
             ],
             "expected_outputs_included": false,
             "execution_status": "LOCAL_SKIPFLD_AND_CALLER_BLOCK2_TESTS_PASS__WASH_CHECKERS_NORMAL_AND_OPTIMIZED_PASS"
@@ -46258,7 +46286,7 @@
           ],
           "not_run": [
             "Caller-owned block-two spans and insertion offset are connected only in the synthetic D0 frame assembler; native block-2 cursor, source/generation owner and F13 container-parser joins remain UNBOUND/NOT_RUN.",
-            "OpenJOC exact full-container acceptance at C511, native D0 BSI/audio writer, per-AU fit run, 7.1 output, W04 and production acceptance remain NOT_RUN."
+            "The local Rust writer test and Wash parser test use distinct synthetic inputs; same-byte parser replay, native D0 BSI/audio writer, per-AU fit run, 7.1 output, W04 and production acceptance remain NOT_RUN."
           ],
           "validation_boundary": "The helper serializes one required-present ETSI skip-field and the local D0 frame assembler places it at the caller-declared block-two layout span. Native D0 cursor/owner/source joins, audio generation, GTC and product encode remain outside scope; production_allowed=false.",
           "delivery_scope": "FLAT7X_D0_BLOCK2_SKIPFLD_SERIALIZER_AND_CALLER_LAYOUT_ASSEMBLY_ONLY_NO_NATIVE_CURSOR_OR_PRODUCTION_CLAIM"
@@ -47761,7 +47789,10 @@
             "docs/architecture/PROFILE-DIMENSIONS.md",
             "docs/architecture/adm-to-eac3joc-chain-status.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/FINDINGS.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/STRUCTURAL-CONTRACT.json",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/SOURCE-RECEIPTS.json"
           ],
           "implementation_files": [
             "crates/jocforge-domain/src/codec/access_unit_composer.rs",
@@ -47791,7 +47822,12 @@
             "supplement_seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
             "provider_files": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/PACKAGE-SEAL.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/STRUCTURAL-CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/SOURCE-RECEIPTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/verify_package.py"
             ],
             "frame_extents": {
               "i0_bytes": 2560,
@@ -47878,7 +47914,10 @@
             "docs/architecture/PROFILE-DIMENSIONS.md",
             "docs/architecture/adm-to-eac3joc-chain-status.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/FINDINGS.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/STRUCTURAL-CONTRACT.json",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/SOURCE-RECEIPTS.json"
           ],
           "implementation_files": [
             "crates/jocforge-domain/src/codec/elementary_stream_composer.rs",
@@ -47898,7 +47937,8 @@
           ],
           "vector_inventory": [
             {"path": "crates/jocforge-domain/tests/fixtures/flat7x_elementary_stream/INPUT-ONLY-VECTORS.json", "bytes": 1588, "sha256": "8573c6a3a7d29f91ac8704265dde35d169bac10304788b535927c8d015a0e88b"},
-            {"path": "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json", "bytes": 2542, "sha256": "fddc65f1a52c325347029cc272f24122f9b6ed501d99130a42051b7d7aa8fbee"}
+            {"path": "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json", "bytes": 2542, "sha256": "fddc65f1a52c325347029cc272f24122f9b6ed501d99130a42051b7d7aa8fbee"},
+            {"path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/STRUCTURAL-CONTRACT.json", "bytes": 2137, "sha256": "9a0a1f3cf5ce6342ddf98846169cc8a8c11bbd5e8b5705540432c7db8786cebd"}
           ],
           "clock": {
             "domains": [],
@@ -47913,7 +47953,12 @@
             "supplement_seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
             "provider_files": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/PACKAGE-SEAL.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/STRUCTURAL-CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/SOURCE-RECEIPTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/verify_package.py"
             ],
             "access_unit_bytes": 6656,
             "order": "CALLER_SEQUENCE_ORDER_PRESERVED",
@@ -47921,6 +47966,28 @@
             "extent_arithmetic": "CHECKED_COUNT_MULTIPLICATION_AND_U32_BIT_LENGTH",
             "staging": "EXACT_PRIVATE_STAGING_BOUNDED_BY_MEASURED_EXTENT_AND_WRITER_CAPACITY",
             "crc_bsid_source_generation": "NOT_INSPECTED_OR_INFERRED",
+            "wash_parser_reference": {
+              "package_id": "FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1",
+              "manifest_sha256": "f949141aee93432e4dc27e126ee03e318dc86d8e2dbc9555c1052e9848e5d09f",
+              "seal_file_sha256": "cf28d44ea8e5d6dc6ebe714f4da4f988f33112fcded79d55616a7a1710a51ddf",
+              "parser": "OpenJOC 0.20.1 revision 9654475f10ea9ead020b9ae148dae8b01ab2bef3",
+              "classification": "SYNTHETIC_NOT_REAL_OUTPUT",
+              "scope": "EXPECTED_I0_D0_AU_GROUPING_D0_BSI_AND_BLOCK2_C511_ID11_ID14_JOC_HEADER",
+              "target_au_bytes": 6656,
+              "target_aggregate_bitrate_bps": 1664000,
+              "official_reference_aggregate_bitrate_bps": 1280000,
+              "official_reference_used_to_construct_vector": false,
+              "i0_bytes": 2560,
+              "d0_bytes": 4096,
+              "block2_c_total_bytes": 511,
+              "local_composer_same_byte_parse": "NOT_ESTABLISHED",
+              "complexity16": "NOT_INFERRED",
+              "semantic_owner": "UNBOUND",
+              "source_generation": "UNBOUND",
+              "i0_crc_validation": "NOT_RUN",
+              "audio_block_parser": "NOT_RUN",
+              "production_allowed": false
+            },
             "production_allowed": false,
             "validation_boundary": "Synthetic opaque AU extent/order/capacity composition only; no audio, source join, file, GTC, product encode or W04 validation."
           },
@@ -47928,13 +47995,15 @@
             "kind": "SYNTHETIC_NOT_REAL_OUTPUT_OPAQUE_AU_SEQUENCE_COMPOSITION",
             "authoritative_vectors": [
               "crates/jocforge-domain/tests/fixtures/flat7x_elementary_stream/INPUT-ONLY-VECTORS.json",
-              "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json"
+              "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/STRUCTURAL-CONTRACT.json"
             ],
             "case_pointers": [
               "Two distinct opaque fill patterns occupy consecutive 6656-byte AU spans in caller order.",
               "Empty sequence, usize count overflow, wrong AU extent, one-byte-short writer capacity, and non-byte-aligned cursor reject without caller mutation.",
               "The D0 assembler's 4096-byte synthetic frame is copied into I0→D0 AU bytes and then two stream positions; D0 offsets are derived from AU receipts and the stream receipt's start/count/extent.",
-              "The CRC2 generated by the D0 assembler remains the final two bytes of each opaque D0 span through both compositions; these are synthetic structural checks, not audio, frame acceptance, BSID or source identity claims."
+              "The CRC2 generated by the D0 assembler remains the final two bytes of each opaque D0 span through both compositions; these are synthetic structural checks, not audio, frame acceptance, BSID or source identity claims.",
+              "A separate Wash OpenJOC synthetic reference accepts the expected 6656-byte I0(2560)+D0(4096) structure and D0 block-2 C=511 ID11/ID14/JOC15 shape; it contains no frame bytes and does not parse this local composer output."
             ],
             "expected_outputs_included": true,
             "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_D0_AU_STREAM_OFFSETS_AND_CRC2_PRESERVATION"
@@ -47999,6 +48068,7 @@
           ],
           "not_run": [
             "No CRC, BSID, frame syntax, audio payload, source generation or semantic AU receipt is validated or produced.",
+            "The Wash parser reference contains expected structure only; same-byte parsing of local composer output, I0 CRC, full audio-block parsing, decoding and PCM remain NOT_RUN.",
             "No file I/O, GTC transaction, product encode, final output or W04 acceptance is connected."
           ],
           "validation_boundary": "SYNTHETIC_NOT_REAL_OUTPUT; opaque AU byte sequence only; production_allowed=false.",
@@ -57208,8 +57278,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2155004,
-              "sha256": "c6829396315c800ef369a709f12d369fc40862bf7365750dc6884c7596ad7259"
+              "bytes": 2164973,
+              "sha256": "4c83328285099b03976d447e744143cea09cc8ae65bae124529a0c353560e5d0"
             }
           ],
           "test_inventory": [
