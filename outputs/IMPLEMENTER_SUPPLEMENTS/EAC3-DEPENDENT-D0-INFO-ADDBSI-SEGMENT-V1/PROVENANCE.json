@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge.eac3.flat7x_d0_info_addbsi_suffix.provenance.v1",
+  "package_id": "eac3-dependent-d0-info-addbsi-segment-v1",
+  "status": "WASH_REVIEWED_ETSI_DERIVED_STRUCTURE",
+  "standard": {
+    "id": "ETSI TS 102 366 V1.4.1 (2017-09)",
+    "url": "https://www.etsi.org/deliver/etsi_ts/102300_102399/102366/01.04.01_60/ts_102366v010401p.pdf",
+    "clauses": ["E.1.2.2", "E.1.2.0"],
+    "used_claims": [
+      "infomdate-gated informational fields",
+      "D0 target-specific omissions for strmtyp=1/acmod=5/lfeon=0/fscod=0",
+      "addbsie and U6 addbsil byte-count-minus-one syntax"
+    ],
+    "pdf_sha256": "NOT_CALCULATED; ETSI server returned HTTP 403"
+  },
+  "parent_packages": [
+    {
+      "package_id": "eac3-dependent-d0-bsi-segment-v1",
+      "manifest_sha256": "cf24050c7539262f53f220366f3c4328d766147a39daeb37e3e89f27817b88db"
+    },
+    {
+      "package_id": "eac3-dependent-d0-mixing-metadata-v1",
+      "manifest_sha256": "a7d8bb0e724dd94b9a31fa860c4296daecc957e4570dfdb9f32bf5ef17c3aa12"
+    }
+  ],
+  "reference_sample_fact": {
+    "source_package": "OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1",
+    "manifest_sha256": "f7f8630c3f18e990324f013e70486c561de6816a844f852f18f03a82ce28fbfc",
+    "observed_d0_addbsi_length_bytes": 2,
+    "target_1664_addbsi_content": "UNBOUND; no official sample payload or codec recipe included"
+  },
+  "input_policy": {
+    "addbsi_vector_bytes": "synthetic opaque test bytes only",
+    "raw_mka_ec3_pcm_payload_included": false,
+    "joc_algorithm_included": false,
+    "private_key_license_included": false
+  },
+  "production_allowed": false
+}

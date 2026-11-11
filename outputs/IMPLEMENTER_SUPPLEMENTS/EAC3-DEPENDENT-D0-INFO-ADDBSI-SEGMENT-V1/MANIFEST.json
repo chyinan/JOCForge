@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "sha256": "a1a0d5120d3e012f100f2463df97daeadc6e283098d5d0dbdea2b230b9fded85",
+      "size_bytes": 2249
+    },
+    {
+      "path": "CONTRACT.json",
+      "sha256": "35753fb6c7a9eb40b6681b640f5276b042b5cd4ef740c0498f1b07d44dadf95e",
+      "size_bytes": 3093
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "sha256": "4c09addfb1a8c8f2e2f56c4469575feda706320ed0495a6d557c2a8155ba18f3",
+      "size_bytes": 2053
+    },
+    {
+      "path": "PROVENANCE.json",
+      "sha256": "f4653fd6315ea380ec4da865865d4f7b1a97cf57b3044dfac40042ea9d3fbace",
+      "size_bytes": 1601
+    },
+    {
+      "path": "build_manifest.py",
+      "sha256": "d493137bfd356c8e3ff0ce6d402b81530a131326bd94847114af2c32142d26c8",
+      "size_bytes": 1471
+    },
+    {
+      "path": "verify_package.py",
+      "sha256": "8ea765d0f9d20bd7c31df7b05df773e1d35eb8f647d9395b289792361d0a4e67",
+      "size_bytes": 5202
+    }
+  ],
+  "package_id": "eac3-dependent-d0-info-addbsi-segment-v1",
+  "production_allowed": false,
+  "schema": "jocforge.wash_implementer_supplement.v1",
+  "status": "IMPLEMENTER_READY_LIMITED_D0_INFO_ADDBSI_SUFFIX"
+}

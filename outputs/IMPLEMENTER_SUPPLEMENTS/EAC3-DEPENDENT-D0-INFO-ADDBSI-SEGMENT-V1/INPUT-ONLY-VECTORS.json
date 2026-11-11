@@ -1,0 +1,77 @@
+{
+  "schema": "jocforge.eac3.flat7x_d0_info_addbsi_suffix.input_only.v1",
+  "execution": "NOT_RUN",
+  "contains_media_or_audio_payload": false,
+  "synthetic_opaque_addbsi_fixture": "0x12 0x34",
+  "vectors": [
+    {
+      "id": "infomdate-absent-no-addbsi",
+      "start_bit_offset": 71,
+      "inputs": {
+        "infomdate_present": false,
+        "information": null,
+        "addbsi_hex": null
+      },
+      "expected_suffix_bits": "0",
+      "expected_suffix_bit_count": 1,
+      "expected_end_bit_offset": 72
+    },
+    {
+      "id": "informational-fields-and-two-byte-addbsi",
+      "start_bit_offset": 71,
+      "inputs": {
+        "infomdate_present": true,
+        "information": {
+          "bsmod": 3,
+          "copyrightb": true,
+          "origbs": false,
+          "audio_production": null,
+          "sourcefscod": 1
+        },
+        "addbsi_hex": "1234"
+      },
+      "expected_suffix_bits": "011100110000010001001000110100",
+      "expected_suffix_bit_count": 30,
+      "expected_end_bit_offset": 101,
+      "addbsil": 1
+    },
+    {
+      "id": "audio-production-fields-without-addbsi",
+      "start_bit_offset": 99,
+      "inputs": {
+        "infomdate_present": true,
+        "information": {
+          "bsmod": 4,
+          "copyrightb": false,
+          "origbs": true,
+          "audio_production": {
+            "mixlevel": 18,
+            "roomtyp": 1,
+            "convtyp": 1
+          },
+          "sourcefscod": 0
+        },
+        "addbsi_hex": null
+      },
+      "expected_suffix_bits": "1000111001001100",
+      "expected_suffix_bit_count": 16,
+      "expected_end_bit_offset": 115
+    },
+    {
+      "id": "capacity-and-range-rejections",
+      "start_bit_offset": 71,
+      "buffer_bytes": 12,
+      "available_bits": 25,
+      "required_bits": 30,
+      "invalid_information_values": {
+        "bsmod": 8,
+        "mixlevel": 32,
+        "roomtyp": 4,
+        "convtyp": 2,
+        "sourcefscod": 2
+      },
+      "invalid_addbsi_lengths": [0, 65],
+      "expected": "REJECT_BEFORE_WRITING_ANY_BIT"
+    }
+  ]
+}

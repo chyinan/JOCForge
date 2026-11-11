@@ -402,6 +402,179 @@ pub fn append_flat7x_d0_mixing_metadata_and_infomdate(
     Ok(writer.cursor())
 }
 
+const D0_BSMOD_WIDTH_BITS: u8 = 3;
+const D0_COPYRIGHTB_WIDTH_BITS: u8 = 1;
+const D0_ORIGBS_WIDTH_BITS: u8 = 1;
+const D0_AUDPRODIE_WIDTH_BITS: u8 = 1;
+const D0_MIXLEVEL_WIDTH_BITS: u8 = 5;
+const D0_ROOMTYP_WIDTH_BITS: u8 = 2;
+const D0_CONVTYP_WIDTH_BITS: u8 = 1;
+const D0_SOURCEFSCOD_WIDTH_BITS: u8 = 1;
+const D0_ADDBSIE_WIDTH_BITS: u8 = 1;
+const D0_ADDBSIL_WIDTH_BITS: u8 = 6;
+const D0_MAX_ADDBSI_BYTES: usize = 64;
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Flat7xD0AudioProductionMetadata {
+    pub mixlevel: u8,
+    pub roomtyp: u8,
+    pub convtyp: u8,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Flat7xD0InformationMetadata {
+    pub bsmod: u8,
+    pub copyrightb: bool,
+    pub origbs: bool,
+    pub audio_production: Option<Flat7xD0AudioProductionMetadata>,
+    pub sourcefscod: u8,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Flat7xD0InfoAddbsiError {
+    InfomdateInputMismatch {
+        infomdate: bool,
+        information_present: bool,
+    },
+    UnsupportedTargetContext,
+    FieldOutOfRange {
+        field: &'static str,
+        value: u8,
+    },
+    AddbsiLengthOutOfRange {
+        bytes: usize,
+    },
+    BitWriter(FrameBitWriterError),
+}
+
+impl From<FrameBitWriterError> for Flat7xD0InfoAddbsiError {
+    fn from(error: FrameBitWriterError) -> Self {
+        Self::BitWriter(error)
+    }
+}
+
+/// Appends caller-supplied D0 informational BSI and opaque addbsi bytes.
+///
+/// The parent mixing/infomdate writer has already emitted `infomdate`; this
+/// helper verifies its matching value, writes the conditional suffix, and
+/// preflights the complete append before changing the frame scratch. It does
+/// not interpret addbsi content or assemble audio, a complete frame, or an AU.
+pub fn append_flat7x_d0_info_and_addbsi(
+    writer: &mut FrameBitWriter<'_>,
+    target: Flat7xI0D0TargetPlan,
+    infomdate: bool,
+    information: Option<Flat7xD0InformationMetadata>,
+    addbsi: Option<&[u8]>,
+) -> Result<FrameBitCursor, Flat7xD0InfoAddbsiError> {
+    if infomdate != information.is_some() {
+        return Err(Flat7xD0InfoAddbsiError::InfomdateInputMismatch {
+            infomdate,
+            information_present: information.is_some(),
+        });
+    }
+
+    let d0 = target.d0();
+    if d0.role() != Flat7xSubstreamRole::DependentD0
+        || d0.acmod().value() != 5
+        || d0.lfeon()
+        || target.sample_rate_hz() != 48_000
+        || target.audio_blocks_per_frame() != D0_BLOCK_MIX_COUNT
+    {
+        return Err(Flat7xD0InfoAddbsiError::UnsupportedTargetContext);
+    }
+
+    if let Some(information) = information {
+        for (field, value, maximum) in [
+            ("bsmod", information.bsmod, 7),
+            ("sourcefscod", information.sourcefscod, 1),
+        ] {
+            if value > maximum {
+                return Err(Flat7xD0InfoAddbsiError::FieldOutOfRange { field, value });
+            }
+        }
+        if let Some(audio_production) = information.audio_production {
+            for (field, value, maximum) in [
+                ("mixlevel", audio_production.mixlevel, 31),
+                ("roomtyp", audio_production.roomtyp, 3),
+                ("convtyp", audio_production.convtyp, 1),
+            ] {
+                if value > maximum {
+                    return Err(Flat7xD0InfoAddbsiError::FieldOutOfRange { field, value });
+                }
+            }
+        }
+    }
+
+    if let Some(bytes) = addbsi {
+        if !(1..=D0_MAX_ADDBSI_BYTES).contains(&bytes.len()) {
+            return Err(Flat7xD0InfoAddbsiError::AddbsiLengthOutOfRange { bytes: bytes.len() });
+        }
+    }
+
+    let information_bits = if let Some(information) = information {
+        let base_bits = u32::from(D0_BSMOD_WIDTH_BITS)
+            + u32::from(D0_COPYRIGHTB_WIDTH_BITS)
+            + u32::from(D0_ORIGBS_WIDTH_BITS)
+            + u32::from(D0_AUDPRODIE_WIDTH_BITS)
+            + u32::from(D0_SOURCEFSCOD_WIDTH_BITS);
+        let audio_production_bits = if information.audio_production.is_some() {
+            u32::from(D0_MIXLEVEL_WIDTH_BITS)
+                + u32::from(D0_ROOMTYP_WIDTH_BITS)
+                + u32::from(D0_CONVTYP_WIDTH_BITS)
+        } else {
+            0
+        };
+        base_bits + audio_production_bits
+    } else {
+        0
+    };
+    let addbsi_bits = if let Some(bytes) = addbsi {
+        let byte_bits = u32::try_from(bytes.len())
+            .ok()
+            .and_then(|length| length.checked_mul(8))
+            .ok_or(FrameBitWriterError::CursorOverflow)?;
+        u32::from(D0_ADDBSIE_WIDTH_BITS)
+            .checked_add(u32::from(D0_ADDBSIL_WIDTH_BITS))
+            .and_then(|bits| bits.checked_add(byte_bits))
+            .ok_or(FrameBitWriterError::CursorOverflow)?
+    } else {
+        u32::from(D0_ADDBSIE_WIDTH_BITS)
+    };
+    let total_bits = information_bits
+        .checked_add(addbsi_bits)
+        .ok_or(FrameBitWriterError::CursorOverflow)?;
+    writer.preflight_capacity(total_bits)?;
+
+    if let Some(information) = information {
+        writer.write_unsigned(u32::from(information.bsmod), D0_BSMOD_WIDTH_BITS)?;
+        writer.write_bit(information.copyrightb)?;
+        writer.write_bit(information.origbs)?;
+        writer.write_bit(information.audio_production.is_some())?;
+        if let Some(audio_production) = information.audio_production {
+            writer.write_unsigned(u32::from(audio_production.mixlevel), D0_MIXLEVEL_WIDTH_BITS)?;
+            writer.write_unsigned(u32::from(audio_production.roomtyp), D0_ROOMTYP_WIDTH_BITS)?;
+            writer.write_unsigned(u32::from(audio_production.convtyp), D0_CONVTYP_WIDTH_BITS)?;
+        }
+        writer.write_unsigned(
+            u32::from(information.sourcefscod),
+            D0_SOURCEFSCOD_WIDTH_BITS,
+        )?;
+    }
+
+    writer.write_bit(addbsi.is_some())?;
+    if let Some(bytes) = addbsi {
+        writer.write_unsigned(
+            u32::try_from(bytes.len() - 1).map_err(|_| FrameBitWriterError::CursorOverflow)?,
+            D0_ADDBSIL_WIDTH_BITS,
+        )?;
+        for byte in bytes {
+            writer.write_unsigned(u32::from(*byte), 8)?;
+        }
+    }
+
+    Ok(writer.cursor())
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum SelectedComplexityFieldWriteError {
     CursorMismatch { actual: u32 },

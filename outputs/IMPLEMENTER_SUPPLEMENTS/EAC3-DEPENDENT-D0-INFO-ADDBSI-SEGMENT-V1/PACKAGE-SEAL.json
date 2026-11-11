@@ -1,0 +1,7 @@
+{
+  "manifest_sha256": "e8f1908d3572571c4dcb19aedd898b0e068464d6921ed54569fd8df4cb3a7cdb",
+  "package_id": "eac3-dependent-d0-info-addbsi-segment-v1",
+  "payload_count": 6,
+  "production_allowed": false,
+  "schema": "jocforge.wash_implementer_supplement_seal.v1"
+}

@@ -1,0 +1,79 @@
+{
+  "schema": "jocforge.eac3.flat7x_d0_info_addbsi_suffix.v1",
+  "package_id": "eac3-dependent-d0-info-addbsi-segment-v1",
+  "status": "IMPLEMENTER_READY_LIMITED_D0_INFO_ADDBSI_SUFFIX",
+  "production_allowed": false,
+  "parent_packages": [
+    {
+      "package_id": "eac3-dependent-d0-bsi-segment-v1",
+      "manifest_sha256": "cf24050c7539262f53f220366f3c4328d766147a39daeb37e3e89f27817b88db",
+      "seal_sha256": "5af97a494b53190ce7014f47829352fc71dc58d9bdf3354554469ed1676f7be2"
+    },
+    {
+      "package_id": "eac3-dependent-d0-mixing-metadata-v1",
+      "manifest_sha256": "a7d8bb0e724dd94b9a31fa860c4296daecc957e4570dfdb9f32bf5ef17c3aa12",
+      "seal_sha256": "a7fcace5ab491fb3f7f82927146a6c9e33f7fa6321bf875d0bb4c11b7c004a7e"
+    },
+    {
+      "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+      "manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+      "seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20"
+    },
+    {
+      "package_id": "OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1",
+      "manifest_sha256": "f7f8630c3f18e990324f013e70486c561de6816a844f852f18f03a82ce28fbfc",
+      "seal_sha256": "2d883e278bb83fa0d617610f94b8a87fa5849ac7bf19bdf08818d8d30d50740e"
+    }
+  ],
+  "target": {
+    "stream_type": 1,
+    "substream_id": 0,
+    "sample_rate_hz": 48000,
+    "fscod": 0,
+    "numblkscod": 3,
+    "audio_blocks": 6,
+    "acmod": 5,
+    "lfeon": 0,
+    "chanmap": "0x1A00",
+    "start_cursor_source": "cursor after parent mixmdate/block-mix/infomdate writer"
+  },
+  "syntax": {
+    "infomdate_already_written": true,
+    "infomdate_presence_input_must_match_information_option": true,
+    "information_fields_if_present": [
+      {"name": "bsmod", "width_bits": 3},
+      {"name": "copyrightb", "width_bits": 1},
+      {"name": "origbs", "width_bits": 1},
+      {"name": "audprodie", "width_bits": 1},
+      {"name": "mixlevel", "width_bits": 5, "condition": "audprodie"},
+      {"name": "roomtyp", "width_bits": 2, "condition": "audprodie"},
+      {"name": "convtyp", "width_bits": 1, "condition": "audprodie"},
+      {"name": "sourcefscod", "width_bits": 1, "condition": "fscod<3"}
+    ],
+    "conversion_fields": {
+      "convsync": "omitted because target strmtyp=1 and numblkscod=3",
+      "blkid_and_frmsizecod": "omitted because target strmtyp=1"
+    },
+    "addbsi": {
+      "addbsie": "derived from addbsi Option",
+      "addbsil_width_bits": 6,
+      "byte_count_range": [1, 64],
+      "addbsil_value": "byte_count - 1",
+      "content": "opaque caller-supplied bytes"
+    },
+    "bit_order": "MSB_FIRST",
+    "preflight_required": true,
+    "end_boundary": "end of addbsi or addbsie=0"
+  },
+  "implementation_scope": {
+    "proposed_function": "append_flat7x_d0_info_and_addbsi",
+    "starts_after_infomdate_bit": true,
+    "caller_inputs_are_explicit": true,
+    "interprets_joc_addbsi": false,
+    "computes_crc": false,
+    "creates_audio_blocks": false,
+    "assembles_full_frame_or_au": false,
+    "modifies_existing_5_1_writer": false,
+    "production_allowed": false
+  }
+}

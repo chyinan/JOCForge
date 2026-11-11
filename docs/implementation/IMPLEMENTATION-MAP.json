@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2106722,
-              "sha256": "ddac24ab2a05384c8d25999297a52f195d01a7f2f2ebbc12f7e239d45cdf6e1f"
+              "bytes": 2112527,
+              "sha256": "788530bb01c81f6e86a681828e893861a23096c9c2089572ecc531bcf708d365"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2106722,
-              "sha256": "ddac24ab2a05384c8d25999297a52f195d01a7f2f2ebbc12f7e239d45cdf6e1f"
+              "bytes": 2112527,
+              "sha256": "788530bb01c81f6e86a681828e893861a23096c9c2089572ecc531bcf708d365"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -43596,8 +43596,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 27841,
-              "sha256": "427aa78930cd336a8f60e0a534d0e6a833bb6ebee54aaaaeafe4db959988bf1f"
+              "bytes": 33951,
+              "sha256": "c683912328c412579ca1b5334015b14563e99990fe05d692c6b857d1683cfe4f"
             }
           ],
           "test_modules": [
@@ -43606,8 +43606,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 27841,
-              "sha256": "427aa78930cd336a8f60e0a534d0e6a833bb6ebee54aaaaeafe4db959988bf1f"
+              "bytes": 33951,
+              "sha256": "c683912328c412579ca1b5334015b14563e99990fe05d692c6b857d1683cfe4f"
             }
           ],
           "local_mapping_files": [],
@@ -44556,8 +44556,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 27841,
-              "sha256": "427aa78930cd336a8f60e0a534d0e6a833bb6ebee54aaaaeafe4db959988bf1f"
+              "bytes": 33951,
+              "sha256": "c683912328c412579ca1b5334015b14563e99990fe05d692c6b857d1683cfe4f"
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_syntax.rs",
@@ -46362,8 +46362,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 27841,
-              "sha256": "427aa78930cd336a8f60e0a534d0e6a833bb6ebee54aaaaeafe4db959988bf1f"
+              "bytes": 33951,
+              "sha256": "c683912328c412579ca1b5334015b14563e99990fe05d692c6b857d1683cfe4f"
             }
           ],
           "test_modules": [
@@ -46487,8 +46487,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 27841,
-              "sha256": "427aa78930cd336a8f60e0a534d0e6a833bb6ebee54aaaaeafe4db959988bf1f"
+              "bytes": 33951,
+              "sha256": "c683912328c412579ca1b5334015b14563e99990fe05d692c6b857d1683cfe4f"
             }
           ],
           "test_modules": [
@@ -46622,8 +46622,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 27841,
-              "sha256": "427aa78930cd336a8f60e0a534d0e6a833bb6ebee54aaaaeafe4db959988bf1f"
+              "bytes": 33951,
+              "sha256": "c683912328c412579ca1b5334015b14563e99990fe05d692c6b857d1683cfe4f"
             }
           ],
           "test_modules": [
@@ -46763,8 +46763,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 27841,
-              "sha256": "427aa78930cd336a8f60e0a534d0e6a833bb6ebee54aaaaeafe4db959988bf1f"
+              "bytes": 33951,
+              "sha256": "c683912328c412579ca1b5334015b14563e99990fe05d692c6b857d1683cfe4f"
             }
           ],
           "test_modules": [
@@ -46923,6 +46923,198 @@
           ],
           "validation_boundary": "Input-only structural values are locally serialized through infomdate. A byte-granularity capacity representation difference is reported; full D0 frame/AU and production remain NOT_RUN.",
           "delivery_scope": "FLAT7X_D0_MIXING_METADATA_AND_INFOMDATE_FIELDS_ONLY_NO_XML_AUDIO_FRAME_OR_PRODUCTION_CLAIM"
+        },
+        {
+          "slice_id": "flat7x-d0-information-addbsi-suffix",
+          "mapping_status": "WASHED_D0_INFORMATION_AND_OPAQUE_ADDBSI_SUFFIX_BOUND__AUDIO_AND_FRAME_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_D0_INFORMATION_AND_ADDBSI_SUFFIX__FULL_FRAME_OPEN",
+          "implementation_requirement": true,
+          "owner": "codec",
+          "scope": "Continues at the cursor returned by the parent mixing/infomdate helper. The caller supplies infomdate plus matching optional information values; the helper emits bsmod, copyrightb, origbs, audprodie, optional mixlevel/roomtyp/convtyp, sourcefscod, addbsie, and optional addbsil plus opaque caller bytes. It validates target context, presence agreement, field ranges, byte count 1..64, and complete suffix capacity before writing. Dependent strmtyp=1 omits conversion syntax. The helper does not interpret addbsi, map XML, calculate CRC, create audio, or assemble a frame/AU.",
+          "dependencies": [
+            "F01E/flat7x-i0-d0-typed-target-plan",
+            "F12/flat7x-d0-mixing-metadata-segment"
+          ],
+          "spec_files": [
+            "specs/12-codec-and-wire.md",
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/CONTRACT.md"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/frame_builder.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
+              "bytes": 33951,
+              "sha256": "c683912328c412579ca1b5334015b14563e99990fe05d692c6b857d1683cfe4f"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/flat7x_d0_info_addbsi.rs"
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_d0_info_addbsi.rs",
+              "bytes": 11626,
+              "sha256": "79a90fa6c8a191b2416246f79be915bd3c87309300a7fffc0face2f4f85d7144"
+            }
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The suffix begins at the parent helper's returned frame-bit cursor and returns its ending cursor."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_D0_INFORMATION_AND_ADDBSI_SUFFIX",
+            "package_id": "eac3-dependent-d0-info-addbsi-segment-v1",
+            "supplement_manifest_sha256": "e8f1908d3572571c4dcb19aedd898b0e068464d6921ed54569fd8df4cb3a7cdb",
+            "supplement_seal_sha256": "d94fd72b890c522849cca6380f7630eddf1637764fda09807a61aa8ce3385f5d",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/PACKAGE-SEAL.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/PROVENANCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/verify_package.py"
+            ],
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "target_context": {
+              "strmtyp": 1,
+              "substream_id": 0,
+              "sample_rate_hz": 48000,
+              "fscod": 0,
+              "numblkscod": 3,
+              "audio_blocks_per_frame": 6,
+              "acmod": 5,
+              "lfeon": 0,
+              "chanmap": "0x1A00"
+            },
+            "infomdate_input_matches_information_presence": true,
+            "information_fields_when_present": [
+              {
+                "name": "bsmod",
+                "width_bits": 3,
+                "valid_values": [
+                  0,
+                  7
+                ]
+              },
+              {
+                "name": "copyrightb",
+                "width_bits": 1
+              },
+              {
+                "name": "origbs",
+                "width_bits": 1
+              },
+              {
+                "name": "audprodie",
+                "width_bits": 1,
+                "value_source": "audio_production Option presence"
+              },
+              {
+                "name": "mixlevel",
+                "width_bits": 5,
+                "valid_values": [
+                  0,
+                  31
+                ],
+                "condition": "audprodie"
+              },
+              {
+                "name": "roomtyp",
+                "width_bits": 2,
+                "valid_values": [
+                  0,
+                  3
+                ],
+                "condition": "audprodie"
+              },
+              {
+                "name": "convtyp",
+                "width_bits": 1,
+                "valid_values": [
+                  0,
+                  1
+                ],
+                "condition": "audprodie"
+              },
+              {
+                "name": "sourcefscod",
+                "width_bits": 1,
+                "valid_values": [
+                  0,
+                  1
+                ]
+              }
+            ],
+            "addbsi": {
+              "addbsie_width_bits": 1,
+              "addbsil_width_bits": 6,
+              "byte_count_range": [
+                1,
+                64
+              ],
+              "addbsil_formula": "byte_count - 1",
+              "content": "opaque caller-supplied bytes"
+            },
+            "preflight_required": true,
+            "production_allowed": false,
+            "validation_boundary": "Local structural suffix only; JOC addbsi interpretation, audio blocks, CRC, complete D0 frame/AU and production remain NOT_RUN."
+          },
+          "vectors": {
+            "kind": "WASHED_INPUT_ONLY_D0_INFO_ADDBSI_SUFFIX_VECTORS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "Absent infomdate information and absent addbsi emit addbsie=0 only.",
+              "Explicit informational BSI fields plus synthetic opaque bytes 0x12 0x34 encode addbsil=1 and return at bit101.",
+              "Optional audio production fields encode mixlevel U5, roomtyp U2 and convtyp U1 before sourcefscod.",
+              "Range gates cover bsmod, mixlevel, roomtyp, convtyp, sourcefscod and addbsi lengths 0/65.",
+              "Capacity input has 25 available bits for a 30-bit suffix and rejects atomically."
+            ],
+            "local_fixture": {
+              "file": "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 2053,
+              "sha256": "4c09addfb1a8c8f2e2f56c4469575feda706320ed0495a6d557c2a8155ba18f3"
+            },
+            "expected_outputs_included": true,
+            "execution_status": "LOCALLY_VERIFIED_INPUT_ONLY_D0_INFORMATION_AND_ADDBSI_SUFFIX"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "INFOMDATE_INFORMATION_PRESENCE_MISMATCH",
+              "category": "parent suffix agreement",
+              "trigger": "The infomdate value supplied for the parent segment differs from information Option presence.",
+              "result": "Typed rejection before bytes or cursor change.",
+              "caller_action": "Use the same infomdate selection for the parent writer and informational values."
+            },
+            {
+              "error_code": "D0_INFO_FIELD_OR_ADDBSI_LENGTH_OUT_OF_RANGE",
+              "category": "caller-supplied field validation",
+              "trigger": "An informational value exceeds its encoded field width or addbsi length is outside 1..64 bytes.",
+              "result": "Typed rejection before bytes or cursor change.",
+              "caller_action": "Reject the suffix candidate and provide explicit values within the declared ranges."
+            },
+            {
+              "error_code": "FRAME_BIT_WRITER_BUFFER_TOO_SMALL",
+              "category": "whole-suffix capacity",
+              "trigger": "The writer lacks capacity for the complete computed suffix.",
+              "result": "BufferTooSmall before any suffix bits are written.",
+              "caller_action": "Reject the suffix candidate; caller retains frame ownership."
+            }
+          ],
+          "not_run": [
+            "No JOC payload interpretation or production addbsi construction is performed.",
+            "Audio, CRC, complete D0 frame/AU, producer/source binding, full output and W04 remain NOT_RUN."
+          ],
+          "validation_boundary": "Wash input-only field vectors replay locally, including atomic rejection. This remains a suffix serializer and production_allowed=false.",
+          "delivery_scope": "FLAT7X_D0_INFORMATION_AND_OPAQUE_ADDBSI_SUFFIX_ONLY_NO_JOC_INTERPRETATION_AUDIO_FRAME_OR_PRODUCTION_CLAIM"
         }
       ]
     },
@@ -56128,8 +56320,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2106722,
-              "sha256": "ddac24ab2a05384c8d25999297a52f195d01a7f2f2ebbc12f7e239d45cdf6e1f"
+              "bytes": 2112527,
+              "sha256": "788530bb01c81f6e86a681828e893861a23096c9c2089572ecc531bcf708d365"
             }
           ],
           "test_inventory": [
