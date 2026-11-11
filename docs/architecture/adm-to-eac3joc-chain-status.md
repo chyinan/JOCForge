@@ -6,6 +6,12 @@
 
 本文记录目标链路、现有实现边界和证据状态。图中的“合同”“局部验证”和“原生 DEE 证据”含义不同，不能互相替代。
 
+## 2026-11-11：官方演示参考的 OAMD 位置字段域
+
+Wash 补包 `OFFICIAL-ATMOS-DEMO-OAMD-POSITION-WASHED-V1` 的 manifest SHA-256 为 `c550a0536ed4752b46872c674fcabc8ad8828b7eb69e17e6fb4a0d082ee52ef8`，package seal SHA-256 为 `906f48f17f47ef372d339bebe598931a933e6dc132452862ab630fce4582c5f5`；普通及 `python -O` checker 均通过。补包覆盖用户指定的 1,280-kbps 参考样本 23,033 个 AU：15 个 dynamic object 每 AU 各有一个 absolute room-position/Z 更新，9 个对象为 Z code 0，6 个对象为 positive ceiling code 15；`b_enable_elevation` zone constraint、`object_size_idx` 与 resolved object-size height 分别保留独立字段域。
+
+隔离实现的 target metadata reference fixture 位于 `crates/jocforge-domain/tests/fixtures/flat7x_metadata/official_demo_oamd_position_reference.json`。fixture 仅含聚合观察值，不包含坐标列表或编码配方。样本码率为 1,280 kbps，1,664-kbps target 仍 `NOT_EVALUATED`，`production_allowed=false`；现有 5.1 默认与生产路径未变。
+
 ## 2026-11-06：authored silence duration admission gate
 
 Wash 包 `ATMOS-SILENCE-DURATION-SAMPLE-BOUNDARY-V1` 已物化到隔离仓。manifest SHA-256 `1295151443daca741c7ca0477b91bdf84d88eae76065d7b861ca4125f895980c`、seal SHA-256 `47f5b8c8538894acdecad538f0537056b3ec216b5894943addf0d490b67f6852`，REPORT、INPUT-ONLY-VECTORS 与 PROVENANCE 三个 payload 本地逐项校验通过；普通 Python 与 `python -O` 均 PASS。向量只列 zero/fractional 两个输入，标为 `PROPOSED_NOT_RUN`。

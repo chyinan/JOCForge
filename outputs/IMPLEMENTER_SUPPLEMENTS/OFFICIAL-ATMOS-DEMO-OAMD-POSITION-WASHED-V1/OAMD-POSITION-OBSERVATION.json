@@ -1,0 +1,70 @@
+{
+  "schema": "wash.official_demo_oamd_position_summary.v1",
+  "source": {
+    "user_designated_basename": "Dolby-Atmos-DD+ 7.1.4.mka",
+    "file_size_bytes": 118008186,
+    "sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+    "authenticity": "USER_DESIGNATED; NOT_INDEPENDENTLY_AUTHENTICATED",
+    "prior_packet_structure_manifest_sha256": "13b691cc9dfc67667b1f02eb28f2257516d284992a58cc80a14569c5ef5ecd9d",
+    "prior_profile_index_manifest_sha256": "c4104e674a9c3df06ead8f6741a7366e58068602789806d1a91d045c1dfd731a"
+  },
+  "observation_package": {
+    "wash_manifest_sha256": "aa74b1169026bb8c7b598e7129c7f3e36880cf4c865fc975f7add8b2146fdde9",
+    "normal_and_optimized_checkers": "PASS",
+    "access_unit_records_verified": 23033,
+    "parser_and_bounded_syntax_trace_matches": 23033,
+    "raw_oamd_or_packet_bytes_included": false,
+    "pcm_created": false,
+    "dee_run": false
+  },
+  "oamd": {
+    "element_id_distribution": {
+      "1": 23033
+    },
+    "oamd_slots_per_access_unit": 16,
+    "object_slots": {
+      "bed_or_isf": 1,
+      "dynamic": 15
+    },
+    "first_access_unit_metadata_blocks": 2,
+    "remaining_access_units_metadata_blocks": 23032
+  },
+  "dynamic_position": {
+    "access_unit_coverage_per_object": 23033,
+    "first_pts": 0,
+    "last_pts": 35379416,
+    "time_base": "651/31250000",
+    "explicit_absolute_position_fields_total": 345495,
+    "explicit_room_z_fields_total": 345495,
+    "differential_position_fields": 0,
+    "room_anchored_updates": 345495,
+    "z_code_distribution": {
+      "code_0": 207297,
+      "code_15_positive": 138198
+    },
+    "code_15_room_coordinate": "positive ceiling at +1 under ETSI TS 103 420 V1.2.1 clause 4.2.1",
+    "extended_position_element_id_5_count": 0
+  },
+  "separate_fields": {
+    "b_enable_elevation_enabled_updates": 345495,
+    "object_size_idx_0_updates": 345495,
+    "resolved_object_size_height_zero_states": 345510,
+    "position_z_is_distinct_from_elevation_flag_and_size_height": true
+  },
+  "rate_comparison": {
+    "reference_total_kbps": 1280,
+    "reference_i0_kbps": 640,
+    "reference_d0_kbps": 640,
+    "requested_target_total_kbps": 1664,
+    "requested_target_i0_kbps": 640,
+    "requested_target_d0_kbps": 1024,
+    "target_output_validation": "NOT_EVALUATED"
+  },
+  "validation_disposition": {
+    "table56_codecdatae_payload_ids_11_14": 0,
+    "etsi_table56_required_codecdatae": 1,
+    "vendor_compatible_observation": "PRESERVED",
+    "etsi_strict": "FAILS_TABLE56_FOR_THIS_SAMPLE",
+    "production_allowed": false
+  }
+}

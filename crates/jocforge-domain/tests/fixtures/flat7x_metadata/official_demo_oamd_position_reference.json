@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge.flat7x_metadata_reference_fixture.v1",
+  "evidence": {
+    "package_id": "OFFICIAL-ATMOS-DEMO-OAMD-POSITION-WASHED-V1",
+    "manifest_sha256": "c550a0536ed4752b46872c674fcabc8ad8828b7eb69e17e6fb4a0d082ee52ef8",
+    "package_seal_sha256": "906f48f17f47ef372d339bebe598931a933e6dc132452862ab630fce4582c5f5",
+    "source_sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+    "source_status": "USER_DESIGNATED_HASH_BOUND; OFFICIAL_PROVENANCE_NOT_INDEPENDENTLY_AUTHENTICATED",
+    "production_allowed": false
+  },
+  "reference_sample": {
+    "total_rate_kbps": 1280,
+    "access_units": 23033,
+    "target_rate_kbps": 1664,
+    "target_validation": "NOT_EVALUATED"
+  },
+  "oamd_structure": {
+    "element_id": 1,
+    "slots_per_access_unit": 16,
+    "bed_or_isf_slots": 1,
+    "dynamic_object_slots": 15
+  },
+  "object_metadata_fields": {
+    "position": {
+      "encoding": "absolute",
+      "anchor": "room",
+      "updates_per_dynamic_object": 23033,
+      "updates_total": 345495,
+      "differential_updates_total": 0,
+      "z_code_zero_object_count": 9,
+      "z_code_positive_ceiling_object_count": 6,
+      "z_code_zero_updates_total": 207297,
+      "z_code_positive_ceiling_updates_total": 138198,
+      "extended_position_element_id_5_count": 0
+    },
+    "elevation_zone_constraint": {
+      "field": "b_enable_elevation",
+      "enabled_updates_total": 345495
+    },
+    "object_size": {
+      "index_field": "object_size_idx",
+      "index_zero_updates_total": 345495,
+      "resolved_height_zero_states": 345510
+    }
+  },
+  "field_domain_relation": {
+    "position_z_is_distinct_from_elevation_zone_constraint": true,
+    "position_z_is_distinct_from_object_size_height": true,
+    "elevation_zone_constraint_is_distinct_from_object_size_height": true
+  }
+}

@@ -18,7 +18,7 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 SUPPLEMENT_ROOT = REPOSITORY_ROOT / "outputs" / "IMPLEMENTER_SUPPLEMENTS"
 CATALOG_PATH = SUPPLEMENT_ROOT / "CATALOG.md"
 MANIFEST_NAMES = ("MANIFEST.json", "evidence_manifest.json", "manifest.json")
-SUMMARY_NAMES = ("CONTRACT.md", "REPORT.md", "README.md", "SUMMARY.md")
+SUMMARY_NAMES = ("CONTRACT.md", "REPORT.md", "README.md", "SUMMARY.md", "IMPLEMENTER-HANDOFF.md")
 STATUS_NAMES = ("CHECK.json", "VERIFICATION.json", "WASH-REVIEW.json", "PACKAGE-SEAL.json")
 SUMMARY_LIMIT = 360
 PAYLOAD_NAME_LIMIT = 8
@@ -89,6 +89,9 @@ def scrub_summary(value: str) -> str:
 
 def first_summary_paragraph(content: bytes) -> str:
     text = content.decode("utf-8", errors="replace")
+    front_matter = re.match(r"\A---\s*\r?\n.*?\r?\n---\s*(?:\r?\n|$)", text, flags=re.DOTALL)
+    if front_matter:
+        text = text[front_matter.end() :]
     paragraphs = re.split(r"\n\s*\n", text)
     selected = []
     for paragraph in paragraphs:

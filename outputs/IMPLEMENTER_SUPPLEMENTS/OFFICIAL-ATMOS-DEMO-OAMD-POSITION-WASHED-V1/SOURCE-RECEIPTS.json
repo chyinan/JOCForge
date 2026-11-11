@@ -1,0 +1,25 @@
+{
+  "schema": "wash.implementer_source_receipts.v1",
+  "package_id": "OFFICIAL-ATMOS-DEMO-OAMD-POSITION-WASHED-V1",
+  "source": {
+    "user_designated_basename": "Dolby-Atmos-DD+ 7.1.4.mka",
+    "file_size_bytes": 118008186,
+    "sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+    "source_status": "USER_DESIGNATED_HASH_BOUND; OFFICIAL_PROVENANCE_NOT_INDEPENDENTLY_AUTHENTICATED"
+  },
+  "wash_observation": {
+    "package_path": "D:\\Tools\\Dolby_Encoding_Engine\\work\\research-audit\\official-atmos-mka-structure\\attempt-04-oamd-position\\delivery-v4",
+    "manifest_sha256": "aa74b1169026bb8c7b598e7129c7f3e36880cf4c865fc975f7add8b2146fdde9",
+    "prior_structure_manifest_sha256": "13b691cc9dfc67667b1f02eb28f2257516d284992a58cc80a14569c5ef5ecd9d",
+    "prior_profile_index_implementer_manifest_sha256": "c4104e674a9c3df06ead8f6741a7366e58068602789806d1a91d045c1dfd731a",
+    "prior_profile_index_implementer_seal_sha256": "0fb4c7f8a7a49488a97586b7e3eb6febc0542cf0044569fe37e65dc07d85757d",
+    "verification": "normal and python -O PASS; 23,033 AU summaries; no source/payload/PCM included"
+  },
+  "exclusions": {
+    "mka_or_packets_included": false,
+    "oamd_payload_or_coordinate_samples_included": false,
+    "pcm_included": false,
+    "key_or_license_included": false,
+    "research_parser_source_included": false
+  }
+}

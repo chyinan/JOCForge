@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.implementer_supplement_seal.v1",
+  "package_id": "OFFICIAL-ATMOS-DEMO-OAMD-POSITION-WASHED-V1",
+  "manifest_sha256": "c550a0536ed4752b46872c674fcabc8ad8828b7eb69e17e6fb4a0d082ee52ef8",
+  "file_paths": [
+    "CHECK.py",
+    "IMPLEMENTER-HANDOFF.md",
+    "OAMD-POSITION-OBSERVATION.json",
+    "SOURCE-RECEIPTS.json"
+  ],
+  "seal_file_excluded_from_own_hash": true
+}

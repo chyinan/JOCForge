@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge.implementer_supplement_manifest.v1",
+  "package_id": "OFFICIAL-ATMOS-DEMO-OAMD-POSITION-WASHED-V1",
+  "audience": "IMPLEMENTER",
+  "status": "WASH_REVIEWED_REFERENCE_OAMD_POSITION_ONLY",
+  "production_allowed": false,
+  "source_sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+  "parent_profile_manifest_sha256": "c4104e674a9c3df06ead8f6741a7366e58068602789806d1a91d045c1dfd731a",
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 2625,
+      "sha256": "44b9a515d4aa11f8c5a89c4565d29c2bb73744978de2c8471b0f464b16b8db12"
+    },
+    {
+      "path": "IMPLEMENTER-HANDOFF.md",
+      "bytes": 2678,
+      "sha256": "4bc08195c4c60ad5f4b316defc354567ecaaf233fa2794699a9735ee9df9da68"
+    },
+    {
+      "path": "OAMD-POSITION-OBSERVATION.json",
+      "bytes": 2624,
+      "sha256": "a8856adaa9649075f423bb7fa1772f430f3868864ccb8f86444450f382d5afdf"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 1385,
+      "sha256": "a99de72fd753e85b6142b384ff0e322e2384ecd25073a5d097e3680893454690"
+    }
+  ]
+}
