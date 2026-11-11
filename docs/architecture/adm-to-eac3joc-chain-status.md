@@ -1818,3 +1818,7 @@ Wash supplement `FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1` (manifest `07ad2b60bd22a1
 ## 2026-11-12 Flat7x I0 AC-3 BSI-tail serialization
 
 `codec::ac3_bsi_tail::write_flat7x_i0_ac3_bsi_tail` uses the sealed `FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1` field order. It begins at the header cursor (bit 62 or 70), writes langcode, audprodie mixlevel/roomtyp, copyrightb/origbs, optional U14 timecodes and addbsie/addbsil/addbsi. The target acmod 7 omits dual-mono fields. Widths, addbsi length 1..64 bytes, total extent and capacity are validated before mutation. Synthetic vectors cover required flags, all optional groups, the maximum addbsi length and rejection atomicity. No XML mapping, audio generation or production caller is connected; `production_allowed=false`.
+
+## 2026-11-12 typed I0 BSI-to-frame composition
+
+`codec::i0_frame_assembler::assemble_flat7x_i0_ac3_frame_from_fields` derives the BSI insertion cursor from `compr` presence, serializes the typed tail in private scratch, and forwards its exact receipt span with six caller-owned audio spans to the existing opaque frame assembler. The all-optionals BSI vector plus synthetic spans verify header/BSI/block offsets, the 20,480-bit extent, CRC residuals and fail-before-write behavior. This entry generates no audio and adds no production caller; `production_allowed=false`.

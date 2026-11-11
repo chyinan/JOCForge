@@ -18,6 +18,8 @@ The additive `codec::i0_frame_assembler::assemble_flat7x_i0_ac3_frame` composes 
 
 `codec::ac3_bsi_tail::write_flat7x_i0_ac3_bsi_tail` serializes the approved caller-authored optionals after the I0 header cursor and returns an exact tail extent. It omits acmod=0-only fields for acmod 7, validates the bounded addbsi U6 length, and remains structural with `production_allowed=false`.
 
+`codec::i0_frame_assembler::assemble_flat7x_i0_ac3_frame_from_fields` composes typed header/BSI values with six caller-owned audio spans. It stages the BSI tail privately, forwards its exact span to the existing whole-frame assembler and returns both receipts; the opaque-span entry remains available. No audio or production callsite is added.
+
 F15 另有独立的 Flat7x AU staging owner value，可为一个 I0+D0 aggregate 建立 proposal、pair-aware ledger entry 与 caller-supplied receipt candidate 验收。该 owner 尚未接入 GTC 或产品路径；5.1 `OutputOwner` 保持独立。
 
 单独的 IO adapter 已可把此 proposal 写到调用方持有的 staging file，执行 sync 和精确范围 readback 后返回 receipt candidate。失败时由调用方废弃 staging attempt；adapter 不做 rollback、rename 或 final exposure，也不连接 encode entry。

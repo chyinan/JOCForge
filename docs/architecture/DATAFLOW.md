@@ -42,6 +42,8 @@ The additive `codec::i0_frame_assembler::assemble_flat7x_i0_ac3_frame` composes 
 
 `codec::ac3_bsi_tail::write_flat7x_i0_ac3_bsi_tail` serializes the approved caller-authored optionals after the I0 header cursor and returns an exact tail extent. It omits acmod=0-only fields for acmod 7, validates the bounded addbsi U6 length, and remains structural with `production_allowed=false`.
 
+`codec::i0_frame_assembler::assemble_flat7x_i0_ac3_frame_from_fields` composes typed header/BSI values with six caller-owned audio spans. It stages the BSI tail privately, forwards its exact span to the existing whole-frame assembler and returns both receipts; the opaque-span entry remains available. No audio or production callsite is added.
+
 The additive `Flat7xAuOutputOwner` stages a complete byte-sequence candidate as one F15 proposal and keeps I0/D0 frame hashes and CRC residuals in one AU ledger entry. The separate IO adapter writes the proposal at the expected staging offset, syncs the file, reads the range back and produces a receipt candidate with the observed write totals and pair CRCs. A failed write may leave bytes in staging; the caller abandons that staging attempt. The adapter does not rename or expose a final file, register a GTC root or alter the selected 5.1 output path.
 
 已物化的 PostWindow fanout capability 位于 F03W `W3072` installed48 输出之后。future renderer 创建一个线性 proposal；`fanout(self)` 生成 CurrentFeatures 和 spatial-audio 两个非 Clone view，并共享同一 immutable `Arc` payload。CurrentFeatures 接收显式 phase。renderer、F04 assembler 和 parent transaction 仍 deferred。

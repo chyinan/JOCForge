@@ -18686,11 +18686,11 @@
               "bytes": 55979,
               "sha256": "f2deba90fe2e2cdb0401bb597e7c35e51631accbc5be67577c99bdcc00b7d55f"
             },
-                                                {
-                          "path": "scripts/check-boundaries.py",
-                          "bytes": 2167541,
-                          "sha256": "bad1b1f7262af19d2663bb08968c94f1a5d886462c6b6e5603cb6b3d5c78399f"
-                        }
+                                                                                                                                                                                                {
+                                                                                                  "path": "scripts/check-boundaries.py",
+                                                                                                  "bytes": 2172415,
+                                                                                                  "sha256": "db3edd21d5517c400e3bcc482aca5bcf785039c59e5421e8e46a136750cce95a"
+                                                                                                }
           ],
           "test_modules": [
             "crates/jocforge-domain/src/spatial/production_callback/selected_audio_provider_bundle.rs",
@@ -22213,11 +22213,11 @@
               "bytes": 39236,
               "sha256": "17db76ffbc5b6983fff43d26e7d63f1529bf64c84347b7c9da7014f05d0d083f"
             },
-                                                {
-                          "path": "scripts/check-boundaries.py",
-                          "bytes": 2167541,
-                          "sha256": "bad1b1f7262af19d2663bb08968c94f1a5d886462c6b6e5603cb6b3d5c78399f"
-                        },
+                                                                                                                                                                                                {
+                                                                                                  "path": "scripts/check-boundaries.py",
+                                                                                                  "bytes": 2172415,
+                                                                                                  "sha256": "db3edd21d5517c400e3bcc482aca5bcf785039c59e5421e8e46a136750cce95a"
+                                                                                                },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
               "bytes": 18568,
@@ -42346,11 +42346,11 @@
               "bytes": 30228,
               "sha256": "3e364b01cd60c64fc79c08b12a9013565b1bcf8b6cec6378ed8e9b241bcbb9c6"
             },
-                                                {
-                          "path": "crates/jocforge-domain/src/codec/mod.rs",
-                          "bytes": 1116,
-                          "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                        },
+                                                                                                {
+                                                  "path": "crates/jocforge-domain/src/codec/mod.rs",
+                                                  "bytes": 1116,
+                                                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                                                },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
               "bytes": 63659,
@@ -42480,11 +42480,11 @@
               "bytes": 99211,
               "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
             },
-                                                {
-                          "path": "crates/jocforge-domain/src/codec/mod.rs",
-                          "bytes": 1116,
-                          "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                        },
+                                                                                                {
+                                                  "path": "crates/jocforge-domain/src/codec/mod.rs",
+                                                  "bytes": 1116,
+                                                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                                                },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
               "bytes": 63659,
@@ -42657,11 +42657,11 @@
               "bytes": 14328,
               "sha256": "711aea5f953cc9c9031fd9296719a48110766b56453911a61954b8c48fb8719c"
             },
-                                                {
-                          "path": "crates/jocforge-domain/src/codec/mod.rs",
-                          "bytes": 1116,
-                          "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                        },
+                                                                                                {
+                                                  "path": "crates/jocforge-domain/src/codec/mod.rs",
+                                                  "bytes": 1116,
+                                                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                                                },
             {
               "path": "crates/jocforge-domain/src/codec/published_emdf_binding.rs",
               "bytes": 9622,
@@ -45544,11 +45544,11 @@
               "bytes": 1560,
               "sha256": "dec7cb83b35d1c7b7ce0633d2fd4eb1af45e7db5b82afc411fd5e0246b979ead"
             },
-                                                {
-                          "path": "crates/jocforge-domain/src/codec/mod.rs",
-                          "bytes": 1116,
-                          "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                        },
+                                                                                                {
+                                                  "path": "crates/jocforge-domain/src/codec/mod.rs",
+                                                  "bytes": 1116,
+                                                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                                                },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
               "bytes": 33107,
@@ -46116,11 +46116,11 @@
               "bytes": 9194,
               "sha256": "0daca3a9401ec1728c8a30297a53dec874902778bda134c9b454765294e097f9"
             },
-                                                {
-                          "path": "crates/jocforge-domain/src/codec/mod.rs",
-                          "bytes": 1116,
-                          "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                        },
+                                                                                                {
+                                                  "path": "crates/jocforge-domain/src/codec/mod.rs",
+                                                  "bytes": 1116,
+                                                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                                                },
             {
               "path": "crates/jocforge-domain/src/codec/d0_frame_assembler.rs",
               "bytes": 18172,
@@ -46810,311 +46810,312 @@
           "validation_boundary": "Locally verified field serialization only; no source mapping, audio/CRC algorithm, complete I0 frame, AU or production.",
           "delivery_scope": "FLAT7X_I0_AC3_HEADER_SEGMENT_THROUGH_COMPR_ONLY_NO_AUDIO_OR_COMPLETE_FRAME_CLAIM"
         },
-                {
-          "slice_id": "flat7x-i0-frame-bit-assembler",
-          "mapping_status": "MATERIALIZED_WASH_BOUNDED_I0_FRAME_ASSEMBLY_AND_CRC_GENERATION",
-          "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_ASSEMBLY_GENERATED_CRC1_CRC2_RESIDUALS__PRODUCTION_OPEN",
-          "implementation_requirement": true,
-          "owner": "codec",
-          "scope": "Assembles one 2560-byte I0 AC-3 frame from the approved header segment, caller-owned BSI-tail and six audio-block spans, optional auxdata and an initial caller crcrsv seed. It shares the seven mandatory BSI-tail bit count with the dedicated BSI-tail serializer, stages the complete frame, generates CRC1/CRC2 and verifies zero residuals before one caller-writer commit. Audio generation, source-generation join and production binding remain open.",
-          "dependencies": [
-            "F01E/flat7x-i0-d0-typed-target-plan",
-            "F12/flat7x-i0-ac3-header-segment",
-            "F12/flat7x-i0-ac3-bsi-tail-writer",
-            "integrity/ac3_crc16"
-          ],
-          "spec_files": [
-            "docs/architecture/PROFILE-DIMENSIONS.md",
-            "docs/architecture/adm-to-eac3joc-chain-status.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/CONTRACT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/FINDINGS.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/FINDINGS.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/CRC-GENERATION-CONTRACT.json"
-          ],
-          "implementation_files": [
-            "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
-            "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
-            "crates/jocforge-domain/src/codec/frame_builder.rs",
-            "crates/jocforge-domain/src/codec/mod.rs",
-            "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
-            "crates/jocforge-domain/src/integrity/mod.rs"
-          ],
-          "implementation_inventory": [
-            {
-              "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
-              "bytes": 19406,
-              "sha256": "047603ecc292c0b3fb1f7e3259834498f7176eb99ad8b73670d9dee43e7f203e"
-            },
-            {
-              "path": "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
-              "bytes": 8747,
-              "sha256": "b3bbb2edfc28d66b46b2d37f3a00aa2ba653996f6331c5aeb79ffb587a4ce719"
-            },
-            {
-              "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 43493,
-              "sha256": "992fa2b5c5f5ff47aef536e0289474432bdf8919f224407af34b5b8c6c761f64"
-            },
-            {
-              "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1116,
-              "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-            },
-            {
-              "path": "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
-              "bytes": 8372,
-              "sha256": "0c570458c5bf9ddadab869ec1c2a4bd6e71c4f9cbc9e655b7d34e9afa14f7d08"
-            },
-            {
-              "path": "crates/jocforge-domain/src/integrity/mod.rs",
-              "bytes": 300,
-              "sha256": "8cf3b9de9d577622322eb1ac7a71bb54158428db5a50529ae36e5b3e8abc8ff0"
-            }
-          ],
-          "test_modules": [
-            "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs"
-          ],
-          "test_inventory": [
-            {
-              "path": "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs",
-              "bytes": 13966,
-              "sha256": "f57036db67f1184362f3b16d034c47ad7c05cd4c66e526fdb5c2c2d35b0f7b32"
-            }
-          ],
-          "vector_inventory": [
-            {
-              "path": "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
-              "bytes": 2707,
-              "sha256": "513f05a255ee46d931e47447b8247eeb632ba1ebe9025e776fd1caee902138fe"
-            },
-            {
-              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
-              "bytes": 1454,
-              "sha256": "7dd7064bd6c98ae1c35ae6fbe33fe0c8ae5d8ea739a94a69a4a6bf54282ef35c"
-            },
-            {
-              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
-              "bytes": 3479,
-              "sha256": "982ebec236bb223984734224da94e2b67d9006ce017d58753e0ae017d1f4d7a4"
-            },
-            {
-              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/INPUT-ONLY-VECTORS.json",
-              "bytes": 1701,
-              "sha256": "81e2ced5481937604fac3d9d153b13c89187528ea9abe120565f28be3cbf6fc4"
-            }
-          ],
-          "clock": {
-            "domains": [],
-            "covered_clauses": [
-              "The caller writer starts at bit zero and advances exactly 20480 frame bits after full staging; no media/source clock is introduced."
-            ]
-          },
-          "parameters": {
-            "kind": "WASH_BOUNDED_I0_AC3_FRAME_PART_ASSEMBLY",
-            "header_package_id": "flat7x-i0-ac3-header-segment-v1",
-            "header_manifest_sha256": "285bff275095c945a3f6f4b5040de20111779cec466602fb1aea29ca8c4ad8e1",
-            "header_seal_sha256": "19a1923a4ec264eca0f55c63eaab3065d6587ef1e86ef0e6af2d288f950acc9d",
-            "continuation_package_id": "FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1",
-            "continuation_manifest_sha256": "cddad099b557617ab6f4aa73d3c40d87f75f12a55c141e14bff6573bdc891787",
-            "continuation_seal_sha256": "329d5f9b1a43cdbee31abe4403f398ed4671a9a27e6bec40a2b09679ae46079d",
-            "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/PACKAGE-SEAL.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/PACKAGE-SEAL.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/verify_package.py",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/MANIFEST.sha256",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/PACKAGE-SEAL.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/CRC-GENERATION-CONTRACT.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/SOURCE-RECEIPTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/verify_package.py"
-            ],
-            "target": {
-              "role": "IndependentI0",
-              "codec": "legacy_ac3_core",
-              "sample_rate_hz": 48000,
-              "rate_kbps": 640,
-              "d0_rate_kbps": 1024,
-              "frame_bytes": 2560,
-              "frame_bits": 20480,
-              "audio_blocks": 6,
-              "samples_per_channel": 1536,
-              "frmsizecod": [
-                36,
-                37
-              ],
-              "bsid": 6,
-              "acmod": 7,
-              "lfeon": true
-            },
-            "frame_part_order": [
-              "syncinfo/header segment",
-              "caller-owned BSI tail after compr",
-              "audblk[0] through audblk[5] in order",
-              "caller-owned auxbits/optional auxdatal then auxdatae",
-              "caller-owned crcrsv then CRC2 U16"
-            ],
-            "bsi_tail_minimum_bits": 7,
-            "bsi_tail_validation": "OPAQUE_CALLER_OWNED_NOT_PARSED",
-            "auxdata_absent_encoding": "auxdatae=0 U1",
-            "auxdata_present_encoding": "caller-owned auxbits/optional auxdatal followed by auxdatae=1 U1",
-            "crc_fields": {
-              "polynomial": "0x8005; init=0; MSB_FIRST; no reflection; no final xor",
-              "crc1": {
-                "field_byte_range": [
-                  2,
-                  4
-                ],
-                "field_start_bit": 16,
-                "field_width_bits": 16,
-                "coverage_byte_range": [
-                  2,
-                  1600
-                ],
-                "suffix_byte_range": [
-                  4,
-                  1600
-                ],
-                "derivation": "CRC(suffix) * x^-(16+8*suffix_bytes) mod P",
-                "residual_condition": "CRC(frame[2:1600]) == 0"
-              },
-              "crc2": {
-                "field_byte_range": [
-                  2558,
-                  2560
-                ],
-                "field_start_bit": 20464,
-                "field_width_bits": 16,
-                "coverage_byte_range": [
-                  2,
-                  2558
-                ],
-                "residual_condition": "CRC(frame[2:]) == 0"
-              },
-              "crcrsv": {
-                "bit_offset": 20463,
-                "initial_value_source": "CALLER_OWNED_SEED",
-                "collision_value": "0x0B77",
-                "collision_rule": "Toggle crcrsv and recompute CRC2 when pre-adjustment CRC2 equals the syncword."
-              },
-              "crc_generation_package_manifest_sha256": "07ad2b60bd22a1312ff15107cf35e836a12a763c764b3fbaa74e02b4f2d9dc2d",
-              "crc_generation_package_seal_file_sha256": "14020e164f7805723a0fd90cd77f924961a3a457315f8fdbe4219dafdaccb031",
-              "validation": "GENERATED_AND_ZERO_RESIDUAL_VERIFIED_ON_SYNTHETIC_FRAME",
-              "real_frame_validation": "NOT_RUN",
-              "production_allowed": false
-            },
-            "frame_extent_rule": "header + BSI tail + six audio blocks + auxdata payload/flag + 17-bit errorcheck == 20480 bits",
-            "integrity_receipts": "Generated CRC1/CRC2 U16 values with field spans, zero residuals, and initial/final crcrsv values plus toggle status.",
-            "production_allowed": false,
-            "source_generation": "UNBOUND",
-            "official_reference_bsid": "NOT_CAPTURED",
-            "validation_boundary": "Synthetic caller-owned bit-span assembly and field placement only; no audio or CRC verification.",
-            "crc_generation_package_id": "FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1",
-            "crc_generation_package_manifest_sha256": "07ad2b60bd22a1312ff15107cf35e836a12a763c764b3fbaa74e02b4f2d9dc2d",
-            "crc_generation_package_seal_file_sha256": "14020e164f7805723a0fd90cd77f924961a3a457315f8fdbe4219dafdaccb031"
-          },
-          "vectors": {
-            "kind": "SYNTHETIC_NOT_REAL_OUTPUT_I0_FRAME_AND_CRC_GEOMETRY",
-            "authoritative_vectors": [
-              "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/INPUT-ONLY-VECTORS.json"
-            ],
-            "local_fixture": {
-              "file": "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
-              "bytes": 2707,
-              "sha256": "513f05a255ee46d931e47447b8247eeb632ba1ebe9025e776fd1caee902138fe"
-            },
-            "case_pointers": [
-              "frmsizecod36/no-compr and frmsizecod37/compr emit exact 2560-byte synthetic frames with the approved part order.",
-              "Six source spans copy in order after an opaque caller BSI tail; optional auxdata is followed by auxdatae.",
-              "The I0 assembler generates CRC1/CRC2 and asserts zero residuals over the approved spans; the synthetic receipt reports field positions and crcrsv result.",
-              "Washed scalar vectors cover target CRC1/CRC2 values, aligned and odd CRC1 truncation boundaries, and the crcrsv collision outcome; no raw frame bytes are supplied for same-byte replay.",
-              "Short BSI tail, source overrun, one-bit-short total, invalid header and short output capacity reject without caller-byte/cursor mutation."
-            ],
-            "expected_outputs_included": true,
-            "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_GENERATED_CRC1_CRC2_AND_ZERO_RESIDUALS"
-          },
-          "error_outcomes": [
-            {
-              "error_code": "I0_AC3_TARGET_CONTEXT_UNSUPPORTED",
-              "category": "target profile",
-              "trigger": "The supplied plan does not match I0 640 kbps, 48 kHz, six blocks and 2560 bytes.",
-              "result": "Typed failure before caller bytes or cursor change.",
-              "caller_action": "Use the approved Flat7x I0/D0 target plan."
-            },
-            {
-              "error_code": "I0_AC3_BSI_TAIL_TOO_SHORT",
-              "category": "caller BSI continuation",
-              "trigger": "The BSI tail is shorter than the seven mandatory presence/control bits for target acmod7.",
-              "result": "Typed failure before staging or caller mutation.",
-              "caller_action": "Supply a complete caller-owned BSI tail bit span."
-            },
-            {
-              "error_code": "I0_AC3_SOURCE_SPAN_OUT_OF_BOUNDS",
-              "category": "opaque source bit span",
-              "trigger": "The BSI, audio-block or auxdata source range exceeds its caller buffer.",
-              "result": "Typed failure before staging or caller mutation.",
-              "caller_action": "Provide an in-bounds caller-owned bit span."
-            },
-            {
-              "error_code": "I0_AC3_SOURCE_SPAN_OVERFLOW",
-              "category": "checked source bit arithmetic",
-              "trigger": "A source bit start plus bit length overflows the representable cursor.",
-              "result": "Typed failure before staging or caller mutation.",
-              "caller_action": "Provide a representable source bit range."
-            },
-            {
-              "error_code": "I0_AC3_HEADER_VALUE_REJECTED",
-              "category": "approved header segment values",
-              "trigger": "The existing I0 header writer rejects frmsizecod, bsmod, mix levels or dialnorm.",
-              "result": "Typed failure in private staging before caller bytes or cursor change.",
-              "caller_action": "Supply values accepted by the approved I0 header segment contract."
-            },
-            {
-              "error_code": "I0_AC3_FRAME_SPAN_MISMATCH",
-              "category": "fixed 2560-byte target extent",
-              "trigger": "The ordered parts and 17-bit errorcheck do not total exactly 20480 bits.",
-              "result": "Typed failure before staging or caller mutation.",
-              "caller_action": "Provide spans that fit the exact I0 frame extent."
-            },
-            {
-              "error_code": "I0_AC3_FRAME_CAPACITY",
-              "category": "caller writer capacity",
-              "trigger": "The caller writer cannot hold the full 20480-bit frame.",
-              "result": "Preflight failure before caller bytes or cursor change.",
-              "caller_action": "Provide a 2560-byte-capable caller writer."
-            },
-            {
-              "error_code": "I0_AC3_CRC1_RESIDUAL_NONZERO",
-              "category": "generated CRC1 integrity",
-              "trigger": "CRC(frame[2:1600]) remains nonzero after CRC1 generation.",
-              "result": "Typed integrity failure in private staging before caller bytes or cursor change.",
-              "caller_action": "Reject the frame candidate and retain the CRC diagnostic receipt."
-            },
-            {
-              "error_code": "I0_AC3_CRC_GENERATION_FAILED",
-              "category": "generated CRC field integrity",
-              "trigger": "CRC1 derivation or CRC2 field generation returns a checked geometry or residual error.",
-              "result": "Typed failure in private staging before caller bytes or cursor change.",
-              "caller_action": "Reject the entire frame candidate; the caller writer remains unchanged."
-            }
-          ],
-          "not_run": [
-            "AC-3 audio-block generation, PCM, decode, parser acceptance and playability.",
-            "The Wash crcrsv collision vector has scalar outputs and no frame bytes; same-byte collision replay remains NOT_RUN.",
-            "Official-reference frame parsing, source/generation joins, I0+D0 AU production, product output and W04."
-          ],
-          "validation_boundary": "Synthetic caller-owned bit-span assembly with generated CRC1/CRC2 and zero-residual receipts; no audio, decoder acceptance, runtime lineage or production output.",
-          "delivery_scope": "FLAT7X_I0_AC3_CALLER_SPAN_FRAME_ASSEMBLY_WITH_ETSI_CRC_GENERATION_AND_ZERO_RESIDUALS__NO_AUDIO_OR_PRODUCTION"
-        },
+                                {
+                  "slice_id": "flat7x-i0-frame-bit-assembler",
+                  "mapping_status": "MATERIALIZED_WASH_BOUNDED_I0_FRAME_ASSEMBLY_AND_CRC_GENERATION",
+                  "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_ASSEMBLY_GENERATED_CRC1_CRC2_RESIDUALS__PRODUCTION_OPEN",
+                  "implementation_requirement": true,
+                  "owner": "codec",
+                  "scope": "Assembles one 2560-byte I0 AC-3 frame from the approved header segment, caller-owned BSI-tail and six audio-block spans, optional auxdata and an initial caller crcrsv seed. It shares the seven mandatory BSI-tail bit count with the dedicated BSI-tail serializer, stages the complete frame, generates CRC1/CRC2 and verifies zero residuals before one caller-writer commit. Audio generation, source-generation join and production binding remain open.",
+                  "dependencies": [
+                    "F01E/flat7x-i0-d0-typed-target-plan",
+                    "F12/flat7x-i0-ac3-header-segment",
+                    "F12/flat7x-i0-ac3-bsi-tail-writer",
+                    "integrity/ac3_crc16"
+                  ],
+                  "spec_files": [
+                    "docs/architecture/PROFILE-DIMENSIONS.md",
+                    "docs/architecture/adm-to-eac3joc-chain-status.md",
+                    "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/CONTRACT.md",
+                    "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/FINDINGS.md",
+                    "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
+                    "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/FINDINGS.md",
+                    "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/CRC-GENERATION-CONTRACT.json"
+                  ],
+                  "implementation_files": [
+                    "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
+                    "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
+                    "crates/jocforge-domain/src/codec/frame_builder.rs",
+                    "crates/jocforge-domain/src/codec/mod.rs",
+                    "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
+                    "crates/jocforge-domain/src/integrity/mod.rs"
+                  ],
+                  "implementation_inventory": [
+                    {
+                      "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
+                      "bytes": 22618,
+                      "sha256": "5abf33c82e97b952700605b88044c3b556d5194efb8ac13105e9d700429089b7"
+                    },
+                    {
+                      "path": "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
+                      "bytes": 8747,
+                      "sha256": "b3bbb2edfc28d66b46b2d37f3a00aa2ba653996f6331c5aeb79ffb587a4ce719"
+                    },
+                    {
+                      "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
+                      "bytes": 43493,
+                      "sha256": "992fa2b5c5f5ff47aef536e0289474432bdf8919f224407af34b5b8c6c761f64"
+                    },
+                    {
+                      "path": "crates/jocforge-domain/src/codec/mod.rs",
+                      "bytes": 1116,
+                      "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                    },
+                    {
+                      "path": "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
+                      "bytes": 8372,
+                      "sha256": "0c570458c5bf9ddadab869ec1c2a4bd6e71c4f9cbc9e655b7d34e9afa14f7d08"
+                    },
+                    {
+                      "path": "crates/jocforge-domain/src/integrity/mod.rs",
+                      "bytes": 300,
+                      "sha256": "8cf3b9de9d577622322eb1ac7a71bb54158428db5a50529ae36e5b3e8abc8ff0"
+                    }
+                  ],
+                  "test_modules": [
+                    "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs"
+                  ],
+                  "test_inventory": [
+                    {
+                      "path": "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs",
+                      "bytes": 23185,
+                      "sha256": "24d049b1f8195e9e104ce2f9254cb03a262101f8040544cbc598d7d7420ede8f"
+                    }
+                  ],
+                  "vector_inventory": [
+                    {
+                      "path": "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
+                      "bytes": 2707,
+                      "sha256": "513f05a255ee46d931e47447b8247eeb632ba1ebe9025e776fd1caee902138fe"
+                    },
+                    {
+                      "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
+                      "bytes": 1454,
+                      "sha256": "7dd7064bd6c98ae1c35ae6fbe33fe0c8ae5d8ea739a94a69a4a6bf54282ef35c"
+                    },
+                    {
+                      "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
+                      "bytes": 3479,
+                      "sha256": "982ebec236bb223984734224da94e2b67d9006ce017d58753e0ae017d1f4d7a4"
+                    },
+                    {
+                      "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/INPUT-ONLY-VECTORS.json",
+                      "bytes": 1701,
+                      "sha256": "81e2ced5481937604fac3d9d153b13c89187528ea9abe120565f28be3cbf6fc4"
+                    }
+                  ],
+                  "clock": {
+                    "domains": [],
+                    "covered_clauses": [
+                      "The caller writer starts at bit zero and advances exactly 20480 frame bits after full staging; no media/source clock is introduced."
+                    ]
+                  },
+                  "parameters": {
+                    "kind": "WASH_BOUNDED_I0_AC3_FRAME_PART_ASSEMBLY",
+                    "header_package_id": "flat7x-i0-ac3-header-segment-v1",
+                    "header_manifest_sha256": "285bff275095c945a3f6f4b5040de20111779cec466602fb1aea29ca8c4ad8e1",
+                    "header_seal_sha256": "19a1923a4ec264eca0f55c63eaab3065d6587ef1e86ef0e6af2d288f950acc9d",
+                    "continuation_package_id": "FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1",
+                    "continuation_manifest_sha256": "cddad099b557617ab6f4aa73d3c40d87f75f12a55c141e14bff6573bdc891787",
+                    "continuation_seal_sha256": "329d5f9b1a43cdbee31abe4403f398ed4671a9a27e6bec40a2b09679ae46079d",
+                    "provider_files": [
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/MANIFEST.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/PACKAGE-SEAL.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/CONTRACT.md",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/MANIFEST.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/PACKAGE-SEAL.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/verify_package.py",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/MANIFEST.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/MANIFEST.sha256",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/PACKAGE-SEAL.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/CRC-GENERATION-CONTRACT.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/INPUT-ONLY-VECTORS.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/SOURCE-RECEIPTS.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/verify_package.py"
+                    ],
+                    "target": {
+                      "role": "IndependentI0",
+                      "codec": "legacy_ac3_core",
+                      "sample_rate_hz": 48000,
+                      "rate_kbps": 640,
+                      "d0_rate_kbps": 1024,
+                      "frame_bytes": 2560,
+                      "frame_bits": 20480,
+                      "audio_blocks": 6,
+                      "samples_per_channel": 1536,
+                      "frmsizecod": [
+                        36,
+                        37
+                      ],
+                      "bsid": 6,
+                      "acmod": 7,
+                      "lfeon": true
+                    },
+                    "frame_part_order": [
+                      "syncinfo/header segment",
+                      "caller-owned BSI tail after compr",
+                      "audblk[0] through audblk[5] in order",
+                      "caller-owned auxbits/optional auxdatal then auxdatae",
+                      "caller-owned crcrsv then CRC2 U16"
+                    ],
+                    "bsi_tail_minimum_bits": 7,
+                    "bsi_tail_validation": "OPAQUE_CALLER_OWNED_NOT_PARSED",
+                    "auxdata_absent_encoding": "auxdatae=0 U1",
+                    "auxdata_present_encoding": "caller-owned auxbits/optional auxdatal followed by auxdatae=1 U1",
+                    "crc_fields": {
+                      "polynomial": "0x8005; init=0; MSB_FIRST; no reflection; no final xor",
+                      "crc1": {
+                        "field_byte_range": [
+                          2,
+                          4
+                        ],
+                        "field_start_bit": 16,
+                        "field_width_bits": 16,
+                        "coverage_byte_range": [
+                          2,
+                          1600
+                        ],
+                        "suffix_byte_range": [
+                          4,
+                          1600
+                        ],
+                        "derivation": "CRC(suffix) * x^-(16+8*suffix_bytes) mod P",
+                        "residual_condition": "CRC(frame[2:1600]) == 0"
+                      },
+                      "crc2": {
+                        "field_byte_range": [
+                          2558,
+                          2560
+                        ],
+                        "field_start_bit": 20464,
+                        "field_width_bits": 16,
+                        "coverage_byte_range": [
+                          2,
+                          2558
+                        ],
+                        "residual_condition": "CRC(frame[2:]) == 0"
+                      },
+                      "crcrsv": {
+                        "bit_offset": 20463,
+                        "initial_value_source": "CALLER_OWNED_SEED",
+                        "collision_value": "0x0B77",
+                        "collision_rule": "Toggle crcrsv and recompute CRC2 when pre-adjustment CRC2 equals the syncword."
+                      },
+                      "crc_generation_package_manifest_sha256": "07ad2b60bd22a1312ff15107cf35e836a12a763c764b3fbaa74e02b4f2d9dc2d",
+                      "crc_generation_package_seal_file_sha256": "14020e164f7805723a0fd90cd77f924961a3a457315f8fdbe4219dafdaccb031",
+                      "validation": "GENERATED_AND_ZERO_RESIDUAL_VERIFIED_ON_SYNTHETIC_FRAME",
+                      "real_frame_validation": "NOT_RUN",
+                      "production_allowed": false
+                    },
+                    "frame_extent_rule": "header + BSI tail + six audio blocks + auxdata payload/flag + 17-bit errorcheck == 20480 bits",
+                    "integrity_receipts": "Generated CRC1/CRC2 U16 values with field spans, zero residuals, and initial/final crcrsv values plus toggle status.",
+                    "production_allowed": false,
+                    "source_generation": "UNBOUND",
+                    "official_reference_bsid": "NOT_CAPTURED",
+                    "validation_boundary": "Synthetic caller-owned bit-span assembly and field placement only; no audio or CRC verification.",
+                    "crc_generation_package_id": "FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1",
+                    "crc_generation_package_manifest_sha256": "07ad2b60bd22a1312ff15107cf35e836a12a763c764b3fbaa74e02b4f2d9dc2d",
+                    "crc_generation_package_seal_file_sha256": "14020e164f7805723a0fd90cd77f924961a3a457315f8fdbe4219dafdaccb031"
+                  },
+                  "vectors": {
+                    "kind": "SYNTHETIC_NOT_REAL_OUTPUT_I0_FRAME_AND_CRC_GEOMETRY",
+                    "authoritative_vectors": [
+                      "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/INPUT-ONLY-VECTORS.json"
+                    ],
+                    "local_fixture": {
+                      "file": "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
+                      "bytes": 2707,
+                      "sha256": "513f05a255ee46d931e47447b8247eeb632ba1ebe9025e776fd1caee902138fe"
+                    },
+                    "case_pointers": [
+                      "frmsizecod36/no-compr and frmsizecod37/compr emit exact 2560-byte synthetic frames with the approved part order.",
+                      "Six source spans copy in order after an opaque caller BSI tail; optional auxdata is followed by auxdatae.",
+                      "The I0 assembler generates CRC1/CRC2 and asserts zero residuals over the approved spans; the synthetic receipt reports field positions and crcrsv result.",
+                      "Washed scalar vectors cover target CRC1/CRC2 values, aligned and odd CRC1 truncation boundaries, and the crcrsv collision outcome; no raw frame bytes are supplied for same-byte replay.",
+                      "Short BSI tail, source overrun, one-bit-short total, invalid header and short output capacity reject without caller-byte/cursor mutation.",
+                      "The typed field entry composes the approved BSI-tail writer receipt with six caller-owned synthetic spans before the existing frame CRC stage."
+                    ],
+                    "expected_outputs_included": true,
+                    "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_GENERATED_CRC1_CRC2_AND_ZERO_RESIDUALS"
+                  },
+                  "error_outcomes": [
+                    {
+                      "error_code": "I0_AC3_TARGET_CONTEXT_UNSUPPORTED",
+                      "category": "target profile",
+                      "trigger": "The supplied plan does not match I0 640 kbps, 48 kHz, six blocks and 2560 bytes.",
+                      "result": "Typed failure before caller bytes or cursor change.",
+                      "caller_action": "Use the approved Flat7x I0/D0 target plan."
+                    },
+                    {
+                      "error_code": "I0_AC3_BSI_TAIL_TOO_SHORT",
+                      "category": "caller BSI continuation",
+                      "trigger": "The BSI tail is shorter than the seven mandatory presence/control bits for target acmod7.",
+                      "result": "Typed failure before staging or caller mutation.",
+                      "caller_action": "Supply a complete caller-owned BSI tail bit span."
+                    },
+                    {
+                      "error_code": "I0_AC3_SOURCE_SPAN_OUT_OF_BOUNDS",
+                      "category": "opaque source bit span",
+                      "trigger": "The BSI, audio-block or auxdata source range exceeds its caller buffer.",
+                      "result": "Typed failure before staging or caller mutation.",
+                      "caller_action": "Provide an in-bounds caller-owned bit span."
+                    },
+                    {
+                      "error_code": "I0_AC3_SOURCE_SPAN_OVERFLOW",
+                      "category": "checked source bit arithmetic",
+                      "trigger": "A source bit start plus bit length overflows the representable cursor.",
+                      "result": "Typed failure before staging or caller mutation.",
+                      "caller_action": "Provide a representable source bit range."
+                    },
+                    {
+                      "error_code": "I0_AC3_HEADER_VALUE_REJECTED",
+                      "category": "approved header segment values",
+                      "trigger": "The existing I0 header writer rejects frmsizecod, bsmod, mix levels or dialnorm.",
+                      "result": "Typed failure in private staging before caller bytes or cursor change.",
+                      "caller_action": "Supply values accepted by the approved I0 header segment contract."
+                    },
+                    {
+                      "error_code": "I0_AC3_FRAME_SPAN_MISMATCH",
+                      "category": "fixed 2560-byte target extent",
+                      "trigger": "The ordered parts and 17-bit errorcheck do not total exactly 20480 bits.",
+                      "result": "Typed failure before staging or caller mutation.",
+                      "caller_action": "Provide spans that fit the exact I0 frame extent."
+                    },
+                    {
+                      "error_code": "I0_AC3_FRAME_CAPACITY",
+                      "category": "caller writer capacity",
+                      "trigger": "The caller writer cannot hold the full 20480-bit frame.",
+                      "result": "Preflight failure before caller bytes or cursor change.",
+                      "caller_action": "Provide a 2560-byte-capable caller writer."
+                    },
+                    {
+                      "error_code": "I0_AC3_CRC1_RESIDUAL_NONZERO",
+                      "category": "generated CRC1 integrity",
+                      "trigger": "CRC(frame[2:1600]) remains nonzero after CRC1 generation.",
+                      "result": "Typed integrity failure in private staging before caller bytes or cursor change.",
+                      "caller_action": "Reject the frame candidate and retain the CRC diagnostic receipt."
+                    },
+                    {
+                      "error_code": "I0_AC3_CRC_GENERATION_FAILED",
+                      "category": "generated CRC field integrity",
+                      "trigger": "CRC1 derivation or CRC2 field generation returns a checked geometry or residual error.",
+                      "result": "Typed failure in private staging before caller bytes or cursor change.",
+                      "caller_action": "Reject the entire frame candidate; the caller writer remains unchanged."
+                    }
+                  ],
+                  "not_run": [
+                    "AC-3 audio-block generation, PCM, decode, parser acceptance and playability.",
+                    "The Wash crcrsv collision vector has scalar outputs and no frame bytes; same-byte collision replay remains NOT_RUN.",
+                    "Official-reference frame parsing, source/generation joins, I0+D0 AU production, product output and W04."
+                  ],
+                  "validation_boundary": "Synthetic caller-owned bit-span assembly with generated CRC1/CRC2 and zero-residual receipts; no audio, decoder acceptance, runtime lineage or production output.",
+                  "delivery_scope": "FLAT7X_I0_AC3_CALLER_SPAN_FRAME_ASSEMBLY_WITH_ETSI_CRC_GENERATION_AND_ZERO_RESIDUALS__NO_AUDIO_OR_PRODUCTION"
+                },
                 {
                   "slice_id": "flat7x-i0-ac3-bsi-tail-writer",
                   "mapping_status": "MATERIALIZED_WASH_BOUNDED_I0_AC3_BSI_TAIL_SERIALIZER",
@@ -47142,7 +47143,7 @@
                       "bytes": 8747,
                       "sha256": "b3bbb2edfc28d66b46b2d37f3a00aa2ba653996f6331c5aeb79ffb587a4ce719"
                     },
-                    {
+                                        {
                       "path": "crates/jocforge-domain/src/codec/mod.rs",
                       "bytes": 1116,
                       "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
@@ -47302,6 +47303,176 @@
                   ],
                   "validation_boundary": "Synthetic caller values verify BSI field order, widths, length arithmetic, cursor extent and rejection atomicity; production_allowed=false.",
                   "delivery_scope": "FLAT7X_I0_AC3_BSI_TAIL_SERIALIZATION_ONLY_NO_AUDIO_XML_MAPPING_OR_PRODUCTION"
+                },
+                {
+                  "slice_id": "flat7x-i0-typed-bsi-frame-assembly-entry",
+                  "mapping_status": "MATERIALIZED_TYPED_I0_BSI_TO_FRAME_COMPOSITION_ENTRY",
+                  "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_TYPED_I0_BSI_TO_FRAME_COMPOSITION__PRODUCTION_OPEN",
+                  "implementation_requirement": true,
+                  "owner": "codec",
+                  "scope": "Adds `assemble_flat7x_i0_ac3_frame_from_fields`, a typed entry that accepts authored I0 header values, the approved typed BSI-tail input, six opaque caller-owned audblk spans, optional auxdata and an initial crcrsv seed. It derives the BSI start from compr presence (62/70 bits), serializes the BSI tail into private scratch, then calls the existing opaque-span frame assembler. The whole frame is still preflighted/staged, CRC1/CRC2 are generated and residual-checked, and the caller writer is committed once only after all spans total exactly 20480 bits. The existing low-level opaque-span entry remains available; no audio-block content or production callsite is added.",
+                  "dependencies": [
+                    "F12/flat7x-i0-ac3-bsi-tail-writer",
+                    "F12/flat7x-i0-frame-bit-assembler"
+                  ],
+                  "spec_files": [
+                    "docs/architecture/adm-to-eac3joc-chain-status.md",
+                    "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
+                    "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/CRC-GENERATION-CONTRACT.json"
+                  ],
+                  "implementation_files": [
+                    "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
+                    "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
+                    "crates/jocforge-domain/src/codec/frame_builder.rs",
+                    "crates/jocforge-domain/src/codec/mod.rs",
+                    "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
+                    "crates/jocforge-domain/src/integrity/mod.rs"
+                  ],
+                  "implementation_inventory": [
+                    {
+                      "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
+                      "bytes": 22618,
+                      "sha256": "5abf33c82e97b952700605b88044c3b556d5194efb8ac13105e9d700429089b7"
+                    },
+                    {
+                      "path": "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
+                      "bytes": 8747,
+                      "sha256": "b3bbb2edfc28d66b46b2d37f3a00aa2ba653996f6331c5aeb79ffb587a4ce719"
+                    },
+                    {
+                      "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
+                      "bytes": 43493,
+                      "sha256": "992fa2b5c5f5ff47aef536e0289474432bdf8919f224407af34b5b8c6c761f64"
+                    },
+                    {
+                      "path": "crates/jocforge-domain/src/codec/mod.rs",
+                      "bytes": 1116,
+                      "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                    },
+                    {
+                      "path": "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
+                      "bytes": 8372,
+                      "sha256": "0c570458c5bf9ddadab869ec1c2a4bd6e71c4f9cbc9e655b7d34e9afa14f7d08"
+                    },
+                    {
+                      "path": "crates/jocforge-domain/src/integrity/mod.rs",
+                      "bytes": 300,
+                      "sha256": "8cf3b9de9d577622322eb1ac7a71bb54158428db5a50529ae36e5b3e8abc8ff0"
+                    }
+                  ],
+                  "test_modules": [
+                    "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs"
+                  ],
+                  "test_inventory": [
+                    {
+                      "path": "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs",
+                      "bytes": 23185,
+                      "sha256": "24d049b1f8195e9e104ce2f9254cb03a262101f8040544cbc598d7d7420ede8f"
+                    }
+                  ],
+                  "vector_inventory": [
+                    {
+                      "path": "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
+                      "bytes": 2707,
+                      "sha256": "513f05a255ee46d931e47447b8247eeb632ba1ebe9025e776fd1caee902138fe"
+                    },
+                    {
+                      "path": "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json",
+                      "bytes": 2614,
+                      "sha256": "c1fda6dd82f72fed627ad967544002ccefa745c94fe81e469b5d0baa1f1fcf33"
+                    }
+                  ],
+                  "clock": {
+                    "domains": [
+                      "FrameBitCursor"
+                    ],
+                    "covered_clauses": [
+                      "The BSI writer begins at the exact 62/70-bit header end cursor.",
+                      "Six caller audio spans follow the BSI receipt in index order; the frame writer commits exactly 20480 bits from cursor zero."
+                    ]
+                  },
+                  "parameters": {
+                    "kind": "TYPED_I0_AC3_BSI_TO_FRAME_ASSEMBLY",
+                    "target": {
+                      "role": "IndependentI0",
+                      "codec": "legacy_ac3_core",
+                      "sample_rate_hz": 48000,
+                      "rate_kbps": 640,
+                      "frame_bytes": 2560,
+                      "frame_bits": 20480,
+                      "audio_blocks": 6,
+                      "samples_per_channel": 1536,
+                      "acmod": 7,
+                      "lfeon": true,
+                      "d0_rate_kbps": 1024
+                    },
+                    "continuation_package_id": "FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1",
+                    "continuation_manifest_sha256": "cddad099b557617ab6f4aa73d3c40d87f75f12a55c141e14bff6573bdc891787",
+                    "crc_generation_package_id": "FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1",
+                    "crc_generation_manifest_sha256": "07ad2b60bd22a1312ff15107cf35e836a12a763c764b3fbaa74e02b4f2d9dc2d",
+                    "typed_entry": "assemble_flat7x_i0_ac3_frame_from_fields",
+                    "low_level_entry": "assemble_flat7x_i0_ac3_frame",
+                    "bsi_tail_start_from_compr": {
+                      "without_compr": 62,
+                      "with_compr": 70
+                    },
+                    "bsi_staging": "PRIVATE_BOUNDED_SCRATCH",
+                    "caller_commit": "ONE_WHOLE_FRAME_WRITE_AFTER_BSI_AND_FRAME_VALIDATION",
+                    "source_generation": "UNBOUND",
+                    "production_allowed": false,
+                    "provider_files": [
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/MANIFEST.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/MANIFEST.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/CRC-GENERATION-CONTRACT.json"
+                    ],
+                    "validation_boundary": "Synthetic typed BSI serialization plus opaque audio-span composition; no audio, source-generation join, output publication or W04."
+                  },
+                  "vectors": {
+                    "kind": "SYNTHETIC_NOT_REAL_OUTPUT_TYPED_I0_BSI_FRAME_COMPOSITION",
+                    "authoritative_vectors": [
+                      "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
+                      "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json"
+                    ],
+                    "case_pointers": [
+                      "Washed all-optionals BSI vector ends at bit 142 for a compr header; the typed receipt matches the frame's BSI span.",
+                      "Six synthetic spans totalling 20320 bits follow the 72-bit typed BSI tail and 70-bit header; auxdatae and 17-bit errorcheck finish the 20480-bit frame.",
+                      "Generated CRC1/CRC2 residuals are zero on the synthetic assembled frame.",
+                      "Invalid typed BSI fields and an incomplete audio-span extent fail before caller output bytes or cursor change."
+                    ],
+                    "expected_outputs_included": true,
+                    "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_TYPED_BSI_TO_FRAME_SPANS_CRC_AND_FAILURE_ATOMICITY"
+                  },
+                  "error_outcomes": [
+                    {
+                      "error_code": "I0_AC3_BSI_FIELD_REJECTED",
+                      "category": "typed BSI field validation",
+                      "trigger": "The BSI-tail writer rejects a field width, value or addbsi extent.",
+                      "result": "Typed failure before caller output bytes or cursor change.",
+                      "caller_action": "Supply BSI values within the approved field bounds."
+                    },
+                    {
+                      "error_code": "I0_AC3_FRAME_SPAN_MISMATCH",
+                      "category": "complete I0 frame extent",
+                      "trigger": "Header, typed BSI tail, six audio spans, auxdata flag and errorcheck do not total exactly 20480 bits.",
+                      "result": "Typed failure before caller output bytes or cursor change.",
+                      "caller_action": "Supply six caller spans that fit the approved frame extent."
+                    },
+                    {
+                      "error_code": "I0_AC3_FRAME_CAPACITY",
+                      "category": "caller writer capacity",
+                      "trigger": "The caller output writer cannot hold 20480 bits from cursor zero.",
+                      "result": "Preflight failure before caller bytes or cursor change.",
+                      "caller_action": "Provide a 2560-byte-capable caller writer."
+                    }
+                  ],
+                  "not_run": [
+                    "No AC-3 audio-block algorithm is run; six spans remain caller-owned.",
+                    "No E-AC-3-to-AC-3 block reinterpretation is performed.",
+                    "Same-generation source receipt, production admission, file output and W04 remain unbound or not run."
+                  ],
+                  "validation_boundary": "Synthetic only; the typed entry composes BSI fields and caller spans through the existing I0 frame assembler; production_allowed=false.",
+                  "delivery_scope": "TYPED_I0_BSI_TO_OPAQUE_AUDIO_SPAN_FRAME_COMPOSITION_ONLY_NO_AUDIO_OR_PRODUCTION"
                 },
         {
           "slice_id": "flat7x-d0-mixing-metadata-segment",
@@ -47853,11 +48024,11 @@
               "bytes": 9194,
               "sha256": "0daca3a9401ec1728c8a30297a53dec874902778bda134c9b454765294e097f9"
             },
-                                                {
-                          "path": "crates/jocforge-domain/src/codec/mod.rs",
-                          "bytes": 1116,
-                          "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                        }
+                                                                                                {
+                                                  "path": "crates/jocforge-domain/src/codec/mod.rs",
+                                                  "bytes": 1116,
+                                                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                                                }
           ],
           "test_modules": [
             "crates/jocforge-domain/tests/flat7x_d0_frame_layout.rs",
@@ -48133,11 +48304,11 @@
               "bytes": 18172,
               "sha256": "4cfd1fdeb420ce408b7a6a315eaac6d05f5bd7feb273cdec31cca4bdabcbcfef"
             },
-                                                {
-                          "path": "crates/jocforge-domain/src/codec/mod.rs",
-                          "bytes": 1116,
-                          "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                        },
+                                                                                                {
+                                                  "path": "crates/jocforge-domain/src/codec/mod.rs",
+                                                  "bytes": 1116,
+                                                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                                                },
             {
               "path": "crates/jocforge-domain/src/integrity/crc16.rs",
               "bytes": 478,
@@ -48293,11 +48464,11 @@
           ],
           "implementation_inventory": [
             {"path": "crates/jocforge-domain/src/codec/access_unit_composer.rs", "bytes": 5122, "sha256": "98f37f91c3957b424d21763615cbdc9ce04ff835dc65f4f78784285930f15df2"},
-                                                {
-                          "path": "crates/jocforge-domain/src/codec/mod.rs",
-                          "bytes": 1116,
-                          "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                        }
+                                                                                                {
+                                                  "path": "crates/jocforge-domain/src/codec/mod.rs",
+                                                  "bytes": 1116,
+                                                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                                                }
           ],
           "test_modules": [
             "crates/jocforge-domain/tests/flat7x_access_unit_composer.rs"
@@ -48422,11 +48593,11 @@
           ],
           "implementation_inventory": [
             {"path": "crates/jocforge-domain/src/codec/elementary_stream_composer.rs", "bytes": 6042, "sha256": "db285669b52bb78f0cb7b0196a9dc3207171916c32391ccfe9a5d75797f53fdd"},
-                                                {
-                          "path": "crates/jocforge-domain/src/codec/mod.rs",
-                          "bytes": 1116,
-                          "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                        }
+                                                                                                {
+                                                  "path": "crates/jocforge-domain/src/codec/mod.rs",
+                                                  "bytes": 1116,
+                                                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                                                }
           ],
           "test_modules": [
             "crates/jocforge-domain/tests/flat7x_elementary_stream_composer.rs",
@@ -57777,11 +57948,11 @@
               "bytes": 7636,
               "sha256": "4b94fbfaeba275c47d8ac300a465e2fafef8944d7f8c0f7ab021136fed603a7c"
             },
-                                                {
-                          "path": "scripts/check-boundaries.py",
-                          "bytes": 2167541,
-                          "sha256": "bad1b1f7262af19d2663bb08968c94f1a5d886462c6b6e5603cb6b3d5c78399f"
-                        }
+                                                                                                                                                                                                {
+                                                                                                  "path": "scripts/check-boundaries.py",
+                                                                                                  "bytes": 2172415,
+                                                                                                  "sha256": "db3edd21d5517c400e3bcc482aca5bcf785039c59e5421e8e46a136750cce95a"
+                                                                                                }
           ],
           "test_inventory": [
             {
@@ -61712,11 +61883,11 @@
           "bytes": 30228,
           "sha256": "3e364b01cd60c64fc79c08b12a9013565b1bcf8b6cec6378ed8e9b241bcbb9c6"
         },
-                                {
-                  "path": "crates/jocforge-domain/src/codec/mod.rs",
-                  "bytes": 1116,
-                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                },
+                                                                {
+                                  "path": "crates/jocforge-domain/src/codec/mod.rs",
+                                  "bytes": 1116,
+                                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                                },
         {
           "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
           "bytes": 63659,

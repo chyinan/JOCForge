@@ -3,12 +3,16 @@
 
 use jocforge_domain::{
     codec::{
+        ac3_bsi_tail::{
+            Flat7xI0Ac3AudioProductionInfo, Flat7xI0Ac3BsiTailError, Flat7xI0Ac3BsiTailInput,
+        },
         bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError},
         frame_builder::Flat7xI0Ac3HeaderSegmentError,
         i0_frame_assembler::{
-            CallerOwnedI0CrcrsvSeed, Flat7xI0Ac3FrameHeaderFields, Flat7xI0FrameAssemblyError,
-            Flat7xI0FrameBitInput, I0AuxDataInput, I0CrcValidationStatus, I0FramePart,
-            OpaqueI0Ac3BitSpan, assemble_flat7x_i0_ac3_frame,
+            CallerOwnedI0CrcrsvSeed, Flat7xI0Ac3FrameAssemblyReceipt, Flat7xI0Ac3FrameHeaderFields,
+            Flat7xI0Ac3FrameInput, Flat7xI0FrameAssemblyError, Flat7xI0FrameBitInput,
+            I0AuxDataInput, I0CrcValidationStatus, I0FramePart, OpaqueI0Ac3BitSpan,
+            assemble_flat7x_i0_ac3_frame, assemble_flat7x_i0_ac3_frame_from_fields,
         },
     },
     integrity::crc16::eac3_crc16,
@@ -20,6 +24,7 @@ const FRAME_VECTORS: &str = include_str!("fixtures/i0_frame_assembler/INPUT-ONLY
 const HEADER_VECTORS: &str = include_str!(
     "../../../outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/INPUT-ONLY-VECTORS.json"
 );
+const BSI_TAIL_VECTORS: &str = include_str!("fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json");
 
 struct SyntheticI0FrameData {
     bsi_tail: Vec<u8>,
@@ -58,6 +63,96 @@ fn header_vector_by_id(id: &Value) -> Value {
         .find(|item| item["id"] == *id)
         .unwrap()
         .clone()
+}
+
+fn bsi_tail_case_by_id(id: &str) -> Value {
+    let vectors: Value = serde_json::from_str(BSI_TAIL_VECTORS).unwrap();
+    assert_eq!(
+        vectors["schema"],
+        "jocforge.flat7x.i0_ac3_bsi_tail.input_only.v1"
+    );
+    assert!(!vectors["production_allowed"].as_bool().unwrap());
+    vectors["cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["id"] == id)
+        .unwrap()
+        .clone()
+}
+
+fn bsi_tail_payload(case: &Value) -> Option<Vec<u8>> {
+    let input = &case["input"]["additional_bsi"];
+    if input.is_null() {
+        return None;
+    }
+    if let Some(hex) = input["hex"].as_str() {
+        return Some(
+            hex.as_bytes()
+                .chunks_exact(2)
+                .map(|pair| {
+                    let high = (pair[0] as char).to_digit(16).unwrap();
+                    let low = (pair[1] as char).to_digit(16).unwrap();
+                    u8::try_from((high << 4) | low).unwrap()
+                })
+                .collect(),
+        );
+    }
+    let fill = u8::from_str_radix(input["fill_hex"].as_str().unwrap(), 16).unwrap();
+    let byte_length = usize::try_from(input["length_bytes"].as_u64().unwrap()).unwrap();
+    Some(vec![fill; byte_length])
+}
+
+fn bsi_tail_fields<'a>(case: &Value, payload: Option<&'a [u8]>) -> Flat7xI0Ac3BsiTailInput<'a> {
+    let input = &case["input"];
+    let audio_production =
+        input["audio_production"]
+            .as_object()
+            .map(|fields| Flat7xI0Ac3AudioProductionInfo {
+                mix_level: u8::try_from(fields["mix_level"].as_u64().unwrap()).unwrap(),
+                room_type: u8::try_from(fields["room_type"].as_u64().unwrap()).unwrap(),
+            });
+    Flat7xI0Ac3BsiTailInput {
+        langcode: input["langcode"]
+            .as_u64()
+            .map(|value| u8::try_from(value).unwrap()),
+        audio_production,
+        copyright: input["copyright"].as_bool().unwrap(),
+        original_bitstream: input["original_bitstream"].as_bool().unwrap(),
+        time_code_1: input["time_code_1"]
+            .as_u64()
+            .map(|value| u16::try_from(value).unwrap()),
+        time_code_2: input["time_code_2"]
+            .as_u64()
+            .map(|value| u16::try_from(value).unwrap()),
+        additional_bsi: payload,
+    }
+}
+
+fn synthetic_audio_blocks(bit_lengths: [u32; 6]) -> [Vec<u8>; 6] {
+    std::array::from_fn(|index| {
+        bytes_for_bits(bit_lengths[index], u8::try_from(index + 1).unwrap())
+    })
+}
+
+fn opaque_audio_blocks<'a>(
+    bit_lengths: [u32; 6],
+    bytes: &'a [Vec<u8>; 6],
+) -> [OpaqueI0Ac3BitSpan<'a>; 6] {
+    std::array::from_fn(|index| OpaqueI0Ac3BitSpan::new(&bytes[index], 0, bit_lengths[index]))
+}
+
+fn assert_caller_writer_unchanged(
+    result: Result<Flat7xI0Ac3FrameAssemblyReceipt, Flat7xI0FrameAssemblyError>,
+    expected_error: Flat7xI0FrameAssemblyError,
+    cursor: u32,
+    before: &[u8],
+    after: &[u8],
+    final_cursor: u32,
+) {
+    assert_eq!(result, Err(expected_error));
+    assert_eq!(final_cursor, cursor);
+    assert_eq!(after, before);
 }
 
 fn parse_hex_byte(value: &Value) -> u8 {
@@ -311,6 +406,180 @@ fn synthetic_i0_assembler_generates_and_residual_checks_crc_fields_after_full_st
             assert!(!read_bit(&output, receipt.auxdata_span().start_bit()));
         }
     }
+}
+
+#[test]
+fn typed_i0_entry_serializes_washed_bsi_then_six_caller_spans_and_crc() {
+    let case = bsi_tail_case_by_id("all-optionals-with-two-byte-addbsi");
+    let payload = bsi_tail_payload(&case).unwrap();
+    let bsi_tail = bsi_tail_fields(&case, Some(&payload));
+    let bit_lengths = [3_387, 3_387, 3_387, 3_387, 3_386, 3_386];
+    assert_eq!(bit_lengths.iter().sum::<u32>(), 20_320);
+    let audio_bytes = synthetic_audio_blocks(bit_lengths);
+    let input = Flat7xI0Ac3FrameInput {
+        header_fields: Flat7xI0Ac3FrameHeaderFields {
+            frmsizecod: 37,
+            bsmod: 0,
+            cmixlev: 1,
+            surmixlev: 1,
+            dialnorm: 31,
+            compr: Some(0x55),
+        },
+        bsi_tail,
+        audio_blocks: opaque_audio_blocks(bit_lengths, &audio_bytes),
+        auxdata: I0AuxDataInput::Absent,
+        crcrsv_seed: CallerOwnedI0CrcrsvSeed { value: false },
+    };
+    let mut frame_bytes = vec![0xa5; 2_560];
+    let receipt;
+    let cursor;
+    {
+        let mut writer = FrameBitWriter::new(&mut frame_bytes, FrameBitCursor::new(0)).unwrap();
+        receipt = assemble_flat7x_i0_ac3_frame_from_fields(
+            Flat7xI0D0TargetPlan::approved_contract(),
+            input,
+            &mut writer,
+        )
+        .unwrap();
+        cursor = writer.cursor().bit_offset();
+    }
+
+    let frame = receipt.frame();
+    let bsi_expected = &case["expected"];
+    assert_eq!(cursor, 20_480);
+    assert_eq!(frame.target_frame_bytes(), 2_560);
+    assert_eq!(
+        [
+            frame.bsi_tail_span().start_bit(),
+            frame.bsi_tail_span().end_bit()
+        ],
+        [70, 142]
+    );
+    assert_eq!(receipt.bsi_tail().start_bit(), 70);
+    assert_eq!(
+        receipt.bsi_tail().end_bit(),
+        u32::try_from(bsi_expected["end_bit"].as_u64().unwrap()).unwrap()
+    );
+    assert_eq!(
+        receipt.bsi_tail().bit_length(),
+        u32::try_from(bsi_expected["bit_length"].as_u64().unwrap()).unwrap()
+    );
+    assert_eq!(receipt.bsi_tail().additional_bsi_start_bit(), Some(126));
+    assert_eq!(receipt.bsi_tail().additional_bsi_bit_length(), Some(16));
+    assert_eq!(frame.audio_block_spans()[0].start_bit(), 142);
+    assert_eq!(frame.audio_block_spans()[5].end_bit(), 20_462);
+    assert_eq!(frame.auxdata_span().start_bit(), 20_462);
+    assert_eq!(frame.auxdata_span().bit_length(), 1);
+    assert_eq!(
+        [
+            frame.errorcheck_span().start_bit(),
+            frame.errorcheck_span().end_bit()
+        ],
+        [20_463, 20_480]
+    );
+    assert_eq!(eac3_crc16(&frame_bytes[2..1_600]), 0);
+    assert_eq!(eac3_crc16(&frame_bytes[2..]), 0);
+    assert!(!receipt.production_allowed());
+}
+
+#[test]
+fn typed_i0_entry_fails_before_caller_write_for_invalid_bsi_or_incomplete_frame_extent() {
+    let empty_audio: [Vec<u8>; 6] = std::array::from_fn(|_| Vec::new());
+    let empty_lengths = [0; 6];
+    let audio_blocks = opaque_audio_blocks(empty_lengths, &empty_audio);
+    let minimum_bsi = Flat7xI0Ac3BsiTailInput {
+        langcode: None,
+        audio_production: None,
+        copyright: false,
+        original_bitstream: false,
+        time_code_1: None,
+        time_code_2: None,
+        additional_bsi: None,
+    };
+
+    let invalid_fields = Flat7xI0Ac3FrameInput {
+        header_fields: Flat7xI0Ac3FrameHeaderFields {
+            frmsizecod: 36,
+            bsmod: 0,
+            cmixlev: 0,
+            surmixlev: 0,
+            dialnorm: 31,
+            compr: None,
+        },
+        bsi_tail: Flat7xI0Ac3BsiTailInput {
+            audio_production: Some(Flat7xI0Ac3AudioProductionInfo {
+                mix_level: 32,
+                room_type: 0,
+            }),
+            ..minimum_bsi
+        },
+        audio_blocks,
+        auxdata: I0AuxDataInput::Absent,
+        crcrsv_seed: CallerOwnedI0CrcrsvSeed { value: false },
+    };
+    let mut invalid_output = vec![0x96; 2_560];
+    let invalid_before = invalid_output.clone();
+    let invalid_result;
+    let invalid_cursor;
+    {
+        let mut writer = FrameBitWriter::new(&mut invalid_output, FrameBitCursor::new(0)).unwrap();
+        invalid_result = assemble_flat7x_i0_ac3_frame_from_fields(
+            Flat7xI0D0TargetPlan::approved_contract(),
+            invalid_fields,
+            &mut writer,
+        );
+        invalid_cursor = writer.cursor().bit_offset();
+    }
+    assert_caller_writer_unchanged(
+        invalid_result,
+        Flat7xI0FrameAssemblyError::BsiTail(Flat7xI0Ac3BsiTailError::MixLevelOutOfRange {
+            value: 32,
+        }),
+        0,
+        &invalid_before,
+        &invalid_output,
+        invalid_cursor,
+    );
+
+    let wrong_extent = Flat7xI0Ac3FrameInput {
+        header_fields: Flat7xI0Ac3FrameHeaderFields {
+            frmsizecod: 36,
+            bsmod: 0,
+            cmixlev: 0,
+            surmixlev: 0,
+            dialnorm: 31,
+            compr: None,
+        },
+        bsi_tail: minimum_bsi,
+        audio_blocks,
+        auxdata: I0AuxDataInput::Absent,
+        crcrsv_seed: CallerOwnedI0CrcrsvSeed { value: false },
+    };
+    let mut short_candidate_output = vec![0x69; 2_560];
+    let short_candidate_before = short_candidate_output.clone();
+    let result;
+    let cursor;
+    {
+        let mut writer =
+            FrameBitWriter::new(&mut short_candidate_output, FrameBitCursor::new(0)).unwrap();
+        result = assemble_flat7x_i0_ac3_frame_from_fields(
+            Flat7xI0D0TargetPlan::approved_contract(),
+            wrong_extent,
+            &mut writer,
+        );
+        cursor = writer.cursor().bit_offset();
+    }
+    assert_caller_writer_unchanged(
+        result,
+        Flat7xI0FrameAssemblyError::FrameSpanMismatch {
+            actual_bits: 87,
+            required_bits: 20_480,
+        },
+        0,
+        &short_candidate_before,
+        &short_candidate_output,
+        cursor,
+    );
 }
 
 #[test]

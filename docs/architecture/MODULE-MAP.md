@@ -27,7 +27,7 @@
 | domain/codec/mantissa | mantissa production 边界 | 空壳；无算法 |
 | domain/codec/frame_builder | Flat7x I0 AC-3 header segment | Writes the approved 62/70-bit header through optional `compr` and returns before caller-owned BSI tail; no audio or CRC generation. |
 | domain/codec/ac3_bsi_tail | Flat7x I0 AC-3 BSI-tail serializer | Writes caller-authored optionals at header end 62/70, omits acmod=0-only fields for target acmod=7, validates field widths and bounded addbsi extent, and returns a tail receipt. |
-| domain/codec/i0_frame_assembler | Flat7x I0 AC-3 structural frame assembly | Copies caller-owned BSI and six audio-block spans, emits optional auxdata, generates CRC1/CRC2 and verifies synthetic zero residuals; audio production and product admission remain open. |
+| domain/codec/i0_frame_assembler | Flat7x I0 AC-3 structural frame assembly | Keeps the opaque-span API and adds a typed-field entry that serializes BSI privately, then composes six caller audio-block spans, optional auxdata, CRC1/CRC2 and one caller commit; audio production and product admission remain open. |
 | domain/codec/core_layout | 5.1 六 carrier 边界 | 空壳；无 sample mapping |
 | domain/codec/substream_topology | 1 independent / 0 dependent 边界 | 空壳；无 writer |
 | domain/codec/rate_profile | 1,024 kbps / 6 blocks / 1,536 samples / 4,096 bytes 边界 | 空壳；无 rate plan |

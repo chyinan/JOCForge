@@ -18,6 +18,8 @@
 
 `codec::ac3_bsi_tail::write_flat7x_i0_ac3_bsi_tail` serializes the approved caller-authored optionals after the I0 header cursor and returns an exact tail extent. It omits acmod=0-only fields for acmod 7, validates the bounded addbsi U6 length, and remains structural with `production_allowed=false`.
 
+`codec::i0_frame_assembler::assemble_flat7x_i0_ac3_frame_from_fields` composes typed header/BSI values with six caller-owned audio spans. It stages the BSI tail privately, forwards its exact span to the existing whole-frame assembler and returns both receipts; the opaque-span entry remains available. No audio or production callsite is added.
+
 `publication::Flat7xAuOutputOwner` accepts such a byte-sequence candidate into one whole-AU append proposal, returns a typed pair ledger entry and validates caller-supplied `Flat7xAuAppendReceiptCandidate` fields before exposing an after-owner proposal. This API is target-only: it has no GTC registration or product-plan binding, and the selected 5.1 `OutputOwner` stays on its current path. The separate staging-file adapter is described below.
 
 `jocforge_io::flat7x_au_append::append_flat7x_au_to_staging_file` accepts the proposal and a caller-owned read/write staging `File`. It checks the append offset, writes the aggregate byte sequence, calls `flush` and `sync_all`, reads back the exact appended range, verifies both frame CRCs and returns a receipt candidate. Callers abandon the staging attempt after any error that follows a write; this adapter has no rollback or final-file exposure path.

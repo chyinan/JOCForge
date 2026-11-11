@@ -2,7 +2,10 @@
 //! Production-disabled Flat7x I0 AC-3 frame assembly from caller-owned syntax spans.
 
 use super::{
-    ac3_bsi_tail::I0_BSI_TAIL_MINIMUM_BITS,
+    ac3_bsi_tail::{
+        Flat7xI0Ac3BsiTailError, Flat7xI0Ac3BsiTailInput, Flat7xI0Ac3BsiTailReceipt,
+        I0_BSI_TAIL_MINIMUM_BITS, write_flat7x_i0_ac3_bsi_tail,
+    },
     bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError},
     frame_builder::{
         Flat7xI0Ac3HeaderSegmentError, Flat7xI0Ac3HeaderValues,
@@ -112,6 +115,16 @@ pub struct Flat7xI0FrameBitInput<'a> {
     /// Six caller-owned spans in AC-3 `audblk[0]` through `audblk[5]` order.
     pub audio_blocks: [OpaqueI0Ac3BitSpan<'a>; I0_AUDIO_BLOCK_COUNT],
     /// Opaque serialized `auxbits` and optional `auxdatal`; the assembler emits `auxdatae`.
+    pub auxdata: I0AuxDataInput<'a>,
+    pub crcrsv_seed: CallerOwnedI0CrcrsvSeed,
+}
+
+/// Typed caller input for frame assembly with the approved BSI-tail field writer.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Flat7xI0Ac3FrameInput<'a> {
+    pub header_fields: Flat7xI0Ac3FrameHeaderFields,
+    pub bsi_tail: Flat7xI0Ac3BsiTailInput<'a>,
+    pub audio_blocks: [OpaqueI0Ac3BitSpan<'a>; I0_AUDIO_BLOCK_COUNT],
     pub auxdata: I0AuxDataInput<'a>,
     pub crcrsv_seed: CallerOwnedI0CrcrsvSeed,
 }
@@ -251,6 +264,27 @@ impl Flat7xI0FrameAssemblyReceipt {
     }
 }
 
+/// Receipt from typed BSI-field serialization followed by whole-frame assembly.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Flat7xI0Ac3FrameAssemblyReceipt {
+    frame: Flat7xI0FrameAssemblyReceipt,
+    bsi_tail: Flat7xI0Ac3BsiTailReceipt,
+}
+
+impl Flat7xI0Ac3FrameAssemblyReceipt {
+    pub const fn frame(self) -> Flat7xI0FrameAssemblyReceipt {
+        self.frame
+    }
+
+    pub const fn bsi_tail(self) -> Flat7xI0Ac3BsiTailReceipt {
+        self.bsi_tail
+    }
+
+    pub const fn production_allowed(self) -> bool {
+        false
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum I0FramePart {
     BsiTail,
@@ -280,6 +314,7 @@ pub enum Flat7xI0FrameAssemblyError {
         actual_bits: u32,
         required_bits: u32,
     },
+    BsiTail(Flat7xI0Ac3BsiTailError),
     Crc1ResidualNonzero {
         residual: u16,
     },
@@ -291,6 +326,12 @@ pub enum Flat7xI0FrameAssemblyError {
 impl From<Ac3Crc16GenerationError> for Flat7xI0FrameAssemblyError {
     fn from(_: Ac3Crc16GenerationError) -> Self {
         Self::CrcGeneration
+    }
+}
+
+impl From<Flat7xI0Ac3BsiTailError> for Flat7xI0FrameAssemblyError {
+    fn from(error: Flat7xI0Ac3BsiTailError) -> Self {
+        Self::BsiTail(error)
     }
 }
 
@@ -313,6 +354,59 @@ impl From<FrameBitWriterError> for Flat7xI0FrameAssemblyError {
 /// CRC1/CRC2 are generated with the approved ETSI AC-3 rule after all frame parts
 /// are staged. The caller supplies the initial `crcrsv` bit; the syncword-collision
 /// adjustment is applied from the CRC contract. This does not generate audio.
+/// Serializes typed caller-owned BSI values, then assembles the complete I0 frame.
+///
+/// The lower-level bit-span API remains available for callers that already have a
+/// serialized BSI tail. This entry preflights the caller frame writer, writes the
+/// BSI fields into private scratch, then delegates to the same whole-frame staging
+/// and CRC path. The audio-block spans remain opaque caller inputs.
+pub fn assemble_flat7x_i0_ac3_frame_from_fields(
+    target: Flat7xI0D0TargetPlan,
+    input: Flat7xI0Ac3FrameInput<'_>,
+    writer: &mut FrameBitWriter<'_>,
+) -> Result<Flat7xI0Ac3FrameAssemblyReceipt, Flat7xI0FrameAssemblyError> {
+    validate_target(target)?;
+    let actual_cursor = writer.cursor().bit_offset();
+    if actual_cursor != 0 {
+        return Err(Flat7xI0FrameAssemblyError::CursorMismatch {
+            actual: actual_cursor,
+        });
+    }
+    writer.preflight_capacity(I0_TARGET_FRAME_BITS)?;
+
+    let header_end_bit = if input.header_fields.compr.is_some() {
+        70
+    } else {
+        62
+    };
+    let mut bsi_scratch = [0_u8; I0_TARGET_FRAME_BYTES];
+    let bsi_receipt = {
+        let mut bsi_writer =
+            FrameBitWriter::new(&mut bsi_scratch, FrameBitCursor::new(header_end_bit))?;
+        write_flat7x_i0_ac3_bsi_tail(&mut bsi_writer, input.bsi_tail)?
+    };
+    let bsi_source = OpaqueI0Ac3BitSpan::new(
+        &bsi_scratch,
+        bsi_receipt.start_bit(),
+        bsi_receipt.bit_length(),
+    );
+    let frame_receipt = assemble_flat7x_i0_ac3_frame(
+        target,
+        Flat7xI0FrameBitInput {
+            header_fields: input.header_fields,
+            bsi_tail: bsi_source,
+            audio_blocks: input.audio_blocks,
+            auxdata: input.auxdata,
+            crcrsv_seed: input.crcrsv_seed,
+        },
+        writer,
+    )?;
+    Ok(Flat7xI0Ac3FrameAssemblyReceipt {
+        frame: frame_receipt,
+        bsi_tail: bsi_receipt,
+    })
+}
+
 pub fn assemble_flat7x_i0_ac3_frame(
     target: Flat7xI0D0TargetPlan,
     input: Flat7xI0FrameBitInput<'_>,
