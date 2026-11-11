@@ -1,6 +1,6 @@
 # JOCForge
 
-The selected 48 kHz / 5.1 six-carrier E-AC-3 JOC CLI path is implemented for explicit rates of 384, 448, 576, 640, 768, and 1024 kbps. Local verification covers input/profile admission, frame sizing, keyless integrity, and a full-file output at each rate. DEE parity and W04 acceptance remain pending.
+The selected 48 kHz / 5.1 six-carrier E-AC-3 JOC CLI path is implemented for explicit rates of 384, 448, 576, 640, 768, and 1024 kbps. Local verification covers input/profile admission, frame sizing, keyless integrity, and a full-file output at each rate. These outputs are not equivalent to DEE; DEE parity and W04 acceptance are not established.
 
 The next profile under development is the Flat7.1 structure matching the official demo:
 
