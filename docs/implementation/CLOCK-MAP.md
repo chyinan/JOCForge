@@ -550,6 +550,7 @@
 | F12/flat7x-d0-fixed-prefix-writer | — | `One synchronous helper emits a 45-bit structural prefix at caller cursor zero.` |
 | F12/flat7x-d0-bsi-segment-through-chanmap | — | `One non-streaming helper serializes a bounded BSI segment from cursor zero.` |
 | F12/flat7x-i0-ac3-header-segment | — | `One synchronous helper serializes an authored-value header segment at caller cursor zero.` |
+| F12/flat7x-d0-mixing-metadata-segment | — | `The helper appends one bounded BSI metadata segment at parent cursor 68 or 76.` |
 | F12S/mantissa-quantizer | — | `The quantizer is stateless and has no callback, source, AU, or trial-search clock ownership.` |
 | F12A/selected-f12a-public-bap-network | — | `F12A has no persistent cross-row/block state; BapFrame carries candidate q but source-generation identity remains caller-owned.` |
 | F13/selected-metadata-owner-source-stage | `CodecSourceIndex`<br>`JocDispatchIndex`<br>`PublishedAuIndex` | `source s`<br>`dispatch s+1`<br>`AU absent for s<2 else s-2`<br>`ordinary writer s-2`<br>`ID14 writer s-1` |

@@ -550,6 +550,7 @@
 | F12/flat7x-d0-fixed-prefix-writer | F12 | `codec` |
 | F12/flat7x-d0-bsi-segment-through-chanmap | F12 | `codec` |
 | F12/flat7x-i0-ac3-header-segment | F12 | `codec` |
+| F12/flat7x-d0-mixing-metadata-segment | F12 | `codec` |
 | F12S/mantissa-quantizer | F12S | `codec` |
 | F12A/selected-f12a-public-bap-network | F12A | `codec` |
 | F13/selected-metadata-owner-source-stage | F13 | `metadata` |

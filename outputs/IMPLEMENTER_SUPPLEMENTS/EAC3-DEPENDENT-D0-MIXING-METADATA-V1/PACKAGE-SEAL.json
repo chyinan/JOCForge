@@ -1,0 +1,7 @@
+{
+  "manifest_sha256": "a7d8bb0e724dd94b9a31fa860c4296daecc957e4570dfdb9f32bf5ef17c3aa12",
+  "package_id": "eac3-dependent-d0-mixing-metadata-v1",
+  "payload_count": 6,
+  "production_allowed": false,
+  "schema": "jocforge.wash_implementer_supplement_seal.v1"
+}

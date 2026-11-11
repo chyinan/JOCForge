@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge.eac3.flat7x_d0_mixing_info_segment.provenance.v1",
+  "package_id": "eac3-dependent-d0-mixing-metadata-v1",
+  "status": "WASH_REVIEWED_ETSI_DERIVED_STRUCTURE",
+  "parents": [
+    {
+      "package_id": "eac3-dependent-d0-bsi-segment-v1",
+      "manifest_sha256": "cf24050c7539262f53f220366f3c4328d766147a39daeb37e3e89f27817b88db",
+      "seal_sha256": "5af97a494b53190ce7014f47829352fc71dc58d9bdf3354554469ed1676f7be2"
+    },
+    {
+      "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+      "manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+      "seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20"
+    }
+  ],
+  "standard": {
+    "id": "ETSI TS 102 366 V1.4.1 (2017-09)",
+    "url": "https://www.etsi.org/deliver/etsi_ts/102300_102399/102366/01.04.01_60/ts_102366v010401p.pdf",
+    "clauses": ["E.1.2.2", "E.1.2.0"],
+    "basis": "Official ETSI E-AC-3 BSI grammar; target field values remain caller inputs"
+  },
+  "inferences": [
+    "Target acmod=5/lfeon=0/strmtyp=1 activates mixmdo and both center/surround mix-level pairs only when mixmdate=1.",
+    "Six block-mix slots follow the approved six-block target; each entry is an explicit optional 5-bit field.",
+    "infomdate follows the mixmdate/mix block and is left to a later caller-owned informational metadata segment."
+  ],
+  "exclusions": ["DEE execution", "audio payload", "PCM", "private key", "license", "XML mapping", "audio algorithm"],
+  "production_allowed": false
+}

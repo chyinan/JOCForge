@@ -8,7 +8,7 @@ use crate::codec::frame_syntax::{
     CodecBlockIndex, SelectedBsiDrcFields, SelectedBsiMixingInformationValues,
     SelectedComplexityIndexTypeA,
 };
-use crate::profile::Flat7xI0D0TargetPlan;
+use crate::profile::{Flat7xI0D0TargetPlan, Flat7xSubstreamRole};
 use crate::timeline::CodecSourceIndex;
 
 const DIALNORM_BIT_OFFSET: u32 = 45;
@@ -269,6 +269,136 @@ pub fn write_flat7x_d0_bsi_through_chanmap(
         writer.write_unsigned(u32::from(compr), D0_COMPR_WIDTH_BITS)?;
     }
     write_flat7x_d0_chanmap_fields(writer, channel_map)?;
+    Ok(writer.cursor())
+}
+
+const D0_MIXMDO_WIDTH_BITS: u8 = 2;
+const D0_MIX_LEVEL_WIDTH_BITS: u8 = 3;
+const D0_MIX_LEVEL_VALUE_COUNT: u8 = 4;
+const D0_BLOCK_MIX_COUNT: u8 = 6;
+const D0_BLOCK_MIX_VALUE_WIDTH_BITS: u8 = 5;
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Flat7xD0MixingMetadataValues {
+    pub mixmdo: u8,
+    pub ltrtcmixlev: u8,
+    pub lorocmixlev: u8,
+    pub ltrtsurmixlev: u8,
+    pub lorosurmixlev: u8,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Flat7xD0MixingMetadataError {
+    ParentSegmentCursorMismatch { actual: u32 },
+    UnsupportedTargetContext,
+    MixmdoOutOfRange { value: u8 },
+    MixLevelOutOfRange { value: u8 },
+    BlockMixValueOutOfRange { block: usize, value: u8 },
+    BitWriter(FrameBitWriterError),
+}
+
+impl From<FrameBitWriterError> for Flat7xD0MixingMetadataError {
+    fn from(error: FrameBitWriterError) -> Self {
+        Self::BitWriter(error)
+    }
+}
+
+/// Appends target D0 mixing metadata and `infomdate` after the parent BSI segment.
+///
+/// Mixing values, six optional block values, and `infomdate` are caller supplied.
+/// Presence flags derive only from their corresponding `Option`s. The complete
+/// variable-length append is validated and preflighted before any bit is written.
+pub fn append_flat7x_d0_mixing_metadata_and_infomdate(
+    writer: &mut FrameBitWriter<'_>,
+    target: Flat7xI0D0TargetPlan,
+    mixing: Option<Flat7xD0MixingMetadataValues>,
+    block_mix: [Option<u8>; 6],
+    infomdate: bool,
+) -> Result<FrameBitCursor, Flat7xD0MixingMetadataError> {
+    let actual = writer.cursor().bit_offset();
+    if actual != D0_BSI_THROUGH_CHANMAP_BITS_WITHOUT_COMPR
+        && actual != D0_BSI_THROUGH_CHANMAP_BITS_WITH_COMPR
+    {
+        return Err(Flat7xD0MixingMetadataError::ParentSegmentCursorMismatch { actual });
+    }
+
+    let d0 = target.d0();
+    if d0.role() != Flat7xSubstreamRole::DependentD0
+        || d0.acmod().value() != 5
+        || d0.lfeon()
+        || target.audio_blocks_per_frame() != D0_BLOCK_MIX_COUNT
+    {
+        return Err(Flat7xD0MixingMetadataError::UnsupportedTargetContext);
+    }
+
+    if let Some(mixing) = mixing {
+        if mixing.mixmdo > 3 {
+            return Err(Flat7xD0MixingMetadataError::MixmdoOutOfRange {
+                value: mixing.mixmdo,
+            });
+        }
+        for value in [
+            mixing.ltrtcmixlev,
+            mixing.lorocmixlev,
+            mixing.ltrtsurmixlev,
+            mixing.lorosurmixlev,
+        ] {
+            if value > 7 {
+                return Err(Flat7xD0MixingMetadataError::MixLevelOutOfRange { value });
+            }
+        }
+    }
+    let mut present_block_values = 0_u32;
+    for (block, value) in block_mix.iter().enumerate() {
+        if let Some(value) = value {
+            if *value > 31 {
+                return Err(Flat7xD0MixingMetadataError::BlockMixValueOutOfRange {
+                    block,
+                    value: *value,
+                });
+            }
+            present_block_values += 1;
+        }
+    }
+
+    let mixing_value_bits = if mixing.is_some() {
+        u32::from(D0_MIXMDO_WIDTH_BITS)
+            + u32::from(D0_MIX_LEVEL_VALUE_COUNT) * u32::from(D0_MIX_LEVEL_WIDTH_BITS)
+    } else {
+        0
+    };
+    let block_info_present = present_block_values != 0;
+    let block_value_bits = if block_info_present {
+        u32::from(D0_BLOCK_MIX_COUNT)
+            + present_block_values * u32::from(D0_BLOCK_MIX_VALUE_WIDTH_BITS)
+    } else {
+        0
+    };
+    let total_bits = 3_u32
+        .checked_add(mixing_value_bits)
+        .and_then(|bits| bits.checked_add(block_value_bits))
+        .ok_or(FrameBitWriterError::CursorOverflow)?;
+    writer.preflight_capacity(total_bits)?;
+
+    writer.write_bit(mixing.is_some())?;
+    if let Some(mixing) = mixing {
+        writer.write_unsigned(u32::from(mixing.mixmdo), D0_MIXMDO_WIDTH_BITS)?;
+        writer.write_unsigned(u32::from(mixing.ltrtcmixlev), D0_MIX_LEVEL_WIDTH_BITS)?;
+        writer.write_unsigned(u32::from(mixing.lorocmixlev), D0_MIX_LEVEL_WIDTH_BITS)?;
+        writer.write_unsigned(u32::from(mixing.ltrtsurmixlev), D0_MIX_LEVEL_WIDTH_BITS)?;
+        writer.write_unsigned(u32::from(mixing.lorosurmixlev), D0_MIX_LEVEL_WIDTH_BITS)?;
+    }
+
+    writer.write_bit(block_info_present)?;
+    if block_info_present {
+        for value in block_mix {
+            writer.write_bit(value.is_some())?;
+            if let Some(value) = value {
+                writer.write_unsigned(u32::from(value), D0_BLOCK_MIX_VALUE_WIDTH_BITS)?;
+            }
+        }
+    }
+    writer.write_bit(infomdate)?;
     Ok(writer.cursor())
 }
 

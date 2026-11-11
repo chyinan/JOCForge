@@ -46,6 +46,12 @@ Wash supplement `flat7x-i0-ac3-header-segment-v1` (manifest `285bff275095c945a3f
 
 The segment writer computes no CRC, maps no XML DRC profile and creates no AC-3 audio blocks or full I0 frame. The selected 5.1 E-AC-3 prefix and rate path remain unchanged. Complete I0 body/frame composition, source binding, I0/D0 AU and production remain open.
 
+## 2026-11-11：Flat7x D0 mixing metadata 与 infomdate
+
+Wash supplement `eac3-dependent-d0-mixing-metadata-v1`（manifest `a7d8bb0e724dd94b9a31fa860c4296daecc957e4570dfdb9f32bf5ef17c3aa12`，seal `a7fcace5ab491fb3f7f82927146a6c9e33f7fa6321bf875d0bb4c11b7c004a7e`）支持从 parent BSI cursor 68/76 延续到 `infomdate`。`append_flat7x_d0_mixing_metadata_and_infomdate` 将 `mixmdate` 由 mixing Option 导出；target `acmod=5/lfeon=0` 下写四个显式 U3 center/surround level；`frmmixcfginfoe` 由六个 block Option 决定，并在启用时写六个 presence flags 和相应 U5 values；随后写 caller 提供的 `infomdate`。全段先校验位域和容量。
+
+该 helper 返回 `infomdate` 后、后续 informational metadata 之前的 caller boundary。它不映射 XML、不计算混音或音频、不处理后续信息元数据、audio blocks、EMDF、CRC 或完整 D0 frame/AU。Wash vector 声明 cursor68 尚有16 bits；字节型 `FrameBitWriter` 在该 cursor 下可表示12或20 bits，因此本地 no-partial-write 向量使用10-byte buffer提供的12 bits，已向 Wash 请求修正向量。
+
 ## 2026-11-06：authored silence duration admission gate
 
 Wash 包 `ATMOS-SILENCE-DURATION-SAMPLE-BOUNDARY-V1` 已物化到隔离仓。manifest SHA-256 `1295151443daca741c7ca0477b91bdf84d88eae76065d7b861ca4125f895980c`、seal SHA-256 `47f5b8c8538894acdecad538f0537056b3ec216b5894943addf0d490b67f6852`，REPORT、INPUT-ONLY-VECTORS 与 PROVENANCE 三个 payload 本地逐项校验通过；普通 Python 与 `python -O` 均 PASS。向量只列 zero/fractional 两个输入，标为 `PROPOSED_NOT_RUN`。

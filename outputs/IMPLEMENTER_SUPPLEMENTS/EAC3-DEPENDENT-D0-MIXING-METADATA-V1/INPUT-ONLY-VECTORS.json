@@ -1,0 +1,61 @@
+{
+  "schema": "jocforge.eac3.flat7x_d0_mixing_info_segment.input_only.v1",
+  "execution": "NOT_RUN",
+  "vectors": [
+    {
+      "id": "no-mixing-no-block-info",
+      "start_bit_offset": 68,
+      "inputs": {
+        "mixing": null,
+        "block_mix": [null, null, null, null, null, null],
+        "infomdate": false
+      },
+      "expected_segment_bits": "000",
+      "expected_segment_bit_count": 3,
+      "expected_end_bit_offset": 71
+    },
+    {
+      "id": "mixing-present-infomdate-present",
+      "start_bit_offset": 68,
+      "inputs": {
+        "mixing": {
+          "mixmdo": 2,
+          "ltrtcmixlev": 1,
+          "lorocmixlev": 2,
+          "ltrtsurmixlev": 3,
+          "lorosurmixlev": 4
+        },
+        "block_mix": [null, null, null, null, null, null],
+        "infomdate": true
+      },
+      "expected_segment_bits": "11000101001110001",
+      "expected_segment_bit_count": 17,
+      "expected_end_bit_offset": 85
+    },
+    {
+      "id": "block-mix-values-without-mixing",
+      "start_bit_offset": 76,
+      "inputs": {
+        "mixing": null,
+        "block_mix": [null, 3, null, 17, null, 31],
+        "infomdate": false
+      },
+      "expected_segment_bits": "010100011011000101111110",
+      "expected_segment_bit_count": 24,
+      "expected_end_bit_offset": 100
+    },
+    {
+      "id": "preflight-and-range-rejections",
+      "start_bit_offset": 68,
+      "buffer_bytes": 10,
+      "available_bits": 12,
+      "required_bits": 17,
+      "invalid_mixmdo": [4],
+      "invalid_mix_levels": [8],
+      "invalid_block_mix_values": [32],
+      "invalid_start_offsets": [67, 69],
+      "expected": "REJECT_BEFORE_WRITING_ANY_BIT"
+    }
+  ],
+  "contains_media_or_audio_payload": false
+}

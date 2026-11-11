@@ -1,0 +1,38 @@
+{
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "sha256": "d2bc54316b9eb538d53e11d5c6f8db695db538109f8cf873c8b784e2e6790df1",
+      "size_bytes": 2195
+    },
+    {
+      "path": "CONTRACT.json",
+      "sha256": "6124440920c544655586b179d45f4c9027b92378cb0887a471f5923a59f2b852",
+      "size_bytes": 2111
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "sha256": "f296d3c65fe6fd0d36aee76a163d8a132d00e63ee5754d9af1562c39f43811a5",
+      "size_bytes": 1716
+    },
+    {
+      "path": "PROVENANCE.json",
+      "sha256": "e474ffc87ac3c8debb02aba3ef4d1b533860d6acf7b064eb293567d755f850a5",
+      "size_bytes": 1542
+    },
+    {
+      "path": "build_manifest.py",
+      "sha256": "bf9dca6f5ac71305e320101997d339785b32302f0cb5a1a36fd6491b313fa5dd",
+      "size_bytes": 1466
+    },
+    {
+      "path": "verify_package.py",
+      "sha256": "e5dfe2539caa831ac2d5555b24a5cf6ea8f81267c93120e7211c26e4a1915407",
+      "size_bytes": 4954
+    }
+  ],
+  "package_id": "eac3-dependent-d0-mixing-metadata-v1",
+  "production_allowed": false,
+  "schema": "jocforge.wash_implementer_supplement.v1",
+  "status": "IMPLEMENTER_READY_LIMITED_D0_MIXING_INFO_SEGMENT"
+}

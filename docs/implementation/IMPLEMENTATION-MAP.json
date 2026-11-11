@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2105692,
-              "sha256": "5feafd554f67813a471c21fe5892caddd931fd7825c9a267f14317d0d5fd5a19"
+              "bytes": 2106722,
+              "sha256": "ddac24ab2a05384c8d25999297a52f195d01a7f2f2ebbc12f7e239d45cdf6e1f"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2105692,
-              "sha256": "5feafd554f67813a471c21fe5892caddd931fd7825c9a267f14317d0d5fd5a19"
+              "bytes": 2106722,
+              "sha256": "ddac24ab2a05384c8d25999297a52f195d01a7f2f2ebbc12f7e239d45cdf6e1f"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -43596,8 +43596,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 23252,
-              "sha256": "683cbcccff80ad0daefe9ed875bdd8f60109dd24e2ab61915fb3fa34cfbabc43"
+              "bytes": 27841,
+              "sha256": "427aa78930cd336a8f60e0a534d0e6a833bb6ebee54aaaaeafe4db959988bf1f"
             }
           ],
           "test_modules": [
@@ -43606,8 +43606,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 23252,
-              "sha256": "683cbcccff80ad0daefe9ed875bdd8f60109dd24e2ab61915fb3fa34cfbabc43"
+              "bytes": 27841,
+              "sha256": "427aa78930cd336a8f60e0a534d0e6a833bb6ebee54aaaaeafe4db959988bf1f"
             }
           ],
           "local_mapping_files": [],
@@ -44556,8 +44556,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 23252,
-              "sha256": "683cbcccff80ad0daefe9ed875bdd8f60109dd24e2ab61915fb3fa34cfbabc43"
+              "bytes": 27841,
+              "sha256": "427aa78930cd336a8f60e0a534d0e6a833bb6ebee54aaaaeafe4db959988bf1f"
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_syntax.rs",
@@ -46362,8 +46362,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 23252,
-              "sha256": "683cbcccff80ad0daefe9ed875bdd8f60109dd24e2ab61915fb3fa34cfbabc43"
+              "bytes": 27841,
+              "sha256": "427aa78930cd336a8f60e0a534d0e6a833bb6ebee54aaaaeafe4db959988bf1f"
             }
           ],
           "test_modules": [
@@ -46487,8 +46487,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 23252,
-              "sha256": "683cbcccff80ad0daefe9ed875bdd8f60109dd24e2ab61915fb3fa34cfbabc43"
+              "bytes": 27841,
+              "sha256": "427aa78930cd336a8f60e0a534d0e6a833bb6ebee54aaaaeafe4db959988bf1f"
             }
           ],
           "test_modules": [
@@ -46622,8 +46622,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-              "bytes": 23252,
-              "sha256": "683cbcccff80ad0daefe9ed875bdd8f60109dd24e2ab61915fb3fa34cfbabc43"
+              "bytes": 27841,
+              "sha256": "427aa78930cd336a8f60e0a534d0e6a833bb6ebee54aaaaeafe4db959988bf1f"
             }
           ],
           "test_modules": [
@@ -46739,6 +46739,190 @@
           ],
           "validation_boundary": "Locally verified field serialization only; no source mapping, audio/CRC algorithm, complete I0 frame, AU or production.",
           "delivery_scope": "FLAT7X_I0_AC3_HEADER_SEGMENT_THROUGH_COMPR_ONLY_NO_AUDIO_OR_COMPLETE_FRAME_CLAIM"
+        },
+        {
+          "slice_id": "flat7x-d0-mixing-metadata-segment",
+          "mapping_status": "WASHED_D0_MIXING_METADATA_AND_INFOMDATE_FIELDS_BOUND__LATER_BSI_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_D0_MIXMDATE_BLOCKMIX_INFOMDATE_SEGMENT__FRAME_TAIL_OPEN",
+          "implementation_requirement": true,
+          "owner": "codec",
+          "scope": "Appends target D0 mixing metadata at the caller's valid parent-segment end cursor 68 or 76. It serializes mixmdate from an explicit Option, optional target-conditioned mixmdo U2 and four U3 center/surround levels, frmmixcfginfoe from six optional U5 block values and their six flags only when present, then caller-supplied infomdate. Every value and full append capacity are validated before writing. The cursor returned is immediately after infomdate.",
+          "dependencies": [
+            "F01E/flat7x-i0-d0-typed-target-plan",
+            "F12/flat7x-d0-bsi-segment-through-chanmap"
+          ],
+          "spec_files": [
+            "specs/12-codec-and-wire.md",
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-MIXING-METADATA-V1/CONTRACT.md"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/frame_builder.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
+              "bytes": 27841,
+              "sha256": "427aa78930cd336a8f60e0a534d0e6a833bb6ebee54aaaaeafe4db959988bf1f"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/flat7x_d0_mixing_metadata.rs"
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_d0_mixing_metadata.rs",
+              "bytes": 8793,
+              "sha256": "2fa3e033a787fc67f82893445717c5f424ac2a06eafcebc17bd2317b385189bb"
+            }
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The helper appends one bounded BSI metadata segment at parent cursor 68 or 76."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_D0_MIXING_METADATA_AND_INFOMDATE_SEGMENT",
+            "package_id": "eac3-dependent-d0-mixing-metadata-v1",
+            "supplement_manifest_sha256": "a7d8bb0e724dd94b9a31fa860c4296daecc957e4570dfdb9f32bf5ef17c3aa12",
+            "supplement_seal_sha256": "a7fcace5ab491fb3f7f82927146a6c9e33f7fa6321bf875d0bb4c11b7c004a7e",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-MIXING-METADATA-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-MIXING-METADATA-V1/PACKAGE-SEAL.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-MIXING-METADATA-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-MIXING-METADATA-V1/CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-MIXING-METADATA-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-MIXING-METADATA-V1/PROVENANCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-MIXING-METADATA-V1/verify_package.py"
+            ],
+            "local_verification": "PASS_NORMAL_AND_PYTHON_O",
+            "target_context": {
+              "strmtyp": 1,
+              "acmod": 5,
+              "lfeon": 0,
+              "audio_blocks_per_frame": 6
+            },
+            "parent_segment_end_offsets": [
+              68,
+              76
+            ],
+            "mixmdate": {
+              "width_bits": 1,
+              "value_source": "mixing Option presence"
+            },
+            "mixing_fields_when_present": {
+              "mixmdo": {
+                "width_bits": 2,
+                "valid_values": [
+                  0,
+                  3
+                ]
+              },
+              "ltrtcmixlev": {
+                "width_bits": 3,
+                "valid_values": [
+                  0,
+                  7
+                ]
+              },
+              "lorocmixlev": {
+                "width_bits": 3,
+                "valid_values": [
+                  0,
+                  7
+                ]
+              },
+              "ltrtsurmixlev": {
+                "width_bits": 3,
+                "valid_values": [
+                  0,
+                  7
+                ]
+              },
+              "lorosurmixlev": {
+                "width_bits": 3,
+                "valid_values": [
+                  0,
+                  7
+                ]
+              }
+            },
+            "frmmixcfginfoe": {
+              "width_bits": 1,
+              "value_source": "any block_mix Option is present"
+            },
+            "block_mix": {
+              "block_count": 6,
+              "flag_width_bits": 1,
+              "value_width_bits": 5,
+              "value_source": "caller supplied Option<U5> array"
+            },
+            "infomdate": {
+              "width_bits": 1,
+              "value_source": "caller supplied boolean"
+            },
+            "segment_bits": {
+              "no_optional_values": 3,
+              "mixing_only_with_infomdate": 17,
+              "three_block_values": 24
+            },
+            "capacity_vector_note": "Wash specifies 16 available bits at start 68; a byte-backed FrameBitWriter has 12 available bits for a 10-byte buffer at that cursor. The local atomic-capacity test uses this representable 12-bit insufficient extent; Wash has been asked to align the vector.",
+            "acmod_validation_context": "Target uses acmod=5; the earlier acmod=6 chanmap value is a separate validation-vector context.",
+            "production_allowed": false,
+            "validation_boundary": "Local structural segment through infomdate only; later informational metadata, audio, EMDF, CRC, complete D0 frame/AU and production remain open."
+          },
+          "vectors": {
+            "kind": "WASHED_D0_MIXING_METADATA_INPUT_ONLY_VECTORS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-MIXING-METADATA-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "No mixing/no block values writes mixmdate, frmmixcfginfoe and infomdate flags only.",
+              "Mixing fields and infomdate vector returns after 17 segment bits.",
+              "Three present block values emit six flags and three U5 values for a 24-bit segment.",
+              "Range-gate vectors cover parent cursor, mixmdo U2, mix levels U3 and block values U5.",
+              "Capacity test uses 12 representable free bits at parent cursor 68 versus the 17-bit vector threshold; package metadata mismatch is tracked separately."
+            ],
+            "local_fixture": {
+              "file": "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-MIXING-METADATA-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 1716,
+              "sha256": "f296d3c65fe6fd0d36aee76a163d8a132d00e63ee5754d9af1562c39f43811a5"
+            },
+            "expected_outputs_included": true,
+            "execution_status": "LOCALLY_VERIFIED_INPUT_ONLY_MIXING_SEGMENT_WITH_BYTE_CAPACITY_ADAPTATION"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "PARENT_SEGMENT_CURSOR_MISMATCH",
+              "category": "parent cursor binding",
+              "trigger": "The writer cursor is not 68 or 76, the two valid ends from the parent BSI segment helper.",
+              "result": "Flat7xD0MixingMetadataError::ParentSegmentCursorMismatch; no bits are written.",
+              "caller_action": "Compose the parent D0 BSI segment before appending mixing metadata."
+            },
+            {
+              "error_code": "D0_MIXING_FIELD_OUT_OF_RANGE",
+              "category": "caller-supplied field range",
+              "trigger": "mixmdo exceeds U2, any mix level exceeds U3, or any block value exceeds U5.",
+              "result": "A typed range error is returned before any bits are written.",
+              "caller_action": "Reject the segment and provide field values within their encoded widths."
+            },
+            {
+              "error_code": "FRAME_BIT_WRITER_BUFFER_TOO_SMALL",
+              "category": "whole-append capacity",
+              "trigger": "The caller buffer lacks capacity for the computed complete append length.",
+              "result": "BufferTooSmall is returned before mixmdate or any later field is written.",
+              "caller_action": "Reject the append candidate; caller retains segment/frame ownership."
+            }
+          ],
+          "not_run": [
+            "Wash's declared 16-bit remaining-capacity value cannot be represented exactly by current byte-backed storage at cursor68; local test uses 12 actual available bits.",
+            "XML DRC mapping, default selection and any mixdown/audio effect.",
+            "Later informational metadata after infomdate, D0 audio, EMDF, CRC, full frame/AU and production."
+          ],
+          "validation_boundary": "Input-only structural values are locally serialized through infomdate. A byte-granularity capacity representation difference is reported; full D0 frame/AU and production remain NOT_RUN.",
+          "delivery_scope": "FLAT7X_D0_MIXING_METADATA_AND_INFOMDATE_FIELDS_ONLY_NO_XML_AUDIO_FRAME_OR_PRODUCTION_CLAIM"
         }
       ]
     },
@@ -55944,8 +56128,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2105692,
-              "sha256": "5feafd554f67813a471c21fe5892caddd931fd7825c9a267f14317d0d5fd5a19"
+              "bytes": 2106722,
+              "sha256": "ddac24ab2a05384c8d25999297a52f195d01a7f2f2ebbc12f7e239d45cdf6e1f"
             }
           ],
           "test_inventory": [

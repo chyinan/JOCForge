@@ -1,0 +1,52 @@
+{
+  "schema": "jocforge.eac3.flat7x_d0_mixing_info_segment.v1",
+  "package_id": "eac3-dependent-d0-mixing-metadata-v1",
+  "status": "IMPLEMENTER_READY_LIMITED_D0_MIXING_INFO_SEGMENT",
+  "production_allowed": false,
+  "parent": {
+    "package_id": "eac3-dependent-d0-bsi-segment-v1",
+    "manifest_sha256": "cf24050c7539262f53f220366f3c4328d766147a39daeb37e3e89f27817b88db",
+    "seal_sha256": "5af97a494b53190ce7014f47829352fc71dc58d9bdf3354554469ed1676f7be2",
+    "end_cursor_bits": [68, 76]
+  },
+  "target": {
+    "role": "D0",
+    "strmtyp": 1,
+    "acmod": 5,
+    "lfeon": 0,
+    "numblkscod": 3,
+    "audio_blocks": 6,
+    "infomdate_data": "caller_owned"
+  },
+  "syntax": {
+    "start_cursor_bits": [68, 76],
+    "field_order": [
+      {"name": "mixmdate", "width": 1, "source": "mixing_fields_presence"},
+      {"name": "mixmdo", "width": 2, "condition": "mixmdate"},
+      {"name": "ltrtcmixlev", "width": 3, "condition": "mixmdate and acmod odd and >2"},
+      {"name": "lorocmixlev", "width": 3, "condition": "mixmdate and acmod odd and >2"},
+      {"name": "ltrtsurmixlev", "width": 3, "condition": "mixmdate and acmod bit 2"},
+      {"name": "lorosurmixlev", "width": 3, "condition": "mixmdate and acmod bit 2"},
+      {"name": "frmmixcfginfoe", "width": 1, "source": "any_block_mix_value_present"},
+      {"name": "blkmixcfginfoe[0..5]", "width": 1, "condition": "for each of six blocks"},
+      {"name": "blkmixcfginfo[blk]", "width": 5, "condition": "corresponding block value is present"},
+      {"name": "infomdate", "width": 1, "source": "caller"}
+    ],
+    "end_boundary": "immediately after infomdate",
+    "mixing_field_ranges": {
+      "mixmdo": [0, 3],
+      "mix_levels": [0, 7],
+      "block_mix_values": [0, 31]
+    },
+    "preflight_before_write": true
+  },
+  "implementation_scope": {
+    "proposed_function": "append_flat7x_d0_mixing_metadata_and_infomdate",
+    "takes_writer_at_parent_segment_cursor": true,
+    "writes_audio_samples": false,
+    "computes_crc": false,
+    "maps_xml_or_dee_values": false,
+    "modifies_5_1_writer": false,
+    "production_allowed": false
+  }
+}
