@@ -9,7 +9,8 @@ use jocforge_domain::{
             Flat7xD0BsiStructureError, Flat7xD0InfoAddbsiError, Flat7xD0InformationMetadata,
             Flat7xD0MixingMetadataError, Flat7xD0MixingMetadataValues,
             append_flat7x_d0_info_and_addbsi, append_flat7x_d0_mixing_metadata_and_infomdate,
-            write_flat7x_d0_bsi_structure, write_flat7x_d0_bsi_through_chanmap,
+            measure_flat7x_d0_bsi_structure, write_flat7x_d0_bsi_structure,
+            write_flat7x_d0_bsi_through_chanmap,
         },
     },
     profile::Flat7xI0D0TargetPlan,
@@ -100,6 +101,12 @@ fn typed_structure_matches_ordered_wash_approved_component_writers() {
         let sequential_end = append_components(&mut sequential, target, structure);
 
         assert_eq!(end, sequential_end);
+        assert_eq!(
+            measure_flat7x_d0_bsi_structure(target, &structure)
+                .unwrap()
+                .value(),
+            end
+        );
         assert_eq!(composed, sequential);
     }
 }

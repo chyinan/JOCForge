@@ -553,6 +553,7 @@
 | F12/flat7x-d0-mixing-metadata-segment | — | `The helper appends one bounded BSI metadata segment at parent cursor 68 or 76.` |
 | F12/flat7x-d0-information-addbsi-suffix | — | `The suffix begins at the parent helper's returned frame-bit cursor and returns its ending cursor.` |
 | F12/flat7x-d0-bsi-structure-composition | — | `The composed BSI starts at frame bit zero and returns the cursor after opaque addbsi or addbsie=0.` |
+| F12/flat7x-d0-six-block-layout-proposal | — | `Layout offsets are frame-bit positions derived from the BSI end, six ordered bit lengths, and one caller-owned block-two insertion offset; no native callback or block cursor is claimed.` |
 | F12S/mantissa-quantizer | — | `The quantizer is stateless and has no callback, source, AU, or trial-search clock ownership.` |
 | F12A/selected-f12a-public-bap-network | — | `F12A has no persistent cross-row/block state; BapFrame carries candidate q but source-generation identity remains caller-owned.` |
 | F13/selected-metadata-owner-source-stage | `CodecSourceIndex`<br>`JocDispatchIndex`<br>`PublishedAuIndex` | `source s`<br>`dispatch s+1`<br>`AU absent for s<2 else s-2`<br>`ordinary writer s-2`<br>`ID14 writer s-1` |

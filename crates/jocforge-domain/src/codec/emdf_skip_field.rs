@@ -30,6 +30,38 @@ impl From<FrameBitWriterError> for D0EmdfSkipFieldWriteError {
     }
 }
 
+/// Returns the complete target block-two skip-field extent for one container.
+///
+/// The input is a byte count only; this helper does not inspect or construct
+/// container contents. The selected target requires one complete field with
+/// `skiple=1`, U9 `skipl`, and 1..=511 payload bytes.
+pub fn flat7x_d0_block2_skipfld_bit_length(
+    payload_bytes: u16,
+) -> Result<u32, D0EmdfSkipFieldWriteError> {
+    let target = Flat7xI0D0TargetPlan::approved_contract().d0_emdf_skip_field();
+    if target.zero_based_audio_block() != FLAT7X_D0_BLOCK_ZERO_BASED
+        || target.field_count() != SINGLE_SKIP_FIELD_COUNT
+        || target.fragmentation_allowed()
+        || target.overflow_policy() != Flat7xEmdfOverflowPolicy::RejectWholeAccessUnitBeforePublish
+        || target.maximum_complete_container_bytes() > SKIPL_MAX_BYTES
+    {
+        return Err(D0EmdfSkipFieldWriteError::InvalidTargetContract);
+    }
+    if payload_bytes == 0 {
+        return Err(D0EmdfSkipFieldWriteError::MissingContainer);
+    }
+    if payload_bytes > target.maximum_complete_container_bytes() {
+        return Err(D0EmdfSkipFieldWriteError::ContainerTooLarge);
+    }
+
+    u32::from(payload_bytes)
+        .checked_mul(8)
+        .and_then(|payload_bits| {
+            u32::from(SKIPLE_WIDTH_BITS + SKIPL_WIDTH_BITS).checked_add(payload_bits)
+        })
+        .ok_or(D0EmdfSkipFieldWriteError::ContainerTooLarge)
+}
+
 /// Writes a complete Flat7x D0 block-two skip-field syntax at the caller cursor.
 ///
 /// Flat7x requires a complete container, so this API emits `skiple=1`, its U9
@@ -41,37 +73,13 @@ pub fn write_flat7x_d0_block2_skipfld(
     writer: &mut FrameBitWriter<'_>,
     complete_emdf_container: &[u8],
 ) -> Result<FrameBitCursor, D0EmdfSkipFieldWriteError> {
-    let target = Flat7xI0D0TargetPlan::approved_contract().d0_emdf_skip_field();
-    if target.zero_based_audio_block() != FLAT7X_D0_BLOCK_ZERO_BASED
-        || target.field_count() != SINGLE_SKIP_FIELD_COUNT
-        || target.fragmentation_allowed()
-        || target.overflow_policy() != Flat7xEmdfOverflowPolicy::RejectWholeAccessUnitBeforePublish
-        || target.maximum_complete_container_bytes() > SKIPL_MAX_BYTES
-    {
-        return Err(D0EmdfSkipFieldWriteError::InvalidTargetContract);
-    }
-
-    // The Flat7x target requires an EMDF container; the generic ETSI
-    // skiple=0 absent-field form is outside this target-specific API.
-    if complete_emdf_container.is_empty() {
-        return Err(D0EmdfSkipFieldWriteError::MissingContainer);
-    }
-    if complete_emdf_container.len() > usize::from(target.maximum_complete_container_bytes()) {
-        return Err(D0EmdfSkipFieldWriteError::ContainerTooLarge);
-    }
-
-    let length_bytes = u32::try_from(complete_emdf_container.len())
+    let payload_bytes = u16::try_from(complete_emdf_container.len())
         .map_err(|_| D0EmdfSkipFieldWriteError::ContainerTooLarge)?;
-    let payload_bits = length_bytes
-        .checked_mul(8)
-        .ok_or(D0EmdfSkipFieldWriteError::ContainerTooLarge)?;
-    let field_bits = u32::from(SKIPLE_WIDTH_BITS + SKIPL_WIDTH_BITS)
-        .checked_add(payload_bits)
-        .ok_or(D0EmdfSkipFieldWriteError::ContainerTooLarge)?;
+    let field_bits = flat7x_d0_block2_skipfld_bit_length(payload_bytes)?;
 
     writer.preflight_capacity(field_bits)?;
     writer.write_bit(true)?;
-    writer.write_unsigned(length_bytes, SKIPL_WIDTH_BITS)?;
+    writer.write_unsigned(u32::from(payload_bytes), SKIPL_WIDTH_BITS)?;
     writer.write_bytes(complete_emdf_container)?;
     Ok(writer.cursor())
 }
@@ -92,6 +100,20 @@ mod tests {
         (0..byte_count)
             .map(|index| read_bits(bytes, start_bit + u32::try_from(index * 8).unwrap(), 8) as u8)
             .collect()
+    }
+
+    #[test]
+    fn target_skip_field_length_covers_one_through_511_payload_bytes() {
+        assert_eq!(flat7x_d0_block2_skipfld_bit_length(1), Ok(18));
+        assert_eq!(flat7x_d0_block2_skipfld_bit_length(511), Ok(4_098));
+        assert_eq!(
+            flat7x_d0_block2_skipfld_bit_length(0),
+            Err(D0EmdfSkipFieldWriteError::MissingContainer)
+        );
+        assert_eq!(
+            flat7x_d0_block2_skipfld_bit_length(512),
+            Err(D0EmdfSkipFieldWriteError::ContainerTooLarge)
+        );
     }
 
     #[test]

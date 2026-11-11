@@ -442,12 +442,27 @@ pub struct Flat7xD0BsiStructure<'a> {
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct D0BsiStructureBitLength(u32);
+
+impl D0BsiStructureBitLength {
+    pub const fn value(self) -> u32 {
+        self.0
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Flat7xD0BsiStructureError {
-    CursorMismatch { actual: u32 },
+    CursorMismatch {
+        actual: u32,
+    },
     UnsupportedTargetContext,
     BsiSegment(Flat7xD0BsiSegmentError),
     MixingMetadata(Flat7xD0MixingMetadataError),
     InfoAddbsi(Flat7xD0InfoAddbsiError),
+    MeasuredExtentMismatch {
+        expected_bits: u32,
+        actual_bits: u32,
+    },
     BitWriter(FrameBitWriterError),
 }
 
@@ -473,6 +488,149 @@ impl From<FrameBitWriterError> for Flat7xD0BsiStructureError {
     fn from(error: FrameBitWriterError) -> Self {
         Self::BitWriter(error)
     }
+}
+
+/// Validates a typed D0 BSI structure and measures its complete extent.
+///
+/// Opaque addbsi content is consulted only for its byte length. The returned
+/// length includes fixed/variable BSI, mixing metadata, infomdate-selected
+/// information, addbsie, and any addbsi length/data field.
+pub fn measure_flat7x_d0_bsi_structure(
+    target: Flat7xI0D0TargetPlan,
+    structure: &Flat7xD0BsiStructure<'_>,
+) -> Result<D0BsiStructureBitLength, Flat7xD0BsiStructureError> {
+    if target != Flat7xI0D0TargetPlan::approved_contract() {
+        return Err(Flat7xD0BsiStructureError::UnsupportedTargetContext);
+    }
+    if !(1..=31).contains(&structure.dialnorm) {
+        return Err(Flat7xD0BsiStructureError::BsiSegment(
+            Flat7xD0BsiSegmentError::DialnormOutOfRange {
+                value: structure.dialnorm,
+            },
+        ));
+    }
+
+    let mut mixing_bits = 3_u32;
+    if let Some(mixing) = structure.mixing {
+        if mixing.mixmdo > 3 {
+            return Err(Flat7xD0BsiStructureError::MixingMetadata(
+                Flat7xD0MixingMetadataError::MixmdoOutOfRange {
+                    value: mixing.mixmdo,
+                },
+            ));
+        }
+        for value in [
+            mixing.ltrtcmixlev,
+            mixing.lorocmixlev,
+            mixing.ltrtsurmixlev,
+            mixing.lorosurmixlev,
+        ] {
+            if value > 7 {
+                return Err(Flat7xD0BsiStructureError::MixingMetadata(
+                    Flat7xD0MixingMetadataError::MixLevelOutOfRange { value },
+                ));
+            }
+        }
+        mixing_bits = mixing_bits
+            .checked_add(
+                u32::from(D0_MIXMDO_WIDTH_BITS)
+                    + u32::from(D0_MIX_LEVEL_VALUE_COUNT) * u32::from(D0_MIX_LEVEL_WIDTH_BITS),
+            )
+            .ok_or(FrameBitWriterError::CursorOverflow)?;
+    }
+
+    let mut present_block_values = 0_u32;
+    for (block, value) in structure.block_mix.iter().enumerate() {
+        if let Some(value) = value {
+            if *value > 31 {
+                return Err(Flat7xD0BsiStructureError::MixingMetadata(
+                    Flat7xD0MixingMetadataError::BlockMixValueOutOfRange {
+                        block,
+                        value: *value,
+                    },
+                ));
+            }
+            present_block_values += 1;
+        }
+    }
+    if present_block_values > 0 {
+        mixing_bits = mixing_bits
+            .checked_add(
+                u32::from(D0_BLOCK_MIX_COUNT)
+                    + present_block_values * u32::from(D0_BLOCK_MIX_VALUE_WIDTH_BITS),
+            )
+            .ok_or(FrameBitWriterError::CursorOverflow)?;
+    }
+
+    let information_bits = if let Some(information) = structure.information {
+        for (field, value, maximum) in [
+            ("bsmod", information.bsmod, 7),
+            ("sourcefscod", information.sourcefscod, 1),
+        ] {
+            if value > maximum {
+                return Err(Flat7xD0BsiStructureError::InfoAddbsi(
+                    Flat7xD0InfoAddbsiError::FieldOutOfRange { field, value },
+                ));
+            }
+        }
+        let audio_production_bits = if let Some(audio_production) = information.audio_production {
+            for (field, value, maximum) in [
+                ("mixlevel", audio_production.mixlevel, 31),
+                ("roomtyp", audio_production.roomtyp, 3),
+                ("convtyp", audio_production.convtyp, 1),
+            ] {
+                if value > maximum {
+                    return Err(Flat7xD0BsiStructureError::InfoAddbsi(
+                        Flat7xD0InfoAddbsiError::FieldOutOfRange { field, value },
+                    ));
+                }
+            }
+            u32::from(D0_MIXLEVEL_WIDTH_BITS)
+                + u32::from(D0_ROOMTYP_WIDTH_BITS)
+                + u32::from(D0_CONVTYP_WIDTH_BITS)
+        } else {
+            0
+        };
+        u32::from(D0_BSMOD_WIDTH_BITS)
+            + u32::from(D0_COPYRIGHTB_WIDTH_BITS)
+            + u32::from(D0_ORIGBS_WIDTH_BITS)
+            + u32::from(D0_AUDPRODIE_WIDTH_BITS)
+            + u32::from(D0_SOURCEFSCOD_WIDTH_BITS)
+            + audio_production_bits
+    } else {
+        0
+    };
+
+    let addbsi_bits = match structure.addbsi {
+        Some(bytes) if !(1..=D0_MAX_ADDBSI_BYTES).contains(&bytes.len()) => {
+            return Err(Flat7xD0BsiStructureError::InfoAddbsi(
+                Flat7xD0InfoAddbsiError::AddbsiLengthOutOfRange { bytes: bytes.len() },
+            ));
+        }
+        Some(bytes) => {
+            let payload_bits = u32::try_from(bytes.len())
+                .ok()
+                .and_then(|length| length.checked_mul(8))
+                .ok_or(FrameBitWriterError::CursorOverflow)?;
+            u32::from(D0_ADDBSIE_WIDTH_BITS)
+                .checked_add(u32::from(D0_ADDBSIL_WIDTH_BITS))
+                .and_then(|bits| bits.checked_add(payload_bits))
+                .ok_or(FrameBitWriterError::CursorOverflow)?
+        }
+        None => u32::from(D0_ADDBSIE_WIDTH_BITS),
+    };
+
+    let bsi_bits = if structure.compr.is_some() {
+        D0_BSI_THROUGH_CHANMAP_BITS_WITH_COMPR
+    } else {
+        D0_BSI_THROUGH_CHANMAP_BITS_WITHOUT_COMPR
+    };
+    let total_bits = bsi_bits
+        .checked_add(mixing_bits)
+        .and_then(|bits| bits.checked_add(information_bits))
+        .and_then(|bits| bits.checked_add(addbsi_bits))
+        .ok_or(FrameBitWriterError::CursorOverflow)?;
+    Ok(D0BsiStructureBitLength(total_bits))
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -637,9 +795,8 @@ pub fn write_flat7x_d0_bsi_structure(
     if actual != 0 {
         return Err(Flat7xD0BsiStructureError::CursorMismatch { actual });
     }
-    if target != Flat7xI0D0TargetPlan::approved_contract() {
-        return Err(Flat7xD0BsiStructureError::UnsupportedTargetContext);
-    }
+    let expected_bits = measure_flat7x_d0_bsi_structure(target, &structure)?.value();
+    writer.preflight_capacity(expected_bits)?;
 
     // Maximum extent: 76 BSI bits + 54 mixing bits + 534 information/addbsi bits.
     let mut staging = [0_u8; D0_BSI_STRUCTURE_STAGING_BYTES];
@@ -668,7 +825,12 @@ pub fn write_flat7x_d0_bsi_structure(
         end = staging_writer.cursor().bit_offset();
     }
 
-    writer.preflight_capacity(end)?;
+    if end != expected_bits {
+        return Err(Flat7xD0BsiStructureError::MeasuredExtentMismatch {
+            expected_bits,
+            actual_bits: end,
+        });
+    }
     for bit_offset in 0..end {
         let byte = staging[(bit_offset / 8) as usize];
         let value = byte & (1_u8 << (7 - bit_offset % 8)) != 0;
