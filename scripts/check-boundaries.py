@@ -13165,17 +13165,18 @@ def check_f15_flat7x_elementary_stream_stage(root, d):
 
     row = rows[0]
     domain_path = root / "crates/jocforge-domain/src/publication/flat7x_elementary_stream_stage.rs"
+    owner_test_path = root / "crates/jocforge-domain/src/publication/flat7x_au_output.rs"
     io_path = root / "crates/jocforge-io/src/flat7x_elementary_stream_stage.rs"
     test_path = root / "crates/jocforge-io/src/flat7x_elementary_stream_stage/tests.rs"
     fixture_path = root / "crates/jocforge-io/tests/fixtures/flat7x_elementary_stream_stage/INPUT-ONLY-VECTORS.json"
     domain_source = rust_code_without_comments(domain_path.read_text(encoding="utf-8"))
     io_source = rust_code_without_comments(io_path.read_text(encoding="utf-8"))
-    test_source = test_path.read_text(encoding="utf-8")
+    test_source = test_path.read_text(encoding="utf-8") + owner_test_path.read_text(encoding="utf-8")
     vectors = json.loads(fixture_path.read_bytes())
     production_sources = [
         path
         for path in (root / "crates").glob("jocforge-*/src/**/*.rs")
-        if path not in {domain_path, io_path, test_path}
+        if path not in {domain_path, owner_test_path, io_path, test_path}
     ]
     no_product_caller = all(
         "stage_flat7x_elementary_stream_to_file" not in path.read_text(encoding="utf-8")
@@ -13183,9 +13184,13 @@ def check_f15_flat7x_elementary_stream_stage(root, d):
     )
     ck(
         "Flat7xElementaryStreamStageProposal" in domain_source
+        and "Flat7xAuFinalizeProposal" in domain_source
         and "measure_flat7x_elementary_stream" in domain_source
-        and "stream_bytes.len() != expected_byte_length" in domain_source
-        and "pub fn stage_flat7x_elementary_stream_to_file(" in io_source
+        and "stream_bytes.len()" in domain_source
+        and "finalize_proposal.durable_length()" in domain_source
+        and "entry.au_sha256()" in domain_source
+        and "receipt.owner_generation != self.finalize_proposal.owner_generation()" in domain_source
+        and "stage_flat7x_elementary_stream_to_file" in io_source
         and "file.seek(SeekFrom::End(0))" in io_source
         and "file.write(remaining)" in io_source
         and "file.flush()" in io_source
@@ -13203,13 +13208,19 @@ def check_f15_flat7x_elementary_stream_stage(root, d):
     )
     ck(
         row["implementation_status"]
-        == "LOCALLY_VERIFIED_TEMP_EXTENT_WRITE_FLUSH_SYNC_READBACK__FINAL_EXPOSURE_CLOSED"
+        == "LOCALLY_VERIFIED_F15_FINALIZE_LEDGER_STAGE_RECEIPT_JOIN_AND_TEMP_IO__SOURCE_CALLBACK_OPEN"
         and row["implementation_requirement"] is True
         and row["owner"] == "output"
         and row["parameters"]["production_allowed"] is False
         and row["parameters"]["final_rename_or_exposure"] is False
         and row["parameters"]["gtc_connected"] is False
+        and row["parameters"]["f15_finalize_proposal_required"] is True
+        and row["parameters"]["owner_attempt_and_generation_receipt_join"]
+        == "EXACT_TYPED_FINALIZE_PROPOSAL_VALUES"
+        and row["parameters"]["source_callback_to_f15_finalize_proposal"] == "NOT_RUN"
         and row["vectors"]["expected_outputs_included"] is True
+        and row["vectors"]["execution_status"]
+        == "LOCALLY_VERIFIED_SYNTHETIC_F15_FINALIZE_RECEIPT_JOIN_AND_TEMP_IO_HELPER__PUBLIC_ADAPTER_JOIN_NOT_RUN"
         and vectors["status"] == "SYNTHETIC_NOT_REAL_OUTPUT"
         and vectors["contains_audio_or_frame_bytes"] is False
         and all(
@@ -13219,6 +13230,7 @@ def check_f15_flat7x_elementary_stream_stage(root, d):
                 "proposal_extent_and_nonempty_temp_destination_reject_without_changing_final_file",
                 "helper_completes_short_writes_and_returns_exact_readback_receipt",
                 "zero_progress_flush_sync_and_readback_failures_return_no_receipt",
+                "elementary_stream_stage_proposal_binds_finalized_f15_ledger_and_receipt_identity",
             )
         ),
         "Flat7x staged-file vectors bind synthetic bytes, IO failure gates and unchanged final sentinel",
@@ -15132,7 +15144,7 @@ def run(root=ROOT):
 
  d0_frame_assembler=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-d0-frame-bit-assembler');verified_scopes+=(d0_frame_assembler['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_EXACT_FRAME_ASSEMBLY_AND_FAILURE_ATOMICITY__PRODUCTION_OPEN');ck(verified_scopes==84,'locally verified scoped-task count including caller-supplied D0 frame assembly')
 
- opaque_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-d0-opaque-au-byte-composer');verified_scopes+=(opaque_au['implementation_status']=='LOCALLY_VERIFIED_TARGET_EXTENTS_ORDER_AND_ATOMIC_COMMIT__NO_CRC_OR_GENERATION');sequence_composer=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-sequence-composer');verified_scopes+=(sequence_composer['implementation_status']=='LOCALLY_VERIFIED_SEQUENCE_AND_D0_TO_AU_TO_STREAM_CHAIN__NO_PRODUCTION');stream_stage=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F15')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-staged-file-adapter');verified_scopes+=(stream_stage['implementation_status']=='LOCALLY_VERIFIED_TEMP_EXTENT_WRITE_FLUSH_SYNC_READBACK__FINAL_EXPOSURE_CLOSED');ck(verified_scopes==87,'locally verified scoped-task count including Flat7x elementary-stream temp staging')
+ opaque_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-d0-opaque-au-byte-composer');verified_scopes+=(opaque_au['implementation_status']=='LOCALLY_VERIFIED_TARGET_EXTENTS_ORDER_AND_ATOMIC_COMMIT__NO_CRC_OR_GENERATION');sequence_composer=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-sequence-composer');verified_scopes+=(sequence_composer['implementation_status']=='LOCALLY_VERIFIED_SEQUENCE_AND_D0_TO_AU_TO_STREAM_CHAIN__NO_PRODUCTION');stream_stage=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F15')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-staged-file-adapter');verified_scopes+=(stream_stage['implementation_status']=='LOCALLY_VERIFIED_F15_FINALIZE_LEDGER_STAGE_RECEIPT_JOIN_AND_TEMP_IO__SOURCE_CALLBACK_OPEN');ck(verified_scopes==87,'locally verified scoped-task count including Flat7x F15 finalize-to-stage integration')
 
  dep=d['approved_dependencies']['sha2']
 

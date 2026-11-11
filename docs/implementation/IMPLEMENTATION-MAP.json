@@ -18688,8 +18688,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2148322,
-              "sha256": "97b13daa0d428ac7c09ea523e2fbb4306faf2678da01e47f02e35eceed50fccc"
+              "bytes": 2149299,
+              "sha256": "36f16a35e1262be62282c236defd36d0ae33d0ef5d7f27d71bf03c08febf1617"
             }
           ],
           "test_modules": [
@@ -22215,8 +22215,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2148322,
-              "sha256": "97b13daa0d428ac7c09ea523e2fbb4306faf2678da01e47f02e35eceed50fccc"
+              "bytes": 2149299,
+              "sha256": "36f16a35e1262be62282c236defd36d0ae33d0ef5d7f27d71bf03c08febf1617"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -57132,8 +57132,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2148322,
-              "sha256": "97b13daa0d428ac7c09ea523e2fbb4306faf2678da01e47f02e35eceed50fccc"
+              "bytes": 2149299,
+              "sha256": "36f16a35e1262be62282c236defd36d0ae33d0ef5d7f27d71bf03c08febf1617"
             }
           ],
           "test_inventory": [
@@ -58543,20 +58543,20 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/publication/flat7x_au_output.rs",
-              "bytes": 37821,
-              "sha256": "2d6c3440fe61a3d12eb1266df5b127a960476cf7e1cfdb143e52040ad157b831"
+              "bytes": 43049,
+              "sha256": "95bd4919eaa5bb74a7cca393dea2a8d0d8b8bd27acdf16797636c5f7fa707048"
             },
             {
               "path": "crates/jocforge-domain/src/publication/mod.rs",
-              "bytes": 1111,
-              "sha256": "92c7df677dfd019482e9cd2cb5ce8ddc201efdd30b0f5948334a1e091e8da443"
+              "bytes": 1202,
+              "sha256": "518ef9aefd965c9ea057c961498685213f551302c2f3b3f4be26be22aeaa6f1b"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/publication/flat7x_au_output.rs",
-              "bytes": 37821,
-              "sha256": "2d6c3440fe61a3d12eb1266df5b127a960476cf7e1cfdb143e52040ad157b831"
+              "bytes": 43049,
+              "sha256": "95bd4919eaa5bb74a7cca393dea2a8d0d8b8bd27acdf16797636c5f7fa707048"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
@@ -58847,13 +58847,14 @@
         {
           "slice_id": "flat7x-elementary-stream-staged-file-adapter",
           "mapping_status": "MATERIALIZED_IMMUTABLE_FLAT7X_STREAM_STAGE_PROPOSAL_AND_CALLER_TEMP_FILE_ADAPTER",
-          "implementation_status": "LOCALLY_VERIFIED_TEMP_EXTENT_WRITE_FLUSH_SYNC_READBACK__FINAL_EXPOSURE_CLOSED",
+          "implementation_status": "LOCALLY_VERIFIED_F15_FINALIZE_LEDGER_STAGE_RECEIPT_JOIN_AND_TEMP_IO__SOURCE_CALLBACK_OPEN",
           "implementation_requirement": true,
           "owner": "output",
-          "scope": "An immutable profile-scoped proposal binds complete opaque elementary-stream bytes to a measured Flat7x sequence extent. The IO adapter writes only to a caller-created unique temporary File that is empty at entry, loops over short writes, rejects zero progress, flushes, syncs, verifies exact staged length, reads back in bounded chunks and compares every byte before returning a typed staged receipt with SHA-256. On failure the temporary file may contain staged bytes and the caller abandons it; the adapter accepts no final path and has no rename, exposure, GTC or product caller.",
+          "scope": "An immutable profile-scoped proposal consumes the F15 Flat7xAuFinalizeProposal and complete opaque elementary-stream bytes. It validates target, finalize count/length, ordered PublishedAuIndex offsets, per-AU I0/D0 extents, ledger CRC receipt fields and I0/D0/AU SHA-256 values before IO. The IO adapter writes only to a caller-created unique temporary File that is empty at entry, loops over short writes, rejects zero progress, flushes, syncs, verifies exact staged length, reads back in bounded chunks and compares every byte before returning an attempt/owner-generation-bound staged receipt candidate. Proposal completion checks that receipt against the same F15 finalize proposal. On failure the temporary file may contain staged bytes and the caller abandons it; the adapter accepts no final path and has no rename, exposure, GTC or product caller.",
           "dependencies": [
             "F12/flat7x-elementary-stream-sequence-composer",
-            "F01E/flat7x-i0-d0-typed-target-plan"
+            "F01E/flat7x-i0-d0-typed-target-plan",
+            "F15/flat7x-atomic-au-output-owner-ledger-receipt"
           ],
           "spec_files": [
             "docs/architecture/PROFILE-DIMENSIONS.md",
@@ -58868,16 +58869,18 @@
             "crates/jocforge-io/src/lib.rs"
           ],
           "implementation_inventory": [
-            {"path": "crates/jocforge-domain/src/publication/flat7x_elementary_stream_stage.rs", "bytes": 2867, "sha256": "af6c44eb5f32470fb82e48edd965a1fd2d4f42e79909c346a12432fe09b9c353"},
-            {"path": "crates/jocforge-domain/src/publication/mod.rs", "bytes": 1111, "sha256": "92c7df677dfd019482e9cd2cb5ce8ddc201efdd30b0f5948334a1e091e8da443"},
-            {"path": "crates/jocforge-io/src/flat7x_elementary_stream_stage.rs", "bytes": 8934, "sha256": "4715af8995d2a146fb2c21a1c182c3e1af62253b8473a6cf5c7c63eb0bd8efac"},
+            {"path": "crates/jocforge-domain/src/publication/flat7x_elementary_stream_stage.rs", "bytes": 11366, "sha256": "68202b098f123dc835ad8a90c2995a4788ac567456163996d7b9ca22fc63d129"},
+            {"path": "crates/jocforge-domain/src/publication/mod.rs", "bytes": 1202, "sha256": "518ef9aefd965c9ea057c961498685213f551302c2f3b3f4be26be22aeaa6f1b"},
+            {"path": "crates/jocforge-io/src/flat7x_elementary_stream_stage.rs", "bytes": 8442, "sha256": "4fc03f14a413bcd46865956289bc20942936506bce85e8a422cd8e45b4bfd5fd"},
             {"path": "crates/jocforge-io/src/lib.rs", "bytes": 227, "sha256": "cabade12d2b2a46eec937aa1f556e388d5a6a1a4f8d7ba1d0a393da141b45ec5"}
           ],
           "test_modules": [
-            "crates/jocforge-io/src/flat7x_elementary_stream_stage/tests.rs"
+            "crates/jocforge-io/src/flat7x_elementary_stream_stage/tests.rs",
+            "crates/jocforge-domain/src/publication/flat7x_au_output.rs"
           ],
           "test_inventory": [
-            {"path": "crates/jocforge-io/src/flat7x_elementary_stream_stage/tests.rs", "bytes": 13974, "sha256": "ddac92d2dcd3617dacca489d1448fe7442a734d26aef201fb65e21b9d4e100ee"}
+            {"path": "crates/jocforge-io/src/flat7x_elementary_stream_stage/tests.rs", "bytes": 13561, "sha256": "27fff3695d44bb68225e87669a4e52f13634d77975e39d5d0b8311ff3d6d7bff"},
+            {"path": "crates/jocforge-domain/src/publication/flat7x_au_output.rs", "bytes": 43049, "sha256": "95bd4919eaa5bb74a7cca393dea2a8d0d8b8bd27acdf16797636c5f7fa707048"}
           ],
           "vector_inventory": [
             {"path": "crates/jocforge-io/tests/fixtures/flat7x_elementary_stream_stage/INPUT-ONLY-VECTORS.json", "bytes": 1289, "sha256": "83486783e6ed5e98cd55869311184c1f08c3e15ab5fe5d3ee390f1f125f5ae27"}
@@ -58885,7 +58888,7 @@
           "clock": {
             "domains": [],
             "covered_clauses": [
-              "The staged receipt binds a byte extent and write/readback evidence only; no media clock, AU identity or source generation is inferred."
+              "The staged receipt binds a byte extent and write/readback evidence only; AU indexes, per-AU source-generation labels, attempt and F15 owner generation are carried from the typed finalize ledger. No media clock or new source identity is inferred."
             ]
           },
           "parameters": {
@@ -58899,22 +58902,26 @@
             ],
             "access_unit_bytes": 6656,
             "stream_byte_length_type": "U32_MEASURED_AND_MATCHED_TO_OPAQUE_BYTES",
+            "f15_finalize_proposal_required": true,
+            "owner_attempt_and_generation_receipt_join": "EXACT_TYPED_FINALIZE_PROPOSAL_VALUES",
+            "per_access_unit_ledger_offset_extent_and_hashes": "CHECKED_IN_ORDER",
+            "source_callback_to_f15_finalize_proposal": "NOT_RUN",
             "caller_temp_file": "UNIQUE_CREATE_NEW_EMPTY_FILE; NO FINAL PATH ACCEPTED",
             "staged_checks": [
               "Exact proposal byte length and empty staging-file preflight",
               "Short-write loop and zero-progress rejection",
               "Flush then file sync_all",
               "Exact final length and chunked full-byte readback equality",
-              "Readback SHA-256 in typed staged receipt"
+              "Readback SHA-256 in typed staged receipt bound to the same F15 finalize attempt and owner generation"
             ],
-            "crc_or_bsid_validation": "NOT_PERFORMED",
+            "crc_or_bsid_validation": "NO_RECOMPUTATION; TYPED_FINALIZE_LEDGER_FRAME_RESIDUALS_REQUIRED_ZERO",
             "final_rename_or_exposure": false,
             "gtc_connected": false,
             "production_allowed": false,
-            "validation_boundary": "Synthetic opaque Flat7x stream staging only; partial temp bytes require caller abandonment; final path remains outside the adapter."
+            "validation_boundary": "Synthetic opaque Flat7x stream staging and typed F15 finalize-ledger join only; partial temp bytes require caller abandonment; final path remains outside the adapter."
           },
           "vectors": {
-            "kind": "SYNTHETIC_NOT_REAL_OUTPUT_TEMP_STAGING_IO_CASES",
+            "kind": "SYNTHETIC_F15_FINALIZE_LEDGER_BINDING_AND_TEMP_STAGING_IO_CASES",
             "authoritative_vectors": [
               "crates/jocforge-io/tests/fixtures/flat7x_elementary_stream_stage/INPUT-ONLY-VECTORS.json"
             ],
@@ -58922,18 +58929,20 @@
               "Two 6656-byte synthetic AUs form a 13312-byte test stream written to a create-new temporary file.",
               "Proposal extent mismatch and nonempty staging destination reject before writes.",
               "Short writes complete through repeated writes; zero progress, flush, file-sync and readback faults return no receipt.",
-              "An existing final-path sentinel remains byte-identical on success and injected staging failures; no rename occurs."
+              "An existing final-path sentinel remains byte-identical on success and injected staging failures; no rename occurs.",
+              "A synthetic F15 finalize ledger binds ordered AU indices, per-AU source-generation labels, offsets, frame extents and I0/D0/AU hashes to the stage proposal; the readback receipt candidate must match the same attempt and owner generation.",
+              "The synthetic receipt-join test exercises the domain stage-proposal completion directly; a positive F13/F12 owner path through the public File adapter is NOT_RUN."
             ],
             "expected_outputs_included": true,
-            "execution_status": "LOCALLY_VERIFIED_TEMP_STAGE_RECEIPT_AND_FAILURE_GATES"
+            "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_F15_FINALIZE_RECEIPT_JOIN_AND_TEMP_IO_HELPER__PUBLIC_ADAPTER_JOIN_NOT_RUN"
           },
           "error_outcomes": [
             {
-              "error_code": "Flat7xElementaryStreamStageProposalError::ByteLengthMismatch",
-              "category": "proposal stream extent",
-              "trigger": "The immutable stream bytes do not equal the measured sequence byte length.",
+              "error_code": "Flat7xElementaryStreamStageProposalError::{ExtentMismatch,FinalizeLedgerMismatch,AccessUnitLedgerHashMismatch}",
+              "category": "F15 finalize ledger and stream extent",
+              "trigger": "Stream extent/count/durable length or ordered AU ledger fields/hashes differ from the approved target.",
               "result": "Proposal rejection before file access.",
-              "caller_action": "Provide the complete opaque stream matching its typed extent."
+              "caller_action": "Provide stream bytes matching the complete typed F15 finalize ledger."
             },
             {
               "error_code": "Flat7xElementaryStreamStageIoFailure::StagingLengthMismatch",
@@ -58948,11 +58957,20 @@
               "trigger": "A write, flush, file sync, length check or exact readback fails.",
               "result": "No staged receipt is returned; temporary bytes may exist and final path is unchanged.",
               "caller_action": "Abandon the temporary staging attempt and create a fresh one."
+            },
+            {
+              "error_code": "Flat7xElementaryStreamStageProposalError::{FinalizeLedgerMismatch,AccessUnitLedgerHashMismatch,StageReceiptAttemptMismatch,StageReceiptOwnerGenerationMismatch,StageReceiptExtentMismatch,StageReceiptDurabilityMissing,StageReceiptReadbackHashMismatch}",
+              "category": "F15 finalize ledger and IO receipt join",
+              "trigger": "The stream differs from an ordered F15 finalize ledger row or the staged receipt does not match the same attempt, owner generation, extent, flush/sync and readback hash.",
+              "result": "No staged-after proposal is returned; F15 finalize remains uninstalled and final path is untouched.",
+              "caller_action": "Discard the staging candidate and return to the typed F15 owner proposal or retire its attempt."
             }
           ],
           "not_run": [
+            "No real positive F13/Integrity receipt bundle has produced an F15 finalize proposal for the public stage_flat7x_elementary_stream_to_file call.",
+            "No source callback-to-owner generation join or parent transaction commit exists; the structural join test uses a synthetic finalize ledger.",
             "No AtomicOutputStaging finalize/rename, parent directory sync, final exposure, GTC registration or product encode is connected.",
-            "No 5.1 writer/sink, CRC, BSID, audio algorithm, source identity or real output is used."
+            "No source callback-to-owner generation join is created; the model test uses a synthetic typed F15 finalize ledger. No 5.1 writer/sink, CRC recomputation, BSID, audio algorithm or real output is used."
           ],
           "validation_boundary": "SYNTHETIC_NOT_REAL_OUTPUT; caller-owned temporary-file staging receipt only; final exposure and production_allowed=false.",
           "delivery_scope": "FLAT7X_OPAQUE_ELEMENTARY_STREAM_TEMP_STAGE_RECEIPT_ONLY_NO_FINAL_EXPOSURE_OR_PRODUCT_CLAIM"
@@ -61476,8 +61494,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/publication/mod.rs",
-          "bytes": 1111,
-          "sha256": "92c7df677dfd019482e9cd2cb5ce8ddc201efdd30b0f5948334a1e091e8da443"
+          "bytes": 1202,
+          "sha256": "518ef9aefd965c9ea057c961498685213f551302c2f3b3f4be26be22aeaa6f1b"
         },
         {
           "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",

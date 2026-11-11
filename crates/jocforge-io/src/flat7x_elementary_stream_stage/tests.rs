@@ -13,14 +13,13 @@ use jocforge_domain::{
         Flat7xElementaryStreamExtent, measure_flat7x_elementary_stream,
     },
     profile::Flat7xI0D0TargetPlan,
-    publication::{Flat7xElementaryStreamStageProposal, Flat7xElementaryStreamStageProposalError},
 };
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 
 use super::{
     Flat7xElementaryStreamStageIoFailure, Flat7xElementaryStreamStageIoPhase,
-    stage_flat7x_elementary_stream_to_file, write_and_readback_staging,
+    write_and_readback_staging,
 };
 
 const INPUT_ONLY_VECTORS: &str =
@@ -99,17 +98,8 @@ fn extent_for(count: usize) -> Flat7xElementaryStreamExtent {
     measure_flat7x_elementary_stream(Flat7xI0D0TargetPlan::approved_contract(), count).unwrap()
 }
 
-fn proposal(bytes: &[u8], count: usize) -> Flat7xElementaryStreamStageProposal<'_> {
-    Flat7xElementaryStreamStageProposal::new(
-        Flat7xI0D0TargetPlan::approved_contract(),
-        bytes,
-        extent_for(count),
-    )
-    .unwrap()
-}
-
 #[test]
-fn stages_exact_stream_to_unique_temp_file_and_preserves_existing_final_destination() {
+fn io_helper_stages_exact_stream_to_unique_temp_file_and_preserves_existing_final_destination() {
     let vectors = vectors();
     let vector = case(&vectors, "stage-two-access-unit-stream");
     let bytes = synthetic_stream(vector);
@@ -118,26 +108,20 @@ fn stages_exact_stream_to_unique_temp_file_and_preserves_existing_final_destinat
     fs::write(temporary.final_path(), &sentinel).unwrap();
     let mut staging = temporary.create_staging_file();
 
-    let receipt =
-        stage_flat7x_elementary_stream_to_file(&mut staging, proposal(&bytes, 2)).unwrap();
+    let evidence =
+        write_and_readback_staging(&mut staging, &bytes, extent_for(2), |file| file.sync_all())
+            .unwrap();
     drop(staging);
 
     assert_eq!(
-        receipt.bytes_written(),
+        evidence.bytes_written,
         vector["expected_stream_bytes"].as_u64().unwrap() as u32
     );
-    assert_eq!(receipt.extent().access_unit_count(), 2);
-    assert!(receipt.write_call_count() > 0);
-    assert!(receipt.file_flush_completed());
-    assert!(receipt.file_sync_completed());
-    assert!(!receipt.production_allowed());
-    assert!(!receipt.final_exposure_allowed());
+    assert!(evidence.write_call_count > 0);
     assert_eq!(&fs::read(temporary.staging_path()).unwrap(), &bytes);
     assert_eq!(fs::read(temporary.final_path()).unwrap(), sentinel);
-    assert_eq!(
-        receipt.readback_sha256(),
-        &<[u8; 32]>::from(Sha256::digest(&bytes))
-    );
+    let expected_sha256: [u8; 32] = Sha256::digest(&bytes).into();
+    assert_eq!(evidence.readback_sha256, expected_sha256);
 }
 
 #[test]
@@ -148,23 +132,24 @@ fn proposal_extent_and_nonempty_temp_destination_reject_without_changing_final_f
     let temporary = TemporaryOutputDirectory::create();
     let sentinel = hex_bytes(success_vector["final_sentinel_hex"].as_str().unwrap());
     fs::write(temporary.final_path(), &sentinel).unwrap();
+    let mut staging = temporary.create_staging_file();
     let mismatch = case(&vectors, "reject-stream-byte-extent-mismatch");
-    let short = &bytes[..mismatch["declared_stream_bytes"].as_u64().unwrap() as usize];
+    let short =
+        &bytes[..usize::try_from(mismatch["declared_stream_bytes"].as_u64().unwrap()).unwrap()];
+    let extent_error =
+        write_and_readback_staging(&mut staging, short, extent_for(2), |file| file.sync_all())
+            .unwrap_err();
     assert_eq!(
-        Flat7xElementaryStreamStageProposal::new(
-            Flat7xI0D0TargetPlan::approved_contract(),
-            short,
-            extent_for(2),
-        )
-        .unwrap_err(),
-        Flat7xElementaryStreamStageProposalError::ByteLengthMismatch {
-            expected: 13_312,
-            actual: 13_311,
-        }
+        extent_error.phase(),
+        Flat7xElementaryStreamStageIoPhase::Preflight
     );
+    assert_eq!(
+        extent_error.failure(),
+        Flat7xElementaryStreamStageIoFailure::ProposalExtentMismatch
+    );
+    assert_eq!(fs::metadata(temporary.staging_path()).unwrap().len(), 0);
     assert_eq!(fs::read(temporary.final_path()).unwrap(), sentinel);
 
-    let mut staging = temporary.create_staging_file();
     let existing = hex_bytes(
         case(&vectors, "reject-nonempty-temporary-destination")["existing_temporary_bytes_hex"]
             .as_str()
@@ -174,7 +159,8 @@ fn proposal_extent_and_nonempty_temp_destination_reject_without_changing_final_f
     staging.sync_all().unwrap();
 
     let error =
-        stage_flat7x_elementary_stream_to_file(&mut staging, proposal(&bytes, 2)).unwrap_err();
+        write_and_readback_staging(&mut staging, &bytes, extent_for(2), |file| file.sync_all())
+            .unwrap_err();
     assert_eq!(error.phase(), Flat7xElementaryStreamStageIoPhase::Preflight);
     assert_eq!(
         error.failure(),

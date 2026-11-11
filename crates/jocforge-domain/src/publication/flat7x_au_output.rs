@@ -943,6 +943,10 @@ mod tests {
         D0EmdfSkipFieldExtent, D0FrameExtent, Flat7xAuCandidate, Flat7xSourceGeneration,
         I0FrameExtent, compose_flat7x_au_byte_sequence, validate_flat7x_au_candidate,
     };
+    use crate::publication::{
+        Flat7xElementaryStreamStageProposal, Flat7xElementaryStreamStageProposalError,
+        Flat7xElementaryStreamStageReceiptCandidate,
+    };
 
     fn crc_valid_frame(frame_bytes: usize, marker: u8) -> Vec<u8> {
         let size = crate::codec::frame_size::Eac3FrameSize::from_frame_bytes(frame_bytes).unwrap();
@@ -1006,6 +1010,132 @@ mod tests {
             i0_crc_residual: 0,
             d0_crc_residual: 0,
         }
+    }
+
+    fn stream_stage_ledger_entry(
+        au_index: u64,
+        source_generation: u64,
+        offset: u64,
+        bytes: &[u8],
+    ) -> Flat7xAuOutputLedgerEntry {
+        let plan = Flat7xI0D0TargetPlan::approved_contract();
+        let i0_end = usize::from(plan.i0().frame_bytes());
+        let i0_bytes = &bytes[..i0_end];
+        let d0_bytes = &bytes[i0_end..];
+        Flat7xAuOutputLedgerEntry {
+            au_index: PublishedAuIndex::new(au_index),
+            source_generation: Flat7xSourceGeneration::new(source_generation),
+            metadata_source_index: CodecSourceIndex::new(2),
+            metadata_dispatch: JocDispatchIndex::new(au_index + 3),
+            metadata_au_index: PublishedAuIndex::new(au_index),
+            offset,
+            length: plan.aggregate_frame_bytes(),
+            i0_frame_bytes: plan.i0().frame_bytes(),
+            d0_frame_bytes: plan.d0().frame_bytes(),
+            i0_sha256: Sha256::digest(i0_bytes).into(),
+            d0_sha256: Sha256::digest(d0_bytes).into(),
+            au_sha256: Sha256::digest(bytes).into(),
+            f13_owner_generations: (0, 1),
+            f13_zero_slot_sha256: [0x44; 32],
+            d0_emdf_container_bytes: 16,
+            d0_emdf_container_sha256: [0x55; 32],
+            i0_integrity_generations: (0, 1),
+            d0_integrity_generations: (1, 2),
+            i0_crc_residual: 0,
+            d0_crc_residual: 0,
+        }
+    }
+
+    fn synthetic_finalize_proposal(
+        attempt_id: &str,
+        owner_generation: u64,
+    ) -> Flat7xAuFinalizeProposal {
+        let first = candidate_sequence().bytes().to_vec();
+        let second = candidate_sequence().bytes().to_vec();
+        let au_bytes = u64::from(access_unit_bytes());
+        Flat7xAuFinalizeProposal {
+            attempt_id: attempt_id.to_owned(),
+            owner_generation,
+            expected_access_units: 2,
+            durable_length: au_bytes * 2,
+            ledger: vec![
+                stream_stage_ledger_entry(0, 7, 0, &first),
+                stream_stage_ledger_entry(1, 8, au_bytes, &second),
+            ],
+        }
+    }
+
+    #[test]
+    fn elementary_stream_stage_proposal_binds_finalized_f15_ledger_and_receipt_identity() {
+        let target = Flat7xI0D0TargetPlan::approved_contract();
+        let first = candidate_sequence().bytes().to_vec();
+        let second = candidate_sequence().bytes().to_vec();
+        let mut stream = first.clone();
+        stream.extend_from_slice(&second);
+        let finalize = synthetic_finalize_proposal("flat7x-stage-attempt", 29);
+
+        let proposal =
+            Flat7xElementaryStreamStageProposal::new(target, &stream, &finalize).unwrap();
+        assert_eq!(proposal.attempt_id(), "flat7x-stage-attempt");
+        assert_eq!(proposal.owner_generation(), 29);
+        assert_eq!(proposal.extent().access_unit_count(), 2);
+        assert_eq!(
+            proposal.finalize_proposal().ledger()[0]
+                .source_generation()
+                .value(),
+            7
+        );
+        assert_eq!(
+            proposal.finalize_proposal().ledger()[1]
+                .source_generation()
+                .value(),
+            8
+        );
+        assert!(!proposal.production_allowed());
+
+        let stream_sha256: [u8; 32] = Sha256::digest(&stream).into();
+        let candidate = Flat7xElementaryStreamStageReceiptCandidate::new(
+            &proposal,
+            access_unit_bytes() * 2,
+            2,
+            stream_sha256,
+            true,
+            true,
+        );
+        let staged_after = proposal.complete(candidate).unwrap();
+        assert_eq!(
+            staged_after.finalize_proposal().attempt_id(),
+            "flat7x-stage-attempt"
+        );
+        assert_eq!(staged_after.finalize_proposal().owner_generation(), 29);
+        assert_eq!(staged_after.receipt().readback_sha256(), &stream_sha256);
+        assert!(!staged_after.production_allowed());
+        assert!(!staged_after.final_exposure_allowed());
+
+        let mut wrong_stream = stream.clone();
+        wrong_stream[access_unit_bytes() as usize + 100] ^= 1;
+        assert_eq!(
+            Flat7xElementaryStreamStageProposal::new(target, &wrong_stream, &finalize).unwrap_err(),
+            Flat7xElementaryStreamStageProposalError::AccessUnitLedgerHashMismatch { au_index: 1 }
+        );
+
+        let other_finalize = synthetic_finalize_proposal("other-attempt", 29);
+        let proposal =
+            Flat7xElementaryStreamStageProposal::new(target, &stream, &finalize).unwrap();
+        let other_proposal =
+            Flat7xElementaryStreamStageProposal::new(target, &stream, &other_finalize).unwrap();
+        let other_receipt = Flat7xElementaryStreamStageReceiptCandidate::new(
+            &other_proposal,
+            access_unit_bytes() * 2,
+            2,
+            stream_sha256,
+            true,
+            true,
+        );
+        assert_eq!(
+            proposal.complete(other_receipt).err(),
+            Some(Flat7xElementaryStreamStageProposalError::StageReceiptAttemptMismatch)
+        );
     }
 
     #[test]

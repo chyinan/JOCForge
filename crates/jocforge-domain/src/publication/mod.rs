@@ -15,7 +15,8 @@ pub use flat7x_au_output::{
     Flat7xAuOutputOwnerError, Flat7xAuSourceReceiptInput,
 };
 pub use flat7x_elementary_stream_stage::{
-    Flat7xElementaryStreamStageProposal, Flat7xElementaryStreamStageProposalError,
+    Flat7xElementaryStreamStageAfterProposal, Flat7xElementaryStreamStageProposal,
+    Flat7xElementaryStreamStageProposalError, Flat7xElementaryStreamStageReceiptCandidate,
 };
 pub use output_owner::{
     OutputAppendProposal, OutputConfiguration, OutputDurableAppendReceipt,

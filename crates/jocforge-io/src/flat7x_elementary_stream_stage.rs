@@ -10,7 +10,10 @@ use std::{
 
 use jocforge_domain::{
     codec::elementary_stream_composer::Flat7xElementaryStreamExtent,
-    publication::Flat7xElementaryStreamStageProposal,
+    publication::{
+        Flat7xElementaryStreamStageAfterProposal, Flat7xElementaryStreamStageProposal,
+        Flat7xElementaryStreamStageReceiptCandidate,
+    },
 };
 use sha2::{Digest, Sha256};
 
@@ -31,6 +34,7 @@ pub enum Flat7xElementaryStreamStageIoFailure {
     WriteZero,
     WriteCallCountOverflow,
     ReadbackMismatch,
+    StageReceiptRejected,
 }
 
 #[derive(Debug)]
@@ -89,48 +93,6 @@ impl fmt::Display for Flat7xElementaryStreamStageIoError {
 
 impl Error for Flat7xElementaryStreamStageIoError {}
 
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct Flat7xElementaryStreamStagedReceipt {
-    extent: Flat7xElementaryStreamExtent,
-    bytes_written: u32,
-    write_call_count: u32,
-    readback_sha256: [u8; 32],
-}
-
-impl Flat7xElementaryStreamStagedReceipt {
-    pub const fn extent(&self) -> Flat7xElementaryStreamExtent {
-        self.extent
-    }
-
-    pub const fn bytes_written(&self) -> u32 {
-        self.bytes_written
-    }
-
-    pub const fn write_call_count(&self) -> u32 {
-        self.write_call_count
-    }
-
-    pub const fn readback_sha256(&self) -> &[u8; 32] {
-        &self.readback_sha256
-    }
-
-    pub const fn file_flush_completed(&self) -> bool {
-        true
-    }
-
-    pub const fn file_sync_completed(&self) -> bool {
-        true
-    }
-
-    pub const fn production_allowed(&self) -> bool {
-        false
-    }
-
-    pub const fn final_exposure_allowed(&self) -> bool {
-        false
-    }
-}
-
 #[derive(Debug)]
 struct StagingWriteEvidence {
     bytes_written: u32,
@@ -142,20 +104,29 @@ struct StagingWriteEvidence {
 ///
 /// The caller must create the temporary destination with create-new semantics and abandon it after
 /// every error. This adapter accepts no final path and performs no rename or exposure.
-pub fn stage_flat7x_elementary_stream_to_file(
+pub fn stage_flat7x_elementary_stream_to_file<'finalize>(
     file: &mut File,
-    proposal: Flat7xElementaryStreamStageProposal<'_>,
-) -> Result<Flat7xElementaryStreamStagedReceipt, Flat7xElementaryStreamStageIoError> {
+    proposal: Flat7xElementaryStreamStageProposal<'_, 'finalize>,
+) -> Result<Flat7xElementaryStreamStageAfterProposal<'finalize>, Flat7xElementaryStreamStageIoError>
+{
     let extent = proposal.extent();
     let evidence = write_and_readback_staging(file, proposal.stream_bytes(), extent, |file| {
         file.sync_all()
     })?;
 
-    Ok(Flat7xElementaryStreamStagedReceipt {
-        extent,
-        bytes_written: evidence.bytes_written,
-        write_call_count: evidence.write_call_count,
-        readback_sha256: evidence.readback_sha256,
+    let receipt = Flat7xElementaryStreamStageReceiptCandidate::new(
+        &proposal,
+        evidence.bytes_written,
+        evidence.write_call_count,
+        evidence.readback_sha256,
+        true,
+        true,
+    );
+    proposal.complete(receipt).map_err(|_| {
+        Flat7xElementaryStreamStageIoError::new(
+            Flat7xElementaryStreamStageIoPhase::Readback,
+            Flat7xElementaryStreamStageIoFailure::StageReceiptRejected,
+        )
     })
 }
 
