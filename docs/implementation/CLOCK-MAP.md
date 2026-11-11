@@ -551,6 +551,7 @@
 | F12/flat7x-d0-bsi-segment-through-chanmap | — | `One non-streaming helper serializes a bounded BSI segment from cursor zero.` |
 | F12/flat7x-i0-ac3-header-segment | — | `One synchronous helper serializes an authored-value header segment at caller cursor zero.` |
 | F12/flat7x-i0-frame-bit-assembler | — | `The caller writer starts at bit zero and advances exactly 20480 frame bits after full staging; no media/source clock is introduced.` |
+| F12/flat7x-i0-ac3-bsi-tail-writer | `FrameBitCursor` | `The caller cursor must equal the approved header end at bit 62 or 70.`<br>`The receipt spans the exact BSI-tail start through end; no media/source clock is minted.` |
 | F12/flat7x-d0-mixing-metadata-segment | — | `The helper appends one bounded BSI metadata segment at parent cursor 68 or 76.` |
 | F12/flat7x-d0-information-addbsi-suffix | — | `The suffix begins at the parent helper's returned frame-bit cursor and returns its ending cursor.` |
 | F12/flat7x-d0-bsi-structure-composition | — | `The composed BSI starts at frame bit zero and returns the cursor after opaque addbsi or addbsie=0.` |

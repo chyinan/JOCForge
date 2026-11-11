@@ -2,6 +2,7 @@
 //! Production-disabled Flat7x I0 AC-3 frame assembly from caller-owned syntax spans.
 
 use super::{
+    ac3_bsi_tail::I0_BSI_TAIL_MINIMUM_BITS,
     bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError},
     frame_builder::{
         Flat7xI0Ac3HeaderSegmentError, Flat7xI0Ac3HeaderValues,
@@ -21,7 +22,6 @@ use crate::{
 const I0_TARGET_FRAME_BYTES: usize = 2_560;
 const I0_TARGET_FRAME_BITS: u32 = 20_480;
 const I0_AUDIO_BLOCK_COUNT: usize = 6;
-const I0_BSI_TAIL_MINIMUM_BITS: u32 = 7;
 const I0_CRC1_START_BIT: u32 = 16;
 const I0_CRC_FIELD_BITS: u32 = 16;
 const I0_CRC1_SUFFIX_START_BYTE: usize = 4;

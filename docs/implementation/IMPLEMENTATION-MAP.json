@@ -18686,11 +18686,11 @@
               "bytes": 55979,
               "sha256": "f2deba90fe2e2cdb0401bb597e7c35e51631accbc5be67577c99bdcc00b7d55f"
             },
-                        {
-              "path": "scripts/check-boundaries.py",
-              "bytes": 2159953,
-              "sha256": "f8f04e9ee14b5158ae5b3a195ed35b666e08b5cc27efa4947f332f7df0d2fb6d"
-            }
+                                                {
+                          "path": "scripts/check-boundaries.py",
+                          "bytes": 2167541,
+                          "sha256": "bad1b1f7262af19d2663bb08968c94f1a5d886462c6b6e5603cb6b3d5c78399f"
+                        }
           ],
           "test_modules": [
             "crates/jocforge-domain/src/spatial/production_callback/selected_audio_provider_bundle.rs",
@@ -22213,11 +22213,11 @@
               "bytes": 39236,
               "sha256": "17db76ffbc5b6983fff43d26e7d63f1529bf64c84347b7c9da7014f05d0d083f"
             },
-                        {
-              "path": "scripts/check-boundaries.py",
-              "bytes": 2159953,
-              "sha256": "f8f04e9ee14b5158ae5b3a195ed35b666e08b5cc27efa4947f332f7df0d2fb6d"
-            },
+                                                {
+                          "path": "scripts/check-boundaries.py",
+                          "bytes": 2167541,
+                          "sha256": "bad1b1f7262af19d2663bb08968c94f1a5d886462c6b6e5603cb6b3d5c78399f"
+                        },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
               "bytes": 18568,
@@ -42346,11 +42346,11 @@
               "bytes": 30228,
               "sha256": "3e364b01cd60c64fc79c08b12a9013565b1bcf8b6cec6378ed8e9b241bcbb9c6"
             },
-                        {
-              "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1094,
-              "sha256": "877dd6818061c0313498a4bad6cb98580c6db86d87c040451419ad210bfcca3c"
-            },
+                                                {
+                          "path": "crates/jocforge-domain/src/codec/mod.rs",
+                          "bytes": 1116,
+                          "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                        },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
               "bytes": 63659,
@@ -42480,11 +42480,11 @@
               "bytes": 99211,
               "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
             },
-                        {
-              "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1094,
-              "sha256": "877dd6818061c0313498a4bad6cb98580c6db86d87c040451419ad210bfcca3c"
-            },
+                                                {
+                          "path": "crates/jocforge-domain/src/codec/mod.rs",
+                          "bytes": 1116,
+                          "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                        },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
               "bytes": 63659,
@@ -42657,11 +42657,11 @@
               "bytes": 14328,
               "sha256": "711aea5f953cc9c9031fd9296719a48110766b56453911a61954b8c48fb8719c"
             },
-                        {
-              "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1094,
-              "sha256": "877dd6818061c0313498a4bad6cb98580c6db86d87c040451419ad210bfcca3c"
-            },
+                                                {
+                          "path": "crates/jocforge-domain/src/codec/mod.rs",
+                          "bytes": 1116,
+                          "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                        },
             {
               "path": "crates/jocforge-domain/src/codec/published_emdf_binding.rs",
               "bytes": 9622,
@@ -45544,11 +45544,11 @@
               "bytes": 1560,
               "sha256": "dec7cb83b35d1c7b7ce0633d2fd4eb1af45e7db5b82afc411fd5e0246b979ead"
             },
-                        {
-              "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1094,
-              "sha256": "877dd6818061c0313498a4bad6cb98580c6db86d87c040451419ad210bfcca3c"
-            },
+                                                {
+                          "path": "crates/jocforge-domain/src/codec/mod.rs",
+                          "bytes": 1116,
+                          "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                        },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
               "bytes": 33107,
@@ -46116,11 +46116,11 @@
               "bytes": 9194,
               "sha256": "0daca3a9401ec1728c8a30297a53dec874902778bda134c9b454765294e097f9"
             },
-                        {
-              "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1094,
-              "sha256": "877dd6818061c0313498a4bad6cb98580c6db86d87c040451419ad210bfcca3c"
-            },
+                                                {
+                          "path": "crates/jocforge-domain/src/codec/mod.rs",
+                          "bytes": 1116,
+                          "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                        },
             {
               "path": "crates/jocforge-domain/src/codec/d0_frame_assembler.rs",
               "bytes": 18172,
@@ -46810,16 +46810,17 @@
           "validation_boundary": "Locally verified field serialization only; no source mapping, audio/CRC algorithm, complete I0 frame, AU or production.",
           "delivery_scope": "FLAT7X_I0_AC3_HEADER_SEGMENT_THROUGH_COMPR_ONLY_NO_AUDIO_OR_COMPLETE_FRAME_CLAIM"
         },
-        {
+                {
           "slice_id": "flat7x-i0-frame-bit-assembler",
           "mapping_status": "MATERIALIZED_WASH_BOUNDED_I0_FRAME_ASSEMBLY_AND_CRC_GENERATION",
           "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_ASSEMBLY_GENERATED_CRC1_CRC2_RESIDUALS__PRODUCTION_OPEN",
           "implementation_requirement": true,
           "owner": "codec",
-          "scope": "Assembles one 2560-byte I0 AC-3 frame from the approved header segment, a caller-owned opaque BSI tail, six ordered caller-owned audio-block spans, optional auxdata and an initial caller-owned crcrsv seed. It prevalidates the fixed target, BSI minimum, all source ranges, exact 20480-bit total and caller capacity, stages the complete frame, generates CRC1 from the suffix bytes [4,1600), verifies CRC(frame[2:1600]) is zero, applies the approved CRC2/crcrsv collision rule, verifies CRC(frame[2:]) is zero, then commits once to the caller writer. It creates no audio, PCM, source-generation join or production binding.",
+          "scope": "Assembles one 2560-byte I0 AC-3 frame from the approved header segment, caller-owned BSI-tail and six audio-block spans, optional auxdata and an initial caller crcrsv seed. It shares the seven mandatory BSI-tail bit count with the dedicated BSI-tail serializer, stages the complete frame, generates CRC1/CRC2 and verifies zero residuals before one caller-writer commit. Audio generation, source-generation join and production binding remain open.",
           "dependencies": [
             "F01E/flat7x-i0-d0-typed-target-plan",
             "F12/flat7x-i0-ac3-header-segment",
+            "F12/flat7x-i0-ac3-bsi-tail-writer",
             "integrity/ac3_crc16"
           ],
           "spec_files": [
@@ -46833,6 +46834,7 @@
           ],
           "implementation_files": [
             "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
+            "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
             "crates/jocforge-domain/src/codec/frame_builder.rs",
             "crates/jocforge-domain/src/codec/mod.rs",
             "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
@@ -46841,8 +46843,13 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
-              "bytes": 19403,
-              "sha256": "66dec958f98100db3588124098061742ec8bc6bb8c128e0dc21cb448dc745f39"
+              "bytes": 19406,
+              "sha256": "047603ecc292c0b3fb1f7e3259834498f7176eb99ad8b73670d9dee43e7f203e"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
+              "bytes": 8747,
+              "sha256": "b3bbb2edfc28d66b46b2d37f3a00aa2ba653996f6331c5aeb79ffb587a4ce719"
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
@@ -46851,8 +46858,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1094,
-              "sha256": "877dd6818061c0313498a4bad6cb98580c6db86d87c040451419ad210bfcca3c"
+              "bytes": 1116,
+              "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
             },
             {
               "path": "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
@@ -47108,6 +47115,194 @@
           "validation_boundary": "Synthetic caller-owned bit-span assembly with generated CRC1/CRC2 and zero-residual receipts; no audio, decoder acceptance, runtime lineage or production output.",
           "delivery_scope": "FLAT7X_I0_AC3_CALLER_SPAN_FRAME_ASSEMBLY_WITH_ETSI_CRC_GENERATION_AND_ZERO_RESIDUALS__NO_AUDIO_OR_PRODUCTION"
         },
+                {
+                  "slice_id": "flat7x-i0-ac3-bsi-tail-writer",
+                  "mapping_status": "MATERIALIZED_WASH_BOUNDED_I0_AC3_BSI_TAIL_SERIALIZER",
+                  "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_BSI_TAIL_FIELD_SERIALIZATION__PRODUCTION_OPEN",
+                  "implementation_requirement": true,
+                  "owner": "codec",
+                  "scope": "Writes the AC-3 BSI tail after the selected I0 header cursor at bit 62 or 70. Presence flags control optional langcode U8, audprodie mixlevel U5 plus roomtyp U2, two U14 timecodes and addbsil U6 plus exactly addbsil+1 additional-BSI bytes. The target is fixed at acmod=7, so dual-mono acmod=0 fields are omitted. It validates field widths, the 1..64-byte payload bound, total extent and caller capacity before writing, then returns an exact tail/payload extent receipt. It maps no XML values, creates no audio, and is not connected to production.",
+                  "dependencies": [
+                    "F12/flat7x-i0-ac3-header-segment",
+                    "F12/flat7x-i0-frame-bit-assembler"
+                  ],
+                  "spec_files": [
+                    "docs/architecture/PROFILE-DIMENSIONS.md",
+                    "docs/architecture/adm-to-eac3joc-chain-status.md",
+                    "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/FINDINGS.md",
+                    "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json"
+                  ],
+                  "implementation_files": [
+                    "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
+                    "crates/jocforge-domain/src/codec/mod.rs"
+                  ],
+                  "implementation_inventory": [
+                    {
+                      "path": "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
+                      "bytes": 8747,
+                      "sha256": "b3bbb2edfc28d66b46b2d37f3a00aa2ba653996f6331c5aeb79ffb587a4ce719"
+                    },
+                    {
+                      "path": "crates/jocforge-domain/src/codec/mod.rs",
+                      "bytes": 1116,
+                      "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                    }
+                  ],
+                  "test_modules": [
+                    "crates/jocforge-domain/tests/flat7x_i0_ac3_bsi_tail.rs"
+                  ],
+                  "test_inventory": [
+                    {
+                      "path": "crates/jocforge-domain/tests/flat7x_i0_ac3_bsi_tail.rs",
+                      "bytes": 11758,
+                      "sha256": "2b0b37e3975623b051a71fa5f2bb697c1ce1daa1d599885436ec0a9976f75a95"
+                    }
+                  ],
+                  "vector_inventory": [
+                    {
+                      "path": "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json",
+                      "bytes": 2614,
+                      "sha256": "c1fda6dd82f72fed627ad967544002ccefa745c94fe81e469b5d0baa1f1fcf33"
+                    }
+                  ],
+                  "clock": {
+                    "domains": [
+                      "FrameBitCursor"
+                    ],
+                    "covered_clauses": [
+                      "The caller cursor must equal the approved header end at bit 62 or 70.",
+                      "The receipt spans the exact BSI-tail start through end; no media/source clock is minted."
+                    ]
+                  },
+                  "parameters": {
+                    "kind": "WASH_BOUNDED_FLAT7X_I0_AC3_BSI_TAIL_SERIALIZATION",
+                    "package_id": "FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1",
+                    "continuation_manifest_sha256": "cddad099b557617ab6f4aa73d3c40d87f75f12a55c141e14bff6573bdc891787",
+                    "continuation_seal_file_sha256": "329d5f9b1a43cdbee31abe4403f398ed4671a9a27e6bec40a2b09679ae46079d",
+                    "provider_files": [
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/MANIFEST.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/PACKAGE-SEAL.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
+                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/verify_package.py"
+                    ],
+                    "target": {
+                      "role": "IndependentI0",
+                      "codec": "legacy_ac3_core",
+                      "sample_rate_hz": 48000,
+                      "rate_kbps": 640,
+                      "frame_bytes": 2560,
+                      "acmod": 7,
+                      "header_end_bits": [
+                        62,
+                        70
+                      ]
+                    },
+                    "minimum_bsi_tail_bits": 7,
+                    "fields": {
+                      "langcode": {
+                        "flag_bits": 1,
+                        "payload_bits": 8
+                      },
+                      "audprodie": {
+                        "flag_bits": 1,
+                        "mixlevel_bits": 5,
+                        "roomtyp_bits": 2
+                      },
+                      "dual_mono_fields": {
+                        "condition": "acmod==0",
+                        "selected_acmod7": "OMITTED"
+                      },
+                      "copyrightb_bits": 1,
+                      "origbs_bits": 1,
+                      "timecod1e": {
+                        "flag_bits": 1,
+                        "payload_bits": 14
+                      },
+                      "timecod2e": {
+                        "flag_bits": 1,
+                        "payload_bits": 14
+                      },
+                      "addbsie": {
+                        "flag_bits": 1,
+                        "addbsil_bits": 6,
+                        "payload_bytes": "addbsil+1",
+                        "accepted_payload_bytes": [
+                          1,
+                          64
+                        ]
+                      }
+                    },
+                    "max_additional_bsi_bytes": 64,
+                    "max_serialized_bsi_tail_bits": 568,
+                    "field_presence": "OPTIONAL_VALUES_DRIVE_THEIR_PRESENCE_FLAGS",
+                    "extent_receipt": "start_bit,end_bit,bit_length,additional_bsi_payload_start_and_extent",
+                    "production_allowed": false,
+                    "validation_boundary": "Synthetic bitfield serialization only; no XML mapping, audio, full I0 frame, source lineage or production callsite."
+                  },
+                  "vectors": {
+                    "kind": "SYNTHETIC_NOT_REAL_OUTPUT_BSI_TAIL_SERIALIZATION",
+                    "authoritative_vectors": [
+                      "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json"
+                    ],
+                    "case_pointers": [
+                      "The minimum case emits the seven mandatory presence/control bits from the no-compr header cursor.",
+                      "The all-optionals case verifies langcode, audprodie, copyright/origbs, both timecodes, addbsil=1, payload bytes and unaligned payload extent.",
+                      "The maximum case emits 64 addbsi bytes with addbsil=63 and reports a 512-bit payload span.",
+                      "Invalid mixlevel/roomtyp/timecode, empty/oversize addbsi, wrong header cursor and short capacity reject before caller bytes or cursor change."
+                    ],
+                    "local_fixture": {
+                      "file": "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json",
+                      "bytes": 2614,
+                      "sha256": "c1fda6dd82f72fed627ad967544002ccefa745c94fe81e469b5d0baa1f1fcf33"
+                    },
+                    "expected_outputs_included": true,
+                    "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_BSI_FIELD_ORDER_WIDTHS_EXTENTS_AND_REJECTIONS"
+                  },
+                  "error_outcomes": [
+                    {
+                      "error_code": "I0_AC3_BSI_HEADER_END_CURSOR_MISMATCH",
+                      "category": "header-tail insertion cursor",
+                      "trigger": "The caller cursor is not the approved 62-bit or 70-bit end of the I0 header.",
+                      "result": "Typed rejection before caller bytes or cursor change.",
+                      "caller_action": "Continue from the I0 header writer receipt."
+                    },
+                    {
+                      "error_code": "I0_AC3_BSI_AUDIO_PRODUCTION_FIELD_RANGE",
+                      "category": "audprodie U7 fields",
+                      "trigger": "mixlevel exceeds U5 or roomtyp exceeds U2.",
+                      "result": "Typed rejection before caller bytes or cursor change.",
+                      "caller_action": "Supply mixlevel 0..31 and roomtyp 0..3."
+                    },
+                    {
+                      "error_code": "I0_AC3_BSI_TIMECODE_RANGE",
+                      "category": "optional timecode U14 fields",
+                      "trigger": "Either supplied timecode exceeds 14 bits.",
+                      "result": "Typed rejection before caller bytes or cursor change.",
+                      "caller_action": "Supply each timecode in 0..16383."
+                    },
+                    {
+                      "error_code": "I0_AC3_BSI_ADDBSI_LENGTH",
+                      "category": "bounded additional BSI payload",
+                      "trigger": "A present payload has zero bytes or more than 64 bytes.",
+                      "result": "Typed rejection before caller bytes or cursor change.",
+                      "caller_action": "Provide 1..64 payload bytes or omit additional BSI."
+                    },
+                    {
+                      "error_code": "FRAME_BIT_WRITER_BUFFER_TOO_SMALL",
+                      "category": "complete BSI-tail capacity",
+                      "trigger": "The complete measured tail does not fit after the header cursor.",
+                      "result": "Capacity failure before caller bytes or cursor change.",
+                      "caller_action": "Provide capacity for the entire BSI tail."
+                    }
+                  ],
+                  "not_run": [
+                    "XML-to-BSI value mapping and semantics beyond caller-authored fields.",
+                    "Real I0 BSI bytes, audio blocks, complete frame parse, decoder acceptance and product output.",
+                    "No production caller or runtime source-generation binding is installed."
+                  ],
+                  "validation_boundary": "Synthetic caller values verify BSI field order, widths, length arithmetic, cursor extent and rejection atomicity; production_allowed=false.",
+                  "delivery_scope": "FLAT7X_I0_AC3_BSI_TAIL_SERIALIZATION_ONLY_NO_AUDIO_XML_MAPPING_OR_PRODUCTION"
+                },
         {
           "slice_id": "flat7x-d0-mixing-metadata-segment",
           "mapping_status": "WASHED_D0_MIXING_METADATA_AND_INFOMDATE_FIELDS_BOUND__LATER_BSI_OPEN",
@@ -47658,11 +47853,11 @@
               "bytes": 9194,
               "sha256": "0daca3a9401ec1728c8a30297a53dec874902778bda134c9b454765294e097f9"
             },
-                        {
-              "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1094,
-              "sha256": "877dd6818061c0313498a4bad6cb98580c6db86d87c040451419ad210bfcca3c"
-            }
+                                                {
+                          "path": "crates/jocforge-domain/src/codec/mod.rs",
+                          "bytes": 1116,
+                          "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                        }
           ],
           "test_modules": [
             "crates/jocforge-domain/tests/flat7x_d0_frame_layout.rs",
@@ -47938,11 +48133,11 @@
               "bytes": 18172,
               "sha256": "4cfd1fdeb420ce408b7a6a315eaac6d05f5bd7feb273cdec31cca4bdabcbcfef"
             },
-                        {
-              "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1094,
-              "sha256": "877dd6818061c0313498a4bad6cb98580c6db86d87c040451419ad210bfcca3c"
-            },
+                                                {
+                          "path": "crates/jocforge-domain/src/codec/mod.rs",
+                          "bytes": 1116,
+                          "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                        },
             {
               "path": "crates/jocforge-domain/src/integrity/crc16.rs",
               "bytes": 478,
@@ -48098,11 +48293,11 @@
           ],
           "implementation_inventory": [
             {"path": "crates/jocforge-domain/src/codec/access_unit_composer.rs", "bytes": 5122, "sha256": "98f37f91c3957b424d21763615cbdc9ce04ff835dc65f4f78784285930f15df2"},
-                        {
-              "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1094,
-              "sha256": "877dd6818061c0313498a4bad6cb98580c6db86d87c040451419ad210bfcca3c"
-            }
+                                                {
+                          "path": "crates/jocforge-domain/src/codec/mod.rs",
+                          "bytes": 1116,
+                          "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                        }
           ],
           "test_modules": [
             "crates/jocforge-domain/tests/flat7x_access_unit_composer.rs"
@@ -48227,11 +48422,11 @@
           ],
           "implementation_inventory": [
             {"path": "crates/jocforge-domain/src/codec/elementary_stream_composer.rs", "bytes": 6042, "sha256": "db285669b52bb78f0cb7b0196a9dc3207171916c32391ccfe9a5d75797f53fdd"},
-                        {
-              "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1094,
-              "sha256": "877dd6818061c0313498a4bad6cb98580c6db86d87c040451419ad210bfcca3c"
-            }
+                                                {
+                          "path": "crates/jocforge-domain/src/codec/mod.rs",
+                          "bytes": 1116,
+                          "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                        }
           ],
           "test_modules": [
             "crates/jocforge-domain/tests/flat7x_elementary_stream_composer.rs",
@@ -57582,11 +57777,11 @@
               "bytes": 7636,
               "sha256": "4b94fbfaeba275c47d8ac300a465e2fafef8944d7f8c0f7ab021136fed603a7c"
             },
-                        {
-              "path": "scripts/check-boundaries.py",
-              "bytes": 2159953,
-              "sha256": "f8f04e9ee14b5158ae5b3a195ed35b666e08b5cc27efa4947f332f7df0d2fb6d"
-            }
+                                                {
+                          "path": "scripts/check-boundaries.py",
+                          "bytes": 2167541,
+                          "sha256": "bad1b1f7262af19d2663bb08968c94f1a5d886462c6b6e5603cb6b3d5c78399f"
+                        }
           ],
           "test_inventory": [
             {
@@ -61517,11 +61712,11 @@
           "bytes": 30228,
           "sha256": "3e364b01cd60c64fc79c08b12a9013565b1bcf8b6cec6378ed8e9b241bcbb9c6"
         },
-                {
-          "path": "crates/jocforge-domain/src/codec/mod.rs",
-          "bytes": 1094,
-          "sha256": "877dd6818061c0313498a4bad6cb98580c6db86d87c040451419ad210bfcca3c"
-        },
+                                {
+                  "path": "crates/jocforge-domain/src/codec/mod.rs",
+                  "bytes": 1116,
+                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
+                },
         {
           "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
           "bytes": 63659,

@@ -11599,7 +11599,7 @@ def check_f13c_r138_record_list_reporting(root,d):
 
 def check_f12_fixed_prefix_slice(root,d):
 
- entry=next(e for e in d['functional_entries']if e['functional_id']=='F12');direct=entry.get('direct_slices',[]);s=next((x for x in direct if x['slice_id']=='selected-fixed-profile-header-prefix'),None);frame_trial=next((x for x in direct if x['slice_id']=='selected-q-frame-trial-and-keyless-crc'),None);main_search=next((x for x in direct if x['slice_id']=='selected-main-q-search'),None);writer=next((x for x in direct if x['slice_id']=='same-source-frame-candidate-writer'),None);carrier_rate=next((x for x in direct if x.get('slice_id')=='washed-data-rate-to-carrier-writer-boundary'),None);header_observation=next((x for x in direct if x.get('slice_id')=='washed-two-rate-eac3-frame-header-observation'),None);six_rate=next((x for x in direct if x.get('slice_id')=='selected-six-rate-profile-frame-size-through-output'),None);rate_frmsiz=next((x for x in direct if x.get('slice_id')=='washed-atmos71-i0-d0-rate-frmsiz-boundary-partial'),None);chanmap_u16=next((x for x in direct if x.get('slice_id')=='washed-eac3-chanmap-u16-msb-first-serialization'),None);i0_syntax=next((x for x in direct if x.get('slice_id')=='washed-atmos71-i0-frame-syntax-equivalence-gap'),None);bsi_segment=next((x for x in direct if x.get('slice_id')=='flat7x-d0-bsi-segment-through-chanmap'),None);i0_ac3_segment=next((x for x in direct if x.get('slice_id')=='flat7x-i0-ac3-header-segment'),None);mixing_segment=next((x for x in direct if x.get('slice_id')=='flat7x-d0-mixing-metadata-segment'),None);ck(entry['implementation_status']=='DEFERRED_DETAILED_MAPPING'and len(direct)==43 and any(x['slice_id']=='selected-codec-owner-generation-previous-short-stage'for x in direct)and s is not None and frame_trial is not None and main_search is not None and writer is not None and carrier_rate is not None and header_observation is not None and six_rate is not None and rate_frmsiz is not None and rate_frmsiz.get('implementation_requirement')is False and rate_frmsiz.get('owner')=='codec' and rate_frmsiz.get('parameters',{}).get('supplement_manifest_sha256')=='f62ff1854f0b690501fe9dab5c61ed7b67b6f911f9cb7290b95715e2b1fa475f' and rate_frmsiz.get('parameters',{}).get('native_writer_boundary',{}).get('second_word_frmsiz_producer')=='UNBOUND' and rate_frmsiz.get('parameters',{}).get('native_writer_boundary',{}).get('bsi_bitrate_field')=='UNBOUND' and rate_frmsiz.get('parameters',{}).get('native_writer_boundary',{}).get('actual_output_rate')=='NOT_RUN' and rate_frmsiz.get('parameters',{}).get('production_gates',{}).get('production_allowed')is False and rate_frmsiz.get('vectors',{}).get('execution_status')=='NOT_RUN' and chanmap_u16 is not None and chanmap_u16.get('mapping_status')=='WASHED_DEPENDENT_CHANMAPE_AND_U16_MSB_FIRST_FIELD_PAIR_BOUND__SEMANTIC_SOURCE_MAPPING_UNBOUND' and chanmap_u16.get('implementation_status')=='LOCALLY_VERIFIED_DEPENDENT_CHANMAPE_U16_FIELD_PAIR__D0_FRAME_COMPOSITION_OPEN' and chanmap_u16.get('implementation_requirement')is True and chanmap_u16.get('owner')=='codec' and chanmap_u16.get('implementation_files')==['crates/jocforge-domain/src/codec/eac3_channel_map.rs','crates/jocforge-domain/src/codec/mod.rs','crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs'] and chanmap_u16.get('test_modules')==['crates/jocforge-domain/tests/eac3_channel_map.rs'] and chanmap_u16.get('parameters',{}).get('supplement_manifest_sha256')=='470fa9830a7937fcd1d5169c980f139669011e766e136ce2dc9bf7498103f787' and chanmap_u16.get('parameters',{}).get('field_width_bits')==16 and chanmap_u16.get('parameters',{}).get('emitted_slot_formula')=='15 - numeric_bit_index' and chanmap_u16.get('parameters',{}).get('one_hot_vector_count')==16 and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('mask_hex')=='0x1A00' and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('expected_emitted_slots')==[3,4,6] and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('expected_field_bits')=='0001101000000000' and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('ADM_source_role_join')=='UNBOUND' and chanmap_u16.get('parameters',{}).get('required_field_pair_bits')==17 and chanmap_u16.get('parameters',{}).get('chanmape_value')==1 and chanmap_u16.get('parameters',{}).get('pair_addendum',{}).get('package_id')=='eac3-dependent-chanmap-field-writer-v1' and chanmap_u16.get('parameters',{}).get('pair_addendum',{}).get('supplement_manifest_sha256')=='fe364375e3a4ac4ae7a7959807d10d48f1f745e43077f4629fe2a16718702c43' and chanmap_u16.get('parameters',{}).get('pair_addendum',{}).get('target_field_pair_bits')=='10001101000000000' and chanmap_u16.get('parameters',{}).get('pair_addendum',{}).get('context_reconciliation')=='SEPARATE_VALIDATION_VECTOR_CONTEXT; TARGET_D0_PREFIX_ACMOD5' and chanmap_u16.get('parameters',{}).get('production_allowed')is False and chanmap_u16.get('vectors',{}).get('execution_status')=='LOCALLY_VERIFIED_U16_AND_DEPENDENT_FIELD_PAIR_INPUT_ONLY' and bsi_segment is not None and bsi_segment.get('implementation_status')=='LOCALLY_VERIFIED_D0_BSI_SEGMENT_THROUGH_CHANMAP__COMPLETE_FRAME_OPEN' and bsi_segment.get('parameters',{}).get('supplement_manifest_sha256')=='cf24050c7539262f53f220366f3c4328d766147a39daeb37e3e89f27817b88db' and bsi_segment.get('parameters',{}).get('segment_bits')=={'without_compr':68,'with_compr':76} and bsi_segment.get('parameters',{}).get('production_allowed')is False and bsi_segment.get('vectors',{}).get('execution_status')=='LOCALLY_VERIFIED_INPUT_ONLY_D0_BSI_SEGMENT' and i0_ac3_segment is not None and i0_ac3_segment.get('implementation_status')=='LOCALLY_VERIFIED_FLAT7X_I0_AC3_HEADER_SEGMENT_THROUGH_COMPR__FULL_FRAME_OPEN' and i0_ac3_segment.get('parameters',{}).get('supplement_manifest_sha256')=='285bff275095c945a3f6f4b5040de20111779cec466602fb1aea29ca8c4ad8e1' and i0_ac3_segment.get('parameters',{}).get('frmsizecod_allowed')==[36,37] and i0_ac3_segment.get('parameters',{}).get('segment_bits')=={'without_compr':62,'with_compr':70} and i0_ac3_segment.get('parameters',{}).get('production_allowed')is False and i0_ac3_segment.get('vectors',{}).get('execution_status')=='LOCALLY_VERIFIED_INPUT_ONLY_I0_HEADER_SEGMENT' and i0_syntax is not None and i0_syntax.get('implementation_requirement')is False and i0_syntax.get('owner')=='codec' and i0_syntax.get('implementation_files')==[] and i0_syntax.get('test_modules')==[] and i0_syntax.get('parameters',{}).get('supplement_manifest_sha256')=='9f500f0785c569d67b846fa54f121b4e42c6b5b179ace98c4bdf19463c906109' and i0_syntax.get('parameters',{}).get('official_i0_exact_bsid')=='NOT_CAPTURED' and i0_syntax.get('parameters',{}).get('isolated_prefix_equivalence_to_official_i0')=='UNBOUND' and i0_syntax.get('parameters',{}).get('implementation_disposition')=='NO_PREFIX_CHANGE_AUTHORIZED' and i0_syntax.get('parameters',{}).get('new_7_1_profile_production_allowed')is False and i0_syntax.get('vectors',{}).get('execution_status')=='NOT_RUN' and six_rate['implementation_status']=='LOCALLY_VERIFIED_SIX_RATE_ADMISSION_F12_F14_F15_IO__ALL_SIX_FULL_FILE_RATE_OUTPUTS_PUBLISHED__DEE_PARITY_PENDING'and writer['implementation_status']=='LOCALLY_COMPILED_F12_CANDIDATE_AND_PRODUCTION_F15_STAGING__REAL_SOURCE_CANDIDATE_NOT_RUN'and any('Direct positive-path application bridge test' in item for item in writer['not_run'])and any('finalized ProgrammeMeasurementReceipt' in item for item in writer['not_run'])and any(path.endswith('/source_frame_bridge.rs') for path in writer['implementation_files'])and any('durable output' in item for item in writer['not_run'])and any('Continuous multi-source output' in item for item in writer['not_run']),'F12 keeps washed rate evidence, local six-rate frame staging, and whole codec source gaps as separate slices')
+ entry=next(e for e in d['functional_entries']if e['functional_id']=='F12');direct=entry.get('direct_slices',[]);s=next((x for x in direct if x['slice_id']=='selected-fixed-profile-header-prefix'),None);frame_trial=next((x for x in direct if x['slice_id']=='selected-q-frame-trial-and-keyless-crc'),None);main_search=next((x for x in direct if x['slice_id']=='selected-main-q-search'),None);writer=next((x for x in direct if x['slice_id']=='same-source-frame-candidate-writer'),None);carrier_rate=next((x for x in direct if x.get('slice_id')=='washed-data-rate-to-carrier-writer-boundary'),None);header_observation=next((x for x in direct if x.get('slice_id')=='washed-two-rate-eac3-frame-header-observation'),None);six_rate=next((x for x in direct if x.get('slice_id')=='selected-six-rate-profile-frame-size-through-output'),None);rate_frmsiz=next((x for x in direct if x.get('slice_id')=='washed-atmos71-i0-d0-rate-frmsiz-boundary-partial'),None);chanmap_u16=next((x for x in direct if x.get('slice_id')=='washed-eac3-chanmap-u16-msb-first-serialization'),None);i0_syntax=next((x for x in direct if x.get('slice_id')=='washed-atmos71-i0-frame-syntax-equivalence-gap'),None);bsi_segment=next((x for x in direct if x.get('slice_id')=='flat7x-d0-bsi-segment-through-chanmap'),None);i0_ac3_segment=next((x for x in direct if x.get('slice_id')=='flat7x-i0-ac3-header-segment'),None);mixing_segment=next((x for x in direct if x.get('slice_id')=='flat7x-d0-mixing-metadata-segment'),None);ck(entry['implementation_status']=='DEFERRED_DETAILED_MAPPING'and len(direct)==44 and any(x['slice_id']=='selected-codec-owner-generation-previous-short-stage'for x in direct)and s is not None and frame_trial is not None and main_search is not None and writer is not None and carrier_rate is not None and header_observation is not None and six_rate is not None and rate_frmsiz is not None and rate_frmsiz.get('implementation_requirement')is False and rate_frmsiz.get('owner')=='codec' and rate_frmsiz.get('parameters',{}).get('supplement_manifest_sha256')=='f62ff1854f0b690501fe9dab5c61ed7b67b6f911f9cb7290b95715e2b1fa475f' and rate_frmsiz.get('parameters',{}).get('native_writer_boundary',{}).get('second_word_frmsiz_producer')=='UNBOUND' and rate_frmsiz.get('parameters',{}).get('native_writer_boundary',{}).get('bsi_bitrate_field')=='UNBOUND' and rate_frmsiz.get('parameters',{}).get('native_writer_boundary',{}).get('actual_output_rate')=='NOT_RUN' and rate_frmsiz.get('parameters',{}).get('production_gates',{}).get('production_allowed')is False and rate_frmsiz.get('vectors',{}).get('execution_status')=='NOT_RUN' and chanmap_u16 is not None and chanmap_u16.get('mapping_status')=='WASHED_DEPENDENT_CHANMAPE_AND_U16_MSB_FIRST_FIELD_PAIR_BOUND__SEMANTIC_SOURCE_MAPPING_UNBOUND' and chanmap_u16.get('implementation_status')=='LOCALLY_VERIFIED_DEPENDENT_CHANMAPE_U16_FIELD_PAIR__D0_FRAME_COMPOSITION_OPEN' and chanmap_u16.get('implementation_requirement')is True and chanmap_u16.get('owner')=='codec' and chanmap_u16.get('implementation_files')==['crates/jocforge-domain/src/codec/eac3_channel_map.rs','crates/jocforge-domain/src/codec/mod.rs','crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs'] and chanmap_u16.get('test_modules')==['crates/jocforge-domain/tests/eac3_channel_map.rs'] and chanmap_u16.get('parameters',{}).get('supplement_manifest_sha256')=='470fa9830a7937fcd1d5169c980f139669011e766e136ce2dc9bf7498103f787' and chanmap_u16.get('parameters',{}).get('field_width_bits')==16 and chanmap_u16.get('parameters',{}).get('emitted_slot_formula')=='15 - numeric_bit_index' and chanmap_u16.get('parameters',{}).get('one_hot_vector_count')==16 and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('mask_hex')=='0x1A00' and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('expected_emitted_slots')==[3,4,6] and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('expected_field_bits')=='0001101000000000' and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('ADM_source_role_join')=='UNBOUND' and chanmap_u16.get('parameters',{}).get('required_field_pair_bits')==17 and chanmap_u16.get('parameters',{}).get('chanmape_value')==1 and chanmap_u16.get('parameters',{}).get('pair_addendum',{}).get('package_id')=='eac3-dependent-chanmap-field-writer-v1' and chanmap_u16.get('parameters',{}).get('pair_addendum',{}).get('supplement_manifest_sha256')=='fe364375e3a4ac4ae7a7959807d10d48f1f745e43077f4629fe2a16718702c43' and chanmap_u16.get('parameters',{}).get('pair_addendum',{}).get('target_field_pair_bits')=='10001101000000000' and chanmap_u16.get('parameters',{}).get('pair_addendum',{}).get('context_reconciliation')=='SEPARATE_VALIDATION_VECTOR_CONTEXT; TARGET_D0_PREFIX_ACMOD5' and chanmap_u16.get('parameters',{}).get('production_allowed')is False and chanmap_u16.get('vectors',{}).get('execution_status')=='LOCALLY_VERIFIED_U16_AND_DEPENDENT_FIELD_PAIR_INPUT_ONLY' and bsi_segment is not None and bsi_segment.get('implementation_status')=='LOCALLY_VERIFIED_D0_BSI_SEGMENT_THROUGH_CHANMAP__COMPLETE_FRAME_OPEN' and bsi_segment.get('parameters',{}).get('supplement_manifest_sha256')=='cf24050c7539262f53f220366f3c4328d766147a39daeb37e3e89f27817b88db' and bsi_segment.get('parameters',{}).get('segment_bits')=={'without_compr':68,'with_compr':76} and bsi_segment.get('parameters',{}).get('production_allowed')is False and bsi_segment.get('vectors',{}).get('execution_status')=='LOCALLY_VERIFIED_INPUT_ONLY_D0_BSI_SEGMENT' and i0_ac3_segment is not None and i0_ac3_segment.get('implementation_status')=='LOCALLY_VERIFIED_FLAT7X_I0_AC3_HEADER_SEGMENT_THROUGH_COMPR__FULL_FRAME_OPEN' and i0_ac3_segment.get('parameters',{}).get('supplement_manifest_sha256')=='285bff275095c945a3f6f4b5040de20111779cec466602fb1aea29ca8c4ad8e1' and i0_ac3_segment.get('parameters',{}).get('frmsizecod_allowed')==[36,37] and i0_ac3_segment.get('parameters',{}).get('segment_bits')=={'without_compr':62,'with_compr':70} and i0_ac3_segment.get('parameters',{}).get('production_allowed')is False and i0_ac3_segment.get('vectors',{}).get('execution_status')=='LOCALLY_VERIFIED_INPUT_ONLY_I0_HEADER_SEGMENT' and i0_syntax is not None and i0_syntax.get('implementation_requirement')is False and i0_syntax.get('owner')=='codec' and i0_syntax.get('implementation_files')==[] and i0_syntax.get('test_modules')==[] and i0_syntax.get('parameters',{}).get('supplement_manifest_sha256')=='9f500f0785c569d67b846fa54f121b4e42c6b5b179ace98c4bdf19463c906109' and i0_syntax.get('parameters',{}).get('official_i0_exact_bsid')=='NOT_CAPTURED' and i0_syntax.get('parameters',{}).get('isolated_prefix_equivalence_to_official_i0')=='UNBOUND' and i0_syntax.get('parameters',{}).get('implementation_disposition')=='NO_PREFIX_CHANGE_AUTHORIZED' and i0_syntax.get('parameters',{}).get('new_7_1_profile_production_allowed')is False and i0_syntax.get('vectors',{}).get('execution_status')=='NOT_RUN' and six_rate['implementation_status']=='LOCALLY_VERIFIED_SIX_RATE_ADMISSION_F12_F14_F15_IO__ALL_SIX_FULL_FILE_RATE_OUTPUTS_PUBLISHED__DEE_PARITY_PENDING'and writer['implementation_status']=='LOCALLY_COMPILED_F12_CANDIDATE_AND_PRODUCTION_F15_STAGING__REAL_SOURCE_CANDIDATE_NOT_RUN'and any('Direct positive-path application bridge test' in item for item in writer['not_run'])and any('finalized ProgrammeMeasurementReceipt' in item for item in writer['not_run'])and any(path.endswith('/source_frame_bridge.rs') for path in writer['implementation_files'])and any('durable output' in item for item in writer['not_run'])and any('Continuous multi-source output' in item for item in writer['not_run']),'F12 keeps washed rate evidence, local six-rate frame staging, and whole codec source gaps as separate slices')
  ck(mixing_segment is not None and mixing_segment.get('implementation_status')=='LOCALLY_VERIFIED_D0_MIXMDATE_BLOCKMIX_INFOMDATE_SEGMENT__FRAME_TAIL_OPEN' and mixing_segment.get('parameters',{}).get('supplement_manifest_sha256')=='a7d8bb0e724dd94b9a31fa860c4296daecc957e4570dfdb9f32bf5ef17c3aa12' and mixing_segment.get('parameters',{}).get('target_context')=={'strmtyp':1,'acmod':5,'lfeon':0,'audio_blocks_per_frame':6} and mixing_segment.get('parameters',{}).get('segment_bits')=={'no_optional_values':3,'mixing_only_with_infomdate':17,'three_block_values':24} and mixing_segment.get('parameters',{}).get('production_allowed')is False and mixing_segment.get('vectors',{}).get('execution_status')=='LOCALLY_VERIFIED_INPUT_ONLY_MIXING_SEGMENT_WITH_BYTE_CAPACITY_ADAPTATION','D0 mixing/infomdate segment preserves target context, explicit fields, and capacity-vector representation note')
 
  rate_header_root='outputs/IMPLEMENTER_SUPPLEMENTS/DEE-EC3-DATA-RATE-FRAME-HEADER-OBSERVATION-V1';rate_header_files=[rate_header_root+'/'+name for name in ('MANIFEST.json','package_seal.json','REPORT.md','INPUT-ONLY-VECTORS.json','OBSERVED-FRAME-HEADERS.json','PROVENANCE.json')]
@@ -12290,6 +12290,7 @@ def check_f12_flat7x_i0_frame_bit_assembler(root, d):
         and row.get("implementation_files")
         == [
             "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
+            "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
             "crates/jocforge-domain/src/codec/frame_builder.rs",
             "crates/jocforge-domain/src/codec/mod.rs",
             "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
@@ -12335,6 +12336,142 @@ def check_f12_flat7x_i0_frame_bit_assembler(root, d):
                 result.returncode == 0 and expected_output in result.stdout,
                 label + " package checker " + ("optimized" if optimized else "normal"),
             )
+def check_f12_flat7x_i0_ac3_bsi_tail_writer(root, d):
+    entry = next(item for item in d["functional_entries"] if item["functional_id"] == "F12")
+    rows = [item for item in entry.get("direct_slices", []) if item.get("slice_id") == "flat7x-i0-ac3-bsi-tail-writer"]
+    ck(len(rows) == 1, "F12 has one washed I0 AC-3 BSI-tail writer slice")
+    if not rows:
+        return
+
+    row = rows[0]
+    module_path = root / "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs"
+    codec_module_path = root / "crates/jocforge-domain/src/codec/mod.rs"
+    test_path = root / "crates/jocforge-domain/tests/flat7x_i0_ac3_bsi_tail.rs"
+    fixture_path = root / "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json"
+    package = root / "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1"
+    module = rust_code_without_comments(module_path.read_text(encoding="utf-8"))
+    codec_module = rust_code_without_comments(codec_module_path.read_text(encoding="utf-8"))
+    test_source = test_path.read_text(encoding="utf-8")
+    vectors = json.loads(fixture_path.read_bytes())
+    manifest_bytes = (package / "MANIFEST.json").read_bytes()
+    seal_bytes = (package / "PACKAGE-SEAL.json").read_bytes()
+    manifest = json.loads(manifest_bytes)
+    seal = json.loads(seal_bytes)
+    contract = json.loads((package / "I0-AC3-BSI-CONTINUATION.json").read_bytes())
+    function_start = module.index("pub fn write_flat7x_i0_ac3_bsi_tail(")
+    function = module[function_start:]
+    validation_start = module.index("fn validate_input(")
+    validation = module[validation_start:]
+    fields = contract.get("bsi_tail_after_compr", [])
+    no_product_call = all(
+        "write_flat7x_i0_ac3_bsi_tail" not in path.read_text(encoding="utf-8")
+        for path in (root / "crates").glob("jocforge-*/src/**/*.rs")
+        if path != module_path
+    )
+    write_order = [
+        "writer.write_bit(input.langcode.is_some())?",
+        "writer.write_bit(input.audio_production.is_some())?",
+        "writer.write_bit(input.copyright)?",
+        "writer.write_bit(input.original_bitstream)?",
+        "writer.write_bit(input.time_code_1.is_some())?",
+        "writer.write_bit(input.time_code_2.is_some())?",
+        "writer.write_bit(input.additional_bsi.is_some())?",
+    ]
+    write_positions = [function.index(marker) for marker in write_order]
+    ck(
+        "pub(crate) const I0_BSI_TAIL_MINIMUM_BITS: u32 = 7" in module
+        and "I0_AC3_HEADER_END_WITHOUT_COMPR: u32 = 62" in module
+        and "I0_AC3_HEADER_END_WITH_COMPR: u32 = 70" in module
+        and "MAX_ADDBSI_BYTES: usize = 64" in module
+        and "ADDBSI_LENGTH_WIDTH: u8 = 6" in module
+        and "I0Ac3TimeCodeField::First" in validation
+        and "I0Ac3TimeCodeField::Second" in validation
+        and "writer.preflight_capacity(bit_length)?" in function
+        and function.index("validate_input(&input)?") < function.index("writer.preflight_capacity(bit_length)?")
+        and function.index("writer.preflight_capacity(bit_length)?") < min(write_positions)
+        and write_positions == sorted(write_positions)
+        and "u32::from(byte_length - 1)" in function
+        and "writer.write_bytes(payload)?" in function
+        and "acmod" not in module
+        and "dual_mono" not in module
+        and "std::fs" not in module
+        and "pub mod ac3_bsi_tail;" in codec_module
+        and no_product_call,
+        "I0 BSI-tail writer prevalidates, serializes in ETSI order and has no product callsite",
+    )
+
+    expected_manifest = "cddad099b557617ab6f4aa73d3c40d87f75f12a55c141e14bff6573bdc891787"
+    expected_seal = "329d5f9b1a43cdbee31abe4403f398ed4671a9a27e6bec40a2b09679ae46079d"
+    expected_fields = [
+        "langcode",
+        "audprodie",
+        "dual_mono_ch2_fields",
+        "copyrightb",
+        "origbs",
+        "timecod1e",
+        "timecod2e",
+        "addbsie",
+    ]
+    ck(
+        hashlib.sha256(manifest_bytes).hexdigest() == expected_manifest
+        and hashlib.sha256(seal_bytes).hexdigest() == expected_seal
+        and manifest.get("package_id") == "FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1"
+        and seal.get("manifest_sha256") == expected_manifest
+        and contract.get("production_allowed") is False
+        and contract.get("target", {}).get("acmod") == 7
+        and contract.get("target", {}).get("header_end_bits") == {"without_compr": 62, "with_compr": 70}
+        and [field.get("name") for field in fields] == expected_fields
+        and fields[2].get("target_acmod7") == "OMITTED"
+        and fields[1].get("optional_payload") == "mixlevel+roomtyp"
+        and fields[1].get("payload_width_bits") == 7
+        and fields[5].get("payload_width_bits") == 14
+        and fields[6].get("payload_width_bits") == 14
+        and fields[7].get("addbsil_width_bits") == 6
+        and fields[7].get("addbsi_bytes") == "addbsil+1",
+        "I0 BSI-tail writer matches the sealed ETSI continuation field contract",
+    )
+
+    parameters = row.get("parameters", {})
+    target = parameters.get("target", {})
+    ck(
+        row.get("implementation_status") == "LOCALLY_VERIFIED_SYNTHETIC_I0_BSI_TAIL_FIELD_SERIALIZATION__PRODUCTION_OPEN"
+        and parameters.get("production_allowed") is False
+        and parameters.get("continuation_manifest_sha256") == expected_manifest
+        and target.get("acmod") == 7
+        and target.get("header_end_bits") == [62, 70]
+        and parameters.get("max_additional_bsi_bytes") == 64
+        and parameters.get("max_serialized_bsi_tail_bits") == 568
+        and row.get("implementation_files")
+        == ["crates/jocforge-domain/src/codec/ac3_bsi_tail.rs", "crates/jocforge-domain/src/codec/mod.rs"]
+        and row.get("test_modules") == [test_path.relative_to(root).as_posix()]
+        and vectors.get("classification") == "SYNTHETIC_NOT_REAL_OUTPUT_BSI_SYNTAX"
+        and vectors.get("contains_pcm_or_real_audio_bytes") is False
+        and vectors.get("continuation_package_manifest_sha256") == expected_manifest
+        and all(
+            marker in test_source
+            for marker in (
+                "writes_the_mandatory_seven_tail_bits_at_the_header_boundary",
+                "writes_optional_fields_and_reports_the_exact_unaligned_addbsi_extent",
+                "accepts_the_maximum_addbsi_length_represented_by_u6",
+                "rejects_invalid_fields_lengths_cursor_and_capacity_before_mutation",
+            )
+        ),
+        "I0 BSI-tail map, vectors and production boundary are explicit",
+    )
+
+    for optimized in (False, True):
+        command = [sys.executable] + (["-O"] if optimized else []) + ["-B", str(package / "verify_package.py")]
+        result = subprocess.run(
+            command,
+            cwd=package,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        ck(
+            result.returncode == 0 and "I0_BSI_CONTINUATION_ORDER=BOUND_BY_ETSI" in result.stdout,
+            "I0 BSI continuation package checker " + ("optimized" if optimized else "normal"),
+        )
 
 def check_f12_flat7x_i0_d0_opaque_au_composer_slice(root, d):
     entry = next(item for item in d["functional_entries"] if item["functional_id"] == "F12")
@@ -13716,7 +13853,7 @@ def check_partial_root_and_new_slice_mappings(root, d):
 
         "F11": ["same-source-converter-pattern-and-offset-plan"],
 
-        "F12": ["same-source-selected-source-numeric-plan-receipt", "same-source-frame-candidate-writer", "selected-length-producer-run99-run100-boundary", "selected-length-synthetic-noise-coverage-run109-run110", "selected-length-target-boundary-fixture-requirement", "f06nd-f12-finalized-measurement-receipt-edge", "washed-reader-origin-to-codec-writer-single-call-boundary", "selected-profile-bsi-mixing-information-writer", "selected-six-rate-profile-frame-size-through-output", "flat7x-d0-block2-skipfld-serializer", "official-atmos-demo-i0-d0-structure-reference", "flat7x-d0-fixed-prefix-writer", "flat7x-d0-bsi-segment-through-chanmap", "flat7x-i0-ac3-header-segment", "flat7x-i0-frame-bit-assembler", "flat7x-d0-mixing-metadata-segment", "flat7x-elementary-stream-sequence-composer"],
+        "F12": ["same-source-selected-source-numeric-plan-receipt", "same-source-frame-candidate-writer", "selected-length-producer-run99-run100-boundary", "selected-length-synthetic-noise-coverage-run109-run110", "selected-length-target-boundary-fixture-requirement", "f06nd-f12-finalized-measurement-receipt-edge", "washed-reader-origin-to-codec-writer-single-call-boundary", "selected-profile-bsi-mixing-information-writer", "selected-six-rate-profile-frame-size-through-output", "flat7x-d0-block2-skipfld-serializer", "official-atmos-demo-i0-d0-structure-reference", "flat7x-d0-fixed-prefix-writer", "flat7x-d0-bsi-segment-through-chanmap", "flat7x-i0-ac3-header-segment", "flat7x-i0-frame-bit-assembler", "flat7x-i0-ac3-bsi-tail-writer", "flat7x-d0-mixing-metadata-segment", "flat7x-elementary-stream-sequence-composer"],
 
         "F13": ["authorized-main-g2-metadata-body-proposal", "meter-receipt-to-metadata-owner-cold-candidate", "selected-f13-producer-model-conditional-length-bound", "native-run100-body-length-to-f13-container-identity-boundary"],
 
@@ -15590,7 +15727,7 @@ def run(root=ROOT):
 
  d0_frame_assembler=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-d0-frame-bit-assembler');verified_scopes+=(d0_frame_assembler['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_EXACT_FRAME_ASSEMBLY_CRC2_AND_FAILURE_ATOMICITY__PRODUCTION_OPEN');ck(verified_scopes==84,'locally verified scoped-task count including generated D0 frame CRC2')
 
- opaque_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-d0-opaque-au-byte-composer');verified_scopes+=(opaque_au['implementation_status']=='LOCALLY_VERIFIED_TARGET_EXTENTS_ORDER_AND_ATOMIC_COMMIT__NO_CRC_OR_GENERATION');sequence_composer=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-sequence-composer');verified_scopes+=(sequence_composer['implementation_status']=='LOCALLY_VERIFIED_SEQUENCE_AND_D0_TO_AU_TO_STREAM_CHAIN__NO_PRODUCTION');stream_stage=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F15')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-staged-file-adapter');verified_scopes+=(stream_stage['implementation_status']=='LOCALLY_VERIFIED_F15_FINALIZE_LEDGER_STAGE_RECEIPT_JOIN_AND_TEMP_IO__SOURCE_CALLBACK_OPEN');ck(verified_scopes==87,'locally verified scoped-task count including Flat7x F15 finalize-to-stage integration');i0_frame_assembler=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-frame-bit-assembler');verified_scopes+=(i0_frame_assembler['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_ASSEMBLY_GENERATED_CRC1_CRC2_RESIDUALS__PRODUCTION_OPEN');ck(verified_scopes==88,'locally verified scoped-task count including I0 AC-3 structure assembly')
+ opaque_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-d0-opaque-au-byte-composer');verified_scopes+=(opaque_au['implementation_status']=='LOCALLY_VERIFIED_TARGET_EXTENTS_ORDER_AND_ATOMIC_COMMIT__NO_CRC_OR_GENERATION');sequence_composer=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-sequence-composer');verified_scopes+=(sequence_composer['implementation_status']=='LOCALLY_VERIFIED_SEQUENCE_AND_D0_TO_AU_TO_STREAM_CHAIN__NO_PRODUCTION');stream_stage=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F15')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-staged-file-adapter');verified_scopes+=(stream_stage['implementation_status']=='LOCALLY_VERIFIED_F15_FINALIZE_LEDGER_STAGE_RECEIPT_JOIN_AND_TEMP_IO__SOURCE_CALLBACK_OPEN');ck(verified_scopes==87,'locally verified scoped-task count including Flat7x F15 finalize-to-stage integration');i0_frame_assembler=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-frame-bit-assembler');verified_scopes+=(i0_frame_assembler['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_ASSEMBLY_GENERATED_CRC1_CRC2_RESIDUALS__PRODUCTION_OPEN');ck(verified_scopes==88,'locally verified scoped-task count including I0 AC-3 structure assembly');i0_bsi_tail=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-ac3-bsi-tail-writer');verified_scopes+=(i0_bsi_tail['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_I0_BSI_TAIL_FIELD_SERIALIZATION__PRODUCTION_OPEN');ck(verified_scopes==89,'locally verified scoped-task count including I0 AC-3 BSI-tail serialization')
 
  dep=d['approved_dependencies']['sha2']
 
@@ -16087,6 +16224,7 @@ def run(root=ROOT):
 
  check_f12_fixed_prefix_slice(root,d)
  check_f12_flat7x_i0_frame_bit_assembler(root,d)
+ check_f12_flat7x_i0_ac3_bsi_tail_writer(root,d)
  check_f12_d0_info_addbsi_slice(root,d)
  check_f12_d0_bsi_structure_slice(root,d)
  check_f12_d0_six_block_layout_slice(root,d)

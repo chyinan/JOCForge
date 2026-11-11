@@ -1,0 +1,99 @@
+{
+  "schema": "jocforge.flat7x.i0_ac3_bsi_tail.input_only.v1",
+  "classification": "SYNTHETIC_NOT_REAL_OUTPUT_BSI_SYNTAX",
+  "contains_pcm_or_real_audio_bytes": false,
+  "continuation_package_manifest_sha256": "cddad099b557617ab6f4aa73d3c40d87f75f12a55c141e14bff6573bdc891787",
+  "production_allowed": false,
+  "cases": [
+    {
+      "id": "minimum-tail-without-optionals",
+      "header_end_bit": 62,
+      "input": {
+        "langcode": null,
+        "audio_production": null,
+        "copyright": true,
+        "original_bitstream": false,
+        "time_code_1": null,
+        "time_code_2": null,
+        "additional_bsi": null
+      },
+      "expected": {
+        "bit_length": 7,
+        "end_bit": 69,
+        "flags": {
+          "langcode_present": 0,
+          "audprodie": 0,
+          "copyright": 1,
+          "original_bitstream": 0,
+          "time_code_1_present": 0,
+          "time_code_2_present": 0,
+          "addbsie": 0
+        }
+      }
+    },
+    {
+      "id": "all-optionals-with-two-byte-addbsi",
+      "header_end_bit": 70,
+      "input": {
+        "langcode": 165,
+        "audio_production": {
+          "mix_level": 17,
+          "room_type": 2
+        },
+        "copyright": true,
+        "original_bitstream": true,
+        "time_code_1": 4660,
+        "time_code_2": 16383,
+        "additional_bsi": {
+          "hex": "dead"
+        }
+      },
+      "expected": {
+        "bit_length": 72,
+        "end_bit": 142,
+        "additional_bsi_start_bit": 126,
+        "additional_bsi_bit_length": 16,
+        "field_offsets": {
+          "langcode_present": 70,
+          "langcode": 71,
+          "audprodie": 79,
+          "mix_level": 80,
+          "room_type": 85,
+          "copyright": 87,
+          "original_bitstream": 88,
+          "time_code_1_present": 89,
+          "time_code_1": 90,
+          "time_code_2_present": 104,
+          "time_code_2": 105,
+          "addbsie": 119,
+          "addbsil": 120,
+          "additional_bsi": 126
+        }
+      }
+    },
+    {
+      "id": "maximum-addbsi-u6-length",
+      "header_end_bit": 62,
+      "input": {
+        "langcode": null,
+        "audio_production": null,
+        "copyright": false,
+        "original_bitstream": true,
+        "time_code_1": null,
+        "time_code_2": null,
+        "additional_bsi": {
+          "fill_hex": "a5",
+          "length_bytes": 64
+        }
+      },
+      "expected": {
+        "bit_length": 525,
+        "end_bit": 587,
+        "addbsil_offset": 69,
+        "addbsil_value": 63,
+        "additional_bsi_start_bit": 75,
+        "additional_bsi_bit_length": 512
+      }
+    }
+  ]
+}
