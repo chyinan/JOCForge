@@ -3,7 +3,7 @@ status: current
 topic: 7.1-flat7x-1664-handoff
 spec: JOCForge
 confidence: package-backed-target
-last_updated: 2026-11-11
+last_updated: 2026-11-12
 tags:
   - handoff
   - AU
@@ -175,3 +175,8 @@ The existing byte composer and elementary-stream composer remain structural comp
 `assemble_flat7x_i0_ac3_frame_from_fields` composes that typed BSI tail with six caller-owned opaque audio spans through the existing I0 frame assembler. The all-optionals vector verifies the 70→142 BSI extent; synthetic spans complete the 20,480-bit frame, and CRC residuals plus fail-before-write cases pass. The opaque low-level API remains available; no audio-block producer is added.
 
 The post-commit 5.1 producer audit found no safe typed edge into the I0 span seam. `SelectedMainFrameCandidate` exposes the complete E-AC-3 frame bytes and per-block mantissa bit counts, while `write_frame_body` writes six E-AC-3 block bodies into one shared frame cursor. I0 assembly requires six AC-3 `audblk` bit spans. The selected 5.1 path has no span-producing API, and no approved contract establishes AC-3 reinterpretation of its E-AC-3 block bytes. A separate I0 audio-block producer contract and same-source binding are the typed blockers.
+
+
+## 2026-11-12 Flat7x CLI paired-target gate
+
+run_with_data_rate_and_joc_layout now resolves two request routes. ExistingSelectedFivePointOne preserves the single-frame F15/OutputOwner path for all six supported rates. Explicit Flat7x selection resolves the approved I0 640 kbps / 2560-byte plus D0 1024 kbps / 4096-byte target pair (1664 kbps / 6656-byte aggregate), then returns Flat7xPairNotReady before run_worker, input admission or output staging. It cannot fall through to a single 1024-kbps E-AC-3 frame. Targeted route tests pass for pair selection, all six 5.1 rate rows and the pre-I/O fail-closed result. The pair target remains production_allowed=false; I0 audblk production is NOT_RUN, while D0 source-generation binding and pair receipts remain UNBOUND.

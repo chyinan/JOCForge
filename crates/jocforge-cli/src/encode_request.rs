@@ -27,8 +27,9 @@ use jocforge_application::{
         MetadataOwnerPreparationError, SelectedJocState, prepare_metadata_owner_from_measurement,
     },
     meter_source_bridge::{
-        CodecRateProfile, EncodingProfile, FrontendControlReplacementCandidate,
-        JocReconstructionLayout, resolve_selected_profile,
+        CodecRateProfile, EncodingProfile, Flat7xI0D0TargetPlan,
+        FrontendControlReplacementCandidate, JocReconstructionLayout, ResolvedEncodingProfile,
+        resolve_selected_profile,
     },
     output_publication::{AttemptId, OutputStagingOwnerId},
     parse_selected_job_file_references, prepare_selected_job_input,
@@ -69,6 +70,7 @@ pub enum EncodeRequestError {
     OutputAlreadyExists,
     UnsupportedDataRate,
     UnsupportedJocLayout,
+    Flat7xPairNotReady,
     InputFile(RiffPcm24FileReadError),
     Riff(jocforge_io::pcm::riff_pcm24::RiffPcm24Error),
     PreparedInput(PreparedJobInputError),
@@ -116,6 +118,9 @@ impl std::fmt::Display for EncodeRequestError {
             Self::UnsupportedJocLayout => {
                 formatter.write_str("joc-layout flat7x requires the selected 1024 kbps profile row")
             }
+            Self::Flat7xPairNotReady => formatter.write_str(
+                "Flat7x paired output is not ready: I0 audblk production, D0 source-generation binding, and pair receipts are incomplete; encode did not enter output staging",
+            ),
             Self::InputFile(error) => write!(formatter, "{error}"),
             Self::Riff(error) => write!(formatter, "selected RIFF input rejected: {error:?}"),
             Self::PreparedInput(error) => write!(formatter, "selected ADM input rejected: {error}"),
@@ -195,14 +200,51 @@ pub fn run_with_data_rate_and_joc_layout(
     codec_rate: CodecRateProfile,
     joc_layout: JocReconstructionLayout,
 ) -> Result<(), EncodeRequestError> {
+    match resolve_encode_request_route(codec_rate, joc_layout)? {
+        EncodeRequestRoute::SelectedFivePointOne(profile) => run_worker(
+            input_path,
+            output_path,
+            Some(profile.codec_rate()),
+            None,
+            profile.joc_reconstruction_layout(),
+        ),
+        EncodeRequestRoute::Flat7xI0D0Pair(_target) => Err(EncodeRequestError::Flat7xPairNotReady),
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum EncodeRequestRoute {
+    SelectedFivePointOne(ResolvedEncodingProfile),
+    Flat7xI0D0Pair(Flat7xI0D0TargetPlan),
+}
+
+fn resolve_encode_request_route(
+    codec_rate: CodecRateProfile,
+    joc_layout: JocReconstructionLayout,
+) -> Result<EncodeRequestRoute, EncodeRequestError> {
     if codec_rate.kbps().is_none() {
         return Err(EncodeRequestError::UnsupportedDataRate);
     }
     let selected_profile = EncodingProfile::selected_with_codec_rate(codec_rate)
         .with_joc_reconstruction_layout(joc_layout);
-    resolve_selected_profile(&selected_profile)
+    let resolved = resolve_selected_profile(&selected_profile)
         .map_err(|_| EncodeRequestError::UnsupportedJocLayout)?;
-    run_worker(input_path, output_path, Some(codec_rate), None, joc_layout)
+
+    match resolved.joc_reconstruction_layout() {
+        JocReconstructionLayout::ExistingSelectedFivePointOne => {
+            Ok(EncodeRequestRoute::SelectedFivePointOne(resolved))
+        }
+        JocReconstructionLayout::Flat7x => {
+            let target = Flat7xI0D0TargetPlan::approved_contract();
+            if target.reconstruction_layout() != JocReconstructionLayout::Flat7x
+                || target.d0().rate() != resolved.codec_rate()
+            {
+                return Err(EncodeRequestError::UnsupportedJocLayout);
+            }
+            Ok(EncodeRequestRoute::Flat7xI0D0Pair(target))
+        }
+        JocReconstructionLayout::Unsupported => Err(EncodeRequestError::UnsupportedJocLayout),
+    }
 }
 
 /// Reads an external job XML and runs the existing selected-profile CLI pipeline.
@@ -1242,9 +1284,10 @@ fn hex_lower(bytes: &[u8]) -> String {
 #[cfg(test)]
 mod tests {
     use super::{
-        EncodeRequestError, FileReferenceParts, ensure_ec3_output_container,
-        ensure_no_temp_directory_configuration, ensure_selected_metering_mode, run_with_data_rate,
-        run_with_data_rate_and_joc_layout, selected_full_file_job_xml,
+        EncodeRequestError, EncodeRequestRoute, FileReferenceParts, ensure_ec3_output_container,
+        ensure_no_temp_directory_configuration, ensure_selected_metering_mode,
+        resolve_encode_request_route, run_with_data_rate, run_with_data_rate_and_joc_layout,
+        selected_full_file_job_xml,
     };
     use jocforge_application::meter_source_bridge::CodecRateProfile;
     use jocforge_application::meter_source_bridge::JocReconstructionLayout;
@@ -1303,6 +1346,76 @@ mod tests {
                 JocReconstructionLayout::Flat7x,
             ),
             Err(EncodeRequestError::UnsupportedJocLayout)
+        ));
+    }
+
+    #[test]
+    fn flat7x_selects_the_approved_i0_d0_pair_target() {
+        let route = resolve_encode_request_route(
+            CodecRateProfile::Kbps1024,
+            JocReconstructionLayout::Flat7x,
+        )
+        .unwrap();
+        let EncodeRequestRoute::Flat7xI0D0Pair(target) = route else {
+            panic!("Flat7x must select the paired target route");
+        };
+
+        assert_eq!(target.i0().rate(), CodecRateProfile::Kbps640);
+        assert_eq!(target.i0().frame_bytes(), 2_560);
+        assert_eq!(target.d0().rate(), CodecRateProfile::Kbps1024);
+        assert_eq!(target.d0().frame_bytes(), 4_096);
+        assert_eq!(target.aggregate_rate_kbps(), Some(1_664));
+        assert_eq!(target.aggregate_frame_bytes(), 6_656);
+        assert!(!target.production_allowed());
+    }
+
+    #[test]
+    fn selected_five_point_one_keeps_every_supported_rate_on_its_single_frame_route() {
+        let rows = [
+            CodecRateProfile::Kbps384,
+            CodecRateProfile::Kbps448,
+            CodecRateProfile::Kbps576,
+            CodecRateProfile::Kbps640,
+            CodecRateProfile::Kbps768,
+            CodecRateProfile::Kbps1024,
+        ];
+
+        for codec_rate in rows {
+            let route = resolve_encode_request_route(
+                codec_rate,
+                JocReconstructionLayout::ExistingSelectedFivePointOne,
+            )
+            .unwrap();
+            let EncodeRequestRoute::SelectedFivePointOne(profile) = route else {
+                panic!("the selected 5.1 profile must retain the single-frame route");
+            };
+            assert_eq!(profile.codec_rate(), codec_rate);
+            assert_eq!(
+                profile.joc_reconstruction_layout(),
+                JocReconstructionLayout::ExistingSelectedFivePointOne
+            );
+        }
+
+        assert!(matches!(
+            run_with_data_rate(
+                Path::new("missing-input.wav"),
+                Path::new("unused-output.ec3"),
+                CodecRateProfile::Kbps1024,
+            ),
+            Err(EncodeRequestError::InvalidPath)
+        ));
+    }
+
+    #[test]
+    fn flat7x_fails_closed_before_input_or_output_staging() {
+        assert!(matches!(
+            run_with_data_rate_and_joc_layout(
+                Path::new("missing-input.wav"),
+                Path::new("unused-output.ec3"),
+                CodecRateProfile::Kbps1024,
+                JocReconstructionLayout::Flat7x,
+            ),
+            Err(EncodeRequestError::Flat7xPairNotReady)
         ));
     }
 

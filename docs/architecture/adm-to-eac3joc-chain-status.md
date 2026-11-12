@@ -1822,3 +1822,8 @@ Wash supplement `FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1` (manifest `07ad2b60bd22a1
 ## 2026-11-12 typed I0 BSI-to-frame composition
 
 `codec::i0_frame_assembler::assemble_flat7x_i0_ac3_frame_from_fields` derives the BSI insertion cursor from `compr` presence, serializes the typed tail in private scratch, and forwards its exact receipt span with six caller-owned audio spans to the existing opaque frame assembler. The all-optionals BSI vector plus synthetic spans verify header/BSI/block offsets, the 20,480-bit extent, CRC residuals and fail-before-write behavior. This entry generates no audio and adds no production caller; `production_allowed=false`.
+
+
+## 2026-11-12 Flat7x CLI paired-target gate
+
+run_with_data_rate_and_joc_layout dispatches ExistingSelectedFivePointOne to the existing single-frame writer across the six supported rates. Explicit Flat7x selection resolves the approved I0=640 kbps/2560-byte plus D0=1024 kbps/4096-byte target plan (1664 kbps/6656-byte aggregate), then returns Flat7xPairNotReady before input admission or output staging. This keeps Flat7x selection out of the 5.1 single-frame writer and prevents treating 1664 kbps as one E-AC-3 rate. Targeted CLI route tests and the selected 5.1 rate regression pass. I0 audblk production remains NOT_RUN; D0 source-generation and pair receipts remain UNBOUND; the target stays production_allowed=false.

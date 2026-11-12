@@ -49,8 +49,8 @@ pub use jocforge_domain::{
         true_peak::TruePeakParameters,
     },
     profile::{
-        CodecRateProfile, EmdfCarriageProfile, EncodingProfile, JocReconstructionLayout,
-        ResolvedEncodingProfile, resolve_selected_profile,
+        CodecRateProfile, EmdfCarriageProfile, EncodingProfile, Flat7xI0D0TargetPlan,
+        JocReconstructionLayout, ResolvedEncodingProfile, resolve_selected_profile,
     },
     spatial::{
         SpatialAudioCallbackOutcome, SpatialAudioReplacementCandidate,
