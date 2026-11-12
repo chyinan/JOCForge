@@ -150,5 +150,83 @@
       }
     }
   ],
-  "invalid_cplinu_field_values": [2, 255]
+  "invalid_cplinu_field_values": [2, 255],
+  "coupling_fields_vectors": [
+    {
+      "id": "synthetic-first-block-coupling-single-subband",
+      "prefix_vector_id": "synthetic-first-block-prefix-with-dynrng",
+      "channel_in_coupling": [true, true, false, false, false],
+      "cplbegf": 15,
+      "cplendf": 13,
+      "cplbndstrc_bits": [],
+      "expected": {
+        "active_subband_count": 1,
+        "channel_in_coupling_span": [21, 5],
+        "cplbegf_span": [26, 4],
+        "cplendf_span": [30, 4],
+        "cplbndstrc_span": null,
+        "next_field_cursor": 34,
+        "bytes_hex": "aab4be3f40"
+      }
+    },
+    {
+      "id": "synthetic-first-block-coupling-three-subband",
+      "prefix_vector_id": "synthetic-first-block-prefix-with-dynrng",
+      "channel_in_coupling": [true, false, true, false, false],
+      "cplbegf": 0,
+      "cplendf": 0,
+      "cplbndstrc_bits": [true, false],
+      "expected": {
+        "active_subband_count": 3,
+        "channel_in_coupling_span": [21, 5],
+        "cplbegf_span": [26, 4],
+        "cplendf_span": [30, 4],
+        "cplbndstrc_span": [34, 2],
+        "next_field_cursor": 36,
+        "bytes_hex": "aab4bd0020"
+      }
+    }
+  ],
+  "invalid_coupling_field_cases": [
+    {
+      "id": "single-channel-in-coupling",
+      "channel_in_coupling": [true, false, false, false, false],
+      "cplbegf": 0,
+      "cplendf": 0,
+      "cplbndstrc_bits": [false, false],
+      "expected_error": "FewerThanTwoChannelsSelected"
+    },
+    {
+      "id": "begin-frequency-code-out-of-range",
+      "channel_in_coupling": [true, true, false, false, false],
+      "cplbegf": 16,
+      "cplendf": 15,
+      "cplbndstrc_bits": [],
+      "expected_error": "FrequencyCodeOutOfRangeBegin"
+    },
+    {
+      "id": "end-frequency-code-out-of-range",
+      "channel_in_coupling": [true, true, false, false, false],
+      "cplbegf": 0,
+      "cplendf": 16,
+      "cplbndstrc_bits": [],
+      "expected_error": "FrequencyCodeOutOfRangeEnd"
+    },
+    {
+      "id": "active-subband-count-zero",
+      "channel_in_coupling": [true, true, false, false, false],
+      "cplbegf": 15,
+      "cplendf": 12,
+      "cplbndstrc_bits": [],
+      "expected_error": "ActiveSubbandCountOutOfRange"
+    },
+    {
+      "id": "band-structure-count-mismatch",
+      "channel_in_coupling": [true, true, false, false, false],
+      "cplbegf": 0,
+      "cplendf": 0,
+      "cplbndstrc_bits": [true],
+      "expected_error": "BandStructureLengthMismatch"
+    }
+  ]
 }

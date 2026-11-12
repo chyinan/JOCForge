@@ -216,11 +216,16 @@ impl TryFrom<u8> for CallerOwnedAc3Cplinu {
 #[must_use]
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct I0Ac3CplinuReceipt {
+    value: CallerOwnedAc3Cplinu,
     field: I0Ac3AudioBlockFieldExtent,
     next_field_cursor: FrameBitCursor,
 }
 
 impl I0Ac3CplinuReceipt {
+    pub const fn value(self) -> CallerOwnedAc3Cplinu {
+        self.value
+    }
+
     pub const fn field(self) -> I0Ac3AudioBlockFieldExtent {
         self.field
     }
@@ -268,10 +273,200 @@ pub fn write_i0_ac3_first_block_cplinu(
     let field_start = writer.cursor();
     writer.write_bit(matches!(input, CallerOwnedAc3Cplinu::Coupled))?;
     Ok(I0Ac3CplinuReceipt {
+        value: input,
         field: I0Ac3AudioBlockFieldExtent {
             start: field_start,
             bit_length: 1,
         },
+        next_field_cursor: writer.cursor(),
+    })
+}
+
+/// Caller-authored coupling fields following cplinu=1 for the selected I0 acmod 7.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct I0Ac3CouplingFieldsInput<'a> {
+    /// Five full-band channel flags in L, C, R, Ls, Rs order.
+    pub channel_in_coupling: [bool; 5],
+    /// Four-bit AC-3 sub-band code, in the range 0..=15.
+    pub cplbegf: u8,
+    /// Four-bit AC-3 end-frequency code, in the range 0..=15.
+    pub cplendf: u8,
+    /// Caller-supplied cplbndstrc[1..ncplsubnd]; element 0 is implicit and omitted.
+    pub band_structure_bits: &'a [bool],
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum I0Ac3CouplingFrequencyField {
+    Begin,
+    End,
+}
+
+#[must_use]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct I0Ac3CouplingFieldsReceipt {
+    channel_in_coupling: I0Ac3AudioBlockFieldExtent,
+    cplbegf: I0Ac3AudioBlockFieldExtent,
+    cplendf: I0Ac3AudioBlockFieldExtent,
+    band_structure: Option<I0Ac3AudioBlockFieldExtent>,
+    active_subband_count: u8,
+    next_field_cursor: FrameBitCursor,
+}
+
+impl I0Ac3CouplingFieldsReceipt {
+    pub const fn channel_in_coupling(self) -> I0Ac3AudioBlockFieldExtent {
+        self.channel_in_coupling
+    }
+
+    pub const fn cplbegf(self) -> I0Ac3AudioBlockFieldExtent {
+        self.cplbegf
+    }
+
+    pub const fn cplendf(self) -> I0Ac3AudioBlockFieldExtent {
+        self.cplendf
+    }
+
+    pub const fn band_structure(self) -> Option<I0Ac3AudioBlockFieldExtent> {
+        self.band_structure
+    }
+
+    pub const fn active_subband_count(self) -> u8 {
+        self.active_subband_count
+    }
+
+    /// The next AC-3 coupling fields, beginning with cplcoe[ch], remain caller-owned.
+    pub const fn next_field_cursor(self) -> FrameBitCursor {
+        self.next_field_cursor
+    }
+
+    pub const fn production_allowed(self) -> bool {
+        false
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum I0Ac3CouplingFieldsError {
+    CouplingNotInUse,
+    PrefixCursorMismatch {
+        expected: FrameBitCursor,
+        actual: FrameBitCursor,
+    },
+    FewerThanTwoChannelsSelected,
+    FrequencyCodeOutOfRange {
+        field: I0Ac3CouplingFrequencyField,
+        value: u8,
+    },
+    ActiveSubbandCountOutOfRange {
+        value: i16,
+    },
+    BandStructureLengthMismatch {
+        expected: u8,
+        actual: usize,
+    },
+    BitWriter(FrameBitWriterError),
+}
+
+impl From<FrameBitWriterError> for I0Ac3CouplingFieldsError {
+    fn from(error: FrameBitWriterError) -> Self {
+        Self::BitWriter(error)
+    }
+}
+
+/// Writes the caller-owned minimum coupling-strategy fields after a block-0 cplinu=1.
+///
+/// ETSI TS 102 366 V1.4.1 clause 4.3.3 orders chincpl[5], cplbegf, cplendf and then
+/// cplbndstrc[1..ncplsubnd]. For I0 acmod 7, phsflginu is absent. The active count is
+/// the standard expression 3 + cplendf - cplbegf and must yield 1..=18. The writer
+/// serializes only caller-supplied choices and stops before coupling-coordinate fields.
+pub fn write_i0_ac3_first_block_coupling_fields(
+    writer: &mut FrameBitWriter<'_>,
+    cplinu: I0Ac3CplinuReceipt,
+    input: I0Ac3CouplingFieldsInput<'_>,
+) -> Result<I0Ac3CouplingFieldsReceipt, I0Ac3CouplingFieldsError> {
+    if cplinu.value() != CallerOwnedAc3Cplinu::Coupled {
+        return Err(I0Ac3CouplingFieldsError::CouplingNotInUse);
+    }
+    let actual_cursor = writer.cursor();
+    let expected_cursor = cplinu.next_field_cursor();
+    if actual_cursor != expected_cursor {
+        return Err(I0Ac3CouplingFieldsError::PrefixCursorMismatch {
+            expected: expected_cursor,
+            actual: actual_cursor,
+        });
+    }
+    if input
+        .channel_in_coupling
+        .iter()
+        .filter(|flag| **flag)
+        .count()
+        < 2
+    {
+        return Err(I0Ac3CouplingFieldsError::FewerThanTwoChannelsSelected);
+    }
+    for (field, value) in [
+        (I0Ac3CouplingFrequencyField::Begin, input.cplbegf),
+        (I0Ac3CouplingFrequencyField::End, input.cplendf),
+    ] {
+        if value > 15 {
+            return Err(I0Ac3CouplingFieldsError::FrequencyCodeOutOfRange { field, value });
+        }
+    }
+    let active_subband_count = 3_i16 + i16::from(input.cplendf) - i16::from(input.cplbegf);
+    if !(1..=18).contains(&active_subband_count) {
+        return Err(I0Ac3CouplingFieldsError::ActiveSubbandCountOutOfRange {
+            value: active_subband_count,
+        });
+    }
+    let active_subband_count = u8::try_from(active_subband_count).map_err(|_| {
+        I0Ac3CouplingFieldsError::ActiveSubbandCountOutOfRange {
+            value: active_subband_count,
+        }
+    })?;
+    let expected_band_bits = active_subband_count - 1;
+    if input.band_structure_bits.len() != usize::from(expected_band_bits) {
+        return Err(I0Ac3CouplingFieldsError::BandStructureLengthMismatch {
+            expected: expected_band_bits,
+            actual: input.band_structure_bits.len(),
+        });
+    }
+    let total_bits = 13_u32 + u32::from(expected_band_bits);
+    writer.preflight_capacity(total_bits)?;
+
+    let channel_start = writer.cursor();
+    for included in input.channel_in_coupling {
+        writer.write_bit(included)?;
+    }
+    let cplbegf_start = writer.cursor();
+    writer.write_unsigned(u32::from(input.cplbegf), 4)?;
+    let cplendf_start = writer.cursor();
+    writer.write_unsigned(u32::from(input.cplendf), 4)?;
+    let band_structure = if expected_band_bits == 0 {
+        None
+    } else {
+        let start = writer.cursor();
+        for value in input.band_structure_bits {
+            writer.write_bit(*value)?;
+        }
+        Some(I0Ac3AudioBlockFieldExtent {
+            start,
+            bit_length: expected_band_bits,
+        })
+    };
+
+    Ok(I0Ac3CouplingFieldsReceipt {
+        channel_in_coupling: I0Ac3AudioBlockFieldExtent {
+            start: channel_start,
+            bit_length: 5,
+        },
+        cplbegf: I0Ac3AudioBlockFieldExtent {
+            start: cplbegf_start,
+            bit_length: 4,
+        },
+        cplendf: I0Ac3AudioBlockFieldExtent {
+            start: cplendf_start,
+            bit_length: 4,
+        },
+        band_structure,
+        active_subband_count,
         next_field_cursor: writer.cursor(),
     })
 }

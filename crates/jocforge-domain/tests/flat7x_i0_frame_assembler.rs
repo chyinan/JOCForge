@@ -12,10 +12,12 @@ use jocforge_domain::{
             Ac3CplinuValueError, CallerOwnedAc3Cplinu, CallerOwnedI0CrcrsvSeed,
             Flat7xI0Ac3FrameAssemblyReceipt, Flat7xI0Ac3FrameHeaderFields, Flat7xI0Ac3FrameInput,
             Flat7xI0FrameAssemblyError, Flat7xI0FrameBitInput, I0Ac3AudioBlockFieldExtent,
-            I0Ac3AudioBlockPrefixError, I0Ac3AudioBlockPrefixInput, I0Ac3CplinuWriteError,
+            I0Ac3AudioBlockPrefixError, I0Ac3AudioBlockPrefixInput, I0Ac3CouplingFieldsError,
+            I0Ac3CouplingFieldsInput, I0Ac3CouplingFrequencyField, I0Ac3CplinuWriteError,
             I0AuxDataInput, I0CrcValidationStatus, I0FramePart, OpaqueI0Ac3BitSpan,
             assemble_flat7x_i0_ac3_frame, assemble_flat7x_i0_ac3_frame_from_fields,
-            write_i0_ac3_first_audio_block_prefix, write_i0_ac3_first_block_cplinu,
+            write_i0_ac3_first_audio_block_prefix, write_i0_ac3_first_block_coupling_fields,
+            write_i0_ac3_first_block_cplinu,
         },
     },
     integrity::crc16::eac3_crc16,
@@ -75,6 +77,48 @@ fn cplinu_case(vectors: &Value, id: &str) -> Value {
         .find(|case| case["id"] == id)
         .unwrap()
         .clone()
+}
+
+fn coupling_fields_case(vectors: &Value, id: &str) -> Value {
+    vectors["coupling_fields_vectors"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["id"] == id)
+        .unwrap()
+        .clone()
+}
+
+fn bool_array<const N: usize>(value: &Value) -> [bool; N] {
+    value
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|item| item.as_bool().unwrap())
+        .collect::<Vec<_>>()
+        .try_into()
+        .unwrap()
+}
+
+fn bool_values(value: &Value) -> Vec<bool> {
+    value
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|item| item.as_bool().unwrap())
+        .collect()
+}
+
+fn coupling_fields_input<'a>(
+    case: &Value,
+    band_structure_bits: &'a [bool],
+) -> I0Ac3CouplingFieldsInput<'a> {
+    I0Ac3CouplingFieldsInput {
+        channel_in_coupling: bool_array(&case["channel_in_coupling"]),
+        cplbegf: u8::try_from(case["cplbegf"].as_u64().unwrap()).unwrap(),
+        cplendf: u8::try_from(case["cplendf"].as_u64().unwrap()).unwrap(),
+        band_structure_bits,
+    }
 }
 
 fn first_audio_block_prefix_input(case: &Value) -> I0Ac3AudioBlockPrefixInput {
@@ -552,6 +596,259 @@ fn cplinu_rejects_a_cursor_that_does_not_follow_cplstre() {
     );
     assert_eq!(output, before);
     assert_eq!(after_cursor, wrong_cursor);
+}
+
+#[test]
+fn synthetic_coupling_fields_write_caller_owned_channel_and_subband_choices() {
+    let vectors = vectors();
+    let prefix_case =
+        first_audio_block_prefix_case(&vectors, "synthetic-first-block-prefix-with-dynrng");
+    for case_id in [
+        "synthetic-first-block-coupling-single-subband",
+        "synthetic-first-block-coupling-three-subband",
+    ] {
+        let case = coupling_fields_case(&vectors, case_id);
+        let expected = &case["expected"];
+        let band_structure = bool_values(&case["cplbndstrc_bits"]);
+        let mut output = vec![0; decode_hex_bytes(expected["bytes_hex"].as_str().unwrap()).len()];
+        let prefix;
+        let cplinu;
+        let receipt;
+        let cursor;
+        {
+            let mut writer = FrameBitWriter::new(&mut output, FrameBitCursor::new(0)).unwrap();
+            prefix = write_i0_ac3_first_audio_block_prefix(
+                &mut writer,
+                first_audio_block_prefix_input(&prefix_case),
+            )
+            .unwrap();
+            cplinu =
+                write_i0_ac3_first_block_cplinu(&mut writer, prefix, CallerOwnedAc3Cplinu::Coupled)
+                    .unwrap();
+            receipt = write_i0_ac3_first_block_coupling_fields(
+                &mut writer,
+                cplinu,
+                coupling_fields_input(&case, &band_structure),
+            )
+            .unwrap();
+            cursor = writer.cursor().bit_offset();
+        }
+
+        assert_eq!(
+            output,
+            decode_hex_bytes(expected["bytes_hex"].as_str().unwrap())
+        );
+        assert_eq!(cplinu.value(), CallerOwnedAc3Cplinu::Coupled);
+        assert_prefix_extent(
+            receipt.channel_in_coupling(),
+            &expected["channel_in_coupling_span"],
+        );
+        assert_prefix_extent(receipt.cplbegf(), &expected["cplbegf_span"]);
+        assert_prefix_extent(receipt.cplendf(), &expected["cplendf_span"]);
+        assert_eq!(
+            receipt
+                .band_structure()
+                .map(|span| [span.start().bit_offset(), u32::from(span.bit_length())]),
+            expected["cplbndstrc_span"].as_array().map(|span| [
+                u32::try_from(span[0].as_u64().unwrap()).unwrap(),
+                u32::try_from(span[1].as_u64().unwrap()).unwrap(),
+            ])
+        );
+        assert_eq!(
+            receipt.active_subband_count(),
+            u8::try_from(expected["active_subband_count"].as_u64().unwrap()).unwrap()
+        );
+        assert_eq!(
+            cursor,
+            u32::try_from(expected["next_field_cursor"].as_u64().unwrap()).unwrap()
+        );
+        assert_eq!(receipt.next_field_cursor().bit_offset(), cursor);
+        assert!(!prefix.production_allowed());
+        assert!(!cplinu.production_allowed());
+        assert!(!receipt.production_allowed());
+    }
+}
+
+#[test]
+fn invalid_coupling_field_inputs_fail_before_writer_mutation() {
+    let vectors = vectors();
+    let prefix_case =
+        first_audio_block_prefix_case(&vectors, "synthetic-first-block-prefix-with-dynrng");
+    for case in vectors["invalid_coupling_field_cases"].as_array().unwrap() {
+        let band_structure = bool_values(&case["cplbndstrc_bits"]);
+        let mut output = [0xa5; 8];
+        let cplinu;
+        {
+            let mut writer = FrameBitWriter::new(&mut output, FrameBitCursor::new(0)).unwrap();
+            let prefix = write_i0_ac3_first_audio_block_prefix(
+                &mut writer,
+                first_audio_block_prefix_input(&prefix_case),
+            )
+            .unwrap();
+            cplinu =
+                write_i0_ac3_first_block_cplinu(&mut writer, prefix, CallerOwnedAc3Cplinu::Coupled)
+                    .unwrap();
+        }
+        let before = output;
+        let cursor = cplinu.next_field_cursor();
+        let result;
+        {
+            let mut writer = FrameBitWriter::new(&mut output, cursor).unwrap();
+            result = write_i0_ac3_first_block_coupling_fields(
+                &mut writer,
+                cplinu,
+                coupling_fields_input(case, &band_structure),
+            );
+            assert_eq!(writer.cursor(), cursor);
+        }
+
+        let expected_error = match case["expected_error"].as_str().unwrap() {
+            "FewerThanTwoChannelsSelected" => {
+                I0Ac3CouplingFieldsError::FewerThanTwoChannelsSelected
+            }
+            "FrequencyCodeOutOfRangeBegin" => I0Ac3CouplingFieldsError::FrequencyCodeOutOfRange {
+                field: I0Ac3CouplingFrequencyField::Begin,
+                value: 16,
+            },
+            "FrequencyCodeOutOfRangeEnd" => I0Ac3CouplingFieldsError::FrequencyCodeOutOfRange {
+                field: I0Ac3CouplingFrequencyField::End,
+                value: 16,
+            },
+            "ActiveSubbandCountOutOfRange" => {
+                I0Ac3CouplingFieldsError::ActiveSubbandCountOutOfRange { value: 0 }
+            }
+            "BandStructureLengthMismatch" => {
+                I0Ac3CouplingFieldsError::BandStructureLengthMismatch {
+                    expected: 2,
+                    actual: 1,
+                }
+            }
+            other => panic!("unknown expected coupling-field error {other}"),
+        };
+        assert_eq!(result, Err(expected_error), "case {}", case["id"]);
+        assert_eq!(output, before, "case {}", case["id"]);
+    }
+}
+
+#[test]
+fn coupling_fields_reject_a_cursor_that_does_not_follow_cplinu() {
+    let vectors = vectors();
+    let prefix_case =
+        first_audio_block_prefix_case(&vectors, "synthetic-first-block-prefix-with-dynrng");
+    let case = coupling_fields_case(&vectors, "synthetic-first-block-coupling-single-subband");
+    let band_structure = bool_values(&case["cplbndstrc_bits"]);
+    let mut output = [0xa5; 8];
+    let prefix;
+    let cplinu;
+    {
+        let mut writer = FrameBitWriter::new(&mut output, FrameBitCursor::new(0)).unwrap();
+        prefix = write_i0_ac3_first_audio_block_prefix(
+            &mut writer,
+            first_audio_block_prefix_input(&prefix_case),
+        )
+        .unwrap();
+        cplinu =
+            write_i0_ac3_first_block_cplinu(&mut writer, prefix, CallerOwnedAc3Cplinu::Coupled)
+                .unwrap();
+    }
+    let before = output;
+    let wrong_cursor = FrameBitCursor::new(cplinu.next_field_cursor().bit_offset() + 1);
+    let result;
+    let after_cursor;
+    {
+        let mut writer = FrameBitWriter::new(&mut output, wrong_cursor).unwrap();
+        result = write_i0_ac3_first_block_coupling_fields(
+            &mut writer,
+            cplinu,
+            coupling_fields_input(&case, &band_structure),
+        );
+        after_cursor = writer.cursor();
+    }
+
+    assert_eq!(
+        result,
+        Err(I0Ac3CouplingFieldsError::PrefixCursorMismatch {
+            expected: cplinu.next_field_cursor(),
+            actual: wrong_cursor,
+        })
+    );
+    assert_eq!(output, before);
+    assert_eq!(after_cursor, wrong_cursor);
+}
+
+#[test]
+fn coupling_fields_require_cplinu_and_preflight_total_capacity() {
+    let vectors = vectors();
+    let prefix_case =
+        first_audio_block_prefix_case(&vectors, "synthetic-first-block-prefix-with-dynrng");
+    let case = coupling_fields_case(&vectors, "synthetic-first-block-coupling-single-subband");
+    let band_structure = bool_values(&case["cplbndstrc_bits"]);
+
+    let mut output = [0xa5; 8];
+    let prefix;
+    let independent;
+    {
+        let mut writer = FrameBitWriter::new(&mut output, FrameBitCursor::new(0)).unwrap();
+        prefix = write_i0_ac3_first_audio_block_prefix(
+            &mut writer,
+            first_audio_block_prefix_input(&prefix_case),
+        )
+        .unwrap();
+        independent =
+            write_i0_ac3_first_block_cplinu(&mut writer, prefix, CallerOwnedAc3Cplinu::Independent)
+                .unwrap();
+    }
+    let before = output;
+    let cursor = independent.next_field_cursor();
+    let result;
+    {
+        let mut writer = FrameBitWriter::new(&mut output, cursor).unwrap();
+        result = write_i0_ac3_first_block_coupling_fields(
+            &mut writer,
+            independent,
+            coupling_fields_input(&case, &band_structure),
+        );
+        assert_eq!(writer.cursor(), cursor);
+    }
+    assert_eq!(result, Err(I0Ac3CouplingFieldsError::CouplingNotInUse));
+    assert_eq!(output, before);
+
+    let mut short_output = [0xa5; 4];
+    let prefix;
+    let cplinu;
+    {
+        let mut writer = FrameBitWriter::new(&mut short_output, FrameBitCursor::new(0)).unwrap();
+        prefix = write_i0_ac3_first_audio_block_prefix(
+            &mut writer,
+            first_audio_block_prefix_input(&prefix_case),
+        )
+        .unwrap();
+        cplinu =
+            write_i0_ac3_first_block_cplinu(&mut writer, prefix, CallerOwnedAc3Cplinu::Coupled)
+                .unwrap();
+        assert_eq!(writer.cursor(), FrameBitCursor::new(21));
+    }
+    let before = short_output;
+    let result;
+    let cursor;
+    {
+        let mut writer =
+            FrameBitWriter::new(&mut short_output, cplinu.next_field_cursor()).unwrap();
+        result = write_i0_ac3_first_block_coupling_fields(
+            &mut writer,
+            cplinu,
+            coupling_fields_input(&case, &band_structure),
+        );
+        cursor = writer.cursor();
+    }
+    assert_eq!(
+        result,
+        Err(I0Ac3CouplingFieldsError::BitWriter(
+            FrameBitWriterError::BufferTooSmall
+        ))
+    );
+    assert_eq!(short_output, before);
+    assert_eq!(cursor, cplinu.next_field_cursor());
 }
 
 fn read_bit(bytes: &[u8], bit_offset: u32) -> bool {
