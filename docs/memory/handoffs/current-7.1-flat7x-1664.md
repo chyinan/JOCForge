@@ -158,6 +158,12 @@ The additive Flat7x D0 assembler now reuses `integrity::crc16::eac3_crc16` after
 
 `FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1` (manifest `f949141aee93432e4dc27e126ee03e318dc86d8e2dbc9555c1052e9848e5d09f`, seal `cf28d44ea8e5d6dc6ebe714f4da4f988f33112fcded79d55616a7a1710a51ddf`) passes normal and optimized verification. Its OpenJOC structural reference reports a synthetic I0 2560-byte + D0 4096-byte 6656-byte AU, D0 chanmap `0x1A00`, and block-2 C=511 ID11/ID14/JOC index1/7-channel/15-object parse shape. The package contains expected structure, not frame bytes; it does not parse the local composer output or validate its I0 CRC. Audio-block parse, decode, PCM and real output remain `NOT_RUN`; `production_allowed=false`.
 
+## 2026-11-12 D0 structural integration boundary
+
+The available structural D0 path already composes the approved `chanmape`/U16 `chanmap` BSI pair, typed complete BSI, six-block layout, one complete block-2 skip-field, and generated CRC2 in `assemble_flat7x_d0_frame_bits`. The D0 assembler obtains BSI end from `write_flat7x_d0_bsi_structure`, then writes the skip-field at the layout-computed span with `write_flat7x_d0_block2_skipfld`.
+
+The remaining D0 API gap is the producer boundary: `Flat7xD0FrameBitInput` receives caller-owned opaque block spans, while `D0Block2SkipFieldInput` carries a caller-supplied `CallerOwnedUnboundD0Block2InsertionPoint`. No application/CLI production callsite supplies those values. The next direct Wash contract must bind six D0 block extents and the block-2 insertion cursor to the same source/generation owner; an audio-block producer remains outside the available approved material.
+
 The existing byte composer and elementary-stream composer remain structural components over caller-supplied opaque spans. Wash contracts `FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1` and `FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1` now bind the I0 frame-part sequence and CRC generation rules. The assembler below uses caller-owned encoded bit spans, generates CRC1/CRC2, and verifies synthetic zero-residual receipts. AC-3 audio-block generation, source-generation joins and product output remain open.
 
 ## 2026-11-12 Flat7x I0 AC-3 structural frame assembly
