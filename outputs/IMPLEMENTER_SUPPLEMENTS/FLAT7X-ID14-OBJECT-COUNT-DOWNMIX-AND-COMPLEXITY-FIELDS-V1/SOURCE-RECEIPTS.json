@@ -1,0 +1,23 @@
+{
+  "schema": "wash-source-receipts.v1",
+  "sources": [
+    {
+      "kind": "WASH_APPROVED_TARGET_PROFILE",
+      "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+      "manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+      "seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+      "used_for": ["target rates", "joc spatial index", "object count", "complexity target", "D0 chanmap"]
+    },
+    {
+      "kind": "WASH_REVIEWED_STATIC_NATIVE_PACKAGE",
+      "package_id": "id14_object_complexity_serializer_wash_v1",
+      "manifest_sha256": "e36dbf26bb64c05e340e9868f434a1275673d54a8d9fe03bfd8ab6c6e1635b23",
+      "package_seal_sha256": "d3b7442dd9195c3c60d165c38cfa9d9454e71a572082491563d7f269e82712f3",
+      "image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+      "wash_checkers": {"normal": "PASS", "python_O": "PASS"},
+      "used_for": ["ID14 six-bit count-minus-one rule", "separate downmix-index width selection", "F12 U8 candidate boundary"]
+    }
+  ],
+  "raw_research_artifacts_included": false,
+  "runtime_receipt": "NOT_RUN"
+}

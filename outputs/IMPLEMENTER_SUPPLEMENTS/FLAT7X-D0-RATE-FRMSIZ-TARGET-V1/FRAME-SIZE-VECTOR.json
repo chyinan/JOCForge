@@ -1,0 +1,38 @@
+{
+  "schema": "flat7x-d0-rate-frmsiz-vector.v1",
+  "delivery": "SANITIZED_IMPLEMENTER_SUPPLEMENT",
+  "status": "WASHED_PARTIAL_IMPLEMENTATION_VISIBLE",
+  "au": {
+    "ordered_substreams": ["I0", "D0"],
+    "aggregate_rate_kbps": 1664,
+    "aggregate_bytes": 6656
+  },
+  "frame_targets": {
+    "i0": {
+      "codec": "AC-3",
+      "rate_kbps": 640,
+      "sample_rate_hz": 48000,
+      "blocks_per_frame": 6,
+      "duration_ms": 32,
+      "frame_bytes": 2560
+    },
+    "d0": {
+      "codec": "E-AC-3",
+      "rate_kbps": 1024,
+      "sample_rate_hz": 48000,
+      "blocks_per_frame": 6,
+      "duration_ms": 32,
+      "frame_bytes": 4096,
+      "frmsiz_field_bits": 11,
+      "frmsiz_encoding": "frame_bytes / 2 - 1",
+      "frmsiz_value": 2047,
+      "frmsiz_hex": "0x7ff"
+    }
+  },
+  "native_binding": {
+    "profile_rate_to_typed_d0_slot": "UNBOUND",
+    "typed_d0_slot_to_frame_writer": "UNBOUND",
+    "selected_runtime_rate": "NOT_CAPTURED"
+  },
+  "runtime": "NOT_RUN"
+}

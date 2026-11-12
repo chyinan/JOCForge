@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.wash_implementer_supplement.v1",
+  "package_id": "FLAT7X-MAIN-ARCHITECTURE-REUSE-MATRIX-V1",
+  "scope": "Architecture-only role/order and reuse matrix crosswalk from sealed main reference to isolated current seams",
+  "files": [
+    {
+      "path": "FINDINGS.md",
+      "bytes": 2998,
+      "sha256": "9f0c6fb7b94407ab91ead80ea88b87acf0aa4243e362fa785487b14dedc477c4"
+    },
+    {
+      "path": "REUSE-MATRIX.json",
+      "bytes": 2805,
+      "sha256": "b2989b8ea3519b6c5c02a982184585a42c65c3eb8ed70dabb7b05f3af0072c42"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 2086,
+      "sha256": "caa7530bbe3a8fcacf42342f488228e04848eaae2fba92025db8debb5ca04760"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 2716,
+      "sha256": "570968a1f71a664491bf6376a9763dfe16fc202076bdc8137f2f5084e0c7a4b0"
+    }
+  ]
+}

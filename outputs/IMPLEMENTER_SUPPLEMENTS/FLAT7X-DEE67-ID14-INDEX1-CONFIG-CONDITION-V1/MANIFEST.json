@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.wash_implementer_supplement.v1",
+  "package_id": "FLAT7X-DEE67-ID14-INDEX1-CONFIG-CONDITION-V1",
+  "scope": "Static conditional source edge for the Flat7x ID14 downmix U3 field",
+  "files": [
+    {
+      "path": "FINDINGS.md",
+      "bytes": 1066,
+      "sha256": "289381f438f1dc56fe3deea2cff9f742b1444b3b4a624b22a42de354e18632e2"
+    },
+    {
+      "path": "NATIVE-CONDITION.json",
+      "bytes": 1717,
+      "sha256": "7fc70612742cd81394f42e1777353fa6cefee92ad43bb6899d0f5f024a1d1a70"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 1016,
+      "sha256": "06c2c68c0ac3eab5d29babb1749cef9fba3c930f4f84ffc723cc639d591bd422"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 2845,
+      "sha256": "a48b0f9a812288a194debf07a19729393bf03d46606b8b8fba2b7f4b82bd3d4a"
+    }
+  ]
+}

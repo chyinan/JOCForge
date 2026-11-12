@@ -1,0 +1,76 @@
+{
+  "schema": "jocforge.flat7x.id14_header_edges.v1",
+  "package_id": "FLAT7X-ID14-INDEX-OBJECT-HEADER-EDGES-V1",
+  "evidence_class": "Ghidra 12.2 static producer/consumer edges",
+  "candidate_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "ghidra_mode": "READ_ONLY_NO_ANALYSIS",
+  "production_allowed": false,
+  "official_demo_reference": {
+    "package_id": "OPENJOC-OFFICIAL-MKA-STRUCTURE-WASH-V1",
+    "manifest_sha256": "394406989cf724c29ee5f8c31677ff135f92552e54945a48a3733001d1a4bc54",
+    "contract": {
+      "downmix_index": 1,
+      "joc_channel_count": 7,
+      "object_count_bits": 14,
+      "object_count": 15,
+      "transport": "D0 block 2; payload IDs 11 and 14",
+      "d0_chanmap": "0x1A00",
+      "track_channels": 8
+    }
+  },
+  "native_edges": {
+    "downmix_index": {
+      "owner_field": "FUN_1801f6ca0 state+0x24c U32",
+      "read": "current invocation value copied to local ID14 header context",
+      "writer": "FUN_180235460 -> FUN_180235820 emits local value as U3",
+      "coefficient_width_consumer": "FUN_180231360 maps index 1 to width 7; direct transfer to FUN_1802315b0 param5",
+      "next_value_update": "state+0x24c update occurs after current writer; state+0x0c==1 selects value 1",
+      "current_target_generation": "UNBOUND"
+    },
+    "object_count": {
+      "producer": "code13-code14",
+      "base": "11 for selector 0; 15 for selector 1..5",
+      "state": "nested JOC state+0x08",
+      "consumers": [
+        "FUN_1802321a0 count-bounded object rows",
+        "FUN_180235820 U6 object_count_minus_one"
+      ],
+      "target_count": 15,
+      "target_encoded_u6": 14,
+      "current_target_generation": "UNBOUND"
+    },
+    "separate_domains": [
+      "coefficient channel width",
+      "container track channel count",
+      "E-AC-3 chanmap locations/value",
+      "ADM physical rows",
+      "JOC object count"
+    ],
+    "transport": {
+      "native_request_body_bytes": "1..2040 selects first_block=2",
+      "official_C_bytes": [
+        301,
+        377
+      ],
+      "official_body_B_bytes": [
+        297,
+        373
+      ],
+      "relation": "C=B+4; length compatibility only",
+      "typed_carrier_block_transfer": "UNBOUND"
+    },
+    "semantic_reader": {
+      "selected_ID14_path": "generic U8 queue copy",
+      "native_semantic_parser": "NOT_OBSERVED_ON_SELECTED_PATH",
+      "global_absence_claim": false
+    }
+  },
+  "unresolved": {
+    "current_invocation_downmix_value": "UNBOUND",
+    "same_generation_join": "UNBOUND",
+    "complexity16": "UNBOUND",
+    "native_runtime": "NOT_RUN",
+    "audio_decode": "NOT_RUN",
+    "PCM": "NOT_RUN"
+  }
+}

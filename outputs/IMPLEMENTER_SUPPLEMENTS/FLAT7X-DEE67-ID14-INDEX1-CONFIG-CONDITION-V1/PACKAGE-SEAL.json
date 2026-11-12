@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash_implementer_supplement_seal.v1",
+  "package_id": "FLAT7X-DEE67-ID14-INDEX1-CONFIG-CONDITION-V1",
+  "manifest_sha256": "3ae7489b94bc7eb811a263fbe5feeb131e9e5ef3e3b4a06d04c06ac56175048b",
+  "payload_count": 4,
+  "file_paths": [
+    "FINDINGS.md",
+    "NATIVE-CONDITION.json",
+    "SOURCE-RECEIPTS.json",
+    "verify_package.py"
+  ]
+}

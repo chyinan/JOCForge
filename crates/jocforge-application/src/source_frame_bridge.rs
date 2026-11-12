@@ -7,13 +7,14 @@ pub use jocforge_domain::codec::{
     owner::{CodecOwnerProposal, CodecOwnerRoot, CodecOwnerStageError},
     source_frame_writer::SelectedSourceFrameCandidate,
 };
+pub use jocforge_domain::transaction::CallbackLineageIdentity;
 pub use jocforge_domain::{
     analysis::owner::AnalysisNumericPlanStage, drc::NoneDrcOwnerAfterProposal,
     joc::emdf::metadata_owner::MetadataSourceProposal,
 };
 
 use jocforge_domain::{
-    analysis::source_frame::SharedAnalysisReceipt,
+    analysis::source_frame::{SharedAnalysisIdentity, SharedAnalysisReceipt},
     codec::{
         bap::BapParameters,
         published_emdf_binding::{PublishedEmdfBindingError, emdf_frame_input_for_source},
@@ -21,8 +22,18 @@ use jocforge_domain::{
             SelectedSourceFrameWriterError, prepare_selected_source_frame_candidate,
         },
     },
+    profile::{
+        Flat7xD0PcmRows, Flat7xI0D0TargetPlan, Flat7xI0PcmRows, Flat7xProvisionalSourcePcmView,
+        Flat7xProvisionalSourceRoleMap, Flat7xSourceRoleMapError,
+        build_flat7x_provisional_source_role_map,
+        project_flat7x_source_pcm_rows as project_profile_source_pcm_rows,
+    },
     publication::OutputSourceAfterProposal,
-    timeline::{PublicationDisposition, publication_for_source, source_for_callback},
+    timeline::{
+        CodecSourceIndex, FrontendCallbackIndex, PublicationDisposition, publication_for_source,
+        source_for_callback,
+    },
+    transaction::{AttemptId, CallbackTransactionId, ProgrammeId},
 };
 
 use crate::{
@@ -36,11 +47,184 @@ pub enum SourceFrameBridgeError {
     F15AdmissionRejected,
     AnalysisSharedReceiptMissing,
     MetadataSourceLineageMismatch,
+    Flat7xSourceRoleMap(Flat7xSourceRoleMapError),
+    Flat7xSourceRoleMapLineageMismatch,
     F12EmdfCursorMissing,
     F12EmdfCursorUnexpected,
     CodecSource(CodecSourceBridgeError),
     PublishedEmdf(PublishedEmdfBindingError),
     FrameWriter(SelectedSourceFrameWriterError),
+}
+
+/// Source-generation-bound receipt for the replaceable Flat7x ADM-row role projection.
+///
+/// The map keeps physical PCM rows separate from I0 carrier roles and D0 `chanmap` locations.
+/// Its row-to-role policy is provisional; the identity fields bind this exact projection to the
+/// prepared input, attempt, callback, source transaction, and selected F07/F12 source generation.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Flat7xSourceRoleMapReceipt {
+    prepared_identity: Arc<jocforge_domain::meter::prepared_job_identity::PreparedJobInputIdentity>,
+    programme_id: ProgrammeId,
+    attempt_id: AttemptId,
+    callback_index: FrontendCallbackIndex,
+    source_index: CodecSourceIndex,
+    source_transaction_id: CallbackTransactionId,
+    shared_analysis_identity: SharedAnalysisIdentity,
+    target: Flat7xI0D0TargetPlan,
+    role_map: Flat7xProvisionalSourceRoleMap,
+}
+
+impl Flat7xSourceRoleMapReceipt {
+    pub const fn callback_index(&self) -> FrontendCallbackIndex {
+        self.callback_index
+    }
+
+    pub const fn source_index(&self) -> CodecSourceIndex {
+        self.source_index
+    }
+
+    pub fn source_transaction_id(&self) -> &CallbackTransactionId {
+        &self.source_transaction_id
+    }
+
+    pub const fn target(&self) -> Flat7xI0D0TargetPlan {
+        self.target
+    }
+
+    pub const fn role_map(&self) -> &Flat7xProvisionalSourceRoleMap {
+        &self.role_map
+    }
+
+    pub const fn shared_analysis_identity(&self) -> &SharedAnalysisIdentity {
+        &self.shared_analysis_identity
+    }
+
+    pub fn is_bound_to_source(
+        &self,
+        prepared: &PreparedJobInput,
+        programme_id: &ProgrammeId,
+        attempt_id: AttemptId,
+        callback_lineage: &CallbackLineageIdentity,
+        source_index: CodecSourceIndex,
+        source_transaction_id: &CallbackTransactionId,
+    ) -> bool {
+        let identity_capability = prepared.domain_identity_capability();
+        let source_key = self.shared_analysis_identity.source_stage_key();
+        &self.programme_id == programme_id
+            && prepared.programme_id() == programme_id
+            && self.attempt_id == attempt_id
+            && callback_lineage.programme_id() == programme_id
+            && callback_lineage.attempt_id() == attempt_id
+            && callback_lineage.callback_index() == self.callback_index
+            && self.source_index == source_index
+            && &self.source_transaction_id == source_transaction_id
+            && self.shared_analysis_identity.source_index() == source_index
+            && source_key.attempt_id() == attempt_id
+            && source_key.transaction_id() == source_transaction_id
+            && source_key.source_index() == source_index
+            && source_key
+                .prepared_job_input_identity()
+                .is_some_and(|identity| Arc::ptr_eq(identity, &identity_capability))
+            && Arc::ptr_eq(&self.prepared_identity, &identity_capability)
+            && usize::from(self.role_map.physical_row_count())
+                == usize::from(prepared.configuration().wave().channels())
+    }
+}
+
+/// Same-source projection of the actual callback PCM rows through the provisional role map.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Flat7xSourcePcmProjection<'a> {
+    role_map_receipt: Flat7xSourceRoleMapReceipt,
+    pcm_view: Flat7xProvisionalSourcePcmView<'a>,
+}
+
+impl Flat7xSourcePcmProjection<'_> {
+    pub const fn role_map_receipt(&self) -> &Flat7xSourceRoleMapReceipt {
+        &self.role_map_receipt
+    }
+
+    pub const fn i0_rows(&self) -> Flat7xI0PcmRows<'_> {
+        self.pcm_view.i0()
+    }
+
+    pub const fn d0_rows(&self) -> Flat7xD0PcmRows<'_> {
+        self.pcm_view.d0()
+    }
+
+    pub const fn physical_row_count(&self) -> u16 {
+        self.pcm_view.physical_row_count()
+    }
+}
+
+/// Builds the profile-specific provisional ADM-row map and binds it to one already staged
+/// same-source analysis result. This is a value-only producer seam; it does not install state.
+pub fn bind_flat7x_source_role_map(
+    prepared: &PreparedJobInput,
+    target: Flat7xI0D0TargetPlan,
+    callback_lineage: &CallbackLineageIdentity,
+    source_index: CodecSourceIndex,
+    source_transaction_id: &CallbackTransactionId,
+    shared_analysis_identity: &SharedAnalysisIdentity,
+) -> Result<Flat7xSourceRoleMapReceipt, SourceFrameBridgeError> {
+    let prepared_identity = prepared.domain_identity_capability();
+    let source_key = shared_analysis_identity.source_stage_key();
+    if callback_lineage.programme_id() != prepared.programme_id()
+        || callback_lineage.attempt_id() != source_key.attempt_id()
+        || source_index != shared_analysis_identity.source_index()
+        || source_key.source_index() != source_index
+        || source_key.transaction_id() != source_transaction_id
+        || source_key
+            .prepared_job_input_identity()
+            .is_none_or(|identity| !Arc::ptr_eq(identity, &prepared_identity))
+    {
+        return Err(SourceFrameBridgeError::Flat7xSourceRoleMapLineageMismatch);
+    }
+    let role_map = build_flat7x_provisional_source_role_map(prepared.graph().graph(), target)
+        .map_err(SourceFrameBridgeError::Flat7xSourceRoleMap)?;
+    if usize::from(role_map.physical_row_count())
+        != usize::from(prepared.configuration().wave().channels())
+    {
+        return Err(SourceFrameBridgeError::Flat7xSourceRoleMapLineageMismatch);
+    }
+
+    Ok(Flat7xSourceRoleMapReceipt {
+        prepared_identity,
+        programme_id: prepared.programme_id().clone(),
+        attempt_id: source_key.attempt_id(),
+        callback_index: callback_lineage.callback_index(),
+        source_index,
+        source_transaction_id: source_transaction_id.clone(),
+        shared_analysis_identity: shared_analysis_identity.clone(),
+        target,
+        role_map,
+    })
+}
+
+/// Projects this callback's physical PCM rows and retains their source-bound role receipt for
+/// downstream I0/D0 producer stages.
+pub fn build_flat7x_source_pcm_projection<'a>(
+    prepared: &PreparedJobInput,
+    target: Flat7xI0D0TargetPlan,
+    callback_lineage: &CallbackLineageIdentity,
+    source_index: CodecSourceIndex,
+    source_transaction_id: &CallbackTransactionId,
+    shared_analysis_identity: &SharedAnalysisIdentity,
+    physical_pcm_rows: &'a [Vec<u32>],
+) -> Result<Flat7xSourcePcmProjection<'a>, SourceFrameBridgeError> {
+    let role_map_receipt = bind_flat7x_source_role_map(
+        prepared,
+        target,
+        callback_lineage,
+        source_index,
+        source_transaction_id,
+        shared_analysis_identity,
+    )?;
+    let pcm_view = project_profile_source_pcm_rows(role_map_receipt.role_map(), physical_pcm_rows)
+        .map_err(SourceFrameBridgeError::Flat7xSourceRoleMap)?;
+    Ok(Flat7xSourcePcmProjection {
+        role_map_receipt,
+        pcm_view,
+    })
 }
 
 /// Prepares a selected F12 frame candidate using the BAP value retained by this request's F15

@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge.wash.source_receipts.v1",
+  "package_id": "FLAT7X-ID14-INDEX-OBJECT-HEADER-EDGES-V1",
+  "source_package": {
+    "package_id": "id14_demo_contract_native_edge_wash_v1",
+    "path": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-2/outputs/id14_demo_contract_native_edge_wash_v1",
+    "manifest_sha256": "29841b2ee5553fdb71500ac4cca2f9599587480a00e61e3c655176c81e219729",
+    "package_seal_sha256": "bfc5434fe4be7fbec38a001c4b0a1e9b548f9d6a7c56ce97aaf05945580df146",
+    "wash_verification": {
+      "normal_checker": "PASS",
+      "python_optimized_checker": "PASS"
+    }
+  },
+  "target_image": {
+    "path": "D:/Programs/dee71joc/test_dee/dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "identity_status": "HASH_BOUND_TARGET_IMAGE"
+  },
+  "official_structure_parent": {
+    "package_id": "OPENJOC-OFFICIAL-MKA-STRUCTURE-WASH-V1",
+    "manifest_sha256": "394406989cf724c29ee5f8c31677ff135f92552e54945a48a3733001d1a4bc54"
+  },
+  "access": {
+    "source_code_copied": false,
+    "raw_MKA_EC3_payload_PCM_included": false,
+    "DEE_or_encoder_run": false,
+    "key_or_license_accessed": false,
+    "input_vectors": "NOT_RUN"
+  }
+}

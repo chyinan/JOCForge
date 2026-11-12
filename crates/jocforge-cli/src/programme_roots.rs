@@ -16,7 +16,7 @@ use jocforge_application::{
     },
     reader_eof_callback::{GtcOwnerId, ReaderEofMachine},
     source_analysis_bridge::AnalysisOwnerRoot,
-    source_frame_bridge::CodecOwnerRoot,
+    source_frame_bridge::{CallbackLineageIdentity, CodecOwnerRoot, Flat7xSourceRoleMapReceipt},
     spatial_callback::MainSpatialColdRoots,
 };
 
@@ -80,6 +80,7 @@ pub(crate) struct ProgrammeCallbackCommit {
     pub frame_sha256: Option<[u8; 32]>,
     pub metadata_container_bytes: Option<usize>,
     pub append: Option<DurableAppendSummary>,
+    pub flat7x_source_role_map: Option<Flat7xSourceRoleMapReceipt>,
     pub phase_generation_before: u64,
     pub phase_generation_after: u64,
     pub owner_receipts: Vec<GtcOwnerReceipt>,
@@ -453,6 +454,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
             frame_sha256: None,
             metadata_container_bytes: None,
             append: None,
+            flat7x_source_role_map: None,
             phase_generation_before: phase_generation_after - 1,
             phase_generation_after,
             owner_receipts,
@@ -464,7 +466,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
         self,
         gtc_callback_transaction_id: CallbackTransactionId,
         prepared: &PreparedJobInput,
-        advance: SourceFrameAdvance,
+        advance: SourceFrameAdvance<'_>,
     ) -> Result<(Self, ProgrammeCallbackCommit), String> {
         if prepared.programme_id() != &self.programme_id
             || self.measurement.programme_id() != prepared.programme_id()
@@ -515,6 +517,25 @@ impl<'a> ProgrammeOwnerRoots<'a> {
                 != advance.integrity_root.committed_state().generation()
         {
             return Err("Integrity proposal is not bound to this source callback root".to_owned());
+        }
+        if let Some(projection) = advance.flat7x_source_pcm_projection.as_ref() {
+            let role_map = projection.role_map_receipt();
+            let callback_lineage = CallbackLineageIdentity::new(
+                self.programme_id.clone(),
+                self.attempt,
+                callback_index,
+            );
+            if !role_map.is_bound_to_source(
+                prepared,
+                &self.programme_id,
+                self.attempt,
+                &callback_lineage,
+                source_index,
+                &advance.source_transaction_id,
+            ) || projection.physical_row_count() != role_map.role_map().physical_row_count()
+            {
+                return Err("Flat7x PCM projection is not bound to this source callback".to_owned());
+            }
         }
         let next_callback = callback_index
             .value()
@@ -659,6 +680,10 @@ impl<'a> ProgrammeOwnerRoots<'a> {
         let frame_sha256 = advance.frame_sha256;
         let metadata_container_bytes = advance.metadata_container_bytes;
         let append = advance.append;
+        let flat7x_source_role_map = advance
+            .flat7x_source_pcm_projection
+            .as_ref()
+            .map(|projection| projection.role_map_receipt().clone());
         let output_after = self
             .output
             .with_after_source(advance.output_after)
@@ -698,6 +723,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
             frame_sha256: Some(frame_sha256),
             metadata_container_bytes,
             append,
+            flat7x_source_role_map,
             phase_generation_before: next_phase_generation - 1,
             phase_generation_after: next_phase_generation,
             owner_receipts,
@@ -845,7 +871,7 @@ fn validate_receipts(
 fn validate_source_receipt_generations(
     receipts: &[GtcOwnerReceipt],
     before: &ProgrammeOwnerRoots<'_>,
-    after: &SourceFrameAdvance,
+    after: &SourceFrameAdvance<'_>,
     output_before_generation: u64,
     output_after_generation: u64,
 ) -> Result<(), String> {

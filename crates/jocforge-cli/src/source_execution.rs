@@ -19,7 +19,7 @@ use jocforge_application::{
     meter_finalization_bridge::{
         ProgrammeMeasurementReceipt, StandaloneMeterRoot, unchanged_meter_root_receipt,
     },
-    meter_source_bridge::ResolvedEncodingProfile,
+    meter_source_bridge::{Flat7xI0D0TargetPlan, JocReconstructionLayout, ResolvedEncodingProfile},
     output_publication::{
         AdmittedProductionPlan, OutputDurableAppendReceipt, OutputSourceAfterProposal,
         ProgrammeOutputBinding, prepare_output_source_from_candidate,
@@ -29,7 +29,10 @@ use jocforge_application::{
         AnalysisOwnerRoot, SelectedSourceAnalysisProviders, SpatialSourceAnalysisBridgeInput,
         prepare_source_analysis_from_spatial_callback,
     },
-    source_frame_bridge::{CodecOwnerRoot, prepare_admitted_source_frame},
+    source_frame_bridge::{
+        CodecOwnerRoot, Flat7xSourcePcmProjection, build_flat7x_source_pcm_projection,
+        prepare_admitted_source_frame,
+    },
     spatial_callback::{MainSpatialCallbackCandidate, MainSpatialColdRoots},
 };
 
@@ -51,9 +54,62 @@ pub(crate) struct DurableAppendSummary {
     pub durable: bool,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) enum Flat7xPcmRowDelivery {
+    NormalCallback,
+    CachedDrain,
+}
+
+/// Physical RIFF PCM rows carried to the Flat7x source stage with their callback/source lineage.
+pub(crate) struct Flat7xPcmSourceRows {
+    input_sha256: [u8; 32],
+    callback_index: FrontendCallbackIndex,
+    source_index: CodecSourceIndex,
+    delivery: Flat7xPcmRowDelivery,
+    physical_pcm_rows: Vec<Vec<u32>>,
+}
+
+impl Flat7xPcmSourceRows {
+    pub(crate) fn new(
+        input_sha256: [u8; 32],
+        callback_index: FrontendCallbackIndex,
+        source_index: CodecSourceIndex,
+        delivery: Flat7xPcmRowDelivery,
+        physical_pcm_rows: Vec<Vec<u32>>,
+    ) -> Self {
+        Self {
+            input_sha256,
+            callback_index,
+            source_index,
+            delivery,
+            physical_pcm_rows,
+        }
+    }
+
+    pub const fn input_sha256(&self) -> &[u8; 32] {
+        &self.input_sha256
+    }
+
+    pub const fn callback_index(&self) -> FrontendCallbackIndex {
+        self.callback_index
+    }
+
+    pub const fn source_index(&self) -> CodecSourceIndex {
+        self.source_index
+    }
+
+    pub const fn delivery(&self) -> Flat7xPcmRowDelivery {
+        self.delivery
+    }
+
+    pub fn physical_pcm_rows(&self) -> &[Vec<u32>] {
+        &self.physical_pcm_rows
+    }
+}
+
 /// Complete same-source after-values staged before a full programme parent replacement.
 #[must_use]
-pub(crate) struct SourceFrameAdvance {
+pub(crate) struct SourceFrameAdvance<'pcm> {
     pub callback_index: FrontendCallbackIndex,
     pub source_transaction_id: CallbackTransactionId,
     pub main_roots: MainSpatialColdRoots,
@@ -65,6 +121,7 @@ pub(crate) struct SourceFrameAdvance {
     pub joc_state: SelectedJocState,
     pub codec_root: CodecOwnerRoot,
     pub output_after: OutputSourceAfterProposal,
+    pub flat7x_source_pcm_projection: Option<Flat7xSourcePcmProjection<'pcm>>,
     pub source_index: CodecSourceIndex,
     pub frame_sha256: [u8; 32],
     pub metadata_container_bytes: Option<usize>,
@@ -77,7 +134,7 @@ pub(crate) struct SourceFrameAdvance {
 
 /// Stages F07-F15 for one actual source index without installing any owner root.
 #[allow(clippy::too_many_arguments)]
-pub(crate) fn stage_source_frame(
+pub(crate) fn stage_source_frame<'pcm>(
     prepared: &PreparedJobInput,
     joc_profile: ResolvedEncodingProfile,
     attempt: AttemptId,
@@ -104,7 +161,8 @@ pub(crate) fn stage_source_frame(
     output_binding_before: &ProgrammeOutputBinding,
     admitted_plan: &AdmittedProductionPlan,
     staging: &mut ProgrammeOutputStaging,
-) -> Result<SourceFrameAdvance, String> {
+    flat7x_physical_pcm_rows: Option<&'pcm Flat7xPcmSourceRows>,
+) -> Result<SourceFrameAdvance<'pcm>, String> {
     if source_for_callback_clock(callback_index) != Some(source_index)
         || spatial_callback.callback_index() != callback_index
         || main_callback_transaction.as_str().is_empty()
@@ -136,6 +194,46 @@ pub(crate) fn stage_source_frame(
         })
         .map_err(|error| format!("F07-F10 source stage: {error:?}"))?;
     let mut analysis_stage = *analysis_box;
+    let flat7x_source_pcm_projection =
+        if joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
+            let pcm_source = flat7x_physical_pcm_rows.ok_or_else(|| {
+                "Flat7x source stage requires the callback's physical PCM rows".to_owned()
+            })?;
+            let expected_input_sha = prepared.resource_identity().input_sha256();
+            let expected_delivery = if u64::from(callback_index.value())
+                < prepared.configuration().source_samples().div_ceil(1_536)
+            {
+                Flat7xPcmRowDelivery::NormalCallback
+            } else {
+                Flat7xPcmRowDelivery::CachedDrain
+            };
+            if pcm_source.input_sha256() != &expected_input_sha
+                || pcm_source.callback_index() != callback_index
+                || pcm_source.source_index() != source_index
+                || pcm_source.delivery() != expected_delivery
+            {
+                return Err(
+                    "Flat7x PCM rows do not match the current callback/source lineage".to_owned(),
+                );
+            }
+            let shared_analysis = analysis_stage.shared_analysis().ok_or_else(|| {
+                "Flat7x role map requires the current shared source analysis".to_owned()
+            })?;
+            Some(
+                build_flat7x_source_pcm_projection(
+                    prepared,
+                    Flat7xI0D0TargetPlan::approved_contract(),
+                    &callback_identity,
+                    source_index,
+                    &source_transaction_id,
+                    shared_analysis.identity(),
+                    pcm_source.physical_pcm_rows(),
+                )
+                .map_err(|error| format!("Flat7x source PCM projection: {error:?}"))?,
+            )
+        } else {
+            None
+        };
 
     let drc_source =
         prepare_drc_source_from_analysis(prepared, drc_before, &analysis_stage, &callback_identity)
@@ -406,6 +504,7 @@ pub(crate) fn stage_source_frame(
         joc_state,
         codec_root: *codec_proposal.after_state(),
         output_after,
+        flat7x_source_pcm_projection,
         source_index,
         frame_sha256,
         metadata_container_bytes,

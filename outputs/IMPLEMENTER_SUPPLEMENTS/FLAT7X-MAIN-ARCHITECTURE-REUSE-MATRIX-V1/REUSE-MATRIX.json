@@ -1,0 +1,86 @@
+{
+  "schema": "jocforge.flat7x.main_architecture_reuse_matrix.v1",
+  "package_id": "FLAT7X-MAIN-ARCHITECTURE-REUSE-MATRIX-V1",
+  "evidence_class": "HASH_BOUND_ARCHITECTURE_REFERENCE",
+  "production_allowed": false,
+  "reuse_decisions": [
+    {
+      "concern": "ordered I0 then D0 assembly",
+      "main_fact": "separate frame roles and explicit I0->D0 vector order",
+      "isolated_seam": [
+        "Flat7xI0D0TargetPlan",
+        "compose_flat7x_au_byte_sequence",
+        "Flat7xAuOutputOwner"
+      ],
+      "action": "reuse architectural ordering only"
+    },
+    {
+      "concern": "frame role ownership",
+      "main_fact": "OwnershipPlan distinguishes independent/dependent role ownership",
+      "isolated_seam": [
+        "Flat7xAuOutputOwner",
+        "F13/I0/D0 integrity receipts"
+      ],
+      "action": "reuse typed ownership idea, not code or row values"
+    },
+    {
+      "concern": "bit I/O and CRC",
+      "main_fact": "legacy writer helpers",
+      "isolated_seam": [
+        "FrameBitWriter",
+        "D0 CRC2 generation",
+        "ETSI I0 AC3 contracts"
+      ],
+      "action": "implement from approved isolated/ETSI contracts"
+    },
+    {
+      "concern": "legacy profile/rates",
+      "main_fact": "legacy Flat-7.X chanmap 0x0200 and 1024+640 choices",
+      "target": "I0=640, D0=1024, chanmap=0x1A00, Flat7x/index1",
+      "action": "legacy constants are incompatible; keep target profile separate"
+    },
+    {
+      "concern": "D0 audio",
+      "main_fact": "legacy D0 writer/audio algorithm exists in main",
+      "isolated_status": "D0 source-role and audio producer UNBOUND",
+      "action": "do not copy legacy or FFmpeg audio path"
+    },
+    {
+      "concern": "publication",
+      "main_fact": "main returns concatenated bytes in memory",
+      "isolated_seam": [
+        "F15 AU receipt owner",
+        "I0+D0 staging proposal"
+      ],
+      "action": "retain isolated transaction model; final exposure remains open"
+    },
+    {
+      "concern": "5.1 compatibility",
+      "isolated_status": "existing 5.1 multirate path separate",
+      "action": "preserve its writer/resolver and regression coverage"
+    }
+  ],
+  "target": {
+    "i0_kbps": 640,
+    "d0_kbps": 1024,
+    "aggregate_kbps": 1664,
+    "d0_chanmap": "0x1A00",
+    "joc_layout": "Flat7x",
+    "joc_index": 1,
+    "joc_coefficient_channels": 7,
+    "joc_objects": 15,
+    "official_sample_rate_reference_kbps": [
+      640,
+      640
+    ],
+    "official_sample_total_kbps": 1280
+  },
+  "open_audio_gates": [
+    "I0 legacy AC3 audio blocks and real-frame CRC",
+    "D0 source-role mapping",
+    "D0 audio behavior",
+    "same-source-generation I0+D0 join",
+    "all-AU EMDF fit",
+    "real product output"
+  ]
+}

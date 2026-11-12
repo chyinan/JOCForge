@@ -1,0 +1,22 @@
+{
+  "schema": "wash-source-receipts.v1",
+  "sources": [
+    {
+      "kind": "WASH_APPROVED_TARGET_PROFILE",
+      "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+      "manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+      "seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+      "used_for": ["I0/D0 aggregate and target rate split"]
+    },
+    {
+      "kind": "WASH_REVIEWED_RATE_AND_FIELD_WIDTH_PACKAGE",
+      "package_id": "DEE67-RATE-SELECTOR-ALTERNATE-CALLER-EDGE-WASH-V1",
+      "manifest_sha256": "8b4da8bf6267f10012b7551360ed4a84000163ece707808c092e3597f36b1ae8",
+      "package_seal_sha256": "c5e8080ebed68c239b6b4f29abad8eceeed09a00274b71dd3fdb78f2a2f6771c",
+      "wash_checkers": {"normal": "PASS", "python_O": "PASS"},
+      "used_for": ["target D0 4096-byte frame arithmetic", "11-bit frmsiz vector", "native join remains UNBOUND"]
+    }
+  ],
+  "raw_research_artifacts_included": false,
+  "media_pcm_payload_key_license_read": false
+}

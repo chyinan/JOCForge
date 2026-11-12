@@ -1,0 +1,34 @@
+{
+  "schema": "jocforge.wash.source_receipts.v1",
+  "package_id": "FLAT7X-MAIN-ARCHITECTURE-REUSE-MATRIX-V1",
+  "main_reference_package": {
+    "package_id": "JOCFORGE-MAIN-ISOLATED-I0-D0-REFERENCE-V1",
+    "path": "C:/Users/chyinan/Documents/Codex/2026-11-03/jocforge-reverse-agent-5/outputs/JOCFORGE-MAIN-ISOLATED-I0-D0-REFERENCE-V1",
+    "manifest_sha256": "845e66208f997e14741b54f9fbc0458dd3bee0d7c97372fbc1b5c863e740647c",
+    "package_seal_sha256": "c2fef10b9133d361fedc6859017f18e9cb1731f347e3ba27874dc5b9234c229",
+    "normal_checker": "PASS",
+    "python_optimized_checker": "PASS",
+    "main_commit": "05a4108e0c6288130dec1203b301979a91475fca",
+    "isolated_snapshot_in_parent_package": "92dbd01a6f53c11cbc3ec8a9025b4422365b7b02"
+  },
+  "current_isolated_snapshot": {
+    "head_and_remote": "9456d4ca2c105ba2c799bf24a1545af2eb3e1d48",
+    "worktree": "DIRTY; unrelated and current I0 assembler edits preserved",
+    "file_sha256": {
+      "crates/jocforge-domain/src/profile/production.rs": "0914633c0c628cef2cdbe6c71758c4489ef3d3183d1de0d8fac88059c97a83f",
+      "crates/jocforge-domain/src/codec/d0_frame_assembler.rs": "4cfd1fdeb420ce408b7a6a315eaac6d05f5bd7feb273cdec31cca4bdabcbcfef",
+      "crates/jocforge-domain/src/codec/i0_frame_assembler.rs": "9ab7c8bf28e57ff098221c3d20f9a7fe5d37ddfca90ed11de8310fe0ade91ac0",
+      "crates/jocforge-domain/src/joc/huffman/id14_header.rs": "46302ebb0c2b320c51b1fc6e3101bb0f31238294344ebc6aedec504cb747eb1f",
+      "crates/jocforge-domain/src/publication/flat7x_au_output.rs": "95bd4919eaa5bb74a7cca393dea2a8d0d8b8bd27acdf16797636c5f7fa707048",
+      "crates/jocforge-io/src/flat7x_au_append.rs": "b3309a9d408fa62d7848e9d905a150a26ceb01bba365bbabbe3ea166264cd63a",
+      "docs/architecture/OLD-WIRE-REUSE-MATRIX.md": "c8ddf2c2be9dc6abeb1a217f0f849f0f48a75d18bcaa089f17b44cd0eff3f25"
+    }
+  },
+  "access": {
+    "main_source_code_copied": false,
+    "old_audio_algorithm_included": false,
+    "ffmpeg_path_included": false,
+    "codec_run": "NOT_RUN",
+    "media_or_payload_read": "NOT_RUN"
+  }
+}

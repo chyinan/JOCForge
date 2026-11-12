@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash_implementer_supplement_seal.v1",
+  "package_id": "FLAT7X-MAIN-ARCHITECTURE-REUSE-MATRIX-V1",
+  "manifest_sha256": "3d54cf6d72c56eb24ac5565712c71ce3f59375ffb5851cab426db31fba157e1a",
+  "payload_count": 4,
+  "file_paths": [
+    "FINDINGS.md",
+    "REUSE-MATRIX.json",
+    "SOURCE-RECEIPTS.json",
+    "verify_package.py"
+  ]
+}

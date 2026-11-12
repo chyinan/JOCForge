@@ -81,6 +81,7 @@ pub struct Flat7xTargetId14HeaderInput {
 pub enum Flat7xTargetId14HeaderError {
     MissingTargetContract,
     UnsupportedTargetContract,
+    DownmixIndexMismatch { expected: u8, actual: u32 },
     ObjectCountMismatch { expected: u8, actual: u32 },
     MissingDescriptorList,
     DescriptorCountMismatch { expected: u8, actual: usize },
@@ -220,6 +221,8 @@ pub fn write_id14_header_for_flat7x_target(
     let approved = Flat7xI0D0TargetPlan::approved_contract();
     if target != approved
         || target.joc_dmx_config_idx() != 1
+        || target.joc_spatial_index().value() != 1
+        || target.downmix_index().value() != 1
         || target.coded_object_count() != 15
         || target.complexity_index_type_a() != 16
         || target.reconstruction_carriers().len() != 7
@@ -227,7 +230,15 @@ pub fn write_id14_header_for_flat7x_target(
         return Err(Flat7xTargetId14HeaderError::UnsupportedTargetContract);
     }
 
-    let expected_object_count = target.coded_object_count();
+    let expected_downmix_index = u32::from(target.downmix_index().value());
+    if input.downmix_index != expected_downmix_index {
+        return Err(Flat7xTargetId14HeaderError::DownmixIndexMismatch {
+            expected: target.downmix_index().value(),
+            actual: input.downmix_index,
+        });
+    }
+
+    let expected_object_count = target.joc_object_count();
     if input.object_count != u32::from(expected_object_count) {
         return Err(Flat7xTargetId14HeaderError::ObjectCountMismatch {
             expected: expected_object_count,

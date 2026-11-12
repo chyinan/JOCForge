@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge.wash_implementer_supplement_seal.v1",
+  "package_id": "FLAT7X-ID14-INDEX-OBJECT-HEADER-EDGES-V1",
+  "manifest_sha256": "d2d24da28cc269a95ed06a4c50c6ab6a20be6cb4214502e12ab059e38b5d1dff",
+  "payload_count": 4,
+  "file_paths": [
+    "FINDINGS.md",
+    "ID14-HEADER-EDGES.json",
+    "SOURCE-RECEIPTS.json",
+    "verify_package.py"
+  ]
+}

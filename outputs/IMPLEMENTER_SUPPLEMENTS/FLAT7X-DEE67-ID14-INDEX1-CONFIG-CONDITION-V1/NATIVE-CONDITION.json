@@ -1,0 +1,46 @@
+{
+  "schema": "jocforge.flat7x.dee67_id14_index1_condition.v1",
+  "package_id": "FLAT7X-DEE67-ID14-INDEX1-CONFIG-CONDITION-V1",
+  "production_allowed": false,
+  "evidence_class": "STATIC_CONDITIONAL_RULE",
+  "candidate_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "ghidra_mode": "READ_ONLY_NO_ANALYSIS",
+  "edge_sequence": [
+    {
+      "function": "FUN_1801bfdb0",
+      "condition": "param_10 == 0x15",
+      "write": "parent+0x1832c = U32(1)",
+      "param_10_semantic_identity": "UNBOUND"
+    },
+    {
+      "function": "FUN_1801f7840",
+      "operation": "copies parent+0x1832c to constructed state+0x0c",
+      "operation_2": "publishes constructed state pointer at parent+0x18318"
+    },
+    {
+      "function": "FUN_1801f6ca0",
+      "read": "state+0x0c",
+      "conditional_effect": "value 1 stores state+0x24c = 1 after current ID14 writer",
+      "writer": "reads current state+0x24c snapshot and emits U3",
+      "current_invocation_value": "NOT_CAPTURED",
+      "same_generation_target_join": "UNBOUND"
+    }
+  ],
+  "reference_contract": {
+    "official_reference_package": "OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1",
+    "manifest_sha256": "f7f8630c3f18e990324f013e70486c561de6816a844f852f18f03a82ce28fbfc",
+    "downmix_index": 1,
+    "joc_channel_count": 7,
+    "joc_object_count": 15,
+    "track_channels": 8,
+    "d0_chanmap": "0x1A00",
+    "relation_to_static_condition": "COMPATIBLE_BUT_RUNTIME_JOIN_UNBOUND"
+  },
+  "access": {
+    "dee_or_encoder_run": false,
+    "media_or_payload_read": false,
+    "pcm_read_or_saved": false,
+    "private_key_or_license_accessed": false,
+    "input_vectors": "NOT_RUN"
+  }
+}

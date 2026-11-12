@@ -15,6 +15,46 @@ pub enum Flat7xSubstreamRole {
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Flat7xFrameCodec {
+    Ac3,
+    Eac3,
+}
+
+/// JOC spatial-profile selector, distinct from coefficient downmix selection.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum JocSpatialIndex {
+    Flat7x,
+}
+
+impl JocSpatialIndex {
+    pub const fn value(self) -> u8 {
+        match self {
+            Self::Flat7x => 1,
+        }
+    }
+}
+
+/// Coefficient downmix selector, distinct from the JOC spatial-profile selector.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum DownmixIndex {
+    SevenChannel,
+}
+
+impl DownmixIndex {
+    pub const fn value(self) -> u8 {
+        match self {
+            Self::SevenChannel => 1,
+        }
+    }
+
+    pub const fn coefficient_width(self) -> u8 {
+        match self {
+            Self::SevenChannel => 7,
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Eac3CodedChannel {
     Left,
     Center,
@@ -79,10 +119,13 @@ impl DependentChannelMap {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Flat7xFrameTarget {
     role: Flat7xSubstreamRole,
+    codec: Flat7xFrameCodec,
+    bsid: u8,
     substream_id: Eac3SubstreamId,
     acmod: Eac3Acmod,
     lfeon: bool,
     channel_map: Option<DependentChannelMap>,
+    dmixmod: Option<u8>,
     rate: CodecRateProfile,
     frame_bytes: u16,
     coded_channels: &'static [Eac3CodedChannel],
@@ -91,6 +134,14 @@ pub struct Flat7xFrameTarget {
 impl Flat7xFrameTarget {
     pub const fn role(self) -> Flat7xSubstreamRole {
         self.role
+    }
+
+    pub const fn codec(self) -> Flat7xFrameCodec {
+        self.codec
+    }
+
+    pub const fn bsid(self) -> u8 {
+        self.bsid
     }
 
     pub const fn substream_id(self) -> Eac3SubstreamId {
@@ -109,6 +160,11 @@ impl Flat7xFrameTarget {
         self.channel_map
     }
 
+    /// Returns the demo-observed I0 AC-3 `dmixmod`; D0 has no such field.
+    pub const fn dmixmod(self) -> Option<u8> {
+        self.dmixmod
+    }
+
     pub const fn rate(self) -> CodecRateProfile {
         self.rate
     }
@@ -123,15 +179,18 @@ impl Flat7xFrameTarget {
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum Flat7xDownmixControls {
+pub enum JocDownmixAlgorithmControls {
+    /// Algorithm-level mode/phase controls are separate from I0 `dmixmod` and
+    /// the JOC wire `phase_signaling` value captured from the official demo.
     Unbound,
 }
 
+pub type Flat7xDownmixControls = JocDownmixAlgorithmControls;
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Flat7xOpenGate {
-    I0ExactBsid,
     AdmSourceRowToD0RoleJoin,
-    DownmixModeAndPhase,
+    JocDownmixAlgorithmControls,
     RuntimeSourceGenerationJoin,
     NativeD0AudioAlgorithm,
     NativeD0WriterOwner,
@@ -185,13 +244,18 @@ pub struct Flat7xI0D0TargetPlan {
     i0: Flat7xFrameTarget,
     d0: Flat7xFrameTarget,
     reconstruction_layout: JocReconstructionLayout,
-    joc_dmx_config_idx: u8,
+    joc_spatial_index: JocSpatialIndex,
+    downmix_index: DownmixIndex,
+    joc_extension_idx: u8,
+    joc_phase_signaling: bool,
     reconstruction_carriers: [ReconstructionCarrierPosition; 7],
-    coded_object_count: u8,
+    joc_object_count: u8,
     complexity_index_type_a: u8,
-    downmix_controls: Flat7xDownmixControls,
+    joc_downmix_controls: JocDownmixAlgorithmControls,
+    emdf_payload_ids: [u8; 2],
+    emdf_group_id: u8,
     d0_emdf_skip_field: D0EmdfSkipFieldTarget,
-    open_gates: [Flat7xOpenGate; 7],
+    open_gates: [Flat7xOpenGate; 6],
 }
 
 impl Flat7xI0D0TargetPlan {
@@ -220,26 +284,35 @@ impl Flat7xI0D0TargetPlan {
             samples_per_frame: 1_536,
             i0: Flat7xFrameTarget {
                 role: Flat7xSubstreamRole::IndependentI0,
+                codec: Flat7xFrameCodec::Ac3,
+                bsid: 6,
                 substream_id: Eac3SubstreamId(0),
                 acmod: Eac3Acmod(7),
                 lfeon: true,
                 channel_map: None,
+                dmixmod: Some(1),
                 rate: CodecRateProfile::Kbps640,
                 frame_bytes: 2_560,
                 coded_channels: I0_CHANNELS,
             },
             d0: Flat7xFrameTarget {
                 role: Flat7xSubstreamRole::DependentD0,
+                codec: Flat7xFrameCodec::Eac3,
+                bsid: 16,
                 substream_id: Eac3SubstreamId(0),
                 acmod: Eac3Acmod(5),
                 lfeon: false,
                 channel_map: Some(DependentChannelMap(0x1a00)),
+                dmixmod: None,
                 rate: CodecRateProfile::Kbps1024,
                 frame_bytes: 4_096,
                 coded_channels: D0_CHANNELS,
             },
             reconstruction_layout: JocReconstructionLayout::Flat7x,
-            joc_dmx_config_idx: 1,
+            joc_spatial_index: JocSpatialIndex::Flat7x,
+            downmix_index: DownmixIndex::SevenChannel,
+            joc_extension_idx: 0,
+            joc_phase_signaling: false,
             reconstruction_carriers: [
                 ReconstructionCarrierPosition::Left,
                 ReconstructionCarrierPosition::Right,
@@ -249,9 +322,11 @@ impl Flat7xI0D0TargetPlan {
                 ReconstructionCarrierPosition::LeftRearSurround,
                 ReconstructionCarrierPosition::RightRearSurround,
             ],
-            coded_object_count: 15,
+            joc_object_count: 15,
             complexity_index_type_a: 16,
-            downmix_controls: Flat7xDownmixControls::Unbound,
+            joc_downmix_controls: JocDownmixAlgorithmControls::Unbound,
+            emdf_payload_ids: [11, 14],
+            emdf_group_id: 0,
             d0_emdf_skip_field: D0EmdfSkipFieldTarget {
                 zero_based_audio_block: 2,
                 field_count: 1,
@@ -260,9 +335,8 @@ impl Flat7xI0D0TargetPlan {
                 overflow_policy: Flat7xEmdfOverflowPolicy::RejectWholeAccessUnitBeforePublish,
             },
             open_gates: [
-                Flat7xOpenGate::I0ExactBsid,
                 Flat7xOpenGate::AdmSourceRowToD0RoleJoin,
-                Flat7xOpenGate::DownmixModeAndPhase,
+                Flat7xOpenGate::JocDownmixAlgorithmControls,
                 Flat7xOpenGate::RuntimeSourceGenerationJoin,
                 Flat7xOpenGate::NativeD0AudioAlgorithm,
                 Flat7xOpenGate::NativeD0WriterOwner,
@@ -322,15 +396,37 @@ impl Flat7xI0D0TargetPlan {
     }
 
     pub const fn joc_dmx_config_idx(self) -> u8 {
-        self.joc_dmx_config_idx
+        self.joc_spatial_index.value()
+    }
+
+    pub const fn joc_spatial_index(self) -> JocSpatialIndex {
+        self.joc_spatial_index
+    }
+
+    pub const fn downmix_index(self) -> DownmixIndex {
+        self.downmix_index
+    }
+
+    pub const fn joc_extension_idx(self) -> u8 {
+        self.joc_extension_idx
+    }
+
+    /// Returns the observed JOC wire signaling value, separate from algorithm controls.
+    pub const fn joc_phase_signaling(self) -> bool {
+        self.joc_phase_signaling
     }
 
     pub const fn reconstruction_carriers(self) -> [ReconstructionCarrierPosition; 7] {
         self.reconstruction_carriers
     }
 
+    pub const fn joc_object_count(self) -> u8 {
+        self.joc_object_count
+    }
+
+    /// Returns the semantic JOC object count used by the ID14 header.
     pub const fn coded_object_count(self) -> u8 {
-        self.coded_object_count
+        self.joc_object_count
     }
 
     pub const fn complexity_index_type_a(self) -> u8 {
@@ -338,7 +434,19 @@ impl Flat7xI0D0TargetPlan {
     }
 
     pub const fn downmix_controls(self) -> Flat7xDownmixControls {
-        self.downmix_controls
+        self.joc_downmix_controls
+    }
+
+    pub const fn joc_downmix_algorithm_controls(self) -> JocDownmixAlgorithmControls {
+        self.joc_downmix_controls
+    }
+
+    pub const fn emdf_payload_ids(self) -> [u8; 2] {
+        self.emdf_payload_ids
+    }
+
+    pub const fn emdf_group_id(self) -> u8 {
+        self.emdf_group_id
     }
 
     pub const fn d0_emdf_skip_field(self) -> D0EmdfSkipFieldTarget {
@@ -361,7 +469,7 @@ impl Flat7xI0D0TargetPlan {
         false
     }
 
-    pub const fn open_gates(self) -> [Flat7xOpenGate; 7] {
+    pub const fn open_gates(self) -> [Flat7xOpenGate; 6] {
         self.open_gates
     }
 }
@@ -721,16 +829,22 @@ mod tests {
             ]
         );
         assert_eq!(plan.i0().substream_id().value(), 0);
+        assert_eq!(plan.i0().codec(), Flat7xFrameCodec::Ac3);
+        assert_eq!(plan.i0().bsid(), 6);
         assert_eq!(plan.i0().acmod().value(), 7);
         assert!(plan.i0().lfeon());
         assert_eq!(plan.i0().channel_map(), None);
+        assert_eq!(plan.i0().dmixmod(), Some(1));
         assert_eq!(plan.i0().rate(), CodecRateProfile::Kbps640);
         assert_eq!(plan.i0().frame_bytes(), 2_560);
         assert_eq!(plan.i0().coded_channels().len(), 6);
 
         assert_eq!(plan.d0().substream_id().value(), 0);
+        assert_eq!(plan.d0().codec(), Flat7xFrameCodec::Eac3);
+        assert_eq!(plan.d0().bsid(), 16);
         assert_eq!(plan.d0().acmod().value(), 5);
         assert!(!plan.d0().lfeon());
+        assert_eq!(plan.d0().dmixmod(), None);
         assert_eq!(
             plan.d0().channel_map().map(DependentChannelMap::value),
             Some(0x1a00)
@@ -743,6 +857,8 @@ mod tests {
         );
         assert_eq!(plan.d0().rate(), CodecRateProfile::Kbps1024);
         assert_eq!(plan.d0().frame_bytes(), 4_096);
+        assert_eq!(plan.d0().rate().frame_size_code(), Some(2_047));
+        assert_eq!(plan.d0().rate().frame_bytes(), Some(4_096));
         assert_eq!(plan.d0().coded_channels().len(), 4);
 
         assert_eq!(plan.aggregate_rate_kbps(), Some(1_664));
@@ -759,7 +875,13 @@ mod tests {
             plan.reconstruction_layout(),
             JocReconstructionLayout::Flat7x
         );
+        assert_eq!(plan.joc_spatial_index(), JocSpatialIndex::Flat7x);
         assert_eq!(plan.joc_dmx_config_idx(), 1);
+        assert_eq!(plan.downmix_index(), DownmixIndex::SevenChannel);
+        assert_eq!(plan.downmix_index().value(), 1);
+        assert_eq!(plan.downmix_index().coefficient_width(), 7);
+        assert_eq!(plan.joc_extension_idx(), 0);
+        assert!(!plan.joc_phase_signaling());
         assert_eq!(
             plan.reconstruction_carriers(),
             [
@@ -772,9 +894,15 @@ mod tests {
                 ReconstructionCarrierPosition::RightRearSurround,
             ]
         );
+        assert_eq!(plan.joc_object_count(), 15);
         assert_eq!(plan.coded_object_count(), 15);
         assert_eq!(plan.complexity_index_type_a(), 16);
-        assert_eq!(plan.downmix_controls(), Flat7xDownmixControls::Unbound);
+        assert_eq!(plan.emdf_payload_ids(), [11, 14]);
+        assert_eq!(plan.emdf_group_id(), 0);
+        assert_eq!(
+            plan.joc_downmix_algorithm_controls(),
+            JocDownmixAlgorithmControls::Unbound
+        );
     }
 
     #[test]
@@ -794,15 +922,15 @@ mod tests {
         assert!(plan.atomic_pair_publication_required());
         assert!(!plan.partial_i0_publication_allowed());
         assert!(!plan.production_allowed());
-        assert_eq!(plan.open_gates().len(), 7);
+        assert_eq!(plan.open_gates().len(), 6);
     }
 
     #[test]
     fn flat7x_target_id14_header_rejects_invalid_target_before_writer_mutation() {
         let mut target = Flat7xI0D0TargetPlan::approved_contract();
-        target.coded_object_count = 14;
+        target.joc_object_count = 14;
         let input = Flat7xTargetId14HeaderInput {
-            downmix_index: 3,
+            downmix_index: 1,
             object_count: 15,
             extension_config: 0,
             clip_gain_index: 0,

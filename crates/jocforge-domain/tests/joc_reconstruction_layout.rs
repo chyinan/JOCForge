@@ -203,7 +203,10 @@ fn flat7x_target_header_writes_index1_and_count15_as_u6_count_minus_one() {
     let target = Flat7xI0D0TargetPlan::approved_contract();
     let profile = resolved_flat7x_profile();
     assert_eq!(target.joc_dmx_config_idx(), 1);
-    assert_eq!(target.coded_object_count(), 15);
+    assert_eq!(target.joc_spatial_index().value(), 1);
+    assert_eq!(target.downmix_index().value(), 1);
+    assert_eq!(target.downmix_index().coefficient_width(), 7);
+    assert_eq!(target.joc_object_count(), 15);
     assert_eq!(target.complexity_index_type_a(), 16);
     assert_eq!(target.reconstruction_carriers().len(), 7);
     assert_eq!(target.accepted_physical_channel_counts(), [36, 38]);
@@ -213,14 +216,14 @@ fn flat7x_target_header_writes_index1_and_count15_as_u6_count_minus_one() {
         JocDownmixProfile::SelectedMode0Phase1Index3
     );
 
-    let input = flat7x_target_header_input(3, 15, 0);
+    let input = flat7x_target_header_input(1, 15, 0);
     let mut writer = Id14WriterState::new(vec![0xa5; 64]);
     let outcome = write_id14_header_for_flat7x_target(&input, Some(target), &mut writer).unwrap();
 
     assert_eq!(outcome.return_code(), Id14WriterReturnCode::Success);
     assert_eq!(first_bits(writer.buffer(), 9), "001001110");
     assert_eq!(writer.output_length().value(), 6);
-    assert_eq!(input.downmix_index, 3);
+    assert_eq!(input.downmix_index, 1);
     assert_eq!(input.object_count, 15);
 }
 
@@ -242,7 +245,20 @@ fn flat7x_target_header_rejects_missing_contract_and_count_mismatch_atomically()
 
     assert_eq!(
         write_id14_header_for_flat7x_target(
-            &flat7x_target_header_input(3, 14, 0),
+            &flat7x_target_header_input(3, 15, 0),
+            Some(target),
+            &mut writer,
+        ),
+        Err(Flat7xTargetId14HeaderError::DownmixIndexMismatch {
+            expected: 1,
+            actual: 3,
+        })
+    );
+    assert_eq!(writer, original);
+
+    assert_eq!(
+        write_id14_header_for_flat7x_target(
+            &flat7x_target_header_input(1, 14, 0),
             Some(target),
             &mut writer,
         ),

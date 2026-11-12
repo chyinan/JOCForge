@@ -53,8 +53,13 @@ fn wash_cli_vectors_select_or_reject_layout_before_source_admission() {
             vector.get("expected_profile").and_then(Value::as_str),
             vector.get("expected_result").and_then(Value::as_str),
         ) {
-            (Some("existing_selected_1024_5_1" | "flat7x_1024_5_1_core"), None) => {
+            (Some("existing_selected_1024_5_1"), None) => {
                 assert!(stderr.contains("encode requires absolute input and output file paths"));
+            }
+            (Some("flat7x_1024_5_1_core"), None) => {
+                // The historical selector vector predates the current I0+D0 pair target.
+                // The active Flat7x row now fails closed before source admission.
+                assert!(stderr.contains("Flat7x paired output is not ready"));
             }
             (None, Some("reject before encoder execution")) => {
                 assert!(stderr.contains("joc-layout must be flat7x"));

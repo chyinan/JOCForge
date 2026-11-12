@@ -1,0 +1,53 @@
+{
+  "schema": "flat7x-id14-object-count-downmix-complexity-fields.v1",
+  "delivery": "SANITIZED_IMPLEMENTER_SUPPLEMENT",
+  "status": "WASHED_PARTIAL",
+  "target": {
+    "independent_rate_kbps": 640,
+    "dependent_rate_kbps": 1024,
+    "aggregate_au_rate_kbps": 1664,
+    "joc_spatial_index": 1,
+    "downmix_index": 1,
+    "downmix_coefficient_width": 7,
+    "joc_object_count": 15,
+    "id14_object_count_bits": 14,
+    "id14_object_count_field_width_bits": 6,
+    "complexity_index_type_a": 16,
+    "complexity_index_type_a_field_width_bits": 8,
+    "d0_chanmap": "0x1A00"
+  },
+  "native_static_rules": {
+    "id14_object_count": {
+      "field_width_bits": 6,
+      "encoding_rule": "count_minus_one",
+      "target_example_count": 15,
+      "target_example_encoded_value": 14,
+      "runtime_invocation_join": "UNBOUND"
+    },
+    "downmix_index": {
+      "field_width_bits": 3,
+      "observed_value": 1,
+      "selected_coefficient_processing_width": 7,
+      "runtime_profile_join": "UNBOUND"
+    },
+    "f12_complexity_candidate": {
+      "source": "configuration scalar candidate",
+      "serialization_width_bits": 8,
+      "target_value_join": "UNBOUND",
+      "id14_count_join": "UNBOUND",
+      "owner_generation_join": "UNBOUND"
+    }
+  },
+  "dimension_separation": {
+    "joc_spatial_index_equals_downmix_index": false,
+    "joc_object_count_equals_adm_physical_row_count": false,
+    "d0_chanmap_equals_joc_object_count": false,
+    "complexity_index_derived_from_object_count": false
+  },
+  "scope": {
+    "d0_channel_role_owner": "UNBOUND",
+    "seven_carrier_audio_algorithm": "NOT_DEFINED_HERE",
+    "native_runtime": "NOT_RUN",
+    "runtime_output_equivalence": "NOT_ESTABLISHED"
+  }
+}

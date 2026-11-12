@@ -747,6 +747,8 @@ fn run_inner(
                     roots.main(),
                     roots.reader_eof(),
                     &main_providers,
+                    resolved_joc_profile.joc_reconstruction_layout()
+                        == JocReconstructionLayout::Flat7x,
                 )?
             } else {
                 stage_main_cached_callback_candidate(
@@ -755,6 +757,8 @@ fn run_inner(
                     callback_index,
                     &roots,
                     &main_providers,
+                    resolved_joc_profile.joc_reconstruction_layout()
+                        == JocReconstructionLayout::Flat7x,
                 )?
             };
             if pending.callback_index != callback_index {
@@ -788,12 +792,19 @@ fn run_inner(
                     roots.output(),
                     &plan,
                     &mut staging,
+                    pending.flat7x_physical_pcm_rows.as_ref(),
                 )
                 .map_err(EncodeRequestError::SourcePipeline)?;
                 let (next_roots, receipt) = roots
                     .commit_source_advance(callback_transaction_id, &prepared, advance)
                     .map_err(EncodeRequestError::SourcePipeline)?;
                 roots = next_roots;
+                let flat7x_role_map_assumption = receipt
+                    .flat7x_source_role_map
+                    .as_ref()
+                    .map_or("not_selected", |role_map| {
+                        role_map.role_map().assumption_id()
+                    });
                 committed_callbacks = committed_callbacks.checked_add(1).ok_or_else(|| {
                     EncodeRequestError::SourcePipeline("callback count overflow".to_owned())
                 })?;
@@ -840,7 +851,7 @@ fn run_inner(
                         || append.au_index + 1 == roots.expected_published()
                     {
                         eprintln!(
-                            "AU append committed: g={} callback_tx={} source={} source_tx={} au={} frame_bytes={} crc_residual={} durable={} published={}/{} phase_generation={}->{}",
+                            "AU append committed: g={} callback_tx={} source={} source_tx={} au={} frame_bytes={} crc_residual={} durable={} published={}/{} role_map_assumption={} phase_generation={}->{}",
                             receipt.callback_index.value(),
                             receipt.callback_transaction_id.as_str(),
                             receipt.source_index.map_or(u64::MAX, |index| index.value()),
@@ -854,6 +865,7 @@ fn run_inner(
                             append.durable,
                             roots.published_aus(),
                             roots.expected_published(),
+                            flat7x_role_map_assumption,
                             receipt.phase_generation_before,
                             receipt.phase_generation_after,
                         );
@@ -1016,6 +1028,7 @@ fn run_inner(
 struct PendingMainCallback {
     callback_index: FrontendCallbackIndex,
     source_index: Option<CodecSourceIndex>,
+    flat7x_physical_pcm_rows: Option<crate::source_execution::Flat7xPcmSourceRows>,
     frontend: Option<FrontendControlReplacementCandidate>,
     spatial: MainSpatialCallbackCandidate,
     reader_eof_candidate: ReaderEofReplacementCandidate,
@@ -1030,6 +1043,7 @@ fn stage_main_callback_candidate(
     roots: &MainSpatialColdRoots,
     reader_eof_before: &ReaderEofMachine,
     providers: &crate::selected_spatial_callback_providers::SelectedMainSpatialCallbackProviders,
+    preserve_flat7x_pcm_rows: bool,
 ) -> Result<PendingMainCallback, EncodeRequestError> {
     let frame = read_frontend_pcm_callback(
         parsed,
@@ -1104,9 +1118,24 @@ fn stage_main_callback_candidate(
     if spatial.callback_index() != callback_index {
         return Err(EncodeRequestError::ClockMismatch);
     }
+    let source_index = frame.source_index();
+    let flat7x_physical_pcm_rows = if preserve_flat7x_pcm_rows {
+        source_index.map(|source_index| {
+            crate::source_execution::Flat7xPcmSourceRows::new(
+                *frame.input_sha256(),
+                callback_index,
+                source_index,
+                crate::source_execution::Flat7xPcmRowDelivery::NormalCallback,
+                frame.physical_pcm_rows().to_vec(),
+            )
+        })
+    } else {
+        None
+    };
     Ok(PendingMainCallback {
         callback_index,
-        source_index: frame.source_index(),
+        source_index,
+        flat7x_physical_pcm_rows,
         frontend: Some(frontend),
         spatial,
         reader_eof_candidate,
@@ -1120,6 +1149,7 @@ fn stage_main_cached_callback_candidate(
     callback_index: FrontendCallbackIndex,
     roots: &ProgrammeOwnerRoots<'_>,
     providers: &crate::selected_spatial_callback_providers::SelectedMainSpatialCallbackProviders,
+    preserve_flat7x_pcm_rows: bool,
 ) -> Result<PendingMainCallback, EncodeRequestError> {
     let source_index =
         source_for_callback_clock(callback_index).ok_or(EncodeRequestError::ClockMismatch)?;
@@ -1175,14 +1205,51 @@ fn stage_main_cached_callback_candidate(
     if spatial.callback_index() != callback_index {
         return Err(EncodeRequestError::ClockMismatch);
     }
+    let flat7x_physical_pcm_rows = if preserve_flat7x_pcm_rows {
+        Some(crate::source_execution::Flat7xPcmSourceRows::new(
+            prepared.resource_identity().input_sha256(),
+            callback_index,
+            source_index,
+            crate::source_execution::Flat7xPcmRowDelivery::CachedDrain,
+            cached_flat7x_physical_pcm_rows(prepared, roots)?,
+        ))
+    } else {
+        None
+    };
     Ok(PendingMainCallback {
         callback_index,
         source_index: Some(source_index),
+        flat7x_physical_pcm_rows,
         frontend: None,
         spatial,
         reader_eof_candidate,
         transaction_id,
     })
+}
+
+fn cached_flat7x_physical_pcm_rows(
+    prepared: &PreparedJobInput,
+    roots: &ProgrammeOwnerRoots<'_>,
+) -> Result<Vec<Vec<u32>>, EncodeRequestError> {
+    let physical_row_count = usize::from(prepared.configuration().wave().channels());
+    let expected_words = physical_row_count
+        .checked_mul(1_536)
+        .ok_or(EncodeRequestError::ClockMismatch)?;
+    let cached_words = roots
+        .main()
+        .spatial_control()
+        .committed()
+        .previous_pcm_bits();
+    if cached_words.len() != expected_words {
+        return Err(EncodeRequestError::SourcePipeline(format!(
+            "Flat7x cached PCM extent: expected {expected_words} words, found {}",
+            cached_words.len()
+        )));
+    }
+    Ok(cached_words
+        .chunks_exact(1_536)
+        .map(|row| row.to_vec())
+        .collect())
 }
 
 struct FileReferenceParts {

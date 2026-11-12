@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge.wash_implementer_supplement.v1",
+  "package_id": "FLAT7X-ID14-INDEX-OBJECT-HEADER-EDGES-V1",
+  "scope": "Hash-bound static ID14 header field edges compared against official Flat7x demo structure",
+  "files": [
+    {
+      "path": "FINDINGS.md",
+      "bytes": 1801,
+      "sha256": "754740999094268007f8d2ff1cc208891883df2a624cd7ccd860072fe9f6768a"
+    },
+    {
+      "path": "ID14-HEADER-EDGES.json",
+      "bytes": 2726,
+      "sha256": "bc7706b43e31fcd11bc32fdeb4736c5b22f694caa764cd6ad8cc480d6d751e8f"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 1272,
+      "sha256": "78ab7700e9d5215f2fdbde0259c6c5901003f06ed149c13f2f7d0de3f7addcb6"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 2774,
+      "sha256": "c96b58388fe8f6dd75299f630960c19cfadd8c37833917a0ef925aad4ffd44a1"
+    }
+  ]
+}

@@ -16,6 +16,7 @@ use crate::frontend::selected_adm_graph::{PhysicalHostIndex, SelectedAdmGraph, S
 use super::{DependentChannelMap, Flat7xI0D0TargetPlan};
 
 const D0_TARGET_CHANNEL_MAP: u16 = 0x1a00;
+const PCM_SAMPLES_PER_SOURCE: usize = 1_536;
 const I0_ROLE_ROWS: [(Flat7xI0CarrierRole, &str); 6] = [
     (Flat7xI0CarrierRole::Left, "front_left"),
     (Flat7xI0CarrierRole::Center, "front_center"),
@@ -118,6 +119,26 @@ pub enum Flat7xD0ChannelSource {
     },
 }
 
+impl Flat7xD0ChannelSource {
+    pub const fn single_row(self) -> Option<AdmPcmRow> {
+        match self {
+            Self::Single { row, .. } => Some(row),
+            Self::StereoPair { .. } => None,
+        }
+    }
+
+    pub const fn pair_rows(self) -> Option<(AdmPcmRow, AdmPcmRow)> {
+        match self {
+            Self::Single { .. } => None,
+            Self::StereoPair {
+                left_row,
+                right_row,
+                ..
+            } => Some((left_row, right_row)),
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Flat7xD0RowBinding {
     location: Flat7xD0ChannelMapLocation,
@@ -134,11 +155,63 @@ impl Flat7xD0RowBinding {
     }
 }
 
+/// I0 PCM row view in AC-3 core order `[L, C, R, Ls, Rs, LFE]`.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Flat7xI0PcmRows<'a> {
+    rows: [&'a [u32]; 6],
+}
+
+impl<'a> Flat7xI0PcmRows<'a> {
+    pub const fn rows(self) -> [&'a [u32]; 6] {
+        self.rows
+    }
+}
+
+/// D0 PCM row view in enabled E-AC-3 `chanmap` order `[Ls, Rs, Lrs, Rrs]`.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Flat7xD0PcmRows<'a> {
+    rows: [&'a [u32]; 4],
+}
+
+impl<'a> Flat7xD0PcmRows<'a> {
+    pub const fn rows(self) -> [&'a [u32]; 4] {
+        self.rows
+    }
+}
+
+/// Borrowed source PCM projection after applying the provisional profile-specific role map.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Flat7xProvisionalSourcePcmView<'a> {
+    physical_row_count: u16,
+    i0: Flat7xI0PcmRows<'a>,
+    d0: Flat7xD0PcmRows<'a>,
+}
+
+impl<'a> Flat7xProvisionalSourcePcmView<'a> {
+    pub const fn physical_row_count(self) -> u16 {
+        self.physical_row_count
+    }
+
+    pub const fn i0(self) -> Flat7xI0PcmRows<'a> {
+        self.i0
+    }
+
+    pub const fn d0(self) -> Flat7xD0PcmRows<'a> {
+        self.d0
+    }
+
+    pub const fn provisional(self) -> bool {
+        true
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Flat7xSourceRoleMapError {
     UnsupportedTarget,
     UnsupportedPhysicalRowCount { actual: u16 },
     PhysicalHostOutOfRange { row: u8, physical_rows: u16 },
+    PhysicalPcmRowCountMismatch { expected: u16, actual: usize },
+    PhysicalPcmSampleCountMismatch { row: usize, actual: usize },
     DuplicateBedRole(&'static str),
     MissingBedRole(&'static str),
     D0ChannelMapMismatch { actual: u16 },
@@ -178,6 +251,76 @@ impl Flat7xProvisionalSourceRoleMap {
     pub const fn assumption_id(&self) -> &'static str {
         "flat7x-direct-speaker-bed-rows-to-i0-d0-roles-v1"
     }
+}
+
+/// Projects one callback's physical PCM rows through the profile-specific I0 and D0 bindings.
+/// The function preserves the independent index domains and only returns borrowed row slices.
+pub fn project_flat7x_source_pcm_rows<'a>(
+    role_map: &Flat7xProvisionalSourceRoleMap,
+    physical_pcm_rows: &'a [Vec<u32>],
+) -> Result<Flat7xProvisionalSourcePcmView<'a>, Flat7xSourceRoleMapError> {
+    if physical_pcm_rows.len() != usize::from(role_map.physical_row_count()) {
+        return Err(Flat7xSourceRoleMapError::PhysicalPcmRowCountMismatch {
+            expected: role_map.physical_row_count(),
+            actual: physical_pcm_rows.len(),
+        });
+    }
+    for (row, samples) in physical_pcm_rows.iter().enumerate() {
+        if samples.len() != PCM_SAMPLES_PER_SOURCE {
+            return Err(Flat7xSourceRoleMapError::PhysicalPcmSampleCountMismatch {
+                row,
+                actual: samples.len(),
+            });
+        }
+    }
+
+    let mut i0_rows = [&[][..]; 6];
+    for (destination, binding) in i0_rows.iter_mut().zip(role_map.i0_rows) {
+        *destination = physical_pcm_rows
+            .get(usize::from(binding.row.physical_host().value()))
+            .ok_or(Flat7xSourceRoleMapError::PhysicalHostOutOfRange {
+                row: binding.row.physical_host().value(),
+                physical_rows: role_map.physical_row_count(),
+            })?;
+    }
+
+    let mut d0_rows = [&[][..]; 4];
+    let mut next_d0_row = 0;
+    for binding in role_map.d0_rows {
+        let mut append = |row: AdmPcmRow| -> Result<(), Flat7xSourceRoleMapError> {
+            let Some(destination) = d0_rows.get_mut(next_d0_row) else {
+                return Err(Flat7xSourceRoleMapError::D0ChannelMapLocationMismatch);
+            };
+            *destination = physical_pcm_rows
+                .get(usize::from(row.physical_host().value()))
+                .ok_or(Flat7xSourceRoleMapError::PhysicalHostOutOfRange {
+                    row: row.physical_host().value(),
+                    physical_rows: role_map.physical_row_count(),
+                })?;
+            next_d0_row += 1;
+            Ok(())
+        };
+        match binding.source {
+            Flat7xD0ChannelSource::Single { row, .. } => append(row)?,
+            Flat7xD0ChannelSource::StereoPair {
+                left_row,
+                right_row,
+                ..
+            } => {
+                append(left_row)?;
+                append(right_row)?;
+            }
+        }
+    }
+    if next_d0_row != d0_rows.len() {
+        return Err(Flat7xSourceRoleMapError::D0ChannelMapLocationMismatch);
+    }
+
+    Ok(Flat7xProvisionalSourcePcmView {
+        physical_row_count: role_map.physical_row_count(),
+        i0: Flat7xI0PcmRows { rows: i0_rows },
+        d0: Flat7xD0PcmRows { rows: d0_rows },
+    })
 }
 
 /// Builds the current selected-profile row map without conflating PCM rows, coded roles, or
@@ -367,6 +510,57 @@ mod tests {
                 right_row: row_for_role("rear_right"),
             }
         );
+
+        let physical_rows = (0..38)
+            .map(|row| vec![u32::try_from(row).unwrap(); PCM_SAMPLES_PER_SOURCE])
+            .collect::<Vec<_>>();
+        let pcm_view = project_flat7x_source_pcm_rows(&map, &physical_rows).unwrap();
+        assert_eq!(pcm_view.physical_row_count(), 38);
+        assert!(pcm_view.provisional());
+        assert_eq!(
+            pcm_view.i0().rows().map(|row| row[0]),
+            map.i0_rows()
+                .map(|binding| u32::from(binding.row().physical_host().value()))
+        );
+        assert_eq!(
+            pcm_view.d0().rows().map(|row| row[0]),
+            [
+                u32::from(
+                    map.d0_rows()[0]
+                        .source()
+                        .single_row()
+                        .unwrap()
+                        .physical_host()
+                        .value()
+                ),
+                u32::from(
+                    map.d0_rows()[1]
+                        .source()
+                        .single_row()
+                        .unwrap()
+                        .physical_host()
+                        .value()
+                ),
+                u32::from(
+                    map.d0_rows()[2]
+                        .source()
+                        .pair_rows()
+                        .unwrap()
+                        .0
+                        .physical_host()
+                        .value()
+                ),
+                u32::from(
+                    map.d0_rows()[2]
+                        .source()
+                        .pair_rows()
+                        .unwrap()
+                        .1
+                        .physical_host()
+                        .value()
+                ),
+            ]
+        );
     }
 
     #[test]
@@ -377,9 +571,18 @@ mod tests {
 
         assert_eq!(map.physical_row_count(), 36);
         assert_eq!(map.d0_channel_map().value(), D0_TARGET_CHANNEL_MAP);
+        let physical_rows = (0..36)
+            .map(|row| vec![u32::try_from(row).unwrap(); PCM_SAMPLES_PER_SOURCE])
+            .collect::<Vec<_>>();
+        let pcm_view = project_flat7x_source_pcm_rows(&map, &physical_rows).unwrap();
+        assert_eq!(pcm_view.physical_row_count(), 36);
         let Flat7xD0ChannelSource::Single { row, .. } = map.d0_rows()[0].source() else {
             panic!("D0 chanmap location 3 is a single surround channel");
         };
         assert_eq!(map.i0_rows()[3].row(), row);
+        assert_eq!(
+            pcm_view.i0().rows()[3],
+            physical_rows[usize::from(row.physical_host().value())]
+        );
     }
 }

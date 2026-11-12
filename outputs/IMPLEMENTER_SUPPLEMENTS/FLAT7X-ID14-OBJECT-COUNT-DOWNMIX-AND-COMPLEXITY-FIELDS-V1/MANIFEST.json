@@ -1,0 +1,29 @@
+{
+  "schema": "wash-sanitized-implementer-manifest.v1",
+  "package_id": "FLAT7X-ID14-OBJECT-COUNT-DOWNMIX-AND-COMPLEXITY-FIELDS-V1",
+  "delivery": "SANITIZED_IMPLEMENTER_SUPPLEMENT",
+  "status": "WASHED_PARTIAL_IMPLEMENTATION_VISIBLE",
+  "payloads": [
+    {
+      "path": "FINDINGS.md",
+      "size_bytes": 2212,
+      "sha256": "499b24c80e9389e193b75f2bc5e5aada412741788de3e0315893b2e3870e2578"
+    },
+    {
+      "path": "FIELD-MODEL.json",
+      "size_bytes": 1708,
+      "sha256": "df5a4b51f0cd3e8d94469dc42b7f584e8d36271200a975fa1ddb1f477a629576"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "size_bytes": 1158,
+      "sha256": "98803efd0f9650709e92d9c5de364627ecb4dd7fd130fb7934d2f572922769a5"
+    },
+    {
+      "path": "verify_package.py",
+      "size_bytes": 3285,
+      "sha256": "2fbe3e0a5b68ac1362914d295b74eef55f3bf2bce92d16cfd88a602a11eb4e97"
+    }
+  ],
+  "native_runtime": "NOT_RUN"
+}

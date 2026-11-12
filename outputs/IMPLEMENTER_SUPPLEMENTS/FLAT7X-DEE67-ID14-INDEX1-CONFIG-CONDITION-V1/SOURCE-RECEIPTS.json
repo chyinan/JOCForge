@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge.wash.source_receipts.v1",
+  "package_id": "FLAT7X-DEE67-ID14-INDEX1-CONFIG-CONDITION-V1",
+  "source_package": {
+    "package_id": "id14_downmix_index_state_initializer_boundary_wash_v1",
+    "path": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-2/outputs/id14_downmix_index_state_initializer_boundary_wash_v1",
+    "manifest_sha256": "63e3610e75ad6850ebbd65498e976693e44e0018e8a1bd517d42153c6ea3538f",
+    "package_seal_sha256": "e0dd33468edb1d5b21ddd9ed03c459cbf2d70b4fd016fcf6886a7c9110f9f192",
+    "normal_checker": "PASS",
+    "python_optimized_checker": "PASS"
+  },
+  "candidate": {
+    "image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "source_code_copied": false
+  },
+  "official_reference": {
+    "package_id": "OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1",
+    "manifest_sha256": "f7f8630c3f18e990324f013e70486c561de6816a844f852f18f03a82ce28fbfc",
+    "used_as_runtime_or_generation_evidence": false
+  }
+}

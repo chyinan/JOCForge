@@ -1,0 +1,29 @@
+{
+  "schema": "wash-sanitized-implementer-manifest.v1",
+  "package_id": "FLAT7X-D0-RATE-FRMSIZ-TARGET-V1",
+  "delivery": "SANITIZED_IMPLEMENTER_SUPPLEMENT",
+  "status": "WASHED_PARTIAL_IMPLEMENTATION_VISIBLE",
+  "payloads": [
+    {
+      "path": "FINDINGS.md",
+      "size_bytes": 1106,
+      "sha256": "42e776b311a5f4f83f0eebeebf5fdbd9678a681ed54499fc0c91bfb9d8615312"
+    },
+    {
+      "path": "FRAME-SIZE-VECTOR.json",
+      "size_bytes": 978,
+      "sha256": "e72fecc4de26839bd7a2244c9da1dfacac6bbc0316f843245e84d536a4be8c93"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "size_bytes": 1038,
+      "sha256": "7287f12afcd12074dadd7a5e98df4972e696795976a2b0aa7dbfa781aa6eb467"
+    },
+    {
+      "path": "verify_package.py",
+      "size_bytes": 2786,
+      "sha256": "fb4e21db2a07aed4c61d5116f71244b55991b4561c30d5cc0c128d7e5bc1c6ce"
+    }
+  ],
+  "native_runtime": "NOT_RUN"
+}
