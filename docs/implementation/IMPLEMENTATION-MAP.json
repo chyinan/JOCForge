@@ -10377,7 +10377,7 @@
           "implementation_status": "LOCALLY_VERIFIED_TYPED_TARGET_AND_I0_D0_BYTE_SEQUENCE_CANDIDATE__NO_PRODUCTION_PATH",
           "implementation_requirement": true,
           "owner": "UNBOUND",
-          "scope": "Value-only I0=640 kbps plus D0=1024 kbps Flat7x AU target, using official-demo non-rate fields. I0 is AC-3 BSID6/acmod7/LFE/dmixmod1; D0 is E-AC-3 BSID16/acmod5/no-LFE/chanmap0x1A00/frmsiz2047. JOC spatial index1 and coefficient downmix index1 are distinct typed axes; object count15, complexity16, ADM physical rows, chanmap, extension0/phase-signaling-off, and EMDF IDs11/14 group0 stay separate. The existing 5.1 production row remains unchanged; this plan and byte candidate create no production path.",
+          "scope": "Value-only I0=640 kbps plus D0=1024 kbps Flat7x AU target, using official-demo non-rate fields. I0 is AC-3 BSID6/acmod7/LFE/dmixmod1; D0 is E-AC-3 BSID16/acmod5/no-LFE/chanmap0x1A00/frmsiz2047. JOC spatial index1 and coefficient downmix index1 are distinct typed axes; object count15, complexity16, ADM physical rows, chanmap, extension0/phase-signaling-off, and EMDF IDs11/14 group0 stay separate. The existing 5.1 production row remains unchanged; this plan and byte candidate create no production path. I0 dmixmod1 requires a separate BSID6 xbs1e alternate-BSI group; associated mix-level target bytes remain NOT_CAPTURED and its writer gate stays open.",
           "spec_files": [
             "docs/architecture/PROFILE-DIMENSIONS.md",
             "docs/architecture/ARCHITECTURE-DECISIONS.md",
@@ -10394,8 +10394,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 36981,
-              "sha256": "962c0f8d5451b3eefae9a0162a94583832a5552e9ac03d7f2bc29b43027674a7"
+              "bytes": 37208,
+              "sha256": "d92a8d5e0d5c4a6eeabfd509379ff228f254e43c05781811d8b6e5bd43e289e6"
             },
             {
               "path": "crates/jocforge-domain/src/profile/mod.rs",
@@ -10406,8 +10406,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 36981,
-              "sha256": "962c0f8d5451b3eefae9a0162a94583832a5552e9ac03d7f2bc29b43027674a7"
+              "bytes": 37208,
+              "sha256": "d92a8d5e0d5c4a6eeabfd509379ff228f254e43c05781811d8b6e5bd43e289e6"
             }
           ],
           "clock": {
@@ -10454,7 +10454,16 @@
                 "frame_bytes": 2560,
                 "codec_family": "AC-3",
                 "bsid": 6,
-                "dmixmod": 1
+                "dmixmod": 1,
+                "alternate_bsi": {
+                  "syntax": "ETSI TS 102 366 V1.4.1 Annex D xbs1e",
+                  "xbs1e": "PRESENT_TO_CARRY_DMIXMOD",
+                  "dmixmod": 1,
+                  "ltrtcmixlev": "NOT_CAPTURED",
+                  "ltrtsurmixlev": "NOT_CAPTURED",
+                  "lorocmixlev": "NOT_CAPTURED",
+                  "lorosurmixlev": "NOT_CAPTURED"
+                }
               },
               "d0": {
                 "role": "dependent",
@@ -10526,6 +10535,7 @@
                 "group_id": 0
               },
               "unbound_gates": [
+                "I0 BSID6 alternate xbs1e mix metadata writer and demo mix levels",
                 "ADM source-row to D0 role join",
                 "JOC algorithm-level mode and phase controls",
                 "runtime source-generation owner join",
@@ -45690,8 +45700,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 36981,
-              "sha256": "962c0f8d5451b3eefae9a0162a94583832a5552e9ac03d7f2bc29b43027674a7"
+              "bytes": 37208,
+              "sha256": "d92a8d5e0d5c4a6eeabfd509379ff228f254e43c05781811d8b6e5bd43e289e6"
             }
           ],
           "test_inventory": [
@@ -48071,8 +48081,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 36981,
-              "sha256": "962c0f8d5451b3eefae9a0162a94583832a5552e9ac03d7f2bc29b43027674a7"
+              "bytes": 37208,
+              "sha256": "d92a8d5e0d5c4a6eeabfd509379ff228f254e43c05781811d8b6e5bd43e289e6"
             }
           ],
           "clock": {
@@ -48556,8 +48566,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 36981,
-              "sha256": "962c0f8d5451b3eefae9a0162a94583832a5552e9ac03d7f2bc29b43027674a7"
+              "bytes": 37208,
+              "sha256": "d92a8d5e0d5c4a6eeabfd509379ff228f254e43c05781811d8b6e5bd43e289e6"
             }
           ],
           "clock": {

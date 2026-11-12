@@ -189,6 +189,7 @@ pub type Flat7xDownmixControls = JocDownmixAlgorithmControls;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Flat7xOpenGate {
+    I0AlternateBsiMixMetadataWriter,
     AdmSourceRowToD0RoleJoin,
     JocDownmixAlgorithmControls,
     RuntimeSourceGenerationJoin,
@@ -255,7 +256,7 @@ pub struct Flat7xI0D0TargetPlan {
     emdf_payload_ids: [u8; 2],
     emdf_group_id: u8,
     d0_emdf_skip_field: D0EmdfSkipFieldTarget,
-    open_gates: [Flat7xOpenGate; 6],
+    open_gates: [Flat7xOpenGate; 7],
 }
 
 impl Flat7xI0D0TargetPlan {
@@ -335,6 +336,7 @@ impl Flat7xI0D0TargetPlan {
                 overflow_policy: Flat7xEmdfOverflowPolicy::RejectWholeAccessUnitBeforePublish,
             },
             open_gates: [
+                Flat7xOpenGate::I0AlternateBsiMixMetadataWriter,
                 Flat7xOpenGate::AdmSourceRowToD0RoleJoin,
                 Flat7xOpenGate::JocDownmixAlgorithmControls,
                 Flat7xOpenGate::RuntimeSourceGenerationJoin,
@@ -469,7 +471,7 @@ impl Flat7xI0D0TargetPlan {
         false
     }
 
-    pub const fn open_gates(self) -> [Flat7xOpenGate; 6] {
+    pub const fn open_gates(self) -> [Flat7xOpenGate; 7] {
         self.open_gates
     }
 }
@@ -922,7 +924,11 @@ mod tests {
         assert!(plan.atomic_pair_publication_required());
         assert!(!plan.partial_i0_publication_allowed());
         assert!(!plan.production_allowed());
-        assert_eq!(plan.open_gates().len(), 6);
+        assert_eq!(plan.open_gates().len(), 7);
+        assert_eq!(
+            plan.open_gates()[0],
+            Flat7xOpenGate::I0AlternateBsiMixMetadataWriter
+        );
     }
 
     #[test]
