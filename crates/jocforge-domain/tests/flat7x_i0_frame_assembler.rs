@@ -9,12 +9,13 @@ use jocforge_domain::{
         bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError},
         frame_builder::Flat7xI0Ac3HeaderSegmentError,
         i0_frame_assembler::{
-            CallerOwnedI0CrcrsvSeed, Flat7xI0Ac3FrameAssemblyReceipt, Flat7xI0Ac3FrameHeaderFields,
-            Flat7xI0Ac3FrameInput, Flat7xI0FrameAssemblyError, Flat7xI0FrameBitInput,
-            I0Ac3AudioBlockFieldExtent, I0Ac3AudioBlockPrefixError, I0Ac3AudioBlockPrefixInput,
+            Ac3CplinuValueError, CallerOwnedAc3Cplinu, CallerOwnedI0CrcrsvSeed,
+            Flat7xI0Ac3FrameAssemblyReceipt, Flat7xI0Ac3FrameHeaderFields, Flat7xI0Ac3FrameInput,
+            Flat7xI0FrameAssemblyError, Flat7xI0FrameBitInput, I0Ac3AudioBlockFieldExtent,
+            I0Ac3AudioBlockPrefixError, I0Ac3AudioBlockPrefixInput, I0Ac3CplinuWriteError,
             I0AuxDataInput, I0CrcValidationStatus, I0FramePart, OpaqueI0Ac3BitSpan,
             assemble_flat7x_i0_ac3_frame, assemble_flat7x_i0_ac3_frame_from_fields,
-            write_i0_ac3_first_audio_block_prefix,
+            write_i0_ac3_first_audio_block_prefix, write_i0_ac3_first_block_cplinu,
         },
     },
     integrity::crc16::eac3_crc16,
@@ -58,6 +59,16 @@ fn case_by_id(vectors: &Value, id: &str) -> Value {
 
 fn first_audio_block_prefix_case(vectors: &Value, id: &str) -> Value {
     vectors["first_audio_block_prefix_vectors"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["id"] == id)
+        .unwrap()
+        .clone()
+}
+
+fn cplinu_case(vectors: &Value, id: &str) -> Value {
+    vectors["cplinu_vectors"]
         .as_array()
         .unwrap()
         .iter()
@@ -393,6 +404,154 @@ fn first_audio_block_prefix_capacity_failure_leaves_bytes_and_cursor_unchanged()
     );
     assert_eq!(output, before);
     assert_eq!(cursor, 0);
+}
+
+#[test]
+fn synthetic_cplinu_vectors_write_the_caller_owned_bit_after_cplstre() {
+    let vectors = vectors();
+    for case_id in [
+        "synthetic-first-block-cplinu-independent",
+        "synthetic-first-block-cplinu-coupled",
+    ] {
+        let case = cplinu_case(&vectors, case_id);
+        let prefix_case =
+            first_audio_block_prefix_case(&vectors, case["prefix_vector_id"].as_str().unwrap());
+        let expected = &case["expected"];
+        let mut output = [0; 3];
+        let prefix;
+        let receipt;
+        let cursor;
+        {
+            let mut writer = FrameBitWriter::new(&mut output, FrameBitCursor::new(0)).unwrap();
+            prefix = write_i0_ac3_first_audio_block_prefix(
+                &mut writer,
+                first_audio_block_prefix_input(&prefix_case),
+            )
+            .unwrap();
+            let caller_value = CallerOwnedAc3Cplinu::try_from(
+                u8::try_from(case["field_value"].as_u64().unwrap()).unwrap(),
+            )
+            .unwrap();
+            receipt = write_i0_ac3_first_block_cplinu(&mut writer, prefix, caller_value).unwrap();
+            cursor = writer.cursor().bit_offset();
+        }
+
+        assert_eq!(
+            output.as_slice(),
+            decode_hex_bytes(expected["bytes_hex"].as_str().unwrap())
+        );
+        assert_eq!(
+            receipt.field().start().bit_offset(),
+            u32::try_from(expected["field_span"][0].as_u64().unwrap()).unwrap()
+        );
+        assert_eq!(receipt.field().bit_length(), 1);
+        assert_eq!(
+            cursor,
+            u32::try_from(expected["next_field_cursor"].as_u64().unwrap()).unwrap()
+        );
+        assert_eq!(receipt.next_field_cursor().bit_offset(), cursor);
+        assert_eq!(
+            read_bit(&output, receipt.field().start().bit_offset()),
+            case["field_value"].as_u64().unwrap() == 1
+        );
+        assert!(!prefix.production_allowed());
+        assert!(!receipt.production_allowed());
+    }
+}
+
+#[test]
+fn cplinu_range_and_capacity_rejections_leave_bytes_and_cursor_unchanged() {
+    let vectors = vectors();
+    let prefix_case =
+        first_audio_block_prefix_case(&vectors, "synthetic-first-block-prefix-with-dynrng");
+    for invalid in vectors["invalid_cplinu_field_values"].as_array().unwrap() {
+        let value = u8::try_from(invalid.as_u64().unwrap()).unwrap();
+        let mut output = [0xa5; 3];
+        let prefix = {
+            let mut writer = FrameBitWriter::new(&mut output, FrameBitCursor::new(0)).unwrap();
+            write_i0_ac3_first_audio_block_prefix(
+                &mut writer,
+                first_audio_block_prefix_input(&prefix_case),
+            )
+            .unwrap()
+        };
+        let before = output;
+        let before_cursor = prefix.next_field_cursor();
+        let rejected = CallerOwnedAc3Cplinu::try_from(value);
+        assert_eq!(rejected, Err(Ac3CplinuValueError::OutOfRange { value }));
+        assert_eq!(output, before);
+        assert_eq!(prefix.next_field_cursor(), before_cursor);
+
+        let mut exact_edge_output = [0xa5; 3];
+        let prefix;
+        {
+            let mut writer =
+                FrameBitWriter::new(&mut exact_edge_output, FrameBitCursor::new(4)).unwrap();
+            prefix = write_i0_ac3_first_audio_block_prefix(
+                &mut writer,
+                first_audio_block_prefix_input(&prefix_case),
+            )
+            .unwrap();
+            assert_eq!(writer.cursor(), FrameBitCursor::new(24));
+        }
+        let before = exact_edge_output;
+        let result;
+        let after_cursor;
+        {
+            let mut writer =
+                FrameBitWriter::new(&mut exact_edge_output, prefix.next_field_cursor()).unwrap();
+            result = write_i0_ac3_first_block_cplinu(
+                &mut writer,
+                prefix,
+                CallerOwnedAc3Cplinu::Independent,
+            );
+            after_cursor = writer.cursor();
+        }
+        assert_eq!(
+            result,
+            Err(I0Ac3CplinuWriteError::BitWriter(
+                FrameBitWriterError::BufferTooSmall
+            ))
+        );
+        assert_eq!(exact_edge_output, before);
+        assert_eq!(after_cursor, prefix.next_field_cursor());
+    }
+}
+
+#[test]
+fn cplinu_rejects_a_cursor_that_does_not_follow_cplstre() {
+    let vectors = vectors();
+    let prefix_case =
+        first_audio_block_prefix_case(&vectors, "synthetic-first-block-prefix-with-dynrng");
+    let mut output = [0xa5; 4];
+    let prefix = {
+        let mut writer = FrameBitWriter::new(&mut output, FrameBitCursor::new(0)).unwrap();
+        write_i0_ac3_first_audio_block_prefix(
+            &mut writer,
+            first_audio_block_prefix_input(&prefix_case),
+        )
+        .unwrap()
+    };
+    let before = output;
+    let wrong_cursor = FrameBitCursor::new(prefix.next_field_cursor().bit_offset() + 1);
+    let result;
+    let after_cursor;
+    {
+        let mut writer = FrameBitWriter::new(&mut output, wrong_cursor).unwrap();
+        result =
+            write_i0_ac3_first_block_cplinu(&mut writer, prefix, CallerOwnedAc3Cplinu::Independent);
+        after_cursor = writer.cursor();
+    }
+
+    assert_eq!(
+        result,
+        Err(I0Ac3CplinuWriteError::PrefixCursorMismatch {
+            expected: prefix.next_field_cursor(),
+            actual: wrong_cursor,
+        })
+    );
+    assert_eq!(output, before);
+    assert_eq!(after_cursor, wrong_cursor);
 }
 
 fn read_bit(bytes: &[u8], bit_offset: u32) -> bool {

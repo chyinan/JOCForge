@@ -188,6 +188,94 @@ pub fn write_i0_ac3_first_audio_block_prefix(
     })
 }
 
+/// Caller-owned value for the one-bit AC-3 cplinu field.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum CallerOwnedAc3Cplinu {
+    Independent,
+    Coupled,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Ac3CplinuValueError {
+    OutOfRange { value: u8 },
+}
+
+impl TryFrom<u8> for CallerOwnedAc3Cplinu {
+    type Error = Ac3CplinuValueError;
+
+    fn try_from(value: u8) -> Result<Self, Self::Error> {
+        match value {
+            0 => Ok(Self::Independent),
+            1 => Ok(Self::Coupled),
+            value => Err(Ac3CplinuValueError::OutOfRange { value }),
+        }
+    }
+}
+
+/// The emitted cplinu bit and its immediately following caller cursor.
+#[must_use]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct I0Ac3CplinuReceipt {
+    field: I0Ac3AudioBlockFieldExtent,
+    next_field_cursor: FrameBitCursor,
+}
+
+impl I0Ac3CplinuReceipt {
+    pub const fn field(self) -> I0Ac3AudioBlockFieldExtent {
+        self.field
+    }
+
+    pub const fn next_field_cursor(self) -> FrameBitCursor {
+        self.next_field_cursor
+    }
+
+    pub const fn production_allowed(self) -> bool {
+        false
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum I0Ac3CplinuWriteError {
+    PrefixCursorMismatch {
+        expected: FrameBitCursor,
+        actual: FrameBitCursor,
+    },
+    BitWriter(FrameBitWriterError),
+}
+
+impl From<FrameBitWriterError> for I0Ac3CplinuWriteError {
+    fn from(error: FrameBitWriterError) -> Self {
+        Self::BitWriter(error)
+    }
+}
+
+/// Writes the caller-owned AC-3 cplinu choice immediately after the block-0 cplstre prefix.
+///
+/// ETSI TS 102 366 V1.4.1 clause 4.4.3.8 assigns 0 to independent channels and 1 to coupling
+/// in use. Any coupling parameters that follow remain caller-owned. This serializer chooses no
+/// coupling mode and is not connected to an audio producer or production frame path.
+pub fn write_i0_ac3_first_block_cplinu(
+    writer: &mut FrameBitWriter<'_>,
+    prefix: I0Ac3AudioBlockPrefixReceipt,
+    input: CallerOwnedAc3Cplinu,
+) -> Result<I0Ac3CplinuReceipt, I0Ac3CplinuWriteError> {
+    let actual = writer.cursor();
+    let expected = prefix.next_field_cursor();
+    if actual != expected {
+        return Err(I0Ac3CplinuWriteError::PrefixCursorMismatch { expected, actual });
+    }
+    writer.preflight_capacity(1)?;
+    let field_start = writer.cursor();
+    writer.write_bit(matches!(input, CallerOwnedAc3Cplinu::Coupled))?;
+    Ok(I0Ac3CplinuReceipt {
+        field: I0Ac3AudioBlockFieldExtent {
+            start: field_start,
+            bit_length: 1,
+        },
+        next_field_cursor: writer.cursor(),
+    })
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct OpaqueI0Ac3BitSpan<'a> {
     bytes: &'a [u8],

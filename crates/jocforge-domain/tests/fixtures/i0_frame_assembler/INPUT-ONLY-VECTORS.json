@@ -127,5 +127,28 @@
         "next_field_cursor": 12
       }
     }
-  ]
+  ],
+  "cplinu_vectors": [
+    {
+      "id": "synthetic-first-block-cplinu-independent",
+      "prefix_vector_id": "synthetic-first-block-prefix-with-dynrng",
+      "field_value": 0,
+      "expected": {
+        "field_span": [20, 1],
+        "next_field_cursor": 21,
+        "bytes_hex": "aab4b0"
+      }
+    },
+    {
+      "id": "synthetic-first-block-cplinu-coupled",
+      "prefix_vector_id": "synthetic-first-block-prefix-with-dynrng",
+      "field_value": 1,
+      "expected": {
+        "field_span": [20, 1],
+        "next_field_cursor": 21,
+        "bytes_hex": "aab4b8"
+      }
+    }
+  ],
+  "invalid_cplinu_field_values": [2, 255]
 }

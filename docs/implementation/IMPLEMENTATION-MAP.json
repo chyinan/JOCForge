@@ -46816,7 +46816,7 @@
                   "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_ASSEMBLY_GENERATED_CRC1_CRC2_RESIDUALS__PRODUCTION_OPEN",
                   "implementation_requirement": true,
                   "owner": "codec",
-                  "scope": "Assembles one 2560-byte I0 AC-3 frame from the approved header segment, caller-owned BSI-tail and six audio-block spans, optional auxdata and an initial caller crcrsv seed. It shares the seven mandatory BSI-tail bit count with the dedicated BSI-tail serializer, stages the complete frame, generates CRC1/CRC2 and verifies zero residuals before one caller-writer commit. Audio generation, source-generation join and production binding remain open. The module also has a standalone production-disabled first-audblk prefix serializer for five blksw, five dithflag, dynrnge with optional dynrng, and mandatory block-0 cplstre=1. It stops before cplinu; its explicit field inputs carry no source receipt.",
+                  "scope": "Assembles one 2560-byte I0 AC-3 frame from the approved header segment, caller-owned BSI-tail and six audio-block spans, optional auxdata and an initial caller crcrsv seed. It shares the seven mandatory BSI-tail bit count with the dedicated BSI-tail serializer, stages the complete frame, generates CRC1/CRC2 and verifies zero residuals before one caller-writer commit. Audio generation, source-generation join and production binding remain open. The module also has a standalone production-disabled first-audblk prefix serializer for five blksw, five dithflag, dynrnge with optional dynrng, and mandatory block-0 cplstre=1. It stops before cplinu; its explicit field inputs carry no source receipt. A separate caller-owned typed cplinu writer accepts only U1 values, checks the prefix next cursor and capacity, returns its one-bit extent, and selects no coupling mode.",
                   "dependencies": [
                     "F01E/flat7x-i0-d0-typed-target-plan",
                     "F12/flat7x-i0-ac3-header-segment",
@@ -46843,8 +46843,8 @@
                   "implementation_inventory": [
                     {
                       "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
-                      "bytes": 27805,
-                      "sha256": "de529e401776b131af815e0e9bed2955e7d8dc0aba7db8150a0c0f758f6f3335"
+                      "bytes": 30428,
+                      "sha256": "d215aef57922b2ffeaf631689b2b079f86440f174d8080aa947290aa8d4a74fb"
                     },
                     {
                       "path": "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
@@ -46878,15 +46878,15 @@
                   "test_inventory": [
                     {
                       "path": "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs",
-                      "bytes": 27833,
-                      "sha256": "d5326d373d71cf728f5d1cd5038674894dadff54b180129036c88ceff593b2d2"
+                      "bytes": 33594,
+                      "sha256": "cd7af1817b6f63ca7d75f9338821298a3dcb4ff49e967dd36910ee8a21b61d39"
                     }
                   ],
                   "vector_inventory": [
                     {
                       "path": "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
-                      "bytes": 3832,
-                      "sha256": "f46e02ce039ed0db080c0cace990380addf7ceccf396a3670e435595f90a14a2"
+                      "bytes": 4467,
+                      "sha256": "a9ab38ac3baf4739dcfe4d01b2324e58c386f93639d33ba0d0ce641ced8a85c1"
                     },
                     {
                       "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
@@ -47038,7 +47038,7 @@
                       "The I0 assembler generates CRC1/CRC2 and asserts zero residuals over the approved spans; the synthetic receipt reports field positions and crcrsv result.",
                       "Washed scalar vectors cover target CRC1/CRC2 values, aligned and odd CRC1 truncation boundaries, and the crcrsv collision outcome; no raw frame bytes are supplied for same-byte replay.",
                       "Short BSI tail, source overrun, one-bit-short total, invalid header and short output capacity reject without caller-byte/cursor mutation.",
-                      "Synthetic first-audblk prefix vectors cover present/absent dynrng, exact field extents, mandatory cplstre=1 and short-capacity fail-before-write; cplinu and later fields remain outside this prefix."
+                      "Synthetic first-audblk prefix vectors cover dynrng presence, field extents, cplstre=1, caller-owned cplinu 0/1, invalid U1 rejection, cursor mismatch and fail-before-write capacity."
                     ],
                     "expected_outputs_included": true,
                     "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_GENERATED_CRC1_CRC2_AND_ZERO_RESIDUALS"
@@ -47331,8 +47331,8 @@
                   "implementation_inventory": [
                     {
                       "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
-                      "bytes": 27805,
-                      "sha256": "de529e401776b131af815e0e9bed2955e7d8dc0aba7db8150a0c0f758f6f3335"
+                      "bytes": 30428,
+                      "sha256": "d215aef57922b2ffeaf631689b2b079f86440f174d8080aa947290aa8d4a74fb"
                     },
                     {
                       "path": "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
@@ -47366,15 +47366,15 @@
                   "test_inventory": [
                     {
                       "path": "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs",
-                      "bytes": 27833,
-                      "sha256": "d5326d373d71cf728f5d1cd5038674894dadff54b180129036c88ceff593b2d2"
+                      "bytes": 33594,
+                      "sha256": "cd7af1817b6f63ca7d75f9338821298a3dcb4ff49e967dd36910ee8a21b61d39"
                     }
                   ],
                   "vector_inventory": [
                     {
                       "path": "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
-                      "bytes": 3832,
-                      "sha256": "f46e02ce039ed0db080c0cace990380addf7ceccf396a3670e435595f90a14a2"
+                      "bytes": 4467,
+                      "sha256": "a9ab38ac3baf4739dcfe4d01b2324e58c386f93639d33ba0d0ce641ced8a85c1"
                     },
                     {
                       "path": "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json",
