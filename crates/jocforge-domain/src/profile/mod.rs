@@ -2,6 +2,7 @@
 //! Selected production-profile gate and validation-only profile types.
 
 mod flat7x_access_unit_target;
+mod flat7x_source_role_map;
 mod production;
 mod validation;
 
@@ -12,6 +13,11 @@ pub use flat7x_access_unit_target::{
     Flat7xEmdfOverflowPolicy, Flat7xFrameTarget, Flat7xI0D0TargetPlan, Flat7xOpenGate,
     Flat7xSourceGeneration, Flat7xSubstreamRole, I0FrameExtent, ReconstructionCarrierPosition,
     compose_flat7x_au_byte_sequence, validate_flat7x_au_candidate,
+};
+pub use flat7x_source_role_map::{
+    AdmPcmRow, Flat7xD0ChannelMapLocation, Flat7xD0ChannelSource, Flat7xD0RowBinding,
+    Flat7xD0SourceRole, Flat7xI0CarrierRole, Flat7xI0RowBinding, Flat7xProvisionalSourceRoleMap,
+    Flat7xSourceRoleMapError, build_flat7x_provisional_source_role_map,
 };
 
 pub use production::{
