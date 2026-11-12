@@ -1,0 +1,38 @@
+{
+  "schema": "wash-package-seal.v1",
+  "package_id": "FLAT7X-CHANMAP-CANDIDATE-U16-SEQUENCE-BOUNDARY-V3",
+  "seal_excludes_itself": true,
+  "manifest_sha256": "8d649592a39ce682d2bcfa501d4779f180a831d7c23110e76447752c1eaa7646",
+  "files": [
+    {
+      "path": "FINDINGS.md",
+      "size_bytes": 1089,
+      "sha256": "9280baae3338b748585a798b6a4834d39bbe0ecd053051a6f454220de6d59d7d"
+    },
+    {
+      "path": "SEQUENCE-BOUNDARY.json",
+      "size_bytes": 1013,
+      "sha256": "26fdfe9dfa11bc8b94395125bf314bbb3999522ff8c73711dd3bb39d011fdf78"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "size_bytes": 984,
+      "sha256": "330a12c9c445ed913f63aaaf1120f87dff8bd5380008a30c4214a94d4ea67dd9"
+    },
+    {
+      "path": "verify_package.py",
+      "size_bytes": 2716,
+      "sha256": "468d03f0139e44383e11ae5680633cb5cc442e2b98f42359a4ff3b0891ca5dcb"
+    },
+    {
+      "path": "MANIFEST.json",
+      "size_bytes": 938,
+      "sha256": "8d649592a39ce682d2bcfa501d4779f180a831d7c23110e76447752c1eaa7646"
+    },
+    {
+      "path": "MANIFEST.sha256",
+      "size_bytes": 64,
+      "sha256": "8829fe2f3db9a7412c8702801259933db411b89404543457f15453e932035bfc"
+    }
+  ]
+}

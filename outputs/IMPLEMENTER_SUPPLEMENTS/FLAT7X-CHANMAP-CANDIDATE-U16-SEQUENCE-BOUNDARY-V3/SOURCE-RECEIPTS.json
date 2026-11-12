@@ -1,0 +1,21 @@
+{
+  "schema": "wash-source-receipts.v1",
+  "sources": [
+    {
+      "kind": "WASH_REVIEWED_STATIC_NATIVE_PACKAGE",
+      "package_id": "d0_chanmap_r15_plus2_stored_u16_callee_consumer_followup_wash_v8",
+      "manifest_sha256": "d5fe213b3a97b9242eb4af29945b199db3373b8bc989e075df544b29f299e8d7",
+      "package_seal_sha256": "b1b68bb4e54e0e2d28273622ab477c6b6ab0b38c7857289b9aa4ae7867dd4cbf",
+      "wash_checkers": {"normal": "PASS", "python_O": "PASS"},
+      "used_for": ["six U16 writes at two-byte stride", "opaque base-owner boundary"]
+    },
+    {
+      "kind": "WASH_APPROVED_TARGET_PROFILE",
+      "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+      "manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+      "seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+      "used_for": ["target field separation", "Flat7x profile identity"]
+    }
+  ],
+  "raw_research_artifacts_included": false
+}

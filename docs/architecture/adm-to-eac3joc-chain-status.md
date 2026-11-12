@@ -1856,3 +1856,5 @@ The active Flat7x rate override remains I0 640 kbps plus D0 1024 kbps = 1664 kbp
 ## 2026-11-12 Flat7x per-span staging sink
 
 Wash supplement `FLAT7X-PER-SPAN-FILEWRITER-SINK-AND-STAGING-CONTRACT-V1` (manifest `03b80a61ccef6e83bcdcd6adc552936bdfbda6c9a357c503e6584cd921493c5c`, seal `00d85343beebb48a96aa0eef4c50638ffac1b6334950fc1ae445fbe917858f91`) records a native byte-span write through a `FILE*`, with stream role and AU/source joins open. JOCForge's temporary staging adapter consumes one pair-owned proposal and writes the validated I0 span followed by D0; the append after-state is returned only after both spans, sync, readback, pair equality and per-frame CRC checks succeed. Any write/readback failure retires the attempt for staging abandonment; the native per-span edge does not supply the isolated pair-commit rule.
+
+`FLAT7X-CHANMAP-CANDIDATE-U16-SEQUENCE-BOUNDARY-V3` observes six candidate metadata U16 stores at stride2. The pointer owner, row semantics, table cardinality and `0x1A00` relation remain unbound; this sequence does not alter the provisional PCM row projection or D0 channel-map model.

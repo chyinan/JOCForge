@@ -1,0 +1,30 @@
+{
+  "schema": "flat7x-candidate-u16-sequence-boundary.v1",
+  "delivery": "SANITIZED_IMPLEMENTER_SUPPLEMENT",
+  "status": "WASHED_PARTIAL_IMPLEMENTATION_VISIBLE",
+  "observed_sequence": {
+    "store_width_bits": 16,
+    "destination_stride_bytes": 2,
+    "store_count_in_selected_loop": 6,
+    "first_destination_offset_from_candidate_base": 2,
+    "value_source_shape": "composite_address_load_then_u16_store",
+    "base_register_owner": "UNBOUND",
+    "direct_caller_binding": "UNBOUND"
+  },
+  "semantic_joins": {
+    "field_labels": "UNBOUND",
+    "channel_or_row_role": "UNBOUND",
+    "selected_profile": "UNBOUND",
+    "d0_chanmap_0x1a00": "UNBOUND",
+    "adm_physical_rows": "UNBOUND",
+    "eac3_blocks": "UNBOUND",
+    "coded_channel_locations": "UNBOUND",
+    "joc_carriers": "UNBOUND"
+  },
+  "implementation_policy": {
+    "current_pcm_row_map": "PROVISIONAL_REPLACEABLE",
+    "derive_pcm_role_from_u16_sequence": false,
+    "change_audio_algorithm_from_this_receipt": false
+  },
+  "runtime": "NOT_RUN"
+}

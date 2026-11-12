@@ -2,7 +2,7 @@
 
 > Generated locator only. A catalog row is not evidence. Read the selected package, verify its manifest and payload hashes, then use only its stated scope.
 
-Package directories: 1124. Top-level manifests: 1122.
+Package directories: 1125. Top-level manifests: 1123.
 
 Search by function, parameter, status, or package name:
 
@@ -797,6 +797,7 @@ Rebuild with `rtk proxy python -B scripts/build_supplement_catalog.py`.
 | first_love_dbmd_negative_sentinel_crosscheck_v1 | ca46c680e2eb84b0928668c25ace0a98e78d70410f232dacd948b53bd8373a97 | manifest: FIRST_LOVE_NEGATIVE_FFOA_SENTINEL_BRANCH_MATCHES_CANDIDATE_HELPER; POSITIVE_DELTA_BRANCH_UNEXERCISED | OBSERVATION.json, VERIFICATION.json, WASH-REVIEW.md, verify_package.py | No hash-verified summary payload declared. |
 | first_love_dee_output_metadata_reference_v1 | 338cc6e787d359d49cdcdd7a18c3a32675a07554d8ac525576725b27a44e309f | manifest: SAMPLE_DEE_OUTPUT_METADATA_VERIFIED; STRICT_EAC3_CHECK_FAIL; RENDER_NOT_RUN | OBSERVATION.json, VERIFICATION.json, WASH-REVIEW.md, verify_package.py | No hash-verified summary payload declared. |
 | FLAT7X-CHANMAP-CANDIDATE-ROW-POINTER-ACCESS-BOUNDARY-V1 | ce4d6ec220678efb0f8d5844af25d452584201ec7af8a954a5e0e6d65cca7e8d | manifest: WASHED_PARTIAL_IMPLEMENTATION_VISIBLE | FINDINGS.md, FIELD-BOUNDARY.json, SOURCE-RECEIPTS.json, verify_package.py | No hash-verified summary payload declared. |
+| FLAT7X-CHANMAP-CANDIDATE-U16-SEQUENCE-BOUNDARY-V3 | 8d649592a39ce682d2bcfa501d4779f180a831d7c23110e76447752c1eaa7646 | manifest: WASHED_PARTIAL_IMPLEMENTATION_VISIBLE | FINDINGS.md, SEQUENCE-BOUNDARY.json, SOURCE-RECEIPTS.json, verify_package.py | No hash-verified summary payload declared. |
 | FLAT7X-CHANMAP-U16-METADATA-ENTRY-PAIR-V2 | 985221c8ad56e8621b5b454a1876d433ea23ac51edfb7f7149c2822e2d48aaf9 | manifest: WASHED_PARTIAL_IMPLEMENTATION_VISIBLE | FINDINGS.md, ENTRY-PAIR.json, SOURCE-RECEIPTS.json, verify_package.py | No hash-verified summary payload declared. |
 | FLAT7X-CHANMAP-U16-METADATA-ROW-BOUNDARY-V1 | a987e3b6c6883a70b77656a6cbf9cebf1c2cd26187b9c79c473d697fb110bc80 | manifest: WASHED_PARTIAL_IMPLEMENTATION_VISIBLE | FINDINGS.md, FIELD-BOUNDARY.json, SOURCE-RECEIPTS.json, verify_package.py | No hash-verified summary payload declared. |
 | FLAT7X-D0-RATE-FRMSIZ-TARGET-V1 | 1eb4311e3f63ec84c57c7fe636a8a21773bd633ae3f4fe9b0739b88e09e66139 | manifest: WASHED_PARTIAL_IMPLEMENTATION_VISIBLE | FINDINGS.md, FRAME-SIZE-VECTOR.json, SOURCE-RECEIPTS.json, verify_package.py | No hash-verified summary payload declared. |
