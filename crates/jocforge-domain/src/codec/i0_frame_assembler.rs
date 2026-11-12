@@ -25,12 +25,168 @@ use crate::{
 const I0_TARGET_FRAME_BYTES: usize = 2_560;
 const I0_TARGET_FRAME_BITS: u32 = 20_480;
 const I0_AUDIO_BLOCK_COUNT: usize = 6;
+const I0_AC3_FULLBAND_CHANNEL_COUNT_BITS: u8 = 5;
 const I0_CRC1_START_BIT: u32 = 16;
 const I0_CRC_FIELD_BITS: u32 = 16;
 const I0_CRC1_SUFFIX_START_BYTE: usize = 4;
 const I0_CRC1_BOUNDARY_BYTE: usize = 1_600;
 const I0_CRCRSV_FIELD_BITS: u32 = 1;
 const I0_ERRORCHECK_FIELD_BITS: u32 = I0_CRCRSV_FIELD_BITS + I0_CRC_FIELD_BITS;
+
+/// Explicit model values for the AC-3 audblk fields before coupling continuation.
+///
+/// Values may be projected from same-source F07/F12 typed values, but this input carries no
+/// source receipt and asserts no native or DEE behavior. Its serializer stays production-disabled.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct I0Ac3AudioBlockPrefixInput {
+    /// AC-3 acmod 7 has five full-band channels in L, C, R, Ls, Rs order.
+    pub block_switch_flags: [bool; 5],
+    pub dither_flags: [bool; 5],
+    /// The proposed AC-3 dynrng value; None emits dynrnge=0.
+    pub dynamic_range_code: Option<u8>,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct I0Ac3AudioBlockFieldExtent {
+    start: FrameBitCursor,
+    bit_length: u8,
+}
+
+impl I0Ac3AudioBlockFieldExtent {
+    pub const fn start(self) -> FrameBitCursor {
+        self.start
+    }
+
+    pub const fn bit_length(self) -> u8 {
+        self.bit_length
+    }
+}
+
+/// Field extents through the mandatory first-block cplstre bit.
+#[must_use]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct I0Ac3AudioBlockPrefixReceipt {
+    block_switch: I0Ac3AudioBlockFieldExtent,
+    dither: I0Ac3AudioBlockFieldExtent,
+    dynamic_range_exists: I0Ac3AudioBlockFieldExtent,
+    dynamic_range: Option<I0Ac3AudioBlockFieldExtent>,
+    coupling_strategy_exists: I0Ac3AudioBlockFieldExtent,
+    next_field_cursor: FrameBitCursor,
+}
+
+impl I0Ac3AudioBlockPrefixReceipt {
+    pub const fn block_switch(self) -> I0Ac3AudioBlockFieldExtent {
+        self.block_switch
+    }
+
+    pub const fn dither(self) -> I0Ac3AudioBlockFieldExtent {
+        self.dither
+    }
+
+    pub const fn dynamic_range_exists(self) -> I0Ac3AudioBlockFieldExtent {
+        self.dynamic_range_exists
+    }
+
+    pub const fn dynamic_range(self) -> Option<I0Ac3AudioBlockFieldExtent> {
+        self.dynamic_range
+    }
+
+    pub const fn coupling_strategy_exists(self) -> I0Ac3AudioBlockFieldExtent {
+        self.coupling_strategy_exists
+    }
+
+    /// The next required AC-3 field is cplinu; it is outside this bounded prefix.
+    pub const fn next_field_cursor(self) -> FrameBitCursor {
+        self.next_field_cursor
+    }
+
+    pub const fn production_allowed(self) -> bool {
+        false
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum I0Ac3AudioBlockPrefixError {
+    BitWriter(FrameBitWriterError),
+}
+
+impl From<FrameBitWriterError> for I0Ac3AudioBlockPrefixError {
+    fn from(error: FrameBitWriterError) -> Self {
+        Self::BitWriter(error)
+    }
+}
+
+/// Writes the AC-3 first-audblk prefix from explicitly supplied model values.
+///
+/// ETSI TS 102 366 v1.4.1 clause 4.3.3 orders five blksw bits, five dithflag bits,
+/// dynrnge and optional dynrng before cplstre. Clause 4.4.3.7 requires cplstre=1
+/// in block 0. This serializer stops after that bit, before caller-owned cplinu.
+/// It writes no exponents, bit allocation, mantissas, or source bytes.
+pub fn write_i0_ac3_first_audio_block_prefix(
+    writer: &mut FrameBitWriter<'_>,
+    input: I0Ac3AudioBlockPrefixInput,
+) -> Result<I0Ac3AudioBlockPrefixReceipt, I0Ac3AudioBlockPrefixError> {
+    let dynamic_range_bits = if input.dynamic_range_code.is_some() {
+        8_u32
+    } else {
+        0
+    };
+    let total_bits = u32::from(I0_AC3_FULLBAND_CHANNEL_COUNT_BITS)
+        .checked_mul(2)
+        .and_then(|value| value.checked_add(2))
+        .ok_or(I0Ac3AudioBlockPrefixError::BitWriter(
+            FrameBitWriterError::CursorOverflow,
+        ))?
+        .checked_add(dynamic_range_bits)
+        .ok_or(I0Ac3AudioBlockPrefixError::BitWriter(
+            FrameBitWriterError::CursorOverflow,
+        ))?;
+    writer.preflight_capacity(total_bits)?;
+
+    let block_switch_start = writer.cursor();
+    for value in input.block_switch_flags {
+        writer.write_bit(value)?;
+    }
+    let dither_start = writer.cursor();
+    for value in input.dither_flags {
+        writer.write_bit(value)?;
+    }
+    let dynamic_range_exists_start = writer.cursor();
+    writer.write_bit(input.dynamic_range_code.is_some())?;
+    let dynamic_range = if let Some(value) = input.dynamic_range_code {
+        let start = writer.cursor();
+        writer.write_unsigned(u32::from(value), 8)?;
+        Some(I0Ac3AudioBlockFieldExtent {
+            start,
+            bit_length: 8,
+        })
+    } else {
+        None
+    };
+    let coupling_strategy_exists_start = writer.cursor();
+    writer.write_bit(true)?;
+
+    Ok(I0Ac3AudioBlockPrefixReceipt {
+        block_switch: I0Ac3AudioBlockFieldExtent {
+            start: block_switch_start,
+            bit_length: I0_AC3_FULLBAND_CHANNEL_COUNT_BITS,
+        },
+        dither: I0Ac3AudioBlockFieldExtent {
+            start: dither_start,
+            bit_length: I0_AC3_FULLBAND_CHANNEL_COUNT_BITS,
+        },
+        dynamic_range_exists: I0Ac3AudioBlockFieldExtent {
+            start: dynamic_range_exists_start,
+            bit_length: 1,
+        },
+        dynamic_range,
+        coupling_strategy_exists: I0Ac3AudioBlockFieldExtent {
+            start: coupling_strategy_exists_start,
+            bit_length: 1,
+        },
+        next_field_cursor: writer.cursor(),
+    })
+}
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct OpaqueI0Ac3BitSpan<'a> {

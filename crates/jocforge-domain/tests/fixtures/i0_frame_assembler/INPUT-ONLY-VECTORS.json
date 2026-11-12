@@ -93,5 +93,39 @@
         "crcrsv_toggled": false
       }
     }
+  ],
+  "first_audio_block_prefix_vectors": [
+    {
+      "id": "synthetic-first-block-prefix-with-dynrng",
+      "block_switch_flags": [true, false, true, false, true],
+      "dither_flags": [false, true, false, true, false],
+      "dynamic_range_code": 165,
+      "expected": {
+        "bit_length": 20,
+        "bytes_hex": "aab4b0",
+        "block_switch_span": [0, 5],
+        "dither_span": [5, 5],
+        "dynamic_range_exists_span": [10, 1],
+        "dynamic_range_span": [11, 8],
+        "coupling_strategy_exists_span": [19, 1],
+        "next_field_cursor": 20
+      }
+    },
+    {
+      "id": "synthetic-first-block-prefix-without-dynrng",
+      "block_switch_flags": [false, false, false, false, false],
+      "dither_flags": [true, true, true, true, true],
+      "dynamic_range_code": null,
+      "expected": {
+        "bit_length": 12,
+        "bytes_hex": "07d0",
+        "block_switch_span": [0, 5],
+        "dither_span": [5, 5],
+        "dynamic_range_exists_span": [10, 1],
+        "dynamic_range_span": null,
+        "coupling_strategy_exists_span": [11, 1],
+        "next_field_cursor": 12
+      }
+    }
   ]
 }

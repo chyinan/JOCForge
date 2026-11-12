@@ -46816,7 +46816,7 @@
                   "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_ASSEMBLY_GENERATED_CRC1_CRC2_RESIDUALS__PRODUCTION_OPEN",
                   "implementation_requirement": true,
                   "owner": "codec",
-                  "scope": "Assembles one 2560-byte I0 AC-3 frame from the approved header segment, caller-owned BSI-tail and six audio-block spans, optional auxdata and an initial caller crcrsv seed. It shares the seven mandatory BSI-tail bit count with the dedicated BSI-tail serializer, stages the complete frame, generates CRC1/CRC2 and verifies zero residuals before one caller-writer commit. Audio generation, source-generation join and production binding remain open.",
+                  "scope": "Assembles one 2560-byte I0 AC-3 frame from the approved header segment, caller-owned BSI-tail and six audio-block spans, optional auxdata and an initial caller crcrsv seed. It shares the seven mandatory BSI-tail bit count with the dedicated BSI-tail serializer, stages the complete frame, generates CRC1/CRC2 and verifies zero residuals before one caller-writer commit. Audio generation, source-generation join and production binding remain open. The module also has a standalone production-disabled first-audblk prefix serializer for five blksw, five dithflag, dynrnge with optional dynrng, and mandatory block-0 cplstre=1. It stops before cplinu; its explicit field inputs carry no source receipt.",
                   "dependencies": [
                     "F01E/flat7x-i0-d0-typed-target-plan",
                     "F12/flat7x-i0-ac3-header-segment",
@@ -46843,8 +46843,8 @@
                   "implementation_inventory": [
                     {
                       "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
-                      "bytes": 22618,
-                      "sha256": "5abf33c82e97b952700605b88044c3b556d5194efb8ac13105e9d700429089b7"
+                      "bytes": 27805,
+                      "sha256": "de529e401776b131af815e0e9bed2955e7d8dc0aba7db8150a0c0f758f6f3335"
                     },
                     {
                       "path": "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
@@ -46878,15 +46878,15 @@
                   "test_inventory": [
                     {
                       "path": "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs",
-                      "bytes": 23185,
-                      "sha256": "24d049b1f8195e9e104ce2f9254cb03a262101f8040544cbc598d7d7420ede8f"
+                      "bytes": 27833,
+                      "sha256": "d5326d373d71cf728f5d1cd5038674894dadff54b180129036c88ceff593b2d2"
                     }
                   ],
                   "vector_inventory": [
                     {
                       "path": "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
-                      "bytes": 2707,
-                      "sha256": "513f05a255ee46d931e47447b8247eeb632ba1ebe9025e776fd1caee902138fe"
+                      "bytes": 3832,
+                      "sha256": "f46e02ce039ed0db080c0cace990380addf7ceccf396a3670e435595f90a14a2"
                     },
                     {
                       "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
@@ -47038,7 +47038,7 @@
                       "The I0 assembler generates CRC1/CRC2 and asserts zero residuals over the approved spans; the synthetic receipt reports field positions and crcrsv result.",
                       "Washed scalar vectors cover target CRC1/CRC2 values, aligned and odd CRC1 truncation boundaries, and the crcrsv collision outcome; no raw frame bytes are supplied for same-byte replay.",
                       "Short BSI tail, source overrun, one-bit-short total, invalid header and short output capacity reject without caller-byte/cursor mutation.",
-                      "The typed field entry composes the approved BSI-tail writer receipt with six caller-owned synthetic spans before the existing frame CRC stage."
+                      "Synthetic first-audblk prefix vectors cover present/absent dynrng, exact field extents, mandatory cplstre=1 and short-capacity fail-before-write; cplinu and later fields remain outside this prefix."
                     ],
                     "expected_outputs_included": true,
                     "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_GENERATED_CRC1_CRC2_AND_ZERO_RESIDUALS"
@@ -47331,8 +47331,8 @@
                   "implementation_inventory": [
                     {
                       "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
-                      "bytes": 22618,
-                      "sha256": "5abf33c82e97b952700605b88044c3b556d5194efb8ac13105e9d700429089b7"
+                      "bytes": 27805,
+                      "sha256": "de529e401776b131af815e0e9bed2955e7d8dc0aba7db8150a0c0f758f6f3335"
                     },
                     {
                       "path": "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
@@ -47366,15 +47366,15 @@
                   "test_inventory": [
                     {
                       "path": "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs",
-                      "bytes": 23185,
-                      "sha256": "24d049b1f8195e9e104ce2f9254cb03a262101f8040544cbc598d7d7420ede8f"
+                      "bytes": 27833,
+                      "sha256": "d5326d373d71cf728f5d1cd5038674894dadff54b180129036c88ceff593b2d2"
                     }
                   ],
                   "vector_inventory": [
                     {
                       "path": "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
-                      "bytes": 2707,
-                      "sha256": "513f05a255ee46d931e47447b8247eeb632ba1ebe9025e776fd1caee902138fe"
+                      "bytes": 3832,
+                      "sha256": "f46e02ce039ed0db080c0cace990380addf7ceccf396a3670e435595f90a14a2"
                     },
                     {
                       "path": "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json",

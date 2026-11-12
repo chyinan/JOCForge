@@ -1827,3 +1827,9 @@ Wash supplement `FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1` (manifest `07ad2b60bd22a1
 ## 2026-11-12 Flat7x CLI paired-target gate
 
 run_with_data_rate_and_joc_layout dispatches ExistingSelectedFivePointOne to the existing single-frame writer across the six supported rates. Explicit Flat7x selection resolves the approved I0=640 kbps/2560-byte plus D0=1024 kbps/4096-byte target plan (1664 kbps/6656-byte aggregate), then returns Flat7xPairNotReady before input admission or output staging. This keeps Flat7x selection out of the 5.1 single-frame writer and prevents treating 1664 kbps as one E-AC-3 rate. Targeted CLI route tests and the selected 5.1 rate regression pass. I0 audblk production remains NOT_RUN; D0 source-generation and pair receipts remain UNBOUND; the target stays production_allowed=false.
+
+## 2026-11-12 AC-3 I0 first-audblk control prefix
+
+The standalone prefix writer follows ETSI TS 102 366 V1.4.1 clauses 4.3.3 and 4.4.3.1–4.4.3.7: five full-band `blksw`, five `dithflag`, `dynrnge` plus optional `dynrng`, then block-0 `cplstre=1`. It returns per-field bit extents and stops before `cplinu`; caller capacity is preflighted before any write. Synthetic vectors cover present/absent dynrng, exact output spans and fail-before-write capacity behavior.
+
+The same-source selected F07/F12 plan has block-0 short flags and dither decisions, while the selected BSI/DRC input has a block-0 line-dynamic-range code. These explicit values can supply the prefix as a user-authorized model projection; E-AC-3 frame bytes are never input. The prefix input carries no source identity receipt. The approved I0 target does not select `cplinu`; AC-3 exponent strategy/channel-bandwidth mapping, BA/SNR controls and mantissa syntax also lack an approved same-source I0 contract. The full six-block producer, source-generation join and production remain UNBOUND/NOT_RUN; `production_allowed=false`.

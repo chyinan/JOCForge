@@ -176,6 +176,12 @@ The existing byte composer and elementary-stream composer remain structural comp
 
 The post-commit 5.1 producer audit found no safe typed edge into the I0 span seam. `SelectedMainFrameCandidate` exposes the complete E-AC-3 frame bytes and per-block mantissa bit counts, while `write_frame_body` writes six E-AC-3 block bodies into one shared frame cursor. I0 assembly requires six AC-3 `audblk` bit spans. The selected 5.1 path has no span-producing API, and no approved contract establishes AC-3 reinterpretation of its E-AC-3 block bytes. A separate I0 audio-block producer contract and same-source binding are the typed blockers.
 
+## 2026-11-12 AC-3 first-audblk control prefix
+
+ETSI TS 102 366 V1.4.1 clauses 4.3.3 and 4.4.3.1–4.4.3.7 define the first audblk prefix as five `blksw` bits in L/C/R/Ls/Rs order, five `dithflag` bits, `dynrnge` with optional 8-bit `dynrng`, then `cplstre`; `cplstre` is required to be 1 in block 0. The isolated implementation adds a standalone production-disabled serializer for those fields and stops at the next required `cplinu` field. Synthetic input-only vectors verify both present/absent dynrng layouts, exact extents and fail-before-write capacity rejection. This is standard syntax serialization over explicit model values, not a DEE/native behavior claim.
+
+The same-source selected F07/F12 plan contains the five short flags, dither decisions and first-block line-DRC code that can supply the written fields as a user-authorized model projection. The I0 input type itself does not carry a source receipt, and no I0 producer binds those values to generated audblk content. `cplinu` selection and subsequent coupling/exponent/BA/SNR/mantissa fields remain UNBOUND. Six-block production, source-generation join and publication remain NOT_RUN; `production_allowed=false`.
+
 
 ## 2026-11-12 Flat7x CLI paired-target gate
 

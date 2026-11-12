@@ -11,8 +11,10 @@ use jocforge_domain::{
         i0_frame_assembler::{
             CallerOwnedI0CrcrsvSeed, Flat7xI0Ac3FrameAssemblyReceipt, Flat7xI0Ac3FrameHeaderFields,
             Flat7xI0Ac3FrameInput, Flat7xI0FrameAssemblyError, Flat7xI0FrameBitInput,
+            I0Ac3AudioBlockFieldExtent, I0Ac3AudioBlockPrefixError, I0Ac3AudioBlockPrefixInput,
             I0AuxDataInput, I0CrcValidationStatus, I0FramePart, OpaqueI0Ac3BitSpan,
             assemble_flat7x_i0_ac3_frame, assemble_flat7x_i0_ac3_frame_from_fields,
+            write_i0_ac3_first_audio_block_prefix,
         },
     },
     integrity::crc16::eac3_crc16,
@@ -52,6 +54,59 @@ fn case_by_id(vectors: &Value, id: &str) -> Value {
         .find(|case| case["id"] == id)
         .unwrap()
         .clone()
+}
+
+fn first_audio_block_prefix_case(vectors: &Value, id: &str) -> Value {
+    vectors["first_audio_block_prefix_vectors"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["id"] == id)
+        .unwrap()
+        .clone()
+}
+
+fn first_audio_block_prefix_input(case: &Value) -> I0Ac3AudioBlockPrefixInput {
+    let bool_array = |name: &str| {
+        case[name]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|value| value.as_bool().unwrap())
+            .collect::<Vec<_>>()
+            .try_into()
+            .unwrap()
+    };
+    I0Ac3AudioBlockPrefixInput {
+        block_switch_flags: bool_array("block_switch_flags"),
+        dither_flags: bool_array("dither_flags"),
+        dynamic_range_code: case["dynamic_range_code"]
+            .as_u64()
+            .map(|value| u8::try_from(value).unwrap()),
+    }
+}
+
+fn decode_hex_bytes(value: &str) -> Vec<u8> {
+    value
+        .as_bytes()
+        .chunks_exact(2)
+        .map(|pair| {
+            let high = (pair[0] as char).to_digit(16).unwrap();
+            let low = (pair[1] as char).to_digit(16).unwrap();
+            u8::try_from((high << 4) | low).unwrap()
+        })
+        .collect()
+}
+
+fn assert_prefix_extent(actual: I0Ac3AudioBlockFieldExtent, expected: &Value) {
+    assert_eq!(
+        actual.start().bit_offset(),
+        u32::try_from(expected[0].as_u64().unwrap()).unwrap()
+    );
+    assert_eq!(
+        u64::from(actual.bit_length()),
+        expected[1].as_u64().unwrap()
+    );
 }
 
 fn header_vector_by_id(id: &Value) -> Value {
@@ -255,6 +310,89 @@ fn frame_input<'a>(case: &Value, data: &'a SyntheticI0FrameData) -> Flat7xI0Fram
                 .unwrap(),
         },
     }
+}
+
+#[test]
+fn synthetic_first_audio_block_prefix_vector_writes_standard_fields_and_extents() {
+    let vectors = vectors();
+    for case_id in [
+        "synthetic-first-block-prefix-with-dynrng",
+        "synthetic-first-block-prefix-without-dynrng",
+    ] {
+        let case = first_audio_block_prefix_case(&vectors, case_id);
+        let expected = &case["expected"];
+        let expected_bytes = decode_hex_bytes(expected["bytes_hex"].as_str().unwrap());
+        let mut output = vec![0; expected_bytes.len()];
+        let receipt;
+        let cursor;
+        {
+            let mut writer = FrameBitWriter::new(&mut output, FrameBitCursor::new(0)).unwrap();
+            receipt = write_i0_ac3_first_audio_block_prefix(
+                &mut writer,
+                first_audio_block_prefix_input(&case),
+            )
+            .unwrap();
+            cursor = writer.cursor().bit_offset();
+        }
+
+        assert_eq!(output, expected_bytes);
+        assert_eq!(
+            cursor,
+            u32::try_from(expected["next_field_cursor"].as_u64().unwrap()).unwrap()
+        );
+        assert_prefix_extent(receipt.block_switch(), &expected["block_switch_span"]);
+        assert_prefix_extent(receipt.dither(), &expected["dither_span"]);
+        assert_prefix_extent(
+            receipt.dynamic_range_exists(),
+            &expected["dynamic_range_exists_span"],
+        );
+        assert_eq!(
+            receipt
+                .dynamic_range()
+                .map(|span| [span.start().bit_offset(), u32::from(span.bit_length())]),
+            expected["dynamic_range_span"].as_array().map(|span| [
+                u32::try_from(span[0].as_u64().unwrap()).unwrap(),
+                u32::try_from(span[1].as_u64().unwrap()).unwrap(),
+            ])
+        );
+        assert_prefix_extent(
+            receipt.coupling_strategy_exists(),
+            &expected["coupling_strategy_exists_span"],
+        );
+        assert_eq!(receipt.next_field_cursor().bit_offset(), cursor);
+        assert!(read_bit(
+            &output,
+            receipt.coupling_strategy_exists().start().bit_offset()
+        ));
+        assert!(!receipt.production_allowed());
+    }
+}
+
+#[test]
+fn first_audio_block_prefix_capacity_failure_leaves_bytes_and_cursor_unchanged() {
+    let vectors = vectors();
+    let case = first_audio_block_prefix_case(&vectors, "synthetic-first-block-prefix-with-dynrng");
+    let mut output = [0xa5, 0x5a];
+    let before = output;
+    let result;
+    let cursor;
+    {
+        let mut writer = FrameBitWriter::new(&mut output, FrameBitCursor::new(0)).unwrap();
+        result = write_i0_ac3_first_audio_block_prefix(
+            &mut writer,
+            first_audio_block_prefix_input(&case),
+        );
+        cursor = writer.cursor().bit_offset();
+    }
+
+    assert_eq!(
+        result,
+        Err(I0Ac3AudioBlockPrefixError::BitWriter(
+            FrameBitWriterError::BufferTooSmall
+        ))
+    );
+    assert_eq!(output, before);
+    assert_eq!(cursor, 0);
 }
 
 fn read_bit(bytes: &[u8], bit_offset: u32) -> bool {
