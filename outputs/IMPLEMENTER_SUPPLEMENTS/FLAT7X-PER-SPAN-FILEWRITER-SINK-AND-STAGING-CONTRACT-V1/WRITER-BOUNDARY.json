@@ -1,0 +1,33 @@
+{
+  "schema": "flat7x-per-span-filewriter-sink.v1",
+  "delivery": "SANITIZED_IMPLEMENTER_SUPPLEMENT",
+  "status": "WASHED_PARTIAL_IMPLEMENTATION_VISIBLE",
+  "native_selected_path": {
+    "provider_result": "byte_span_start_and_end",
+    "span_length": "end_minus_start",
+    "writer_input": ["span", "length", "sequential_write_ordinal"],
+    "nonzero_span_sink": "fwrite(buffer, 1, length, FILE*)",
+    "short_write_checked_after_sink": true,
+    "stream_role": "UNBOUND",
+    "au_identity": "UNBOUND",
+    "source_generation": "UNBOUND",
+    "native_pair_atomicity": "UNBOUND",
+    "native_file_identity": "UNBOUND",
+    "durability": "UNBOUND"
+  },
+  "approved_pair_target": {
+    "ordered_substreams": ["I0", "D0"],
+    "i0_rate_kbps": 640,
+    "d0_rate_kbps": 1024,
+    "au_aggregate_rate_kbps": 1664,
+    "au_bytes": 6656
+  },
+  "jocforge_staging_policy": {
+    "append_order": ["I0", "D0"],
+    "validate_each_span_before_pair_exposure": true,
+    "publish_only_complete_pair": true,
+    "discard_pair_candidate_on_any_write_failure": true,
+    "existing_five_one_route_unchanged": true
+  },
+  "native_runtime": "NOT_RUN"
+}

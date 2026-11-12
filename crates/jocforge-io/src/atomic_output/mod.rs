@@ -7,9 +7,11 @@ mod tests;
 #[cfg(windows)]
 mod windows_rename;
 
+use crate::flat7x_au_append::{Flat7xAuAppendIoFailure, append_flat7x_au_to_staging_file};
 use jocforge_domain::{
     integrity::crc16::eac3_crc16,
     publication::{
+        Flat7xAuAppendProposal, Flat7xAuAttemptRetirement, Flat7xAuOutputAfterProposal,
         OutputAppendProposal, OutputConfiguration, OutputDurableAppendReceipt,
         OutputFinalExposureReceipt, OutputFinalizeProposal,
     },
@@ -79,6 +81,64 @@ pub enum OutputIoFailure {
     FinalPathExistsAtRename,
     Rename,
     ParentFsyncAfterRename,
+}
+
+/// Failure while appending one Flat7x pair into this attempt's atomic staging file.
+///
+/// Every returned error carries the consumed pair proposal's retirement receipt.
+#[derive(Debug)]
+pub enum Flat7xAtomicAppendFailure {
+    AttemptMismatch(Flat7xAuAttemptRetirement),
+    SessionAbandoned(Flat7xAuAttemptRetirement),
+    SessionFinalized(Flat7xAuAttemptRetirement),
+    ExposureUncertain(Flat7xAuAttemptRetirement),
+    StagingHandleMissing(Flat7xAuAttemptRetirement),
+    Append(Flat7xAuAppendIoFailure),
+}
+
+impl Flat7xAtomicAppendFailure {
+    pub const fn retirement(&self) -> &Flat7xAuAttemptRetirement {
+        match self {
+            Self::AttemptMismatch(receipt)
+            | Self::SessionAbandoned(receipt)
+            | Self::SessionFinalized(receipt)
+            | Self::ExposureUncertain(receipt)
+            | Self::StagingHandleMissing(receipt) => receipt,
+            Self::Append(failure) => failure.retirement(),
+        }
+    }
+}
+
+impl std::fmt::Display for Flat7xAtomicAppendFailure {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::AttemptMismatch(_) => {
+                formatter.write_str("Flat7x attempt differs from atomic staging attempt")
+            }
+            Self::SessionAbandoned(_) => {
+                formatter.write_str("atomic output staging attempt is abandoned")
+            }
+            Self::SessionFinalized(_) => {
+                formatter.write_str("atomic output staging attempt is finalized")
+            }
+            Self::ExposureUncertain(_) => {
+                formatter.write_str("atomic output staging exposure is uncertain")
+            }
+            Self::StagingHandleMissing(_) => {
+                formatter.write_str("atomic output staging handle is unavailable")
+            }
+            Self::Append(failure) => write!(formatter, "{failure}"),
+        }
+    }
+}
+
+impl std::error::Error for Flat7xAtomicAppendFailure {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::Append(failure) => Some(failure),
+            _ => None,
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -244,6 +304,53 @@ impl AtomicOutputStaging {
         }
 
         let result = self.append_inner(proposal);
+        if result.is_err() {
+            self.state = SessionState::Abandoned;
+        }
+        result
+    }
+
+    /// Appends one complete Flat7x I0+D0 pair through the same attempt-scoped staging handle.
+    ///
+    /// The pair proposal is consumed on every outcome. Any state, attempt, or IO failure retires
+    /// the pair attempt and abandons an open atomic staging session; no final path is exposed.
+    pub fn append_flat7x_au<'a>(
+        &mut self,
+        proposal: Flat7xAuAppendProposal<'a>,
+    ) -> Result<Flat7xAuOutputAfterProposal<'a>, Flat7xAtomicAppendFailure> {
+        match self.state {
+            SessionState::Open => {}
+            SessionState::Abandoned => {
+                return Err(Flat7xAtomicAppendFailure::SessionAbandoned(
+                    proposal.retire_staging_failure(),
+                ));
+            }
+            SessionState::ExposureUncertain => {
+                return Err(Flat7xAtomicAppendFailure::ExposureUncertain(
+                    proposal.retire_staging_failure(),
+                ));
+            }
+            SessionState::Finalized => {
+                return Err(Flat7xAtomicAppendFailure::SessionFinalized(
+                    proposal.retire_staging_failure(),
+                ));
+            }
+        }
+        if proposal.attempt_id() != self.attempt_id {
+            self.state = SessionState::Abandoned;
+            return Err(Flat7xAtomicAppendFailure::AttemptMismatch(
+                proposal.retire_staging_failure(),
+            ));
+        }
+        let Some(file) = self.file.as_mut() else {
+            self.state = SessionState::Abandoned;
+            return Err(Flat7xAtomicAppendFailure::StagingHandleMissing(
+                proposal.retire_staging_failure(),
+            ));
+        };
+
+        let result = append_flat7x_au_to_staging_file(file, proposal)
+            .map_err(Flat7xAtomicAppendFailure::Append);
         if result.is_err() {
             self.state = SessionState::Abandoned;
         }

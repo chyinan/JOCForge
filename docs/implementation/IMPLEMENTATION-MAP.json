@@ -4877,8 +4877,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 61167,
-              "sha256": "7cb4875121c41b2ae7d37b895f73028b417953b3a907ba5ff3fc93373840f201"
+              "bytes": 63800,
+              "sha256": "10b34bca4e5c158cf41854097a9dd795c3ee9cefc8e8abf4a86348634efc2b0c"
             },
             {
               "path": "crates/jocforge-cli/src/main.rs",
@@ -10377,7 +10377,7 @@
           "implementation_status": "LOCALLY_VERIFIED_TYPED_TARGET_AND_I0_D0_BYTE_SEQUENCE_CANDIDATE__NO_PRODUCTION_PATH",
           "implementation_requirement": true,
           "owner": "UNBOUND",
-          "scope": "Value-only Wash-approved I0=640 kbps plus D0=1024 kbps Flat7x AU plan. It preserves the existing 5.1 production row and models distinct independent I0 and dependent D0 frame contracts, reconstruction layout, and the single D0 block-2 EMDF skip-field cap. The pure validator requires both frames, equal supplied generation labels, exact frame extents, one nonfragmented D0 block-2 EMDF field and a complete container length from 1 through 511 bytes. The noncommitting byte-sequence candidate checks each supplied frame extent and E-AC-3 CRC, then concatenates I0 followed by D0. Neither value parses substream syntax, proves runtime identity, or writes/publishes frames; production remains disabled.",
+          "scope": "Value-only I0=640 kbps plus D0=1024 kbps Flat7x AU target, using official-demo non-rate fields. I0 is AC-3 BSID6/acmod7/LFE/dmixmod1; D0 is E-AC-3 BSID16/acmod5/no-LFE/chanmap0x1A00/frmsiz2047. JOC spatial index1 and coefficient downmix index1 are distinct typed axes; object count15, complexity16, ADM physical rows, chanmap, extension0/phase-signaling-off, and EMDF IDs11/14 group0 stay separate. The existing 5.1 production row remains unchanged; this plan and byte candidate create no production path.",
           "spec_files": [
             "docs/architecture/PROFILE-DIMENSIONS.md",
             "docs/architecture/ARCHITECTURE-DECISIONS.md",
@@ -10394,20 +10394,20 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 33107,
-              "sha256": "aca730c6908ab37288b62dfe9e9287269d5e694b861668ed4bf838951daac960"
+              "bytes": 36981,
+              "sha256": "962c0f8d5451b3eefae9a0162a94583832a5552e9ac03d7f2bc29b43027674a7"
             },
             {
               "path": "crates/jocforge-domain/src/profile/mod.rs",
-              "bytes": 1433,
-              "sha256": "54b737e91924fabc2d56b63fac6a7f848e047aca47d838a0cfc15fbd7cde639d"
+              "bytes": 1941,
+              "sha256": "75d90d4c20e96fbc5c69650007bd3e7a1ba012110ad7499befd366993cf5683d"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 33107,
-              "sha256": "aca730c6908ab37288b62dfe9e9287269d5e694b861668ed4bf838951daac960"
+              "bytes": 36981,
+              "sha256": "962c0f8d5451b3eefae9a0162a94583832a5552e9ac03d7f2bc29b43027674a7"
             }
           ],
           "clock": {
@@ -10451,7 +10451,10 @@
                   "LFE"
                 ],
                 "rate_kbps": 640,
-                "frame_bytes": 2560
+                "frame_bytes": 2560,
+                "codec_family": "AC-3",
+                "bsid": 6,
+                "dmixmod": 1
               },
               "d0": {
                 "role": "dependent",
@@ -10472,7 +10475,11 @@
                   "Rrs"
                 ],
                 "rate_kbps": 1024,
-                "frame_bytes": 4096
+                "frame_bytes": 4096,
+                "codec_family": "E-AC-3",
+                "bsid": 16,
+                "dmixmod": "absent",
+                "frmsiz": 2047
               },
               "au": {
                 "order": [
@@ -10498,19 +10505,29 @@
                   "Rrs"
                 ],
                 "coded_objects": 15,
-                "complexity_index_type_a": 16
+                "complexity_index_type_a": 16,
+                "joc_spatial_index": 1,
+                "downmix_index": 1,
+                "downmix_coefficient_width": 7,
+                "joc_extension_idx": 0,
+                "phase_signaling": false,
+                "joc_object_count": 15
               },
               "d0_emdf_skipfld": {
                 "zero_based_audio_block": 2,
                 "field_count": 1,
                 "maximum_complete_container_bytes": 511,
                 "fragmentation_allowed": false,
-                "overflow_policy": "reject whole AU before publish"
+                "overflow_policy": "reject whole AU before publish",
+                "payload_ids": [
+                  11,
+                  14
+                ],
+                "group_id": 0
               },
               "unbound_gates": [
-                "I0 exact BSID",
                 "ADM source-row to D0 role join",
-                "downmix mode and phase",
+                "JOC algorithm-level mode and phase controls",
                 "runtime source-generation owner join",
                 "native D0 audio algorithm",
                 "native D0 writer owner",
@@ -10529,7 +10546,13 @@
               "Any missing frame or mismatched supplied source-generation label returns no complete-pair validation value.",
               "The plan type remains production_allowed=false and the existing selected 5.1 resolver is unchanged.",
               "CRC-valid frame extents concatenate in I0→D0 order to the 6,656-byte target AU sequence.",
-              "Frame extent and per-frame CRC mismatches reject byte-sequence composition."
+              "Frame extent and per-frame CRC mismatches reject byte-sequence composition.",
+              "D0 4096-byte frame maps to E-AC-3 frmsiz2047; AU rate remains I0 640 plus D0 1024.",
+              "Equal integer values joc_spatial_index1 and downmix_index1 are distinct typed dimensions.",
+              "D0 4096-byte frame maps to E-AC-3 frmsiz2047; AU rate remains I0 640 plus D0 1024.",
+              "Equal integer values joc_spatial_index1 and downmix_index1 are separate typed dimensions.",
+              "D0 4096-byte frame maps to E-AC-3 frmsiz2047; AU rate remains I0 640 plus D0 1024.",
+              "Equal integer values joc_spatial_index1 and downmix_index1 are separate typed dimensions."
             ],
             "expected_outputs_included": false,
             "execution_status": "TARGET_PLAN_AND_BYTE_SEQUENCE_INPUT_ONLY_TESTS_PASSED"
@@ -10585,6 +10608,122 @@
           ],
           "validation_boundary": "Architecture-only typed target plan and noncommitting I0→D0 byte-sequence candidate. Supplied frame extents and CRCs are checked; substream syntax, runtime identity, output-owner authority, and publication are not established. production_allowed=false.",
           "delivery_scope": "TYPED_FLAT7X_I0_D0_PLAN_AND_NONCOMMITTING_BYTE_SEQUENCE_CANDIDATE_ONLY"
+        },
+        {
+          "slice_id": "flat7x-adm-pcm-source-role-projection",
+          "mapping_status": "MATERIALIZED_PROVISIONAL_FLAT7X_PCM_ROW_PROJECTION__NATIVE_ROLE_JOIN_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_TYPED_SOURCE_PCM_PROJECTION__AUDIO_PRODUCER_JOIN_OPEN",
+          "implementation_requirement": true,
+          "owner": "application",
+          "scope": "The admitted ADM graph supplies a replaceable DirectSpeakers bed-role projection from physical PCM rows into typed I0 carrier rows and D0 chanmap locations. The application receipt binds prepared input, attempt, callback, source transaction, and same-source analysis identity; CLI carries current normal/cached PCM rows and retains the receipt in the parent callback result. This projection generates no codec audio and makes no native semantic-row-transfer claim.",
+          "spec_files": [
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
+            "crates/jocforge-domain/src/profile/mod.rs",
+            "crates/jocforge-application/src/source_frame_bridge.rs",
+            "crates/jocforge-cli/src/source_execution.rs",
+            "crates/jocforge-cli/src/encode_request.rs",
+            "crates/jocforge-cli/src/programme_roots.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs"
+          ],
+          "clock": {
+            "domains": [
+              "ProgrammeId",
+              "AttemptId",
+              "FrontendCallbackIndex",
+              "CodecSourceIndex",
+              "CallbackTransactionId",
+              "SharedAnalysisIdentity"
+            ],
+            "covered_clauses": [
+              "One projection is bound to the exact prepared input, attempt, callback, source transaction, and shared-analysis identity.",
+              "Physical PCM row, I0 coded role, D0 chanmap location, and JOC reconstruction carrier remain distinct domains."
+            ]
+          },
+          "parameters": {
+            "kind": "PROVISIONAL_SELECTED_DIRECTSPEAKERS_BED_ROLE_PROJECTION",
+            "assumption_id": "flat7x-direct-speaker-bed-rows-to-i0-d0-roles-v1",
+            "reference_manifest_sha256": "f7f8630c3f18e990324f013e70486c561de6816a844f852f18f03a82ce28fbfc",
+            "field_model_manifest_sha256": "c39d02116ff51e5b653b37df10a5b47c240dbec69b6ad23843f392d4809462dc",
+            "production_allowed": false,
+            "validation_boundary": "Synthetic selected-graph and caller PCM-row projection; current target admission retains physical-row counts 36/38. Native owner transfer, real PCM, and target audio generation remain open.",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1/REFERENCE-STRUCTURE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-ID14-OBJECT-COUNT-DOWNMIX-AND-COMPLEXITY-FIELDS-V1/FIELD-MODEL.json"
+            ]
+          },
+          "vectors": {
+            "kind": "SYNTHETIC_SELECTED_ADM_GRAPH_TO_TYPED_PCM_ROW_VIEWS",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1/REFERENCE-STRUCTURE.json"
+            ],
+            "case_pointers": [
+              "The 38-row selected graph projects I0 [L,C,R,Ls,Rs,LFE] and D0 [Ls,Rs,Lrs,Rrs].",
+              "A fixture-derived 36-row CHNA-prefix graph exercises the same typed row and chanmap domains.",
+              "Physical row count, JOC object count15, and D0 chanmap0x1A00 are independent fields."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "SYNTHETIC_ROLE_MAP_AND_SOURCE_PCM_PROJECTION_TESTS_PASS"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "Flat7xSourceRoleMapError::*",
+              "category": "selected graph and PCM-row projection",
+              "trigger": "Required bed roles, physical row extent, row sample count, or target chanmap shape differ.",
+              "programme_state_after": "No source PCM projection is returned.",
+              "caller_action": "Reject this provisional source projection before any audio producer."
+            }
+          ],
+          "not_run": [
+            "Native same-generation ADM-row owner transfer and source-generation receipts.",
+            "I0/D0 audio producer connection, production output, W04, and real PCM."
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
+              "bytes": 19770,
+              "sha256": "f64f529421403aab09104bb69a20cf70987d88b2b62b5f7980ff474fe61c5ab8"
+            },
+            {
+              "path": "crates/jocforge-domain/src/profile/mod.rs",
+              "bytes": 1941,
+              "sha256": "75d90d4c20e96fbc5c69650007bd3e7a1ba012110ad7499befd366993cf5683d"
+            },
+            {
+              "path": "crates/jocforge-application/src/source_frame_bridge.rs",
+              "bytes": 17682,
+              "sha256": "35d966c1871b2210535f9986be860f1db6c99c0a00a44c157f49db01da8a5c09"
+            },
+            {
+              "path": "crates/jocforge-cli/src/source_execution.rs",
+              "bytes": 21938,
+              "sha256": "7e0bcd5a3f8f166c9b0074ad4286c10316e455635c9b60801a5e466da4d757e7"
+            },
+            {
+              "path": "crates/jocforge-cli/src/encode_request.rs",
+              "bytes": 63800,
+              "sha256": "10b34bca4e5c158cf41854097a9dd795c3ee9cefc8e8abf4a86348634efc2b0c"
+            },
+            {
+              "path": "crates/jocforge-cli/src/programme_roots.rs",
+              "bytes": 41069,
+              "sha256": "bc40e3d41e3669e8870652cf6a48503060560b22385c410e38cb684da99e2176"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
+              "bytes": 19770,
+              "sha256": "f64f529421403aab09104bb69a20cf70987d88b2b62b5f7980ff474fe61c5ab8"
+            }
+          ]
         }
       ]
     },
@@ -15626,8 +15765,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 61167,
-              "sha256": "7cb4875121c41b2ae7d37b895f73028b417953b3a907ba5ff3fc93373840f201"
+              "bytes": 63800,
+              "sha256": "10b34bca4e5c158cf41854097a9dd795c3ee9cefc8e8abf4a86348634efc2b0c"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
@@ -18686,11 +18825,11 @@
               "bytes": 55979,
               "sha256": "f2deba90fe2e2cdb0401bb597e7c35e51631accbc5be67577c99bdcc00b7d55f"
             },
-                                                                                                                                                                                                {
-                                                                                                  "path": "scripts/check-boundaries.py",
-                                                                                                  "bytes": 2172415,
-                                                                                                  "sha256": "db3edd21d5517c400e3bcc482aca5bcf785039c59e5421e8e46a136750cce95a"
-                                                                                                }
+            {
+              "path": "scripts/check-boundaries.py",
+              "bytes": 2198162,
+              "sha256": "5f28782ac45a73a0ae456acb53ec77dc0f2f05f6ee3bc42338179eafb98c25e8"
+            }
           ],
           "test_modules": [
             "crates/jocforge-domain/src/spatial/production_callback/selected_audio_provider_bundle.rs",
@@ -20008,8 +20147,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_fitting.rs",
-              "bytes": 33181,
-              "sha256": "ca17ec188840ae0f4375385bec7b877e8c92e21ed336dbc82c76923bbdfab4f1"
+              "bytes": 33212,
+              "sha256": "d254a0e50ee7fbad38149976ba8cebae2e96b3dce6cc9be9422d3bfa85d22ff2"
             },
             {
               "path": "crates/jocforge-domain/src/joc/fit_score.rs",
@@ -22213,11 +22352,11 @@
               "bytes": 39236,
               "sha256": "17db76ffbc5b6983fff43d26e7d63f1529bf64c84347b7c9da7014f05d0d083f"
             },
-                                                                                                                                                                                                {
-                                                                                                  "path": "scripts/check-boundaries.py",
-                                                                                                  "bytes": 2172415,
-                                                                                                  "sha256": "db3edd21d5517c400e3bcc482aca5bcf785039c59e5421e8e46a136750cce95a"
-                                                                                                },
+            {
+              "path": "scripts/check-boundaries.py",
+              "bytes": 2198162,
+              "sha256": "5f28782ac45a73a0ae456acb53ec77dc0f2f05f6ee3bc42338179eafb98c25e8"
+            },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
               "bytes": 18568,
@@ -41651,8 +41790,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/bap.rs",
-              "bytes": 24933,
-              "sha256": "bb377739f7fe85e64d1f88f832684a83049b7a2e9bbe0a14805db9d15eb2c62a"
+              "bytes": 25419,
+              "sha256": "2d9421e7f3ecfe91d13ccaf82eb6458d4a670715dbee6a64f268c5878b460073"
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_syntax.rs",
@@ -42346,11 +42485,11 @@
               "bytes": 30228,
               "sha256": "3e364b01cd60c64fc79c08b12a9013565b1bcf8b6cec6378ed8e9b241bcbb9c6"
             },
-                                                                                                {
-                                                  "path": "crates/jocforge-domain/src/codec/mod.rs",
-                                                  "bytes": 1116,
-                                                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                                                },
+            {
+              "path": "crates/jocforge-domain/src/codec/mod.rs",
+              "bytes": 1141,
+              "sha256": "310555b04e94adfb45606a8a7b025fa5550aa18eba8ae712dbae11d972673c34"
+            },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
               "bytes": 63659,
@@ -42480,11 +42619,11 @@
               "bytes": 99211,
               "sha256": "46a184023b0b1b33881feb4411f8ed17a0531f52c35658f48664bf46172182ab"
             },
-                                                                                                {
-                                                  "path": "crates/jocforge-domain/src/codec/mod.rs",
-                                                  "bytes": 1116,
-                                                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                                                },
+            {
+              "path": "crates/jocforge-domain/src/codec/mod.rs",
+              "bytes": 1141,
+              "sha256": "310555b04e94adfb45606a8a7b025fa5550aa18eba8ae712dbae11d972673c34"
+            },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
               "bytes": 63659,
@@ -42649,19 +42788,19 @@
             },
             {
               "path": "crates/jocforge-application/src/source_frame_bridge.rs",
-              "bytes": 10242,
-              "sha256": "2334b9859c8e9ea222474714906077ef47667f2306205b5388dd128f19d7eb0d"
+              "bytes": 17682,
+              "sha256": "35d966c1871b2210535f9986be860f1db6c99c0a00a44c157f49db01da8a5c09"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
               "bytes": 14328,
               "sha256": "711aea5f953cc9c9031fd9296719a48110766b56453911a61954b8c48fb8719c"
             },
-                                                                                                {
-                                                  "path": "crates/jocforge-domain/src/codec/mod.rs",
-                                                  "bytes": 1116,
-                                                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                                                },
+            {
+              "path": "crates/jocforge-domain/src/codec/mod.rs",
+              "bytes": 1141,
+              "sha256": "310555b04e94adfb45606a8a7b025fa5550aa18eba8ae712dbae11d972673c34"
+            },
             {
               "path": "crates/jocforge-domain/src/codec/published_emdf_binding.rs",
               "bytes": 9622,
@@ -42679,8 +42818,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-              "bytes": 98059,
-              "sha256": "bab96a268a9a5d171ff8fc2a603eb260d3b9516b9eba7e4b4a55ebd1025e01c1"
+              "bytes": 98115,
+              "sha256": "07918d3ba58c719e9ba73c2869fc41f014f845b90f60e8f76ede4f3bb90ab691"
             },
             {
               "path": "crates/jocforge-application/src/output_publication/plan_admission.rs",
@@ -42689,8 +42828,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 61167,
-              "sha256": "7cb4875121c41b2ae7d37b895f73028b417953b3a907ba5ff3fc93373840f201"
+              "bytes": 63800,
+              "sha256": "10b34bca4e5c158cf41854097a9dd795c3ee9cefc8e8abf4a86348634efc2b0c"
             },
             {
               "path": "crates/jocforge-cli/src/lib.rs",
@@ -44526,8 +44665,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/mod.rs",
-              "bytes": 1433,
-              "sha256": "54b737e91924fabc2d56b63fac6a7f848e047aca47d838a0cfc15fbd7cde639d"
+              "bytes": 1941,
+              "sha256": "75d90d4c20e96fbc5c69650007bd3e7a1ba012110ad7499befd366993cf5683d"
             },
             {
               "path": "crates/jocforge-domain/src/profile/production.rs",
@@ -44591,8 +44730,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/integrity/programme_owner.rs",
-              "bytes": 56239,
-              "sha256": "f8d0a9fc1a95e8513fdf34429a6c3db5bfcca995a6c619fd6636b7bbb6247231"
+              "bytes": 56270,
+              "sha256": "c58e3c4234180d6fdca88c271f00260fde375d93490bbae38f073d187581a3d4"
             },
             {
               "path": "crates/jocforge-application/src/codec_source_bridge.rs",
@@ -44631,8 +44770,8 @@
             },
             {
               "path": "crates/jocforge-application/src/source_frame_bridge.rs",
-              "bytes": 10242,
-              "sha256": "2334b9859c8e9ea222474714906077ef47667f2306205b5388dd128f19d7eb0d"
+              "bytes": 17682,
+              "sha256": "35d966c1871b2210535f9986be860f1db6c99c0a00a44c157f49db01da8a5c09"
             },
             {
               "path": "crates/jocforge-application/src/spatial_callback.rs",
@@ -44646,8 +44785,8 @@
             },
             {
               "path": "crates/jocforge-io/src/atomic_output/mod.rs",
-              "bytes": 25573,
-              "sha256": "8f04c650fff9f103ddd272b509bf77eeb589daa5db3d104f165a3df7ab5fa754"
+              "bytes": 29801,
+              "sha256": "281cb6cb1ce03ac476875a96bd80b206a25878d61932665eef7d85fc4dc3c794"
             },
             {
               "path": "crates/jocforge-io/src/provider/mod.rs",
@@ -44666,8 +44805,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 61167,
-              "sha256": "7cb4875121c41b2ae7d37b895f73028b417953b3a907ba5ff3fc93373840f201"
+              "bytes": 63800,
+              "sha256": "10b34bca4e5c158cf41854097a9dd795c3ee9cefc8e8abf4a86348634efc2b0c"
             },
             {
               "path": "crates/jocforge-cli/src/main.rs",
@@ -44686,8 +44825,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/programme_roots.rs",
-              "bytes": 39874,
-              "sha256": "c6deb60a863b11893c6eff56ff46cc1a635372b2a42ee0a51fd2e349a43af4c2"
+              "bytes": 41069,
+              "sha256": "bc40e3d41e3669e8870652cf6a48503060560b22385c410e38cb684da99e2176"
             },
             {
               "path": "crates/jocforge-cli/src/selected_meter_provider_identity.rs",
@@ -44768,13 +44907,13 @@
             },
             {
               "path": "crates/jocforge-io/src/atomic_output/tests.rs",
-              "bytes": 16965,
-              "sha256": "aec5fda7da8cec33b98c1ecccb2e570bc7976107585a2031c85c43b9e26adc72"
+              "bytes": 22535,
+              "sha256": "efb191ef206ccdd5905598ba97d2aa044a3800cdd9a6cd4d5ece498343bb61da"
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 61167,
-              "sha256": "7cb4875121c41b2ae7d37b895f73028b417953b3a907ba5ff3fc93373840f201"
+              "bytes": 63800,
+              "sha256": "10b34bca4e5c158cf41854097a9dd795c3ee9cefc8e8abf4a86348634efc2b0c"
             },
             {
               "path": "crates/jocforge-io/src/provider/spatial_audio.rs",
@@ -45544,15 +45683,15 @@
               "bytes": 1560,
               "sha256": "dec7cb83b35d1c7b7ce0633d2fd4eb1af45e7db5b82afc411fd5e0246b979ead"
             },
-                                                                                                {
-                                                  "path": "crates/jocforge-domain/src/codec/mod.rs",
-                                                  "bytes": 1116,
-                                                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                                                },
+            {
+              "path": "crates/jocforge-domain/src/codec/mod.rs",
+              "bytes": 1141,
+              "sha256": "310555b04e94adfb45606a8a7b025fa5550aa18eba8ae712dbae11d972673c34"
+            },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 33107,
-              "sha256": "aca730c6908ab37288b62dfe9e9287269d5e694b861668ed4bf838951daac960"
+              "bytes": 36981,
+              "sha256": "962c0f8d5451b3eefae9a0162a94583832a5552e9ac03d7f2bc29b43027674a7"
             }
           ],
           "test_inventory": [
@@ -45687,13 +45826,13 @@
             },
             {
               "path": "crates/jocforge-domain/src/profile/mod.rs",
-              "bytes": 1433,
-              "sha256": "54b737e91924fabc2d56b63fac6a7f848e047aca47d838a0cfc15fbd7cde639d"
+              "bytes": 1941,
+              "sha256": "75d90d4c20e96fbc5c69650007bd3e7a1ba012110ad7499befd366993cf5683d"
             },
             {
               "path": "crates/jocforge-domain/src/joc/huffman/id14_header.rs",
-              "bytes": 18168,
-              "sha256": "46302ebb0c2b320c51b1fc6e3101bb0f31238294344ebc6aedec504cb747eb1f"
+              "bytes": 18636,
+              "sha256": "7e7b06297c86808f1f043b6aeb223efca2ffc76bff88dd119447881eb7121881"
             },
             {
               "path": "crates/jocforge-domain/src/joc/huffman.rs",
@@ -45712,8 +45851,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/joc_reconstruction_layout.rs",
-              "bytes": 11304,
-              "sha256": "0c3d8513628eb46ff9880d430f4b222e31ced15790dc8c0937208d3d641bfad5"
+              "bytes": 11810,
+              "sha256": "ab8174d7ff35ecf3cb2217acee4ca393ec7a51c613d051a2d0af9af71fc869a9"
             }
           ],
           "clock": {
@@ -45886,13 +46025,13 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 61167,
-              "sha256": "7cb4875121c41b2ae7d37b895f73028b417953b3a907ba5ff3fc93373840f201"
+              "bytes": 63800,
+              "sha256": "10b34bca4e5c158cf41854097a9dd795c3ee9cefc8e8abf4a86348634efc2b0c"
             },
             {
               "path": "crates/jocforge-cli/src/source_execution.rs",
-              "bytes": 18415,
-              "sha256": "f4d4a307d42f5dde109ce368922cc596b2c13e649df48dd9fd27c63d1149ba48"
+              "bytes": 21938,
+              "sha256": "7e0bcd5a3f8f166c9b0074ad4286c10316e455635c9b60801a5e466da4d757e7"
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
@@ -45911,8 +46050,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/profile/mod.rs",
-              "bytes": 1433,
-              "sha256": "54b737e91924fabc2d56b63fac6a7f848e047aca47d838a0cfc15fbd7cde639d"
+              "bytes": 1941,
+              "sha256": "75d90d4c20e96fbc5c69650007bd3e7a1ba012110ad7499befd366993cf5683d"
             },
             {
               "path": "crates/jocforge-domain/src/joc/programme_state.rs",
@@ -45931,8 +46070,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_fitting.rs",
-              "bytes": 33181,
-              "sha256": "ca17ec188840ae0f4375385bec7b877e8c92e21ed336dbc82c76923bbdfab4f1"
+              "bytes": 33212,
+              "sha256": "d254a0e50ee7fbad38149976ba8cebae2e96b3dce6cc9be9422d3bfa85d22ff2"
             },
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_representation.rs",
@@ -45951,8 +46090,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/huffman/id14_header.rs",
-              "bytes": 18168,
-              "sha256": "46302ebb0c2b320c51b1fc6e3101bb0f31238294344ebc6aedec504cb747eb1f"
+              "bytes": 18636,
+              "sha256": "7e7b06297c86808f1f043b6aeb223efca2ffc76bff88dd119447881eb7121881"
             }
           ],
           "test_modules": [
@@ -45964,13 +46103,13 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-cli/tests/joc_layout_selection.rs",
-              "bytes": 2722,
-              "sha256": "8e5cc4e50c7d622f3af4c39cd6c24f2893b152b9a54ed52e2268018f1168a7ef"
+              "bytes": 3017,
+              "sha256": "8818b87a22c19739429d614431c4dc1725d2fc25a05d38ad8d167eeb3619c9f5"
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 61167,
-              "sha256": "7cb4875121c41b2ae7d37b895f73028b417953b3a907ba5ff3fc93373840f201"
+              "bytes": 63800,
+              "sha256": "10b34bca4e5c158cf41854097a9dd795c3ee9cefc8e8abf4a86348634efc2b0c"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -45979,8 +46118,8 @@
             },
             {
               "path": "crates/jocforge-domain/tests/joc_reconstruction_layout.rs",
-              "bytes": 11304,
-              "sha256": "0c3d8513628eb46ff9880d430f4b222e31ced15790dc8c0937208d3d641bfad5"
+              "bytes": 11810,
+              "sha256": "ab8174d7ff35ecf3cb2217acee4ca393ec7a51c613d051a2d0af9af71fc869a9"
             }
           ],
           "clock": {
@@ -46116,11 +46255,11 @@
               "bytes": 9194,
               "sha256": "0daca3a9401ec1728c8a30297a53dec874902778bda134c9b454765294e097f9"
             },
-                                                                                                {
-                                                  "path": "crates/jocforge-domain/src/codec/mod.rs",
-                                                  "bytes": 1116,
-                                                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                                                },
+            {
+              "path": "crates/jocforge-domain/src/codec/mod.rs",
+              "bytes": 1141,
+              "sha256": "310555b04e94adfb45606a8a7b025fa5550aa18eba8ae712dbae11d972673c34"
+            },
             {
               "path": "crates/jocforge-domain/src/codec/d0_frame_assembler.rs",
               "bytes": 18172,
@@ -46140,9 +46279,21 @@
             }
           ],
           "vector_inventory": [
-            {"path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/INPUT-ONLY-VECTOR.json", "bytes": 1750, "sha256": "356916e6ed58189bd2bd33962d1dd43280d8a87485df71621e452ef8e05f6bee"},
-            {"path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/INPUT-ONLY-VECTOR.json", "bytes": 878, "sha256": "1ad223f37900fa3ae356658b65e75e41488b96012805a6c9ad3d1392f06e0a1c"},
-            {"path": "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json", "bytes": 2542, "sha256": "fddc65f1a52c325347029cc272f24122f9b6ed501d99130a42051b7d7aa8fbee"}
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/INPUT-ONLY-VECTOR.json",
+              "bytes": 1750,
+              "sha256": "356916e6ed58189bd2bd33962d1dd43280d8a87485df71621e452ef8e05f6bee"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/INPUT-ONLY-VECTOR.json",
+              "bytes": 878,
+              "sha256": "1ad223f37900fa3ae356658b65e75e41488b96012805a6c9ad3d1392f06e0a1c"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json",
+              "bytes": 2542,
+              "sha256": "fddc65f1a52c325347029cc272f24122f9b6ed501d99130a42051b7d7aa8fbee"
+            }
           ],
           "clock": {
             "domains": [],
@@ -46161,9 +46312,20 @@
               "seal_file_sha256": "7c31c485368c3755de23f7fee981a141c3607eef86d7110a4cdf1661c6a15024",
               "checker_normal": "PASS",
               "checker_optimized": "PASS",
-              "official_mka_c_total_bytes": {"minimum": 301, "maximum": 377},
-              "official_mka_rate_kbps": {"i0": 640, "d0": 640, "aggregate": 1280},
-              "approved_target_rate_kbps": {"i0": 640, "d0": 1024, "aggregate": 1664},
+              "official_mka_c_total_bytes": {
+                "minimum": 301,
+                "maximum": 377
+              },
+              "official_mka_rate_kbps": {
+                "i0": 640,
+                "d0": 640,
+                "aggregate": 1280
+              },
+              "approved_target_rate_kbps": {
+                "i0": 640,
+                "d0": 1024,
+                "aggregate": 1664
+              },
               "c511": "FIT_EXACT_ARITHMETIC_ONLY",
               "openjoc_c511_full_container_parse": "NOT_RUN_IN_THIS_PACKAGE"
             },
@@ -46228,7 +46390,7 @@
               },
               "production_allowed": false,
               "caller_block2_layout_assembly": "LOCALLY_VERIFIED_SYNTHETIC_D0_FRAME; INSERTION_OFFSET_CALLER_OWNED_UNBOUND",
-            "native_block_cursor_bound": false,
+              "native_block_cursor_bound": false,
               "runtime_owner_bound": false,
               "generic_absent_syntax_exposed": false,
               "missing_container_policy": "MissingContainer before any write"
@@ -46810,670 +46972,882 @@
           "validation_boundary": "Locally verified field serialization only; no source mapping, audio/CRC algorithm, complete I0 frame, AU or production.",
           "delivery_scope": "FLAT7X_I0_AC3_HEADER_SEGMENT_THROUGH_COMPR_ONLY_NO_AUDIO_OR_COMPLETE_FRAME_CLAIM"
         },
-                                {
-                  "slice_id": "flat7x-i0-frame-bit-assembler",
-                  "mapping_status": "MATERIALIZED_WASH_BOUNDED_I0_FRAME_ASSEMBLY_AND_CRC_GENERATION",
-                  "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_ASSEMBLY_GENERATED_CRC1_CRC2_RESIDUALS__PRODUCTION_OPEN",
-                  "implementation_requirement": true,
-                  "owner": "codec",
-                  "scope": "Assembles one 2560-byte I0 AC-3 frame from the approved header segment, caller-owned BSI-tail and six audio-block spans, optional auxdata and an initial caller crcrsv seed. It shares the seven mandatory BSI-tail bit count with the dedicated BSI-tail serializer, stages the complete frame, generates CRC1/CRC2 and verifies zero residuals before one caller-writer commit. Audio generation, source-generation join and production binding remain open. The module also has a standalone production-disabled first-audblk prefix serializer for five blksw, five dithflag, dynrnge with optional dynrng, and mandatory block-0 cplstre=1. It stops before cplinu; its explicit field inputs carry no source receipt. A separate caller-owned typed cplinu writer accepts only U1 values, checks the prefix next cursor and capacity, returns its one-bit extent, and selects no coupling mode. A following caller-owned coupling-fields writer serializes chincpl[5], cplbegf/cplendf and the formula-sized cplbndstrc bits. It validates ranges and extents without choosing coupling, and stops before cplcoe.",
-                  "dependencies": [
-                    "F01E/flat7x-i0-d0-typed-target-plan",
-                    "F12/flat7x-i0-ac3-header-segment",
-                    "F12/flat7x-i0-ac3-bsi-tail-writer",
-                    "integrity/ac3_crc16"
-                  ],
-                  "spec_files": [
-                    "docs/architecture/PROFILE-DIMENSIONS.md",
-                    "docs/architecture/adm-to-eac3joc-chain-status.md",
-                    "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/CONTRACT.md",
-                    "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/FINDINGS.md",
-                    "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
-                    "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/FINDINGS.md",
-                    "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/CRC-GENERATION-CONTRACT.json"
-                  ],
-                  "implementation_files": [
-                    "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
-                    "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
-                    "crates/jocforge-domain/src/codec/frame_builder.rs",
-                    "crates/jocforge-domain/src/codec/mod.rs",
-                    "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
-                    "crates/jocforge-domain/src/integrity/mod.rs"
-                  ],
-                  "implementation_inventory": [
-                    {
-                      "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
-                      "bytes": 36737,
-                      "sha256": "4681a27970d05f717bfb0af14898b00ae244876380d15cbcd0ae92205c6fcae9"
-                    },
-                    {
-                      "path": "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
-                      "bytes": 8747,
-                      "sha256": "b3bbb2edfc28d66b46b2d37f3a00aa2ba653996f6331c5aeb79ffb587a4ce719"
-                    },
-                    {
-                      "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-                      "bytes": 43493,
-                      "sha256": "992fa2b5c5f5ff47aef536e0289474432bdf8919f224407af34b5b8c6c761f64"
-                    },
-                    {
-                      "path": "crates/jocforge-domain/src/codec/mod.rs",
-                      "bytes": 1116,
-                      "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                    },
-                    {
-                      "path": "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
-                      "bytes": 8372,
-                      "sha256": "0c570458c5bf9ddadab869ec1c2a4bd6e71c4f9cbc9e655b7d34e9afa14f7d08"
-                    },
-                    {
-                      "path": "crates/jocforge-domain/src/integrity/mod.rs",
-                      "bytes": 300,
-                      "sha256": "8cf3b9de9d577622322eb1ac7a71bb54158428db5a50529ae36e5b3e8abc8ff0"
-                    }
-                  ],
-                  "test_modules": [
-                    "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs"
-                  ],
-                  "test_inventory": [
-                    {
-                      "path": "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs",
-                      "bytes": 44297,
-                      "sha256": "325a31f27e94bdffb9aa03dac69c7e38ccb798188c30683c4510b2a29b6479e7"
-                    }
-                  ],
-                  "vector_inventory": [
-                    {
-                      "path": "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
-                      "bytes": 6907,
-                      "sha256": "a21831772989d86b79644805848844c60c7923ed9d295bb3f2f367f46b7e80d6"
-                    },
-                    {
-                      "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
-                      "bytes": 1454,
-                      "sha256": "7dd7064bd6c98ae1c35ae6fbe33fe0c8ae5d8ea739a94a69a4a6bf54282ef35c"
-                    },
-                    {
-                      "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
-                      "bytes": 3479,
-                      "sha256": "982ebec236bb223984734224da94e2b67d9006ce017d58753e0ae017d1f4d7a4"
-                    },
-                    {
-                      "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/INPUT-ONLY-VECTORS.json",
-                      "bytes": 1701,
-                      "sha256": "81e2ced5481937604fac3d9d153b13c89187528ea9abe120565f28be3cbf6fc4"
-                    }
-                  ],
-                  "clock": {
-                    "domains": [],
-                    "covered_clauses": [
-                      "The caller writer starts at bit zero and advances exactly 20480 frame bits after full staging; no media/source clock is introduced."
-                    ]
-                  },
-                  "parameters": {
-                    "kind": "WASH_BOUNDED_I0_AC3_FRAME_PART_ASSEMBLY",
-                    "header_package_id": "flat7x-i0-ac3-header-segment-v1",
-                    "header_manifest_sha256": "285bff275095c945a3f6f4b5040de20111779cec466602fb1aea29ca8c4ad8e1",
-                    "header_seal_sha256": "19a1923a4ec264eca0f55c63eaab3065d6587ef1e86ef0e6af2d288f950acc9d",
-                    "continuation_package_id": "FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1",
-                    "continuation_manifest_sha256": "cddad099b557617ab6f4aa73d3c40d87f75f12a55c141e14bff6573bdc891787",
-                    "continuation_seal_sha256": "329d5f9b1a43cdbee31abe4403f398ed4671a9a27e6bec40a2b09679ae46079d",
-                    "provider_files": [
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/MANIFEST.json",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/PACKAGE-SEAL.json",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/CONTRACT.md",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/MANIFEST.json",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/PACKAGE-SEAL.json",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/verify_package.py",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/MANIFEST.json",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/MANIFEST.sha256",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/PACKAGE-SEAL.json",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/CRC-GENERATION-CONTRACT.json",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/INPUT-ONLY-VECTORS.json",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/SOURCE-RECEIPTS.json",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/verify_package.py"
-                    ],
-                    "target": {
-                      "role": "IndependentI0",
-                      "codec": "legacy_ac3_core",
-                      "sample_rate_hz": 48000,
-                      "rate_kbps": 640,
-                      "d0_rate_kbps": 1024,
-                      "frame_bytes": 2560,
-                      "frame_bits": 20480,
-                      "audio_blocks": 6,
-                      "samples_per_channel": 1536,
-                      "frmsizecod": [
-                        36,
-                        37
-                      ],
-                      "bsid": 6,
-                      "acmod": 7,
-                      "lfeon": true
-                    },
-                    "frame_part_order": [
-                      "syncinfo/header segment",
-                      "caller-owned BSI tail after compr",
-                      "audblk[0] through audblk[5] in order",
-                      "caller-owned auxbits/optional auxdatal then auxdatae",
-                      "caller-owned crcrsv then CRC2 U16"
-                    ],
-                    "bsi_tail_minimum_bits": 7,
-                    "bsi_tail_validation": "OPAQUE_CALLER_OWNED_NOT_PARSED",
-                    "auxdata_absent_encoding": "auxdatae=0 U1",
-                    "auxdata_present_encoding": "caller-owned auxbits/optional auxdatal followed by auxdatae=1 U1",
-                    "crc_fields": {
-                      "polynomial": "0x8005; init=0; MSB_FIRST; no reflection; no final xor",
-                      "crc1": {
-                        "field_byte_range": [
-                          2,
-                          4
-                        ],
-                        "field_start_bit": 16,
-                        "field_width_bits": 16,
-                        "coverage_byte_range": [
-                          2,
-                          1600
-                        ],
-                        "suffix_byte_range": [
-                          4,
-                          1600
-                        ],
-                        "derivation": "CRC(suffix) * x^-(16+8*suffix_bytes) mod P",
-                        "residual_condition": "CRC(frame[2:1600]) == 0"
-                      },
-                      "crc2": {
-                        "field_byte_range": [
-                          2558,
-                          2560
-                        ],
-                        "field_start_bit": 20464,
-                        "field_width_bits": 16,
-                        "coverage_byte_range": [
-                          2,
-                          2558
-                        ],
-                        "residual_condition": "CRC(frame[2:]) == 0"
-                      },
-                      "crcrsv": {
-                        "bit_offset": 20463,
-                        "initial_value_source": "CALLER_OWNED_SEED",
-                        "collision_value": "0x0B77",
-                        "collision_rule": "Toggle crcrsv and recompute CRC2 when pre-adjustment CRC2 equals the syncword."
-                      },
-                      "crc_generation_package_manifest_sha256": "07ad2b60bd22a1312ff15107cf35e836a12a763c764b3fbaa74e02b4f2d9dc2d",
-                      "crc_generation_package_seal_file_sha256": "14020e164f7805723a0fd90cd77f924961a3a457315f8fdbe4219dafdaccb031",
-                      "validation": "GENERATED_AND_ZERO_RESIDUAL_VERIFIED_ON_SYNTHETIC_FRAME",
-                      "real_frame_validation": "NOT_RUN",
-                      "production_allowed": false
-                    },
-                    "frame_extent_rule": "header + BSI tail + six audio blocks + auxdata payload/flag + 17-bit errorcheck == 20480 bits",
-                    "integrity_receipts": "Generated CRC1/CRC2 U16 values with field spans, zero residuals, and initial/final crcrsv values plus toggle status.",
-                    "production_allowed": false,
-                    "source_generation": "UNBOUND",
-                    "official_reference_bsid": "NOT_CAPTURED",
-                    "validation_boundary": "Synthetic caller-owned bit-span assembly and field placement only; no audio or CRC verification.",
-                    "crc_generation_package_id": "FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1",
-                    "crc_generation_package_manifest_sha256": "07ad2b60bd22a1312ff15107cf35e836a12a763c764b3fbaa74e02b4f2d9dc2d",
-                    "crc_generation_package_seal_file_sha256": "14020e164f7805723a0fd90cd77f924961a3a457315f8fdbe4219dafdaccb031"
-                  },
-                  "vectors": {
-                    "kind": "SYNTHETIC_NOT_REAL_OUTPUT_I0_FRAME_AND_CRC_GEOMETRY",
-                    "authoritative_vectors": [
-                      "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/INPUT-ONLY-VECTORS.json"
-                    ],
-                    "local_fixture": {
-                      "file": "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
-                      "bytes": 2707,
-                      "sha256": "513f05a255ee46d931e47447b8247eeb632ba1ebe9025e776fd1caee902138fe"
-                    },
-                    "case_pointers": [
-                      "frmsizecod36/no-compr and frmsizecod37/compr emit exact 2560-byte synthetic frames with the approved part order.",
-                      "Six source spans copy in order after an opaque caller BSI tail; optional auxdata is followed by auxdatae.",
-                      "The I0 assembler generates CRC1/CRC2 and asserts zero residuals over the approved spans; the synthetic receipt reports field positions and crcrsv result.",
-                      "Washed scalar vectors cover target CRC1/CRC2 values, aligned and odd CRC1 truncation boundaries, and the crcrsv collision outcome; no raw frame bytes are supplied for same-byte replay.",
-                      "Short BSI tail, source overrun, one-bit-short total, invalid header and short output capacity reject without caller-byte/cursor mutation.",
-                      "Synthetic first-audblk vectors cover dynrng, cplinu 0/1, chincpl, single/three-subband cplbegf/cplendf/cplbndstrc extents, invalid ranges/counts, cursor mismatch and fail-before-write capacity."
-                    ],
-                    "expected_outputs_included": true,
-                    "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_GENERATED_CRC1_CRC2_AND_ZERO_RESIDUALS"
-                  },
-                  "error_outcomes": [
-                    {
-                      "error_code": "I0_AC3_TARGET_CONTEXT_UNSUPPORTED",
-                      "category": "target profile",
-                      "trigger": "The supplied plan does not match I0 640 kbps, 48 kHz, six blocks and 2560 bytes.",
-                      "result": "Typed failure before caller bytes or cursor change.",
-                      "caller_action": "Use the approved Flat7x I0/D0 target plan."
-                    },
-                    {
-                      "error_code": "I0_AC3_BSI_TAIL_TOO_SHORT",
-                      "category": "caller BSI continuation",
-                      "trigger": "The BSI tail is shorter than the seven mandatory presence/control bits for target acmod7.",
-                      "result": "Typed failure before staging or caller mutation.",
-                      "caller_action": "Supply a complete caller-owned BSI tail bit span."
-                    },
-                    {
-                      "error_code": "I0_AC3_SOURCE_SPAN_OUT_OF_BOUNDS",
-                      "category": "opaque source bit span",
-                      "trigger": "The BSI, audio-block or auxdata source range exceeds its caller buffer.",
-                      "result": "Typed failure before staging or caller mutation.",
-                      "caller_action": "Provide an in-bounds caller-owned bit span."
-                    },
-                    {
-                      "error_code": "I0_AC3_SOURCE_SPAN_OVERFLOW",
-                      "category": "checked source bit arithmetic",
-                      "trigger": "A source bit start plus bit length overflows the representable cursor.",
-                      "result": "Typed failure before staging or caller mutation.",
-                      "caller_action": "Provide a representable source bit range."
-                    },
-                    {
-                      "error_code": "I0_AC3_HEADER_VALUE_REJECTED",
-                      "category": "approved header segment values",
-                      "trigger": "The existing I0 header writer rejects frmsizecod, bsmod, mix levels or dialnorm.",
-                      "result": "Typed failure in private staging before caller bytes or cursor change.",
-                      "caller_action": "Supply values accepted by the approved I0 header segment contract."
-                    },
-                    {
-                      "error_code": "I0_AC3_FRAME_SPAN_MISMATCH",
-                      "category": "fixed 2560-byte target extent",
-                      "trigger": "The ordered parts and 17-bit errorcheck do not total exactly 20480 bits.",
-                      "result": "Typed failure before staging or caller mutation.",
-                      "caller_action": "Provide spans that fit the exact I0 frame extent."
-                    },
-                    {
-                      "error_code": "I0_AC3_FRAME_CAPACITY",
-                      "category": "caller writer capacity",
-                      "trigger": "The caller writer cannot hold the full 20480-bit frame.",
-                      "result": "Preflight failure before caller bytes or cursor change.",
-                      "caller_action": "Provide a 2560-byte-capable caller writer."
-                    },
-                    {
-                      "error_code": "I0_AC3_CRC1_RESIDUAL_NONZERO",
-                      "category": "generated CRC1 integrity",
-                      "trigger": "CRC(frame[2:1600]) remains nonzero after CRC1 generation.",
-                      "result": "Typed integrity failure in private staging before caller bytes or cursor change.",
-                      "caller_action": "Reject the frame candidate and retain the CRC diagnostic receipt."
-                    },
-                    {
-                      "error_code": "I0_AC3_CRC_GENERATION_FAILED",
-                      "category": "generated CRC field integrity",
-                      "trigger": "CRC1 derivation or CRC2 field generation returns a checked geometry or residual error.",
-                      "result": "Typed failure in private staging before caller bytes or cursor change.",
-                      "caller_action": "Reject the entire frame candidate; the caller writer remains unchanged."
-                    }
-                  ],
-                  "not_run": [
-                    "AC-3 audio-block generation, PCM, decode, parser acceptance and playability.",
-                    "The Wash crcrsv collision vector has scalar outputs and no frame bytes; same-byte collision replay remains NOT_RUN.",
-                    "Official-reference frame parsing, source/generation joins, I0+D0 AU production, product output and W04."
-                  ],
-                  "validation_boundary": "Synthetic caller-owned bit-span assembly with generated CRC1/CRC2 and zero-residual receipts; no audio, decoder acceptance, runtime lineage or production output.",
-                  "delivery_scope": "FLAT7X_I0_AC3_CALLER_SPAN_FRAME_ASSEMBLY_WITH_ETSI_CRC_GENERATION_AND_ZERO_RESIDUALS__NO_AUDIO_OR_PRODUCTION"
-                },
-                {
-                  "slice_id": "flat7x-i0-ac3-bsi-tail-writer",
-                  "mapping_status": "MATERIALIZED_WASH_BOUNDED_I0_AC3_BSI_TAIL_SERIALIZER",
-                  "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_BSI_TAIL_FIELD_SERIALIZATION__PRODUCTION_OPEN",
-                  "implementation_requirement": true,
-                  "owner": "codec",
-                  "scope": "Writes the AC-3 BSI tail after the selected I0 header cursor at bit 62 or 70. Presence flags control optional langcode U8, audprodie mixlevel U5 plus roomtyp U2, two U14 timecodes and addbsil U6 plus exactly addbsil+1 additional-BSI bytes. The target is fixed at acmod=7, so dual-mono acmod=0 fields are omitted. It validates field widths, the 1..64-byte payload bound, total extent and caller capacity before writing, then returns an exact tail/payload extent receipt. It maps no XML values, creates no audio, and is not connected to production.",
-                  "dependencies": [
-                    "F12/flat7x-i0-ac3-header-segment",
-                    "F12/flat7x-i0-frame-bit-assembler"
-                  ],
-                  "spec_files": [
-                    "docs/architecture/PROFILE-DIMENSIONS.md",
-                    "docs/architecture/adm-to-eac3joc-chain-status.md",
-                    "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/FINDINGS.md",
-                    "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json"
-                  ],
-                  "implementation_files": [
-                    "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
-                    "crates/jocforge-domain/src/codec/mod.rs"
-                  ],
-                  "implementation_inventory": [
-                    {
-                      "path": "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
-                      "bytes": 8747,
-                      "sha256": "b3bbb2edfc28d66b46b2d37f3a00aa2ba653996f6331c5aeb79ffb587a4ce719"
-                    },
-                                        {
-                      "path": "crates/jocforge-domain/src/codec/mod.rs",
-                      "bytes": 1116,
-                      "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                    }
-                  ],
-                  "test_modules": [
-                    "crates/jocforge-domain/tests/flat7x_i0_ac3_bsi_tail.rs"
-                  ],
-                  "test_inventory": [
-                    {
-                      "path": "crates/jocforge-domain/tests/flat7x_i0_ac3_bsi_tail.rs",
-                      "bytes": 11758,
-                      "sha256": "2b0b37e3975623b051a71fa5f2bb697c1ce1daa1d599885436ec0a9976f75a95"
-                    }
-                  ],
-                  "vector_inventory": [
-                    {
-                      "path": "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json",
-                      "bytes": 2614,
-                      "sha256": "c1fda6dd82f72fed627ad967544002ccefa745c94fe81e469b5d0baa1f1fcf33"
-                    }
-                  ],
-                  "clock": {
-                    "domains": [
-                      "FrameBitCursor"
-                    ],
-                    "covered_clauses": [
-                      "The caller cursor must equal the approved header end at bit 62 or 70.",
-                      "The receipt spans the exact BSI-tail start through end; no media/source clock is minted."
-                    ]
-                  },
-                  "parameters": {
-                    "kind": "WASH_BOUNDED_FLAT7X_I0_AC3_BSI_TAIL_SERIALIZATION",
-                    "package_id": "FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1",
-                    "continuation_manifest_sha256": "cddad099b557617ab6f4aa73d3c40d87f75f12a55c141e14bff6573bdc891787",
-                    "continuation_seal_file_sha256": "329d5f9b1a43cdbee31abe4403f398ed4671a9a27e6bec40a2b09679ae46079d",
-                    "provider_files": [
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/MANIFEST.json",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/PACKAGE-SEAL.json",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/verify_package.py"
-                    ],
-                    "target": {
-                      "role": "IndependentI0",
-                      "codec": "legacy_ac3_core",
-                      "sample_rate_hz": 48000,
-                      "rate_kbps": 640,
-                      "frame_bytes": 2560,
-                      "acmod": 7,
-                      "header_end_bits": [
-                        62,
-                        70
-                      ]
-                    },
-                    "minimum_bsi_tail_bits": 7,
-                    "fields": {
-                      "langcode": {
-                        "flag_bits": 1,
-                        "payload_bits": 8
-                      },
-                      "audprodie": {
-                        "flag_bits": 1,
-                        "mixlevel_bits": 5,
-                        "roomtyp_bits": 2
-                      },
-                      "dual_mono_fields": {
-                        "condition": "acmod==0",
-                        "selected_acmod7": "OMITTED"
-                      },
-                      "copyrightb_bits": 1,
-                      "origbs_bits": 1,
-                      "timecod1e": {
-                        "flag_bits": 1,
-                        "payload_bits": 14
-                      },
-                      "timecod2e": {
-                        "flag_bits": 1,
-                        "payload_bits": 14
-                      },
-                      "addbsie": {
-                        "flag_bits": 1,
-                        "addbsil_bits": 6,
-                        "payload_bytes": "addbsil+1",
-                        "accepted_payload_bytes": [
-                          1,
-                          64
-                        ]
-                      }
-                    },
-                    "max_additional_bsi_bytes": 64,
-                    "max_serialized_bsi_tail_bits": 568,
-                    "field_presence": "OPTIONAL_VALUES_DRIVE_THEIR_PRESENCE_FLAGS",
-                    "extent_receipt": "start_bit,end_bit,bit_length,additional_bsi_payload_start_and_extent",
-                    "production_allowed": false,
-                    "validation_boundary": "Synthetic bitfield serialization only; no XML mapping, audio, full I0 frame, source lineage or production callsite."
-                  },
-                  "vectors": {
-                    "kind": "SYNTHETIC_NOT_REAL_OUTPUT_BSI_TAIL_SERIALIZATION",
-                    "authoritative_vectors": [
-                      "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json"
-                    ],
-                    "case_pointers": [
-                      "The minimum case emits the seven mandatory presence/control bits from the no-compr header cursor.",
-                      "The all-optionals case verifies langcode, audprodie, copyright/origbs, both timecodes, addbsil=1, payload bytes and unaligned payload extent.",
-                      "The maximum case emits 64 addbsi bytes with addbsil=63 and reports a 512-bit payload span.",
-                      "Invalid mixlevel/roomtyp/timecode, empty/oversize addbsi, wrong header cursor and short capacity reject before caller bytes or cursor change."
-                    ],
-                    "local_fixture": {
-                      "file": "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json",
-                      "bytes": 2614,
-                      "sha256": "c1fda6dd82f72fed627ad967544002ccefa745c94fe81e469b5d0baa1f1fcf33"
-                    },
-                    "expected_outputs_included": true,
-                    "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_BSI_FIELD_ORDER_WIDTHS_EXTENTS_AND_REJECTIONS"
-                  },
-                  "error_outcomes": [
-                    {
-                      "error_code": "I0_AC3_BSI_HEADER_END_CURSOR_MISMATCH",
-                      "category": "header-tail insertion cursor",
-                      "trigger": "The caller cursor is not the approved 62-bit or 70-bit end of the I0 header.",
-                      "result": "Typed rejection before caller bytes or cursor change.",
-                      "caller_action": "Continue from the I0 header writer receipt."
-                    },
-                    {
-                      "error_code": "I0_AC3_BSI_AUDIO_PRODUCTION_FIELD_RANGE",
-                      "category": "audprodie U7 fields",
-                      "trigger": "mixlevel exceeds U5 or roomtyp exceeds U2.",
-                      "result": "Typed rejection before caller bytes or cursor change.",
-                      "caller_action": "Supply mixlevel 0..31 and roomtyp 0..3."
-                    },
-                    {
-                      "error_code": "I0_AC3_BSI_TIMECODE_RANGE",
-                      "category": "optional timecode U14 fields",
-                      "trigger": "Either supplied timecode exceeds 14 bits.",
-                      "result": "Typed rejection before caller bytes or cursor change.",
-                      "caller_action": "Supply each timecode in 0..16383."
-                    },
-                    {
-                      "error_code": "I0_AC3_BSI_ADDBSI_LENGTH",
-                      "category": "bounded additional BSI payload",
-                      "trigger": "A present payload has zero bytes or more than 64 bytes.",
-                      "result": "Typed rejection before caller bytes or cursor change.",
-                      "caller_action": "Provide 1..64 payload bytes or omit additional BSI."
-                    },
-                    {
-                      "error_code": "FRAME_BIT_WRITER_BUFFER_TOO_SMALL",
-                      "category": "complete BSI-tail capacity",
-                      "trigger": "The complete measured tail does not fit after the header cursor.",
-                      "result": "Capacity failure before caller bytes or cursor change.",
-                      "caller_action": "Provide capacity for the entire BSI tail."
-                    }
-                  ],
-                  "not_run": [
-                    "XML-to-BSI value mapping and semantics beyond caller-authored fields.",
-                    "Real I0 BSI bytes, audio blocks, complete frame parse, decoder acceptance and product output.",
-                    "No production caller or runtime source-generation binding is installed."
-                  ],
-                  "validation_boundary": "Synthetic caller values verify BSI field order, widths, length arithmetic, cursor extent and rejection atomicity; production_allowed=false.",
-                  "delivery_scope": "FLAT7X_I0_AC3_BSI_TAIL_SERIALIZATION_ONLY_NO_AUDIO_XML_MAPPING_OR_PRODUCTION"
-                },
-                {
-                  "slice_id": "flat7x-i0-typed-bsi-frame-assembly-entry",
-                  "mapping_status": "MATERIALIZED_TYPED_I0_BSI_TO_FRAME_COMPOSITION_ENTRY",
-                  "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_TYPED_I0_BSI_TO_FRAME_COMPOSITION__PRODUCTION_OPEN",
-                  "implementation_requirement": true,
-                  "owner": "codec",
-                  "scope": "Adds `assemble_flat7x_i0_ac3_frame_from_fields`, a typed entry that accepts authored I0 header values, the approved typed BSI-tail input, six opaque caller-owned audblk spans, optional auxdata and an initial crcrsv seed. It derives the BSI start from compr presence (62/70 bits), serializes the BSI tail into private scratch, then calls the existing opaque-span frame assembler. The whole frame is still preflighted/staged, CRC1/CRC2 are generated and residual-checked, and the caller writer is committed once only after all spans total exactly 20480 bits. The existing low-level opaque-span entry remains available; no audio-block content or production callsite is added.",
-                  "dependencies": [
-                    "F12/flat7x-i0-ac3-bsi-tail-writer",
-                    "F12/flat7x-i0-frame-bit-assembler"
-                  ],
-                  "spec_files": [
-                    "docs/architecture/adm-to-eac3joc-chain-status.md",
-                    "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
-                    "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/CRC-GENERATION-CONTRACT.json"
-                  ],
-                  "implementation_files": [
-                    "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
-                    "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
-                    "crates/jocforge-domain/src/codec/frame_builder.rs",
-                    "crates/jocforge-domain/src/codec/mod.rs",
-                    "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
-                    "crates/jocforge-domain/src/integrity/mod.rs"
-                  ],
-                  "implementation_inventory": [
-                    {
-                      "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
-                      "bytes": 36737,
-                      "sha256": "4681a27970d05f717bfb0af14898b00ae244876380d15cbcd0ae92205c6fcae9"
-                    },
-                    {
-                      "path": "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
-                      "bytes": 8747,
-                      "sha256": "b3bbb2edfc28d66b46b2d37f3a00aa2ba653996f6331c5aeb79ffb587a4ce719"
-                    },
-                    {
-                      "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
-                      "bytes": 43493,
-                      "sha256": "992fa2b5c5f5ff47aef536e0289474432bdf8919f224407af34b5b8c6c761f64"
-                    },
-                    {
-                      "path": "crates/jocforge-domain/src/codec/mod.rs",
-                      "bytes": 1116,
-                      "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                    },
-                    {
-                      "path": "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
-                      "bytes": 8372,
-                      "sha256": "0c570458c5bf9ddadab869ec1c2a4bd6e71c4f9cbc9e655b7d34e9afa14f7d08"
-                    },
-                    {
-                      "path": "crates/jocforge-domain/src/integrity/mod.rs",
-                      "bytes": 300,
-                      "sha256": "8cf3b9de9d577622322eb1ac7a71bb54158428db5a50529ae36e5b3e8abc8ff0"
-                    }
-                  ],
-                  "test_modules": [
-                    "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs"
-                  ],
-                  "test_inventory": [
-                    {
-                      "path": "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs",
-                      "bytes": 44297,
-                      "sha256": "325a31f27e94bdffb9aa03dac69c7e38ccb798188c30683c4510b2a29b6479e7"
-                    }
-                  ],
-                  "vector_inventory": [
-                    {
-                      "path": "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
-                      "bytes": 6907,
-                      "sha256": "a21831772989d86b79644805848844c60c7923ed9d295bb3f2f367f46b7e80d6"
-                    },
-                    {
-                      "path": "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json",
-                      "bytes": 2614,
-                      "sha256": "c1fda6dd82f72fed627ad967544002ccefa745c94fe81e469b5d0baa1f1fcf33"
-                    }
-                  ],
-                  "clock": {
-                    "domains": [
-                      "FrameBitCursor"
-                    ],
-                    "covered_clauses": [
-                      "The BSI writer begins at the exact 62/70-bit header end cursor.",
-                      "Six caller audio spans follow the BSI receipt in index order; the frame writer commits exactly 20480 bits from cursor zero."
-                    ]
-                  },
-                  "parameters": {
-                    "kind": "TYPED_I0_AC3_BSI_TO_FRAME_ASSEMBLY",
-                    "target": {
-                      "role": "IndependentI0",
-                      "codec": "legacy_ac3_core",
-                      "sample_rate_hz": 48000,
-                      "rate_kbps": 640,
-                      "frame_bytes": 2560,
-                      "frame_bits": 20480,
-                      "audio_blocks": 6,
-                      "samples_per_channel": 1536,
-                      "acmod": 7,
-                      "lfeon": true,
-                      "d0_rate_kbps": 1024
-                    },
-                    "continuation_package_id": "FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1",
-                    "continuation_manifest_sha256": "cddad099b557617ab6f4aa73d3c40d87f75f12a55c141e14bff6573bdc891787",
-                    "crc_generation_package_id": "FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1",
-                    "crc_generation_manifest_sha256": "07ad2b60bd22a1312ff15107cf35e836a12a763c764b3fbaa74e02b4f2d9dc2d",
-                    "typed_entry": "assemble_flat7x_i0_ac3_frame_from_fields",
-                    "low_level_entry": "assemble_flat7x_i0_ac3_frame",
-                    "bsi_tail_start_from_compr": {
-                      "without_compr": 62,
-                      "with_compr": 70
-                    },
-                    "bsi_staging": "PRIVATE_BOUNDED_SCRATCH",
-                    "caller_commit": "ONE_WHOLE_FRAME_WRITE_AFTER_BSI_AND_FRAME_VALIDATION",
-                    "source_generation": "UNBOUND",
-                    "production_allowed": false,
-                    "provider_files": [
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/MANIFEST.json",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/MANIFEST.json",
-                      "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/CRC-GENERATION-CONTRACT.json"
-                    ],
-                    "validation_boundary": "Synthetic typed BSI serialization plus opaque audio-span composition; no audio, source-generation join, output publication or W04."
-                  },
-                  "vectors": {
-                    "kind": "SYNTHETIC_NOT_REAL_OUTPUT_TYPED_I0_BSI_FRAME_COMPOSITION",
-                    "authoritative_vectors": [
-                      "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
-                      "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json"
-                    ],
-                    "case_pointers": [
-                      "Washed all-optionals BSI vector ends at bit 142 for a compr header; the typed receipt matches the frame's BSI span.",
-                      "Six synthetic spans totalling 20320 bits follow the 72-bit typed BSI tail and 70-bit header; auxdatae and 17-bit errorcheck finish the 20480-bit frame.",
-                      "Generated CRC1/CRC2 residuals are zero on the synthetic assembled frame.",
-                      "Invalid typed BSI fields and an incomplete audio-span extent fail before caller output bytes or cursor change."
-                    ],
-                    "expected_outputs_included": true,
-                    "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_TYPED_BSI_TO_FRAME_SPANS_CRC_AND_FAILURE_ATOMICITY"
-                  },
-                  "error_outcomes": [
-                    {
-                      "error_code": "I0_AC3_BSI_FIELD_REJECTED",
-                      "category": "typed BSI field validation",
-                      "trigger": "The BSI-tail writer rejects a field width, value or addbsi extent.",
-                      "result": "Typed failure before caller output bytes or cursor change.",
-                      "caller_action": "Supply BSI values within the approved field bounds."
-                    },
-                    {
-                      "error_code": "I0_AC3_FRAME_SPAN_MISMATCH",
-                      "category": "complete I0 frame extent",
-                      "trigger": "Header, typed BSI tail, six audio spans, auxdata flag and errorcheck do not total exactly 20480 bits.",
-                      "result": "Typed failure before caller output bytes or cursor change.",
-                      "caller_action": "Supply six caller spans that fit the approved frame extent."
-                    },
-                    {
-                      "error_code": "I0_AC3_FRAME_CAPACITY",
-                      "category": "caller writer capacity",
-                      "trigger": "The caller output writer cannot hold 20480 bits from cursor zero.",
-                      "result": "Preflight failure before caller bytes or cursor change.",
-                      "caller_action": "Provide a 2560-byte-capable caller writer."
-                    }
-                  ],
-                  "not_run": [
-                    "No AC-3 audio-block algorithm is run; six spans remain caller-owned.",
-                    "No E-AC-3-to-AC-3 block reinterpretation is performed.",
-                    "Same-generation source receipt, production admission, file output and W04 remain unbound or not run."
-                  ],
-                  "validation_boundary": "Synthetic only; the typed entry composes BSI fields and caller spans through the existing I0 frame assembler; production_allowed=false.",
-                  "delivery_scope": "TYPED_I0_BSI_TO_OPAQUE_AUDIO_SPAN_FRAME_COMPOSITION_ONLY_NO_AUDIO_OR_PRODUCTION"
-                },
+        {
+          "slice_id": "flat7x-i0-frame-bit-assembler",
+          "mapping_status": "MATERIALIZED_WASH_BOUNDED_I0_FRAME_ASSEMBLY_AND_CRC_GENERATION",
+          "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_ASSEMBLY_GENERATED_CRC1_CRC2_RESIDUALS__PRODUCTION_OPEN",
+          "implementation_requirement": true,
+          "owner": "codec",
+          "scope": "Assembles one 2560-byte I0 AC-3 frame from the approved header segment, caller-owned BSI-tail and six audio-block spans, optional auxdata and an initial caller crcrsv seed. It shares the seven mandatory BSI-tail bit count with the dedicated BSI-tail serializer, stages the complete frame, generates CRC1/CRC2 and verifies zero residuals before one caller-writer commit. Audio generation, source-generation join and production binding remain open. The module also has a standalone production-disabled first-audblk prefix serializer for five blksw, five dithflag, dynrnge with optional dynrng, and mandatory block-0 cplstre=1. It stops before cplinu; its explicit field inputs carry no source receipt. A separate caller-owned typed cplinu writer accepts only U1 values, checks the prefix next cursor and capacity, returns its one-bit extent, and selects no coupling mode. A following caller-owned coupling-fields writer serializes chincpl[5], cplbegf/cplendf and the formula-sized cplbndstrc bits. It validates ranges and extents without choosing coupling, and stops before cplcoe.",
+          "dependencies": [
+            "F01E/flat7x-i0-d0-typed-target-plan",
+            "F12/flat7x-i0-ac3-header-segment",
+            "F12/flat7x-i0-ac3-bsi-tail-writer",
+            "integrity/ac3_crc16"
+          ],
+          "spec_files": [
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/CONTRACT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/FINDINGS.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/FINDINGS.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/CRC-GENERATION-CONTRACT.json"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
+            "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
+            "crates/jocforge-domain/src/codec/frame_builder.rs",
+            "crates/jocforge-domain/src/codec/mod.rs",
+            "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
+            "crates/jocforge-domain/src/integrity/mod.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
+              "bytes": 37265,
+              "sha256": "b1752ad6c61f78c344937226907c6ff7c695b76bc144c13523fc245db1f524b0"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
+              "bytes": 8747,
+              "sha256": "b3bbb2edfc28d66b46b2d37f3a00aa2ba653996f6331c5aeb79ffb587a4ce719"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
+              "bytes": 43493,
+              "sha256": "992fa2b5c5f5ff47aef536e0289474432bdf8919f224407af34b5b8c6c761f64"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/mod.rs",
+              "bytes": 1141,
+              "sha256": "310555b04e94adfb45606a8a7b025fa5550aa18eba8ae712dbae11d972673c34"
+            },
+            {
+              "path": "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
+              "bytes": 8372,
+              "sha256": "0c570458c5bf9ddadab869ec1c2a4bd6e71c4f9cbc9e655b7d34e9afa14f7d08"
+            },
+            {
+              "path": "crates/jocforge-domain/src/integrity/mod.rs",
+              "bytes": 300,
+              "sha256": "8cf3b9de9d577622322eb1ac7a71bb54158428db5a50529ae36e5b3e8abc8ff0"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs"
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs",
+              "bytes": 44297,
+              "sha256": "325a31f27e94bdffb9aa03dac69c7e38ccb798188c30683c4510b2a29b6479e7"
+            }
+          ],
+          "vector_inventory": [
+            {
+              "path": "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
+              "bytes": 6907,
+              "sha256": "a21831772989d86b79644805848844c60c7923ed9d295bb3f2f367f46b7e80d6"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 1454,
+              "sha256": "7dd7064bd6c98ae1c35ae6fbe33fe0c8ae5d8ea739a94a69a4a6bf54282ef35c"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
+              "bytes": 3479,
+              "sha256": "982ebec236bb223984734224da94e2b67d9006ce017d58753e0ae017d1f4d7a4"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 1701,
+              "sha256": "81e2ced5481937604fac3d9d153b13c89187528ea9abe120565f28be3cbf6fc4"
+            }
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The caller writer starts at bit zero and advances exactly 20480 frame bits after full staging; no media/source clock is introduced."
+            ]
+          },
+          "parameters": {
+            "kind": "WASH_BOUNDED_I0_AC3_FRAME_PART_ASSEMBLY",
+            "header_package_id": "flat7x-i0-ac3-header-segment-v1",
+            "header_manifest_sha256": "285bff275095c945a3f6f4b5040de20111779cec466602fb1aea29ca8c4ad8e1",
+            "header_seal_sha256": "19a1923a4ec264eca0f55c63eaab3065d6587ef1e86ef0e6af2d288f950acc9d",
+            "continuation_package_id": "FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1",
+            "continuation_manifest_sha256": "cddad099b557617ab6f4aa73d3c40d87f75f12a55c141e14bff6573bdc891787",
+            "continuation_seal_sha256": "329d5f9b1a43cdbee31abe4403f398ed4671a9a27e6bec40a2b09679ae46079d",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/PACKAGE-SEAL.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/PACKAGE-SEAL.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/verify_package.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/MANIFEST.sha256",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/PACKAGE-SEAL.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/CRC-GENERATION-CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/SOURCE-RECEIPTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/verify_package.py"
+            ],
+            "target": {
+              "role": "IndependentI0",
+              "codec": "legacy_ac3_core",
+              "sample_rate_hz": 48000,
+              "rate_kbps": 640,
+              "d0_rate_kbps": 1024,
+              "frame_bytes": 2560,
+              "frame_bits": 20480,
+              "audio_blocks": 6,
+              "samples_per_channel": 1536,
+              "frmsizecod": [
+                36,
+                37
+              ],
+              "bsid": 6,
+              "acmod": 7,
+              "lfeon": true
+            },
+            "frame_part_order": [
+              "syncinfo/header segment",
+              "caller-owned BSI tail after compr",
+              "audblk[0] through audblk[5] in order",
+              "caller-owned auxbits/optional auxdatal then auxdatae",
+              "caller-owned crcrsv then CRC2 U16"
+            ],
+            "bsi_tail_minimum_bits": 7,
+            "bsi_tail_validation": "OPAQUE_CALLER_OWNED_NOT_PARSED",
+            "auxdata_absent_encoding": "auxdatae=0 U1",
+            "auxdata_present_encoding": "caller-owned auxbits/optional auxdatal followed by auxdatae=1 U1",
+            "crc_fields": {
+              "polynomial": "0x8005; init=0; MSB_FIRST; no reflection; no final xor",
+              "crc1": {
+                "field_byte_range": [
+                  2,
+                  4
+                ],
+                "field_start_bit": 16,
+                "field_width_bits": 16,
+                "coverage_byte_range": [
+                  2,
+                  1600
+                ],
+                "suffix_byte_range": [
+                  4,
+                  1600
+                ],
+                "derivation": "CRC(suffix) * x^-(16+8*suffix_bytes) mod P",
+                "residual_condition": "CRC(frame[2:1600]) == 0"
+              },
+              "crc2": {
+                "field_byte_range": [
+                  2558,
+                  2560
+                ],
+                "field_start_bit": 20464,
+                "field_width_bits": 16,
+                "coverage_byte_range": [
+                  2,
+                  2558
+                ],
+                "residual_condition": "CRC(frame[2:]) == 0"
+              },
+              "crcrsv": {
+                "bit_offset": 20463,
+                "initial_value_source": "CALLER_OWNED_SEED",
+                "collision_value": "0x0B77",
+                "collision_rule": "Toggle crcrsv and recompute CRC2 when pre-adjustment CRC2 equals the syncword."
+              },
+              "crc_generation_package_manifest_sha256": "07ad2b60bd22a1312ff15107cf35e836a12a763c764b3fbaa74e02b4f2d9dc2d",
+              "crc_generation_package_seal_file_sha256": "14020e164f7805723a0fd90cd77f924961a3a457315f8fdbe4219dafdaccb031",
+              "validation": "GENERATED_AND_ZERO_RESIDUAL_VERIFIED_ON_SYNTHETIC_FRAME",
+              "real_frame_validation": "NOT_RUN",
+              "production_allowed": false
+            },
+            "frame_extent_rule": "header + BSI tail + six audio blocks + auxdata payload/flag + 17-bit errorcheck == 20480 bits",
+            "integrity_receipts": "Generated CRC1/CRC2 U16 values with field spans, zero residuals, and initial/final crcrsv values plus toggle status.",
+            "production_allowed": false,
+            "source_generation": "UNBOUND",
+            "official_reference_bsid": "NOT_CAPTURED",
+            "validation_boundary": "Synthetic caller-owned bit-span assembly and field placement only; no audio or CRC verification.",
+            "crc_generation_package_id": "FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1",
+            "crc_generation_package_manifest_sha256": "07ad2b60bd22a1312ff15107cf35e836a12a763c764b3fbaa74e02b4f2d9dc2d",
+            "crc_generation_package_seal_file_sha256": "14020e164f7805723a0fd90cd77f924961a3a457315f8fdbe4219dafdaccb031"
+          },
+          "vectors": {
+            "kind": "SYNTHETIC_NOT_REAL_OUTPUT_I0_FRAME_AND_CRC_GEOMETRY",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
+              "bytes": 2707,
+              "sha256": "513f05a255ee46d931e47447b8247eeb632ba1ebe9025e776fd1caee902138fe"
+            },
+            "case_pointers": [
+              "frmsizecod36/no-compr and frmsizecod37/compr emit exact 2560-byte synthetic frames with the approved part order.",
+              "Six source spans copy in order after an opaque caller BSI tail; optional auxdata is followed by auxdatae.",
+              "The I0 assembler generates CRC1/CRC2 and asserts zero residuals over the approved spans; the synthetic receipt reports field positions and crcrsv result.",
+              "Washed scalar vectors cover target CRC1/CRC2 values, aligned and odd CRC1 truncation boundaries, and the crcrsv collision outcome; no raw frame bytes are supplied for same-byte replay.",
+              "Short BSI tail, source overrun, one-bit-short total, invalid header and short output capacity reject without caller-byte/cursor mutation.",
+              "Synthetic first-audblk vectors cover dynrng, cplinu 0/1, chincpl, single/three-subband cplbegf/cplendf/cplbndstrc extents, invalid ranges/counts, cursor mismatch and fail-before-write capacity."
+            ],
+            "expected_outputs_included": true,
+            "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_GENERATED_CRC1_CRC2_AND_ZERO_RESIDUALS"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "I0_AC3_TARGET_CONTEXT_UNSUPPORTED",
+              "category": "target profile",
+              "trigger": "The supplied plan does not match I0 640 kbps, 48 kHz, six blocks and 2560 bytes.",
+              "result": "Typed failure before caller bytes or cursor change.",
+              "caller_action": "Use the approved Flat7x I0/D0 target plan."
+            },
+            {
+              "error_code": "I0_AC3_BSI_TAIL_TOO_SHORT",
+              "category": "caller BSI continuation",
+              "trigger": "The BSI tail is shorter than the seven mandatory presence/control bits for target acmod7.",
+              "result": "Typed failure before staging or caller mutation.",
+              "caller_action": "Supply a complete caller-owned BSI tail bit span."
+            },
+            {
+              "error_code": "I0_AC3_SOURCE_SPAN_OUT_OF_BOUNDS",
+              "category": "opaque source bit span",
+              "trigger": "The BSI, audio-block or auxdata source range exceeds its caller buffer.",
+              "result": "Typed failure before staging or caller mutation.",
+              "caller_action": "Provide an in-bounds caller-owned bit span."
+            },
+            {
+              "error_code": "I0_AC3_SOURCE_SPAN_OVERFLOW",
+              "category": "checked source bit arithmetic",
+              "trigger": "A source bit start plus bit length overflows the representable cursor.",
+              "result": "Typed failure before staging or caller mutation.",
+              "caller_action": "Provide a representable source bit range."
+            },
+            {
+              "error_code": "I0_AC3_HEADER_VALUE_REJECTED",
+              "category": "approved header segment values",
+              "trigger": "The existing I0 header writer rejects frmsizecod, bsmod, mix levels or dialnorm.",
+              "result": "Typed failure in private staging before caller bytes or cursor change.",
+              "caller_action": "Supply values accepted by the approved I0 header segment contract."
+            },
+            {
+              "error_code": "I0_AC3_FRAME_SPAN_MISMATCH",
+              "category": "fixed 2560-byte target extent",
+              "trigger": "The ordered parts and 17-bit errorcheck do not total exactly 20480 bits.",
+              "result": "Typed failure before staging or caller mutation.",
+              "caller_action": "Provide spans that fit the exact I0 frame extent."
+            },
+            {
+              "error_code": "I0_AC3_FRAME_CAPACITY",
+              "category": "caller writer capacity",
+              "trigger": "The caller writer cannot hold the full 20480-bit frame.",
+              "result": "Preflight failure before caller bytes or cursor change.",
+              "caller_action": "Provide a 2560-byte-capable caller writer."
+            },
+            {
+              "error_code": "I0_AC3_CRC1_RESIDUAL_NONZERO",
+              "category": "generated CRC1 integrity",
+              "trigger": "CRC(frame[2:1600]) remains nonzero after CRC1 generation.",
+              "result": "Typed integrity failure in private staging before caller bytes or cursor change.",
+              "caller_action": "Reject the frame candidate and retain the CRC diagnostic receipt."
+            },
+            {
+              "error_code": "I0_AC3_CRC_GENERATION_FAILED",
+              "category": "generated CRC field integrity",
+              "trigger": "CRC1 derivation or CRC2 field generation returns a checked geometry or residual error.",
+              "result": "Typed failure in private staging before caller bytes or cursor change.",
+              "caller_action": "Reject the entire frame candidate; the caller writer remains unchanged."
+            }
+          ],
+          "not_run": [
+            "AC-3 audio-block generation, PCM, decode, parser acceptance and playability.",
+            "The Wash crcrsv collision vector has scalar outputs and no frame bytes; same-byte collision replay remains NOT_RUN.",
+            "Official-reference frame parsing, source/generation joins, I0+D0 AU production, product output and W04."
+          ],
+          "validation_boundary": "Synthetic caller-owned bit-span assembly with generated CRC1/CRC2 and zero-residual receipts; no audio, decoder acceptance, runtime lineage or production output.",
+          "delivery_scope": "FLAT7X_I0_AC3_CALLER_SPAN_FRAME_ASSEMBLY_WITH_ETSI_CRC_GENERATION_AND_ZERO_RESIDUALS__NO_AUDIO_OR_PRODUCTION"
+        },
+        {
+          "slice_id": "flat7x-i0-ac3-bsi-tail-writer",
+          "mapping_status": "MATERIALIZED_WASH_BOUNDED_I0_AC3_BSI_TAIL_SERIALIZER",
+          "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_BSI_TAIL_FIELD_SERIALIZATION__PRODUCTION_OPEN",
+          "implementation_requirement": true,
+          "owner": "codec",
+          "scope": "Writes the AC-3 BSI tail after the selected I0 header cursor at bit 62 or 70. Presence flags control optional langcode U8, audprodie mixlevel U5 plus roomtyp U2, two U14 timecodes and addbsil U6 plus exactly addbsil+1 additional-BSI bytes. The target is fixed at acmod=7, so dual-mono acmod=0 fields are omitted. It validates field widths, the 1..64-byte payload bound, total extent and caller capacity before writing, then returns an exact tail/payload extent receipt. It maps no XML values, creates no audio, and is not connected to production.",
+          "dependencies": [
+            "F12/flat7x-i0-ac3-header-segment",
+            "F12/flat7x-i0-frame-bit-assembler"
+          ],
+          "spec_files": [
+            "docs/architecture/PROFILE-DIMENSIONS.md",
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/FINDINGS.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
+            "crates/jocforge-domain/src/codec/mod.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
+              "bytes": 8747,
+              "sha256": "b3bbb2edfc28d66b46b2d37f3a00aa2ba653996f6331c5aeb79ffb587a4ce719"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/mod.rs",
+              "bytes": 1141,
+              "sha256": "310555b04e94adfb45606a8a7b025fa5550aa18eba8ae712dbae11d972673c34"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/flat7x_i0_ac3_bsi_tail.rs"
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_i0_ac3_bsi_tail.rs",
+              "bytes": 11758,
+              "sha256": "2b0b37e3975623b051a71fa5f2bb697c1ce1daa1d599885436ec0a9976f75a95"
+            }
+          ],
+          "vector_inventory": [
+            {
+              "path": "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json",
+              "bytes": 2614,
+              "sha256": "c1fda6dd82f72fed627ad967544002ccefa745c94fe81e469b5d0baa1f1fcf33"
+            }
+          ],
+          "clock": {
+            "domains": [
+              "FrameBitCursor"
+            ],
+            "covered_clauses": [
+              "The caller cursor must equal the approved header end at bit 62 or 70.",
+              "The receipt spans the exact BSI-tail start through end; no media/source clock is minted."
+            ]
+          },
+          "parameters": {
+            "kind": "WASH_BOUNDED_FLAT7X_I0_AC3_BSI_TAIL_SERIALIZATION",
+            "package_id": "FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1",
+            "continuation_manifest_sha256": "cddad099b557617ab6f4aa73d3c40d87f75f12a55c141e14bff6573bdc891787",
+            "continuation_seal_file_sha256": "329d5f9b1a43cdbee31abe4403f398ed4671a9a27e6bec40a2b09679ae46079d",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/PACKAGE-SEAL.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/verify_package.py"
+            ],
+            "target": {
+              "role": "IndependentI0",
+              "codec": "legacy_ac3_core",
+              "sample_rate_hz": 48000,
+              "rate_kbps": 640,
+              "frame_bytes": 2560,
+              "acmod": 7,
+              "header_end_bits": [
+                62,
+                70
+              ]
+            },
+            "minimum_bsi_tail_bits": 7,
+            "fields": {
+              "langcode": {
+                "flag_bits": 1,
+                "payload_bits": 8
+              },
+              "audprodie": {
+                "flag_bits": 1,
+                "mixlevel_bits": 5,
+                "roomtyp_bits": 2
+              },
+              "dual_mono_fields": {
+                "condition": "acmod==0",
+                "selected_acmod7": "OMITTED"
+              },
+              "copyrightb_bits": 1,
+              "origbs_bits": 1,
+              "timecod1e": {
+                "flag_bits": 1,
+                "payload_bits": 14
+              },
+              "timecod2e": {
+                "flag_bits": 1,
+                "payload_bits": 14
+              },
+              "addbsie": {
+                "flag_bits": 1,
+                "addbsil_bits": 6,
+                "payload_bytes": "addbsil+1",
+                "accepted_payload_bytes": [
+                  1,
+                  64
+                ]
+              }
+            },
+            "max_additional_bsi_bytes": 64,
+            "max_serialized_bsi_tail_bits": 568,
+            "field_presence": "OPTIONAL_VALUES_DRIVE_THEIR_PRESENCE_FLAGS",
+            "extent_receipt": "start_bit,end_bit,bit_length,additional_bsi_payload_start_and_extent",
+            "production_allowed": false,
+            "validation_boundary": "Synthetic bitfield serialization only; no XML mapping, audio, full I0 frame, source lineage or production callsite."
+          },
+          "vectors": {
+            "kind": "SYNTHETIC_NOT_REAL_OUTPUT_BSI_TAIL_SERIALIZATION",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "The minimum case emits the seven mandatory presence/control bits from the no-compr header cursor.",
+              "The all-optionals case verifies langcode, audprodie, copyright/origbs, both timecodes, addbsil=1, payload bytes and unaligned payload extent.",
+              "The maximum case emits 64 addbsi bytes with addbsil=63 and reports a 512-bit payload span.",
+              "Invalid mixlevel/roomtyp/timecode, empty/oversize addbsi, wrong header cursor and short capacity reject before caller bytes or cursor change."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json",
+              "bytes": 2614,
+              "sha256": "c1fda6dd82f72fed627ad967544002ccefa745c94fe81e469b5d0baa1f1fcf33"
+            },
+            "expected_outputs_included": true,
+            "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_BSI_FIELD_ORDER_WIDTHS_EXTENTS_AND_REJECTIONS"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "I0_AC3_BSI_HEADER_END_CURSOR_MISMATCH",
+              "category": "header-tail insertion cursor",
+              "trigger": "The caller cursor is not the approved 62-bit or 70-bit end of the I0 header.",
+              "result": "Typed rejection before caller bytes or cursor change.",
+              "caller_action": "Continue from the I0 header writer receipt."
+            },
+            {
+              "error_code": "I0_AC3_BSI_AUDIO_PRODUCTION_FIELD_RANGE",
+              "category": "audprodie U7 fields",
+              "trigger": "mixlevel exceeds U5 or roomtyp exceeds U2.",
+              "result": "Typed rejection before caller bytes or cursor change.",
+              "caller_action": "Supply mixlevel 0..31 and roomtyp 0..3."
+            },
+            {
+              "error_code": "I0_AC3_BSI_TIMECODE_RANGE",
+              "category": "optional timecode U14 fields",
+              "trigger": "Either supplied timecode exceeds 14 bits.",
+              "result": "Typed rejection before caller bytes or cursor change.",
+              "caller_action": "Supply each timecode in 0..16383."
+            },
+            {
+              "error_code": "I0_AC3_BSI_ADDBSI_LENGTH",
+              "category": "bounded additional BSI payload",
+              "trigger": "A present payload has zero bytes or more than 64 bytes.",
+              "result": "Typed rejection before caller bytes or cursor change.",
+              "caller_action": "Provide 1..64 payload bytes or omit additional BSI."
+            },
+            {
+              "error_code": "FRAME_BIT_WRITER_BUFFER_TOO_SMALL",
+              "category": "complete BSI-tail capacity",
+              "trigger": "The complete measured tail does not fit after the header cursor.",
+              "result": "Capacity failure before caller bytes or cursor change.",
+              "caller_action": "Provide capacity for the entire BSI tail."
+            }
+          ],
+          "not_run": [
+            "XML-to-BSI value mapping and semantics beyond caller-authored fields.",
+            "Real I0 BSI bytes, audio blocks, complete frame parse, decoder acceptance and product output.",
+            "No production caller or runtime source-generation binding is installed."
+          ],
+          "validation_boundary": "Synthetic caller values verify BSI field order, widths, length arithmetic, cursor extent and rejection atomicity; production_allowed=false.",
+          "delivery_scope": "FLAT7X_I0_AC3_BSI_TAIL_SERIALIZATION_ONLY_NO_AUDIO_XML_MAPPING_OR_PRODUCTION"
+        },
+        {
+          "slice_id": "flat7x-i0-typed-bsi-frame-assembly-entry",
+          "mapping_status": "MATERIALIZED_TYPED_I0_BSI_TO_FRAME_COMPOSITION_ENTRY",
+          "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_TYPED_I0_BSI_TO_FRAME_COMPOSITION__PRODUCTION_OPEN",
+          "implementation_requirement": true,
+          "owner": "codec",
+          "scope": "Adds `assemble_flat7x_i0_ac3_frame_from_fields`, a typed entry that accepts authored I0 header values, the approved typed BSI-tail input, six opaque caller-owned audblk spans, optional auxdata and an initial crcrsv seed. It derives the BSI start from compr presence (62/70 bits), serializes the BSI tail into private scratch, then calls the existing opaque-span frame assembler. The whole frame is still preflighted/staged, CRC1/CRC2 are generated and residual-checked, and the caller writer is committed once only after all spans total exactly 20480 bits. The existing low-level opaque-span entry remains available; no audio-block content or production callsite is added.",
+          "dependencies": [
+            "F12/flat7x-i0-ac3-bsi-tail-writer",
+            "F12/flat7x-i0-frame-bit-assembler"
+          ],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/CRC-GENERATION-CONTRACT.json"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
+            "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
+            "crates/jocforge-domain/src/codec/frame_builder.rs",
+            "crates/jocforge-domain/src/codec/mod.rs",
+            "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
+            "crates/jocforge-domain/src/integrity/mod.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
+              "bytes": 37265,
+              "sha256": "b1752ad6c61f78c344937226907c6ff7c695b76bc144c13523fc245db1f524b0"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
+              "bytes": 8747,
+              "sha256": "b3bbb2edfc28d66b46b2d37f3a00aa2ba653996f6331c5aeb79ffb587a4ce719"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
+              "bytes": 43493,
+              "sha256": "992fa2b5c5f5ff47aef536e0289474432bdf8919f224407af34b5b8c6c761f64"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/mod.rs",
+              "bytes": 1141,
+              "sha256": "310555b04e94adfb45606a8a7b025fa5550aa18eba8ae712dbae11d972673c34"
+            },
+            {
+              "path": "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
+              "bytes": 8372,
+              "sha256": "0c570458c5bf9ddadab869ec1c2a4bd6e71c4f9cbc9e655b7d34e9afa14f7d08"
+            },
+            {
+              "path": "crates/jocforge-domain/src/integrity/mod.rs",
+              "bytes": 300,
+              "sha256": "8cf3b9de9d577622322eb1ac7a71bb54158428db5a50529ae36e5b3e8abc8ff0"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs"
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs",
+              "bytes": 44297,
+              "sha256": "325a31f27e94bdffb9aa03dac69c7e38ccb798188c30683c4510b2a29b6479e7"
+            }
+          ],
+          "vector_inventory": [
+            {
+              "path": "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
+              "bytes": 6907,
+              "sha256": "a21831772989d86b79644805848844c60c7923ed9d295bb3f2f367f46b7e80d6"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json",
+              "bytes": 2614,
+              "sha256": "c1fda6dd82f72fed627ad967544002ccefa745c94fe81e469b5d0baa1f1fcf33"
+            }
+          ],
+          "clock": {
+            "domains": [
+              "FrameBitCursor"
+            ],
+            "covered_clauses": [
+              "The BSI writer begins at the exact 62/70-bit header end cursor.",
+              "Six caller audio spans follow the BSI receipt in index order; the frame writer commits exactly 20480 bits from cursor zero."
+            ]
+          },
+          "parameters": {
+            "kind": "TYPED_I0_AC3_BSI_TO_FRAME_ASSEMBLY",
+            "target": {
+              "role": "IndependentI0",
+              "codec": "legacy_ac3_core",
+              "sample_rate_hz": 48000,
+              "rate_kbps": 640,
+              "frame_bytes": 2560,
+              "frame_bits": 20480,
+              "audio_blocks": 6,
+              "samples_per_channel": 1536,
+              "acmod": 7,
+              "lfeon": true,
+              "d0_rate_kbps": 1024
+            },
+            "continuation_package_id": "FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1",
+            "continuation_manifest_sha256": "cddad099b557617ab6f4aa73d3c40d87f75f12a55c141e14bff6573bdc891787",
+            "crc_generation_package_id": "FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1",
+            "crc_generation_manifest_sha256": "07ad2b60bd22a1312ff15107cf35e836a12a763c764b3fbaa74e02b4f2d9dc2d",
+            "typed_entry": "assemble_flat7x_i0_ac3_frame_from_fields",
+            "low_level_entry": "assemble_flat7x_i0_ac3_frame",
+            "bsi_tail_start_from_compr": {
+              "without_compr": 62,
+              "with_compr": 70
+            },
+            "bsi_staging": "PRIVATE_BOUNDED_SCRATCH",
+            "caller_commit": "ONE_WHOLE_FRAME_WRITE_AFTER_BSI_AND_FRAME_VALIDATION",
+            "source_generation": "UNBOUND",
+            "production_allowed": false,
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/CRC-GENERATION-CONTRACT.json"
+            ],
+            "validation_boundary": "Synthetic typed BSI serialization plus opaque audio-span composition; no audio, source-generation join, output publication or W04."
+          },
+          "vectors": {
+            "kind": "SYNTHETIC_NOT_REAL_OUTPUT_TYPED_I0_BSI_FRAME_COMPOSITION",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "Washed all-optionals BSI vector ends at bit 142 for a compr header; the typed receipt matches the frame's BSI span.",
+              "Six synthetic spans totalling 20320 bits follow the 72-bit typed BSI tail and 70-bit header; auxdatae and 17-bit errorcheck finish the 20480-bit frame.",
+              "Generated CRC1/CRC2 residuals are zero on the synthetic assembled frame.",
+              "Invalid typed BSI fields and an incomplete audio-span extent fail before caller output bytes or cursor change."
+            ],
+            "expected_outputs_included": true,
+            "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_TYPED_BSI_TO_FRAME_SPANS_CRC_AND_FAILURE_ATOMICITY"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "I0_AC3_BSI_FIELD_REJECTED",
+              "category": "typed BSI field validation",
+              "trigger": "The BSI-tail writer rejects a field width, value or addbsi extent.",
+              "result": "Typed failure before caller output bytes or cursor change.",
+              "caller_action": "Supply BSI values within the approved field bounds."
+            },
+            {
+              "error_code": "I0_AC3_FRAME_SPAN_MISMATCH",
+              "category": "complete I0 frame extent",
+              "trigger": "Header, typed BSI tail, six audio spans, auxdata flag and errorcheck do not total exactly 20480 bits.",
+              "result": "Typed failure before caller output bytes or cursor change.",
+              "caller_action": "Supply six caller spans that fit the approved frame extent."
+            },
+            {
+              "error_code": "I0_AC3_FRAME_CAPACITY",
+              "category": "caller writer capacity",
+              "trigger": "The caller output writer cannot hold 20480 bits from cursor zero.",
+              "result": "Preflight failure before caller bytes or cursor change.",
+              "caller_action": "Provide a 2560-byte-capable caller writer."
+            }
+          ],
+          "not_run": [
+            "No AC-3 audio-block algorithm is run; six spans remain caller-owned.",
+            "No E-AC-3-to-AC-3 block reinterpretation is performed.",
+            "Same-generation source receipt, production admission, file output and W04 remain unbound or not run."
+          ],
+          "validation_boundary": "Synthetic only; the typed entry composes BSI fields and caller spans through the existing I0 frame assembler; production_allowed=false.",
+          "delivery_scope": "TYPED_I0_BSI_TO_OPAQUE_AUDIO_SPAN_FRAME_COMPOSITION_ONLY_NO_AUDIO_OR_PRODUCTION"
+        },
+        {
+          "slice_id": "flat7x-i0-ac3-audio-block-producer",
+          "mapping_status": "MATERIALIZED_ETSI_AC3_BLOCK_ZERO_AUDIO_PRODUCER_PROTOTYPE",
+          "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_AC3_BLOCK_ZERO_AUDIO_BLOCK_AND_PARSER__SIX_BLOCK_RATE_FIT_OPEN",
+          "implementation_requirement": true,
+          "owner": "codec",
+          "scope": "Production-disabled AC-3 block-zero audblk and additive six-block series candidate from one source-bound SelectedSourceNumericPlan receipt. The series emits six ordered spans, retains source identity and per-block BAP controls, and rejects unsupported exponent reuse or aggregate caller-budget overrun. F12/F09/F10-to-AC-3 projections remain provisional; complete frame assembly and production remain open.",
+          "dependencies": [
+            "F12/flat7x-i0-frame-bit-assembler",
+            "F12A/selected-f12a-public-bap-network",
+            "F10/exponent-difference-triple-packing",
+            "F08/math-generated-fbw-transform"
+          ],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The standalone block prototype carries no codec-source or callback clock index."
+            ]
+          },
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
+            "crates/jocforge-domain/src/codec/bap.rs",
+            "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
+            "crates/jocforge-domain/src/codec/mod.rs",
+            "crates/jocforge-validation/src/ac3_audio_block_parser.rs",
+            "crates/jocforge-validation/src/lib.rs"
+          ],
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
+              "bytes": 74130,
+              "sha256": "ebcf423cd84044b6b56da1490d5769acf210ad16b2729d9f1400bd2797ae73f6"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/bap.rs",
+              "bytes": 25419,
+              "sha256": "2d9421e7f3ecfe91d13ccaf82eb6458d4a670715dbee6a64f268c5878b460073"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
+              "bytes": 37265,
+              "sha256": "b1752ad6c61f78c344937226907c6ff7c695b76bc144c13523fc245db1f524b0"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/mod.rs",
+              "bytes": 1141,
+              "sha256": "310555b04e94adfb45606a8a7b025fa5550aa18eba8ae712dbae11d972673c34"
+            },
+            {
+              "path": "crates/jocforge-validation/src/ac3_audio_block_parser.rs",
+              "bytes": 22157,
+              "sha256": "2c6ca895e1d49efecda7c6fd087636081c57a5a7698ed05d68c12f29dc972530"
+            },
+            {
+              "path": "crates/jocforge-validation/src/lib.rs",
+              "bytes": 351,
+              "sha256": "94452b17452e0ecdadf9cc454875ec31683c2db61222a71d6f0724196b5a6937"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
+            "crates/jocforge-domain/src/codec/bap.rs",
+            "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
+            "crates/jocforge-validation/src/ac3_audio_block_parser.rs"
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
+              "bytes": 74130,
+              "sha256": "ebcf423cd84044b6b56da1490d5769acf210ad16b2729d9f1400bd2797ae73f6"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/bap.rs",
+              "bytes": 25419,
+              "sha256": "2d9421e7f3ecfe91d13ccaf82eb6458d4a670715dbee6a64f268c5878b460073"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
+              "bytes": 37265,
+              "sha256": "b1752ad6c61f78c344937226907c6ff7c695b76bc144c13523fc245db1f524b0"
+            },
+            {
+              "path": "crates/jocforge-validation/src/ac3_audio_block_parser.rs",
+              "bytes": 22157,
+              "sha256": "2c6ca895e1d49efecda7c6fd087636081c57a5a7698ed05d68c12f29dc972530"
+            }
+          ],
+          "parameters": {
+            "kind": "AC3_I0_BLOCK_ZERO_PCM_TO_AUDBLK",
+            "standard": "ETSI TS 102 366 V1.4.1",
+            "clauses": [
+              "4.3.3",
+              "4.4.3.1-4.4.3.13",
+              "4.4.3.21-4.4.3.47",
+              "6.1.3",
+              "6.2",
+              "6.3.2-6.3.5",
+              "7.2.1.3",
+              "7.2.3"
+            ],
+            "target": {
+              "sample_rate_hz": 48000,
+              "independent_rate_kbps": 640,
+              "acmod": 7,
+              "lfeon": true,
+              "block_index": 0,
+              "fullband_channels": [
+                "L",
+                "C",
+                "R",
+                "Ls",
+                "Rs"
+              ],
+              "pcm_samples_per_block": 256,
+              "overlap_samples": 256
+            },
+            "supported_channel_bandwidth": {
+              "chbwcod": 48,
+              "endmant": 217,
+              "lfe_endmant": 7
+            },
+            "bap_provider_sha256": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3",
+            "transform_window_provider_sha256": "963a176760f7c7d43dba138553717b7d5273a9457a574f658ee73eeb62e7da5c",
+            "provider_files": [
+              "crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-PUBLIC-BAP-PROVIDER-V1/public-bap-48k-v1.json"
+            ],
+            "mantissa_groups_cross_exponent_sets": [
+              1,
+              2,
+              4
+            ],
+            "reused_transform_material": "MathGeneratedTransformParameters.window_f32_bits only; F08 dual-bank transform functions remain unchanged and are not called by this stage.",
+            "quantizer_policy": "NearestTiesEven caller-selected encoder policy",
+            "gain_range_codes": "caller-supplied; code 0 only in this prototype",
+            "cplinu": "caller input; independent value only in this prototype",
+            "delta_bit_allocation": "caller input; absent only in this prototype",
+            "skip_field": "caller input; absent emits skiple=0",
+            "lfeexpstr": "1 required for block zero",
+            "source_generation": "UNBOUND",
+            "production_allowed": false,
+            "validation_boundary": "Synthetic caller PCM and controls produce one exact block span; the validation parser checks the supported syntax and bit extent.",
+            "six_block_series_candidate": {
+              "audio_blocks": 6,
+              "source_receipt": "NumericPlanReceipt<SelectedSourceNumericPlan>",
+              "assumption_ids": [
+                "PROVISIONAL_I0_SELECTED_F12_51_SPECTRUM_V1",
+                "PROVISIONAL_I0_F09_F10_EXPSTR_TO_AC3_V1"
+              ],
+              "production_allowed": false
+            }
+          },
+          "vectors": {
+            "kind": "SYNTHETIC_INPUT_ONLY",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
+              "crates/jocforge-validation/src/ac3_audio_block_parser.rs"
+            ],
+            "case_pointers": [
+              "ac3_audio_block::long_transform_matches_the_etsi_scalar_formula_for_one_hot_input",
+              "ac3_audio_block::mathematical_window_matches_published_etsi_table_landmarks",
+              "ac3_audio_block::nearest_ties_even_policy_is_explicit_at_asymmetric_code_boundaries",
+              "ac3_audio_block::grouped_mantissas_continue_across_each_fullband_and_lfe_boundary",
+              "ac3_audio_block_parser::produced_block_has_complete_etsi_structure_and_exact_cursor",
+              "ac3_audio_block_parser::parser_accepts_the_caller_supplied_skip_field_branch",
+              "ac3_audio_block_parser::producer_requires_explicit_supported_coupling_and_delta_choices",
+              "six_ordered_blocks_retain_source_identity_and_caller_q_controls",
+              "block_zero_exponent_reuse_rejects_the_series_before_returning_a_candidate",
+              "aggregate_budget_rejects_without_returning_a_partial_block_set",
+              "six_ordered_blocks_retain_source_identity_and_caller_q_controls",
+              "block_zero_exponent_reuse_rejects_the_series_before_returning_a_candidate",
+              "aggregate_budget_rejects_without_returning_a_partial_block_set",
+              "six_ordered_blocks_retain_source_identity_and_caller_q_controls",
+              "block_zero_exponent_reuse_rejects_the_series_before_returning_a_candidate",
+              "aggregate_budget_rejects_without_returning_a_partial_block_set"
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_INPUT_AND_STRUCTURAL_PARSER"
+          },
+          "not_run": [
+            "Complete 2560-byte I0 frame assembly and target 640-kbps whole-frame fit.",
+            "I0/D0 source-generation parent transaction, D0 audio, product output, W04 and real PCM."
+          ],
+          "error_outcomes": [
+            {
+              "error_code": "AC3_AUDIO_BLOCK_INPUT_REJECTED",
+              "category": "PCM or caller control validation",
+              "trigger": "Non-finite/out-of-range PCM, unsupported block-switch/coupling/delta/bandwidth/gain input, or invalid exponent plan.",
+              "result": "Typed rejection before a candidate is returned.",
+              "caller_action": "Supply the supported long, independent block-zero row and explicit valid controls."
+            },
+            {
+              "error_code": "AC3_AUDIO_BLOCK_BAP_REJECTED",
+              "category": "public BAP provider or allocation inputs",
+              "trigger": "The provider identity, 48-kHz row shape or caller allocation controls fail validation.",
+              "result": "Typed rejection before a candidate is returned.",
+              "caller_action": "Supply the pinned public provider and legal block controls."
+            },
+            {
+              "error_code": "AC3_AUDIO_BLOCK_MANTISSA_RANGE",
+              "category": "coefficient/exponent normalization",
+              "trigger": "Caller exponent values do not normalize a transformed coefficient to the AC-3 range.",
+              "result": "Typed rejection before a candidate is returned.",
+              "caller_action": "Supply an explicit decoder exponent plan that covers the PCM block."
+            }
+          ],
+          "validation_boundary": "The validation-only parser checks the block-zero syntax branch, BAP-derived mantissa code spaces, padding bits and exact bit cursor; it does not decode PCM or grant product acceptance.",
+          "delivery_scope": "ONE_AC3_BLOCK_ZERO_AUDBLK_CANDIDATE_ONLY_NO_SIX_BLOCK_FRAME_OR_PRODUCTION"
+        },
         {
           "slice_id": "flat7x-d0-mixing-metadata-segment",
           "mapping_status": "WASHED_D0_MIXING_METADATA_AND_INFOMDATE_FIELDS_BOUND__LATER_BSI_OPEN",
@@ -47697,8 +48071,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 33107,
-              "sha256": "aca730c6908ab37288b62dfe9e9287269d5e694b861668ed4bf838951daac960"
+              "bytes": 36981,
+              "sha256": "962c0f8d5451b3eefae9a0162a94583832a5552e9ac03d7f2bc29b43027674a7"
             }
           ],
           "clock": {
@@ -48024,11 +48398,11 @@
               "bytes": 9194,
               "sha256": "0daca3a9401ec1728c8a30297a53dec874902778bda134c9b454765294e097f9"
             },
-                                                                                                {
-                                                  "path": "crates/jocforge-domain/src/codec/mod.rs",
-                                                  "bytes": 1116,
-                                                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                                                }
+            {
+              "path": "crates/jocforge-domain/src/codec/mod.rs",
+              "bytes": 1141,
+              "sha256": "310555b04e94adfb45606a8a7b025fa5550aa18eba8ae712dbae11d972673c34"
+            }
           ],
           "test_modules": [
             "crates/jocforge-domain/tests/flat7x_d0_frame_layout.rs",
@@ -48141,7 +48515,7 @@
           "implementation_status": "LOCALLY_VERIFIED_FLAT7X_TARGET_INDEX1_OBJECT_COUNT15_HEADER_ONLY__PRODUCTION_OPEN",
           "implementation_requirement": true,
           "owner": "codec",
-          "scope": "Adds a separate header-only API from an optional approved Flat7xI0D0TargetPlan to the existing profile-aware ID14 writer. It requires the exact approved target, profile-owned joc_dmx_config_idx=1, and caller object_count=15 matching the target's coded object count. The existing writer encodes semantic object_count 15 as the ETSI U6 value 14. The typed header-only input contains no body or complexity field; the adapter preserves the caller downmix input, serializes only ID14 header/descriptors, stages the write, and commits caller writer bytes only on success. Mode0/phase1/internal index3, complexity_index_type_a=16, seven reconstruction carriers, 15 reconstruction rows, and ADM physical rows remain distinct domains. No D0 audio, EMDF, AU, GTC, or production connection is added.",
+          "scope": "Header-only Flat7x adapter requires JOC spatial index1, coefficient downmix index1, and semantic object count15; U6 emits14. A caller downmix mismatch rejects before writer staging. Complexity16 remains independent; the adapter writes no body and creates no production path.",
           "dependencies": [
             "F01E/flat7x-i0-d0-typed-target-plan",
             "F12/flat7x-reconstruction-layout-profile-and-header-index"
@@ -48161,8 +48535,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/joc/huffman/id14_header.rs",
-              "bytes": 18168,
-              "sha256": "46302ebb0c2b320c51b1fc6e3101bb0f31238294344ebc6aedec504cb747eb1f"
+              "bytes": 18636,
+              "sha256": "7e7b06297c86808f1f043b6aeb223efca2ffc76bff88dd119447881eb7121881"
             },
             {
               "path": "crates/jocforge-domain/src/joc/huffman.rs",
@@ -48177,13 +48551,13 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/joc_reconstruction_layout.rs",
-              "bytes": 11304,
-              "sha256": "0c3d8513628eb46ff9880d430f4b222e31ced15790dc8c0937208d3d641bfad5"
+              "bytes": 11810,
+              "sha256": "ab8174d7ff35ecf3cb2217acee4ca393ec7a51c613d051a2d0af9af71fc869a9"
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 33107,
-              "sha256": "aca730c6908ab37288b62dfe9e9287269d5e694b861668ed4bf838951daac960"
+              "bytes": 36981,
+              "sha256": "962c0f8d5451b3eefae9a0162a94583832a5552e9ac03d7f2bc29b43027674a7"
             }
           ],
           "clock": {
@@ -48219,10 +48593,19 @@
               "complexity_index_type_a": {
                 "value": 16,
                 "serialized_in_id14_header": false
-              }
+              },
+              "joc_spatial_index": {
+                "width_bits": 3,
+                "value": 1
+              },
+              "downmix_index": {
+                "width_bits": 3,
+                "value": 1
+              },
+              "downmix_coefficient_width": 7
             },
             "separate_domains": {
-              "downmix": "SelectedMode0Phase1Index3 and caller downmix_index remain separate from reconstruction index 1",
+              "downmix": "Algorithm mode/phase controls, coefficient downmix index1, and JOC spatial index1 are independent",
               "reconstruction_carriers": 7,
               "reconstruction_rows": 15,
               "ADM_physical_rows": "N, currently 36/38 supported input scope; not object_count"
@@ -48245,7 +48628,10 @@
               "Downmix mode0/phase1/internal index3 remains separate from header reconstruction index 1.",
               "Complexity16, seven carriers, 15 reconstruction rows and ADM physical input rows are separate domains; complexity is not serialized as object_count.",
               "Missing/invalid target contract and object_count mismatch reject with caller writer state unchanged.",
-              "Existing 5.1 profile header remains byte-equal to its previous writer path; target wrapper omits body bytes."
+              "Existing 5.1 profile header remains byte-equal to its previous writer path; target wrapper omits body bytes.",
+              "Target adapter accepts downmix_index1 and rejects a different value before writer mutation.",
+              "The target adapter accepts downmix_index1 and rejects a different caller value before writer mutation.",
+              "Target adapter accepts downmix_index1 and rejects a different caller value before writer mutation."
             ],
             "expected_outputs_included": true,
             "execution_status": "LOCALLY_VERIFIED_FLAT7X_HEADER_FIELDS_DOMAIN_SEPARATION_AND_5_1_BYTE_EQUALITY"
@@ -48264,6 +48650,27 @@
               "trigger": "Caller semantic object_count differs from the target count 15.",
               "result": "Typed rejection before writer mutation.",
               "caller_action": "Use the target's semantic object count; the writer encodes U6 count-minus-one."
+            },
+            {
+              "error_code": "Flat7xTargetId14HeaderError::DownmixIndexMismatch",
+              "category": "coefficient downmix target gate",
+              "trigger": "Caller downmix index differs from target value1.",
+              "result": "Typed rejection before writer staging or mutation.",
+              "caller_action": "Supply the separately selected target downmix index."
+            },
+            {
+              "error_code": "Flat7xTargetId14HeaderError::DownmixIndexMismatch",
+              "category": "coefficient downmix target gate",
+              "trigger": "Caller downmix index differs from target value1.",
+              "result": "Typed rejection before writer staging or mutation.",
+              "caller_action": "Supply the separately selected target downmix index."
+            },
+            {
+              "error_code": "Flat7xTargetId14HeaderError::DownmixIndexMismatch",
+              "category": "coefficient downmix target gate",
+              "trigger": "Caller downmix index differs from target value1.",
+              "result": "Typed rejection before writer staging or mutation.",
+              "caller_action": "Supply the separately selected target downmix index."
             }
           ],
           "not_run": [
@@ -48304,11 +48711,11 @@
               "bytes": 18172,
               "sha256": "4cfd1fdeb420ce408b7a6a315eaac6d05f5bd7feb273cdec31cca4bdabcbcfef"
             },
-                                                                                                {
-                                                  "path": "crates/jocforge-domain/src/codec/mod.rs",
-                                                  "bytes": 1116,
-                                                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                                                },
+            {
+              "path": "crates/jocforge-domain/src/codec/mod.rs",
+              "bytes": 1141,
+              "sha256": "310555b04e94adfb45606a8a7b025fa5550aa18eba8ae712dbae11d972673c34"
+            },
             {
               "path": "crates/jocforge-domain/src/integrity/crc16.rs",
               "bytes": 478,
@@ -48372,7 +48779,7 @@
               "insertion_authority": "CALLER_OWNED_UNBOUND_OFFSET"
             },
             "crc2_source": "generated by approved eac3_crc16 after full D0 frame body staging",
-            "integrity_receipt": "D0Crc2IntegrityReceipt carries the generated U16 and verified zero residual",
+            "integrity_receipt": "D0Crc2IntegrityReceipt carries generated CRC16 U16 and verified residual",
             "crc2_contract": {
               "package_id": "CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1",
               "manifest_sha256": "d9085785d5484d236d4b24925a52954fc0bb01153c2e173e2d07d8f6e1b4a5f6",
@@ -48383,7 +48790,6 @@
               "verify_coverage": "frame[2:4096]",
               "required_residual": 0
             },
-            "integrity_receipt": "D0Crc2IntegrityReceipt carries generated CRC16 U16 and verified residual",
             "preflight_extent": "BSI + all six opaque spans + one complete block-two skipfield + generated CRC2 must equal 32768 bits",
             "production_allowed": false,
             "validation_boundary": "Synthetic caller-span assembly into a caller writer; no real audio, frame acceptance, playback, AU/GTC or production claim."
@@ -48463,19 +48869,31 @@
             "crates/jocforge-domain/src/codec/mod.rs"
           ],
           "implementation_inventory": [
-            {"path": "crates/jocforge-domain/src/codec/access_unit_composer.rs", "bytes": 5122, "sha256": "98f37f91c3957b424d21763615cbdc9ce04ff835dc65f4f78784285930f15df2"},
-                                                                                                {
-                                                  "path": "crates/jocforge-domain/src/codec/mod.rs",
-                                                  "bytes": 1116,
-                                                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                                                }
+            {
+              "path": "crates/jocforge-domain/src/codec/access_unit_composer.rs",
+              "bytes": 5122,
+              "sha256": "98f37f91c3957b424d21763615cbdc9ce04ff835dc65f4f78784285930f15df2"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/mod.rs",
+              "bytes": 1141,
+              "sha256": "310555b04e94adfb45606a8a7b025fa5550aa18eba8ae712dbae11d972673c34"
+            }
           ],
           "test_modules": [
             "crates/jocforge-domain/tests/flat7x_access_unit_composer.rs"
           ],
           "test_inventory": [
-            {"path": "crates/jocforge-domain/tests/flat7x_access_unit_composer.rs", "bytes": 5774, "sha256": "aab17f765979a1bfca9f6f7c729911cceec58b633623a8cfc70c919ed39bff0d"},
-            {"path": "crates/jocforge-domain/tests/fixtures/flat7x_au_composer/INPUT-ONLY-VECTORS.json", "bytes": 1225, "sha256": "33cd48142e8ca77a32ec94b3a4ab8cd0c3089d8374df0201225985256fe450ca"}
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_access_unit_composer.rs",
+              "bytes": 5774,
+              "sha256": "aab17f765979a1bfca9f6f7c729911cceec58b633623a8cfc70c919ed39bff0d"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/fixtures/flat7x_au_composer/INPUT-ONLY-VECTORS.json",
+              "bytes": 1225,
+              "sha256": "33cd48142e8ca77a32ec94b3a4ab8cd0c3089d8374df0201225985256fe450ca"
+            }
           ],
           "clock": {
             "domains": [],
@@ -48502,7 +48920,10 @@
               "d0_bytes": 4096,
               "aggregate_bytes": 6656,
               "aggregate_bits": 53248,
-              "order": ["I0", "D0"]
+              "order": [
+                "I0",
+                "D0"
+              ]
             },
             "input_kind": "OPAQUE_CALLER_SUPPLIED_FRAME_BYTES",
             "source_generation": "NOT_ACCEPTED_OR_INFERRED",
@@ -48592,25 +49013,49 @@
             "crates/jocforge-domain/src/codec/mod.rs"
           ],
           "implementation_inventory": [
-            {"path": "crates/jocforge-domain/src/codec/elementary_stream_composer.rs", "bytes": 6042, "sha256": "db285669b52bb78f0cb7b0196a9dc3207171916c32391ccfe9a5d75797f53fdd"},
-                                                                                                {
-                                                  "path": "crates/jocforge-domain/src/codec/mod.rs",
-                                                  "bytes": 1116,
-                                                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                                                }
+            {
+              "path": "crates/jocforge-domain/src/codec/elementary_stream_composer.rs",
+              "bytes": 6042,
+              "sha256": "db285669b52bb78f0cb7b0196a9dc3207171916c32391ccfe9a5d75797f53fdd"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/mod.rs",
+              "bytes": 1141,
+              "sha256": "310555b04e94adfb45606a8a7b025fa5550aa18eba8ae712dbae11d972673c34"
+            }
           ],
           "test_modules": [
             "crates/jocforge-domain/tests/flat7x_elementary_stream_composer.rs",
             "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs"
           ],
           "test_inventory": [
-            {"path": "crates/jocforge-domain/tests/flat7x_elementary_stream_composer.rs", "bytes": 7866, "sha256": "883eb1f6ac72cac6972ba6b0fb6225d4fa628bbe958f2f10486a4ebe6b39adbc"},
-            {"path": "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs", "bytes": 18597, "sha256": "51ce3cc5d1db171b256339b7165d363b934ba41b0a5736d072706694aa0d218e"}
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_elementary_stream_composer.rs",
+              "bytes": 7866,
+              "sha256": "883eb1f6ac72cac6972ba6b0fb6225d4fa628bbe958f2f10486a4ebe6b39adbc"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs",
+              "bytes": 18597,
+              "sha256": "51ce3cc5d1db171b256339b7165d363b934ba41b0a5736d072706694aa0d218e"
+            }
           ],
           "vector_inventory": [
-            {"path": "crates/jocforge-domain/tests/fixtures/flat7x_elementary_stream/INPUT-ONLY-VECTORS.json", "bytes": 1588, "sha256": "8573c6a3a7d29f91ac8704265dde35d169bac10304788b535927c8d015a0e88b"},
-            {"path": "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json", "bytes": 2542, "sha256": "fddc65f1a52c325347029cc272f24122f9b6ed501d99130a42051b7d7aa8fbee"},
-            {"path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/STRUCTURAL-CONTRACT.json", "bytes": 2137, "sha256": "9a0a1f3cf5ce6342ddf98846169cc8a8c11bbd5e8b5705540432c7db8786cebd"}
+            {
+              "path": "crates/jocforge-domain/tests/fixtures/flat7x_elementary_stream/INPUT-ONLY-VECTORS.json",
+              "bytes": 1588,
+              "sha256": "8573c6a3a7d29f91ac8704265dde35d169bac10304788b535927c8d015a0e88b"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json",
+              "bytes": 2542,
+              "sha256": "fddc65f1a52c325347029cc272f24122f9b6ed501d99130a42051b7d7aa8fbee"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1/STRUCTURAL-CONTRACT.json",
+              "bytes": 2137,
+              "sha256": "9a0a1f3cf5ce6342ddf98846169cc8a8c11bbd5e8b5705540432c7db8786cebd"
+            }
           ],
           "clock": {
             "domains": [],
@@ -49241,7 +49686,7 @@
           "slice_id": "selected-metadata-owner-source-stage",
           "mapping_status": "MATERIALIZED_SELECTED_SOURCE_STAGE__GLOBAL_CALLBACK_BLOCKED",
           "implementation_status": "LOCALLY_VERIFIED_TYPED_BODY_BARRIER_TIMER_FOUR_QUEUE_EMDF_NONPAYLOAD_VALIDATION_REASON__PARENT_INSTALL_NOT_RUN",
-          "scope": "Selected 48 kHz/1536-sample profile only: lineage-bound ID11/ID2/ID14 body barrier, ID1 configuration with an explicit internal I32-derived value, private timer and four-queue clone, source2+ EMDF proposal, specialized receipt and owned noncommitting after-state. The current ProgrammeMeasurementReceipt has no provider crosswalk for this value; it is not inferred from gating_kind. Programme meter execution, parent root installation, complexity BSI and durable output remain separate. The selected container parser is a partial protected-container admission layer used by the owner proposal; it does not claim full ID1/ID2 body-semantic decoding or a successful real-container KAT. A typed non-payload CurrentEmdfValidationReason reports the first failed parser, queue-pop, producer-lineage, or wrapper predicate while retaining the stable METADATA_CURRENT_EMDF_VALIDATION code and the existing fail-closed decision.",
+          "scope": "Selected 48 kHz/1536-sample profile only: lineage-bound ID11/ID2/ID14 body barrier, ID1 configuration with an explicit internal I32-derived value, private timer and four-queue clone, source2+ EMDF proposal, specialized receipt and owned noncommitting after-state. The current ProgrammeMeasurementReceipt has no provider crosswalk for this value; it is not inferred from gating_kind. Programme meter execution, parent root installation, complexity BSI and durable output remain separate. The selected container parser is a partial protected-container admission layer used by the owner proposal; it does not claim full ID1/ID2 body-semantic decoding or a successful real-container KAT. A typed non-payload CurrentEmdfValidationReason reports the first failed parser, queue-pop, producer-lineage, or wrapper predicate while retaining the stable METADATA_CURRENT_EMDF_VALIDATION code and the existing fail-closed decision. A non-default test-support fixture constructor accepts caller-supplied fixture bytes and returns synthetic F13 values for downstream F15 IO tests; it performs no filesystem or environment IO. A non-default test-support fixture factory receives caller-supplied bytes and returns synthetic metadata values for downstream output tests; the fixture module performs no filesystem or environment IO. The non-default test-support fixture constructor receives caller-supplied fixture bytes and returns synthetic F13 values for F15 IO tests; it performs no filesystem or environment IO.",
           "implementation_files": [
             "crates/jocforge-domain/src/joc/emdf/id1_configuration.rs",
             "crates/jocforge-domain/src/joc/emdf/metadata_bodies.rs",
@@ -49251,12 +49696,14 @@
             "crates/jocforge-domain/src/joc/emdf/metadata_owner/emdf_serializer.rs",
             "crates/jocforge-domain/src/joc/id14_body.rs",
             "crates/jocforge-domain/src/joc/source_stage.rs",
-            "crates/jocforge-domain/src/joc/emdf/protected_container.rs"
+            "crates/jocforge-domain/src/joc/emdf/protected_container.rs",
+            "crates/jocforge-domain/src/joc/emdf/metadata_owner/test_support.rs"
           ],
           "test_modules": [
             "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
             "crates/jocforge-domain/src/joc/id14_body.rs",
-            "crates/jocforge-domain/src/joc/emdf/protected_container.rs"
+            "crates/jocforge-domain/src/joc/emdf/protected_container.rs",
+            "crates/jocforge-domain/src/joc/emdf/metadata_owner/test_support.rs"
           ],
           "clock": {
             "domains": [
@@ -49317,18 +49764,18 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/joc/emdf/id1_configuration.rs",
-              "bytes": 9484,
-              "sha256": "5cb62c6ccf26eff6a450b5e7ec8d4e386870f6e2a8b9cb3b9e100947b83b2aba"
+              "bytes": 9515,
+              "sha256": "e79aa54a6828e3dc7f2b1870d0d81ea248f3c485a481821fe0f88b5dce17009f"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_bodies.rs",
-              "bytes": 9282,
-              "sha256": "8552447d807c13974c668552892c2b90347ad6bb7a16cd5796d5d472641f8f6d"
+              "bytes": 9344,
+              "sha256": "cdee744e21916ada2f1981b523a7ed00feac9b4a6633ca8fc020ff12d672bc5f"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-              "bytes": 98059,
-              "sha256": "bab96a268a9a5d171ff8fc2a603eb260d3b9516b9eba7e4b4a55ebd1025e01c1"
+              "bytes": 98115,
+              "sha256": "07918d3ba58c719e9ba73c2869fc41f014f845b90f60e8f76ede4f3bb90ab691"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/timer.rs",
@@ -49357,8 +49804,13 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/protected_container.rs",
-              "bytes": 57424,
-              "sha256": "ebb25ae83219436f85972d3467894beea770e5e8741c7a01fdb3489115c6365e"
+              "bytes": 57455,
+              "sha256": "ecaa706af9ddffd17e829d2dbd20a4bab445f8848f04e52e654a0a241b335ec1"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/test_support.rs",
+              "bytes": 14530,
+              "sha256": "5f8ea585fecf0b65f2bb29733b01cd2f4650c00572ff44d25c5de4eeaf323c5f"
             }
           ],
           "test_inventory": [
@@ -49374,8 +49826,13 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/protected_container.rs",
-              "bytes": 57424,
-              "sha256": "ebb25ae83219436f85972d3467894beea770e5e8741c7a01fdb3489115c6365e"
+              "bytes": 57455,
+              "sha256": "ecaa706af9ddffd17e829d2dbd20a4bab445f8848f04e52e654a0a241b335ec1"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/test_support.rs",
+              "bytes": 14530,
+              "sha256": "5f8ea585fecf0b65f2bb29733b01cd2f4650c00572ff44d25c5de4eeaf323c5f"
             }
           ]
         },
@@ -49975,8 +50432,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_bodies.rs",
-              "bytes": 9282,
-              "sha256": "8552447d807c13974c668552892c2b90347ad6bb7a16cd5796d5d472641f8f6d"
+              "bytes": 9344,
+              "sha256": "cdee744e21916ada2f1981b523a7ed00feac9b4a6633ca8fc020ff12d672bc5f"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/id2_wire.rs",
@@ -52691,8 +53148,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-              "bytes": 98059,
-              "sha256": "bab96a268a9a5d171ff8fc2a603eb260d3b9516b9eba7e4b4a55ebd1025e01c1"
+              "bytes": 98115,
+              "sha256": "07918d3ba58c719e9ba73c2869fc41f014f845b90f60e8f76ede4f3bb90ab691"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
@@ -52822,8 +53279,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_fitting.rs",
-              "bytes": 33181,
-              "sha256": "ca17ec188840ae0f4375385bec7b877e8c92e21ed336dbc82c76923bbdfab4f1"
+              "bytes": 33212,
+              "sha256": "d254a0e50ee7fbad38149976ba8cebae2e96b3dce6cc9be9422d3bfa85d22ff2"
             },
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_payload.rs",
@@ -52837,8 +53294,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_bodies.rs",
-              "bytes": 9282,
-              "sha256": "8552447d807c13974c668552892c2b90347ad6bb7a16cd5796d5d472641f8f6d"
+              "bytes": 9344,
+              "sha256": "cdee744e21916ada2f1981b523a7ed00feac9b4a6633ca8fc020ff12d672bc5f"
             },
             {
               "path": "crates/jocforge-domain/src/joc/oamd/reader_target.rs",
@@ -52859,8 +53316,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/coefficient_fitting.rs",
-              "bytes": 33181,
-              "sha256": "ca17ec188840ae0f4375385bec7b877e8c92e21ed336dbc82c76923bbdfab4f1"
+              "bytes": 33212,
+              "sha256": "d254a0e50ee7fbad38149976ba8cebae2e96b3dce6cc9be9422d3bfa85d22ff2"
             }
           ],
           "verification": {
@@ -57178,7 +57635,7 @@
       "inventory_status": "INVENTORIED",
       "implementation_status": "DEFERRED_DETAILED_MAPPING",
       "direct_slices": [
-                {
+        {
           "slice_id": "public-keyless-integrity-owner",
           "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_TYPED_ABSENT_AND_F12_FRAME_RECEIPTS__WHOLE_F14_AUTH_DEFERRED",
           "implementation_status": "LOCALLY_VERIFIED_ABSENT_AND_PROTECTED_F12_OWNER_PROPOSALS__PARENT_COMMIT_AND_PRIVATE_AUTH_DEFERRED",
@@ -57382,8 +57839,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/integrity/programme_owner.rs",
-              "bytes": 56239,
-              "sha256": "f8d0a9fc1a95e8513fdf34429a6c3db5bfcca995a6c619fd6636b7bbb6247231"
+              "bytes": 56270,
+              "sha256": "c58e3c4234180d6fdca88c271f00260fde375d93490bbae38f073d187581a3d4"
             },
             {
               "path": "crates/jocforge-application/src/integrity_source_bridge.rs",
@@ -57900,8 +58357,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-io/src/atomic_output/mod.rs",
-              "bytes": 25573,
-              "sha256": "8f04c650fff9f103ddd272b509bf77eeb589daa5db3d104f165a3df7ab5fa754"
+              "bytes": 29801,
+              "sha256": "281cb6cb1ce03ac476875a96bd80b206a25878d61932665eef7d85fc4dc3c794"
             },
             {
               "path": "crates/jocforge-io/src/atomic_output/windows_rename.rs",
@@ -57910,8 +58367,8 @@
             },
             {
               "path": "crates/jocforge-io/src/atomic_output/tests.rs",
-              "bytes": 16965,
-              "sha256": "aec5fda7da8cec33b98c1ecccb2e570bc7976107585a2031c85c43b9e26adc72"
+              "bytes": 22535,
+              "sha256": "efb191ef206ccdd5905598ba97d2aa044a3800cdd9a6cd4d5ece498343bb61da"
             },
             {
               "path": "crates/jocforge-domain/src/publication/output_owner.rs",
@@ -57930,8 +58387,8 @@
             },
             {
               "path": "crates/jocforge-io/Cargo.toml",
-              "bytes": 650,
-              "sha256": "d43d74a80bebb3b66577f3a80b0b5d07680f0d6476efc3043e098b78bdd10769"
+              "bytes": 669,
+              "sha256": "ecc46b0c2d7e90c0726582f6ef95bfb5aafbb2a95998597d8ea6a59738c5bf62"
             },
             {
               "path": "Cargo.toml",
@@ -57940,25 +58397,25 @@
             },
             {
               "path": "Cargo.lock",
-              "bytes": 7031,
-              "sha256": "492008a370b8dd531314964aea29bdf2ab38b9b503f3c1db11e20ec145010fa1"
+              "bytes": 7006,
+              "sha256": "e8a7ba9c16b7c8fa9c7d7a2d97d0ee16976425ecb42b51478f4a62a8fbb3ffd7"
             },
             {
               "path": "docs/architecture/DEPENDENCY-RULES.md",
               "bytes": 7636,
               "sha256": "4b94fbfaeba275c47d8ac300a465e2fafef8944d7f8c0f7ab021136fed603a7c"
             },
-                                                                                                                                                                                                {
-                                                                                                  "path": "scripts/check-boundaries.py",
-                                                                                                  "bytes": 2172415,
-                                                                                                  "sha256": "db3edd21d5517c400e3bcc482aca5bcf785039c59e5421e8e46a136750cce95a"
-                                                                                                }
+            {
+              "path": "scripts/check-boundaries.py",
+              "bytes": 2198162,
+              "sha256": "5f28782ac45a73a0ae456acb53ec77dc0f2f05f6ee3bc42338179eafb98c25e8"
+            }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-io/src/atomic_output/tests.rs",
-              "bytes": 16965,
-              "sha256": "aec5fda7da8cec33b98c1ecccb2e570bc7976107585a2031c85c43b9e26adc72"
+              "bytes": 22535,
+              "sha256": "efb191ef206ccdd5905598ba97d2aa044a3800cdd9a6cd4d5ece498343bb61da"
             },
             {
               "path": "crates/jocforge-domain/src/publication/tests.rs",
@@ -58709,8 +59166,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-              "bytes": 98059,
-              "sha256": "bab96a268a9a5d171ff8fc2a603eb260d3b9516b9eba7e4b4a55ebd1025e01c1"
+              "bytes": 98115,
+              "sha256": "07918d3ba58c719e9ba73c2869fc41f014f845b90f60e8f76ede4f3bb90ab691"
             },
             {
               "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
@@ -58724,8 +59181,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 61167,
-              "sha256": "7cb4875121c41b2ae7d37b895f73028b417953b3a907ba5ff3fc93373840f201"
+              "bytes": 63800,
+              "sha256": "10b34bca4e5c158cf41854097a9dd795c3ee9cefc8e8abf4a86348634efc2b0c"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -59366,8 +59823,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/publication/mod.rs",
-              "bytes": 1202,
-              "sha256": "518ef9aefd965c9ea057c961498685213f551302c2f3b3f4be26be22aeaa6f1b"
+              "bytes": 1258,
+              "sha256": "669fad789ce0e1b099c6d14d196560b18d7bf565ea2873f3f53d51e8723d32ae"
             }
           ],
           "test_inventory": [
@@ -59383,13 +59840,13 @@
             },
             {
               "path": "crates/jocforge-domain/src/integrity/programme_owner.rs",
-              "bytes": 56239,
-              "sha256": "f8d0a9fc1a95e8513fdf34429a6c3db5bfcca995a6c619fd6636b7bbb6247231"
+              "bytes": 56270,
+              "sha256": "c58e3c4234180d6fdca88c271f00260fde375d93490bbae38f073d187581a3d4"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/protected_container.rs",
-              "bytes": 57424,
-              "sha256": "ebb25ae83219436f85972d3467894beea770e5e8741c7a01fdb3489115c6365e"
+              "bytes": 57455,
+              "sha256": "ecaa706af9ddffd17e829d2dbd20a4bab445f8848f04e52e654a0a241b335ec1"
             }
           ],
           "clock": {
@@ -59547,10 +60004,10 @@
         {
           "slice_id": "flat7x-au-staging-append-io-receipt-adapter",
           "mapping_status": "ADDITIVE_FLAT7X_STAGING_FILE_RECEIPT_ADAPTER__PRODUCT_IO_OPEN",
-          "implementation_status": "LOCALLY_VERIFIED_STAGING_BYTE_IO_HELPER__FULL_RECEIPT_ADAPTER_JOIN_NOT_RUN",
+          "implementation_status": "LOCALLY_VERIFIED_F15_PAIR_APPEND_SESSION_ADAPTER__PRODUCT_CALLER_OPEN",
           "implementation_requirement": true,
           "owner": "output",
-          "scope": "An isolated IO adapter appends one already-composed 6,656-byte I0→D0 AU proposal to a caller-owned staging file. Its byte IO helper checks staging offset, writes aggregate bytes, flushes/syncs the file, reads back the same range, and verifies whole-AU equality and both frame CRCs. No positive run supplied the required F13 plus I0/D0 integrity receipt bundle to the public adapter. The adapter consumes proposals on error and carries attempt-retirement evidence; it has no final destination, atomic rename, rollback, GTC parent, encode entry or 5.1 sink connection.",
+          "scope": "AtomicOutputStaging::append_flat7x_au consumes one F15 pair proposal, checks open session/attempt identity, writes the I0 span then the D0 span, flushes/syncs and reads back the exact 6656-byte pair before completing the after-owner. Any write/readback failure retires the proposal and requires abandoning the session. The native per-span FileWriter observation supplies no stream-role/AU/source-generation/durability join; isolated pair behavior comes from the typed staging contract.",
           "spec_files": [
             "docs/architecture/DATAFLOW.md",
             "docs/architecture/PUBLIC-API.md",
@@ -59558,28 +60015,100 @@
           ],
           "implementation_files": [
             "crates/jocforge-io/src/flat7x_au_append.rs",
-            "crates/jocforge-io/src/lib.rs"
+            "crates/jocforge-io/src/lib.rs",
+            "crates/jocforge-domain/Cargo.toml",
+            "crates/jocforge-application/Cargo.toml",
+            "crates/jocforge-domain/src/integrity/programme_owner.rs",
+            "crates/jocforge-domain/src/joc/emdf/metadata_owner/test_support.rs",
+            "crates/jocforge-domain/src/publication/mod.rs",
+            "crates/jocforge-domain/src/publication/test_support.rs",
+            "crates/jocforge-io/Cargo.toml",
+            "crates/jocforge-io/src/atomic_output/mod.rs",
+            "crates/jocforge-io/src/atomic_output/tests.rs"
           ],
           "test_modules": [
-            "crates/jocforge-io/src/flat7x_au_append.rs"
+            "crates/jocforge-io/src/flat7x_au_append.rs",
+            "crates/jocforge-domain/src/joc/emdf/metadata_owner/test_support.rs",
+            "crates/jocforge-domain/src/publication/test_support.rs",
+            "crates/jocforge-io/src/atomic_output/tests.rs"
           ],
           "implementation_inventory": [
             {
               "path": "crates/jocforge-io/src/flat7x_au_append.rs",
-              "bytes": 11980,
-              "sha256": "b3309a9d408fa62d7848e9d905a150a26ceb01bba365bbabbe3ea166264cd63a"
+              "bytes": 12221,
+              "sha256": "a23a83cceed603750e4910a3a830c9be4e577efbe15a429aebb98226f00c7997"
             },
             {
               "path": "crates/jocforge-io/src/lib.rs",
               "bytes": 227,
               "sha256": "cabade12d2b2a46eec937aa1f556e388d5a6a1a4f8d7ba1d0a393da141b45ec5"
+            },
+            {
+              "path": "crates/jocforge-domain/Cargo.toml",
+              "bytes": 640,
+              "sha256": "63bc56f6213c8cb4f5c0723c622daae7930ccaf0c2287cbdf9813839415dbc13"
+            },
+            {
+              "path": "crates/jocforge-application/Cargo.toml",
+              "bytes": 535,
+              "sha256": "dbabe7dc48c5c7555d7074df5e3c740f6652088822e895b3318e1cb300cac812"
+            },
+            {
+              "path": "crates/jocforge-domain/src/integrity/programme_owner.rs",
+              "bytes": 56270,
+              "sha256": "c58e3c4234180d6fdca88c271f00260fde375d93490bbae38f073d187581a3d4"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/test_support.rs",
+              "bytes": 14530,
+              "sha256": "5f8ea585fecf0b65f2bb29733b01cd2f4650c00572ff44d25c5de4eeaf323c5f"
+            },
+            {
+              "path": "crates/jocforge-domain/src/publication/mod.rs",
+              "bytes": 1258,
+              "sha256": "669fad789ce0e1b099c6d14d196560b18d7bf565ea2873f3f53d51e8723d32ae"
+            },
+            {
+              "path": "crates/jocforge-domain/src/publication/test_support.rs",
+              "bytes": 7801,
+              "sha256": "bda24e59ad3eaa232ae25dff56e2fa63d3c727f8ea372796d76d7fd55923afb4"
+            },
+            {
+              "path": "crates/jocforge-io/Cargo.toml",
+              "bytes": 669,
+              "sha256": "ecc46b0c2d7e90c0726582f6ef95bfb5aafbb2a95998597d8ea6a59738c5bf62"
+            },
+            {
+              "path": "crates/jocforge-io/src/atomic_output/mod.rs",
+              "bytes": 29801,
+              "sha256": "281cb6cb1ce03ac476875a96bd80b206a25878d61932665eef7d85fc4dc3c794"
+            },
+            {
+              "path": "crates/jocforge-io/src/atomic_output/tests.rs",
+              "bytes": 22535,
+              "sha256": "efb191ef206ccdd5905598ba97d2aa044a3800cdd9a6cd4d5ece498343bb61da"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-io/src/flat7x_au_append.rs",
-              "bytes": 11980,
-              "sha256": "b3309a9d408fa62d7848e9d905a150a26ceb01bba365bbabbe3ea166264cd63a"
+              "bytes": 12221,
+              "sha256": "a23a83cceed603750e4910a3a830c9be4e577efbe15a429aebb98226f00c7997"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/test_support.rs",
+              "bytes": 14530,
+              "sha256": "5f8ea585fecf0b65f2bb29733b01cd2f4650c00572ff44d25c5de4eeaf323c5f"
+            },
+            {
+              "path": "crates/jocforge-domain/src/publication/test_support.rs",
+              "bytes": 7801,
+              "sha256": "bda24e59ad3eaa232ae25dff56e2fa63d3c727f8ea372796d76d7fd55923afb4"
+            },
+            {
+              "path": "crates/jocforge-io/src/atomic_output/tests.rs",
+              "bytes": 22535,
+              "sha256": "efb191ef206ccdd5905598ba97d2aa044a3800cdd9a6cd4d5ece498343bb61da"
             }
           ],
           "clock": {
@@ -59601,7 +60130,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/IMPLEMENTER-HANDOFF.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/SOURCE-RECEIPTS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/CHECK.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1/CHECK.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-PER-SPAN-FILEWRITER-SINK-AND-STAGING-CONTRACT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-PER-SPAN-FILEWRITER-SINK-AND-STAGING-CONTRACT-V1/PACKAGE-SEAL.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-PER-SPAN-FILEWRITER-SINK-AND-STAGING-CONTRACT-V1/FINDINGS.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-PER-SPAN-FILEWRITER-SINK-AND-STAGING-CONTRACT-V1/WRITER-BOUNDARY.json"
             ],
             "validation_boundary": "Temporary staging-file adapter only; readback and sync results are captured in a receipt candidate. No rollback or final exposure is provided. production_allowed=false.",
             "target": {
@@ -59620,18 +60153,46 @@
               "package_id": "ATMOS71-FLAT7X-1664-IMPLEMENTER-HANDOFF-V1",
               "manifest_sha256": "530867a0e15a82dcb461d540e2d07ef4e53de5fdd66131109b5c0110a7d3b884",
               "seal_sha256": "7ca3956885e570fd5d51aadeea1b74b94e522380c487fd13ee86cdc71e5dcf5a"
+            },
+            "test_support": {
+              "feature": "test-support",
+              "default_enabled": false,
+              "io_activation": "jocforge-io dev-dependencies only",
+              "production_receipts": false
+            },
+            "per_span_writer_package": {
+              "package_id": "FLAT7X-PER-SPAN-FILEWRITER-SINK-AND-STAGING-CONTRACT-V1",
+              "manifest_sha256": "03b80a61ccef6e83bcdcd6adc552936bdfbda6c9a357c503e6584cd921493c5c",
+              "seal_sha256": "00d85343beebb48a96aa0eef4c50638ffac1b6334950fc1ae445fbe917858f91",
+              "native_role_au_source_join": "UNBOUND",
+              "isolated_append_order": [
+                "I0",
+                "D0"
+              ]
             }
           },
           "vectors": {
             "kind": "SYNTHETIC_TEMP_FILE_IO_CASES",
-            "authoritative_vectors": [],
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-io/src/atomic_output/tests.rs",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-PER-SPAN-FILEWRITER-SINK-AND-STAGING-CONTRACT-V1/WRITER-BOUNDARY.json"
+            ],
             "case_pointers": [
               "A synthetic CRC-valid AU byte slice is written to a temporary staging file, synced, and read back byte-for-byte by the IO helper.",
               "A staging length mismatch rejects before writing.",
-              "A corrupt I0 frame CRC rejects before writing."
+              "A corrupt I0 frame CRC rejects before writing.",
+              "Complete 6656-byte pair readback includes both CRC receipts.",
+              "Wrong-attempt and offset mismatches retire/abandon the session and reject later appends.",
+              "The complete 6656-byte pair readback retains both CRC receipts.",
+              "Wrong-attempt and offset mismatch retire/abandon the session and reject later appends.",
+              "The complete 6656-byte pair readback retains both CRC receipts.",
+              "Wrong-attempt and offset mismatch retire/abandon the session and reject later appends.",
+              "I0 span completes before D0 span begins.",
+              "No pair receipt is returned until both spans and the exact pair readback/CRC checks pass."
             ],
             "expected_outputs_included": false,
-            "execution_status": "TEMP_FILE_BYTE_IO_HELPER_TESTS_PASSED__FULL_RECEIPT_BUNDLE_ADAPTER_NOT_RUN"
+            "execution_status": "F15_PAIR_APPEND_STAGING_READBACK_CRC_SYNC_AND_RETIREMENT_TESTS_PASS"
           },
           "error_outcomes": [
             {
@@ -59657,7 +60218,9 @@
             }
           ],
           "not_run": [
-            "No complete F13/Integrity pair receipt bundle was supplied to exercise the public append adapter; no app product binding, selected 5.1 sink connection, final file exposure/rename, rollback, GTC parent commit, real source input, W04, or listening acceptance."
+            "F13 parser and F12 Integrity owner-stage receipt bundle are not produced by the synthetic fixture.",
+            "No product encode caller, final file exposure, GTC commit, real input, W04, or listening acceptance.",
+            "Native FileWriter stream/AU/source-generation and durable-storage joins remain UNBOUND."
           ],
           "validation_boundary": "The adapter source consumes a typed F15 proposal, while current temporary-file tests exercise its shared byte-write/sync/readback helper with synthetic bytes. End-to-end F13/Integrity receipt binding and product invocation are not run; production_allowed=false.",
           "delivery_scope": "FLAT7X_STAGING_FILE_APPEND_AND_RECEIPT_CANDIDATE_ONLY_NO_PRODUCT_BINDING"
@@ -59687,21 +60250,49 @@
             "crates/jocforge-io/src/lib.rs"
           ],
           "implementation_inventory": [
-            {"path": "crates/jocforge-domain/src/publication/flat7x_elementary_stream_stage.rs", "bytes": 11366, "sha256": "68202b098f123dc835ad8a90c2995a4788ac567456163996d7b9ca22fc63d129"},
-            {"path": "crates/jocforge-domain/src/publication/mod.rs", "bytes": 1202, "sha256": "518ef9aefd965c9ea057c961498685213f551302c2f3b3f4be26be22aeaa6f1b"},
-            {"path": "crates/jocforge-io/src/flat7x_elementary_stream_stage.rs", "bytes": 8442, "sha256": "4fc03f14a413bcd46865956289bc20942936506bce85e8a422cd8e45b4bfd5fd"},
-            {"path": "crates/jocforge-io/src/lib.rs", "bytes": 227, "sha256": "cabade12d2b2a46eec937aa1f556e388d5a6a1a4f8d7ba1d0a393da141b45ec5"}
+            {
+              "path": "crates/jocforge-domain/src/publication/flat7x_elementary_stream_stage.rs",
+              "bytes": 11366,
+              "sha256": "68202b098f123dc835ad8a90c2995a4788ac567456163996d7b9ca22fc63d129"
+            },
+            {
+              "path": "crates/jocforge-domain/src/publication/mod.rs",
+              "bytes": 1258,
+              "sha256": "669fad789ce0e1b099c6d14d196560b18d7bf565ea2873f3f53d51e8723d32ae"
+            },
+            {
+              "path": "crates/jocforge-io/src/flat7x_elementary_stream_stage.rs",
+              "bytes": 8442,
+              "sha256": "4fc03f14a413bcd46865956289bc20942936506bce85e8a422cd8e45b4bfd5fd"
+            },
+            {
+              "path": "crates/jocforge-io/src/lib.rs",
+              "bytes": 227,
+              "sha256": "cabade12d2b2a46eec937aa1f556e388d5a6a1a4f8d7ba1d0a393da141b45ec5"
+            }
           ],
           "test_modules": [
             "crates/jocforge-io/src/flat7x_elementary_stream_stage/tests.rs",
             "crates/jocforge-domain/src/publication/flat7x_au_output.rs"
           ],
           "test_inventory": [
-            {"path": "crates/jocforge-io/src/flat7x_elementary_stream_stage/tests.rs", "bytes": 13561, "sha256": "27fff3695d44bb68225e87669a4e52f13634d77975e39d5d0b8311ff3d6d7bff"},
-            {"path": "crates/jocforge-domain/src/publication/flat7x_au_output.rs", "bytes": 43049, "sha256": "95bd4919eaa5bb74a7cca393dea2a8d0d8b8bd27acdf16797636c5f7fa707048"}
+            {
+              "path": "crates/jocforge-io/src/flat7x_elementary_stream_stage/tests.rs",
+              "bytes": 13561,
+              "sha256": "27fff3695d44bb68225e87669a4e52f13634d77975e39d5d0b8311ff3d6d7bff"
+            },
+            {
+              "path": "crates/jocforge-domain/src/publication/flat7x_au_output.rs",
+              "bytes": 43049,
+              "sha256": "95bd4919eaa5bb74a7cca393dea2a8d0d8b8bd27acdf16797636c5f7fa707048"
+            }
           ],
           "vector_inventory": [
-            {"path": "crates/jocforge-io/tests/fixtures/flat7x_elementary_stream_stage/INPUT-ONLY-VECTORS.json", "bytes": 1289, "sha256": "83486783e6ed5e98cd55869311184c1f08c3e15ab5fe5d3ee390f1f125f5ae27"}
+            {
+              "path": "crates/jocforge-io/tests/fixtures/flat7x_elementary_stream_stage/INPUT-ONLY-VECTORS.json",
+              "bytes": 1289,
+              "sha256": "83486783e6ed5e98cd55869311184c1f08c3e15ab5fe5d3ee390f1f125f5ae27"
+            }
           ],
           "clock": {
             "domains": [],
@@ -61883,11 +62474,11 @@
           "bytes": 30228,
           "sha256": "3e364b01cd60c64fc79c08b12a9013565b1bcf8b6cec6378ed8e9b241bcbb9c6"
         },
-                                                                {
-                                  "path": "crates/jocforge-domain/src/codec/mod.rs",
-                                  "bytes": 1116,
-                                  "sha256": "4d08a8868bbed0a0a587fc6adac78536e8b4a55fc5176ec70d3986bf865b2a22"
-                                },
+        {
+          "path": "crates/jocforge-domain/src/codec/mod.rs",
+          "bytes": 1141,
+          "sha256": "310555b04e94adfb45606a8a7b025fa5550aa18eba8ae712dbae11d972673c34"
+        },
         {
           "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
           "bytes": 63659,
@@ -61962,8 +62553,8 @@
       "implementation_inventory": [
         {
           "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-          "bytes": 98059,
-          "sha256": "bab96a268a9a5d171ff8fc2a603eb260d3b9516b9eba7e4b4a55ebd1025e01c1"
+          "bytes": 98115,
+          "sha256": "07918d3ba58c719e9ba73c2869fc41f014f845b90f60e8f76ede4f3bb90ab691"
         }
       ],
       "test_inventory": [
@@ -62312,13 +62903,13 @@
         },
         {
           "path": "crates/jocforge-domain/src/publication/mod.rs",
-          "bytes": 1202,
-          "sha256": "518ef9aefd965c9ea057c961498685213f551302c2f3b3f4be26be22aeaa6f1b"
+          "bytes": 1258,
+          "sha256": "669fad789ce0e1b099c6d14d196560b18d7bf565ea2873f3f53d51e8723d32ae"
         },
         {
           "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-          "bytes": 98059,
-          "sha256": "bab96a268a9a5d171ff8fc2a603eb260d3b9516b9eba7e4b4a55ebd1025e01c1"
+          "bytes": 98115,
+          "sha256": "07918d3ba58c719e9ba73c2869fc41f014f845b90f60e8f76ede4f3bb90ab691"
         },
         {
           "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
@@ -62332,8 +62923,8 @@
         },
         {
           "path": "crates/jocforge-cli/src/encode_request.rs",
-          "bytes": 61167,
-          "sha256": "7cb4875121c41b2ae7d37b895f73028b417953b3a907ba5ff3fc93373840f201"
+          "bytes": 63800,
+          "sha256": "10b34bca4e5c158cf41854097a9dd795c3ee9cefc8e8abf4a86348634efc2b0c"
         },
         {
           "path": "crates/jocforge-cli/src/lib.rs",

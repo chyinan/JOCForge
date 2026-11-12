@@ -391,7 +391,7 @@ impl ParsedCurrentEmdfContainer {
 ///
 /// It deliberately bypasses `parse_current_emdf_container`; callers must keep
 /// the fixture classified as receipt-mechanics coverage, not parser evidence.
-#[cfg(test)]
+#[cfg(any(test, feature = "test-support"))]
 pub(crate) fn synthetic_receipt_gate_container_for_test(
     bytes: Vec<u8>,
     carrier_block: CarrierBlock,

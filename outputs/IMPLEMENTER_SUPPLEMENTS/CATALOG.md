@@ -2,7 +2,7 @@
 
 > Generated locator only. A catalog row is not evidence. Read the selected package, verify its manifest and payload hashes, then use only its stated scope.
 
-Package directories: 1123. Top-level manifests: 1121.
+Package directories: 1124. Top-level manifests: 1122.
 
 Search by function, parameter, status, or package name:
 
@@ -812,6 +812,7 @@ Rebuild with `rtk proxy python -B scripts/build_supplement_catalog.py`.
 | FLAT7X-ID14-INDEX-OBJECT-HEADER-EDGES-V1 | d2d24da28cc269a95ed06a4c50c6ab6a20be6cb4214502e12ab059e38b5d1dff | NOT_DECLARED | FINDINGS.md, ID14-HEADER-EDGES.json, SOURCE-RECEIPTS.json, verify_package.py | Hash-bound static ID14 header field edges compared against official Flat7x demo structure |
 | FLAT7X-ID14-OBJECT-COUNT-DOWNMIX-AND-COMPLEXITY-FIELDS-V1 | c39d02116ff51e5b653b37df10a5b47c240dbec69b6ad23843f392d4809462dc | manifest: WASHED_PARTIAL_IMPLEMENTATION_VISIBLE | FINDINGS.md, FIELD-MODEL.json, SOURCE-RECEIPTS.json, verify_package.py | No hash-verified summary payload declared. |
 | FLAT7X-MAIN-ARCHITECTURE-REUSE-MATRIX-V1 | 3d54cf6d72c56eb24ac5565712c71ce3f59375ffb5851cab426db31fba157e1a | NOT_DECLARED | FINDINGS.md, REUSE-MATRIX.json, SOURCE-RECEIPTS.json, verify_package.py | Architecture-only role/order and reuse matrix crosswalk from sealed main reference to isolated current seams |
+| FLAT7X-PER-SPAN-FILEWRITER-SINK-AND-STAGING-CONTRACT-V1 | 03b80a61ccef6e83bcdcd6adc552936bdfbda6c9a357c503e6584cd921493c5c | manifest: WASHED_PARTIAL_IMPLEMENTATION_VISIBLE | FINDINGS.md, WRITER-BOUNDARY.json, SOURCE-RECEIPTS.json, verify_package.py | No hash-verified summary payload declared. |
 | FLAT7X-SYNTHETIC-I0-D0-1664-PARSER-V1 | f949141aee93432e4dc27e126ee03e318dc86d8e2dbc9555c1052e9848e5d09f | NOT_DECLARED | FINDINGS.md, SOURCE-RECEIPTS.json, STRUCTURAL-CONTRACT.json, verify_package.py | Synthetic structural parser compatibility receipt for 1664-kbps I0+D0 target-size AU |
 | FRONTEND-CONTROL-AFTER-STATE-V1 | 808f676d304deca762aa474ae10de6628642caa3325d0da2bd95b9fd1335060f | NOT_DECLARED | CONTRACT.md, INPUT-ONLY-CASES.json, SOURCE-IDENTITIES.json | selected profile local model; warm serialization and owner projection local; real execution not run \| Grade: approved F01E/GTC and washed normal-snapshot crosswalk, with explicitly marked local serialization decisions. Selected scope is 48 kHz, 38 PCM24 physical input tracks, ten beds, 28 object tracks, one zero-start programme-covering event per object, fra |
 | FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1 | 513b0c7554d25a97c2a5e448ce0f7c109f75b01c80ec53d16a145db6208d1c23 | NOT_DECLARED | CONTRACT.md, INTERFACE.json, INPUT-ONLY-VECTORS.json, SOURCES.json, WASH-VERIFICATION.json | Selected normal callback only; existing drain contracts unchanged \| This is a minimal binding of current approved F01E.7–.10, its selected constructor and the approved bed/object source-flags adapter. It does not require a native capture or a vendor receipt ABI. It defines how the existing event/control owner is invoked by the F03W parent; it does not add an |

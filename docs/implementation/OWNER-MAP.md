@@ -211,6 +211,7 @@
 | F01E/washed-ddp-output-timecode-frame-rate-partial-boundary | F01E | `UNBOUND` |
 | F01E/approved-atmos71-flat7x-1664-profile-contract | F01E | `UNBOUND` |
 | F01E/flat7x-i0-d0-typed-target-plan | F01E | `UNBOUND` |
+| F01E/flat7x-adm-pcm-source-role-projection | F01E | `application` |
 | F03G/target-slot-install | F03G | `spatial_control` |
 | F03C/candidate-selector | F03C | `spatial_control` |
 | F03C/selector-score-choice | F03C | `spatial_control` |
@@ -553,6 +554,7 @@
 | F12/flat7x-i0-frame-bit-assembler | F12 | `codec` |
 | F12/flat7x-i0-ac3-bsi-tail-writer | F12 | `codec` |
 | F12/flat7x-i0-typed-bsi-frame-assembly-entry | F12 | `codec` |
+| F12/flat7x-i0-ac3-audio-block-producer | F12 | `codec` |
 | F12/flat7x-d0-mixing-metadata-segment | F12 | `codec` |
 | F12/flat7x-d0-information-addbsi-suffix | F12 | `codec` |
 | F12/flat7x-d0-bsi-structure-composition | F12 | `codec` |

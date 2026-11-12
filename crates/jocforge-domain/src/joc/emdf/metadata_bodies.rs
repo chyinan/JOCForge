@@ -122,7 +122,7 @@ impl MetadataBodiesProposal {
         (self.lineage, self.bodies)
     }
 
-    #[cfg(test)]
+    #[cfg(any(test, feature = "test-support"))]
     pub(crate) fn for_test(
         programme_id: SourceFlagsProgrammeId,
         attempt: SourceFlagsAttempt,
@@ -150,7 +150,7 @@ impl MetadataBodiesProposal {
         }
     }
 
-    #[cfg(test)]
+    #[cfg(any(test, feature = "test-support"))]
     pub(crate) fn for_test_with_id14_provenance(
         programme_id: SourceFlagsProgrammeId,
         attempt: SourceFlagsAttempt,

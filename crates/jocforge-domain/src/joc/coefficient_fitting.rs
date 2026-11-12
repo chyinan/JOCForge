@@ -148,7 +148,7 @@ impl FitSourceLineage {
         self.spatial_before_digest
     }
 
-    #[cfg(test)]
+    #[cfg(any(test, feature = "test-support"))]
     pub(crate) fn for_test(
         programme_id: SourceFlagsProgrammeId,
         attempt: SourceFlagsAttempt,

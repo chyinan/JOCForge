@@ -8,6 +8,9 @@ mod timer;
 #[cfg(test)]
 mod tests;
 
+#[cfg(feature = "test-support")]
+pub mod test_support;
+
 use emdf_serializer::{EmdfOutput, serialize as serialize_emdf};
 use payload_queue::{PayloadQueue, QueueOperation, QueuedBody};
 use serde_json::{Value, json};

@@ -67,7 +67,7 @@ impl Id1MeasurementConfiguration {
         })
     }
 
-    #[cfg(test)]
+    #[cfg(any(test, feature = "test-support"))]
     pub(crate) fn from_measurement_for_test(
         receipt: &ProgrammeMeasurementReceipt,
     ) -> Result<Self, Id1ConfigurationError> {

@@ -1,0 +1,29 @@
+{
+  "schema": "wash-source-receipts.v1",
+  "sources": [
+    {
+      "kind": "WASH_REVIEWED_STATIC_FILEWRITER_PATH",
+      "package_id": "dee_71_i0_d0_writer_holder_to_fwrite_boundary_wash_v1",
+      "manifest_sha256": "4393506e11b8424b81d907ee9dea82c558c66ab4eec9fe8e9d6f5629da9f1376",
+      "package_seal_sha256": "ea667603e1684f2514359f2e1cd8fd06c89d9ecd525b9bcf10f2c5c1cf296f78",
+      "wash_checkers": {"normal": "PASS", "python_O": "PASS"},
+      "used_for": ["selected span start/end", "writer ordinal", "fwrite per-span sink", "short-write status boundary"]
+    },
+    {
+      "kind": "WASH_APPROVED_AU_TARGET",
+      "package_id": "JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1",
+      "manifest_sha256": "0cd5b5e6a1a37961225bfd71bcbf68619baea76c48800449078919acd3499f43",
+      "seal_sha256": "584fdd652ce61102f182f34a133fd083e325cfcde2e9674e5cdaf2c36a576e1a",
+      "used_for": ["I0 then D0 AU target order"]
+    },
+    {
+      "kind": "WASH_APPROVED_PAIR_STAGING_CONTRACT",
+      "package_id": "FLAT7X-F15-STAGING-TRANSACTION-CONTRACT-V1",
+      "manifest_sha256": "18de94b6b18a13222df8e9eae018f77c49fa735007869b99255b97a1cb5ae0d1",
+      "seal_sha256": "8879c0417bf60db4d8dc9dec1fbbeccd884978af6460f304cfb8034052e4d3ee",
+      "used_for": ["pair-owned staging and complete-pair exposure rule"]
+    }
+  ],
+  "raw_research_artifacts_included": false,
+  "media_pcm_payload_key_license_read": false
+}

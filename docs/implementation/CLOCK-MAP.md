@@ -211,6 +211,7 @@
 | F01E/washed-ddp-output-timecode-frame-rate-partial-boundary | — | `The supplement binds schema and candidate property paths only; no runtime rate conversion or frame clock is selected.` |
 | F01E/approved-atmos71-flat7x-1664-profile-contract | — | `The contract row lists 48 kHz and six-block/1,536-sample dimensions but does not establish runtime clock behavior.`<br>`No runtime callback clock, D0 source-role projection, or output observation is established.` |
 | F01E/flat7x-i0-d0-typed-target-plan | `Flat7xSourceGeneration` | `The target contract requires I0, D0 and D0 EMDF metadata to share a source generation; local validation compares supplied generation labels only and creates no runtime owner receipt.` |
+| F01E/flat7x-adm-pcm-source-role-projection | `ProgrammeId`<br>`AttemptId`<br>`FrontendCallbackIndex`<br>`CodecSourceIndex`<br>`CallbackTransactionId`<br>`SharedAnalysisIdentity` | `One projection is bound to the exact prepared input, attempt, callback, source transaction, and shared-analysis identity.`<br>`Physical PCM row, I0 coded role, D0 chanmap location, and JOC reconstruction carrier remain distinct domains.` |
 | F03G/target-slot-install | — | `Pure per-callback value transition; no clock or committed state is owned.` |
 | F03C/candidate-selector | — | `Each selector call initializes cold scratch; no callback/source/AU counter or cross-call selector state is owned.` |
 | F03C/selector-score-choice | — | `No state or clock is owned.` |
@@ -553,6 +554,7 @@
 | F12/flat7x-i0-frame-bit-assembler | — | `The caller writer starts at bit zero and advances exactly 20480 frame bits after full staging; no media/source clock is introduced.` |
 | F12/flat7x-i0-ac3-bsi-tail-writer | `FrameBitCursor` | `The caller cursor must equal the approved header end at bit 62 or 70.`<br>`The receipt spans the exact BSI-tail start through end; no media/source clock is minted.` |
 | F12/flat7x-i0-typed-bsi-frame-assembly-entry | `FrameBitCursor` | `The BSI writer begins at the exact 62/70-bit header end cursor.`<br>`Six caller audio spans follow the BSI receipt in index order; the frame writer commits exactly 20480 bits from cursor zero.` |
+| F12/flat7x-i0-ac3-audio-block-producer | — | `The standalone block prototype carries no codec-source or callback clock index.` |
 | F12/flat7x-d0-mixing-metadata-segment | — | `The helper appends one bounded BSI metadata segment at parent cursor 68 or 76.` |
 | F12/flat7x-d0-information-addbsi-suffix | — | `The suffix begins at the parent helper's returned frame-bit cursor and returns its ending cursor.` |
 | F12/flat7x-d0-bsi-structure-composition | — | `The composed BSI starts at frame bit zero and returns the cursor after opaque addbsi or addbsie=0.` |

@@ -1,0 +1,38 @@
+{
+  "schema": "wash-package-seal.v1",
+  "package_id": "FLAT7X-PER-SPAN-FILEWRITER-SINK-AND-STAGING-CONTRACT-V1",
+  "seal_excludes_itself": true,
+  "manifest_sha256": "03b80a61ccef6e83bcdcd6adc552936bdfbda6c9a357c503e6584cd921493c5c",
+  "files": [
+    {
+      "path": "FINDINGS.md",
+      "size_bytes": 1497,
+      "sha256": "531057a68593055831acd89ddd42cffeb4b8d66bbad11571b3307ea72c29ad50"
+    },
+    {
+      "path": "WRITER-BOUNDARY.json",
+      "size_bytes": 1131,
+      "sha256": "88c775cefc744d5ead31d8b87f9083ade07c6961717e67520e0c9d15f6913be8"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "size_bytes": 1405,
+      "sha256": "13ce15b77117d406ccd467a74facce7b646250f50b6dff8fe03b34bd62e26fff"
+    },
+    {
+      "path": "verify_package.py",
+      "size_bytes": 2784,
+      "sha256": "70d95ffa83c83dc83eb98737a2c07b8ee25593524e2dc9211703773cc2d04636"
+    },
+    {
+      "path": "MANIFEST.json",
+      "size_bytes": 943,
+      "sha256": "03b80a61ccef6e83bcdcd6adc552936bdfbda6c9a357c503e6584cd921493c5c"
+    },
+    {
+      "path": "MANIFEST.sha256",
+      "size_bytes": 64,
+      "sha256": "9b285f4690318571e103ada6d96194b9df42ad40ba581e4e903abe74e1f450f8"
+    }
+  ]
+}

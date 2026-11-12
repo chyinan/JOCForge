@@ -3,7 +3,10 @@
 
 mod flat7x_au_output;
 mod flat7x_elementary_stream_stage;
+
 mod output_owner;
+#[cfg(feature = "test-support")]
+pub mod test_support;
 
 #[cfg(test)]
 mod tests;

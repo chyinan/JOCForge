@@ -183,18 +183,9 @@ fn write_and_readback_staging(
         return Err(Flat7xAuAppendIoError::D0FrameCrc);
     }
 
-    let mut remaining = bytes;
     let mut write_calls = Vec::new();
-    while !remaining.is_empty() {
-        let written = file.write(remaining)?;
-        if written == 0 {
-            return Err(Flat7xAuAppendIoError::WriteZero);
-        }
-        write_calls.push(u64::try_from(written).map_err(|_| {
-            Flat7xAuAppendIoError::Io(io::Error::other("write count conversion failed"))
-        })?);
-        remaining = &remaining[written..];
-    }
+    write_span(file, i0_bytes, &mut write_calls)?;
+    write_span(file, d0_bytes, &mut write_calls)?;
     file.flush()?;
     file.sync_all()?;
 
@@ -224,6 +215,25 @@ fn write_and_readback_staging(
         i0_crc_residual,
         d0_crc_residual,
     })
+}
+
+fn write_span(
+    file: &mut File,
+    span: &[u8],
+    write_calls: &mut Vec<u64>,
+) -> Result<(), Flat7xAuAppendIoError> {
+    let mut remaining = span;
+    while !remaining.is_empty() {
+        let written = file.write(remaining)?;
+        if written == 0 {
+            return Err(Flat7xAuAppendIoError::WriteZero);
+        }
+        write_calls.push(u64::try_from(written).map_err(|_| {
+            Flat7xAuAppendIoError::Io(io::Error::other("write count conversion failed"))
+        })?);
+        remaining = &remaining[written..];
+    }
+    Ok(())
 }
 
 #[cfg(test)]

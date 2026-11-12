@@ -1,4 +1,6 @@
 use super::*;
+use jocforge_domain::joc::emdf::metadata_owner::test_support::Flat7xReceiptGateMetadataTestInputs;
+use jocforge_domain::publication::test_support::Flat7xAuAppendTestFixture;
 use jocforge_domain::publication::{
     OutputOwner, OutputProvider, OutputSourceIdentity, OutputSourceProposal,
 };
@@ -17,10 +19,35 @@ use std::process::Command;
 const SYNTHETIC_PROVIDER: &[u8] = include_bytes!(
     "../../../jocforge-domain/tests/fixtures/output_owner/synthetic-output-provider.json"
 );
+const FLAT7X_RECEIPT_PAIR_VECTORS: &[u8] = include_bytes!(
+    "../../../../outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/INPUT-ONLY-VECTORS.json"
+);
+const METADATA_OWNER_VECTORS: &[u8] = include_bytes!(
+    "../../../../crates/jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json"
+);
+const METADATA_PUBLIC_PROVIDER: &[u8] = include_bytes!(
+    "../../../../crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json"
+);
+const METADATA_WRAPPER_CONFIG: &[u8] = include_bytes!(
+    "../../../../crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-wrapper-config.json"
+);
+const KEYLESS_INTEGRITY_PROVIDER: &[u8] = include_bytes!(
+    "../../../../crates/jocforge-domain/tests/fixtures/integrity_owner/integrity-public-provider.json"
+);
 const FRAME_BYTES: usize = 4_096;
 const FRAME_BYTES_U32: u32 = FRAME_BYTES as u32;
 
 struct ScratchDirectory(PathBuf);
+
+fn flat7x_test_fixture() -> Flat7xAuAppendTestFixture {
+    Flat7xAuAppendTestFixture::positive_pair(Flat7xReceiptGateMetadataTestInputs {
+        f15_pair_vectors: FLAT7X_RECEIPT_PAIR_VECTORS,
+        metadata_owner_vectors: METADATA_OWNER_VECTORS,
+        metadata_public_provider: METADATA_PUBLIC_PROVIDER,
+        metadata_wrapper_config: METADATA_WRAPPER_CONFIG,
+        keyless_integrity_provider: KEYLESS_INTEGRITY_PROVIDER,
+    })
+}
 
 impl ScratchDirectory {
     fn new() -> io::Result<Self> {
@@ -118,6 +145,10 @@ fn output_owner_for_rate(frame_bytes: usize, attempt_id: &str, source_samples: u
         )
         .unwrap(),
     )
+}
+
+fn flat7x_output_owner(attempt_id: &str) -> OutputOwner {
+    output_owner_for_rate(FRAME_BYTES, attempt_id, 1_536)
 }
 
 fn advance_suppressed_sources(owner: OutputOwner) -> OutputOwner {
@@ -233,6 +264,115 @@ fn selected_append_returns_durable_receipt_only_after_readback_and_fsync() {
         u64::from(FRAME_BYTES_U32)
     );
     assert!(!staging.is_abandoned());
+}
+
+#[test]
+fn flat7x_pair_append_writes_and_reads_back_one_complete_6656_byte_au() {
+    let scratch = ScratchDirectory::new().unwrap();
+    let fixture = flat7x_test_fixture();
+    let output = flat7x_output_owner(fixture.attempt_id());
+    let mut staging = AtomicOutputStaging::create(scratch.path(), output.configuration()).unwrap();
+    let proposal = fixture.append_proposal(fixture.attempt_id()).unwrap();
+
+    let after = staging.append_flat7x_au(proposal).unwrap();
+
+    assert_eq!(after.receipt().bytes_written(), 6_656);
+    assert_eq!(after.receipt().offset(), 0);
+    assert_eq!(after.receipt().frame_crc_residuals(), (0, 0));
+    assert!(after.receipt().file_fsync());
+    assert!(after.receipt().durable());
+    assert_eq!(
+        fs::read(staging.staging_path()).unwrap(),
+        fixture.expected_bytes()
+    );
+    assert!(!staging.is_abandoned());
+}
+
+#[test]
+fn flat7x_pair_attempt_mismatch_retires_pair_and_abandons_atomic_session() {
+    let scratch = ScratchDirectory::new().unwrap();
+    let fixture = flat7x_test_fixture();
+    let output = flat7x_output_owner("atomic-good-attempt");
+    let mut staging = AtomicOutputStaging::create(scratch.path(), output.configuration()).unwrap();
+
+    let failure = staging
+        .append_flat7x_au(
+            fixture
+                .append_proposal("pair-wrong-attempt")
+                .expect("synthetic F15 pair proposal"),
+        )
+        .err()
+        .unwrap_or_else(|| panic!("wrong attempt must be rejected"));
+    assert!(matches!(
+        failure,
+        Flat7xAtomicAppendFailure::AttemptMismatch(_)
+    ));
+    assert!(staging.is_abandoned());
+    assert_eq!(fs::metadata(staging.staging_path()).unwrap().len(), 0);
+
+    let second = fixture
+        .append_proposal("atomic-good-attempt")
+        .expect("synthetic F15 pair proposal");
+    let failure = staging
+        .append_flat7x_au(second)
+        .err()
+        .unwrap_or_else(|| panic!("abandoned session must reject another pair"));
+    assert!(matches!(
+        failure,
+        Flat7xAtomicAppendFailure::SessionAbandoned(_)
+    ));
+    assert!(staging.is_abandoned());
+}
+
+#[test]
+fn flat7x_pair_wrong_staging_offset_retires_and_rejects_following_append() {
+    let scratch = ScratchDirectory::new().unwrap();
+    let fixture = flat7x_test_fixture();
+    let attempt_id = fixture.attempt_id();
+    let mut output = flat7x_output_owner(attempt_id);
+    let mut staging = AtomicOutputStaging::create(scratch.path(), output.configuration()).unwrap();
+
+    let frame = [0_u8; FRAME_BYTES];
+    let frame_hash = frame_sha256(&frame);
+    output = advance_suppressed_sources_for_frame(output, &frame);
+    let proposal = output
+        .prepare_source(
+            OutputSourceIdentity::new(
+                CodecSourceIndex::new(2),
+                JocDispatchIndex::new(3),
+                Some(PublishedAuIndex::new(0)),
+            ),
+            &frame,
+            &frame_hash,
+        )
+        .unwrap();
+    let OutputSourceProposal::Append(proposal) = proposal else {
+        panic!("source two must append the ordinary test frame")
+    };
+    let receipt = staging.append(&proposal).unwrap();
+    output = proposal.complete(receipt).unwrap().into_after_owner();
+    assert_eq!(output.state_json()["durable_length"], FRAME_BYTES_U32);
+
+    let failure = staging
+        .append_flat7x_au(fixture.append_proposal(attempt_id).unwrap())
+        .err()
+        .unwrap_or_else(|| panic!("wrong staging offset must retire the pair"));
+    assert!(matches!(failure, Flat7xAtomicAppendFailure::Append(_)));
+    assert!(staging.is_abandoned());
+    assert_eq!(
+        fs::metadata(staging.staging_path()).unwrap().len(),
+        FRAME_BYTES as u64
+    );
+
+    let second = fixture.append_proposal(attempt_id).unwrap();
+    let failure = staging
+        .append_flat7x_au(second)
+        .err()
+        .unwrap_or_else(|| panic!("abandoned session must reject another pair"));
+    assert!(matches!(
+        failure,
+        Flat7xAtomicAppendFailure::SessionAbandoned(_)
+    ));
 }
 
 #[test]

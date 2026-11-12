@@ -6,7 +6,7 @@ license.workspace = true
 rust-version.workspace = true
 
 [features]
-test-support = []
+test-support = ["jocforge-domain/test-support"]
 
 [dependencies]
 jocforge-domain = { path = "../jocforge-domain" }

@@ -14,7 +14,7 @@ serde_json = { version = "=1.0.154", default-features = false, features = ["std"
 windows-sys = { version = "=0.61.2", default-features = false, features = ["Win32_Foundation", "Win32_Security", "Win32_Storage_FileSystem"] }
 
 [dev-dependencies]
-jocforge-application = { path = "../jocforge-application" }
+jocforge-domain = { path = "../jocforge-domain", features = ["test-support"] }
 
 [lints]
 workspace = true

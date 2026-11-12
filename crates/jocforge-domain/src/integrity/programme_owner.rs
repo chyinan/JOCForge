@@ -564,7 +564,7 @@ impl IntegrityF12SourceReceipts {
 ///
 /// This fixture bypasses the Integrity owner stage; it does not establish F12
 /// producer integration or source-generation ownership.
-#[cfg(test)]
+#[cfg(any(test, feature = "test-support"))]
 pub(crate) fn synthetic_f12_receipts_for_flat7x_test(
     identity: IntegrityIdentity,
     generations: (u64, u64),
