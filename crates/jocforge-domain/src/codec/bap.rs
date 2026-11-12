@@ -230,8 +230,19 @@ pub fn allocate_bap_row(
     provider_file: Option<&[u8]>,
     input: &BapRowInput<'_>,
 ) -> Result<Vec<u8>, BapError> {
-    validate_sample_and_profile(input.profile)?;
     let parameters = load_bap_parameters(provider_file)?;
+    allocate_bap_row_with_parameters(&parameters, input)
+}
+
+/// Allocates one selected F12A row using an already validated immutable provider capability.
+///
+/// The input and provider are checked before the row is computed. This is useful when a caller
+/// owns one source-scoped plan and needs several rows without reparsing the same provider bytes.
+pub fn allocate_bap_row_with_parameters(
+    parameters: &BapParameters,
+    input: &BapRowInput<'_>,
+) -> Result<Vec<u8>, BapError> {
+    validate_sample_and_profile(input.profile)?;
     validate_row_extent(input.end_exclusive)?;
     validate_exponent_row(input.decoded_exponents, input.end_exclusive)?;
     validate_candidate_codes(
@@ -244,7 +255,7 @@ pub fn allocate_bap_row(
         input.fast_gain_code,
     )?;
     validate_caller_context(input.candidate, input.caller_all_active_fine_zero)?;
-    compute_bap_row(input, &parameters)
+    compute_bap_row(input, parameters)
 }
 
 /// Allocates BAP for one selected q over six blocks in internal

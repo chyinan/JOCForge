@@ -116,13 +116,14 @@ impl From<FrameBitWriterError> for I0Ac3AudioBlockPrefixError {
     }
 }
 
-/// Writes the AC-3 first-audblk prefix from explicitly supplied model values.
+/// Writes the AC-3 `audblk` control prefix from explicitly supplied model values.
 ///
 /// ETSI TS 102 366 v1.4.1 clause 4.3.3 orders five blksw bits, five dithflag bits,
-/// dynrnge and optional dynrng before cplstre. Clause 4.4.3.7 requires cplstre=1
-/// in block 0. This serializer stops after that bit, before caller-owned cplinu.
+/// dynrnge and optional dynrng before cplstre in each audio block. Clause 4.4.3.7
+/// requires cplstre=1 in block 0. This serializer stops after cplstre, before caller-owned
+/// cplinu; an independent-channel caller follows with `cplinu=0` for each block.
 /// It writes no exponents, bit allocation, mantissas, or source bytes.
-pub fn write_i0_ac3_first_audio_block_prefix(
+pub fn write_i0_ac3_audio_block_prefix(
     writer: &mut FrameBitWriter<'_>,
     input: I0Ac3AudioBlockPrefixInput,
 ) -> Result<I0Ac3AudioBlockPrefixReceipt, I0Ac3AudioBlockPrefixError> {
@@ -186,6 +187,17 @@ pub fn write_i0_ac3_first_audio_block_prefix(
         },
         next_field_cursor: writer.cursor(),
     })
+}
+
+/// Compatibility name for the first-block call site.
+///
+/// The wire fields are shared by all six AC-3 audio blocks; block-zero-specific validation and
+/// policy remain with the caller.
+pub fn write_i0_ac3_first_audio_block_prefix(
+    writer: &mut FrameBitWriter<'_>,
+    input: I0Ac3AudioBlockPrefixInput,
+) -> Result<I0Ac3AudioBlockPrefixReceipt, I0Ac3AudioBlockPrefixError> {
+    write_i0_ac3_audio_block_prefix(writer, input)
 }
 
 /// Caller-owned value for the one-bit AC-3 cplinu field.

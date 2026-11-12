@@ -5,16 +5,25 @@
 //! full-band row. I0 frame assembly, six-block state, and publication remain separate.
 
 use super::{
-    bap::{BapError, BapProfileInput, BapRowInput, allocate_bap_row},
+    bap::{
+        BapError, BapProfileInput, BapRowInput, allocate_bap_row, allocate_bap_row_with_parameters,
+    },
     bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError},
     exponent_packing::{ExponentPackingError, pack_exponent_difference_group},
     i0_frame_assembler::{
         CallerOwnedAc3Cplinu, I0Ac3AudioBlockPrefixError, I0Ac3AudioBlockPrefixInput,
-        I0Ac3CplinuWriteError, OpaqueI0Ac3BitSpan, write_i0_ac3_first_audio_block_prefix,
-        write_i0_ac3_first_block_cplinu,
+        I0Ac3CplinuWriteError, OpaqueI0Ac3BitSpan, write_i0_ac3_audio_block_prefix,
+        write_i0_ac3_first_audio_block_prefix, write_i0_ac3_first_block_cplinu,
     },
 };
-use crate::transform::math_generated_parameters::MathGeneratedTransformParameters;
+use crate::{
+    analysis::source_frame::SharedAnalysisIdentity,
+    codec::selected_frame_trial::{BlockExponentPlan, SelectedSourceNumericPlan},
+    transform::{
+        fullband_exponent_pipeline::NumericPlanReceipt,
+        math_generated_parameters::MathGeneratedTransformParameters,
+    },
+};
 
 const PCM_SAMPLES_PER_BLOCK: usize = 256;
 const PCM_WINDOW_SAMPLES: usize = PCM_SAMPLES_PER_BLOCK * 2;
@@ -24,6 +33,7 @@ const LFE_ENDMANT: usize = 7;
 const AC3_SAMPLE_RATE_HZ: u32 = 48_000;
 const AC3_FULLBAND_CHBW_CODE: u8 = 48;
 const AC3_BLOCK_BUDGET_BYTES: usize = 2_560;
+const I0_AUDIO_BLOCK_COUNT: usize = 6;
 
 /// One AC-3 transform window: prior overlap samples followed by this block's 256 new samples.
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -153,6 +163,288 @@ impl Ac3AudioBlockCandidate {
 
     pub const fn production_allowed(&self) -> bool {
         false
+    }
+}
+
+/// The zero-based position of one AC-3 I0 audio block in its syncframe.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct I0AudioBlockIndex(u8);
+
+impl I0AudioBlockIndex {
+    pub const fn new(value: u8) -> Option<Self> {
+        if value < I0_AUDIO_BLOCK_COUNT as u8 {
+            Some(Self(value))
+        } else {
+            None
+        }
+    }
+
+    pub const fn value(self) -> u8 {
+        self.0
+    }
+}
+
+/// One caller-selected ten-bit SNR/BAP candidate, split into AC-3 coarse and fine fields.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct I0BapCandidateQ {
+    value: u16,
+    coarse: u8,
+    fine: u8,
+}
+
+impl I0BapCandidateQ {
+    pub fn new(value: u16) -> Option<Self> {
+        if value > 1_023 {
+            return None;
+        }
+        let coarse = u8::try_from(value >> 4).ok()?;
+        let fine = u8::try_from(value & 0x0f).ok()?;
+        Some(Self {
+            value,
+            coarse,
+            fine,
+        })
+    }
+
+    pub const fn value(self) -> u16 {
+        self.value
+    }
+
+    const fn coarse(self) -> u8 {
+        self.coarse
+    }
+
+    const fn fine(self) -> u8 {
+        self.fine
+    }
+}
+
+/// Caller-owned aggregate bit budget for the six I0 audio-block spans.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct I0AudioBlockSeriesBudget {
+    available_bits: u32,
+}
+
+impl I0AudioBlockSeriesBudget {
+    pub const fn new(available_bits: u32) -> Self {
+        Self { available_bits }
+    }
+
+    pub const fn available_bits(self) -> u32 {
+        self.available_bits
+    }
+}
+
+/// Caller-owned AC-3 block controls and BAP policy for one source block.
+///
+/// The `candidate_q` value is used for every channel row in this block. Its high six bits are
+/// serialized as `csnroffst`; its low four bits become each channel's fine SNR offset.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct I0AudioBlockControlPolicy {
+    pub candidate_q: I0BapCandidateQ,
+    pub slow_decay_code: u8,
+    pub fast_decay_code: u8,
+    pub slow_gain_code: u8,
+    pub floor_code: u8,
+    pub fast_gain_codes: [u8; FULLBAND_CHANNEL_COUNT + 1],
+    pub caller_all_active_fine_zero: bool,
+    pub dither_flags: [bool; FULLBAND_CHANNEL_COUNT],
+    pub dynamic_range_code: Option<u8>,
+}
+
+/// Six explicit, ordered block policies supplied by the source-stage caller.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct I0AudioBlockSeriesPolicy {
+    pub blocks: [I0AudioBlockControlPolicy; I0_AUDIO_BLOCK_COUNT],
+    pub cplinu: CallerOwnedAc3Cplinu,
+    pub delta_bit_allocation: Ac3DeltaBitAllocationInput,
+    pub quantizer_policy: Ac3MantissaQuantizerPolicy,
+}
+
+/// Auditable assumptions used by this candidate-only projection from the selected F12 plan.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum I0AudioBlockAssumptionId {
+    SelectedF12SpectrumAsI0Ac3SourceV1,
+    SelectedF09F10ExponentStrategyAsAc3ExpstrV1,
+}
+
+impl I0AudioBlockAssumptionId {
+    pub const fn id(self) -> &'static str {
+        match self {
+            Self::SelectedF12SpectrumAsI0Ac3SourceV1 => {
+                "PROVISIONAL_I0_SELECTED_F12_51_SPECTRUM_V1"
+            }
+            Self::SelectedF09F10ExponentStrategyAsAc3ExpstrV1 => {
+                "PROVISIONAL_I0_F09_F10_EXPSTR_TO_AC3_V1"
+            }
+        }
+    }
+}
+
+/// Caller-selected allocation controls and the validated provider used for all six blocks.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct I0BapPolicyReceipt {
+    block_controls: [I0AudioBlockControlPolicy; I0_AUDIO_BLOCK_COUNT],
+    db_per_bit_codes: [u8; I0_AUDIO_BLOCK_COUNT],
+    bap_provider_sha256: [u8; 32],
+}
+
+impl I0BapPolicyReceipt {
+    pub const fn block_controls(&self) -> &[I0AudioBlockControlPolicy; I0_AUDIO_BLOCK_COUNT] {
+        &self.block_controls
+    }
+
+    pub const fn db_per_bit_codes(&self) -> &[u8; I0_AUDIO_BLOCK_COUNT] {
+        &self.db_per_bit_codes
+    }
+
+    pub const fn bap_provider_sha256(&self) -> &[u8; 32] {
+        &self.bap_provider_sha256
+    }
+}
+
+/// Receipt for one source-bound, six-block I0 audio proposal.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct I0AudioBlockSeriesReceipt {
+    source_identity: SharedAnalysisIdentity,
+    block_order: [I0AudioBlockIndex; I0_AUDIO_BLOCK_COUNT],
+    block_bit_lengths: [u32; I0_AUDIO_BLOCK_COUNT],
+    bap_policy: I0BapPolicyReceipt,
+    cplinu: CallerOwnedAc3Cplinu,
+    delta_bit_allocation: Ac3DeltaBitAllocationInput,
+    quantizer_policy: Ac3MantissaQuantizerPolicy,
+    assumptions: [I0AudioBlockAssumptionId; 2],
+}
+
+impl I0AudioBlockSeriesReceipt {
+    pub const fn source_identity(&self) -> &SharedAnalysisIdentity {
+        &self.source_identity
+    }
+
+    pub const fn block_order(&self) -> &[I0AudioBlockIndex; I0_AUDIO_BLOCK_COUNT] {
+        &self.block_order
+    }
+
+    pub const fn block_bit_lengths(&self) -> &[u32; I0_AUDIO_BLOCK_COUNT] {
+        &self.block_bit_lengths
+    }
+
+    pub const fn bap_policy(&self) -> &I0BapPolicyReceipt {
+        &self.bap_policy
+    }
+
+    pub const fn cplinu(&self) -> CallerOwnedAc3Cplinu {
+        self.cplinu
+    }
+
+    pub const fn delta_bit_allocation(&self) -> Ac3DeltaBitAllocationInput {
+        self.delta_bit_allocation
+    }
+
+    pub const fn quantizer_policy(&self) -> Ac3MantissaQuantizerPolicy {
+        self.quantizer_policy
+    }
+
+    pub const fn assumptions(&self) -> &[I0AudioBlockAssumptionId; 2] {
+        &self.assumptions
+    }
+}
+
+/// Noncommitting six-audblk candidate in AC-3 I0 block order.
+#[must_use]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct I0AudioBlockSeriesCandidate {
+    blocks: [Ac3AudioBlockCandidate; I0_AUDIO_BLOCK_COUNT],
+    receipt: I0AudioBlockSeriesReceipt,
+}
+
+impl I0AudioBlockSeriesCandidate {
+    pub const fn receipt(&self) -> &I0AudioBlockSeriesReceipt {
+        &self.receipt
+    }
+
+    pub fn block(&self, index: I0AudioBlockIndex) -> &Ac3AudioBlockCandidate {
+        &self.blocks[usize::from(index.value())]
+    }
+
+    pub fn blocks(&self) -> &[Ac3AudioBlockCandidate; I0_AUDIO_BLOCK_COUNT] {
+        &self.blocks
+    }
+
+    pub fn i0_bit_spans(&self) -> [OpaqueI0Ac3BitSpan<'_>; I0_AUDIO_BLOCK_COUNT] {
+        std::array::from_fn(|index| self.blocks[index].as_i0_bit_span())
+    }
+
+    pub const fn production_allowed(&self) -> bool {
+        false
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum I0AudioBlockSeriesError {
+    BapProviderIdentityMismatch,
+    ShortTransformUnsupported {
+        block: u8,
+        channel: u8,
+    },
+    FullbandExponentStrategyUnsupported {
+        block: u8,
+        channel: u8,
+        value: u8,
+    },
+    FullbandExponentReuseMismatch {
+        block: u8,
+        channel: u8,
+    },
+    BlockZeroFullbandExponentReuse {
+        channel: u8,
+    },
+    LfeExponentStrategyUnsupported {
+        block: u8,
+        value: u8,
+    },
+    LfeExponentReuseMismatch {
+        block: u8,
+    },
+    BlockZeroLfeExponentReuse,
+    ChannelBandwidthUnsupported {
+        block: u8,
+        channel: u8,
+        value: u8,
+    },
+    GainRangeUnsupported {
+        block: u8,
+        channel: u8,
+        value: u8,
+    },
+    Bap(BapError),
+    Block(Ac3AudioBlockError),
+    BitWriter(FrameBitWriterError),
+    BudgetExceedsI0Frame {
+        available_bits: u32,
+    },
+    AudioBlockBudgetExceeded {
+        required_bits: u32,
+        available_bits: u32,
+    },
+    BitCountOverflow,
+}
+
+impl From<BapError> for I0AudioBlockSeriesError {
+    fn from(error: BapError) -> Self {
+        Self::Bap(error)
+    }
+}
+
+impl From<Ac3AudioBlockError> for I0AudioBlockSeriesError {
+    fn from(error: Ac3AudioBlockError) -> Self {
+        Self::Block(error)
+    }
+}
+
+impl From<FrameBitWriterError> for I0AudioBlockSeriesError {
+    fn from(error: FrameBitWriterError) -> Self {
+        Self::BitWriter(error)
     }
 }
 
@@ -410,6 +702,432 @@ pub fn produce_ac3_audio_block(
         bytes,
         bit_length: actual_bit_length,
     })
+}
+
+/// Produces six candidate I0 `audblk` spans from one source-bound selected numeric plan.
+///
+/// The selected F12 5.1 coefficient/exponent rows are reused as the I0 spectrum under the
+/// explicit `SelectedF12SpectrumAsI0Ac3SourceV1` assumption. F09/F10 block strategy values are
+/// interpreted as AC-3 `chexpstr`/`lfeexpstr` values under the separate
+/// `SelectedF09F10ExponentStrategyAsAc3ExpstrV1` assumption. The caller supplies every block's
+/// allocation candidate and control policy. This function does not read or slice an E-AC-3 frame,
+/// assemble the I0 syncframe, or install state.
+pub fn produce_i0_audio_block_series(
+    numeric_plan: &NumericPlanReceipt<'_, SelectedSourceNumericPlan>,
+    policy: I0AudioBlockSeriesPolicy,
+    budget: I0AudioBlockSeriesBudget,
+) -> Result<I0AudioBlockSeriesCandidate, I0AudioBlockSeriesError> {
+    let plan = numeric_plan.plan();
+    if plan.bap_provider_sha256 != plan.bap_parameters.provider_sha256() {
+        return Err(I0AudioBlockSeriesError::BapProviderIdentityMismatch);
+    }
+    if budget.available_bits() > (AC3_BLOCK_BUDGET_BYTES as u32) * 8 {
+        return Err(I0AudioBlockSeriesError::BudgetExceedsI0Frame {
+            available_bits: budget.available_bits(),
+        });
+    }
+    if policy.cplinu != CallerOwnedAc3Cplinu::Independent {
+        return Err(I0AudioBlockSeriesError::Block(
+            Ac3AudioBlockError::UnsupportedCoupling,
+        ));
+    }
+    if policy.delta_bit_allocation != Ac3DeltaBitAllocationInput::Absent {
+        return Err(I0AudioBlockSeriesError::Block(
+            Ac3AudioBlockError::UnsupportedDeltaBitAllocation,
+        ));
+    }
+
+    let mut blocks = Vec::with_capacity(I0_AUDIO_BLOCK_COUNT);
+    let mut block_bit_lengths = [0_u32; I0_AUDIO_BLOCK_COUNT];
+    let mut previous_fullband_exponents: Option<[[u8; FULLBAND_ENDMANT]; FULLBAND_CHANNEL_COUNT]> =
+        None;
+    let mut previous_bandwidth_codes: Option<[u8; FULLBAND_CHANNEL_COUNT]> = None;
+    let mut previous_gain_ranges: Option<[u8; FULLBAND_CHANNEL_COUNT]> = None;
+    let mut previous_lfe_exponents: Option<[u8; LFE_ENDMANT]> = None;
+    let mut total_audio_bits = 0_u32;
+
+    for (block_index, block_bit_length) in block_bit_lengths.iter_mut().enumerate() {
+        let block_number =
+            u8::try_from(block_index).map_err(|_| I0AudioBlockSeriesError::BitCountOverflow)?;
+        let exponent_plan = &plan.exponent_plan_by_block[block_index];
+        let source_coefficients = &plan.coefficients_by_block[block_index];
+        let block_policy = policy.blocks[block_index];
+
+        if let Some((channel, _)) = plan.short_flags[block_index]
+            .iter()
+            .enumerate()
+            .find(|(_, short)| **short)
+        {
+            return Err(I0AudioBlockSeriesError::ShortTransformUnsupported {
+                block: block_number,
+                channel: u8::try_from(channel)
+                    .map_err(|_| I0AudioBlockSeriesError::BitCountOverflow)?,
+            });
+        }
+
+        let mut encoded_fullband: [Option<EncodedExponentRow>; FULLBAND_CHANNEL_COUNT] =
+            [None; FULLBAND_CHANNEL_COUNT];
+        let mut quantizer_exponent_plans = [Ac3FullbandExponentPlan {
+            strategy: Ac3ExponentStrategy::D15,
+            decoded_exponents: [0; FULLBAND_ENDMANT],
+        }; FULLBAND_CHANNEL_COUNT];
+        let mut current_fullband_exponents = [[0_u8; FULLBAND_ENDMANT]; FULLBAND_CHANNEL_COUNT];
+        let mut current_bandwidth_codes = [0_u8; FULLBAND_CHANNEL_COUNT];
+        let mut current_gain_ranges = [0_u8; FULLBAND_CHANNEL_COUNT];
+
+        for channel in 0..FULLBAND_CHANNEL_COUNT {
+            let lane = &exponent_plan.fullband[channel];
+            current_fullband_exponents[channel] = lane.decoded_exponents;
+            current_bandwidth_codes[channel] = lane.bandwidth_code;
+            current_gain_ranges[channel] = lane.gain_range;
+            let quantizer_strategy = match lane.strategy {
+                0 => {
+                    if block_index == 0 {
+                        return Err(I0AudioBlockSeriesError::BlockZeroFullbandExponentReuse {
+                            channel: u8::try_from(channel)
+                                .map_err(|_| I0AudioBlockSeriesError::BitCountOverflow)?,
+                        });
+                    }
+                    let previous = previous_fullband_exponents.as_ref().ok_or(
+                        I0AudioBlockSeriesError::BlockZeroFullbandExponentReuse {
+                            channel: u8::try_from(channel)
+                                .map_err(|_| I0AudioBlockSeriesError::BitCountOverflow)?,
+                        },
+                    )?;
+                    let previous_bandwidth = previous_bandwidth_codes.as_ref().ok_or(
+                        I0AudioBlockSeriesError::BlockZeroFullbandExponentReuse {
+                            channel: u8::try_from(channel)
+                                .map_err(|_| I0AudioBlockSeriesError::BitCountOverflow)?,
+                        },
+                    )?;
+                    let previous_gain = previous_gain_ranges.as_ref().ok_or(
+                        I0AudioBlockSeriesError::BlockZeroFullbandExponentReuse {
+                            channel: u8::try_from(channel)
+                                .map_err(|_| I0AudioBlockSeriesError::BitCountOverflow)?,
+                        },
+                    )?;
+                    if lane.decoded_exponents != previous[channel]
+                        || lane.bandwidth_code != previous_bandwidth[channel]
+                        || lane.gain_range != previous_gain[channel]
+                        || !lane.packed_groups.is_empty()
+                    {
+                        return Err(I0AudioBlockSeriesError::FullbandExponentReuseMismatch {
+                            block: block_number,
+                            channel: u8::try_from(channel)
+                                .map_err(|_| I0AudioBlockSeriesError::BitCountOverflow)?,
+                        });
+                    }
+                    Ac3ExponentStrategy::D15
+                }
+                value @ 1..=3 => {
+                    if lane.bandwidth_code != AC3_FULLBAND_CHBW_CODE {
+                        return Err(I0AudioBlockSeriesError::ChannelBandwidthUnsupported {
+                            block: block_number,
+                            channel: u8::try_from(channel)
+                                .map_err(|_| I0AudioBlockSeriesError::BitCountOverflow)?,
+                            value: lane.bandwidth_code,
+                        });
+                    }
+                    if lane.gain_range != 0 {
+                        return Err(I0AudioBlockSeriesError::GainRangeUnsupported {
+                            block: block_number,
+                            channel: u8::try_from(channel)
+                                .map_err(|_| I0AudioBlockSeriesError::BitCountOverflow)?,
+                            value: lane.gain_range,
+                        });
+                    }
+                    let strategy = ac3_exponent_strategy(value).ok_or(
+                        I0AudioBlockSeriesError::FullbandExponentStrategyUnsupported {
+                            block: block_number,
+                            channel: u8::try_from(channel)
+                                .map_err(|_| I0AudioBlockSeriesError::BitCountOverflow)?,
+                            value,
+                        },
+                    )?;
+                    let encoded = encode_exponent_row(&lane.decoded_exponents, strategy)?;
+                    if lane.base_exponent != encoded.absolute
+                        || lane.packed_groups.len() != encoded.group_count
+                        || lane
+                            .packed_groups
+                            .iter()
+                            .zip(encoded.groups.iter())
+                            .any(|(actual, expected)| actual.value() != *expected)
+                    {
+                        return Err(I0AudioBlockSeriesError::Block(
+                            Ac3AudioBlockError::InvalidExponentPlan,
+                        ));
+                    }
+                    encoded_fullband[channel] = Some(encoded);
+                    strategy
+                }
+                value => {
+                    return Err(
+                        I0AudioBlockSeriesError::FullbandExponentStrategyUnsupported {
+                            block: block_number,
+                            channel: u8::try_from(channel)
+                                .map_err(|_| I0AudioBlockSeriesError::BitCountOverflow)?,
+                            value,
+                        },
+                    );
+                }
+            };
+            quantizer_exponent_plans[channel] = Ac3FullbandExponentPlan {
+                strategy: quantizer_strategy,
+                decoded_exponents: lane.decoded_exponents,
+            };
+        }
+
+        let lfe_exponents = exponent_plan.lfe.decoded_exponents;
+        let encoded_lfe = match exponent_plan.lfe.strategy {
+            0 => {
+                if block_index == 0 {
+                    return Err(I0AudioBlockSeriesError::BlockZeroLfeExponentReuse);
+                }
+                if previous_lfe_exponents.as_ref() != Some(&lfe_exponents) {
+                    return Err(I0AudioBlockSeriesError::LfeExponentReuseMismatch {
+                        block: block_number,
+                    });
+                }
+                None
+            }
+            1 => {
+                let encoded = encode_lfe_exponent_row(lfe_exponents)?;
+                if exponent_plan.lfe.base_exponent != encoded.absolute
+                    || exponent_plan
+                        .lfe
+                        .packed_groups
+                        .iter()
+                        .zip(encoded.groups.iter())
+                        .any(|(actual, expected)| actual.value() != *expected)
+                {
+                    return Err(I0AudioBlockSeriesError::Block(
+                        Ac3AudioBlockError::InvalidExponentPlan,
+                    ));
+                }
+                Some(encoded)
+            }
+            value => {
+                return Err(I0AudioBlockSeriesError::LfeExponentStrategyUnsupported {
+                    block: block_number,
+                    value,
+                });
+            }
+        };
+
+        let mut fullband_bap_rows = Vec::with_capacity(FULLBAND_CHANNEL_COUNT);
+        for channel in 0..FULLBAND_CHANNEL_COUNT {
+            let q = block_policy.candidate_q.value();
+            let row = allocate_bap_row_with_parameters(
+                plan.bap_parameters.as_ref(),
+                &BapRowInput {
+                    decoded_exponents: &exponent_plan.fullband[channel].decoded_exponents,
+                    end_exclusive: FULLBAND_ENDMANT,
+                    candidate: q,
+                    slow_decay_code: block_policy.slow_decay_code,
+                    fast_decay_code: block_policy.fast_decay_code,
+                    slow_gain_code: block_policy.slow_gain_code,
+                    db_per_bit_code: plan.db_per_bit_codes[block_index],
+                    floor_code: block_policy.floor_code,
+                    fast_gain_code: block_policy.fast_gain_codes[channel],
+                    caller_all_active_fine_zero: block_policy.caller_all_active_fine_zero,
+                    profile: BapProfileInput {
+                        sample_rate_hz: AC3_SAMPLE_RATE_HZ,
+                        coupling: false,
+                        delta: false,
+                        aht: false,
+                    },
+                },
+            )?
+            .try_into()
+            .map_err(|_| I0AudioBlockSeriesError::BitCountOverflow)?;
+            fullband_bap_rows.push(row);
+        }
+        let fullband_bap_rows: [[u8; FULLBAND_ENDMANT]; FULLBAND_CHANNEL_COUNT] = fullband_bap_rows
+            .try_into()
+            .map_err(|_| I0AudioBlockSeriesError::BitCountOverflow)?;
+        let lfe_bap: [u8; LFE_ENDMANT] = allocate_bap_row_with_parameters(
+            plan.bap_parameters.as_ref(),
+            &BapRowInput {
+                decoded_exponents: &lfe_exponents,
+                end_exclusive: LFE_ENDMANT,
+                candidate: block_policy.candidate_q.value(),
+                slow_decay_code: block_policy.slow_decay_code,
+                fast_decay_code: block_policy.fast_decay_code,
+                slow_gain_code: block_policy.slow_gain_code,
+                db_per_bit_code: plan.db_per_bit_codes[block_index],
+                floor_code: block_policy.floor_code,
+                fast_gain_code: block_policy.fast_gain_codes[FULLBAND_CHANNEL_COUNT],
+                caller_all_active_fine_zero: block_policy.caller_all_active_fine_zero,
+                profile: BapProfileInput {
+                    sample_rate_hz: AC3_SAMPLE_RATE_HZ,
+                    coupling: false,
+                    delta: false,
+                    aht: false,
+                },
+            },
+        )?
+        .try_into()
+        .map_err(|_| I0AudioBlockSeriesError::BitCountOverflow)?;
+
+        let coefficients = &source_coefficients.fullband_words;
+        let mut fullband_coefficients = [[0.0_f32; FULLBAND_ENDMANT]; FULLBAND_CHANNEL_COUNT];
+        for channel in 0..FULLBAND_CHANNEL_COUNT {
+            for bin in 0..FULLBAND_ENDMANT {
+                fullband_coefficients[channel][bin] = f32::from_bits(coefficients[channel][bin]);
+            }
+        }
+        let lfe_coefficients = source_coefficients.lfe_words.map(f32::from_bits);
+        let mantissa_fields = build_mantissa_fields(
+            &fullband_coefficients,
+            &quantizer_exponent_plans,
+            &fullband_bap_rows,
+            &lfe_coefficients,
+            lfe_exponents,
+            lfe_bap,
+            policy.quantizer_policy,
+        )?;
+
+        let allocation = Ac3BlockAllocationControls {
+            slow_decay_code: block_policy.slow_decay_code,
+            fast_decay_code: block_policy.fast_decay_code,
+            slow_gain_code: block_policy.slow_gain_code,
+            db_per_bit_code: plan.db_per_bit_codes[block_index],
+            floor_code: block_policy.floor_code,
+            coarse_snr_offset: block_policy.candidate_q.coarse(),
+            fullband_fine_snr_offsets: [block_policy.candidate_q.fine(); FULLBAND_CHANNEL_COUNT],
+            fullband_fast_gain_codes: std::array::from_fn(|channel| {
+                block_policy.fast_gain_codes[channel]
+            }),
+            lfe_fine_snr_offset: block_policy.candidate_q.fine(),
+            lfe_fast_gain_code: block_policy.fast_gain_codes[FULLBAND_CHANNEL_COUNT],
+        };
+
+        let mut frame_scratch = vec![0_u8; AC3_BLOCK_BUDGET_BYTES];
+        let bit_length = {
+            let mut writer = FrameBitWriter::new(&mut frame_scratch, FrameBitCursor::new(0))?;
+            let prefix = write_i0_ac3_audio_block_prefix(
+                &mut writer,
+                I0Ac3AudioBlockPrefixInput {
+                    block_switch_flags: plan.short_flags[block_index],
+                    dither_flags: block_policy.dither_flags,
+                    dynamic_range_code: block_policy.dynamic_range_code,
+                },
+            )
+            .map_err(|error| I0AudioBlockSeriesError::Block(Ac3AudioBlockError::Prefix(error)))?;
+            let _cplinu_receipt =
+                write_i0_ac3_first_block_cplinu(&mut writer, prefix, policy.cplinu).map_err(
+                    |error| I0AudioBlockSeriesError::Block(Ac3AudioBlockError::Cplinu(error)),
+                )?;
+            write_selected_plan_exponent_syntax(
+                &mut writer,
+                exponent_plan,
+                &encoded_fullband,
+                encoded_lfe,
+            )?;
+            write_bit_allocation_syntax(&mut writer, allocation)?;
+            writer.write_bit(false)?; // deltbaie=0 for this caller-selected block policy.
+            writer.write_bit(false)?; // I0 uses no skip-field payload.
+            for field in &mantissa_fields {
+                writer.write_unsigned(u32::from(field.value), field.width)?;
+            }
+            writer.cursor().bit_offset()
+        };
+
+        total_audio_bits = total_audio_bits
+            .checked_add(bit_length)
+            .ok_or(I0AudioBlockSeriesError::BitCountOverflow)?;
+        if total_audio_bits > budget.available_bits() {
+            return Err(I0AudioBlockSeriesError::AudioBlockBudgetExceeded {
+                required_bits: total_audio_bits,
+                available_bits: budget.available_bits(),
+            });
+        }
+        let byte_length = usize::try_from(bit_length.div_ceil(8))
+            .map_err(|_| I0AudioBlockSeriesError::BitCountOverflow)?;
+        frame_scratch.truncate(byte_length);
+        *block_bit_length = bit_length;
+        blocks.push(Ac3AudioBlockCandidate {
+            bytes: frame_scratch,
+            bit_length,
+        });
+        previous_fullband_exponents = Some(current_fullband_exponents);
+        previous_bandwidth_codes = Some(current_bandwidth_codes);
+        previous_gain_ranges = Some(current_gain_ranges);
+        previous_lfe_exponents = Some(lfe_exponents);
+    }
+
+    let blocks: [Ac3AudioBlockCandidate; I0_AUDIO_BLOCK_COUNT] = blocks
+        .try_into()
+        .map_err(|_| I0AudioBlockSeriesError::BitCountOverflow)?;
+    let receipt = I0AudioBlockSeriesReceipt {
+        source_identity: numeric_plan.identity().clone(),
+        block_order: [
+            I0AudioBlockIndex(0),
+            I0AudioBlockIndex(1),
+            I0AudioBlockIndex(2),
+            I0AudioBlockIndex(3),
+            I0AudioBlockIndex(4),
+            I0AudioBlockIndex(5),
+        ],
+        block_bit_lengths,
+        bap_policy: I0BapPolicyReceipt {
+            block_controls: policy.blocks,
+            db_per_bit_codes: plan.db_per_bit_codes,
+            bap_provider_sha256: plan.bap_provider_sha256,
+        },
+        cplinu: policy.cplinu,
+        delta_bit_allocation: policy.delta_bit_allocation,
+        quantizer_policy: policy.quantizer_policy,
+        assumptions: [
+            I0AudioBlockAssumptionId::SelectedF12SpectrumAsI0Ac3SourceV1,
+            I0AudioBlockAssumptionId::SelectedF09F10ExponentStrategyAsAc3ExpstrV1,
+        ],
+    };
+
+    Ok(I0AudioBlockSeriesCandidate { blocks, receipt })
+}
+
+fn write_selected_plan_exponent_syntax(
+    writer: &mut FrameBitWriter<'_>,
+    plan: &BlockExponentPlan,
+    fullband_rows: &[Option<EncodedExponentRow>; FULLBAND_CHANNEL_COUNT],
+    lfe_row: Option<EncodedLfeExponentRow>,
+) -> Result<(), I0AudioBlockSeriesError> {
+    for lane in &plan.fullband {
+        writer.write_unsigned(u32::from(lane.strategy), 2)?;
+    }
+    writer.write_bit(plan.lfe.strategy == 1)?;
+
+    for lane in &plan.fullband {
+        if lane.strategy != 0 {
+            writer.write_unsigned(u32::from(lane.bandwidth_code), 6)?;
+        }
+    }
+    for (lane, row) in plan.fullband.iter().zip(fullband_rows) {
+        if let Some(row) = row {
+            writer.write_unsigned(u32::from(row.absolute), 4)?;
+            for group in row.groups.iter().take(row.group_count) {
+                writer.write_unsigned(u32::from(*group), 7)?;
+            }
+            writer.write_unsigned(u32::from(lane.gain_range), 2)?;
+        }
+    }
+    if let Some(row) = lfe_row {
+        writer.write_unsigned(u32::from(row.absolute), 4)?;
+        for group in row.groups {
+            writer.write_unsigned(u32::from(group), 7)?;
+        }
+    }
+    Ok(())
+}
+
+fn ac3_exponent_strategy(value: u8) -> Option<Ac3ExponentStrategy> {
+    match value {
+        1 => Some(Ac3ExponentStrategy::D15),
+        2 => Some(Ac3ExponentStrategy::D25),
+        3 => Some(Ac3ExponentStrategy::D45),
+        _ => None,
+    }
 }
 
 fn validate_input(input: &Ac3AudioBlockInput<'_>) -> Result<(), Ac3AudioBlockError> {
@@ -980,5 +1698,285 @@ mod tests {
                 assert_eq!(expected_value, grouped_value(bap, codes));
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod i0_audio_block_series_tests {
+    use std::sync::Arc;
+
+    use super::{
+        Ac3DeltaBitAllocationInput, Ac3MantissaQuantizerPolicy, CallerOwnedAc3Cplinu,
+        I0AudioBlockControlPolicy, I0AudioBlockIndex, I0AudioBlockSeriesBudget,
+        I0AudioBlockSeriesError, I0AudioBlockSeriesPolicy, I0BapCandidateQ,
+        produce_i0_audio_block_series,
+    };
+    use crate::{
+        analysis::{
+            input_history::{INPUT_HISTORY_BLOCK_SAMPLES, InputHistory},
+            source_frame::{
+                AnalysisOwnerGeneration, F07SourceFrameBeforeState, InstalledAudioSourceFrame,
+                stage_f07a_source_frame,
+            },
+            transient_channel::TransientChannelState,
+            transient_parameters::load_transient_parameters,
+        },
+        codec::{
+            bap::{
+                BapProfileInput, BapRowInput, allocate_bap_row, allocate_bap_row_with_parameters,
+                load_bap_parameters,
+            },
+            exponent_packing::pack_exponent_difference_group,
+            selected_frame_trial::{
+                BlockExponentPlan, CoefficientBlockInput, ConverterHeaderInput,
+                FullbandExponentLanePlan, LfeExponentPlan, MainExponentSyntax,
+                SelectedSourceNumericPlan,
+            },
+        },
+        timeline::CodecSourceIndex,
+        transaction::{AttemptId, CallbackTransactionId, SourceTransaction},
+    };
+
+    const I0_BLOCKS: usize = 6;
+    const FULLBAND_CHANNELS: usize = 5;
+    const FULLBAND_BINS: usize = 217;
+    const LFE_BINS: usize = 7;
+    const BAP_PROVIDER: &[u8] = include_bytes!(
+        "../../../../outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-PUBLIC-BAP-PROVIDER-V1/public-bap-48k-v1.json"
+    );
+    const TRANSIENT_PARAMETERS: &[u8] =
+        include_bytes!("../../tests/fixtures/transient_channel/PARAMETERS.json");
+
+    fn f07_proposal() -> crate::analysis::source_frame::F07SourceFrameProposal {
+        let before = F07SourceFrameBeforeState::new(
+            std::array::from_fn(|_| InputHistory::cold()),
+            std::array::from_fn(|_| TransientChannelState::cold()),
+            [false; FULLBAND_CHANNELS],
+        );
+        let installed_audio: Box<InstalledAudioSourceFrame> =
+            Box::new([[[0_u32; INPUT_HISTORY_BLOCK_SAMPLES]; I0_BLOCKS]; 6]);
+        let parameters = load_transient_parameters(Some(TRANSIENT_PARAMETERS)).unwrap();
+        stage_f07a_source_frame(&before, &installed_audio, &parameters).unwrap()
+    }
+
+    fn source_transaction() -> SourceTransaction {
+        let mut transaction = SourceTransaction::new(
+            AttemptId::new(7),
+            CallbackTransactionId::new("i0-series-source-4").unwrap(),
+            CodecSourceIndex::new(4),
+            AnalysisOwnerGeneration::from_parent_snapshot(12),
+        );
+        transaction
+            .prepare_shared_analysis(
+                AnalysisOwnerGeneration::from_parent_snapshot(13),
+                f07_proposal(),
+            )
+            .unwrap();
+        transaction
+    }
+
+    fn numeric_plan() -> SelectedSourceNumericPlan {
+        let bap_parameters = Arc::new(load_bap_parameters(Some(BAP_PROVIDER)).unwrap());
+        let zero_group = pack_exponent_difference_group(&[0, 0, 0]).unwrap();
+        let exponent_plan_by_block = std::array::from_fn(|block| {
+            let strategy = u8::from(block == 0);
+            let fullband_groups = if strategy == 0 {
+                Vec::new()
+            } else {
+                vec![zero_group; 72]
+            };
+            let fullband = std::array::from_fn(|_| FullbandExponentLanePlan {
+                decoded_exponents: [15; FULLBAND_BINS],
+                strategy,
+                bandwidth_code: 48,
+                base_exponent: 15,
+                packed_groups: fullband_groups.clone(),
+                gain_range: 0,
+            });
+            BlockExponentPlan {
+                fullband,
+                lfe: LfeExponentPlan {
+                    decoded_exponents: [15; LFE_BINS],
+                    strategy,
+                    base_exponent: 15,
+                    packed_groups: [zero_group; 2],
+                },
+            }
+        });
+        let coefficients_by_block = std::array::from_fn(|_| CoefficientBlockInput {
+            fullband_words: std::array::from_fn(|_| [0.0_f32.to_bits(); FULLBAND_BINS]),
+            lfe_words: [0.0_f32.to_bits(); LFE_BINS],
+        });
+        SelectedSourceNumericPlan {
+            bap_provider_sha256: bap_parameters.provider_sha256(),
+            bap_parameters,
+            coefficients_by_block,
+            exponent_plan_by_block,
+            db_per_bit_codes: [2; I0_BLOCKS],
+            short_flags: [[false; FULLBAND_CHANNELS]; I0_BLOCKS],
+            previous_short: [false; FULLBAND_CHANNELS],
+            main_exponent_syntax: MainExponentSyntax::BlockStrategies,
+            converter: ConverterHeaderInput {
+                frame_codes: [0; FULLBAND_CHANNELS],
+                snr_offset: 0,
+            },
+        }
+    }
+
+    // Synthetic test controls exercise caller-selected q and block ordering only. They are not
+    // a selected or recommended production q policy.
+    fn synthetic_policy() -> I0AudioBlockSeriesPolicy {
+        I0AudioBlockSeriesPolicy {
+            blocks: std::array::from_fn(|block| I0AudioBlockControlPolicy {
+                candidate_q: I0BapCandidateQ::new(if block == 0 { 16 } else { 0 }).unwrap(),
+                slow_decay_code: 2,
+                fast_decay_code: 1,
+                slow_gain_code: 1,
+                floor_code: 7,
+                fast_gain_codes: [0; FULLBAND_CHANNELS + 1],
+                caller_all_active_fine_zero: block != 0,
+                dither_flags: [false; FULLBAND_CHANNELS],
+                dynamic_range_code: Some(0x30 + u8::try_from(block).unwrap()),
+            }),
+            cplinu: CallerOwnedAc3Cplinu::Independent,
+            delta_bit_allocation: Ac3DeltaBitAllocationInput::Absent,
+            quantizer_policy: Ac3MantissaQuantizerPolicy::NearestTiesEven,
+        }
+    }
+
+    fn read_bits(bytes: &[u8], start: usize, width: usize) -> u32 {
+        (start..start + width).fold(0_u32, |value, bit_index| {
+            let byte = bytes[bit_index / 8];
+            let shift = 7 - bit_index % 8;
+            (value << 1) | u32::from((byte >> shift) & 1)
+        })
+    }
+
+    #[test]
+    fn validated_bap_parameter_row_matches_the_provider_file_entry() {
+        let parameters = load_bap_parameters(Some(BAP_PROVIDER)).unwrap();
+        let exponents = [15_u8; FULLBAND_BINS];
+        let input = BapRowInput {
+            decoded_exponents: &exponents,
+            end_exclusive: FULLBAND_BINS,
+            candidate: 16,
+            slow_decay_code: 2,
+            fast_decay_code: 1,
+            slow_gain_code: 1,
+            db_per_bit_code: 2,
+            floor_code: 7,
+            fast_gain_code: 0,
+            caller_all_active_fine_zero: false,
+            profile: BapProfileInput {
+                sample_rate_hz: 48_000,
+                coupling: false,
+                delta: false,
+                aht: false,
+            },
+        };
+
+        let reparsed = allocate_bap_row(Some(BAP_PROVIDER), &input).unwrap();
+        let reused = allocate_bap_row_with_parameters(&parameters, &input).unwrap();
+        assert_eq!(reused, reparsed);
+    }
+
+    #[test]
+    fn six_ordered_blocks_retain_source_identity_and_caller_q_controls() {
+        let mut transaction = source_transaction();
+        let numeric_receipt = transaction.prepare_numeric_plan(numeric_plan()).unwrap();
+        let selected_policy = synthetic_policy();
+        let candidate = produce_i0_audio_block_series(
+            &numeric_receipt,
+            selected_policy,
+            I0AudioBlockSeriesBudget::new(20_480),
+        )
+        .unwrap();
+
+        assert_eq!(
+            candidate.receipt().source_identity(),
+            numeric_receipt.identity()
+        );
+        assert_eq!(candidate.blocks().len(), I0_BLOCKS);
+        assert_eq!(candidate.receipt().block_bit_lengths().len(), I0_BLOCKS);
+        assert!(!candidate.production_allowed());
+        assert_eq!(
+            candidate.receipt().assumptions()[0].id(),
+            "PROVISIONAL_I0_SELECTED_F12_51_SPECTRUM_V1"
+        );
+        assert_eq!(
+            candidate.receipt().assumptions()[1].id(),
+            "PROVISIONAL_I0_F09_F10_EXPSTR_TO_AC3_V1"
+        );
+
+        for block in 0..I0_BLOCKS {
+            let index = I0AudioBlockIndex::new(u8::try_from(block).unwrap()).unwrap();
+            assert_eq!(
+                candidate.receipt().block_order()[block].value(),
+                u8::try_from(block).unwrap()
+            );
+            assert_eq!(
+                candidate.receipt().bap_policy().block_controls()[block].candidate_q,
+                selected_policy.blocks[block].candidate_q
+            );
+            assert_eq!(
+                read_bits(candidate.block(index).bytes(), 11, 8),
+                u32::from(0x30 + u8::try_from(block).unwrap())
+            );
+            assert_eq!(
+                candidate.block(index).bit_length(),
+                candidate.receipt().block_bit_lengths()[block]
+            );
+        }
+
+        let spans = candidate.i0_bit_spans();
+        for block in 0..I0_BLOCKS {
+            assert_eq!(
+                spans[block].bit_length(),
+                candidate.blocks()[block].bit_length()
+            );
+        }
+    }
+
+    #[test]
+    fn block_zero_exponent_reuse_rejects_the_series_before_returning_a_candidate() {
+        let mut plan = numeric_plan();
+        plan.exponent_plan_by_block[0].fullband[0].strategy = 0;
+        let mut transaction = source_transaction();
+        let numeric_receipt = transaction.prepare_numeric_plan(plan).unwrap();
+
+        let error = produce_i0_audio_block_series(
+            &numeric_receipt,
+            synthetic_policy(),
+            I0AudioBlockSeriesBudget::new(20_480),
+        )
+        .unwrap_err();
+
+        assert_eq!(
+            error,
+            I0AudioBlockSeriesError::BlockZeroFullbandExponentReuse { channel: 0 }
+        );
+    }
+
+    #[test]
+    fn aggregate_budget_rejects_without_returning_a_partial_block_set() {
+        let mut transaction = source_transaction();
+        let numeric_receipt = transaction.prepare_numeric_plan(numeric_plan()).unwrap();
+
+        let error = produce_i0_audio_block_series(
+            &numeric_receipt,
+            synthetic_policy(),
+            I0AudioBlockSeriesBudget::new(1),
+        )
+        .unwrap_err();
+        assert!(
+            matches!(
+                error,
+                I0AudioBlockSeriesError::AudioBlockBudgetExceeded {
+                    available_bits: 1,
+                    ..
+                }
+            ),
+            "unexpected series error: {error:?}"
+        );
     }
 }
