@@ -1,0 +1,38 @@
+{
+  "schema": "wash-package-seal.v1",
+  "package_id": "FLAT7X-CHANMAP-U16-METADATA-ROW-BOUNDARY-V1",
+  "seal_excludes_itself": true,
+  "manifest_sha256": "a987e3b6c6883a70b77656a6cbf9cebf1c2cd26187b9c79c473d697fb110bc80",
+  "files": [
+    {
+      "path": "FINDINGS.md",
+      "size_bytes": 867,
+      "sha256": "88a910eb70caf5107d900c426f454b81345588820cb9d4f26b6c4b74d58b2527"
+    },
+    {
+      "path": "FIELD-BOUNDARY.json",
+      "size_bytes": 910,
+      "sha256": "d0c1cb13081fae46d647f66cb18797fa474764237d475c7a5c8b3bf992ccaeb1"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "size_bytes": 963,
+      "sha256": "9da7f1121256b0bb7aa67d3b91ff6be60d230698109014c3166f6df2bcf11a53"
+    },
+    {
+      "path": "verify_package.py",
+      "size_bytes": 2666,
+      "sha256": "a72332c7a0c3b163871f7a567a8023404b774272509c60b803f9b9cf804a5b55"
+    },
+    {
+      "path": "MANIFEST.json",
+      "size_bytes": 927,
+      "sha256": "a987e3b6c6883a70b77656a6cbf9cebf1c2cd26187b9c79c473d697fb110bc80"
+    },
+    {
+      "path": "MANIFEST.sha256",
+      "size_bytes": 64,
+      "sha256": "17b6031d8893aaef2edff5c7ae8aa7825d9b0e22ede6733ba88bf41ed8a0277d"
+    }
+  ]
+}

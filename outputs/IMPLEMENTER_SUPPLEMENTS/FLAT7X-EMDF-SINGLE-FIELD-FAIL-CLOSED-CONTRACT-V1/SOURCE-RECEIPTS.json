@@ -1,0 +1,22 @@
+{
+  "schema": "wash-source-receipts.v1",
+  "sources": [
+    {
+      "kind": "WASH_APPROVED_TARGET_PROFILE",
+      "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+      "manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+      "seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+      "used_for": ["D0 block-2 single-field target", "maximum C length", "reject-overflow policy", "I0 then D0 pair order"]
+    },
+    {
+      "kind": "WASH_REVIEWED_STATIC_NATIVE_PACKAGE",
+      "package_id": "DEE670-ADDBSI-EMDF-CANDIDATE-WRITER-CAPACITY-BOUNDARY-ADDENDUM-20261112",
+      "manifest_sha256": "3f59606459337c6a5daa033ffabf8c8a52b508563b42b35d4c7f2d2f8892905b",
+      "checksums_sha256": "6d56f729dde19ee3fdaaf812858b75ad325990613be88230dfbf36a1a2ab71fc",
+      "wash_checkers": {"normal": "PASS", "python_O": "PASS"},
+      "used_for": ["candidate writer capacity/error boundary", "explicit no-join status"]
+    }
+  ],
+  "raw_research_artifacts_included": false,
+  "media_pcm_payload_key_license_read": false
+}

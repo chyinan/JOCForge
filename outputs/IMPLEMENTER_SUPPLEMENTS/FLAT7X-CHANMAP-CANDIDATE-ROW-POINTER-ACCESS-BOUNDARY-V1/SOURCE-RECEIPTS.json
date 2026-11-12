@@ -1,0 +1,22 @@
+{
+  "schema": "wash-source-receipts.v1",
+  "sources": [
+    {
+      "kind": "WASH_REVIEWED_STATIC_NATIVE_PACKAGE",
+      "package_id": "d0_chanmap_r8_row_role_successor_followup_wash_v1",
+      "manifest_sha256": "2862a999ca13c9fbdb64b062d2e970f3eb985281d45ced691ade3957edfc1072",
+      "package_seal_sha256": "6e401056967e1a4bd5189b7333f139f49bfff6a503d06eabb974283f3bc7950b",
+      "wash_checkers": {"normal": "PASS", "python_O": "PASS"},
+      "used_for": ["row-pointer access boundary", "mask-setter argument separation", "UNBOUND row mapping status"]
+    },
+    {
+      "kind": "WASH_APPROVED_TARGET_PROFILE",
+      "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+      "manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+      "seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+      "used_for": ["target chanmap and separate profile dimensions"]
+    }
+  ],
+  "raw_research_artifacts_included": false,
+  "runtime": "NOT_RUN"
+}

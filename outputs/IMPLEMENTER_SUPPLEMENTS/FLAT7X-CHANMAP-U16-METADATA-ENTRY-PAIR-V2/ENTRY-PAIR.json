@@ -1,0 +1,27 @@
+{
+  "schema": "flat7x-chanmap-u16-metadata-entry-pair.v1",
+  "delivery": "SANITIZED_IMPLEMENTER_SUPPLEMENT",
+  "status": "WASHED_PARTIAL_IMPLEMENTATION_VISIBLE",
+  "observed_candidate_metadata_table": {
+    "entry_0": {"offset_bytes": 0, "write_width_bits": 16, "status": "BOUND"},
+    "entry_1": {"offset_bytes": 2, "write_width_bits": 16, "status": "BOUND"},
+    "adjacent_two_byte_destination_pattern": true,
+    "table_cardinality": "UNBOUND",
+    "typed_owner": "UNBOUND",
+    "field_semantics": "UNBOUND",
+    "row_role": "UNBOUND",
+    "join_to_d0_chanmap_0x1a00": "UNBOUND"
+  },
+  "independent_target_dimensions": {
+    "d0_chanmap": "0x1A00",
+    "d0_coded_locations": ["Ls", "Rs", "Lrs/Rrs pair"],
+    "pcm_source_rows": "SEPARATE",
+    "joc_reconstruction_carriers": "SEPARATE"
+  },
+  "implementation_policy": {
+    "directspeakers_pcm_role_map": "PROVISIONAL_REPLACEABLE",
+    "infer_role_from_u16_position": false,
+    "change_audio_algorithm_from_this_receipt": false
+  },
+  "runtime": "NOT_RUN"
+}

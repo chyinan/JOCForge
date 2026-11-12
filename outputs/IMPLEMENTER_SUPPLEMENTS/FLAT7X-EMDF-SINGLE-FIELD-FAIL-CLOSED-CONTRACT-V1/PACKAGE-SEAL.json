@@ -1,0 +1,38 @@
+{
+  "schema": "wash-package-seal.v1",
+  "package_id": "FLAT7X-EMDF-SINGLE-FIELD-FAIL-CLOSED-CONTRACT-V1",
+  "seal_excludes_itself": true,
+  "manifest_sha256": "759162aef0c2cbae7b4f14a5cb30608f4b03526c61016d2ea775e767738fcfd4",
+  "files": [
+    {
+      "path": "FINDINGS.md",
+      "size_bytes": 1722,
+      "sha256": "15eeec9e7cfac758c40221f86a9efd31894db156efb5a7403866a4391b3bbbf0"
+    },
+    {
+      "path": "FIELD-CONTRACT.json",
+      "size_bytes": 1125,
+      "sha256": "d0bea5a0e5747e80c01a4ac7752bbac6acb51987ed263be16b3bd5dd48944d0b"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "size_bytes": 1090,
+      "sha256": "58bebd0740b3c16c84eaf0d078aa653928ce3d9d8d488177416052b35e15d0e7"
+    },
+    {
+      "path": "verify_package.py",
+      "size_bytes": 2926,
+      "sha256": "e9f1277a47dc5a56832cdb489f6133971e469a08e12cb5710b2746a48423142f"
+    },
+    {
+      "path": "MANIFEST.json",
+      "size_bytes": 935,
+      "sha256": "759162aef0c2cbae7b4f14a5cb30608f4b03526c61016d2ea775e767738fcfd4"
+    },
+    {
+      "path": "MANIFEST.sha256",
+      "size_bytes": 64,
+      "sha256": "9ff38598124dc38b704851b57e050b547aebf3c42de820c074a4dc0f4c0c4cba"
+    }
+  ]
+}

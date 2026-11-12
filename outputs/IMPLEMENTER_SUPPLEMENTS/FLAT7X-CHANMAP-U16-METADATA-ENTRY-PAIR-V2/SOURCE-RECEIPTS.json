@@ -1,0 +1,22 @@
+{
+  "schema": "wash-source-receipts.v1",
+  "sources": [
+    {
+      "kind": "WASH_REVIEWED_STATIC_NATIVE_PACKAGE",
+      "package_id": "d0_chanmap_r8_row_role_successor_followup_wash_v1",
+      "manifest_sha256": "2862a999ca13c9fbdb64b062d2e970f3eb985281d45ced691ade3957edfc1072",
+      "package_seal_sha256": "6e401056967e1a4bd5189b7333f139f49bfff6a503d06eabb974283f3bc7950b",
+      "wash_checkers": {"normal": "PASS", "python_O": "PASS"},
+      "used_for": ["first U16 destination write through candidate row pointer"]
+    },
+    {
+      "kind": "WASH_REVIEWED_STATIC_NATIVE_PACKAGE",
+      "package_id": "d0_chanmap_r15_plus2_loaded_value_consumer_followup_wash_v1",
+      "manifest_sha256": "ad505d8d4093044040135bd814a08ea4117b1578f7eb9845a8ca8aeec1cf98e8",
+      "package_seal_sha256": "1fcdaf6d92b1cece17a7487ad6e825aabace50ae9185822f504d33a4a7e5412b",
+      "wash_checkers": {"normal": "PASS", "python_O": "PASS"},
+      "used_for": ["adjacent U16 write at candidate pointer offset plus two", "field role remains UNBOUND"]
+    }
+  ],
+  "raw_research_artifacts_included": false
+}

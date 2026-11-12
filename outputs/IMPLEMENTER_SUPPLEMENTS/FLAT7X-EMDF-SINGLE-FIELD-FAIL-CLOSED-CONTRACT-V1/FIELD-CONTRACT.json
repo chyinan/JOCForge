@@ -1,0 +1,31 @@
+{
+  "schema": "flat7x-emdf-single-field-contract.v1",
+  "delivery": "SANITIZED_IMPLEMENTER_SUPPLEMENT",
+  "status": "WASHED_PARTIAL_IMPLEMENTATION_VISIBLE",
+  "target_contract": {
+    "substream": "D0",
+    "block_ordinal": 2,
+    "field": "skipfld",
+    "field_width_bits": 9,
+    "container": "one complete EMDF container",
+    "maximum_container_length_bytes": 511,
+    "overflow_behavior": "REJECT",
+    "fragmentation_across_fields_blocks_or_aus": false,
+    "pair_order": ["I0", "D0"],
+    "pair_commit": "atomic candidate exposure after validation"
+  },
+  "implementation_policy": {
+    "validate_full_container_before_staging": true,
+    "reject_before_pair_commit_on_overflow": true,
+    "preserve_existing_five_one_path": true
+  },
+  "native_candidate_boundary": {
+    "candidate_serializer_budget_join_to_target_skipl": "UNBOUND",
+    "candidate_u16_count_join_to_target_skipl": "UNBOUND",
+    "candidate_staging_caps_join_to_target_skipl": "UNBOUND",
+    "native_field_capacity_bytes": "UNBOUND",
+    "native_overflow_behavior": "UNBOUND",
+    "d0_block_ordinal_2_join": "UNBOUND",
+    "runtime": "NOT_RUN"
+  }
+}

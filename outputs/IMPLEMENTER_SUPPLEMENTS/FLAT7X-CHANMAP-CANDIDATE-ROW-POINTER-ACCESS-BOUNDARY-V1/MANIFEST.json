@@ -1,0 +1,29 @@
+{
+  "schema": "wash-sanitized-implementer-manifest.v1",
+  "package_id": "FLAT7X-CHANMAP-CANDIDATE-ROW-POINTER-ACCESS-BOUNDARY-V1",
+  "delivery": "SANITIZED_IMPLEMENTER_SUPPLEMENT",
+  "status": "WASHED_PARTIAL_IMPLEMENTATION_VISIBLE",
+  "payloads": [
+    {
+      "path": "FINDINGS.md",
+      "size_bytes": 1151,
+      "sha256": "23c87a4e173d55b21d54ea16c627334404ab93dbc5655a9dd4a1eedf7e2b12ef"
+    },
+    {
+      "path": "FIELD-BOUNDARY.json",
+      "size_bytes": 1044,
+      "sha256": "a80904ffa3beaaf391183df362cf64e414c6aaab72aedd5fad9d00119cc0a380"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "size_bytes": 1018,
+      "sha256": "65954dfe08a9ac93c7bf52ed0b47420cf0a8bd2b669d1af2ad9304eee846a07f"
+    },
+    {
+      "path": "verify_package.py",
+      "size_bytes": 2847,
+      "sha256": "13c929e90ab1f7597e2053ad4e7d69119f8df305caf7a5d202970527c1663af0"
+    }
+  ],
+  "native_runtime": "NOT_RUN"
+}

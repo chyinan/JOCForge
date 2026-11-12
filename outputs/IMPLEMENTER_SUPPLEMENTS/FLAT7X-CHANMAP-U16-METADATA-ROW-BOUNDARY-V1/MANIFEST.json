@@ -1,0 +1,29 @@
+{
+  "schema": "wash-sanitized-implementer-manifest.v1",
+  "package_id": "FLAT7X-CHANMAP-U16-METADATA-ROW-BOUNDARY-V1",
+  "delivery": "SANITIZED_IMPLEMENTER_SUPPLEMENT",
+  "status": "WASHED_PARTIAL_IMPLEMENTATION_VISIBLE",
+  "payloads": [
+    {
+      "path": "FINDINGS.md",
+      "size_bytes": 867,
+      "sha256": "88a910eb70caf5107d900c426f454b81345588820cb9d4f26b6c4b74d58b2527"
+    },
+    {
+      "path": "FIELD-BOUNDARY.json",
+      "size_bytes": 910,
+      "sha256": "d0c1cb13081fae46d647f66cb18797fa474764237d475c7a5c8b3bf992ccaeb1"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "size_bytes": 963,
+      "sha256": "9da7f1121256b0bb7aa67d3b91ff6be60d230698109014c3166f6df2bcf11a53"
+    },
+    {
+      "path": "verify_package.py",
+      "size_bytes": 2666,
+      "sha256": "a72332c7a0c3b163871f7a567a8023404b774272509c60b803f9b9cf804a5b55"
+    }
+  ],
+  "native_runtime": "NOT_RUN"
+}

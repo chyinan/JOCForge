@@ -1,0 +1,24 @@
+{
+  "schema": "flat7x-chanmap-u16-metadata-row-boundary.v1",
+  "delivery": "SANITIZED_IMPLEMENTER_SUPPLEMENT",
+  "status": "WASHED_PARTIAL_IMPLEMENTATION_VISIBLE",
+  "native_static_observation": {
+    "candidate_row_pointer_destination_access": "U16 write",
+    "value_source_shape": "three owner-relative U8 inputs combined before the write",
+    "value_semantics": "UNBOUND",
+    "row_semantic_role": "UNBOUND",
+    "owner_generation": "UNBOUND",
+    "join_to_d0_chanmap_0x1a00": "UNBOUND"
+  },
+  "dimension_separation": {
+    "candidate_metadata_row_is_pcm_row": false,
+    "d0_chanmap_locations_are_metadata_rows": false,
+    "adm_physical_rows_equal_joc_carriers": false
+  },
+  "implementation_policy": {
+    "directspeakers_pcm_role_map": "PROVISIONAL_REPLACEABLE",
+    "new_channel_role_rule_from_this_package": false,
+    "change_audio_algorithm_from_this_package": false
+  },
+  "runtime": "NOT_RUN"
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "flat7x-chanmap-row-pointer-access-boundary.v1",
+  "delivery": "SANITIZED_IMPLEMENTER_SUPPLEMENT",
+  "status": "WASHED_PARTIAL_IMPLEMENTATION_VISIBLE",
+  "target": {
+    "d0_chanmap": "0x1A00",
+    "etsI_coded_locations": ["Ls", "Rs", "Lrs/Rrs pair"],
+    "joc_spatial_index": 1
+  },
+  "native_static_boundary": {
+    "candidate_row_pointer_carried_through_early_branch": true,
+    "candidate_row_pointer_read_before_mask_setter": false,
+    "candidate_row_pointer_written_before_mask_setter": false,
+    "mask_setter_receives_selected_parent_separately": true,
+    "mask_path_u16_record_serializer_edge": "BOUND",
+    "mask_value_to_candidate_row_join": "UNBOUND",
+    "chanmap_to_native_owner_join": "UNBOUND",
+    "native_per_row_mapping": "UNBOUND"
+  },
+  "implementation_policy": {
+    "directspeakers_bed_row_map": "PROVISIONAL_REPLACEABLE",
+    "adm_rows_equal_chanmap_locations": false,
+    "chanmap_locations_equal_joc_carriers": false,
+    "change_audio_algorithm_from_this_receipt": false
+  },
+  "runtime": "NOT_RUN"
+}

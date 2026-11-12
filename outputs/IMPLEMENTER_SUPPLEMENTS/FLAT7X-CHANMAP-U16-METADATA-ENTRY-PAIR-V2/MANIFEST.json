@@ -1,0 +1,29 @@
+{
+  "schema": "wash-sanitized-implementer-manifest.v1",
+  "package_id": "FLAT7X-CHANMAP-U16-METADATA-ENTRY-PAIR-V2",
+  "delivery": "SANITIZED_IMPLEMENTER_SUPPLEMENT",
+  "status": "WASHED_PARTIAL_IMPLEMENTATION_VISIBLE",
+  "payloads": [
+    {
+      "path": "FINDINGS.md",
+      "size_bytes": 1210,
+      "sha256": "d03db7d0cad51dabd993d0e7309c43feac76afadf55d55fed771ed8d3f9f3130"
+    },
+    {
+      "path": "ENTRY-PAIR.json",
+      "size_bytes": 1012,
+      "sha256": "ce36fbfea9e4721c504dc78dceb7a803ae96b682a898d4bf7ff37448b1e1ba73"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "size_bytes": 1087,
+      "sha256": "0ce92f8fb2116d77ffa460644f225fa9188bdb0944aafd6f6c968e78e711ed74"
+    },
+    {
+      "path": "verify_package.py",
+      "size_bytes": 2601,
+      "sha256": "80623743623be742c7bf9eaf3fc63218184208664948d867c6af97011da2aa39"
+    }
+  ],
+  "native_runtime": "NOT_RUN"
+}
