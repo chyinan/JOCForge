@@ -12857,11 +12857,11 @@ def check_f12_flat7x_i0_typed_bsi_frame_assembly(root, d):
         and "binding.resolved_profile.joc_reconstruction_layout() != JocReconstructionLayout::Flat7x" in pair_source
         and "resolved_profile: binding.resolved_profile" in pair_source
         and "binding.role_map_receipt.shared_analysis_identity()" in pair_source
-        and "provisional_d0_carrier_rows" in pair_source
+        and "d0_rows: projection.d0_rows()" in pair_source
         and "Flat7xD0AudioSpanReceipt::from_source_bound_producer" in pair_source
         and "assemble_flat7x_i0_ac3_frame_from_audio_series(" in pair_source
         and "pub const fn production_allowed(&self) -> bool {\n        false\n    }" in pair_source,
-        "I0 source candidate and provisional front3-plus-chanmap4 D0 row view stay source-bound",
+        "I0 and four-channel D0 source rows stay source-bound; seven JOC carriers remain separate",
     )
     ck(
         "six_block_candidate_composes_official_bsi_crc_and_source_identity_into_i0_frame" in series_test_source
@@ -13275,14 +13275,26 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         and "pub(crate) fn append_flat7x_pair" in rust_code_without_comments(
             (root / "crates/jocforge-cli/src/output_publication.rs").read_text(encoding="utf-8")
         )
-        and "Flat7xD0CarrierPcmRows" in rust_code_without_comments(
+        and "Flat7xD0PcmRows" in rust_code_without_comments(
             (root / "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs").read_text(encoding="utf-8")
         )
+        and len(
+            json.loads(
+                (root / "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json").read_text(encoding="utf-8")
+            )["d0"]["coded_channel_locations"]
+        )
+        == 4
+        and len(
+            json.loads(
+                (root / "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json").read_text(encoding="utf-8")
+            )["joc"]["carriers"]
+        )
+        == 7
         and "checked_next" in rust_code_without_comments(
             (root / "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs").read_text(encoding="utf-8")
         )
         and no_cli_pair_candidate,
-        "the receipt-backed I0/D0 pair proposal reaches atomic staging with explicit generation and provisional row mapping",
+        "the receipt-backed I0/D0 pair proposal reaches atomic staging with explicit generation and four D0 coded rows distinct from seven JOC carriers",
     )
     ck(
         "pub fn preflight_flat7x_pair_io_stage(" in pair_output

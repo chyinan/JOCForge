@@ -20,9 +20,8 @@ use jocforge_domain::{
         selected_frame_trial::SelectedSourceNumericPlan,
     },
     profile::{
-        CodecRateProfile, Flat7xD0CarrierPcmRows, Flat7xD0CarrierProjectionError, Flat7xD0PcmRows,
-        Flat7xI0D0TargetPlan, Flat7xI0PcmRows, JocReconstructionLayout, ResolvedEncodingProfile,
-        project_flat7x_d0_carrier_pcm_rows,
+        CodecRateProfile, Flat7xD0PcmRows, Flat7xI0D0TargetPlan, Flat7xI0PcmRows,
+        JocReconstructionLayout, ResolvedEncodingProfile,
     },
     timeline::{CodecSourceIndex, FrontendCallbackIndex},
     transaction::{AttemptId, CallbackTransactionId, ProgrammeId},
@@ -163,7 +162,6 @@ pub enum Flat7xPairSourceError {
     SourceIdentityMismatch,
     D0AudioSpanProducerDisabled(Flat7xD0AudioSpanProducerState),
     D0AudioSpanSourceIdentityMismatch,
-    D0CarrierProjection(Flat7xD0CarrierProjectionError),
     I0AudioBlockSeries(I0AudioBlockSeriesError),
     I0FrameAssembly(Flat7xI0FrameAssemblyError),
     AccessUnitAssembly(Flat7xI0D0AuCandidateError),
@@ -202,7 +200,6 @@ pub struct Flat7xPairSourceBinding<'pcm> {
     d0_source_identity: Flat7xD0SourceIdentity,
     i0_rows: Flat7xI0PcmRows<'pcm>,
     d0_rows: Flat7xD0PcmRows<'pcm>,
-    d0_carrier_rows: Flat7xD0CarrierPcmRows<'pcm>,
 }
 
 impl Flat7xPairSourceBinding<'_> {
@@ -234,17 +231,10 @@ impl Flat7xPairSourceBinding<'_> {
         self.d0_rows
     }
 
-    /// Returns the replaceable seven-carrier D0 PCM row projection bound at source admission.
-    pub const fn provisional_d0_carrier_rows(&self) -> Flat7xD0CarrierPcmRows<'_> {
-        self.d0_carrier_rows
-    }
-
     pub fn is_bound_to_projection(&self, projection: &Flat7xSourcePcmProjection<'_>) -> bool {
         self.role_map_receipt == *projection.role_map_receipt()
             && self.i0_rows == projection.i0_rows()
             && self.d0_rows == projection.d0_rows()
-            && project_flat7x_d0_carrier_pcm_rows(projection.i0_rows(), projection.d0_rows())
-                .is_ok_and(|rows| self.d0_carrier_rows == rows)
     }
 }
 
@@ -529,10 +519,6 @@ pub fn bind_flat7x_pair_source<'pcm>(
     {
         return Err(Flat7xPairSourceError::SourceIdentityMismatch);
     }
-    let d0_carrier_rows =
-        project_flat7x_d0_carrier_pcm_rows(projection.i0_rows(), projection.d0_rows())
-            .map_err(Flat7xPairSourceError::D0CarrierProjection)?;
-
     Ok(Flat7xPairSourceBinding {
         resolved_profile: profile,
         target,
@@ -545,7 +531,6 @@ pub fn bind_flat7x_pair_source<'pcm>(
         ),
         i0_rows: projection.i0_rows(),
         d0_rows: projection.d0_rows(),
-        d0_carrier_rows,
     })
 }
 
@@ -1287,11 +1272,7 @@ mod pair_access_unit_integration_tests {
         let binding =
             bind_flat7x_pair_source(resolved_profile, &projection, &numeric_plan).unwrap();
         let d0_source_identity = binding.d0_source_identity().clone();
-        assert_eq!(
-            binding.provisional_d0_carrier_rows().assumption_id(),
-            "PROVISIONAL_D0_FRONT3_PLUS_CHANMAP4_V1"
-        );
-        assert_eq!(binding.provisional_d0_carrier_rows().rows().len(), 7);
+        assert_eq!(binding.d0_rows().rows().len(), 4);
         let i0_frame = match assemble_flat7x_i0_frame_candidate_from_binding(
             &binding,
             &numeric_plan,

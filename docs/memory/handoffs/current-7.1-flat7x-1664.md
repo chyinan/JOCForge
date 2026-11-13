@@ -297,4 +297,10 @@ The source binding carries `Flat7xD0CarrierPcmRows` under the replaceable model 
 
 The pair proposal seam accepts the source-bound I0 full-frame candidate, opaque caller-owned D0 frame bytes, explicit generation label, and same-source F13/I0/D0 receipts; the existing F15 owner checks the pair CRCs, extents, skip-field bounds, and I0→D0 order. `ProgrammeOutputStaging::append_flat7x_pair` delegates the resulting proposal to the existing atomic sink. The CLI route has not yet been given a D0 producer.
 
-The shortest remaining audio implementation seam is a seven-carrier, no-LFE D0 audblk writer and its source-bound span receipt. Existing `produce_i0_audio_block_series` implements only five full-band rows plus LFE, so it cannot directly supply D0 `acmod=5/lfeon=0/chanmap=0x1A00`. No D0 audio/BSI/EMDF bytes were generated. The 5.1 six-rate route remains unchanged.
+The previous seven-row D0 PCM view mixed three I0 front channels with four D0 chanmap rows. The Wash-approved profile row specifies four D0 coded channels (`Ls`, `Rs`, `Lrs`, `Rrs`); its seven JOC reconstruction carriers are a separate domain. The shortest remaining audio implementation seam is a four-channel, no-LFE D0 audblk writer and its source-bound span receipt. Existing `produce_i0_audio_block_series` implements only five full-band rows plus LFE. No D0 audio/BSI/EMDF bytes were generated. The 5.1 six-rate route remains unchanged.
+
+## 2026-11-13 D0 coded-channel shape correction
+
+Wash-approved package `JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1`, `PROFILE-ROW.json`, defines D0 coded-channel locations `[Ls, Rs, Lrs, Rrs]` with `acmod=5`, `lfeon=false`, and `chanmap=0x1A00`. It separately defines seven JOC reconstruction carriers `[L, R, C, Ls, Rs, Lrs, Rrs]`. The previous `PROVISIONAL_D0_FRONT3_PLUS_CHANMAP4_V1` model is superseded because it mixed the two domains.
+
+The local source binding now carries the four D0 PCM rows already produced by the provisional source-role projection. That DirectSpeakers-to-D0 projection remains a replaceable assumption. The four-channel D0 audio-block producer, receipt issuance, atomic pair-root commit, final output exposure, and actual encoding remain open; the 5.1 path remains unchanged.
