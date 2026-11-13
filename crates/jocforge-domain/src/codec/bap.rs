@@ -5,6 +5,15 @@
 use serde_json::{Map, Value};
 use sha2::{Digest, Sha256};
 
+mod flat7x_d0_provider;
+
+pub use flat7x_d0_provider::{
+    FLAT7X_D0_BAP_BIN_COUNT, FLAT7X_D0_BAP_BLOCK_COUNT, FLAT7X_D0_BAP_CHANNEL_COUNT,
+    FLAT7X_D0_BAP_PROFILE_ID, FLAT7X_D0_BAP_TABLE_SET_SHA256, Flat7xD0BapBlock, Flat7xD0BapFrame,
+    Flat7xD0BapFrameInput, Flat7xD0BapParameters, Flat7xD0BapRowInput,
+    allocate_flat7x_d0_bap_frame, allocate_flat7x_d0_bap_row,
+};
+
 const SELECTED_SAMPLE_RATE_HZ: u32 = 48_000;
 const SELECTED_PROVIDER_BYTES: usize = 8_509;
 const SELECTED_PROVIDER_SHA256: &str =

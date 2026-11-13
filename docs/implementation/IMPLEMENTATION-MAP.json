@@ -18897,8 +18897,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2222025,
-              "sha256": "100c77ab7df9d8a425b4f1529f22d0f9008feef3d98b752a6ed23abe5fab1e70"
+              "bytes": 2223190,
+              "sha256": "7990f2a67c6100f5132b80b154f02ae2e6fd2fa0a1f16582497d382f5c266eae"
             }
           ],
           "test_modules": [
@@ -22423,8 +22423,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2222025,
-              "sha256": "100c77ab7df9d8a425b4f1529f22d0f9008feef3d98b752a6ed23abe5fab1e70"
+              "bytes": 2223190,
+              "sha256": "7990f2a67c6100f5132b80b154f02ae2e6fd2fa0a1f16582497d382f5c266eae"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -41851,8 +41851,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/bap.rs",
-              "bytes": 25419,
-              "sha256": "2d9421e7f3ecfe91d13ccaf82eb6458d4a670715dbee6a64f268c5878b460073"
+              "bytes": 25794,
+              "sha256": "67f43cc2ae8eb6e95592107f6409a07f152d34567583e3abcdbf241800131e7a"
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_syntax.rs",
@@ -47894,8 +47894,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/bap.rs",
-              "bytes": 25419,
-              "sha256": "2d9421e7f3ecfe91d13ccaf82eb6458d4a670715dbee6a64f268c5878b460073"
+              "bytes": 25794,
+              "sha256": "67f43cc2ae8eb6e95592107f6409a07f152d34567583e3abcdbf241800131e7a"
             },
             {
               "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
@@ -47932,8 +47932,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/bap.rs",
-              "bytes": 25419,
-              "sha256": "2d9421e7f3ecfe91d13ccaf82eb6458d4a670715dbee6a64f268c5878b460073"
+              "bytes": 25794,
+              "sha256": "67f43cc2ae8eb6e95592107f6409a07f152d34567583e3abcdbf241800131e7a"
             },
             {
               "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
@@ -49485,7 +49485,7 @@
           "implementation_status": "LOCALLY_VERIFIED_I0_OPAQUE_D0_F15_PAIR_PROPOSAL_AND_EAC3_U4_U7_EXPONENT_ROW_WRITER__FULL_D0_AUDIO_BLOCK_GAP__PRODUCTION_FALSE",
           "implementation_requirement": true,
           "owner": "application",
-          "scope": "The selected Flat7x CLI route enters ADM/job admission and source execution. Source binding carries four provisional D0 coded PCM rows [Ls, Rs, Lrs, Rrs], separate from seven JOC reconstruction carriers. A source-bound I0 frame and D0 block spans can be joined with same-source F13/I0/D0 receipts into an I0-before-D0 F15 proposal and existing atomic AU staging seam. The D0 pair receipt now carries ZeroFillUnusedAuxBits: the frame assembler writes auxdatae=0, zero-fills unused frame-level auxbits after six audio blocks and the sole block-2 EMDF skip-field, and places CRC2 in the final 16 bits. Arbitrary opaque tail input is restricted to test-support structure fixtures. The CLI still stops at its named D0 audio producer gate; BAP/mantissa production, source-root commit and product output remain open. production_allowed=false.",
+          "scope": "The selected Flat7x CLI route enters ADM/job admission and source execution. Source binding carries four provisional D0 coded PCM rows [Ls, Rs, Lrs, Rrs], separate from seven JOC reconstruction carriers. A source-bound I0 frame and D0 block spans can be joined with same-source F13/I0/D0 receipts into an I0-before-D0 F15 proposal and existing atomic AU staging seam. The D0 pair receipt carries the typed ZeroFillUnusedAuxBits tail policy. A D0-only provider now materializes ETSI TS 102 366 V1.4.1 BAP tables and allocates six blocks × four coded channels × 253 bins; its table-set SHA-256 is 5a9ea2d179dc8017316006e8ffd23b2f5e30f1b363e56740f94787b4ef8e96fe. The restricted 217-bin plus LFE7 selected provider is not reused. D0 PCM transform, D15 exponent production, mantissas, full audblk assembly, source receipts and CLI/parent production remain open. production_allowed=false.",
           "dependencies": [
             "F12/flat7x-i0-typed-bsi-frame-assembly-entry",
             "F12/flat7x-d0-frame-bit-assembler",
@@ -49506,7 +49506,8 @@
             "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/MANIFEST.json",
             "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/PACKAGE-SEAL.json",
             "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/CONTRACT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/POLICY.json"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/POLICY.json",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/SOURCE-REFERENCES.json"
           ],
           "implementation_files": [
             "crates/jocforge-application/src/flat7x_pair_source.rs",
@@ -49530,7 +49531,9 @@
             "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
             "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
             "crates/jocforge-domain/src/profile/mod.rs",
-            "crates/jocforge-domain/src/publication/test_support.rs"
+            "crates/jocforge-domain/src/publication/test_support.rs",
+            "crates/jocforge-domain/src/codec/bap.rs",
+            "crates/jocforge-domain/src/codec/bap/flat7x_d0_provider.rs"
           ],
           "test_modules": [
             "crates/jocforge-application/src/flat7x_pair_source.rs",
@@ -49544,7 +49547,10 @@
             "crates/jocforge-cli/tests/flat7x_pair_io_handoff.rs",
             "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
             "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-            "crates/jocforge-cli/src/encode_request.rs"
+            "crates/jocforge-cli/src/encode_request.rs",
+            "crates/jocforge-domain/src/codec/bap/flat7x_d0_provider.rs",
+            "crates/jocforge-domain/tests/flat7x_d0_bap.rs",
+            "crates/jocforge-domain/tests/bap_converter_search.rs"
           ],
           "clock": {
             "domains": [
@@ -49561,7 +49567,7 @@
           },
           "parameters": {
             "kind": "SOURCE_BOUND_FLAT7X_I0_D0_IN_MEMORY_AU_CANDIDATE",
-            "validation_boundary": "Pins the in-memory pair to the official-demo non-rate profile and the selected 1664-kbps aggregate override: I0 AC-3 640 kbps/2560 bytes, D0 E-AC-3 1024 kbps/4096 bytes, Flat7x spatial/downmix index 1, chanmap 0x1A00 and 15 JOC objects. D0 BSI values and opaque audio spans remain caller-supplied; this candidate does not authorize production output.",
+            "validation_boundary": "The typed D0 provider materializes the ETSI table set and allocates BAP rows for four 253-bin channels over six blocks. It consumes caller-owned decoded exponent rows and candidate/control values. It does not transform PCM, produce exponents/mantissas/audblk bytes, or claim target-frame bit-budget fit; production_allowed=false.",
             "target": {
               "i0_rate_kbps": 640,
               "i0_frame_bytes": 2560,
@@ -49677,7 +49683,9 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/MANIFEST.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/PACKAGE-SEAL.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/POLICY.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/POLICY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/SOURCE-REFERENCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/INPUT-ONLY-VECTORS.json"
             ],
             "d0_source_range_boundary": {
               "package_id": "DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1",
@@ -49763,7 +49771,7 @@
               ],
               "coded_channel_count": 4,
               "joc_reconstruction_carrier_count": 7,
-              "scope": "D0 carries only its four coded chanmap rows. The seven JOC reconstruction carriers are a separate domain. ADM-to-coded-row mapping remains provisional; no transform, BAP, mantissa, or D0 frame bytes are produced.",
+              "scope": "D0 carries its four coded chanmap rows. The seven JOC reconstruction carriers are a separate domain. ADM-to-coded-row mapping remains provisional. The D0 BAP row provider consumes caller-supplied D0 decoded exponent rows; PCM transform, D15 exponent production, mantissas, and frame bytes remain open.",
               "production_allowed": false
             },
             "source_generation_model": {
@@ -49776,9 +49784,9 @@
             "d0_audio_block_producer_gap": {
               "existing_i0_writer_shape": "five full-band lanes plus separate LFE; acmod=7/lfeon=1",
               "selected_d0_target_shape": "four coded channels Ls/Rs/Lrs/Rrs; acmod=5/lfeon=0/chanmap=0x1A00; seven JOC reconstruction carriers remain separate",
-              "local_four_channel_d0_audblk_writer": "U4_U7_EXPONENT_ROW_SERIALIZER_ONLY",
+              "local_four_channel_d0_audblk_writer": "D0_BAP_ROWS_ONLY_4X253X6; U4_U7_SERIALIZER; NO_AUDBLK",
               "producer_input": "Flat7xD0AudioSpanReceipt::from_source_bound_producer",
-              "producer_status": "BLOCKED_ON_D0_TRANSFORM_EXPONENT_BAP_MANTISSA_AND_AUDBLK_ASSEMBLY"
+              "producer_status": "BLOCKED_ON_D0_PCM_TRANSFORM_D15_EXPONENT_MANTISSA_AND_AUDBLK_ASSEMBLY"
             },
             "eac3_exponent_row_writer": {
               "package_id": "EAC3-EXPONENT-U4-U7-WRITER-BOUNDARY-V1",
@@ -49797,6 +49805,22 @@
               "auxdatae": 0,
               "unused_auxbits": "zero",
               "placement": "after six audio blocks and the unique block-2 skip-field, before final CRC2",
+              "production_allowed": false
+            },
+            "d0_bap_provider": {
+              "profile_id": "FLAT7X_D0_FBW253_4CH_NO_LFE_V1",
+              "source_standard": "ETSI TS 102 366 V1.4.1 (2017-09), Tables 6.6-6.12 and 6.14-6.16",
+              "source_reference_file": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/SOURCE-REFERENCES.json",
+              "table_set_sha256": "5a9ea2d179dc8017316006e8ffd23b2f5e30f1b363e56740f94787b4ef8e96fe",
+              "coded_channels": 4,
+              "active_bins_per_channel": 253,
+              "lfe_bins": 0,
+              "blocks": 6,
+              "existing_fbw217_lfe7_provider_reused": false,
+              "pcm_transform_input": "NOT_INTEGRATED; caller supplies D0 decoded exponent rows",
+              "frame_wide_candidate_or_bit_budget_search": "NOT_INTEGRATED",
+              "implementation_module": "crates/jocforge-domain/src/codec/bap/flat7x_d0_provider.rs",
+              "test_module": "crates/jocforge-domain/tests/flat7x_d0_bap.rs",
               "production_allowed": false
             }
           },
@@ -49817,7 +49841,8 @@
               "crates/jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json",
               "crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json",
               "crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-wrapper-config.json",
-              "crates/jocforge-domain/tests/fixtures/integrity_owner/integrity-public-provider.json"
+              "crates/jocforge-domain/tests/fixtures/integrity_owner/integrity-public-provider.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/INPUT-ONLY-VECTORS.json"
             ],
             "case_pointers": [
               "The source-role map, I0 series and D0 producer identity must join by exact SharedAnalysisIdentity.",
@@ -49852,7 +49877,9 @@
               "A source-bound I0 full-frame candidate and caller-owned opaque 4096-byte D0 span, plus same-source F13/I0/D0 receipts, form one 6656-byte I0-before-D0 F15 append proposal.",
               "The public CLI source path currently reports Flat7xD0AudioProducerUnavailable with NoApprovedAudioProductionRule at the D0 span producer input before any output staging call.",
               "The existing AC-3 audio-block producer accepts five full-band channels plus LFE; the D0 target codes four full-band channels with acmod=5/lfeon=0/chanmap=0x1A00. A generic E-AC-3 U4/U7 exponent-row serializer is locally verified; transform, exponent seed/group selection, BAP, mantissa, D0 audblk and six-block source production remain open.",
-              "Typed zero-fill policy writes auxdatae=0 and all remaining frame-tail bits as zero; no flag capacity rejects before caller mutation. Synthetic only."
+              "Typed zero-fill policy writes auxdatae=0 and all remaining frame-tail bits as zero; no flag capacity rejects before caller mutation. Synthetic only.",
+              "The D0 provider test binds the public table-set digest and table landmarks, then allocates 4×253 rows for each of six blocks. Wash extent vectors remain input-only and are not claimed as executed.",
+              "The local D0 BAP provider suite binds ETSI table landmarks and canonical table-set digest, then allocates 4×253 rows for each of six blocks. Wash extent vectors remain input-only."
             ],
             "expected_outputs_included": false,
             "execution_status": "I0_OPAQUE_D0_F15_PAIR_PROPOSAL_AND_EAC3_U4_U7_ROW_WRITER_PASS__FULL_D0_PRODUCER_BLOCKED",
@@ -49940,7 +49967,10 @@
             "The CLI source route reaches the D0 span producer input and returns NoApprovedAudioProductionRule for the current source; it does not stage a partial I0 AU.",
             "The local I0 writer is five full-band plus LFE, while the target D0 uses four coded full-band channels and no LFE. The seven JOC reconstruction carriers are separate. Only caller-supplied U4/U7 exponent-row syntax is implemented; full D0 audio-block syntax and source-owned audio-span production remain unimplemented.",
             "The pair proposal and atomic staging APIs are connected for receipt-bearing callers, but current CLI execution has no D0 producer receipts and no parent F15 pair-root commit/final exposure path.",
-            "No encoder, DEE, staging file, .ec3, or final output was created."
+            "No encoder, DEE, staging file, .ec3, or final output was created.",
+            "D0 PCM transform, D15 exponent generation, mantissa packing, complete audblk writer and frame bit-budget fit remain NOT_RUN.",
+            "The new typed D0 BAP provider has no CLI producer caller or source-generation-bound F12 receipt yet.",
+            "The typed D0 BAP provider has no CLI producer caller or source-generation-bound F12 receipt yet."
           ],
           "validation_boundary": "Synthetic opaque D0 spans and caller BSI values are assembled with the existing D0 frame and AU composers. The E-AC-3 exponent-row helper separately verifies caller-supplied U4/U7 field order, width, cursor extent, and whole-row capacity atomicity. The row seed, group-count and D0 lane join remain caller-owned; production_allowed=false.",
           "delivery_scope": "RECEIPTED_I0_OPAQUE_D0_F15_PAIR_PROPOSAL_CLI_REACHES_D0_AUDIO_PRODUCER_WITH_U4_U7_ROW_WRITER",
@@ -50054,6 +50084,16 @@
               "path": "crates/jocforge-domain/src/publication/test_support.rs",
               "bytes": 12309,
               "sha256": "8c21ed42080a7f9153aa0f8f3eddb0164f2b947381118a2319f08d59ce7f9560"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/bap.rs",
+              "bytes": 25794,
+              "sha256": "67f43cc2ae8eb6e95592107f6409a07f152d34567583e3abcdbf241800131e7a"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/bap/flat7x_d0_provider.rs",
+              "bytes": 13829,
+              "sha256": "087d0425cd7f3022ba1fdf7b0272c28ac828fd2c371890c86663ee2bc61c6114"
             }
           ],
           "test_inventory": [
@@ -50116,6 +50156,21 @@
               "path": "crates/jocforge-cli/src/encode_request.rs",
               "bytes": 66388,
               "sha256": "13ac367bd788d76d2cd1ec50eac3ca24d325f8f24e5efa3b1992da42b4f0f7f2"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/bap/flat7x_d0_provider.rs",
+              "bytes": 13829,
+              "sha256": "087d0425cd7f3022ba1fdf7b0272c28ac828fd2c371890c86663ee2bc61c6114"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_d0_bap.rs",
+              "bytes": 3587,
+              "sha256": "e2026b37ef382fa76105edc7c6f03b6e6dd6abff93a72075f3ecbe632c9ccd22"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/bap_converter_search.rs",
+              "bytes": 19599,
+              "sha256": "9f5ec8729ef45b3f364699d35f5d184b344b970f8c692e3062c27dc4dc371e6b"
             }
           ],
           "vector_inventory": [
@@ -50170,6 +50225,11 @@
               "sha256": "dbf02c22de6dac36da5bd2c90234f4add1c04ecb313d0e0fceb611c289ccd537"
             },
             {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-EXPONENT-U4-U7-WRITER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 1017,
+              "sha256": "b081d55b220a9b971c3ec8a1475f53f6f8aac854d5d781f3b6a0d3ca51dd42e1"
+            },
+            {
               "path": "crates/jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json",
               "bytes": 227297,
               "sha256": "4271ce47e911ba107c1f76931cf872d8240e7152381d0f12bd5b17bf3e2eb023"
@@ -50190,9 +50250,9 @@
               "sha256": "b0f52c55d38b9fba45ec39fc956cd8cd895ce2cfbc1f77d9493d99d2b8636a4d"
             },
             {
-              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-EXPONENT-U4-U7-WRITER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
-              "bytes": 1017,
-              "sha256": "b081d55b220a9b971c3ec8a1475f53f6f8aac854d5d781f3b6a0d3ca51dd42e1"
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 6831,
+              "sha256": "087ab39d07807aee179e5157ee10f408a1a0f16c54a4430c2d1b024a40af62c8"
             }
           ],
           "staging_adapter": {
@@ -59429,8 +59489,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2222025,
-              "sha256": "100c77ab7df9d8a425b4f1529f22d0f9008feef3d98b752a6ed23abe5fab1e70"
+              "bytes": 2223190,
+              "sha256": "7990f2a67c6100f5132b80b154f02ae2e6fd2fa0a1f16582497d382f5c266eae"
             }
           ],
           "test_inventory": [

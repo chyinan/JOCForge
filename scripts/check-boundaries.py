@@ -13095,6 +13095,7 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
     d0_assembler_path = root / "crates/jocforge-domain/src/codec/d0_frame_assembler.rs"
     ac3_test_path = root / "crates/jocforge-domain/src/codec/ac3_audio_block.rs"
     exponent_packing_path = root / "crates/jocforge-domain/src/codec/exponent_packing.rs"
+    d0_bap_path = root / "crates/jocforge-domain/src/codec/bap/flat7x_d0_provider.rs"
     skipfield_test_path = root / "crates/jocforge-domain/src/codec/emdf_skip_field.rs"
     cli_path = root / "crates/jocforge-cli/src/encode_request.rs"
     app = rust_code_without_comments(app_path.read_text(encoding="utf-8"))
@@ -13106,6 +13107,7 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
     ac3_tests = ac3_test_path.read_text(encoding="utf-8")
     exponent_packing_source = exponent_packing_path.read_text(encoding="utf-8")
     exponent_packing = rust_code_without_comments(exponent_packing_source)
+    d0_bap = rust_code_without_comments(d0_bap_path.read_text(encoding="utf-8"))
     skipfield_tests = skipfield_test_path.read_text(encoding="utf-8")
     cli = rust_code_without_comments(cli_path.read_text(encoding="utf-8"))
 
@@ -13180,6 +13182,7 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         ("DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1", "bf2f7e43a4cecd315e21d993c7fddcd8534089224747db1d9d2fc805f914e95d", "CHECK.py", "PASS slot-0-only Config+0x58 read boundary; profile join stays open"),
         ("DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1", "ba65817c81f8097dda3cc3897f337da81c9a46fee0a892051d553c49089e8f04", "CHECK.py", "PASS sanitized I0/D0 AU boundary; join stays unbound and publication disabled"),
         ("EAC3-EXPONENT-U4-U7-WRITER-BOUNDARY-V1", "d1fb9e452554c04bb6c630d143e8124a8790d8610ac20deb61838d14e2f7a2e9", "CHECK.py", "PASS: manifest and payload hashes, exact U4/U7 widths/count/cursor, input-only vectors, and exclusions"),
+        ("FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1", "689d5e4f3b27fd79110f6fb99189d4407384424929b3a74d20ba3447698f545b", "CHECK.py", "PACKAGE_CHECK=PASS package=FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1"),
     ):
         package = root / "outputs/IMPLEMENTER_SUPPLEMENTS" / package_id
         ck(package_id + " | " + manifest_sha256 in catalog, "catalog registers " + package_id)
@@ -13257,10 +13260,21 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         and "eac3_exponent_row_writes_seed_then_u7_groups_msb_first" in exponent_packing_source
         and "eac3_exponent_row_preflights_seed_and_extent_before_mutation" in exponent_packing_source
         and row.get("parameters", {}).get("d0_audio_block_producer_gap", {}).get("local_four_channel_d0_audblk_writer")
-        == "U4_U7_EXPONENT_ROW_SERIALIZER_ONLY"
+        == "D0_BAP_ROWS_ONLY_4X253X6; U4_U7_SERIALIZER; NO_AUDBLK"
         and row.get("parameters", {}).get("d0_audio_block_producer_gap", {}).get("producer_status")
-        == "BLOCKED_ON_D0_TRANSFORM_EXPONENT_BAP_MANTISSA_AND_AUDBLK_ASSEMBLY",
-        "E-AC-3 U4/U7 row writer emits caller values atomically while the D0 audio producer remains partial",
+        == "BLOCKED_ON_D0_PCM_TRANSFORM_D15_EXPONENT_MANTISSA_AND_AUDBLK_ASSEMBLY"
+        and "pub struct Flat7xD0BapParameters" in d0_bap
+        and "pub struct Flat7xD0BapFrameInput" in d0_bap
+        and "pub fn allocate_flat7x_d0_bap_frame(" in d0_bap
+        and "FLAT7X_D0_BAP_BIN_COUNT: usize = 253" in d0_bap
+        and "FLAT7X_D0_BAP_CHANNEL_COUNT: usize = 4" in d0_bap
+        and "FLAT7X_D0_BAP_BLOCK_COUNT: usize = 6" in d0_bap
+        and row.get("parameters", {}).get("d0_bap_provider", {}).get("profile_id")
+        == "FLAT7X_D0_FBW253_4CH_NO_LFE_V1"
+        and row.get("parameters", {}).get("d0_bap_provider", {}).get("table_set_sha256")
+        == "5a9ea2d179dc8017316006e8ffd23b2f5e30f1b363e56740f94787b4ef8e96fe"
+        and row.get("parameters", {}).get("d0_bap_provider", {}).get("existing_fbw217_lfe7_provider_reused") is False,
+        "D0 BAP provider materializes typed 4x253x6 rows while transform, mantissa and audblk remain open",
     )
 
     no_cli_pair_candidate = (
