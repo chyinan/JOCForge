@@ -18897,8 +18897,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2225161,
-              "sha256": "fbd32638da54e3991f816652075b8b6f504436f428c5f5335277f598dca2415d"
+              "bytes": 2243772,
+              "sha256": "038ae50215f7f2dec982cb168adaf741d907bf8b3d7fb77e2467fcfc05ba2fc8"
             }
           ],
           "test_modules": [
@@ -22423,8 +22423,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2225161,
-              "sha256": "fbd32638da54e3991f816652075b8b6f504436f428c5f5335277f598dca2415d"
+              "bytes": 2243772,
+              "sha256": "038ae50215f7f2dec982cb168adaf741d907bf8b3d7fb77e2467fcfc05ba2fc8"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -42546,8 +42546,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1141,
-              "sha256": "310555b04e94adfb45606a8a7b025fa5550aa18eba8ae712dbae11d972673c34"
+              "bytes": 1226,
+              "sha256": "516a0cf69584cbbd47c168b94d8c83659cfda6c7b74469bb031ccaf7b659e440"
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
@@ -42680,8 +42680,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1198,
-              "sha256": "7e5a5f0b02da6b05c5c82acc63c6a1c6b0a0393aa5ad4df2afa56e1d86c18c6b"
+              "bytes": 1226,
+              "sha256": "516a0cf69584cbbd47c168b94d8c83659cfda6c7b74469bb031ccaf7b659e440"
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
@@ -42857,8 +42857,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1198,
-              "sha256": "7e5a5f0b02da6b05c5c82acc63c6a1c6b0a0393aa5ad4df2afa56e1d86c18c6b"
+              "bytes": 1226,
+              "sha256": "516a0cf69584cbbd47c168b94d8c83659cfda6c7b74469bb031ccaf7b659e440"
             },
             {
               "path": "crates/jocforge-domain/src/codec/published_emdf_binding.rs",
@@ -45744,8 +45744,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1141,
-              "sha256": "310555b04e94adfb45606a8a7b025fa5550aa18eba8ae712dbae11d972673c34"
+              "bytes": 1226,
+              "sha256": "516a0cf69584cbbd47c168b94d8c83659cfda6c7b74469bb031ccaf7b659e440"
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
@@ -46316,8 +46316,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1198,
-              "sha256": "7e5a5f0b02da6b05c5c82acc63c6a1c6b0a0393aa5ad4df2afa56e1d86c18c6b"
+              "bytes": 1226,
+              "sha256": "516a0cf69584cbbd47c168b94d8c83659cfda6c7b74469bb031ccaf7b659e440"
             },
             {
               "path": "crates/jocforge-domain/src/codec/d0_frame_assembler.rs",
@@ -47122,8 +47122,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1198,
-              "sha256": "7e5a5f0b02da6b05c5c82acc63c6a1c6b0a0393aa5ad4df2afa56e1d86c18c6b"
+              "bytes": 1226,
+              "sha256": "516a0cf69584cbbd47c168b94d8c83659cfda6c7b74469bb031ccaf7b659e440"
             },
             {
               "path": "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
@@ -47411,8 +47411,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1198,
-              "sha256": "7e5a5f0b02da6b05c5c82acc63c6a1c6b0a0393aa5ad4df2afa56e1d86c18c6b"
+              "bytes": 1226,
+              "sha256": "516a0cf69584cbbd47c168b94d8c83659cfda6c7b74469bb031ccaf7b659e440"
             },
             {
               "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
@@ -47692,8 +47692,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1198,
-              "sha256": "7e5a5f0b02da6b05c5c82acc63c6a1c6b0a0393aa5ad4df2afa56e1d86c18c6b"
+              "bytes": 1226,
+              "sha256": "516a0cf69584cbbd47c168b94d8c83659cfda6c7b74469bb031ccaf7b659e440"
             },
             {
               "path": "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
@@ -47904,8 +47904,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1198,
-              "sha256": "7e5a5f0b02da6b05c5c82acc63c6a1c6b0a0393aa5ad4df2afa56e1d86c18c6b"
+              "bytes": 1226,
+              "sha256": "516a0cf69584cbbd47c168b94d8c83659cfda6c7b74469bb031ccaf7b659e440"
             },
             {
               "path": "crates/jocforge-validation/src/ac3_audio_block_parser.rs",
@@ -48688,8 +48688,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1141,
-              "sha256": "310555b04e94adfb45606a8a7b025fa5550aa18eba8ae712dbae11d972673c34"
+              "bytes": 1226,
+              "sha256": "516a0cf69584cbbd47c168b94d8c83659cfda6c7b74469bb031ccaf7b659e440"
             }
           ],
           "test_modules": [
@@ -49001,8 +49001,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1141,
-              "sha256": "310555b04e94adfb45606a8a7b025fa5550aa18eba8ae712dbae11d972673c34"
+              "bytes": 1226,
+              "sha256": "516a0cf69584cbbd47c168b94d8c83659cfda6c7b74469bb031ccaf7b659e440"
             },
             {
               "path": "crates/jocforge-domain/src/integrity/crc16.rs",
@@ -49164,8 +49164,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1141,
-              "sha256": "310555b04e94adfb45606a8a7b025fa5550aa18eba8ae712dbae11d972673c34"
+              "bytes": 1226,
+              "sha256": "516a0cf69584cbbd47c168b94d8c83659cfda6c7b74469bb031ccaf7b659e440"
             }
           ],
           "test_modules": [
@@ -49308,8 +49308,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1198,
-              "sha256": "7e5a5f0b02da6b05c5c82acc63c6a1c6b0a0393aa5ad4df2afa56e1d86c18c6b"
+              "bytes": 1226,
+              "sha256": "516a0cf69584cbbd47c168b94d8c83659cfda6c7b74469bb031ccaf7b659e440"
             }
           ],
           "test_modules": [
@@ -49481,11 +49481,11 @@
         },
         {
           "slice_id": "flat7x-source-bound-i0-d0-au-candidate",
-          "mapping_status": "MATERIALIZED_PAIR_TYPED_TAIL_D0_SPECTRA_BAP_AND_D15_ROWS__FULL_AUDIO_PRODUCER_OPEN",
-          "implementation_status": "LOCALLY_VERIFIED_D0_SPECTRUM_BAP_D15_AND_U4_U7_ROWS__FULL_AUDBLK_PARENT_PRODUCTION_OPEN",
+          "mapping_status": "MATERIALIZED_PAIR_TYPED_TAIL_D0_SPECTRUM_BAP_D15_AND_MANTISSA__FULL_AUDBLK_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_D0_SPECTRUM_BAP_D15_MANTISSA_AND_U4_U7__FULL_AUDBLK_PARENT_PRODUCTION_OPEN",
           "implementation_requirement": true,
           "owner": "application",
-          "scope": "The selected Flat7x CLI route enters ADM/job admission and source execution. Source binding carries four provisional D0 coded PCM rows [Ls, Rs, Lrs, Rrs], separate from seven JOC reconstruction carriers. A source-bound I0 frame and D0 block spans can be joined with same-source F13/I0/D0 receipts into an I0-before-D0 F15 proposal and existing atomic AU staging seam. The D0 pair receipt carries the typed ZeroFillUnusedAuxBits tail policy. D0 spectrum analysis consumes four typed 512-sample windows through the shared `transform::long_mdct` core, returns 253 coefficient bins/channel, and derives gainrng per channel. A D0-only ETSI table provider allocates six-block 4×253 BAP rows. A D15 exponent row stage extracts leading-zero exponents and emits U4 plus 84 U7 groups; its explicitly named JOCForge seed-cap and slew-limit preprocessing policy is pending Wash review. Mantissas, full audblk assembly, source receipts and CLI/parent production remain open. production_allowed=false.",
+          "scope": "The selected Flat7x CLI route enters ADM/job admission and source execution. Source binding carries four provisional D0 coded PCM rows [Ls, Rs, Lrs, Rrs], separate from seven JOC reconstruction carriers. A source-bound I0 frame and D0 block spans can be joined with same-source F13/I0/D0 receipts into an I0-before-D0 F15 proposal and existing atomic AU staging seam. The D0 pair receipt carries the typed ZeroFillUnusedAuxBits tail policy. D0 spectrum analysis consumes four typed 512-sample windows through the shared transform::long_mdct core, returns 253 coefficient bins/channel, and derives gainrng per channel. A D0-only ETSI table provider allocates six-block 4x253 BAP rows. A D15 row stage returns final decoder-visible exponents plus U4/U7 values. The D0 mantissa stage uses those decoded exponents and selected-block BAP rows with the existing E-AC-3 quantizer/grouping core under replaceable policy JOCFORGE_EXISTING_EAC3_QUANTIZER_V1. It returns block-local packed mantissa bits only; frame-wide budget, complete audblk, source receipt and CLI/parent production remain open. production_allowed=false.",
           "dependencies": [
             "F12/flat7x-i0-typed-bsi-frame-assembly-entry",
             "F12/flat7x-d0-frame-bit-assembler",
@@ -49495,72 +49495,79 @@
           ],
           "spec_files": [
             "docs/architecture/adm-to-eac3joc-chain-status.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1/RECEIPT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1/FINDINGS.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/FINDINGS.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-EMDF-SINGLE-FIELD-FAIL-CLOSED-CONTRACT-V1/FINDINGS.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-RATE-FRMSIZ-TARGET-V1/FINDINGS.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/MANIFEST.json",
             "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1/CONTRACT.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-EXPONENT-U4-U7-WRITER-BOUNDARY-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1/FINDINGS.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/CONTRACT.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/MANIFEST.json",
             "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/PACKAGE-SEAL.json",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/CONTRACT.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/POLICY.json",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/SOURCE-REFERENCES.json"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/SOURCE-REFERENCES.json",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-RATE-FRMSIZ-TARGET-V1/FINDINGS.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/FINDINGS.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-EMDF-SINGLE-FIELD-FAIL-CLOSED-CONTRACT-V1/FINDINGS.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1/RECEIPT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1/REPORT.md"
           ],
           "implementation_files": [
+            "crates/jocforge-application/src/flat7x_pair_output.rs",
             "crates/jocforge-application/src/flat7x_pair_source.rs",
+            "crates/jocforge-application/src/lib.rs",
+            "crates/jocforge-cli/Cargo.toml",
+            "crates/jocforge-cli/src/encode_request.rs",
+            "crates/jocforge-cli/src/output_publication.rs",
+            "crates/jocforge-cli/src/source_execution.rs",
+            "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
             "crates/jocforge-domain/src/codec/access_unit_composer.rs",
+            "crates/jocforge-domain/src/codec/bap.rs",
+            "crates/jocforge-domain/src/codec/bap/flat7x_d0_provider.rs",
             "crates/jocforge-domain/src/codec/d0_frame_assembler.rs",
             "crates/jocforge-domain/src/codec/d0_frame_layout.rs",
             "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
-            "crates/jocforge-domain/src/codec/frame_builder.rs",
-            "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
             "crates/jocforge-domain/src/codec/exponent_packing.rs",
-            "crates/jocforge-domain/src/transform/fullband_exponent_pipeline.rs",
-            "crates/jocforge-application/src/flat7x_pair_output.rs",
-            "crates/jocforge-application/src/lib.rs",
-            "crates/jocforge-io/src/flat7x_au_append.rs",
-            "crates/jocforge-cli/Cargo.toml",
-            "crates/jocforge-cli/src/output_publication.rs",
-            "crates/jocforge-domain/src/publication/flat7x_au_output.rs",
-            "crates/jocforge-io/Cargo.toml",
-            "crates/jocforge-cli/src/encode_request.rs",
-            "crates/jocforge-cli/src/source_execution.rs",
-            "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
-            "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-            "crates/jocforge-domain/src/profile/mod.rs",
-            "crates/jocforge-domain/src/publication/test_support.rs",
-            "crates/jocforge-domain/src/codec/bap.rs",
-            "crates/jocforge-domain/src/codec/bap/flat7x_d0_provider.rs",
-            "crates/jocforge-domain/src/codec/mod.rs",
-            "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
+            "crates/jocforge-domain/src/codec/flat7x_d0_exponents.rs",
+            "crates/jocforge-domain/src/codec/flat7x_d0_mantissa.rs",
             "crates/jocforge-domain/src/codec/flat7x_d0_spectrum.rs",
+            "crates/jocforge-domain/src/codec/frame_builder.rs",
+            "crates/jocforge-domain/src/codec/grouped_quantizer.rs",
+            "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
+            "crates/jocforge-domain/src/codec/mantissa.rs",
+            "crates/jocforge-domain/src/codec/mod.rs",
+            "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
+            "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
+            "crates/jocforge-domain/src/profile/mod.rs",
+            "crates/jocforge-domain/src/publication/flat7x_au_output.rs",
+            "crates/jocforge-domain/src/publication/test_support.rs",
+            "crates/jocforge-domain/src/transform/fullband_exponent_pipeline.rs",
             "crates/jocforge-domain/src/transform/long_mdct.rs",
             "crates/jocforge-domain/src/transform/mod.rs",
-            "crates/jocforge-domain/src/codec/flat7x_d0_exponents.rs",
-            "crates/jocforge-domain/src/codec/mantissa.rs"
+            "crates/jocforge-io/Cargo.toml",
+            "crates/jocforge-io/src/flat7x_au_append.rs",
+            "scripts/check-boundaries.py"
           ],
           "test_modules": [
             "crates/jocforge-application/src/flat7x_pair_source.rs",
-            "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
-            "crates/jocforge-domain/src/codec/exponent_packing.rs",
-            "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
-            "crates/jocforge-domain/tests/flat7x_access_unit_composer.rs",
-            "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs",
-            "crates/jocforge-io/src/flat7x_au_append.rs",
+            "crates/jocforge-cli/src/encode_request.rs",
             "crates/jocforge-cli/src/output_publication/tests.rs",
             "crates/jocforge-cli/tests/flat7x_pair_io_handoff.rs",
-            "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
-            "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-            "crates/jocforge-cli/src/encode_request.rs",
+            "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
             "crates/jocforge-domain/src/codec/bap/flat7x_d0_provider.rs",
-            "crates/jocforge-domain/tests/flat7x_d0_bap.rs",
-            "crates/jocforge-domain/tests/bap_converter_search.rs",
+            "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
+            "crates/jocforge-domain/src/codec/exponent_packing.rs",
             "crates/jocforge-domain/src/codec/flat7x_d0_spectrum.rs",
+            "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
+            "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
+            "crates/jocforge-domain/tests/bap_converter_search.rs",
+            "crates/jocforge-domain/tests/flat7x_access_unit_composer.rs",
+            "crates/jocforge-domain/tests/flat7x_d0_bap.rs",
+            "crates/jocforge-domain/tests/flat7x_d0_exponents.rs",
+            "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs",
+            "crates/jocforge-domain/tests/flat7x_d0_mantissa.rs",
             "crates/jocforge-domain/tests/flat7x_d0_spectrum.rs",
-            "crates/jocforge-domain/tests/flat7x_d0_exponents.rs"
+            "crates/jocforge-domain/tests/grouped_quantizer.rs",
+            "crates/jocforge-io/src/flat7x_au_append.rs"
           ],
           "clock": {
             "domains": [
@@ -49577,7 +49584,7 @@
           },
           "parameters": {
             "kind": "SOURCE_BOUND_FLAT7X_I0_D0_IN_MEMORY_AU_CANDIDATE",
-            "validation_boundary": "D0 spectrum analysis produces four 253-bin coefficient rows and measured gainrng. The D0-only BAP provider allocates rows from decoded exponents. The D15 row stage extracts raw exponents and applies the named lower-only JOCForge preprocessor, returning the decoder-visible exponent row plus U4/U7 values. The preprocessor follows ETSI legal-sequence constraints but is an explicit replaceable local choice. No mantissa, audblk, frame fit, source receipt or production output is claimed. production_allowed=false.",
+            "validation_boundary": "D0 spectrum analysis produces four 253-bin coefficient rows and measured gainrng. The D0-only BAP provider allocates six blocks of four rows from final decoder-visible exponents. The D15 row stage returns its selected local lower-only projection and U4/U7 values. The D0 mantissa stage scales each coefficient with the matching decoder-visible exponent and selected block BAP, then reuses the existing generic E-AC-3 quantizer and grouped packer. Wash mantissa vectors are input-only and omit expected quantizer/group codes; local tests check the D0 adapter against the shared quantizer. Frame-wide BAP candidate/bit-budget selection, complete audblk assembly, source receipt and production output remain open. production_allowed=false.",
             "target": {
               "i0_rate_kbps": 640,
               "i0_frame_bytes": 2560,
@@ -49662,40 +49669,42 @@
             "partial_or_file_publication": false,
             "production_allowed": false,
             "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-EMDF-SINGLE-FIELD-FAIL-CLOSED-CONTRACT-V1/manifest.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-RATE-FRMSIZ-TARGET-V1/manifest.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1/manifest.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1/SKIPFLD-VALUES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1/manifest.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1/package_seal.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1/SOURCE-RECEIPTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-RANGE-WRITE-BOUNDARY-V1/manifest.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-RANGE-WRITE-BOUNDARY-V1/package_seal.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-RANGE-WRITE-BOUNDARY-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-RANGE-WRITE-BOUNDARY-V1/SOURCE-RECEIPTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1/manifest.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1/package_seal.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1/SOURCE-RECEIPTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1/manifest.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1/package_seal.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1/SOURCE-RECEIPTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/integrity_owner/integrity-public-provider.json",
               "crates/jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json",
               "crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json",
               "crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-wrapper-config.json",
-              "crates/jocforge-domain/tests/fixtures/integrity_owner/integrity-public-provider.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1/SOURCE-RECEIPTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1/manifest.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-RANGE-WRITE-BOUNDARY-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-RANGE-WRITE-BOUNDARY-V1/SOURCE-RECEIPTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-RANGE-WRITE-BOUNDARY-V1/manifest.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-RANGE-WRITE-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1/SOURCE-RECEIPTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1/manifest.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1/SOURCE-RECEIPTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1/manifest.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/MANIFEST.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/PACKAGE-SEAL.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/CONTRACT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/POLICY.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/SOURCE-REFERENCES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/INPUT-ONLY-VECTORS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-RATE-FRMSIZ-TARGET-V1/manifest.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-EMDF-SINGLE-FIELD-FAIL-CLOSED-CONTRACT-V1/manifest.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1/SKIPFLD-VALUES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1/manifest.json"
             ],
             "d0_source_range_boundary": {
               "package_id": "DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1",
@@ -49794,9 +49803,9 @@
             "d0_audio_block_producer_gap": {
               "existing_i0_writer_shape": "five full-band lanes plus separate LFE; acmod=7/lfeon=1",
               "selected_d0_target_shape": "four coded channels Ls/Rs/Lrs/Rrs; acmod=5/lfeon=0/chanmap=0x1A00; seven JOC reconstruction carriers remain separate",
-              "local_four_channel_d0_audblk_writer": "D0_SPECTRA_BAP_D15_ROWS_ONLY_4X253X6; NO_MANTISSA_OR_AUDBLK",
+              "local_four_channel_d0_audblk_writer": "D0_SPECTRUM_BAP_D15_MANTISSA_PACKING; NO_COMPLETE_AUDBLK",
               "producer_input": "Flat7xD0AudioSpanReceipt::from_source_bound_producer",
-              "producer_status": "BLOCKED_ON_D0_FRAME_WIDE_BIT_BUDGET_MANTISSA_AUDBLK_AND_F12_RECEIPT"
+              "producer_status": "BLOCKED_ON_FRAME_WIDE_BIT_BUDGET_COMPLETE_AUDBLK_AND_F12_RECEIPT"
             },
             "eac3_exponent_row_writer": {
               "package_id": "EAC3-EXPONENT-U4-U7-WRITER-BOUNDARY-V1",
@@ -49864,27 +49873,53 @@
               "production_allowed": false,
               "wash_review_status": "RECOMMENDATION_RECEIVED; LOCAL_POLICY_REPLACEABLE; PRODUCTION_DISABLED",
               "decoded_exponent_consumers": "BAP and future mantissa stage consume decoded_exponents returned by this row"
+            },
+            "d0_mantissa_stage": {
+              "profile_id": "FLAT7X_D0_FBW253_4CH_NO_LFE_V1",
+              "channel_order": [
+                "Ls",
+                "Rs",
+                "Lrs",
+                "Rrs"
+              ],
+              "bins_per_channel": 253,
+              "input": "Flat7xD0SpectrumBlock plus matching Flat7xD0ExponentRow decoder-visible values and selected Flat7xD0BapFrame block",
+              "normalization": "codec::mantissa::quantize_mantissa scales each coefficient using the matching decoder-visible exponent",
+              "quantizer_policy_id": "JOCFORGE_EXISTING_EAC3_QUANTIZER_V1",
+              "grouped_packer": "codec::grouped_quantizer::pack_block_mantissas",
+              "output": "Block-local quantizer observations, grouped fields, MSB-first bytes and bit count",
+              "wash_package_id": "CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1",
+              "wash_manifest_sha256": "fd819c3ec27e7bade55efda5e648792c9c33892a9be7a36bbfce89231b9e961f",
+              "wash_input_only_vectors": true,
+              "wash_expected_codes_included": false,
+              "local_tests": [
+                "d0_mantissa_uses_decoder_visible_exponents_for_each_coded_row",
+                "d0_mantissa_groups_quantize_with_the_selected_block_bap_rows"
+              ],
+              "test_output_oracle": "Shared generic quantizer consistency only; no independent expected quantizer codes",
+              "production_allowed": false
             }
           },
           "vectors": {
             "kind": "SOURCE_BOUND_I0_CANDIDATE_PLUS_OPAQUE_D0_FRAME_F15_PROPOSAL_AND_TYPED_CLI_BLOCKER",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/INPUT-ONLY-VECTOR.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/INPUT-ONLY-VECTOR.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-EMDF-SINGLE-FIELD-FAIL-CLOSED-CONTRACT-V1/FIELD-CONTRACT.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-RATE-FRMSIZ-TARGET-V1/FRAME-SIZE-VECTOR.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1/SKIPFLD-VALUES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1/TARGET-AU-ORDER-VECTOR.json",
-              "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json",
               "crates/jocforge-domain/tests/fixtures/flat7x_au_composer/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-EXPONENT-U4-U7-WRITER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/integrity_owner/integrity-public-provider.json",
               "crates/jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json",
               "crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json",
               "crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-wrapper-config.json",
-              "crates/jocforge-domain/tests/fixtures/integrity_owner/integrity-public-provider.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/INPUT-ONLY-VECTORS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-EXPONENT-U4-U7-WRITER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-RATE-FRMSIZ-TARGET-V1/FRAME-SIZE-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/INPUT-ONLY-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/INPUT-ONLY-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-EMDF-SINGLE-FIELD-FAIL-CLOSED-CONTRACT-V1/FIELD-CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1/TARGET-AU-ORDER-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1/SKIPFLD-VALUES.json"
             ],
             "case_pointers": [
               "The source-role map, I0 series and D0 producer identity must join by exact SharedAnalysisIdentity.",
@@ -49927,7 +49962,7 @@
               "D15 tests cover [24,0], [0,24], [24,24,0], [0,0,24], 10,000 deterministic invariant rows, decoded<=raw and ±2 differences, the 84-group tail, and exact 592-bit U4/U7 serialization under the named lower-only local policy."
             ],
             "expected_outputs_included": false,
-            "execution_status": "D0_SPECTRUM_BAP_D15_LOCAL_VECTORS_PASS; WASH_EXTENT_VECTOR_NOT_EXECUTED",
+            "execution_status": "D0_SPECTRUM_BAP_D15_AND_MANTISSA_LOCAL_INPUT_ONLY_TESTS_PASS; WASH_EXPECTED_CODES_NOT_PROVIDED",
             "application_integration_test": {
               "name": "application_pair_candidate_composes_matching_i0_d0_frames_in_one_au",
               "command": "cargo test -p jocforge-application --lib application_pair_candidate_composes_matching_i0_d0_frames_in_one_au --features test-support --locked -j1",
@@ -49971,6 +50006,19 @@
               "local_supported_shape": "five full-band plus LFE; acmod=7/lfeon=1",
               "required_d0_shape": "four coded channels from chanmap 0x1A00; E-AC-3 acmod=5/lfeon=0; separate seven-carrier JOC reconstruction profile",
               "status": "U4_U7_ROW_WRITER_LOCALLY_VERIFIED; FULL_D0_AUDBLK_WRITER_OPEN"
+            },
+            "d0_mantissa_tests": {
+              "test_file": "crates/jocforge-domain/tests/flat7x_d0_mantissa.rs",
+              "test_count": 2,
+              "input_kind": "synthetic typed PCM/spectrum/D15/BAP values",
+              "assertions": [
+                "four-channel 4x253 output order",
+                "decoder-visible exponent quantizer consistency",
+                "selected block BAP row",
+                "grouped-pack extents and output bit count"
+              ],
+              "wash_expected_codes_used": false,
+              "production_allowed": false
             }
           },
           "error_outcomes": [
@@ -50002,26 +50050,71 @@
             "External ProEncoder range population and the source-generation-bound D0 span owner remain UNBOUND; source-range reads do not produce audio spans.",
             "The in-memory I/O sink is test-only; no staging File, .ec3, final exposure or durable receipt was created.",
             "The CLI source route reaches the D0 span producer input and returns NoApprovedAudioProductionRule for the current source; it does not stage a partial I0 AU.",
-            "The local I0 writer is five full-band plus LFE, while the target D0 uses four coded full-band channels and no LFE. The seven JOC reconstruction carriers are separate. D0 BAP/D15 row stages are materialized; full D0 audblk syntax and source-owned audio-span production remain unimplemented.",
+            "D0 spectrum/BAP/D15/mantissa stages are locally materialized; full D0 audblk syntax and source-owned audio-span production remain unimplemented.",
             "The pair proposal and atomic staging APIs are connected for receipt-bearing callers, but current CLI execution has no D0 producer receipts and no parent F15 pair-root commit/final exposure path.",
             "No encoder, DEE, staging file, .ec3, or final output was created.",
             "The new typed D0 BAP provider has no CLI producer caller or source-generation-bound F12 receipt yet.",
             "The typed D0 BAP provider has no CLI producer caller or source-generation-bound F12 receipt yet.",
-            "D0 mantissa packing, complete audblk writer, frame-wide SNR/bit-budget search and source-bound F12 receipt remain NOT_RUN.",
+            "Frame-wide SNR/bit-budget search, complete D0 audblk writer, source-bound F12 receipt, CLI producer and parent F15 atomic commit remain NOT_RUN.",
             "The selected JOCForge lower-only D15 preprocessor is a replaceable model choice; final audio-block and source-receipt integration remains pending."
           ],
           "validation_boundary": "Synthetic opaque D0 spans and caller BSI values are assembled with the existing D0 frame and AU composers. The E-AC-3 exponent-row helper separately verifies caller-supplied U4/U7 field order, width, cursor extent, and whole-row capacity atomicity. The row seed, group-count and D0 lane join remain caller-owned; production_allowed=false.",
           "delivery_scope": "RECEIPTED_I0_D0_PAIR_CANDIDATE_WITH_D0_SPECTRUM_BAP_D15_ROWS__NO_FULL_AUDBLK_OR_PRODUCTION",
           "implementation_inventory": [
             {
+              "path": "crates/jocforge-application/src/flat7x_pair_output.rs",
+              "bytes": 25319,
+              "sha256": "421ff5eeeee65632f242a8d5ec015b05771e1415110c5e3bb916d55a6d051208"
+            },
+            {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
               "bytes": 59489,
               "sha256": "7e478006a2a3c2a7e758c107c76dea20c6afed452c2b031e37a79a68e7951c7e"
             },
             {
+              "path": "crates/jocforge-application/src/lib.rs",
+              "bytes": 39292,
+              "sha256": "dde52b4bf3145f72db6a75a2d08548a66e820ed04f32b7935bee2d2e35bc6b4e"
+            },
+            {
+              "path": "crates/jocforge-cli/Cargo.toml",
+              "bytes": 721,
+              "sha256": "a0fa6a1d647e48a3f84df3353c2df34aca3c1534b6383ee0956cb1d045878c87"
+            },
+            {
+              "path": "crates/jocforge-cli/src/encode_request.rs",
+              "bytes": 66388,
+              "sha256": "13ac367bd788d76d2cd1ec50eac3ca24d325f8f24e5efa3b1992da42b4f0f7f2"
+            },
+            {
+              "path": "crates/jocforge-cli/src/output_publication.rs",
+              "bytes": 21906,
+              "sha256": "d72ee6c5621b8bbe63c2b8835eac1861395e374a6b3987a9823d32c67a973c67"
+            },
+            {
+              "path": "crates/jocforge-cli/src/source_execution.rs",
+              "bytes": 24225,
+              "sha256": "0a0fe4b5580d0fd6a220e719fbd23af707c01b2938b692162467f16d9920534a"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
+              "bytes": 89887,
+              "sha256": "759501356aa30bfaf938bcbf645890a9b9bd5b4654a3c5ca953bb20628d4ea7c"
+            },
+            {
               "path": "crates/jocforge-domain/src/codec/access_unit_composer.rs",
               "bytes": 11894,
               "sha256": "5117114aa46744649ec0bdc77137f85ec626b020eb4c6d6534d3af530533e17c"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/bap.rs",
+              "bytes": 25794,
+              "sha256": "67f43cc2ae8eb6e95592107f6409a07f152d34567583e3abcdbf241800131e7a"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/bap/flat7x_d0_provider.rs",
+              "bytes": 13829,
+              "sha256": "087d0425cd7f3022ba1fdf7b0272c28ac828fd2c371890c86663ee2bc61c6114"
             },
             {
               "path": "crates/jocforge-domain/src/codec/d0_frame_assembler.rs",
@@ -50039,9 +50132,34 @@
               "sha256": "1eed121576d901e8d7acf6e0df01f4ef265abc897125f6705b0fb9b8a2d570c4"
             },
             {
+              "path": "crates/jocforge-domain/src/codec/exponent_packing.rs",
+              "bytes": 7317,
+              "sha256": "7f0529dda86fd27540b43093a04dc51b39ad2c475638ecf2525b3fd505764c17"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/flat7x_d0_exponents.rs",
+              "bytes": 5479,
+              "sha256": "604e3f8680e274db6f0c50018665fc5725faf5f8ca50ea33c6e1f65a60a29203"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/flat7x_d0_mantissa.rs",
+              "bytes": 3675,
+              "sha256": "52b51edab2471b7e4ecc16f052a397f455d96da394999ed181bbfd1abc8a2968"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/flat7x_d0_spectrum.rs",
+              "bytes": 4489,
+              "sha256": "88fb6827d5f0a2dd719f5ecd879689e0ea1bdae40fb3f03b6398becca1cf9557"
+            },
+            {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
               "bytes": 43493,
               "sha256": "992fa2b5c5f5ff47aef536e0289474432bdf8919f224407af34b5b8c6c761f64"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/grouped_quantizer.rs",
+              "bytes": 7891,
+              "sha256": "92fc4e16edd27a0e5faf0b94dfa1b0becb2fe0177b32ed36ee3e43948ec2bbe5"
             },
             {
               "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
@@ -50049,64 +50167,14 @@
               "sha256": "21c24753e26f7898310164acabc362ed7698c3ca3017f2a6e398c11b5ebcd4f0"
             },
             {
-              "path": "crates/jocforge-domain/src/codec/exponent_packing.rs",
-              "bytes": 7317,
-              "sha256": "7f0529dda86fd27540b43093a04dc51b39ad2c475638ecf2525b3fd505764c17"
+              "path": "crates/jocforge-domain/src/codec/mantissa.rs",
+              "bytes": 10785,
+              "sha256": "08d41fd3f1846c9d768cc774104d0eac8339a6e1e604db89998dee2e0537e6ea"
             },
             {
-              "path": "crates/jocforge-domain/src/transform/fullband_exponent_pipeline.rs",
-              "bytes": 5770,
-              "sha256": "4beb7c4f073a4bb5d86b4682e2d9a9a81aa8196d6a98a9a92190bb3cd3c3b164"
-            },
-            {
-              "path": "crates/jocforge-application/src/flat7x_pair_output.rs",
-              "bytes": 25319,
-              "sha256": "421ff5eeeee65632f242a8d5ec015b05771e1415110c5e3bb916d55a6d051208"
-            },
-            {
-              "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 39292,
-              "sha256": "dde52b4bf3145f72db6a75a2d08548a66e820ed04f32b7935bee2d2e35bc6b4e"
-            },
-            {
-              "path": "crates/jocforge-io/src/flat7x_au_append.rs",
-              "bytes": 16503,
-              "sha256": "283cdbf25e21d14b86d8dadabf1709224c61e77754c20b625ccf10cffca4fb5a"
-            },
-            {
-              "path": "crates/jocforge-cli/Cargo.toml",
-              "bytes": 721,
-              "sha256": "a0fa6a1d647e48a3f84df3353c2df34aca3c1534b6383ee0956cb1d045878c87"
-            },
-            {
-              "path": "crates/jocforge-cli/src/output_publication.rs",
-              "bytes": 21906,
-              "sha256": "d72ee6c5621b8bbe63c2b8835eac1861395e374a6b3987a9823d32c67a973c67"
-            },
-            {
-              "path": "crates/jocforge-domain/src/publication/flat7x_au_output.rs",
-              "bytes": 44312,
-              "sha256": "ec60b40944699a08b6c7f4882ef62660a6e6a4b4e0833a09c7d5b7fba9256b98"
-            },
-            {
-              "path": "crates/jocforge-io/Cargo.toml",
-              "bytes": 702,
-              "sha256": "d812284e191fcc901125754ddb3e08b048f55fc22d19842eb2c0ef85763051aa"
-            },
-            {
-              "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 66388,
-              "sha256": "13ac367bd788d76d2cd1ec50eac3ca24d325f8f24e5efa3b1992da42b4f0f7f2"
-            },
-            {
-              "path": "crates/jocforge-cli/src/source_execution.rs",
-              "bytes": 24225,
-              "sha256": "0a0fe4b5580d0fd6a220e719fbd23af707c01b2938b692162467f16d9920534a"
-            },
-            {
-              "path": "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
-              "bytes": 20171,
-              "sha256": "555f07c12e1d2f9deec679a1ed909ce0913c76ee871a9656d22730a9cc5d4c37"
+              "path": "crates/jocforge-domain/src/codec/mod.rs",
+              "bytes": 1226,
+              "sha256": "516a0cf69584cbbd47c168b94d8c83659cfda6c7b74469bb031ccaf7b659e440"
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
@@ -50114,9 +50182,19 @@
               "sha256": "e18c1f3378b1be9f95a0ee530a8424c31ef4828135423a712840584eb133f0e7"
             },
             {
+              "path": "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
+              "bytes": 20171,
+              "sha256": "555f07c12e1d2f9deec679a1ed909ce0913c76ee871a9656d22730a9cc5d4c37"
+            },
+            {
               "path": "crates/jocforge-domain/src/profile/mod.rs",
               "bytes": 1941,
               "sha256": "75d90d4c20e96fbc5c69650007bd3e7a1ba012110ad7499befd366993cf5683d"
+            },
+            {
+              "path": "crates/jocforge-domain/src/publication/flat7x_au_output.rs",
+              "bytes": 44312,
+              "sha256": "ec60b40944699a08b6c7f4882ef62660a6e6a4b4e0833a09c7d5b7fba9256b98"
             },
             {
               "path": "crates/jocforge-domain/src/publication/test_support.rs",
@@ -50124,29 +50202,9 @@
               "sha256": "8c21ed42080a7f9153aa0f8f3eddb0164f2b947381118a2319f08d59ce7f9560"
             },
             {
-              "path": "crates/jocforge-domain/src/codec/bap.rs",
-              "bytes": 25794,
-              "sha256": "67f43cc2ae8eb6e95592107f6409a07f152d34567583e3abcdbf241800131e7a"
-            },
-            {
-              "path": "crates/jocforge-domain/src/codec/bap/flat7x_d0_provider.rs",
-              "bytes": 13829,
-              "sha256": "087d0425cd7f3022ba1fdf7b0272c28ac828fd2c371890c86663ee2bc61c6114"
-            },
-            {
-              "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1198,
-              "sha256": "7e5a5f0b02da6b05c5c82acc63c6a1c6b0a0393aa5ad4df2afa56e1d86c18c6b"
-            },
-            {
-              "path": "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
-              "bytes": 89887,
-              "sha256": "759501356aa30bfaf938bcbf645890a9b9bd5b4654a3c5ca953bb20628d4ea7c"
-            },
-            {
-              "path": "crates/jocforge-domain/src/codec/flat7x_d0_spectrum.rs",
-              "bytes": 4489,
-              "sha256": "88fb6827d5f0a2dd719f5ecd879689e0ea1bdae40fb3f03b6398becca1cf9557"
+              "path": "crates/jocforge-domain/src/transform/fullband_exponent_pipeline.rs",
+              "bytes": 5770,
+              "sha256": "4beb7c4f073a4bb5d86b4682e2d9a9a81aa8196d6a98a9a92190bb3cd3c3b164"
             },
             {
               "path": "crates/jocforge-domain/src/transform/long_mdct.rs",
@@ -50159,14 +50217,19 @@
               "sha256": "e096513286e3f678dbabdb6962064551172d74e7d28678c096f7d2cab2fa70bd"
             },
             {
-              "path": "crates/jocforge-domain/src/codec/flat7x_d0_exponents.rs",
-              "bytes": 5479,
-              "sha256": "604e3f8680e274db6f0c50018665fc5725faf5f8ca50ea33c6e1f65a60a29203"
+              "path": "crates/jocforge-io/Cargo.toml",
+              "bytes": 702,
+              "sha256": "d812284e191fcc901125754ddb3e08b048f55fc22d19842eb2c0ef85763051aa"
             },
             {
-              "path": "crates/jocforge-domain/src/codec/mantissa.rs",
-              "bytes": 10785,
-              "sha256": "08d41fd3f1846c9d768cc774104d0eac8339a6e1e604db89998dee2e0537e6ea"
+              "path": "crates/jocforge-io/src/flat7x_au_append.rs",
+              "bytes": 16503,
+              "sha256": "283cdbf25e21d14b86d8dadabf1709224c61e77754c20b625ccf10cffca4fb5a"
+            },
+            {
+              "path": "scripts/check-boundaries.py",
+              "bytes": 2243772,
+              "sha256": "038ae50215f7f2dec982cb168adaf741d907bf8b3d7fb77e2467fcfc05ba2fc8"
             }
           ],
           "test_inventory": [
@@ -50176,34 +50239,9 @@
               "sha256": "7e478006a2a3c2a7e758c107c76dea20c6afed452c2b031e37a79a68e7951c7e"
             },
             {
-              "path": "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
-              "bytes": 89887,
-              "sha256": "759501356aa30bfaf938bcbf645890a9b9bd5b4654a3c5ca953bb20628d4ea7c"
-            },
-            {
-              "path": "crates/jocforge-domain/src/codec/exponent_packing.rs",
-              "bytes": 7317,
-              "sha256": "7f0529dda86fd27540b43093a04dc51b39ad2c475638ecf2525b3fd505764c17"
-            },
-            {
-              "path": "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
-              "bytes": 12243,
-              "sha256": "1eed121576d901e8d7acf6e0df01f4ef265abc897125f6705b0fb9b8a2d570c4"
-            },
-            {
-              "path": "crates/jocforge-domain/tests/flat7x_access_unit_composer.rs",
-              "bytes": 5774,
-              "sha256": "aab17f765979a1bfca9f6f7c729911cceec58b633623a8cfc70c919ed39bff0d"
-            },
-            {
-              "path": "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs",
-              "bytes": 25617,
-              "sha256": "dba27ba79a3dd4ff3a20f2b44c1a8f8765b413bc3604933a05e7dd18b73ccdae"
-            },
-            {
-              "path": "crates/jocforge-io/src/flat7x_au_append.rs",
-              "bytes": 16503,
-              "sha256": "283cdbf25e21d14b86d8dadabf1709224c61e77754c20b625ccf10cffca4fb5a"
+              "path": "crates/jocforge-cli/src/encode_request.rs",
+              "bytes": 66388,
+              "sha256": "13ac367bd788d76d2cd1ec50eac3ca24d325f8f24e5efa3b1992da42b4f0f7f2"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication/tests.rs",
@@ -50216,19 +50254,9 @@
               "sha256": "4d0e145875a26214c91232ed7fe97084f7ecaa826982bf874e064e5100a5e48e"
             },
             {
-              "path": "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
-              "bytes": 20171,
-              "sha256": "555f07c12e1d2f9deec679a1ed909ce0913c76ee871a9656d22730a9cc5d4c37"
-            },
-            {
-              "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 37419,
-              "sha256": "e18c1f3378b1be9f95a0ee530a8424c31ef4828135423a712840584eb133f0e7"
-            },
-            {
-              "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 66388,
-              "sha256": "13ac367bd788d76d2cd1ec50eac3ca24d325f8f24e5efa3b1992da42b4f0f7f2"
+              "path": "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
+              "bytes": 89887,
+              "sha256": "759501356aa30bfaf938bcbf645890a9b9bd5b4654a3c5ca953bb20628d4ea7c"
             },
             {
               "path": "crates/jocforge-domain/src/codec/bap/flat7x_d0_provider.rs",
@@ -50236,14 +50264,14 @@
               "sha256": "087d0425cd7f3022ba1fdf7b0272c28ac828fd2c371890c86663ee2bc61c6114"
             },
             {
-              "path": "crates/jocforge-domain/tests/flat7x_d0_bap.rs",
-              "bytes": 3587,
-              "sha256": "e2026b37ef382fa76105edc7c6f03b6e6dd6abff93a72075f3ecbe632c9ccd22"
+              "path": "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
+              "bytes": 12243,
+              "sha256": "1eed121576d901e8d7acf6e0df01f4ef265abc897125f6705b0fb9b8a2d570c4"
             },
             {
-              "path": "crates/jocforge-domain/tests/bap_converter_search.rs",
-              "bytes": 19599,
-              "sha256": "9f5ec8729ef45b3f364699d35f5d184b344b970f8c692e3062c27dc4dc371e6b"
+              "path": "crates/jocforge-domain/src/codec/exponent_packing.rs",
+              "bytes": 7317,
+              "sha256": "7f0529dda86fd27540b43093a04dc51b39ad2c475638ecf2525b3fd505764c17"
             },
             {
               "path": "crates/jocforge-domain/src/codec/flat7x_d0_spectrum.rs",
@@ -50251,51 +50279,66 @@
               "sha256": "88fb6827d5f0a2dd719f5ecd879689e0ea1bdae40fb3f03b6398becca1cf9557"
             },
             {
-              "path": "crates/jocforge-domain/tests/flat7x_d0_spectrum.rs",
-              "bytes": 1910,
-              "sha256": "920a0b4499ddb429160d0c1d5e3c37488c371750ddd4a917c575ad031f693587"
+              "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
+              "bytes": 37419,
+              "sha256": "e18c1f3378b1be9f95a0ee530a8424c31ef4828135423a712840584eb133f0e7"
+            },
+            {
+              "path": "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
+              "bytes": 20171,
+              "sha256": "555f07c12e1d2f9deec679a1ed909ce0913c76ee871a9656d22730a9cc5d4c37"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/bap_converter_search.rs",
+              "bytes": 19599,
+              "sha256": "9f5ec8729ef45b3f364699d35f5d184b344b970f8c692e3062c27dc4dc371e6b"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_access_unit_composer.rs",
+              "bytes": 5774,
+              "sha256": "aab17f765979a1bfca9f6f7c729911cceec58b633623a8cfc70c919ed39bff0d"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_d0_bap.rs",
+              "bytes": 3587,
+              "sha256": "e2026b37ef382fa76105edc7c6f03b6e6dd6abff93a72075f3ecbe632c9ccd22"
             },
             {
               "path": "crates/jocforge-domain/tests/flat7x_d0_exponents.rs",
               "bytes": 6189,
               "sha256": "15fd5c86edd00b16761c27724e8a55ab240fb8cd35d34c5e6d36116a31632469"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs",
+              "bytes": 25617,
+              "sha256": "dba27ba79a3dd4ff3a20f2b44c1a8f8765b413bc3604933a05e7dd18b73ccdae"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_d0_mantissa.rs",
+              "bytes": 5954,
+              "sha256": "e907f9336b933f67e227ec0954e02efddf5d9828f82f87903cb5f110d71c8eaf"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_d0_spectrum.rs",
+              "bytes": 1910,
+              "sha256": "920a0b4499ddb429160d0c1d5e3c37488c371750ddd4a917c575ad031f693587"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/grouped_quantizer.rs",
+              "bytes": 8978,
+              "sha256": "586013229e9da6acfaf0c8324e99513262d023fd7fb0a487044c6f2a50acfd4d"
+            },
+            {
+              "path": "crates/jocforge-io/src/flat7x_au_append.rs",
+              "bytes": 16503,
+              "sha256": "283cdbf25e21d14b86d8dadabf1709224c61e77754c20b625ccf10cffca4fb5a"
             }
           ],
           "vector_inventory": [
             {
-              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1/EVIDENCE.json",
-              "bytes": 2352,
-              "sha256": "0fcb4b0a7b41b7f252f8329a81ac7ad9c4b75a4f930ec96f376ca089ffeeb2a6"
-            },
-            {
-              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/INPUT-ONLY-VECTOR.json",
-              "bytes": 1750,
-              "sha256": "356916e6ed58189bd2bd33962d1dd43280d8a87485df71621e452ef8e05f6bee"
-            },
-            {
-              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/INPUT-ONLY-VECTOR.json",
-              "bytes": 878,
-              "sha256": "1ad223f37900fa3ae356658b65e75e41488b96012805a6c9ad3d1392f06e0a1c"
-            },
-            {
-              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-EMDF-SINGLE-FIELD-FAIL-CLOSED-CONTRACT-V1/FIELD-CONTRACT.json",
-              "bytes": 1125,
-              "sha256": "d0bea5a0e5747e80c01a4ac7752bbac6acb51987ed263be16b3bd5dd48944d0b"
-            },
-            {
-              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-RATE-FRMSIZ-TARGET-V1/FRAME-SIZE-VECTOR.json",
-              "bytes": 978,
-              "sha256": "e72fecc4de26839bd7a2244c9da1dfacac6bbc0316f843245e84d536a4be8c93"
-            },
-            {
-              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1/SKIPFLD-VALUES.json",
-              "bytes": 2407,
-              "sha256": "e1340016087f66a609fd7f5fc37b559518a61fa7590782700359f3b64e127f18"
-            },
-            {
-              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1/TARGET-AU-ORDER-VECTOR.json",
-              "bytes": 1041,
-              "sha256": "5b4d54868b6fe06df20956fd2d2258272c00602fbc659adb22964fca1c039550"
+              "path": "crates/jocforge-domain/tests/fixtures/flat7x_au_composer/INPUT-ONLY-VECTORS.json",
+              "bytes": 1225,
+              "sha256": "33cd48142e8ca77a32ec94b3a4ab8cd0c3089d8374df0201225985256fe450ca"
             },
             {
               "path": "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json",
@@ -50303,19 +50346,9 @@
               "sha256": "fddc65f1a52c325347029cc272f24122f9b6ed501d99130a42051b7d7aa8fbee"
             },
             {
-              "path": "crates/jocforge-domain/tests/fixtures/flat7x_au_composer/INPUT-ONLY-VECTORS.json",
-              "bytes": 1225,
-              "sha256": "33cd48142e8ca77a32ec94b3a4ab8cd0c3089d8374df0201225985256fe450ca"
-            },
-            {
-              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/INPUT-ONLY-VECTORS.json",
-              "bytes": 4037,
-              "sha256": "dbf02c22de6dac36da5bd2c90234f4add1c04ecb313d0e0fceb611c289ccd537"
-            },
-            {
-              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-EXPONENT-U4-U7-WRITER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
-              "bytes": 1017,
-              "sha256": "b081d55b220a9b971c3ec8a1475f53f6f8aac854d5d781f3b6a0d3ca51dd42e1"
+              "path": "crates/jocforge-domain/tests/fixtures/integrity_owner/integrity-public-provider.json",
+              "bytes": 687,
+              "sha256": "b0f52c55d38b9fba45ec39fc956cd8cd895ce2cfbc1f77d9493d99d2b8636a4d"
             },
             {
               "path": "crates/jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json",
@@ -50333,14 +50366,59 @@
               "sha256": "722e93ad671e4faab6ae9f33125bd49f8f369f717db0c9a3600cd861cdbd5a56"
             },
             {
-              "path": "crates/jocforge-domain/tests/fixtures/integrity_owner/integrity-public-provider.json",
-              "bytes": 687,
-              "sha256": "b0f52c55d38b9fba45ec39fc956cd8cd895ce2cfbc1f77d9493d99d2b8636a4d"
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 11051,
+              "sha256": "19dfa6afdaedfe2cfb6ff7db31a0679f109bb4482702d9c81ea5b3ea4ecdcd4b"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-EXPONENT-U4-U7-WRITER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 1017,
+              "sha256": "b081d55b220a9b971c3ec8a1475f53f6f8aac854d5d781f3b6a0d3ca51dd42e1"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1/EVIDENCE.json",
+              "bytes": 2352,
+              "sha256": "0fcb4b0a7b41b7f252f8329a81ac7ad9c4b75a4f930ec96f376ca089ffeeb2a6"
             },
             {
               "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1/INPUT-ONLY-VECTORS.json",
               "bytes": 6831,
               "sha256": "087ab39d07807aee179e5157ee10f408a1a0f16c54a4430c2d1b024a40af62c8"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-RATE-FRMSIZ-TARGET-V1/FRAME-SIZE-VECTOR.json",
+              "bytes": 978,
+              "sha256": "e72fecc4de26839bd7a2244c9da1dfacac6bbc0316f843245e84d536a4be8c93"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/INPUT-ONLY-VECTOR.json",
+              "bytes": 878,
+              "sha256": "1ad223f37900fa3ae356658b65e75e41488b96012805a6c9ad3d1392f06e0a1c"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/INPUT-ONLY-VECTOR.json",
+              "bytes": 1750,
+              "sha256": "356916e6ed58189bd2bd33962d1dd43280d8a87485df71621e452ef8e05f6bee"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-EMDF-SINGLE-FIELD-FAIL-CLOSED-CONTRACT-V1/FIELD-CONTRACT.json",
+              "bytes": 1125,
+              "sha256": "d0bea5a0e5747e80c01a4ac7752bbac6acb51987ed263be16b3bd5dd48944d0b"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 4037,
+              "sha256": "dbf02c22de6dac36da5bd2c90234f4add1c04ecb313d0e0fceb611c289ccd537"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1/TARGET-AU-ORDER-VECTOR.json",
+              "bytes": 1041,
+              "sha256": "5b4d54868b6fe06df20956fd2d2258272c00602fbc659adb22964fca1c039550"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1/SKIPFLD-VALUES.json",
+              "bytes": 2407,
+              "sha256": "e1340016087f66a609fd7f5fc37b559518a61fa7590782700359f3b64e127f18"
             }
           ],
           "staging_adapter": {
@@ -59577,8 +59655,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2225161,
-              "sha256": "fbd32638da54e3991f816652075b8b6f504436f428c5f5335277f598dca2415d"
+              "bytes": 2243772,
+              "sha256": "038ae50215f7f2dec982cb168adaf741d907bf8b3d7fb77e2467fcfc05ba2fc8"
             }
           ],
           "test_inventory": [
@@ -63644,8 +63722,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/codec/mod.rs",
-          "bytes": 1198,
-          "sha256": "7e5a5f0b02da6b05c5c82acc63c6a1c6b0a0393aa5ad4df2afa56e1d86c18c6b"
+          "bytes": 1226,
+          "sha256": "516a0cf69584cbbd47c168b94d8c83659cfda6c7b74469bb031ccaf7b659e440"
         },
         {
           "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",

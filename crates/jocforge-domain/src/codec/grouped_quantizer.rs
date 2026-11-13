@@ -11,6 +11,8 @@ pub enum MantissaChannel {
     Right,
     LeftSurround,
     RightSurround,
+    LeftRearSurround,
+    RightRearSurround,
     Lfe,
 }
 
@@ -128,7 +130,7 @@ struct PendingGroup {
     count: u8,
 }
 
-/// Quantizes and packs one block in channel order [L,C,R,Ls,Rs,LFE], then bin order.
+/// Quantizes and packs one block in channel order [L,C,R,Ls,Rs,Lrs,Rrs,LFE], then bin order.
 ///
 /// Every call starts with empty BAP1/2/4 groups. Grouped fields occupy the first
 /// item's position; partial groups use their F12 filler codes. Errors describe
