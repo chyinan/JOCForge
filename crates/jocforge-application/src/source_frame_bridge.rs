@@ -75,6 +75,10 @@ pub struct Flat7xSourceRoleMapReceipt {
 }
 
 impl Flat7xSourceRoleMapReceipt {
+    pub const fn programme_id(&self) -> &ProgrammeId {
+        &self.programme_id
+    }
+
     pub const fn callback_index(&self) -> FrontendCallbackIndex {
         self.callback_index
     }
@@ -138,16 +142,16 @@ pub struct Flat7xSourcePcmProjection<'a> {
     pcm_view: Flat7xProvisionalSourcePcmView<'a>,
 }
 
-impl Flat7xSourcePcmProjection<'_> {
+impl<'a> Flat7xSourcePcmProjection<'a> {
     pub const fn role_map_receipt(&self) -> &Flat7xSourceRoleMapReceipt {
         &self.role_map_receipt
     }
 
-    pub const fn i0_rows(&self) -> Flat7xI0PcmRows<'_> {
+    pub const fn i0_rows(&self) -> Flat7xI0PcmRows<'a> {
         self.pcm_view.i0()
     }
 
-    pub const fn d0_rows(&self) -> Flat7xD0PcmRows<'_> {
+    pub const fn d0_rows(&self) -> Flat7xD0PcmRows<'a> {
         self.pcm_view.d0()
     }
 

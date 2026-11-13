@@ -36,6 +36,11 @@ use jocforge_application::{
     spatial_callback::{MainSpatialCallbackCandidate, MainSpatialColdRoots},
 };
 
+use jocforge_application::flat7x_pair_source::{
+    Flat7xD0AudioSpanInput, Flat7xD0AudioSpanProducerState, Flat7xPairSourceError,
+    bind_flat7x_pair_source, require_flat7x_d0_audio_blocks,
+};
+
 use crate::{
     output_publication::{
         ProgrammeOutputStaging, SourceFrameOutputStageError, stage_source_frame_output,
@@ -285,6 +290,34 @@ pub(crate) fn stage_source_frame<'pcm>(
         &metadata_source,
     )
     .map_err(|error| format!("F12 frame candidate: {error:?}"))?;
+    let flat7x_pair_source_binding = match flat7x_source_pcm_projection.as_ref() {
+        Some(projection) => Some(
+            bind_flat7x_pair_source(
+                joc_profile,
+                projection,
+                frame_candidate.numeric_plan_receipt(),
+            )
+            .map_err(|error: Flat7xPairSourceError| {
+                format!("Flat7x I0/D0 source binding: {error:?}")
+            })?,
+        ),
+        None => None,
+    };
+    if let Some(binding) = flat7x_pair_source_binding {
+        require_flat7x_d0_audio_blocks(
+            Flat7xD0AudioSpanInput::Disabled(
+                Flat7xD0AudioSpanProducerState::NoApprovedAudioProductionRule,
+            ),
+            binding.d0_source_identity(),
+        )
+        .map_err(|error: Flat7xPairSourceError| {
+            format!(
+                "Flat7x paired source {} awaits D0 audio spans: {error:?}",
+                binding.source_index().value()
+            )
+        })?;
+        return Err("Flat7x pair candidate cannot enter single-frame output staging".to_owned());
+    }
     let integrity_candidate = stage_integrity_after_f12(
         integrity_before,
         &metadata_source,

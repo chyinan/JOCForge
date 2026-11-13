@@ -1860,3 +1860,13 @@ Wash supplement `FLAT7X-PER-SPAN-FILEWRITER-SINK-AND-STAGING-CONTRACT-V1` (manif
 `FLAT7X-CHANMAP-CANDIDATE-U16-SEQUENCE-BOUNDARY-V3` observes six candidate metadata U16 stores at stride2. The pointer owner, row semantics, table cardinality and `0x1A00` relation remain unbound; this sequence does not alter the provisional PCM row projection or D0 channel-map model.
 
 The official demo's I0 `dmixmod=1` is an AC-3 BSID6 Annex D `xbs1e` field. ETSI TS 102 366 V1.4.1 Annex D places four additional 3-bit Lt/Rt and Lo/Ro mix-level values in the same 14-bit group; those sample values are `NOT_CAPTURED` in the current Wash supplements, and the I0 alternate-BSI writer remains a separate open gate.
+
+## 2026-11-13 Flat7x callback pair-source boundary
+
+The Flat7x callback now binds the selected `Flat7xI0D0TargetPlan`, the current provisional ADM PCM-row projection, and the F12 `SelectedSourceNumericPlan` through the same `SharedAnalysisIdentity`. This binding is created in `source_execution::stage_source_frame` and checked before the generic selected single-frame output staging seam.
+
+D0 audio spans cross an explicit `Flat7xD0AudioSpanReceipt` carrying `AttemptId`, source transaction, `CodecSourceIndex`, and `Flat7xAnalysisGeneration`. The span consumer compares the complete receipt identity with the pair-source binding and returns `D0AudioSpanSourceIdentityMismatch` on any difference. Receipt construction is fixture-only while no Wash-approved D0 producer can issue a matching source-generation receipt; the callback passes `NoApprovedAudioProductionRule` and exits before single-frame output staging.
+
+`prepare_flat7x_pair_audio_blocks` combines the existing six-block I0 candidate producer with the typed D0 span input. I0 controls remain explicit caller inputs. The candidate exposes both existing frame-assembler inputs and retains the replaceable row-map receipt. It creates no output bytes or publication authority. Two focused D0 disabled/matching and generation-mismatch tests pass; the selected 5.1 six-rate route regression, scoped workspace check, formatting check, and boundary inventory pass. No encoder or DEE run was performed.
+
+The first-file blocker is the absence of a D0 audio-span producer that can issue this source-bound receipt. Complete I0/D0 frame assembly, owner-integrity/F13 receipts for both pair frames, and product pair staging remain unconnected. The official-demo I0 `xbs1e` mix-level values also remain `NOT_CAPTURED`.
