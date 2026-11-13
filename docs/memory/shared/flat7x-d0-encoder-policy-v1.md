@@ -23,3 +23,5 @@ D0 目标使用 chbwcod=60，对应 253 个 active bins。隔离仓库已有 F12
 编码算法代码、输入向量执行、DEE/encoder run 和 .ec3 输出均为 NOT_RUN。真实编码仍需单独 Fresh GO。实现 Agent 已收到该契约，并开始按公开 ETSI 表构建 D0 专用 BAP 路径。
 
 2026-11-14 进度：帧尾策略已物化为 `Flat7xD0FrameTailPolicy::ZeroFillUnusedAuxBits`，从 source-bound D0 receipt 传到 AU/frame composer；生产 writer 写入 `auxdatae=0` 并显式零填剩余 auxbits，CRC2 保持最后 16 位。block 2 唯一 skip-field 和 1–511 字节范围继续由现有 assembler 检查。原始 opaque tail 注入只在 `test-support` 下用于结构复制用例。D0 专用 4×253-bin BAP table provider 和 6×4 typed BAP row allocator 已实现，ETSI table-set SHA-256 为 `5a9ea2d179dc8017316006e8ffd23b2f5e30f1b363e56740f94787b4ef8e96fe`。PCM transform、D15 exponent production、mantissa/audblk serialization、六块历史、F12/F13/F15 同源提交和真实输出仍未闭合。
+
+2026-11-14 新增 D0 spectrum slice：`transform_flat7x_d0_pcm_block` 接受四个 512-sample long-window，输出每路 253 个 coefficient bits，并从完整窗口按 ETSI Table 6.33a 计算 `gainrng`。它返回候选频谱，不安装历史，也不生成 exponent、mantissa 或 audblk。5.1 transform 路径保持原样。D15 exponent production/adjustment、mantissa、完整六块 D0 frame 与生产接线仍开放。

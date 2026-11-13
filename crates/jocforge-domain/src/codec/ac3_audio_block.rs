@@ -20,13 +20,12 @@ use crate::{
     analysis::source_frame::SharedAnalysisIdentity,
     codec::selected_frame_trial::{BlockExponentPlan, SelectedSourceNumericPlan},
     transform::{
-        fullband_exponent_pipeline::NumericPlanReceipt,
+        fullband_exponent_pipeline::NumericPlanReceipt, long_mdct::forward_long_mdct_512,
         math_generated_parameters::MathGeneratedTransformParameters,
     },
 };
 
 const PCM_SAMPLES_PER_BLOCK: usize = 256;
-const PCM_WINDOW_SAMPLES: usize = PCM_SAMPLES_PER_BLOCK * 2;
 const FULLBAND_CHANNEL_COUNT: usize = 5;
 const FULLBAND_ENDMANT: usize = 217;
 const LFE_ENDMANT: usize = 7;
@@ -1178,36 +1177,12 @@ fn transform_long_block(
     input: &Ac3PcmBlockWindow,
     window_f32_bits: &[u32; PCM_SAMPLES_PER_BLOCK],
 ) -> Result<[f32; PCM_SAMPLES_PER_BLOCK], Ac3AudioBlockError> {
-    let mut output = [0.0_f32; PCM_SAMPLES_PER_BLOCK];
-    for (coefficient_index, output_value) in output.iter_mut().enumerate() {
-        let mut sum = 0.0_f64;
-        for sample_index in 0..PCM_WINDOW_SAMPLES {
-            let sample = if sample_index < PCM_SAMPLES_PER_BLOCK {
-                input.previous_samples[sample_index]
-            } else {
-                input.current_samples[sample_index - PCM_SAMPLES_PER_BLOCK]
-            };
-            let window_index = if sample_index < PCM_SAMPLES_PER_BLOCK {
-                sample_index
-            } else {
-                PCM_WINDOW_SAMPLES - 1 - sample_index
-            };
-            let window_value = f64::from(f32::from_bits(window_f32_bits[window_index]));
-            let phase = (std::f64::consts::PI / 1_024.0)
-                * (2 * sample_index + 1) as f64
-                * (2 * coefficient_index + 1) as f64
-                + (std::f64::consts::PI / 4.0) * (2 * coefficient_index + 1) as f64;
-            sum += f64::from(sample) * window_value * phase.cos();
-        }
-        let transformed = (-2.0 / PCM_WINDOW_SAMPLES as f64) * sum;
-        #[allow(clippy::cast_possible_truncation)]
-        let transformed = transformed as f32;
-        if !transformed.is_finite() {
-            return Err(Ac3AudioBlockError::InvalidPcm);
-        }
-        *output_value = transformed;
-    }
-    Ok(output)
+    forward_long_mdct_512(
+        &input.previous_samples,
+        &input.current_samples,
+        window_f32_bits,
+    )
+    .map_err(|_| Ac3AudioBlockError::InvalidPcm)
 }
 
 fn encode_exponent_row(

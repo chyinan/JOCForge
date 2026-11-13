@@ -13096,6 +13096,9 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
     ac3_test_path = root / "crates/jocforge-domain/src/codec/ac3_audio_block.rs"
     exponent_packing_path = root / "crates/jocforge-domain/src/codec/exponent_packing.rs"
     d0_bap_path = root / "crates/jocforge-domain/src/codec/bap/flat7x_d0_provider.rs"
+    d0_spectrum_path = root / "crates/jocforge-domain/src/codec/flat7x_d0_spectrum.rs"
+    ac3_audio_path = root / "crates/jocforge-domain/src/codec/ac3_audio_block.rs"
+    long_mdct_path = root / "crates/jocforge-domain/src/transform/long_mdct.rs"
     skipfield_test_path = root / "crates/jocforge-domain/src/codec/emdf_skip_field.rs"
     cli_path = root / "crates/jocforge-cli/src/encode_request.rs"
     app = rust_code_without_comments(app_path.read_text(encoding="utf-8"))
@@ -13108,6 +13111,9 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
     exponent_packing_source = exponent_packing_path.read_text(encoding="utf-8")
     exponent_packing = rust_code_without_comments(exponent_packing_source)
     d0_bap = rust_code_without_comments(d0_bap_path.read_text(encoding="utf-8"))
+    d0_spectrum = rust_code_without_comments(d0_spectrum_path.read_text(encoding="utf-8"))
+    ac3_audio_source = rust_code_without_comments(ac3_audio_path.read_text(encoding="utf-8"))
+    long_mdct = rust_code_without_comments(long_mdct_path.read_text(encoding="utf-8"))
     skipfield_tests = skipfield_test_path.read_text(encoding="utf-8")
     cli = rust_code_without_comments(cli_path.read_text(encoding="utf-8"))
 
@@ -13260,15 +13266,26 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         and "eac3_exponent_row_writes_seed_then_u7_groups_msb_first" in exponent_packing_source
         and "eac3_exponent_row_preflights_seed_and_extent_before_mutation" in exponent_packing_source
         and row.get("parameters", {}).get("d0_audio_block_producer_gap", {}).get("local_four_channel_d0_audblk_writer")
-        == "D0_BAP_ROWS_ONLY_4X253X6; U4_U7_SERIALIZER; NO_AUDBLK"
+        == "D0_SPECTRA_AND_BAP_ROWS_ONLY_4X253X6; U4_U7_SERIALIZER; NO_AUDBLK"
         and row.get("parameters", {}).get("d0_audio_block_producer_gap", {}).get("producer_status")
-        == "BLOCKED_ON_D0_PCM_TRANSFORM_D15_EXPONENT_MANTISSA_AND_AUDBLK_ASSEMBLY"
+        == "BLOCKED_ON_D0_D15_EXPONENT_MANTISSA_AND_AUDBLK_ASSEMBLY"
         and "pub struct Flat7xD0BapParameters" in d0_bap
         and "pub struct Flat7xD0BapFrameInput" in d0_bap
         and "pub fn allocate_flat7x_d0_bap_frame(" in d0_bap
         and "FLAT7X_D0_BAP_BIN_COUNT: usize = 253" in d0_bap
         and "FLAT7X_D0_BAP_CHANNEL_COUNT: usize = 4" in d0_bap
         and "FLAT7X_D0_BAP_BLOCK_COUNT: usize = 6" in d0_bap
+        and "pub fn transform_flat7x_d0_pcm_block(" in d0_spectrum
+        and "pub struct Flat7xD0PcmWindow" in d0_spectrum
+        and "pub struct Flat7xD0SpectrumBlock" in d0_spectrum
+        and "forward_long_mdct_512(" in d0_spectrum
+        and "Ac3PcmBlockWindow" not in d0_spectrum
+        and "fn transform_long_block(" in ac3_audio_source
+        and "forward_long_mdct_512(" in ac3_audio_source
+        and "pub fn forward_long_mdct_512(" in long_mdct
+        and "if maximum >= 0.5" in d0_spectrum
+        and "else if maximum >= 0.25" in d0_spectrum
+        and "else if maximum >= 0.125" in d0_spectrum
         and row.get("parameters", {}).get("d0_bap_provider", {}).get("profile_id")
         == "FLAT7X_D0_FBW253_4CH_NO_LFE_V1"
         and row.get("parameters", {}).get("d0_bap_provider", {}).get("table_set_sha256")

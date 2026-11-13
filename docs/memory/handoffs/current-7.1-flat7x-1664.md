@@ -318,3 +318,9 @@ Focused verification passed: 5 default D0 frame tests, 7 frame tests with `test-
 The local `codec::bap::flat7x_d0_provider` now materializes an isolated D0 table set from ETSI TS 102 366 V1.4.1 Tables 6.6–6.12 and 6.14–6.16, identified by canonical SHA-256 `5a9ea2d179dc8017316006e8ffd23b2f5e30f1b363e56740f94787b4ef8e96fe`. Its typed API allocates a 253-bin row or six blocks × four D0 coded rows; no LFE axis exists. Existing selected 5.1 BAP provider/allocator stays untouched.
 
 Verification: table landmark/coverage 1, D0 provider/frame 4, existing 5.1 BAP 14, workspace check, and selected 5.1 all-rate regression 1 passed. Generated-map and boundary checks pass (92 scopes / 104 IDs / 0 unmaterialized roots / 6 partial roots). Strict domain Clippy reports 9 existing diagnostics outside this D0 provider. This is a BAP-row allocator only: transform, D15 exponents, frame-wide candidate/budget selection, mantissas, audblk serialization, source-bound receipt, CLI wiring, parent commit and real output remain open. No encoder or `.ec3` was run.
+
+## 2026-11-14 D0 spectrum rows and gainrng
+
+`codec::flat7x_d0_spectrum::transform_flat7x_d0_pcm_block` now accepts one typed 4-channel D0 block with previous/current 256-sample windows. It calls the shared pure `transform::long_mdct::forward_long_mdct_512` core and returns 253-bin coefficient words plus measured `gainrng` codes using Table 6.33a. D0 source history remains caller-owned; this pure candidate creates no state commit and no audio-block syntax.
+
+The D0 spectrum suite passed (2), BAP suite (4), existing selected 5.1 BAP suite (14), and 5.1 all-rate CLI regression (1); domain check passed. The next small seam is D15 exponent extraction and U4/U7 row production from these spectra, followed by mantissa packing and six-block audblk assembly.

@@ -6,6 +6,7 @@ pub mod fbw_transform;
 pub mod fullband_exponent_pipeline;
 pub mod history_owner;
 pub mod lfe_transform;
+pub mod long_mdct;
 pub mod long_transform;
 pub mod math_generated_parameters;
 pub(super) mod parameters;
