@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge-implementer-supplement-manifest-v1",
+  "package_id": "DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1",
+  "status": "WASH_APPROVED_BOUNDED_STATIC_BOUNDARY",
+  "production_allowed": false,
+  "files": [
+    {
+      "path": "CHECK.py",
+      "sha256": "67bf523886e95782b4c53593110558857f1a5cce363729e5531786d4552ea6ee"
+    },
+    {
+      "path": "CONTRACT.md",
+      "sha256": "c6404250b8526b90fab625653ec90fc7976d16a0014826e55898cb7963229dc4"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "sha256": "d9602a8a58b38e5ded3d50bb9fd41119ebd667f222b0d882f86ec93b76fa26ca"
+    }
+  ]
+}

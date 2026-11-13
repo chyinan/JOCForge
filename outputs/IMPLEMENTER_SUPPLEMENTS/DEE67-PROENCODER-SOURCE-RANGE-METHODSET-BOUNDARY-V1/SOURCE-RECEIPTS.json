@@ -1,0 +1,44 @@
+{
+  "schema": "wash-proencoder-source-range-boundary-receipts-v1",
+  "candidate_image_sha256": "2b7da4835d60fc538caf49cd0ef27a4a10d2486bc03b754b41b5bea4bb51fead",
+  "methodset_package": {
+    "package_id": "DEE670-FLAT7X-PROENCODER-SOURCE-RANGE-METHODSET-STORE-BOUNDARY-WASH-V1",
+    "manifest_sha256": "341f251d1473223a26894cb29f057c28f6e73c0012663cd610e50749a7e44041",
+    "checksums_sha256": "23f3edd1ec9c0414977389407474c24426068907823ccbc36b03498212907a2d"
+  },
+  "v3_lineage_review": {
+    "manifest_sha256": "c62e39c3d8b32c4f4a460b3f901eb0115bd8674989ba357bae371f7e75f5dce4",
+    "seal_sha256": "89967eb0ff44bdc7b81cce8f7324f0fb02011fcb54d66b380c9840046c6125fe"
+  },
+  "selected_methodset": {
+    "slot1": [
+      "FUN_1402ad5b0",
+      "FUN_1402ad5d0"
+    ],
+    "slot2": [
+      "FUN_1402ac760",
+      "FUN_1402aca80",
+      "FUN_1402ad310"
+    ],
+    "slot3": [
+      "FUN_1402ac750"
+    ],
+    "slot0_and_other_image_methods": "NOT_SCANNED"
+  },
+  "observed": {
+    "direct_worker_range_reads": 6,
+    "direct_worker_range_stores": 0,
+    "object_subobject_offsets": [
+      "this+0x190",
+      "this+0x198"
+    ],
+    "subobject_path": "this+0x140 plus offsets +0x50/+0x58",
+    "other_offsets": [
+      "stack RSP+0x50",
+      "stack RSP+0x58"
+    ],
+    "external_populator": "UNBOUND",
+    "global_absence_claim": false,
+    "production_allowed": false
+  }
+}
