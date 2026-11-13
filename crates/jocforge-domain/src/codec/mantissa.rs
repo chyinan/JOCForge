@@ -187,7 +187,7 @@ fn scan_finite_coefficients(words: &[u32]) -> ClippedMantissaRow {
             word
         };
         clipped_words.push(clipped_word);
-        raw_exponents.push(raw_primary_exponent(clipped_word));
+        raw_exponents.push(raw_exponent_from_f32_word(clipped_word));
         clipped_flags.push(clipped_word != word);
     }
     ClippedMantissaRow {
@@ -197,8 +197,8 @@ fn scan_finite_coefficients(words: &[u32]) -> ClippedMantissaRow {
     }
 }
 
-fn raw_primary_exponent(clipped_word: u32) -> u8 {
-    let doubled = clipped_word.wrapping_mul(2);
+pub(crate) fn raw_exponent_from_f32_word(coefficient_word: u32) -> u8 {
+    let doubled = coefficient_word.wrapping_mul(2);
     let exponent = if doubled == 0 {
         -127_i16
     } else {

@@ -324,3 +324,9 @@ Verification: table landmark/coverage 1, D0 provider/frame 4, existing 5.1 BAP 1
 `codec::flat7x_d0_spectrum::transform_flat7x_d0_pcm_block` now accepts one typed 4-channel D0 block with previous/current 256-sample windows. It calls the shared pure `transform::long_mdct::forward_long_mdct_512` core and returns 253-bin coefficient words plus measured `gainrng` codes using Table 6.33a. D0 source history remains caller-owned; this pure candidate creates no state commit and no audio-block syntax.
 
 The D0 spectrum suite passed (2), BAP suite (4), existing selected 5.1 BAP suite (14), and 5.1 all-rate CLI regression (1); domain check passed. The next small seam is D15 exponent extraction and U4/U7 row production from these spectra, followed by mantissa packing and six-block audblk assembly.
+
+## 2026-11-14 D0 D15 exponent row
+
+The D0 row stage extracts raw exponents from 253-bin spectra, applies D15 `JOCFORGE_D15_LOWER_ONLY_SEED15_SLEW2_V1`, returns the decoder-visible exponents and serializes a U4 seed plus 84 U7 groups through the existing writer (592 bits per row). The preprocessor caps the seed at 15, forward-limits increases to two, then backward-lowers earlier exponents to bound decreases. This keeps decoder exponents no larger than raw and every delta within ±2. Wash confirmed ETSI does not select one unique preprocessor and recommended this lower-only policy. It remains an explicitly replaceable JOCForge model choice.
+
+The focused D15 suite passed (6), including the four raw-exponent spike cases, 10,000 deterministic invariant rows and U4/U7 byte serialization; the 5.1 all-rate regression remains green. Mantissa normalization using the final decoder exponents, whole-frame bit budgeting, complete D0 audblk, source receipts and parent commit remain open. No encoder or `.ec3` was run.

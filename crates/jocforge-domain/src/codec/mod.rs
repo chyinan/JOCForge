@@ -21,6 +21,7 @@ pub mod emdf_skip_field;
 pub mod exponent_normalization;
 pub mod exponent_packing;
 pub mod exponent_refresh_state;
+pub mod flat7x_d0_exponents;
 pub mod flat7x_d0_spectrum;
 pub mod frame_builder;
 pub mod frame_size;
