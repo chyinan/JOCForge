@@ -1882,3 +1882,21 @@ D0 audio spans cross an explicit `Flat7xD0AudioSpanReceipt` carrying `AttemptId`
 `prepare_flat7x_pair_audio_blocks` combines the existing six-block I0 candidate producer with the typed D0 span input. I0 controls remain explicit caller inputs. The candidate exposes both existing frame-assembler inputs and retains the replaceable row-map receipt. It creates no output bytes or publication authority. Two focused D0 disabled/matching and generation-mismatch tests pass; the selected 5.1 six-rate route regression, scoped workspace check, formatting check, and boundary inventory pass. No encoder or DEE run was performed.
 
 The first-file blocker is the absence of a D0 audio-span producer that can issue this source-bound receipt. The I0 callsite now creates a complete in-memory frame candidate, while the I0 audio-projection assumptions, parent source-generation commit, D0 frame assembly, pair integrity/F13 receipts, and product pair staging remain open.
+
+## 2026-11-13 source-bound I0/D0 in-memory AU candidate
+
+The application pair seam now verifies the selected `ResolvedEncodingProfile`, role-map receipt, I0 `SharedAnalysisIdentity`, and D0 attempt/transaction/callback/source/generation identity before invoking existing D0 frame and I0→D0 AU composers. D0 receives caller-owned BSI and six opaque block spans; the existing layout/frame path enforces zero-based block index 2 (third audio-block prefix), one complete skip-field, C=1..511, exact 4,096-byte extent, and CRC2. The resulting 6,656-byte candidate preserves I0-first/D0-second spans and has `production_allowed=false`; no CLI, AU owner, file or publication path is connected.
+
+`FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1` binds the index wording only. `OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1` supplies sample C=314/301/301 and ID11/ID14 lengths at 640 kbps; local writer regression uses synthetic bytes and leaves 1,024-kbps target container behavior separate. No raw sample container, parser, or D0 audio algorithm is included.
+
+`DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1` reports selected same-object worker range reads without a direct store; the external range populator and D0 audio owner remain `UNBOUND`. The pair candidate preserves caller-owned D0 spans while that source edge remains open.
+
+## 2026-11-13 official-demo target and pair commit boundaries
+
+The selected target remains 1,664 kbps aggregate: I0 640 kbps/2,560 bytes followed by D0 1,024 kbps/4,096 bytes. Its non-rate profile follows the official demo: 48 kHz, six blocks/1,536 samples, Flat7x spatial and coefficient indices 1, D0 chanmap `0x1A00`, and 15 JOC objects. The 1,280-kbps sample remains the reference for non-rate values; its D0 EMDF sizes are sample observations.
+
+Wash supplement `DEE67-PROENCODER-SLOT0-RANGE-WRITE-BOUNDARY-V1` (manifest `bb49bd95f41c7eee237299ce383075d00943343c0c7899a08b21a40db41574bd`, seal `912b38d37f98625ee3a039c08c7902d35ec27ba742ca5e0b0634d79735496b62`) confines its observation to slot 0 first-block writes. The external span populator and D0 role/source-generation join remain `UNBOUND`.
+
+Wash supplement `DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1` (manifest `bf2f7e43a4cecd315e21d993c7fddcd8534089224747db1d9d2fc805f914e95d`, seal `2d906abfdb78fe2ca17ed21e1a0aeb3075e95181dfedd6209a6957d3866033d9`) bounds the Config+0x58 read check to the 19-instruction slot-0 method; the profile-index-1 consumer remains `UNBOUND`.
+
+Wash supplement `DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1` (manifest `ba65817c81f8097dda3cc3897f337da81c9a46fee0a892051d553c49089e8f04`, seal `92ffa1712763fccffd6006f8d9b2b35b7cc4b7660bef304b28b1bb0f3bc68dfa`) separates the callback-buffer and FileWriter paths. Their I0/D0 role, source generation and durable pair commit are not joined; the source-bound in-memory candidate remains production-disabled.

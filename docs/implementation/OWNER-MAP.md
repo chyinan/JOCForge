@@ -563,6 +563,7 @@
 | F12/flat7x-d0-frame-bit-assembler | F12 | `codec` |
 | F12/flat7x-i0-d0-opaque-au-byte-composer | F12 | `codec` |
 | F12/flat7x-elementary-stream-sequence-composer | F12 | `codec` |
+| F12/flat7x-source-bound-i0-d0-au-candidate | F12 | `application` |
 | F12S/mantissa-quantizer | F12S | `codec` |
 | F12A/selected-f12a-public-bap-network | F12A | `codec` |
 | F13/selected-metadata-owner-source-stage | F13 | `metadata` |

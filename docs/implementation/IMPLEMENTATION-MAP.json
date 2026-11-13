@@ -10573,9 +10573,6 @@
               "Frame extent and per-frame CRC mismatches reject byte-sequence composition.",
               "D0 4096-byte frame maps to E-AC-3 frmsiz2047; AU rate remains I0 640 plus D0 1024.",
               "Equal integer values joc_spatial_index1 and downmix_index1 are distinct typed dimensions.",
-              "D0 4096-byte frame maps to E-AC-3 frmsiz2047; AU rate remains I0 640 plus D0 1024.",
-              "Equal integer values joc_spatial_index1 and downmix_index1 are separate typed dimensions.",
-              "D0 4096-byte frame maps to E-AC-3 frmsiz2047; AU rate remains I0 640 plus D0 1024.",
               "Equal integer values joc_spatial_index1 and downmix_index1 are separate typed dimensions."
             ],
             "expected_outputs_included": false,
@@ -10781,8 +10778,8 @@
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 16484,
-              "sha256": "66b9aec484cb81410de32950b9601d51f63474cb98976a6b58435ae82cdb1610"
+              "bytes": 21970,
+              "sha256": "b342898a95240cfefcc4e6c230dc218a7562183a90c76a79af80d7bc542dce74"
             }
           ],
           "test_inventory": [
@@ -10793,8 +10790,8 @@
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 16484,
-              "sha256": "66b9aec484cb81410de32950b9601d51f63474cb98976a6b58435ae82cdb1610"
+              "bytes": 21970,
+              "sha256": "b342898a95240cfefcc4e6c230dc218a7562183a90c76a79af80d7bc542dce74"
             }
           ]
         }
@@ -18900,8 +18897,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2200369,
-              "sha256": "4c1e64c0c06b2ed7f03f0231b752be1e87a22d02de65369ec1c17af8e046050e"
+              "bytes": 2215204,
+              "sha256": "d762704047ee09bb0e31a24f540da6b870cfaa643e3dcd6055fead4bd7ab5938"
             }
           ],
           "test_modules": [
@@ -22297,7 +22294,6 @@
               "Unsupported K-matrix stage count rejects; DV32 block size other than 32 rejects.",
               "Installed48 dependency index is retained as identity only, without claiming all values were loaded.",
               "Typed direct inventory does not construct MeterProviderSet, state root, production prepass receipt or READY.",
-              "The real approved DV32 direct asset and validated F01B receiver_blend32 compose to the same typed selected parameter value; the direct inventory remains incomplete.",
               "The real approved DV32 direct asset and validated F01B receiver_blend32 compose to the same typed selected parameter value; the direct inventory remains incomplete."
             ]
           },
@@ -22427,8 +22423,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2200369,
-              "sha256": "4c1e64c0c06b2ed7f03f0231b752be1e87a22d02de65369ec1c17af8e046050e"
+              "bytes": 2215204,
+              "sha256": "d762704047ee09bb0e31a24f540da6b870cfaa643e3dcd6055fead4bd7ab5938"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -22636,8 +22632,6 @@
               "A repeated admission for the same tuple retains the local ID; an incremented attempt receives a different ID.",
               "A source extent differing from the prepared configuration is rejected before an admission receipt is returned.",
               "All package ledger rows remain evidence of missing runtime/provider coverage, not expected prepass outputs.",
-              "The dynamic ADM meter-admission test accepts 36 WAVE/CHNA rows and produces an owner ID bound to the exact PreparedJobInput and source extent.",
-              "The dynamic ADM meter-admission test accepts 36 WAVE/CHNA rows and produces an owner ID bound to the exact PreparedJobInput and source extent.",
               "The dynamic ADM meter-admission test accepts 36 WAVE/CHNA rows and produces an owner ID bound to the exact PreparedJobInput and source extent."
             ],
             "expected_outputs_included": false
@@ -25908,7 +25902,6 @@
               "last normal read is one host sample plus 1535 positive zeros per channel",
               "each normal cursor step consumes the shared chunk decoder's typed frame count and returns the same actual sample words as the caller-borrowed RIFF hop",
               "a different byte-slice identity and an out-of-order callback reject without cursor advance",
-              "Synthetic 1050-sample source case reads 1050 actual samples and verifies a 486-word positive-zero tail in each of 38 rows.",
               "Synthetic 1050-sample source case reads 1050 actual samples and verifies a 486-word positive-zero tail in each of 38 rows."
             ],
             "local_fixture": {
@@ -27349,11 +27342,6 @@
               "The package does not decide raw ADM event-snapshot reinstall versus retention and does not join native zero-length submissions to the source-empty callback.",
               "dynamic_f01e_owner_installs_36_and_38_rows_and_keeps_three_meter_drains: verifies synthetic 36/38 owner cardinalities and FreshZero control receipts",
               "selected_meter_36_row_g0_reports_the_fixed_feature_axis_gate: verifies the first local Meter feature handoff returns MeterFrameIdentity for 46 rows",
-              "source_axis::tests preserve ordered S46 IDs0..45 and reject duplicate/unordered identities.",
-              "source_flags::tests produce exactly 46 pairs for N36 and no entries for IDs46/47.",
-              "post_window/current_features/component_stage/ReaderTarget tests keep S46 compact and reject N39/S49.",
-              "prepared_job_input::selected_meter_g0_and_three_fresh_zero_drains_complete_for_36_rows stages synthetic G0 and g=1..3 FreshZero proposals through Spatial/OAR.",
-              "production_callback::tests::all_zero_active_c_keeps_d_and_advances_component_without_committing_owners preserves the S48 baseline.",
               "source_axis::tests preserve ordered S46 IDs0..45 and reject duplicate/unordered identities.",
               "source_flags::tests produce exactly 46 pairs for N36 and no entries for IDs46/47.",
               "post_window/current_features/component_stage/ReaderTarget tests keep S46 compact and reject N39/S49.",
@@ -42540,9 +42528,7 @@
               "g0/g1 unchanged codec snapshots produce changed=false and commit_count=0.",
               "A changed source proposal receipt binds the exact before/after codec state and parent-supplied transaction token.",
               "A proposal staged from a different codec before-state rejects.",
-              "g0/g1 unchanged codec snapshots produce changed=false and commit_count=0.",
-              "A changed source proposal receipt binds exact before/after codec state and parent-supplied transaction token.",
-              "A proposal staged from a different codec before-state rejects."
+              "A changed source proposal receipt binds exact before/after codec state and parent-supplied transaction token."
             ],
             "expected_values_are_assertions_only": true
           },
@@ -46325,8 +46311,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
-              "bytes": 9194,
-              "sha256": "0daca3a9401ec1728c8a30297a53dec874902778bda134c9b454765294e097f9"
+              "bytes": 12243,
+              "sha256": "1eed121576d901e8d7acf6e0df01f4ef265abc897125f6705b0fb9b8a2d570c4"
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
@@ -46335,15 +46321,15 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/d0_frame_assembler.rs",
-              "bytes": 18172,
-              "sha256": "4cfd1fdeb420ce408b7a6a315eaac6d05f5bd7feb273cdec31cca4bdabcbcfef"
+              "bytes": 18184,
+              "sha256": "002f306ae17bc62667f8a334974b9d541cbfd1aaa2cf4682cd1b3fb962a2d129"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
-              "bytes": 9194,
-              "sha256": "0daca3a9401ec1728c8a30297a53dec874902778bda134c9b454765294e097f9"
+              "bytes": 12243,
+              "sha256": "1eed121576d901e8d7acf6e0df01f4ef265abc897125f6705b0fb9b8a2d570c4"
             },
             {
               "path": "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs",
@@ -46366,6 +46352,11 @@
               "path": "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json",
               "bytes": 2542,
               "sha256": "fddc65f1a52c325347029cc272f24122f9b6ed501d99130a42051b7d7aa8fbee"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1/SKIPFLD-VALUES.json",
+              "bytes": 2407,
+              "sha256": "e1340016087f66a609fd7f5fc37b559518a61fa7590782700359f3b64e127f18"
             }
           ],
           "clock": {
@@ -46436,7 +46427,8 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/package_seal.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/CHECK.py",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/INPUT-ONLY-VECTOR.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/INPUT-ONLY-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1/SKIPFLD-VALUES.json"
             ],
             "standard_rule": "ETSI TS 102 366 V1.4.1 clauses 4.4.3.58-60",
             "target": {
@@ -46468,14 +46460,50 @@
               "generic_absent_syntax_exposed": false,
               "missing_container_policy": "MissingContainer before any write"
             },
-            "validation_boundary": "The field helper is connected to synthetic D0FrameBitAssembler layout output through a caller-owned block-two insertion offset; the native block cursor and runtime owner remain unbound."
+            "validation_boundary": "The field helper is connected to synthetic D0FrameBitAssembler layout output through a caller-owned block-two insertion offset; the native block cursor and runtime owner remain unbound.",
+            "official_sample_three_au_numeric": {
+              "package_id": "OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1",
+              "manifest_sha256": "940bdf73dad449fef39f5533d458876c08b177cdb6f514a2620e8f696b917ac3",
+              "package_seal_sha256": "769aa8aff8a0a4b1cba1c620b0dca960fd8c6274d5b88e4642989a56579a166d",
+              "sample_rate_kbps": 640,
+              "block_index": 2,
+              "block_index_convention": "zero-based third audio-block prefix",
+              "C_bytes_by_au": [
+                314,
+                301,
+                301
+              ],
+              "id11_data_bytes_by_au": [
+                79,
+                66,
+                66
+              ],
+              "id14_data_bytes_by_au": [
+                216,
+                216,
+                216
+              ],
+              "consumed_bytes_by_au": [
+                314,
+                301,
+                301
+              ],
+              "trailing_bytes_by_au": [
+                0,
+                0,
+                0
+              ],
+              "raw_container_bytes_included": false,
+              "target_rate_extrapolation": false
+            }
           },
           "vectors": {
             "kind": "WASHED_SKIPFLD_STRUCTURE_SUMMARY_PLUS_LOCAL_CALLER_BLOCK2_BOUNDARIES",
             "authoritative_vectors": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/INPUT-ONLY-VECTOR.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/INPUT-ONLY-VECTOR.json",
-              "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json"
+              "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1/SKIPFLD-VALUES.json"
             ],
             "case_pointers": [
               "At an unaligned cursor, present C=16 writes skiple=1, U9 byte length, then exactly C bytes MSB-first.",
@@ -46484,10 +46512,11 @@
               "A missing/empty target container and C=512 reject before changing cursor or frame bytes; no continuation is generated.",
               "Insufficient capacity for the complete 1+9+8C field rejects before mutation.",
               "The original Wash package reports official MKA block-2 C_total/skipl=301..377; target-rate context remains I0/D0=640/1024.",
-              "The C511 parser addendum reports one separately synthesized ID6 container: C_total=skipl=511, Parsed, bytes_consumed=511; it does not parse local Rust output or establish real JOC semantics."
+              "The C511 parser addendum reports one separately synthesized ID6 container: C_total=skipl=511, Parsed, bytes_consumed=511; it does not parse local Rust output or establish real JOC semantics.",
+              "The latest sealed three-AU official-sample vector supplies C=314/301/301 and ID11/ID14 lengths; local writer regression uses synthetic bytes only."
             ],
             "expected_outputs_included": false,
-            "execution_status": "LOCAL_SKIPFLD_AND_CALLER_BLOCK2_TESTS_PASS__WASH_CHECKERS_NORMAL_AND_OPTIMIZED_PASS"
+            "execution_status": "LOCAL_SKIPFLD_WRITER_AND_THREE_AU_SAMPLE_NUMERIC_REGRESSION_PASS__WASH_CHECKERS_NORMAL_AND_OPTIMIZED_PASS"
           },
           "error_outcomes": [
             {
@@ -47678,8 +47707,8 @@
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 16484,
-              "sha256": "66b9aec484cb81410de32950b9601d51f63474cb98976a6b58435ae82cdb1610"
+              "bytes": 21970,
+              "sha256": "b342898a95240cfefcc4e6c230dc218a7562183a90c76a79af80d7bc542dce74"
             }
           ],
           "test_modules": [
@@ -47694,8 +47723,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
-              "bytes": 78599,
-              "sha256": "882bd9b84a60c5d55d1219704f24c8ef2462f65ce8fa84eaa60883affb39a841"
+              "bytes": 91117,
+              "sha256": "a31f4c80dcd850436c480fdc1c3e535881f809b43ad2ae6aa9f9b917cb832662"
             }
           ],
           "vector_inventory": [
@@ -47792,7 +47821,6 @@
               "Generated CRC1/CRC2 residuals are zero on the synthetic assembled frame.",
               "Invalid typed BSI fields and an incomplete audio-span extent fail before caller output bytes or cursor change.",
               "six_block_candidate_composes_official_bsi_crc_and_source_identity_into_i0_frame",
-              "six_block_candidate_composes_official_bsi_crc_and_source_identity_into_i0_frame",
               "The structural vector supplies explicit synthetic auxdata to reach the exact frame extent; the product auxdata policy remains open."
             ],
             "expected_outputs_included": true,
@@ -47861,8 +47889,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
-              "bytes": 78599,
-              "sha256": "882bd9b84a60c5d55d1219704f24c8ef2462f65ce8fa84eaa60883affb39a841"
+              "bytes": 91117,
+              "sha256": "a31f4c80dcd850436c480fdc1c3e535881f809b43ad2ae6aa9f9b917cb832662"
             },
             {
               "path": "crates/jocforge-domain/src/codec/bap.rs",
@@ -47899,8 +47927,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
-              "bytes": 78599,
-              "sha256": "882bd9b84a60c5d55d1219704f24c8ef2462f65ce8fa84eaa60883affb39a841"
+              "bytes": 91117,
+              "sha256": "a31f4c80dcd850436c480fdc1c3e535881f809b43ad2ae6aa9f9b917cb832662"
             },
             {
               "path": "crates/jocforge-domain/src/codec/bap.rs",
@@ -48012,13 +48040,6 @@
               "six_ordered_blocks_retain_source_identity_and_caller_q_controls",
               "block_zero_exponent_reuse_rejects_the_series_before_returning_a_candidate",
               "aggregate_budget_rejects_without_returning_a_partial_block_set",
-              "six_ordered_blocks_retain_source_identity_and_caller_q_controls",
-              "block_zero_exponent_reuse_rejects_the_series_before_returning_a_candidate",
-              "aggregate_budget_rejects_without_returning_a_partial_block_set",
-              "six_ordered_blocks_retain_source_identity_and_caller_q_controls",
-              "block_zero_exponent_reuse_rejects_the_series_before_returning_a_candidate",
-              "aggregate_budget_rejects_without_returning_a_partial_block_set",
-              "six_block_candidate_composes_official_bsi_crc_and_source_identity_into_i0_frame",
               "six_block_candidate_composes_official_bsi_crc_and_source_identity_into_i0_frame"
             ],
             "expected_outputs_included": false,
@@ -48662,8 +48683,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
-              "bytes": 9194,
-              "sha256": "0daca3a9401ec1728c8a30297a53dec874902778bda134c9b454765294e097f9"
+              "bytes": 12243,
+              "sha256": "1eed121576d901e8d7acf6e0df01f4ef265abc897125f6705b0fb9b8a2d570c4"
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
@@ -48688,8 +48709,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
-              "bytes": 9194,
-              "sha256": "0daca3a9401ec1728c8a30297a53dec874902778bda134c9b454765294e097f9"
+              "bytes": 12243,
+              "sha256": "1eed121576d901e8d7acf6e0df01f4ef265abc897125f6705b0fb9b8a2d570c4"
             }
           ],
           "clock": {
@@ -48975,8 +48996,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/d0_frame_assembler.rs",
-              "bytes": 18172,
-              "sha256": "4cfd1fdeb420ce408b7a6a315eaac6d05f5bd7feb273cdec31cca4bdabcbcfef"
+              "bytes": 18184,
+              "sha256": "002f306ae17bc62667f8a334974b9d541cbfd1aaa2cf4682cd1b3fb962a2d129"
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
@@ -49138,8 +49159,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/access_unit_composer.rs",
-              "bytes": 5122,
-              "sha256": "98f37f91c3957b424d21763615cbdc9ce04ff835dc65f4f78784285930f15df2"
+              "bytes": 10112,
+              "sha256": "3ad586e2299ab444f6eaedf2bc2943a6db80b49076f2e1d3525a9c2d13290f4d"
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
@@ -49457,6 +49478,377 @@
           ],
           "validation_boundary": "SYNTHETIC_NOT_REAL_OUTPUT; opaque AU byte sequence only; production_allowed=false.",
           "delivery_scope": "FLAT7X_OPAQUE_AU_SEQUENCE_COMPOSITION_ONLY_NO_AUDIO_SOURCE_JOIN_FILE_GTC_OR_PRODUCTION_CLAIM"
+        },
+        {
+          "slice_id": "flat7x-source-bound-i0-d0-au-candidate",
+          "mapping_status": "MATERIALIZED_SOURCE_BOUND_I0_D0_IN_MEMORY_AU_CANDIDATE__PRODUCTION_FALSE",
+          "implementation_status": "LOCALLY_VERIFIED_SOURCE_BOUND_I0_D0_AU_CANDIDATE_C511_AND_REJECTIONS__PRODUCTION_FALSE",
+          "implementation_requirement": true,
+          "owner": "application",
+          "scope": "Joins a source-bound I0 frame candidate with six caller-owned D0 opaque audio spans and an explicit D0 BSI structure. It retains the selected ResolvedEncodingProfile, Flat7x target and one SharedAnalysisIdentity; D0SourceIdentity is checked against the role-map transaction, source index and analysis-after generation. The existing D0 frame assembler enforces six ordered spans, zero-based block_index=2, one complete skiple=1/U9 skip-field with C<=511, exact 4096-byte extent and CRC2; the existing I0/D0 byte composer emits I0 before D0 at 6656 bytes. The target carries Flat7x/spatial index1/downmix index1/15-object values. The result is an in-memory candidate with no CLI, AU-owner, file or publication path; production_allowed=false.",
+          "dependencies": [
+            "F12/flat7x-i0-typed-bsi-frame-assembly-entry",
+            "F12/flat7x-d0-frame-bit-assembler",
+            "F12/flat7x-d0-block2-skipfld-serializer",
+            "F12/flat7x-i0-d0-opaque-au-byte-composer",
+            "F01E/flat7x-i0-d0-typed-target-plan"
+          ],
+          "spec_files": [
+            "docs/architecture/adm-to-eac3joc-chain-status.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1/RECEIPT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1/FINDINGS.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/FINDINGS.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-EMDF-SINGLE-FIELD-FAIL-CLOSED-CONTRACT-V1/FINDINGS.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-RATE-FRMSIZ-TARGET-V1/FINDINGS.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1/REPORT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1/CONTRACT.md"
+          ],
+          "implementation_files": [
+            "crates/jocforge-application/src/flat7x_pair_source.rs",
+            "crates/jocforge-domain/src/codec/access_unit_composer.rs",
+            "crates/jocforge-domain/src/codec/d0_frame_assembler.rs",
+            "crates/jocforge-domain/src/codec/d0_frame_layout.rs",
+            "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
+            "crates/jocforge-domain/src/codec/frame_builder.rs",
+            "crates/jocforge-domain/src/codec/i0_frame_assembler.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-application/src/flat7x_pair_source.rs",
+            "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
+            "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
+            "crates/jocforge-domain/tests/flat7x_access_unit_composer.rs",
+            "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs"
+          ],
+          "clock": {
+            "domains": [
+              "AttemptId",
+              "CallbackTransactionId",
+              "CodecSourceIndex",
+              "AnalysisOwnerGeneration",
+              "SharedAnalysisIdentity"
+            ],
+            "covered_clauses": [
+              "The I0 candidate, selected pair source-role receipt and D0SourceIdentity must match one SharedAnalysisIdentity, including source transaction, source index and analysis-after generation.",
+              "The pair byte candidate preserves I0-to-D0 order; it creates no PublishedAuIndex or output-owner generation."
+            ]
+          },
+          "parameters": {
+            "kind": "SOURCE_BOUND_FLAT7X_I0_D0_IN_MEMORY_AU_CANDIDATE",
+            "validation_boundary": "Pins the in-memory pair to the official-demo non-rate profile and the selected 1664-kbps aggregate override: I0 AC-3 640 kbps/2560 bytes, D0 E-AC-3 1024 kbps/4096 bytes, Flat7x spatial/downmix index 1, chanmap 0x1A00 and 15 JOC objects. D0 BSI values and opaque audio spans remain caller-supplied; this candidate does not authorize production output.",
+            "target": {
+              "i0_rate_kbps": 640,
+              "i0_frame_bytes": 2560,
+              "d0_rate_kbps": 1024,
+              "d0_frame_bytes": 4096,
+              "aggregate_rate_kbps": 1664,
+              "access_unit_bytes": 6656,
+              "d0_chanmap": "0x1A00",
+              "joc_spatial_index": 1,
+              "joc_downmix_index": 1,
+              "joc_object_count": 15
+            },
+            "d0_block_index_convention": {
+              "package_id": "FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1",
+              "manifest_sha256": "da59cf0d1b8684750f90c936f07d90d495662215e367e6365a8cc22253ceadaf",
+              "package_seal_sha256": "427e5e34feca213d00daa9a969a8da0a6f14fff8872899c0062ba66611242131",
+              "block_index": 2,
+              "base": "zero-based",
+              "prefix_ordinal": 3,
+              "production_allowed": false
+            },
+            "d0_skipfield": {
+              "package_id": "FLAT7X-EMDF-SINGLE-FIELD-FAIL-CLOSED-CONTRACT-V1",
+              "manifest_sha256": "759162aef0c2cbae7b4f14a5cb30608f4b03526c61016d2ea775e767738fcfd4",
+              "zero_based_block_index": 2,
+              "single_field_count": 1,
+              "skiple": 1,
+              "skipl_width_bits": 9,
+              "C_range_bytes": [
+                1,
+                511
+              ],
+              "fragmentation_allowed": false,
+              "overflow_policy": "REJECT_WHOLE_AU_BEFORE_PUBLISH",
+              "production_allowed": false
+            },
+            "d0_frame_rate_contract": {
+              "package_id": "FLAT7X-D0-RATE-FRMSIZ-TARGET-V1",
+              "manifest_sha256": "1eb4311e3f63ec84c57c7fe636a8a21773bd633ae3f4fe9b0739b88e09e66139",
+              "rate_kbps": 1024,
+              "frame_bytes": 4096,
+              "frmsiz": 2047
+            },
+            "official_sample_numeric_regression": {
+              "package_id": "OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1",
+              "manifest_sha256": "940bdf73dad449fef39f5533d458876c08b177cdb6f514a2620e8f696b917ac3",
+              "package_seal_sha256": "769aa8aff8a0a4b1cba1c620b0dca960fd8c6274d5b88e4642989a56579a166d",
+              "sample_rate_kbps": 640,
+              "C_bytes_by_au": [
+                314,
+                301,
+                301
+              ],
+              "id11_data_bytes_by_au": [
+                79,
+                66,
+                66
+              ],
+              "id14_data_bytes_by_au": [
+                216,
+                216,
+                216
+              ],
+              "consumed_bytes_by_au": [
+                314,
+                301,
+                301
+              ],
+              "trailing_bytes_by_au": [
+                0,
+                0,
+                0
+              ],
+              "raw_container_bytes_included": false,
+              "target_rate_extrapolation": false
+            },
+            "source_binding": {
+              "i0_frame_identity": "SharedAnalysisIdentity",
+              "d0_identity": "D0SourceIdentity",
+              "required_join": "same attempt/source transaction/source index/analysis-after generation and selected role-map receipt"
+            },
+            "partial_or_file_publication": false,
+            "production_allowed": false,
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-EMDF-SINGLE-FIELD-FAIL-CLOSED-CONTRACT-V1/manifest.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-RATE-FRMSIZ-TARGET-V1/manifest.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1/manifest.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1/SKIPFLD-VALUES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1/manifest.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1/SOURCE-RECEIPTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-RANGE-WRITE-BOUNDARY-V1/manifest.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-RANGE-WRITE-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-RANGE-WRITE-BOUNDARY-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-RANGE-WRITE-BOUNDARY-V1/SOURCE-RECEIPTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1/manifest.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1/SOURCE-RECEIPTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1/manifest.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1/SOURCE-RECEIPTS.json"
+            ],
+            "d0_source_range_boundary": {
+              "package_id": "DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1",
+              "manifest_sha256": "5368aec9880349a210ada6450c2f69664141cf4f9adae46ac4805440631d8ea6",
+              "package_seal_sha256": "ecd1840441a9a9c13eadd4131c5e96de64bb437ccd6e9b5027b9f6bd6af16d9b",
+              "observation": "selected same-object method set reads the worker range locations without direct stores",
+              "external_range_populator": "UNBOUND",
+              "d0_audio_owner": "UNBOUND",
+              "production_allowed": false
+            },
+            "d0_slot0_range_write_boundary": {
+              "package_id": "DEE67-PROENCODER-SLOT0-RANGE-WRITE-BOUNDARY-V1",
+              "manifest_sha256": "bb49bd95f41c7eee237299ce383075d00943343c0c7899a08b21a40db41574bd",
+              "package_seal_sha256": "912b38d37f98625ee3a039c08c7902d35ec27ba742ca5e0b0634d79735496b62",
+              "scope": "nine-instruction slot-0 first block; writes vtable to this+0 and has no direct write to this+0x190/+0x198 or subobject offsets +0x50/+0x58 before its call",
+              "external_span_populator": "UNBOUND",
+              "production_allowed": false
+            },
+            "i0_d0_au_commit_boundary": {
+              "package_id": "DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1",
+              "manifest_sha256": "ba65817c81f8097dda3cc3897f337da81c9a46fee0a892051d553c49089e8f04",
+              "package_seal_sha256": "92ffa1712763fccffd6006f8d9b2b35b7cc4b7660bef304b28b1bb0f3bc68dfa",
+              "observed_paths": [
+                "per-unit callback buffer",
+                "FileWriter span/fwrite"
+              ],
+              "same_source_role_and_generation_join": "UNBOUND",
+              "durable_pair_commit": "UNBOUND",
+              "production_allowed": false
+            },
+            "d0_slot0_config_read_boundary": {
+              "package_id": "DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1",
+              "manifest_sha256": "bf2f7e43a4cecd315e21d993c7fddcd8534089224747db1d9d2fc805f914e95d",
+              "package_seal_sha256": "2d906abfdb78fe2ca17ed21e1a0aeb3075e95181dfedd6209a6957d3866033d9",
+              "method_instruction_count": 19,
+              "same_object_config_plus_0x58_read": "NOT_OBSERVED_IN_SLOT0",
+              "profile_index_1_consumer": "UNBOUND",
+              "production_allowed": false
+            }
+          },
+          "vectors": {
+            "kind": "SYNTHETIC_SOURCE_BOUND_PAIR_AU_CANDIDATE_PLUS_WASHED_SAMPLE_NUMERIC_REGRESSION",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/INPUT-ONLY-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/INPUT-ONLY-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-EMDF-SINGLE-FIELD-FAIL-CLOSED-CONTRACT-V1/FIELD-CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-RATE-FRMSIZ-TARGET-V1/FRAME-SIZE-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1/SKIPFLD-VALUES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1/TARGET-AU-ORDER-VECTOR.json",
+              "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/flat7x_au_composer/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "The source-role map, I0 series and D0 producer identity must join by exact SharedAnalysisIdentity.",
+              "The synthetic D0 frame uses six caller-owned spans with exactly one complete C=511 block-index-2 field; C=512 fails before AU candidate return.",
+              "A one-bit-short D0 frame rejects before an AU candidate is returned.",
+              "The AU candidate spans I0 at bytes 0..2560 then D0 at bytes 2560..6656.",
+              "The package numeric regression uses only C=314/301/301 and ID11/ID14 lengths from 640-kbps samples with synthetic writer bytes.",
+              "Flat7x spatial index1, coefficient index1 and 15-object count are carried as separate target-plan values.",
+              "The candidate remains in memory with production disabled and no CLI/AU-owner/file publication."
+            ],
+            "expected_outputs_included": false,
+            "execution_status": "LOCALLY_VERIFIED_SOURCE_BOUND_PAIR_AU_C511_512_EXTENT_ORDER_IDENTITY_AND_THREE_AU_SAMPLE_WRITER_REGRESSION"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "Flat7xI0D0AuCandidateError::SourceIdentityMismatch",
+              "category": "pair source join",
+              "trigger": "I0 frame/source receipt and the current selected pair/D0 identity differ in programme, attempt, callback, transaction, source index or analysis generation.",
+              "result": "No pair AU candidate is returned.",
+              "caller_action": "Reject the complete pair candidate."
+            },
+            {
+              "error_code": "Flat7xD0FrameAssemblyError::{Layout,FrameSpanMismatch}",
+              "category": "D0 frame structure",
+              "trigger": "D0 block-index placement, single skip-field extent, C<=511, or exact 4096-byte frame extent fails.",
+              "result": "No pair AU candidate is returned.",
+              "caller_action": "Reject the complete pair candidate."
+            },
+            {
+              "error_code": "Flat7xI0D0AuCompositionError::{I0FrameExtentMismatch,D0FrameExtentMismatch,AggregateExtentMismatch}",
+              "category": "I0-to-D0 byte ordering",
+              "trigger": "Either complete frame or the 6656-byte aggregate differs from the target contract.",
+              "result": "No pair AU candidate is returned.",
+              "caller_action": "Reject the whole AU candidate before any owner/publication stage."
+            }
+          ],
+          "not_run": [
+            "No raw skipfld/container/payload/frame bytes, parser or real media are included.",
+            "No 640-kbps sample C is extrapolated to the 1024-kbps D0 target.",
+            "No D0 audio generation, ADM channel-role join, BSI beyond caller-supplied structure semantics, decode, playback, F13/I0/D0 integrity join, AU owner, CLI, file, GTC, production encode or W04 is connected.",
+            "External ProEncoder range population and the source-generation-bound D0 span owner remain UNBOUND; source-range reads do not produce audio spans."
+          ],
+          "validation_boundary": "Synthetic opaque D0 spans and caller BSI values are assembled with the existing D0 frame and AU composers; Wash numeric packages supply only block-index/rate/size measurements. The target contract and pair source receipts are retained; production_allowed=false.",
+          "delivery_scope": "SOURCE_BOUND_FLAT7X_PAIR_IN_MEMORY_AU_CANDIDATE_C511_C512_EXTENT_ORDER_AND_IDENTITY_REJECTIONS_NO_PRODUCTION",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
+              "bytes": 21970,
+              "sha256": "b342898a95240cfefcc4e6c230dc218a7562183a90c76a79af80d7bc542dce74"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/access_unit_composer.rs",
+              "bytes": 10112,
+              "sha256": "3ad586e2299ab444f6eaedf2bc2943a6db80b49076f2e1d3525a9c2d13290f4d"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/d0_frame_assembler.rs",
+              "bytes": 18184,
+              "sha256": "002f306ae17bc62667f8a334974b9d541cbfd1aaa2cf4682cd1b3fb962a2d129"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/d0_frame_layout.rs",
+              "bytes": 10642,
+              "sha256": "a38cf538a6ea63235169719ba5fe6a8cce561f332455bc106502787f2a2a749a"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
+              "bytes": 12243,
+              "sha256": "1eed121576d901e8d7acf6e0df01f4ef265abc897125f6705b0fb9b8a2d570c4"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
+              "bytes": 43493,
+              "sha256": "992fa2b5c5f5ff47aef536e0289474432bdf8919f224407af34b5b8c6c761f64"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
+              "bytes": 42876,
+              "sha256": "21c24753e26f7898310164acabc362ed7698c3ca3017f2a6e398c11b5ebcd4f0"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
+              "bytes": 21970,
+              "sha256": "b342898a95240cfefcc4e6c230dc218a7562183a90c76a79af80d7bc542dce74"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
+              "bytes": 91117,
+              "sha256": "a31f4c80dcd850436c480fdc1c3e535881f809b43ad2ae6aa9f9b917cb832662"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
+              "bytes": 12243,
+              "sha256": "1eed121576d901e8d7acf6e0df01f4ef265abc897125f6705b0fb9b8a2d570c4"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_access_unit_composer.rs",
+              "bytes": 5774,
+              "sha256": "aab17f765979a1bfca9f6f7c729911cceec58b633623a8cfc70c919ed39bff0d"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs",
+              "bytes": 18597,
+              "sha256": "51ce3cc5d1db171b256339b7165d363b934ba41b0a5736d072706694aa0d218e"
+            }
+          ],
+          "vector_inventory": [
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1/EVIDENCE.json",
+              "bytes": 2352,
+              "sha256": "0fcb4b0a7b41b7f252f8329a81ac7ad9c4b75a4f930ec96f376ca089ffeeb2a6"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/INPUT-ONLY-VECTOR.json",
+              "bytes": 1750,
+              "sha256": "356916e6ed58189bd2bd33962d1dd43280d8a87485df71621e452ef8e05f6bee"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1/INPUT-ONLY-VECTOR.json",
+              "bytes": 878,
+              "sha256": "1ad223f37900fa3ae356658b65e75e41488b96012805a6c9ad3d1392f06e0a1c"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-EMDF-SINGLE-FIELD-FAIL-CLOSED-CONTRACT-V1/FIELD-CONTRACT.json",
+              "bytes": 1125,
+              "sha256": "d0bea5a0e5747e80c01a4ac7752bbac6acb51987ed263be16b3bd5dd48944d0b"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-RATE-FRMSIZ-TARGET-V1/FRAME-SIZE-VECTOR.json",
+              "bytes": 978,
+              "sha256": "e72fecc4de26839bd7a2244c9da1dfacac6bbc0316f843245e84d536a4be8c93"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1/SKIPFLD-VALUES.json",
+              "bytes": 2407,
+              "sha256": "e1340016087f66a609fd7f5fc37b559518a61fa7590782700359f3b64e127f18"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1/TARGET-AU-ORDER-VECTOR.json",
+              "bytes": 1041,
+              "sha256": "5b4d54868b6fe06df20956fd2d2258272c00602fbc659adb22964fca1c039550"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json",
+              "bytes": 2542,
+              "sha256": "fddc65f1a52c325347029cc272f24122f9b6ed501d99130a42051b7d7aa8fbee"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/fixtures/flat7x_au_composer/INPUT-ONLY-VECTORS.json",
+              "bytes": 1225,
+              "sha256": "33cd48142e8ca77a32ec94b3a4ab8cd0c3089d8374df0201225985256fe450ca"
+            }
+          ]
         }
       ]
     },
@@ -58674,8 +59066,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2200369,
-              "sha256": "4c1e64c0c06b2ed7f03f0231b752be1e87a22d02de65369ec1c17af8e046050e"
+              "bytes": 2215204,
+              "sha256": "d762704047ee09bb0e31a24f540da6b870cfaa643e3dcd6055fead4bd7ab5938"
             }
           ],
           "test_inventory": [
@@ -60451,8 +60843,6 @@
               "A corrupt I0 frame CRC rejects before writing.",
               "Complete 6656-byte pair readback includes both CRC receipts.",
               "Wrong-attempt and offset mismatches retire/abandon the session and reject later appends.",
-              "The complete 6656-byte pair readback retains both CRC receipts.",
-              "Wrong-attempt and offset mismatch retire/abandon the session and reject later appends.",
               "The complete 6656-byte pair readback retains both CRC receipts.",
               "Wrong-attempt and offset mismatch retire/abandon the session and reject later appends.",
               "I0 span completes before D0 span begins.",

@@ -88,6 +88,10 @@ pub fn write_flat7x_d0_block2_skipfld(
 mod tests {
     use super::*;
 
+    const OFFICIAL_THREE_AU_NUMERIC_VECTOR: &str = include_str!(
+        "../../../../outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1/SKIPFLD-VALUES.json"
+    );
+
     fn read_bits(bytes: &[u8], start_bit: u32, width: u8) -> u32 {
         (0..u32::from(width)).fold(0, |value, offset| {
             let bit = start_bit + offset;
@@ -114,6 +118,70 @@ mod tests {
             flat7x_d0_block2_skipfld_bit_length(512),
             Err(D0EmdfSkipFieldWriteError::ContainerTooLarge)
         );
+    }
+
+    #[test]
+    fn official_three_au_numeric_vector_drives_synthetic_skipfield_writer_regression() {
+        let vector: serde_json::Value =
+            serde_json::from_str(OFFICIAL_THREE_AU_NUMERIC_VECTOR).unwrap();
+        assert_eq!(
+            vector["block_index_convention"],
+            "zero-based third audio-block prefix"
+        );
+        assert_eq!(vector["target_contract"]["max_C"], 511);
+        assert_eq!(vector["target_contract"]["overflow"], "REJECT");
+        assert_eq!(
+            vector["target_contract"]["cross_skipfld_continuation"],
+            "DISALLOWED"
+        );
+        assert!(
+            !vector["target_contract"]["production_allowed"]
+                .as_bool()
+                .unwrap()
+        );
+
+        for (sample_index, expected_c, expected_id11, expected_id14) in [
+            (0_usize, 314_usize, 79_u64, 216_u64),
+            (1_usize, 301_usize, 66_u64, 216_u64),
+            (2_usize, 301_usize, 66_u64, 216_u64),
+        ] {
+            let sample = &vector["samples"][sample_index];
+            assert_eq!(sample["au_index"].as_u64(), Some(sample_index as u64));
+            assert_eq!(sample["frame_bytes"], 2_560);
+            assert_eq!(sample["rate_kbps"], 640);
+            assert_eq!(sample["block_index"], 2);
+            assert!(sample["zero_based"].as_bool().unwrap());
+            assert!(sample["skipfld_present"].as_bool().unwrap());
+            assert_eq!(sample["C"].as_u64(), Some(expected_c as u64));
+            assert_eq!(sample["consumed"].as_u64(), Some(expected_c as u64));
+            assert_eq!(sample["trailing"], 0);
+            assert_eq!(sample["payloads"][0]["id"], 11);
+            assert_eq!(
+                sample["payloads"][0]["data_bytes"].as_u64(),
+                Some(expected_id11)
+            );
+            assert_eq!(sample["payloads"][1]["id"], 14);
+            assert_eq!(
+                sample["payloads"][1]["data_bytes"].as_u64(),
+                Some(expected_id14)
+            );
+
+            // The Wash vector has numeric fields only; these bytes are synthetic writer input.
+            let synthetic_container = vec![0xa5_u8; expected_c];
+            let mut output = vec![0_u8; expected_c + 3];
+            let end = {
+                let mut writer = FrameBitWriter::new(&mut output, FrameBitCursor::new(3)).unwrap();
+                write_flat7x_d0_block2_skipfld(&mut writer, &synthetic_container).unwrap()
+            };
+            assert_eq!(
+                end.bit_offset(),
+                3 + flat7x_d0_block2_skipfld_bit_length(u16::try_from(expected_c).unwrap())
+                    .unwrap()
+            );
+            assert_eq!(read_bits(&output, 3, 1), 1);
+            assert_eq!(read_bits(&output, 4, 9), expected_c as u32);
+            assert_eq!(read_bytes(&output, 13, expected_c), synthetic_container);
+        }
     }
 
     #[test]

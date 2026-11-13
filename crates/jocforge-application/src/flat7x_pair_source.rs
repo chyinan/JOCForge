@@ -7,7 +7,11 @@ use jocforge_domain::{
             I0AudioBlockSeriesBudget, I0AudioBlockSeriesCandidate, I0AudioBlockSeriesError,
             I0AudioBlockSeriesPolicy, produce_i0_audio_block_series,
         },
+        access_unit_composer::{
+            Flat7xI0D0AuCandidate, Flat7xI0D0AuCandidateError, assemble_flat7x_i0_d0_au_candidate,
+        },
         d0_frame_assembler::Flat7xD0FrameBitInput,
+        frame_builder::Flat7xD0BsiStructure,
         i0_frame_assembler::{
             CallerOwnedI0CrcrsvSeed, Flat7xI0Ac3AudioSeriesFrameCandidate,
             Flat7xI0FrameAssemblyError, I0AuxDataInput,
@@ -96,6 +100,23 @@ impl Flat7xD0SourceIdentity {
     pub const fn analysis_generation(&self) -> Flat7xAnalysisGeneration {
         self.analysis_generation
     }
+
+    fn matches_pair_source(
+        &self,
+        programme_id: &ProgrammeId,
+        attempt_id: AttemptId,
+        callback_index: FrontendCallbackIndex,
+        source_transaction_id: &CallbackTransactionId,
+        source_index: CodecSourceIndex,
+        analysis_generation: Flat7xAnalysisGeneration,
+    ) -> bool {
+        &self.programme_id == programme_id
+            && self.attempt_id == attempt_id
+            && self.callback_index == callback_index
+            && &self.source_transaction_id == source_transaction_id
+            && self.source_index == source_index
+            && self.analysis_generation == analysis_generation
+    }
 }
 
 /// Immutable source-bound D0 audio spans. Its constructor stays inside this module until a
@@ -129,6 +150,7 @@ pub enum Flat7xPairSourceError {
     D0AudioSpanSourceIdentityMismatch,
     I0AudioBlockSeries(I0AudioBlockSeriesError),
     I0FrameAssembly(Flat7xI0FrameAssemblyError),
+    AccessUnitAssembly(Flat7xI0D0AuCandidateError),
 }
 
 /// Resolves the typed D0 producer boundary before a pair candidate can be created.
@@ -325,6 +347,110 @@ pub fn assemble_flat7x_pair_i0_frame_candidate(
     })
 }
 
+/// Complete in-memory I0→D0 AU candidate with the selected profile and both source receipts.
+#[must_use]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Flat7xPairAccessUnitCandidate {
+    resolved_profile: ResolvedEncodingProfile,
+    source_role_map_receipt: Flat7xSourceRoleMapReceipt,
+    d0_source_identity: Flat7xD0SourceIdentity,
+    access_unit: Flat7xI0D0AuCandidate,
+}
+
+impl Flat7xPairAccessUnitCandidate {
+    pub const fn resolved_profile(&self) -> ResolvedEncodingProfile {
+        self.resolved_profile
+    }
+
+    pub const fn target(&self) -> Flat7xI0D0TargetPlan {
+        self.access_unit.target()
+    }
+
+    pub fn source_identity(&self) -> &SharedAnalysisIdentity {
+        self.access_unit.source_identity()
+    }
+
+    pub const fn source_role_map_receipt(&self) -> &Flat7xSourceRoleMapReceipt {
+        &self.source_role_map_receipt
+    }
+
+    pub const fn d0_source_identity(&self) -> &Flat7xD0SourceIdentity {
+        &self.d0_source_identity
+    }
+
+    pub const fn access_unit(&self) -> &Flat7xI0D0AuCandidate {
+        &self.access_unit
+    }
+
+    pub const fn access_unit_bytes(
+        &self,
+    ) -> &[u8; jocforge_domain::codec::access_unit_composer::FLAT7X_AU_FRAME_BYTES] {
+        self.access_unit.access_unit_bytes()
+    }
+
+    pub const fn production_allowed(&self) -> bool {
+        false
+    }
+}
+
+/// Builds the paired I0→D0 byte candidate from the same profile, source receipt and D0 input.
+///
+/// The D0 BSI and six opaque audio spans remain caller-owned. The existing D0 assembler validates
+/// its target, six block positions and single block-index-2 skip-field before the I0→D0 composer
+/// emits one in-memory AU candidate. This function performs no CLI, AU-owner, file or publication
+/// call.
+pub fn assemble_flat7x_pair_access_unit_candidate(
+    pair_audio: &Flat7xPairAudioBlockCandidate<'_, '_>,
+    i0_frame: &Flat7xPairI0FrameCandidate,
+    d0_bsi: Flat7xD0BsiStructure<'_>,
+) -> Result<Flat7xPairAccessUnitCandidate, Flat7xPairSourceError> {
+    let binding = &pair_audio.binding;
+    let role_map = &binding.role_map_receipt;
+    let shared_identity = role_map.shared_analysis_identity();
+    if binding.resolved_profile != i0_frame.resolved_profile
+        || binding.target != i0_frame.target()
+        || role_map != i0_frame.source_role_map_receipt()
+        || i0_frame.source_identity() != shared_identity
+        || pair_audio.i0_audio_blocks.receipt().source_identity() != shared_identity
+        || binding.source_index != shared_identity.source_index()
+        || !d0_identity_matches_role_map(&binding.d0_source_identity, role_map)
+    {
+        return Err(Flat7xPairSourceError::SourceIdentityMismatch);
+    }
+
+    let access_unit = assemble_flat7x_i0_d0_au_candidate(
+        binding.target,
+        shared_identity,
+        i0_frame.i0_frame.clone(),
+        d0_bsi,
+        pair_audio.d0_audio_blocks,
+    )
+    .map_err(Flat7xPairSourceError::AccessUnitAssembly)?;
+
+    Ok(Flat7xPairAccessUnitCandidate {
+        resolved_profile: binding.resolved_profile,
+        source_role_map_receipt: role_map.clone(),
+        d0_source_identity: binding.d0_source_identity.clone(),
+        access_unit,
+    })
+}
+
+fn d0_identity_matches_role_map(
+    d0_identity: &Flat7xD0SourceIdentity,
+    role_map: &Flat7xSourceRoleMapReceipt,
+) -> bool {
+    let shared_identity = role_map.shared_analysis_identity();
+    let source_stage = shared_identity.source_stage_key();
+    d0_identity.matches_pair_source(
+        role_map.programme_id(),
+        source_stage.attempt_id(),
+        role_map.callback_index(),
+        source_stage.transaction_id(),
+        role_map.source_index(),
+        Flat7xAnalysisGeneration(shared_identity.analysis_after_generation().value()),
+    )
+}
+
 /// Binds one selected Flat7x profile, source projection, and numeric plan to one source identity.
 pub fn bind_flat7x_pair_source<'pcm>(
     profile: ResolvedEncodingProfile,
@@ -416,10 +542,10 @@ mod tests {
         }
     }
 
-    fn fixture_span_receipt<'a>(
+    fn fixture_span_receipt(
         source_identity: Flat7xD0SourceIdentity,
-        byte: &'a [u8],
-    ) -> Flat7xD0AudioSpanReceipt<'a> {
+        byte: &[u8],
+    ) -> Flat7xD0AudioSpanReceipt<'_> {
         let block = D0FrameAudioBlockInput::Opaque(OpaqueD0AudioBitSpan::new(byte, 0, 1));
         Flat7xD0AudioSpanReceipt {
             source_identity,
@@ -427,6 +553,30 @@ mod tests {
                 audio_blocks: [block; 6],
             },
         }
+    }
+
+    #[test]
+    fn d0_source_identity_matches_the_pair_source_generation_and_transaction() {
+        let identity = fixture_source_identity(9);
+        let programme_id = ProgrammeId::new("flat7x-programme").unwrap();
+        let source_transaction_id = CallbackTransactionId::new("source-7").unwrap();
+
+        assert!(identity.matches_pair_source(
+            &programme_id,
+            AttemptId::new(2),
+            FrontendCallbackIndex::new(9),
+            &source_transaction_id,
+            CodecSourceIndex::new(7),
+            Flat7xAnalysisGeneration(9),
+        ));
+        assert!(!identity.matches_pair_source(
+            &programme_id,
+            AttemptId::new(2),
+            FrontendCallbackIndex::new(9),
+            &source_transaction_id,
+            CodecSourceIndex::new(7),
+            Flat7xAnalysisGeneration(8),
+        ));
     }
 
     #[test]

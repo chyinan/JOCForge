@@ -11607,7 +11607,7 @@ def check_f13c_r138_record_list_reporting(root,d):
 
 def check_f12_fixed_prefix_slice(root,d):
 
- entry=next(e for e in d['functional_entries']if e['functional_id']=='F12');direct=entry.get('direct_slices',[]);s=next((x for x in direct if x['slice_id']=='selected-fixed-profile-header-prefix'),None);frame_trial=next((x for x in direct if x['slice_id']=='selected-q-frame-trial-and-keyless-crc'),None);main_search=next((x for x in direct if x['slice_id']=='selected-main-q-search'),None);writer=next((x for x in direct if x['slice_id']=='same-source-frame-candidate-writer'),None);carrier_rate=next((x for x in direct if x.get('slice_id')=='washed-data-rate-to-carrier-writer-boundary'),None);header_observation=next((x for x in direct if x.get('slice_id')=='washed-two-rate-eac3-frame-header-observation'),None);six_rate=next((x for x in direct if x.get('slice_id')=='selected-six-rate-profile-frame-size-through-output'),None);rate_frmsiz=next((x for x in direct if x.get('slice_id')=='washed-atmos71-i0-d0-rate-frmsiz-boundary-partial'),None);chanmap_u16=next((x for x in direct if x.get('slice_id')=='washed-eac3-chanmap-u16-msb-first-serialization'),None);i0_syntax=next((x for x in direct if x.get('slice_id')=='washed-atmos71-i0-frame-syntax-equivalence-gap'),None);bsi_segment=next((x for x in direct if x.get('slice_id')=='flat7x-d0-bsi-segment-through-chanmap'),None);i0_ac3_segment=next((x for x in direct if x.get('slice_id')=='flat7x-i0-ac3-header-segment'),None);mixing_segment=next((x for x in direct if x.get('slice_id')=='flat7x-d0-mixing-metadata-segment'),None);ck(entry['implementation_status']=='DEFERRED_DETAILED_MAPPING'and len(direct)==46 and any(x['slice_id']=='selected-codec-owner-generation-previous-short-stage'for x in direct)and s is not None and frame_trial is not None and main_search is not None and writer is not None and carrier_rate is not None and header_observation is not None and six_rate is not None and rate_frmsiz is not None and rate_frmsiz.get('implementation_requirement')is False and rate_frmsiz.get('owner')=='codec' and rate_frmsiz.get('parameters',{}).get('supplement_manifest_sha256')=='f62ff1854f0b690501fe9dab5c61ed7b67b6f911f9cb7290b95715e2b1fa475f' and rate_frmsiz.get('parameters',{}).get('native_writer_boundary',{}).get('second_word_frmsiz_producer')=='UNBOUND' and rate_frmsiz.get('parameters',{}).get('native_writer_boundary',{}).get('bsi_bitrate_field')=='UNBOUND' and rate_frmsiz.get('parameters',{}).get('native_writer_boundary',{}).get('actual_output_rate')=='NOT_RUN' and rate_frmsiz.get('parameters',{}).get('production_gates',{}).get('production_allowed')is False and rate_frmsiz.get('vectors',{}).get('execution_status')=='NOT_RUN' and chanmap_u16 is not None and chanmap_u16.get('mapping_status')=='WASHED_DEPENDENT_CHANMAPE_AND_U16_MSB_FIRST_FIELD_PAIR_BOUND__SEMANTIC_SOURCE_MAPPING_UNBOUND' and chanmap_u16.get('implementation_status')=='LOCALLY_VERIFIED_DEPENDENT_CHANMAPE_U16_FIELD_PAIR__D0_FRAME_COMPOSITION_OPEN' and chanmap_u16.get('implementation_requirement')is True and chanmap_u16.get('owner')=='codec' and chanmap_u16.get('implementation_files')==['crates/jocforge-domain/src/codec/eac3_channel_map.rs','crates/jocforge-domain/src/codec/mod.rs','crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs'] and chanmap_u16.get('test_modules')==['crates/jocforge-domain/tests/eac3_channel_map.rs'] and chanmap_u16.get('parameters',{}).get('supplement_manifest_sha256')=='470fa9830a7937fcd1d5169c980f139669011e766e136ce2dc9bf7498103f787' and chanmap_u16.get('parameters',{}).get('field_width_bits')==16 and chanmap_u16.get('parameters',{}).get('emitted_slot_formula')=='15 - numeric_bit_index' and chanmap_u16.get('parameters',{}).get('one_hot_vector_count')==16 and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('mask_hex')=='0x1A00' and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('expected_emitted_slots')==[3,4,6] and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('expected_field_bits')=='0001101000000000' and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('ADM_source_role_join')=='UNBOUND' and chanmap_u16.get('parameters',{}).get('required_field_pair_bits')==17 and chanmap_u16.get('parameters',{}).get('chanmape_value')==1 and chanmap_u16.get('parameters',{}).get('pair_addendum',{}).get('package_id')=='eac3-dependent-chanmap-field-writer-v1' and chanmap_u16.get('parameters',{}).get('pair_addendum',{}).get('supplement_manifest_sha256')=='fe364375e3a4ac4ae7a7959807d10d48f1f745e43077f4629fe2a16718702c43' and chanmap_u16.get('parameters',{}).get('pair_addendum',{}).get('target_field_pair_bits')=='10001101000000000' and chanmap_u16.get('parameters',{}).get('pair_addendum',{}).get('context_reconciliation')=='SEPARATE_VALIDATION_VECTOR_CONTEXT; TARGET_D0_PREFIX_ACMOD5' and chanmap_u16.get('parameters',{}).get('production_allowed')is False and chanmap_u16.get('vectors',{}).get('execution_status')=='LOCALLY_VERIFIED_U16_AND_DEPENDENT_FIELD_PAIR_INPUT_ONLY' and bsi_segment is not None and bsi_segment.get('implementation_status')=='LOCALLY_VERIFIED_D0_BSI_SEGMENT_THROUGH_CHANMAP__COMPLETE_FRAME_OPEN' and bsi_segment.get('parameters',{}).get('supplement_manifest_sha256')=='cf24050c7539262f53f220366f3c4328d766147a39daeb37e3e89f27817b88db' and bsi_segment.get('parameters',{}).get('segment_bits')=={'without_compr':68,'with_compr':76} and bsi_segment.get('parameters',{}).get('production_allowed')is False and bsi_segment.get('vectors',{}).get('execution_status')=='LOCALLY_VERIFIED_INPUT_ONLY_D0_BSI_SEGMENT' and i0_ac3_segment is not None and i0_ac3_segment.get('implementation_status')=='LOCALLY_VERIFIED_FLAT7X_I0_AC3_HEADER_SEGMENT_THROUGH_COMPR__FULL_FRAME_OPEN' and i0_ac3_segment.get('parameters',{}).get('supplement_manifest_sha256')=='285bff275095c945a3f6f4b5040de20111779cec466602fb1aea29ca8c4ad8e1' and i0_ac3_segment.get('parameters',{}).get('frmsizecod_allowed')==[36,37] and i0_ac3_segment.get('parameters',{}).get('segment_bits')=={'without_compr':62,'with_compr':70} and i0_ac3_segment.get('parameters',{}).get('production_allowed')is False and i0_ac3_segment.get('vectors',{}).get('execution_status')=='LOCALLY_VERIFIED_INPUT_ONLY_I0_HEADER_SEGMENT' and i0_syntax is not None and i0_syntax.get('implementation_requirement')is False and i0_syntax.get('owner')=='codec' and i0_syntax.get('implementation_files')==[] and i0_syntax.get('test_modules')==[] and i0_syntax.get('parameters',{}).get('supplement_manifest_sha256')=='9f500f0785c569d67b846fa54f121b4e42c6b5b179ace98c4bdf19463c906109' and i0_syntax.get('parameters',{}).get('official_i0_exact_bsid')=='NOT_CAPTURED' and i0_syntax.get('parameters',{}).get('isolated_prefix_equivalence_to_official_i0')=='UNBOUND' and i0_syntax.get('parameters',{}).get('implementation_disposition')=='NO_PREFIX_CHANGE_AUTHORIZED' and i0_syntax.get('parameters',{}).get('new_7_1_profile_production_allowed')is False and i0_syntax.get('vectors',{}).get('execution_status')=='NOT_RUN' and six_rate['implementation_status']=='LOCALLY_VERIFIED_SIX_RATE_ADMISSION_F12_F14_F15_IO__ALL_SIX_FULL_FILE_RATE_OUTPUTS_PUBLISHED__DEE_PARITY_PENDING'and writer['implementation_status']=='LOCALLY_COMPILED_F12_CANDIDATE_AND_PRODUCTION_F15_STAGING__REAL_SOURCE_CANDIDATE_NOT_RUN'and any('Direct positive-path application bridge test' in item for item in writer['not_run'])and any('finalized ProgrammeMeasurementReceipt' in item for item in writer['not_run'])and any(path.endswith('/source_frame_bridge.rs') for path in writer['implementation_files'])and any('durable output' in item for item in writer['not_run'])and any('Continuous multi-source output' in item for item in writer['not_run']),'F12 keeps washed rate evidence, local six-rate frame staging, and whole codec source gaps as separate slices')
+ entry=next(e for e in d['functional_entries']if e['functional_id']=='F12');direct=entry.get('direct_slices',[]);s=next((x for x in direct if x['slice_id']=='selected-fixed-profile-header-prefix'),None);frame_trial=next((x for x in direct if x['slice_id']=='selected-q-frame-trial-and-keyless-crc'),None);main_search=next((x for x in direct if x['slice_id']=='selected-main-q-search'),None);writer=next((x for x in direct if x['slice_id']=='same-source-frame-candidate-writer'),None);carrier_rate=next((x for x in direct if x.get('slice_id')=='washed-data-rate-to-carrier-writer-boundary'),None);header_observation=next((x for x in direct if x.get('slice_id')=='washed-two-rate-eac3-frame-header-observation'),None);six_rate=next((x for x in direct if x.get('slice_id')=='selected-six-rate-profile-frame-size-through-output'),None);rate_frmsiz=next((x for x in direct if x.get('slice_id')=='washed-atmos71-i0-d0-rate-frmsiz-boundary-partial'),None);chanmap_u16=next((x for x in direct if x.get('slice_id')=='washed-eac3-chanmap-u16-msb-first-serialization'),None);i0_syntax=next((x for x in direct if x.get('slice_id')=='washed-atmos71-i0-frame-syntax-equivalence-gap'),None);bsi_segment=next((x for x in direct if x.get('slice_id')=='flat7x-d0-bsi-segment-through-chanmap'),None);i0_ac3_segment=next((x for x in direct if x.get('slice_id')=='flat7x-i0-ac3-header-segment'),None);mixing_segment=next((x for x in direct if x.get('slice_id')=='flat7x-d0-mixing-metadata-segment'),None);ck(entry['implementation_status']=='DEFERRED_DETAILED_MAPPING'and len(direct)==47 and any(x['slice_id']=='selected-codec-owner-generation-previous-short-stage'for x in direct)and s is not None and frame_trial is not None and main_search is not None and writer is not None and carrier_rate is not None and header_observation is not None and six_rate is not None and rate_frmsiz is not None and rate_frmsiz.get('implementation_requirement')is False and rate_frmsiz.get('owner')=='codec' and rate_frmsiz.get('parameters',{}).get('supplement_manifest_sha256')=='f62ff1854f0b690501fe9dab5c61ed7b67b6f911f9cb7290b95715e2b1fa475f' and rate_frmsiz.get('parameters',{}).get('native_writer_boundary',{}).get('second_word_frmsiz_producer')=='UNBOUND' and rate_frmsiz.get('parameters',{}).get('native_writer_boundary',{}).get('bsi_bitrate_field')=='UNBOUND' and rate_frmsiz.get('parameters',{}).get('native_writer_boundary',{}).get('actual_output_rate')=='NOT_RUN' and rate_frmsiz.get('parameters',{}).get('production_gates',{}).get('production_allowed')is False and rate_frmsiz.get('vectors',{}).get('execution_status')=='NOT_RUN' and chanmap_u16 is not None and chanmap_u16.get('mapping_status')=='WASHED_DEPENDENT_CHANMAPE_AND_U16_MSB_FIRST_FIELD_PAIR_BOUND__SEMANTIC_SOURCE_MAPPING_UNBOUND' and chanmap_u16.get('implementation_status')=='LOCALLY_VERIFIED_DEPENDENT_CHANMAPE_U16_FIELD_PAIR__D0_FRAME_COMPOSITION_OPEN' and chanmap_u16.get('implementation_requirement')is True and chanmap_u16.get('owner')=='codec' and chanmap_u16.get('implementation_files')==['crates/jocforge-domain/src/codec/eac3_channel_map.rs','crates/jocforge-domain/src/codec/mod.rs','crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs'] and chanmap_u16.get('test_modules')==['crates/jocforge-domain/tests/eac3_channel_map.rs'] and chanmap_u16.get('parameters',{}).get('supplement_manifest_sha256')=='470fa9830a7937fcd1d5169c980f139669011e766e136ce2dc9bf7498103f787' and chanmap_u16.get('parameters',{}).get('field_width_bits')==16 and chanmap_u16.get('parameters',{}).get('emitted_slot_formula')=='15 - numeric_bit_index' and chanmap_u16.get('parameters',{}).get('one_hot_vector_count')==16 and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('mask_hex')=='0x1A00' and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('expected_emitted_slots')==[3,4,6] and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('expected_field_bits')=='0001101000000000' and chanmap_u16.get('parameters',{}).get('target_composite',{}).get('ADM_source_role_join')=='UNBOUND' and chanmap_u16.get('parameters',{}).get('required_field_pair_bits')==17 and chanmap_u16.get('parameters',{}).get('chanmape_value')==1 and chanmap_u16.get('parameters',{}).get('pair_addendum',{}).get('package_id')=='eac3-dependent-chanmap-field-writer-v1' and chanmap_u16.get('parameters',{}).get('pair_addendum',{}).get('supplement_manifest_sha256')=='fe364375e3a4ac4ae7a7959807d10d48f1f745e43077f4629fe2a16718702c43' and chanmap_u16.get('parameters',{}).get('pair_addendum',{}).get('target_field_pair_bits')=='10001101000000000' and chanmap_u16.get('parameters',{}).get('pair_addendum',{}).get('context_reconciliation')=='SEPARATE_VALIDATION_VECTOR_CONTEXT; TARGET_D0_PREFIX_ACMOD5' and chanmap_u16.get('parameters',{}).get('production_allowed')is False and chanmap_u16.get('vectors',{}).get('execution_status')=='LOCALLY_VERIFIED_U16_AND_DEPENDENT_FIELD_PAIR_INPUT_ONLY' and bsi_segment is not None and bsi_segment.get('implementation_status')=='LOCALLY_VERIFIED_D0_BSI_SEGMENT_THROUGH_CHANMAP__COMPLETE_FRAME_OPEN' and bsi_segment.get('parameters',{}).get('supplement_manifest_sha256')=='cf24050c7539262f53f220366f3c4328d766147a39daeb37e3e89f27817b88db' and bsi_segment.get('parameters',{}).get('segment_bits')=={'without_compr':68,'with_compr':76} and bsi_segment.get('parameters',{}).get('production_allowed')is False and bsi_segment.get('vectors',{}).get('execution_status')=='LOCALLY_VERIFIED_INPUT_ONLY_D0_BSI_SEGMENT' and i0_ac3_segment is not None and i0_ac3_segment.get('implementation_status')=='LOCALLY_VERIFIED_FLAT7X_I0_AC3_HEADER_SEGMENT_THROUGH_COMPR__FULL_FRAME_OPEN' and i0_ac3_segment.get('parameters',{}).get('supplement_manifest_sha256')=='285bff275095c945a3f6f4b5040de20111779cec466602fb1aea29ca8c4ad8e1' and i0_ac3_segment.get('parameters',{}).get('frmsizecod_allowed')==[36,37] and i0_ac3_segment.get('parameters',{}).get('segment_bits')=={'without_compr':62,'with_compr':70} and i0_ac3_segment.get('parameters',{}).get('production_allowed')is False and i0_ac3_segment.get('vectors',{}).get('execution_status')=='LOCALLY_VERIFIED_INPUT_ONLY_I0_HEADER_SEGMENT' and i0_syntax is not None and i0_syntax.get('implementation_requirement')is False and i0_syntax.get('owner')=='codec' and i0_syntax.get('implementation_files')==[] and i0_syntax.get('test_modules')==[] and i0_syntax.get('parameters',{}).get('supplement_manifest_sha256')=='9f500f0785c569d67b846fa54f121b4e42c6b5b179ace98c4bdf19463c906109' and i0_syntax.get('parameters',{}).get('official_i0_exact_bsid')=='NOT_CAPTURED' and i0_syntax.get('parameters',{}).get('isolated_prefix_equivalence_to_official_i0')=='UNBOUND' and i0_syntax.get('parameters',{}).get('implementation_disposition')=='NO_PREFIX_CHANGE_AUTHORIZED' and i0_syntax.get('parameters',{}).get('new_7_1_profile_production_allowed')is False and i0_syntax.get('vectors',{}).get('execution_status')=='NOT_RUN' and six_rate['implementation_status']=='LOCALLY_VERIFIED_SIX_RATE_ADMISSION_F12_F14_F15_IO__ALL_SIX_FULL_FILE_RATE_OUTPUTS_PUBLISHED__DEE_PARITY_PENDING'and writer['implementation_status']=='LOCALLY_COMPILED_F12_CANDIDATE_AND_PRODUCTION_F15_STAGING__REAL_SOURCE_CANDIDATE_NOT_RUN'and any('Direct positive-path application bridge test' in item for item in writer['not_run'])and any('finalized ProgrammeMeasurementReceipt' in item for item in writer['not_run'])and any(path.endswith('/source_frame_bridge.rs') for path in writer['implementation_files'])and any('durable output' in item for item in writer['not_run'])and any('Continuous multi-source output' in item for item in writer['not_run']),'F12 keeps washed rate evidence, local six-rate frame staging, and whole codec source gaps as separate slices')
  ck(mixing_segment is not None and mixing_segment.get('implementation_status')=='LOCALLY_VERIFIED_D0_MIXMDATE_BLOCKMIX_INFOMDATE_SEGMENT__FRAME_TAIL_OPEN' and mixing_segment.get('parameters',{}).get('supplement_manifest_sha256')=='a7d8bb0e724dd94b9a31fa860c4296daecc957e4570dfdb9f32bf5ef17c3aa12' and mixing_segment.get('parameters',{}).get('target_context')=={'strmtyp':1,'acmod':5,'lfeon':0,'audio_blocks_per_frame':6} and mixing_segment.get('parameters',{}).get('segment_bits')=={'no_optional_values':3,'mixing_only_with_infomdate':17,'three_block_values':24} and mixing_segment.get('parameters',{}).get('production_allowed')is False and mixing_segment.get('vectors',{}).get('execution_status')=='LOCALLY_VERIFIED_INPUT_ONLY_MIXING_SEGMENT_WITH_BYTE_CAPACITY_ADAPTATION','D0 mixing/infomdate segment preserves target context, explicit fields, and capacity-vector representation note')
 
  rate_header_root='outputs/IMPLEMENTER_SUPPLEMENTS/DEE-EC3-DATA-RATE-FRAME-HEADER-OBSERVATION-V1';rate_header_files=[rate_header_root+'/'+name for name in ('MANIFEST.json','package_seal.json','REPORT.md','INPUT-ONLY-VECTORS.json','OBSERVED-FRAME-HEADERS.json','PROVENANCE.json')]
@@ -12196,9 +12196,30 @@ def check_f12_d0_frame_bit_assembler_slice(root, d):
         for path in (root / "crates").glob("jocforge-*/src/**/*.rs")
         if path != module_path
     ]
-    no_production_call = all(
-        "assemble_flat7x_d0_frame_bits" not in path.read_text(encoding="utf-8")
+    pair_candidate_path = root / "crates/jocforge-domain/src/codec/access_unit_composer.rs"
+    pair_candidate_module = rust_code_without_comments(
+        pair_candidate_path.read_text(encoding="utf-8")
+    )
+    pair_candidate_start = pair_candidate_module.index(
+        "pub fn assemble_flat7x_i0_d0_au_candidate("
+    )
+    pair_candidate_end = pair_candidate_module.index(
+        "pub fn write_flat7x_i0_d0_access_unit_bytes(",
+        pair_candidate_start,
+    )
+    pair_candidate_function = pair_candidate_module[
+        pair_candidate_start:pair_candidate_end
+    ]
+    d0_frame_callers = {
+        path
         for path in production_sources
+        if "assemble_flat7x_d0_frame_bits" in path.read_text(encoding="utf-8")
+    }
+    production_disabled_pair_candidate_only = (
+        d0_frame_callers == {pair_candidate_path}
+        and pair_candidate_function.count("assemble_flat7x_d0_frame_bits(") == 1
+        and "pub const fn production_allowed(&self) -> bool {\n        false\n    }"
+        in pair_candidate_module
     )
     ck(
         "D0_TARGET_FRAME_BYTES: usize = 4_096" in module
@@ -12219,8 +12240,8 @@ def check_f12_d0_frame_bit_assembler_slice(root, d):
         and function.index("if verified_residual != 0") < function.index("writer.write_bytes(&staging)?")
         and "Flat7xD0FrameAssemblyReceipt" in module
         and "pub const fn production_allowed(self) -> bool" in module
-        and no_production_call,
-        "D0 frame assembler preflights exact target, generates and verifies CRC2 in scratch, and has no product callsite",
+        and production_disabled_pair_candidate_only,
+        "D0 frame assembler preflights exact target, verifies CRC2 in scratch, and is called only by the disabled pair candidate",
     )
     ck(
         row["implementation_status"]
@@ -13043,6 +13064,199 @@ def check_f12_flat7x_i0_d0_opaque_au_composer_slice(root, d):
             )
         ),
         "opaque I0/D0 composer maps synthetic extent/order and atomic-rejection cases",
+    )
+
+
+def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
+    entry = next(item for item in d["functional_entries"] if item["functional_id"] == "F12")
+    rows = [
+        item for item in entry.get("direct_slices", [])
+        if item.get("slice_id") == "flat7x-source-bound-i0-d0-au-candidate"
+    ]
+    ck(len(rows) == 1, "F12 has one source-bound in-memory pair AU candidate slice")
+    if not rows:
+        return
+
+    row = rows[0]
+    app_path = root / "crates/jocforge-application/src/flat7x_pair_source.rs"
+    composer_path = root / "crates/jocforge-domain/src/codec/access_unit_composer.rs"
+    d0_assembler_path = root / "crates/jocforge-domain/src/codec/d0_frame_assembler.rs"
+    ac3_test_path = root / "crates/jocforge-domain/src/codec/ac3_audio_block.rs"
+    skipfield_test_path = root / "crates/jocforge-domain/src/codec/emdf_skip_field.rs"
+    cli_path = root / "crates/jocforge-cli/src/encode_request.rs"
+    app = rust_code_without_comments(app_path.read_text(encoding="utf-8"))
+    composer = rust_code_without_comments(composer_path.read_text(encoding="utf-8"))
+    d0_assembler = rust_code_without_comments(d0_assembler_path.read_text(encoding="utf-8"))
+    ac3_tests = ac3_test_path.read_text(encoding="utf-8")
+    skipfield_tests = skipfield_test_path.read_text(encoding="utf-8")
+    cli = rust_code_without_comments(cli_path.read_text(encoding="utf-8"))
+
+    block_index_package = root / "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1"
+    block_index_manifest = block_index_package / "MANIFEST.json"
+    block_index_seal = block_index_package / "PACKAGE-SEAL.json"
+    block_index_manifest_sha256 = "da59cf0d1b8684750f90c936f07d90d495662215e367e6365a8cc22253ceadaf"
+    block_index_seal_sha256 = "427e5e34feca213d00daa9a969a8da0a6f14fff8872899c0062ba66611242131"
+    block_index_evidence = json.loads((block_index_package / "EVIDENCE.json").read_bytes())
+
+    numeric_package = root / "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1"
+    numeric_manifest = numeric_package / "manifest.json"
+    numeric_seal = numeric_package / "package_seal.json"
+    numeric_values_path = numeric_package / "SKIPFLD-VALUES.json"
+    numeric_manifest_sha256 = "940bdf73dad449fef39f5533d458876c08b177cdb6f514a2620e8f696b917ac3"
+    numeric_seal_sha256 = "769aa8aff8a0a4b1cba1c620b0dca960fd8c6274d5b88e4642989a56579a166d"
+    numeric_values = json.loads(numeric_values_path.read_bytes())
+    range_package = root / "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1"
+    range_manifest = range_package / "manifest.json"
+    range_seal = range_package / "package_seal.json"
+    range_manifest_sha256 = "5368aec9880349a210ada6450c2f69664141cf4f9adae46ac4805440631d8ea6"
+    range_seal_sha256 = "ecd1840441a9a9c13eadd4131c5e96de64bb437ccd6e9b5027b9f6bd6af16d9b"
+    range_contract = (range_package / "CONTRACT.md").read_text(encoding="utf-8")
+    expected_samples = [
+        {"au_index": 0, "rate_kbps": 640, "frame_bytes": 2560, "block_index": 2, "C": 314, "id11": 79, "id14": 216, "consumed": 314, "trailing": 0},
+        {"au_index": 1, "rate_kbps": 640, "frame_bytes": 2560, "block_index": 2, "C": 301, "id11": 66, "id14": 216, "consumed": 301, "trailing": 0},
+        {"au_index": 2, "rate_kbps": 640, "frame_bytes": 2560, "block_index": 2, "C": 301, "id11": 66, "id14": 216, "consumed": 301, "trailing": 0},
+    ]
+    actual_samples = []
+    for sample in numeric_values.get("samples", []):
+        payloads = {item.get("id"): item.get("data_bytes") for item in sample.get("payloads", [])}
+        actual_samples.append({
+            "au_index": sample.get("au_index"),
+            "rate_kbps": sample.get("rate_kbps"),
+            "frame_bytes": sample.get("frame_bytes"),
+            "block_index": sample.get("block_index"),
+            "C": sample.get("C"),
+            "id11": payloads.get(11),
+            "id14": payloads.get(14),
+            "consumed": sample.get("consumed"),
+            "trailing": sample.get("trailing"),
+        })
+    ck(
+        hashlib.sha256(block_index_manifest.read_bytes()).hexdigest() == block_index_manifest_sha256
+        and hashlib.sha256(block_index_seal.read_bytes()).hexdigest() == block_index_seal_sha256
+        and block_index_evidence.get("resolution", {}).get("contract_d0_emdf_block_index") == 2
+        and block_index_evidence.get("resolution", {}).get("contract_index_base") == "ZERO_BASED"
+        and block_index_evidence.get("resolution", {}).get("audio_block_prefix_position_one_based") == 3
+        and hashlib.sha256(numeric_manifest.read_bytes()).hexdigest() == numeric_manifest_sha256
+        and hashlib.sha256(numeric_seal.read_bytes()).hexdigest() == numeric_seal_sha256
+        and numeric_values.get("block_index_convention") == "zero-based third audio-block prefix"
+        and all(sample.get("rate_kbps") == 640 for sample in numeric_values.get("samples", []))
+        and numeric_values.get("target_contract", {}).get("max_C") == 511
+        and numeric_values.get("target_contract", {}).get("overflow") == "REJECT"
+        and numeric_values.get("target_contract", {}).get("cross_skipfld_continuation") == "DISALLOWED"
+        and numeric_values.get("target_contract", {}).get("production_allowed") is False
+        and hashlib.sha256(range_manifest.read_bytes()).hexdigest() == range_manifest_sha256
+        and hashlib.sha256(range_seal.read_bytes()).hexdigest() == range_seal_sha256
+        and "this+0x190/+0x198" in range_contract
+        and "no direct write to those range locations was observed" in range_contract.lower()
+        and "external range populator" in range_contract.lower()
+        and actual_samples == expected_samples,
+        "sealed block-index convention and three-AU numeric vector values stay sample-scoped",
+    )
+
+    catalog = (root / "outputs/IMPLEMENTER_SUPPLEMENTS/CATALOG.md").read_text(encoding="utf-8")
+    for package_id, manifest_sha256, checker, expected_output in (
+        ("FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1", block_index_manifest_sha256, "verify_package.py", "PASS: Flat7x D0 block-index convention reconciliation"),
+        ("OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1", numeric_manifest_sha256, "CHECK.py", "PASS official demo three-AU block-2 EMDF sample vectors"),
+        ("DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1", range_manifest_sha256, "CHECK.py", "PASS bounded ProEncoder source-range method-set receipt; owner stays unbound"),
+        ("DEE67-PROENCODER-SLOT0-RANGE-WRITE-BOUNDARY-V1", "bb49bd95f41c7eee237299ce383075d00943343c0c7899a08b21a40db41574bd", "CHECK.py", "PASS bounded ProEncoder slot-0 range-write contract; no global absence claim"),
+        ("DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1", "bf2f7e43a4cecd315e21d993c7fddcd8534089224747db1d9d2fc805f914e95d", "CHECK.py", "PASS slot-0-only Config+0x58 read boundary; profile join stays open"),
+        ("DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1", "ba65817c81f8097dda3cc3897f337da81c9a46fee0a892051d553c49089e8f04", "CHECK.py", "PASS sanitized I0/D0 AU boundary; join stays unbound and publication disabled"),
+    ):
+        package = root / "outputs/IMPLEMENTER_SUPPLEMENTS" / package_id
+        ck(package_id + " | " + manifest_sha256 in catalog, "catalog registers " + package_id)
+        for optimized in (False, True):
+            command = [sys.executable] + (["-O"] if optimized else []) + ["-B", str(package / checker)]
+            result = subprocess.run(command, cwd=package, capture_output=True, text=True, encoding="utf-8")
+            ck(
+                result.returncode == 0 and expected_output in result.stdout,
+                package_id + " checker " + ("optimized" if optimized else "normal"),
+            )
+
+    pair_target = row.get("parameters", {}).get("target", {})
+    skip_target = row.get("parameters", {}).get("d0_skipfield", {})
+    numeric_parameters = row.get("parameters", {}).get("official_sample_numeric_regression", {})
+    range_parameters = row.get("parameters", {}).get("d0_source_range_boundary", {})
+    slot0_write_parameters = row.get("parameters", {}).get("d0_slot0_range_write_boundary", {})
+    slot0_read_parameters = row.get("parameters", {}).get("d0_slot0_config_read_boundary", {})
+    commit_parameters = row.get("parameters", {}).get("i0_d0_au_commit_boundary", {})
+    ck(
+        row.get("owner") == "application"
+        and row.get("implementation_status") == "LOCALLY_VERIFIED_SOURCE_BOUND_I0_D0_AU_CANDIDATE_C511_AND_REJECTIONS__PRODUCTION_FALSE"
+        and row.get("parameters", {}).get("production_allowed") is False
+        and pair_target == {
+            "i0_rate_kbps": 640,
+            "i0_frame_bytes": 2560,
+            "d0_rate_kbps": 1024,
+            "d0_frame_bytes": 4096,
+            "aggregate_rate_kbps": 1664,
+            "access_unit_bytes": 6656,
+            "d0_chanmap": "0x1A00",
+            "joc_spatial_index": 1,
+            "joc_downmix_index": 1,
+            "joc_object_count": 15,
+        }
+        and skip_target.get("zero_based_block_index") == 2
+        and skip_target.get("single_field_count") == 1
+        and skip_target.get("C_range_bytes") == [1, 511]
+        and skip_target.get("fragmentation_allowed") is False
+        and numeric_parameters.get("package_id") == "OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1"
+        and numeric_parameters.get("sample_rate_kbps") == 640
+        and numeric_parameters.get("C_bytes_by_au") == [314, 301, 301]
+        and numeric_parameters.get("target_rate_extrapolation") is False
+        and range_parameters.get("package_id") == "DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1"
+        and range_parameters.get("manifest_sha256") == range_manifest_sha256
+        and range_parameters.get("package_seal_sha256") == range_seal_sha256
+        and range_parameters.get("external_range_populator") == "UNBOUND"
+        and range_parameters.get("d0_audio_owner") == "UNBOUND"
+        and range_parameters.get("production_allowed") is False
+        and slot0_write_parameters.get("package_id") == "DEE67-PROENCODER-SLOT0-RANGE-WRITE-BOUNDARY-V1"
+        and slot0_write_parameters.get("manifest_sha256") == "bb49bd95f41c7eee237299ce383075d00943343c0c7899a08b21a40db41574bd"
+        and slot0_write_parameters.get("external_span_populator") == "UNBOUND"
+        and slot0_write_parameters.get("production_allowed") is False
+        and slot0_read_parameters.get("package_id") == "DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1"
+        and slot0_read_parameters.get("manifest_sha256") == "bf2f7e43a4cecd315e21d993c7fddcd8534089224747db1d9d2fc805f914e95d"
+        and slot0_read_parameters.get("same_object_config_plus_0x58_read") == "NOT_OBSERVED_IN_SLOT0"
+        and slot0_read_parameters.get("profile_index_1_consumer") == "UNBOUND"
+        and slot0_read_parameters.get("production_allowed") is False
+        and commit_parameters.get("package_id") == "DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1"
+        and commit_parameters.get("manifest_sha256") == "ba65817c81f8097dda3cc3897f337da81c9a46fee0a892051d553c49089e8f04"
+        and commit_parameters.get("same_source_role_and_generation_join") == "UNBOUND"
+        and commit_parameters.get("durable_pair_commit") == "UNBOUND"
+        and commit_parameters.get("production_allowed") is False
+        and row.get("vectors", {}).get("expected_outputs_included") is False
+        and "raw skipfld/container/payload/frame bytes" in " ".join(row.get("not_run", [])),
+        "pair candidate maps source identity, target extents, block-index 2 and the sample-only C vector",
+    )
+
+    no_cli_pair_candidate = (
+        "assemble_flat7x_pair_access_unit_candidate" not in cli
+        and "EncodeRequestRoute::Flat7xI0D0Pair(_target) => Err(EncodeRequestError::Flat7xPairNotReady)" in cli
+    )
+    ck(
+        "pub struct Flat7xPairAccessUnitCandidate" in app
+        and "pub fn assemble_flat7x_pair_access_unit_candidate(" in app
+        and "d0_identity_matches_role_map(" in app
+        and "assemble_flat7x_i0_d0_au_candidate(" in app
+        and "pub fn assemble_flat7x_i0_d0_au_candidate(" in composer
+        and "assemble_flat7x_d0_frame_bits(" in composer
+        and "write_flat7x_i0_d0_access_unit_bytes(" in composer
+        and "D0FrameAudioBlockInput" in d0_assembler
+        and "D0_BLOCK_TWO_INDEX: usize = 2" in d0_assembler
+        and "Flat7xI0D0AuCandidate" in composer
+        and "pub const fn production_allowed(&self) -> bool {\n        false\n    }" in app
+        and no_cli_pair_candidate,
+        "application binds D0 receipt and source profile to the in-memory frame/AU assemblers without CLI publication",
+    )
+
+    ac3_tests = (root / "crates/jocforge-domain/src/codec/ac3_audio_block.rs").read_text(encoding="utf-8")
+    skipfield_tests = (root / "crates/jocforge-domain/src/codec/emdf_skip_field.rs").read_text(encoding="utf-8")
+    ck(
+        all(name in ac3_tests for name in (
+            "c511_pair_candidate_binds_index2_and_composes_i0_before_d0",
+            "pair_candidate_rejects_identity_mismatch_c512_and_d0_extent_error",
+        ))
+        and "official_three_au_numeric_vector_drives_synthetic_skipfield_writer_regression" in skipfield_tests,
+        "pair AU tests cover source mismatch, C511/C512, frame extent, I0-before-D0 and sample writer fields",
     )
 
 
@@ -14350,7 +14564,7 @@ def check_partial_root_and_new_slice_mappings(root, d):
 
         "F11": ["same-source-converter-pattern-and-offset-plan"],
 
-        "F12": ["same-source-selected-source-numeric-plan-receipt", "same-source-frame-candidate-writer", "selected-length-producer-run99-run100-boundary", "selected-length-synthetic-noise-coverage-run109-run110", "selected-length-target-boundary-fixture-requirement", "f06nd-f12-finalized-measurement-receipt-edge", "washed-reader-origin-to-codec-writer-single-call-boundary", "selected-profile-bsi-mixing-information-writer", "selected-six-rate-profile-frame-size-through-output", "flat7x-d0-block2-skipfld-serializer", "official-atmos-demo-i0-d0-structure-reference", "flat7x-d0-fixed-prefix-writer", "flat7x-d0-bsi-segment-through-chanmap", "flat7x-i0-ac3-header-segment", "flat7x-i0-frame-bit-assembler", "flat7x-i0-ac3-bsi-tail-writer", "flat7x-i0-typed-bsi-frame-assembly-entry", "flat7x-d0-mixing-metadata-segment", "flat7x-elementary-stream-sequence-composer", "flat7x-i0-ac3-audio-block-producer"],
+        "F12": ["same-source-selected-source-numeric-plan-receipt", "same-source-frame-candidate-writer", "selected-length-producer-run99-run100-boundary", "selected-length-synthetic-noise-coverage-run109-run110", "selected-length-target-boundary-fixture-requirement", "f06nd-f12-finalized-measurement-receipt-edge", "washed-reader-origin-to-codec-writer-single-call-boundary", "selected-profile-bsi-mixing-information-writer", "selected-six-rate-profile-frame-size-through-output", "flat7x-d0-block2-skipfld-serializer", "official-atmos-demo-i0-d0-structure-reference", "flat7x-d0-fixed-prefix-writer", "flat7x-d0-bsi-segment-through-chanmap", "flat7x-i0-ac3-header-segment", "flat7x-i0-frame-bit-assembler", "flat7x-i0-ac3-bsi-tail-writer", "flat7x-i0-typed-bsi-frame-assembly-entry", "flat7x-d0-mixing-metadata-segment", "flat7x-elementary-stream-sequence-composer", "flat7x-i0-ac3-audio-block-producer", "flat7x-source-bound-i0-d0-au-candidate"],
 
         "F13": ["authorized-main-g2-metadata-body-proposal", "meter-receipt-to-metadata-owner-cold-candidate", "selected-f13-producer-model-conditional-length-bound", "native-run100-body-length-to-f13-container-identity-boundary"],
 
@@ -14465,7 +14679,7 @@ def check_partial_root_and_new_slice_mappings(root, d):
     flat7x_skip_target = flat7x_skip.get("parameters", {}).get("target", {})
     flat7x_skip_code = rust_code_without_comments((root / "crates/jocforge-domain/src/codec/emdf_skip_field.rs").read_text(encoding="utf-8"))
     flat7x_skip_other_paths = ["crates/jocforge-domain/src/codec/frame_builder.rs", "crates/jocforge-domain/src/codec/selected_frame_trial.rs", "crates/jocforge-domain/src/publication/output_owner.rs"]
-    flat7x_skip_test_names = ["writes_skiple_then_u9_byte_count_and_container_at_an_unaligned_cursor", "accepts_the_one_byte_length_boundary", "accepts_the_511_byte_boundary_and_encodes_its_u9_length", "rejects_missing_container_and_512_byte_container_before_writing", "preflights_the_complete_field_before_mutating_frame_bits", "target_skip_field_length_covers_one_through_511_payload_bytes"]
+    flat7x_skip_test_names = ["writes_skiple_then_u9_byte_count_and_container_at_an_unaligned_cursor", "accepts_the_one_byte_length_boundary", "accepts_the_511_byte_boundary_and_encodes_its_u9_length", "rejects_missing_container_and_512_byte_container_before_writing", "preflights_the_complete_field_before_mutating_frame_bits", "target_skip_field_length_covers_one_through_511_payload_bytes", "official_three_au_numeric_vector_drives_synthetic_skipfield_writer_regression"]
     ck("pub fn flat7x_d0_block2_skipfld_bit_length(" in flat7x_skip_code and "payload_bytes > target.maximum_complete_container_bytes()" in flat7x_skip_code and "SKIPLE_WIDTH_BITS + SKIPL_WIDTH_BITS" in flat7x_skip_code, "skip-field composer shares the exact target length validator")
     ck(flat7x_skip.get("owner") == "codec" and flat7x_skip.get("implementation_status") == "LOCALLY_VERIFIED_REQUIRED_CONTAINER_SKIPFIELD_WRITER_AND_CALLER_BLOCK2_FRAME_ASSEMBLER__PRODUCTION_OPEN" and flat7x_skip_target.get("skiple_width_bits") == 1 and flat7x_skip_target.get("skipl_width_bits") == 9 and flat7x_skip_target.get("maximum_complete_container_bytes") == 511 and flat7x_skip_target.get("fragmentation_allowed") is False and flat7x_skip_target.get("generic_absent_syntax_exposed") is False and flat7x_skip_target.get("production_allowed") is False and "complete_emdf_container: &[u8]" in flat7x_skip_code and "MissingContainer" in flat7x_skip_code and "writer.write_bit(true)" in flat7x_skip_code and "writer.write_bit(false)" not in flat7x_skip_code and all(token in flat7x_skip_code for token in ("writer.write_unsigned(u32::from(payload_bytes), SKIPL_WIDTH_BITS)", "writer.write_bytes(complete_emdf_container)", "writer.preflight_capacity(field_bits)")) and all(token not in flat7x_skip_code for token in ("DependentChannelMap", "coded_object_count", "reconstruction_carriers")) and all("write_flat7x_d0_block2_skipfld" not in rust_code_without_comments((root / path).read_text(encoding="utf-8")) for path in flat7x_skip_other_paths) and all(name in flat7x_skip_code for name in flat7x_skip_test_names) and all("NOT_RUN" in item or "UNBOUND" in item for item in flat7x_skip.get("not_run", [])), "Flat7x skip-field serializer keeps the ETSI present-field model and caller D0 assembler as separate mapped boundaries")
     check_wash_flat7x_d0_skipfld_structure_package(root, flat7x_skip)
@@ -16257,7 +16471,7 @@ def run(root=ROOT):
 
  d0_frame_assembler=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-d0-frame-bit-assembler');verified_scopes+=(d0_frame_assembler['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_EXACT_FRAME_ASSEMBLY_CRC2_AND_FAILURE_ATOMICITY__PRODUCTION_OPEN');ck(verified_scopes==84,'locally verified scoped-task count including generated D0 frame CRC2')
 
- opaque_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-d0-opaque-au-byte-composer');verified_scopes+=(opaque_au['implementation_status']=='LOCALLY_VERIFIED_TARGET_EXTENTS_ORDER_AND_ATOMIC_COMMIT__NO_CRC_OR_GENERATION');sequence_composer=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-sequence-composer');verified_scopes+=(sequence_composer['implementation_status']=='LOCALLY_VERIFIED_SEQUENCE_AND_D0_TO_AU_TO_STREAM_CHAIN__NO_PRODUCTION');stream_stage=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F15')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-staged-file-adapter');verified_scopes+=(stream_stage['implementation_status']=='LOCALLY_VERIFIED_F15_FINALIZE_LEDGER_STAGE_RECEIPT_JOIN_AND_TEMP_IO__SOURCE_CALLBACK_OPEN');ck(verified_scopes==87,'locally verified scoped-task count including Flat7x F15 finalize-to-stage integration');i0_frame_assembler=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-frame-bit-assembler');verified_scopes+=(i0_frame_assembler['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_ASSEMBLY_GENERATED_CRC1_CRC2_RESIDUALS__PRODUCTION_OPEN');ck(verified_scopes==88,'locally verified scoped-task count including I0 AC-3 structure assembly');i0_bsi_tail=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-ac3-bsi-tail-writer');verified_scopes+=(i0_bsi_tail['implementation_status']=='LOCALLY_VERIFIED_OFFICIAL_SAMPLE_I0_BSI_TAIL_THROUGH_ADDBSIE_AND_FRAME_CANDIDATE__PRODUCTION_FALSE');ck(verified_scopes==89,'locally verified scoped-task count including I0 BSI-tail through addbsie');i0_typed_frame=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-typed-bsi-frame-assembly-entry');verified_scopes+=(i0_typed_frame['implementation_status']=='LOCALLY_VERIFIED_SOURCE_BOUND_SIX_BLOCK_I0_FRAME_CANDIDATE__ASSUMPTIONS_OPEN__PRODUCTION_FALSE');ck(verified_scopes==90,'locally verified scoped-task count including typed I0 BSI-to-frame composition');i0_ac3_audio=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-ac3-audio-block-producer');verified_scopes+=(i0_ac3_audio['implementation_status']=='LOCALLY_VERIFIED_SIX_BLOCK_I0_FRAME_CANDIDATE_WITH_PROVISIONAL_ASSUMPTIONS__PRODUCTION_FALSE');ck(verified_scopes==91,'locally verified scoped-task count including AC-3 block-zero prototype')
+ opaque_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-d0-opaque-au-byte-composer');verified_scopes+=(opaque_au['implementation_status']=='LOCALLY_VERIFIED_TARGET_EXTENTS_ORDER_AND_ATOMIC_COMMIT__NO_CRC_OR_GENERATION');sequence_composer=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-sequence-composer');verified_scopes+=(sequence_composer['implementation_status']=='LOCALLY_VERIFIED_SEQUENCE_AND_D0_TO_AU_TO_STREAM_CHAIN__NO_PRODUCTION');stream_stage=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F15')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-staged-file-adapter');verified_scopes+=(stream_stage['implementation_status']=='LOCALLY_VERIFIED_F15_FINALIZE_LEDGER_STAGE_RECEIPT_JOIN_AND_TEMP_IO__SOURCE_CALLBACK_OPEN');ck(verified_scopes==87,'locally verified scoped-task count including Flat7x F15 finalize-to-stage integration');i0_frame_assembler=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-frame-bit-assembler');verified_scopes+=(i0_frame_assembler['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_ASSEMBLY_GENERATED_CRC1_CRC2_RESIDUALS__PRODUCTION_OPEN');ck(verified_scopes==88,'locally verified scoped-task count including I0 AC-3 structure assembly');i0_bsi_tail=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-ac3-bsi-tail-writer');verified_scopes+=(i0_bsi_tail['implementation_status']=='LOCALLY_VERIFIED_OFFICIAL_SAMPLE_I0_BSI_TAIL_THROUGH_ADDBSIE_AND_FRAME_CANDIDATE__PRODUCTION_FALSE');ck(verified_scopes==89,'locally verified scoped-task count including I0 BSI-tail through addbsie');i0_typed_frame=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-typed-bsi-frame-assembly-entry');verified_scopes+=(i0_typed_frame['implementation_status']=='LOCALLY_VERIFIED_SOURCE_BOUND_SIX_BLOCK_I0_FRAME_CANDIDATE__ASSUMPTIONS_OPEN__PRODUCTION_FALSE');ck(verified_scopes==90,'locally verified scoped-task count including typed I0 BSI-to-frame composition');i0_ac3_audio=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-ac3-audio-block-producer');verified_scopes+=(i0_ac3_audio['implementation_status']=='LOCALLY_VERIFIED_SIX_BLOCK_I0_FRAME_CANDIDATE_WITH_PROVISIONAL_ASSUMPTIONS__PRODUCTION_FALSE');ck(verified_scopes==91,'locally verified scoped-task count including AC-3 block-zero prototype');pair_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-source-bound-i0-d0-au-candidate');verified_scopes+=(pair_au['implementation_status']=='LOCALLY_VERIFIED_SOURCE_BOUND_I0_D0_AU_CANDIDATE_C511_AND_REJECTIONS__PRODUCTION_FALSE');ck(verified_scopes==92,'locally verified scoped-task count including source-bound I0/D0 AU candidate')
 
  dep=d['approved_dependencies']['sha2']
 
@@ -16764,6 +16978,7 @@ def run(root=ROOT):
  check_f12_flat7x_target_id14_header_slice(root,d)
  check_f12_d0_frame_bit_assembler_slice(root,d)
  check_f12_flat7x_i0_d0_opaque_au_composer_slice(root,d)
+ check_f12_flat7x_source_bound_i0_d0_au_candidate(root,d)
  check_f12_flat7x_elementary_stream_sequence_composer(root,d)
  check_f15_flat7x_elementary_stream_stage(root,d)
  check_f12_flat7x_layout_slice(root,d)

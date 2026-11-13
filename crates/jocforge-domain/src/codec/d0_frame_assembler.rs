@@ -15,9 +15,9 @@ use super::{
 };
 use crate::{integrity::crc16::eac3_crc16, profile::Flat7xI0D0TargetPlan};
 
-const D0_TARGET_FRAME_BYTES: usize = 4_096;
-const D0_TARGET_FRAME_BITS: u32 = 32_768;
-const D0_CRC2_FIELD_BITS: u32 = 16;
+pub const D0_TARGET_FRAME_BYTES: usize = 4_096;
+pub const D0_TARGET_FRAME_BITS: u32 = 32_768;
+pub const D0_CRC2_FIELD_BITS: u32 = 16;
 const D0_CRC2_FIELD_BYTES: usize = 2;
 const D0_CRC2_COVERAGE_START_BYTE: usize = 2;
 const D0_BLOCK_TWO_INDEX: usize = 2;

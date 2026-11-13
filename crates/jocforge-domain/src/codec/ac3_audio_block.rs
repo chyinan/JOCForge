@@ -1716,20 +1716,33 @@ mod i0_audio_block_series_tests {
             input_history::{INPUT_HISTORY_BLOCK_SAMPLES, InputHistory},
             source_frame::{
                 AnalysisOwnerGeneration, F07SourceFrameBeforeState, InstalledAudioSourceFrame,
-                stage_f07a_source_frame,
+                SharedAnalysisIdentity, stage_f07a_source_frame,
             },
             transient_channel::TransientChannelState,
             transient_parameters::load_transient_parameters,
         },
         codec::{
+            access_unit_composer::{
+                FLAT7X_AU_FRAME_BYTES, Flat7xI0D0AuCandidateError,
+                assemble_flat7x_i0_d0_au_candidate,
+            },
             bap::{
                 BapProfileInput, BapRowInput, allocate_bap_row, allocate_bap_row_with_parameters,
                 load_bap_parameters,
             },
+            d0_frame_assembler::{
+                D0_CRC2_FIELD_BITS, D0_TARGET_FRAME_BITS, D0_TARGET_FRAME_BYTES,
+                D0Block2SkipFieldInput, D0BlockTwoAudioSpans, D0FrameAudioBlockInput,
+                Flat7xD0FrameAssemblyError, Flat7xD0FrameBitInput, OpaqueD0AudioBitSpan,
+            },
+            d0_frame_layout::{CallerOwnedUnboundD0Block2InsertionPoint, D0SixBlockLayoutError},
+            emdf_skip_field::{D0EmdfSkipFieldWriteError, flat7x_d0_block2_skipfld_bit_length},
             exponent_packing::pack_exponent_difference_group,
+            frame_builder::{Flat7xD0BsiStructure, measure_flat7x_d0_bsi_structure},
             i0_frame_assembler::{
-                CallerOwnedI0CrcrsvSeed, Flat7xI0FrameAssemblyError, I0_TARGET_FRAME_BYTES,
-                I0AuxDataInput, OpaqueI0Ac3BitSpan, assemble_flat7x_i0_ac3_frame_from_audio_series,
+                CallerOwnedI0CrcrsvSeed, Flat7xI0Ac3AudioSeriesFrameCandidate,
+                Flat7xI0FrameAssemblyError, I0_TARGET_FRAME_BYTES, I0AuxDataInput,
+                OpaqueI0Ac3BitSpan, assemble_flat7x_i0_ac3_frame_from_audio_series,
             },
             selected_frame_trial::{
                 BlockExponentPlan, CoefficientBlockInput, ConverterHeaderInput,
@@ -1846,6 +1859,136 @@ mod i0_audio_block_series_tests {
             delta_bit_allocation: Ac3DeltaBitAllocationInput::Absent,
             quantizer_policy: Ac3MantissaQuantizerPolicy::NearestTiesEven,
         }
+    }
+
+    fn source_bound_i0_frame_candidate()
+    -> (SharedAnalysisIdentity, Flat7xI0Ac3AudioSeriesFrameCandidate) {
+        let mut transaction = source_transaction();
+        let numeric_receipt = transaction.prepare_numeric_plan(numeric_plan()).unwrap();
+        let audio_candidate = produce_i0_audio_block_series(
+            &numeric_receipt,
+            synthetic_policy(),
+            I0AudioBlockSeriesBudget::new(20_480),
+        )
+        .unwrap();
+        let source_identity = numeric_receipt.identity().clone();
+        let target = crate::profile::Flat7xI0D0TargetPlan::approved_contract();
+        let assemble = |auxdata| {
+            assemble_flat7x_i0_ac3_frame_from_audio_series(
+                target,
+                numeric_receipt.identity(),
+                &audio_candidate,
+                auxdata,
+                CallerOwnedI0CrcrsvSeed { value: false },
+            )
+        };
+        let frame_candidate = match assemble(I0AuxDataInput::Absent) {
+            Ok(candidate) => candidate,
+            Err(Flat7xI0FrameAssemblyError::FrameSpanMismatch {
+                actual_bits,
+                required_bits,
+            }) if actual_bits < required_bits => {
+                let aux_payload_bits = required_bits - actual_bits;
+                let aux_payload_bytes = usize::try_from(aux_payload_bits.div_ceil(8)).unwrap();
+                let aux_payload = vec![0_u8; aux_payload_bytes];
+                assemble(I0AuxDataInput::Present(OpaqueI0Ac3BitSpan::new(
+                    &aux_payload,
+                    0,
+                    aux_payload_bits,
+                )))
+                .unwrap()
+            }
+            other => panic!("unexpected I0 frame assembly result: {other:?}"),
+        };
+        (source_identity, frame_candidate)
+    }
+
+    fn synthetic_d0_bsi() -> Flat7xD0BsiStructure<'static> {
+        // Caller-authored test structure; fields after the captured chanmap are synthetic.
+        Flat7xD0BsiStructure {
+            dialnorm: 31,
+            compr: Some(1),
+            mixing: None,
+            block_mix: [None; 6],
+            information: None,
+            addbsi: None,
+        }
+    }
+
+    #[derive(Clone, Debug)]
+    struct SyntheticD0AudioSpans {
+        audio_bytes: [Vec<u8>; 6],
+        skipfield_prefix_bytes: Vec<u8>,
+        skipfield_suffix_bytes: Vec<u8>,
+        audio_block_bit_lengths: [u32; 6],
+        skipfield_offset_bits: u32,
+    }
+
+    fn synthetic_d0_audio_spans(
+        target: crate::profile::Flat7xI0D0TargetPlan,
+        bsi: &Flat7xD0BsiStructure<'_>,
+        container_bytes: u16,
+    ) -> SyntheticD0AudioSpans {
+        let bsi_bits = measure_flat7x_d0_bsi_structure(target, bsi)
+            .unwrap()
+            .value();
+        let skipfield_bits = flat7x_d0_block2_skipfld_bit_length(container_bytes).unwrap();
+        let frame_bits = u32::from(target.d0().frame_bytes()) * 8;
+        let audio_bits = frame_bits - D0_CRC2_FIELD_BITS - bsi_bits - skipfield_bits;
+        let even_bits = audio_bits / 6;
+        let remainder = audio_bits % 6;
+        let block_lengths = std::array::from_fn(|index| {
+            even_bits + u32::from(u32::try_from(index).unwrap() < remainder)
+        });
+        let block_bytes = std::array::from_fn(|index| {
+            let byte_count = usize::try_from(block_lengths[index].div_ceil(8)).unwrap();
+            vec![0x30 + u8::try_from(index).unwrap(); byte_count]
+        });
+        let block_two_before_bits = block_lengths[2] / 2;
+        let block_two_after_bits = block_lengths[2] - block_two_before_bits;
+        let block_two_before =
+            vec![0x52; usize::try_from(block_two_before_bits.div_ceil(8)).unwrap()];
+        let block_two_after =
+            vec![0x73; usize::try_from(block_two_after_bits.div_ceil(8)).unwrap()];
+
+        SyntheticD0AudioSpans {
+            audio_bytes: block_bytes,
+            skipfield_prefix_bytes: block_two_before,
+            skipfield_suffix_bytes: block_two_after,
+            audio_block_bit_lengths: block_lengths,
+            skipfield_offset_bits: block_two_before_bits,
+        }
+    }
+
+    fn d0_frame_bit_input<'a>(
+        audio: &'a SyntheticD0AudioSpans,
+        skip_fields: &'a [D0Block2SkipFieldInput<'a>],
+        block_lengths: [u32; 6],
+    ) -> Flat7xD0FrameBitInput<'a> {
+        let audio_blocks = std::array::from_fn(|index| {
+            if index == 2 {
+                D0FrameAudioBlockInput::BlockTwo(D0BlockTwoAudioSpans {
+                    before_skipfield: OpaqueD0AudioBitSpan::new(
+                        &audio.skipfield_prefix_bytes,
+                        0,
+                        audio.skipfield_offset_bits,
+                    ),
+                    skip_fields,
+                    after_skipfield: OpaqueD0AudioBitSpan::new(
+                        &audio.skipfield_suffix_bytes,
+                        0,
+                        block_lengths[2] - audio.skipfield_offset_bits,
+                    ),
+                })
+            } else {
+                D0FrameAudioBlockInput::Opaque(OpaqueD0AudioBitSpan::new(
+                    &audio.audio_bytes[index],
+                    0,
+                    block_lengths[index],
+                ))
+            }
+        });
+        Flat7xD0FrameBitInput { audio_blocks }
     }
 
     fn read_bits(bytes: &[u8], start: usize, width: usize) -> u32 {
@@ -2088,6 +2231,175 @@ mod i0_audio_block_series_tests {
                 CallerOwnedI0CrcrsvSeed { value: false },
             ),
             Err(Flat7xI0FrameAssemblyError::SourceIdentityMismatch)
+        );
+    }
+
+    #[test]
+    fn c511_pair_candidate_binds_index2_and_composes_i0_before_d0() {
+        let (source_identity, i0_frame) = source_bound_i0_frame_candidate();
+        let target = crate::profile::Flat7xI0D0TargetPlan::approved_contract();
+        let d0_bsi = synthetic_d0_bsi();
+        let d0_audio = synthetic_d0_audio_spans(target, &d0_bsi, 511);
+        let emdf_container = vec![0xa5_u8; 511];
+        let skip_fields = [D0Block2SkipFieldInput {
+            insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(
+                d0_audio.skipfield_offset_bits,
+            ),
+            complete_emdf_container: &emdf_container,
+        }];
+        let d0_input =
+            d0_frame_bit_input(&d0_audio, &skip_fields, d0_audio.audio_block_bit_lengths);
+
+        let candidate = assemble_flat7x_i0_d0_au_candidate(
+            target,
+            &source_identity,
+            i0_frame.clone(),
+            d0_bsi,
+            d0_input,
+        )
+        .unwrap();
+
+        assert_eq!(candidate.source_identity(), &source_identity);
+        assert_eq!(candidate.target().aggregate_rate_kbps(), Some(1_664));
+        assert_eq!(candidate.target().joc_spatial_index().value(), 1);
+        assert_eq!(candidate.target().downmix_index().value(), 1);
+        assert_eq!(candidate.target().joc_object_count(), 15);
+        assert_eq!(
+            candidate
+                .target()
+                .d0()
+                .channel_map()
+                .map(|channel_map| channel_map.value()),
+            Some(0x1a00)
+        );
+        assert_eq!(candidate.d0_frame_bytes().len(), D0_TARGET_FRAME_BYTES);
+        assert_eq!(candidate.d0_frame_receipt().target_frame_bytes(), 4_096);
+        assert_eq!(
+            candidate.d0_frame_receipt().layout().audio_blocks()[2]
+                .block_index()
+                .zero_based_value(),
+            2
+        );
+        assert_eq!(
+            candidate
+                .d0_frame_receipt()
+                .layout()
+                .block_two_skip_field()
+                .payload_bytes(),
+            511
+        );
+        assert_eq!(
+            candidate
+                .d0_frame_receipt()
+                .crc2_integrity()
+                .verified_residual(),
+            0
+        );
+
+        let receipt = candidate.access_unit_receipt();
+        assert_eq!(receipt.i0_span().start_byte(), 0);
+        assert_eq!(receipt.i0_span().byte_length(), 2_560);
+        assert_eq!(receipt.d0_span().start_byte(), 2_560);
+        assert_eq!(receipt.d0_span().byte_length(), 4_096);
+        assert_eq!(receipt.total_byte_length(), FLAT7X_AU_FRAME_BYTES as u32);
+        assert_eq!(candidate.access_unit_bytes().len(), FLAT7X_AU_FRAME_BYTES);
+        assert_eq!(
+            &candidate.access_unit_bytes()[..2_560],
+            i0_frame.frame_bytes()
+        );
+        assert_eq!(
+            &candidate.access_unit_bytes()[2_560..],
+            candidate.d0_frame_bytes()
+        );
+        assert!(!candidate.production_allowed());
+    }
+
+    #[test]
+    fn pair_candidate_rejects_identity_mismatch_c512_and_d0_extent_error() {
+        let (source_identity, i0_frame) = source_bound_i0_frame_candidate();
+        let target = crate::profile::Flat7xI0D0TargetPlan::approved_contract();
+        let d0_bsi = synthetic_d0_bsi();
+        let d0_audio = synthetic_d0_audio_spans(target, &d0_bsi, 511);
+        let emdf_container = vec![0x5a_u8; 511];
+        let skip_fields = [D0Block2SkipFieldInput {
+            insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(
+                d0_audio.skipfield_offset_bits,
+            ),
+            complete_emdf_container: &emdf_container,
+        }];
+        let d0_input =
+            d0_frame_bit_input(&d0_audio, &skip_fields, d0_audio.audio_block_bit_lengths);
+
+        let mut mismatched_transaction = SourceTransaction::new(
+            AttemptId::new(8),
+            CallbackTransactionId::new("pair-au-other-source").unwrap(),
+            CodecSourceIndex::new(5),
+            AnalysisOwnerGeneration::from_parent_snapshot(12),
+        );
+        mismatched_transaction
+            .prepare_shared_analysis(
+                AnalysisOwnerGeneration::from_parent_snapshot(13),
+                f07_proposal(),
+            )
+            .unwrap();
+        let mismatched_numeric_receipt = mismatched_transaction
+            .prepare_numeric_plan(numeric_plan())
+            .unwrap();
+        assert_eq!(
+            assemble_flat7x_i0_d0_au_candidate(
+                target,
+                mismatched_numeric_receipt.identity(),
+                i0_frame.clone(),
+                d0_bsi,
+                d0_input,
+            ),
+            Err(Flat7xI0D0AuCandidateError::SourceIdentityMismatch)
+        );
+
+        let emdf_container_512 = vec![0x5a_u8; 512];
+        let skip_fields_512 = [D0Block2SkipFieldInput {
+            insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(
+                d0_audio.skipfield_offset_bits,
+            ),
+            complete_emdf_container: &emdf_container_512,
+        }];
+        let d0_input_512 = d0_frame_bit_input(
+            &d0_audio,
+            &skip_fields_512,
+            d0_audio.audio_block_bit_lengths,
+        );
+        assert_eq!(
+            assemble_flat7x_i0_d0_au_candidate(
+                target,
+                &source_identity,
+                i0_frame.clone(),
+                d0_bsi,
+                d0_input_512,
+            ),
+            Err(Flat7xI0D0AuCandidateError::D0FrameAssembly(
+                Flat7xD0FrameAssemblyError::Layout(D0SixBlockLayoutError::SkipField(
+                    D0EmdfSkipFieldWriteError::ContainerTooLarge,
+                )),
+            ))
+        );
+
+        let mut short_block_lengths = d0_audio.audio_block_bit_lengths;
+        short_block_lengths[0] -= 1;
+        let short_d0_input = d0_frame_bit_input(&d0_audio, &skip_fields, short_block_lengths);
+        assert_eq!(
+            assemble_flat7x_i0_d0_au_candidate(
+                target,
+                &source_identity,
+                i0_frame,
+                d0_bsi,
+                short_d0_input,
+            ),
+            Err(Flat7xI0D0AuCandidateError::D0FrameAssembly(
+                Flat7xD0FrameAssemblyError::FrameSpanMismatch {
+                    actual_bits: D0_TARGET_FRAME_BITS - 1,
+                    required_bits: D0_TARGET_FRAME_BITS,
+                },
+            ))
         );
     }
 }
