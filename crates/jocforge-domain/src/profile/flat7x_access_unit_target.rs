@@ -189,7 +189,7 @@ pub type Flat7xDownmixControls = JocDownmixAlgorithmControls;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Flat7xOpenGate {
-    I0BsiFrameAssemblyCallsite,
+    I0AudioAssumptionEvidence,
     AdmSourceRowToD0RoleJoin,
     JocDownmixAlgorithmControls,
     RuntimeSourceGenerationJoin,
@@ -336,7 +336,7 @@ impl Flat7xI0D0TargetPlan {
                 overflow_policy: Flat7xEmdfOverflowPolicy::RejectWholeAccessUnitBeforePublish,
             },
             open_gates: [
-                Flat7xOpenGate::I0BsiFrameAssemblyCallsite,
+                Flat7xOpenGate::I0AudioAssumptionEvidence,
                 Flat7xOpenGate::AdmSourceRowToD0RoleJoin,
                 Flat7xOpenGate::JocDownmixAlgorithmControls,
                 Flat7xOpenGate::RuntimeSourceGenerationJoin,
@@ -927,7 +927,7 @@ mod tests {
         assert_eq!(plan.open_gates().len(), 7);
         assert_eq!(
             plan.open_gates()[0],
-            Flat7xOpenGate::I0BsiFrameAssemblyCallsite
+            Flat7xOpenGate::I0AudioAssumptionEvidence
         );
     }
 

@@ -8,6 +8,11 @@ use jocforge_domain::{
             I0AudioBlockSeriesPolicy, produce_i0_audio_block_series,
         },
         d0_frame_assembler::Flat7xD0FrameBitInput,
+        i0_frame_assembler::{
+            CallerOwnedI0CrcrsvSeed, Flat7xI0Ac3AudioSeriesFrameCandidate,
+            Flat7xI0FrameAssemblyError, I0AuxDataInput,
+            assemble_flat7x_i0_ac3_frame_from_audio_series,
+        },
         selected_frame_trial::SelectedSourceNumericPlan,
     },
     profile::{
@@ -123,6 +128,7 @@ pub enum Flat7xPairSourceError {
     D0AudioSpanProducerDisabled(Flat7xD0AudioSpanProducerState),
     D0AudioSpanSourceIdentityMismatch,
     I0AudioBlockSeries(I0AudioBlockSeriesError),
+    I0FrameAssembly(Flat7xI0FrameAssemblyError),
 }
 
 /// Resolves the typed D0 producer boundary before a pair candidate can be created.
@@ -150,6 +156,7 @@ pub fn require_flat7x_d0_audio_blocks<'a>(
 #[must_use]
 #[derive(Clone)]
 pub struct Flat7xPairSourceBinding<'pcm> {
+    resolved_profile: ResolvedEncodingProfile,
     target: Flat7xI0D0TargetPlan,
     source_index: CodecSourceIndex,
     role_map_receipt: Flat7xSourceRoleMapReceipt,
@@ -159,6 +166,10 @@ pub struct Flat7xPairSourceBinding<'pcm> {
 }
 
 impl Flat7xPairSourceBinding<'_> {
+    pub const fn resolved_profile(&self) -> ResolvedEncodingProfile {
+        self.resolved_profile
+    }
+
     pub const fn target(&self) -> Flat7xI0D0TargetPlan {
         self.target
     }
@@ -235,6 +246,85 @@ impl<'pcm, 'd0> Flat7xPairAudioBlockCandidate<'pcm, 'd0> {
     }
 }
 
+/// Source-bound I0 frame candidate paired with the selected projection receipt.
+///
+/// The frame remains in memory with its provisional audio assumptions and has no AU or
+/// publication authority.
+#[must_use]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Flat7xPairI0FrameCandidate {
+    resolved_profile: ResolvedEncodingProfile,
+    source_role_map_receipt: Flat7xSourceRoleMapReceipt,
+    i0_frame: Flat7xI0Ac3AudioSeriesFrameCandidate,
+}
+
+impl Flat7xPairI0FrameCandidate {
+    pub const fn resolved_profile(&self) -> ResolvedEncodingProfile {
+        self.resolved_profile
+    }
+
+    pub fn source_identity(&self) -> &SharedAnalysisIdentity {
+        self.i0_frame.source_identity()
+    }
+
+    pub const fn target(&self) -> Flat7xI0D0TargetPlan {
+        self.i0_frame.target()
+    }
+
+    pub const fn source_role_map_receipt(&self) -> &Flat7xSourceRoleMapReceipt {
+        &self.source_role_map_receipt
+    }
+
+    pub const fn i0_frame(&self) -> &Flat7xI0Ac3AudioSeriesFrameCandidate {
+        &self.i0_frame
+    }
+
+    pub const fn production_allowed(&self) -> bool {
+        false
+    }
+}
+
+/// Joins the selected pair profile/source receipt and the six-block I0 candidate to frame assembly.
+///
+/// D0 spans must already be present on `pair_audio`; the returned value is an I0 frame candidate,
+/// not an access unit and not a publication proposal. Auxdata and the initial `crcrsv` bit are
+/// caller-supplied inputs.
+pub fn assemble_flat7x_pair_i0_frame_candidate(
+    pair_audio: &Flat7xPairAudioBlockCandidate<'_, '_>,
+    auxdata: I0AuxDataInput<'_>,
+    crcrsv_seed: CallerOwnedI0CrcrsvSeed,
+) -> Result<Flat7xPairI0FrameCandidate, Flat7xPairSourceError> {
+    let binding = &pair_audio.binding;
+    if binding.target != binding.role_map_receipt.target()
+        || binding.resolved_profile.joc_reconstruction_layout() != JocReconstructionLayout::Flat7x
+        || binding.resolved_profile.codec_rate() != CodecRateProfile::Kbps1024
+        || binding.source_index != binding.role_map_receipt.source_index()
+        || binding.source_index
+            != pair_audio
+                .i0_audio_blocks
+                .receipt()
+                .source_identity()
+                .source_index()
+    {
+        return Err(Flat7xPairSourceError::SourceIdentityMismatch);
+    }
+
+    let i0_frame = assemble_flat7x_i0_ac3_frame_from_audio_series(
+        binding.target,
+        binding.role_map_receipt.shared_analysis_identity(),
+        &pair_audio.i0_audio_blocks,
+        auxdata,
+        crcrsv_seed,
+    )
+    .map_err(Flat7xPairSourceError::I0FrameAssembly)?;
+
+    Ok(Flat7xPairI0FrameCandidate {
+        resolved_profile: binding.resolved_profile,
+        source_role_map_receipt: binding.role_map_receipt.clone(),
+        i0_frame,
+    })
+}
+
 /// Binds one selected Flat7x profile, source projection, and numeric plan to one source identity.
 pub fn bind_flat7x_pair_source<'pcm>(
     profile: ResolvedEncodingProfile,
@@ -259,6 +349,7 @@ pub fn bind_flat7x_pair_source<'pcm>(
     }
 
     Ok(Flat7xPairSourceBinding {
+        resolved_profile: profile,
         target,
         source_index: numeric_plan.identity().source_index(),
         role_map_receipt: role_map_receipt.clone(),

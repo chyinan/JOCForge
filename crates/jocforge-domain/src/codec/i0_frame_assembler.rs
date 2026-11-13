@@ -2,9 +2,14 @@
 //! Production-disabled Flat7x I0 AC-3 frame assembly from caller-owned syntax spans.
 
 use super::{
+    ac3_audio_block::{
+        I0AudioBlockAssumptionId, I0AudioBlockSeriesCandidate, I0AudioBlockSeriesReceipt,
+    },
     ac3_bsi_tail::{
         Flat7xI0Ac3BsiTailError, Flat7xI0Ac3BsiTailInput, Flat7xI0Ac3BsiTailReceipt,
+        Flat7xI0OfficialDemoBsiTailError, Flat7xI0OfficialDemoBsiTailReceipt,
         I0_BSI_TAIL_MINIMUM_BITS, write_flat7x_i0_ac3_bsi_tail,
+        write_flat7x_i0_official_demo_bsi_tail,
     },
     bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError},
     frame_builder::{
@@ -13,6 +18,7 @@ use super::{
     },
 };
 use crate::{
+    analysis::source_frame::SharedAnalysisIdentity,
     integrity::{
         ac3_crc16::{
             Ac3Crc16GenerationError, generate_ac3_crc1_from_suffix, generate_ac3_crc2_for_frame,
@@ -22,7 +28,7 @@ use crate::{
     profile::{Flat7xI0D0TargetPlan, Flat7xSubstreamRole},
 };
 
-const I0_TARGET_FRAME_BYTES: usize = 2_560;
+pub const I0_TARGET_FRAME_BYTES: usize = 2_560;
 const I0_TARGET_FRAME_BITS: u32 = 20_480;
 const I0_AUDIO_BLOCK_COUNT: usize = 6;
 const I0_AC3_FULLBAND_CHANNEL_COUNT_BITS: u8 = 5;
@@ -748,6 +754,51 @@ impl Flat7xI0Ac3FrameAssemblyReceipt {
     }
 }
 
+/// Noncommitting I0 frame candidate assembled from the current six-block series receipt.
+#[must_use]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Flat7xI0Ac3AudioSeriesFrameCandidate {
+    target: Flat7xI0D0TargetPlan,
+    audio_series_receipt: I0AudioBlockSeriesReceipt,
+    bsi_tail_receipt: Flat7xI0OfficialDemoBsiTailReceipt,
+    frame_receipt: Flat7xI0FrameAssemblyReceipt,
+    frame_bytes: [u8; I0_TARGET_FRAME_BYTES],
+}
+
+impl Flat7xI0Ac3AudioSeriesFrameCandidate {
+    pub const fn target(&self) -> Flat7xI0D0TargetPlan {
+        self.target
+    }
+
+    pub fn source_identity(&self) -> &SharedAnalysisIdentity {
+        self.audio_series_receipt.source_identity()
+    }
+
+    pub const fn audio_series_receipt(&self) -> &I0AudioBlockSeriesReceipt {
+        &self.audio_series_receipt
+    }
+
+    pub const fn audio_assumptions(&self) -> &[I0AudioBlockAssumptionId; 2] {
+        self.audio_series_receipt.assumptions()
+    }
+
+    pub const fn bsi_tail_receipt(&self) -> Flat7xI0OfficialDemoBsiTailReceipt {
+        self.bsi_tail_receipt
+    }
+
+    pub const fn frame_receipt(&self) -> Flat7xI0FrameAssemblyReceipt {
+        self.frame_receipt
+    }
+
+    pub const fn frame_bytes(&self) -> &[u8; I0_TARGET_FRAME_BYTES] {
+        &self.frame_bytes
+    }
+
+    pub const fn production_allowed(&self) -> bool {
+        false
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum I0FramePart {
     BsiTail,
@@ -758,6 +809,13 @@ pub enum I0FramePart {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Flat7xI0FrameAssemblyError {
     UnsupportedTargetContext,
+    SourceIdentityMismatch,
+    AudioBlockOrderMismatch {
+        index: u8,
+    },
+    AudioBlockLengthMismatch {
+        index: u8,
+    },
     CursorMismatch {
         actual: u32,
     },
@@ -778,6 +836,7 @@ pub enum Flat7xI0FrameAssemblyError {
         required_bits: u32,
     },
     BsiTail(Flat7xI0Ac3BsiTailError),
+    OfficialDemoBsiTail(Flat7xI0OfficialDemoBsiTailError),
     Crc1ResidualNonzero {
         residual: u16,
     },
@@ -795,6 +854,12 @@ impl From<Ac3Crc16GenerationError> for Flat7xI0FrameAssemblyError {
 impl From<Flat7xI0Ac3BsiTailError> for Flat7xI0FrameAssemblyError {
     fn from(error: Flat7xI0Ac3BsiTailError) -> Self {
         Self::BsiTail(error)
+    }
+}
+
+impl From<Flat7xI0OfficialDemoBsiTailError> for Flat7xI0FrameAssemblyError {
+    fn from(error: Flat7xI0OfficialDemoBsiTailError) -> Self {
+        Self::OfficialDemoBsiTail(error)
     }
 }
 
@@ -867,6 +932,88 @@ pub fn assemble_flat7x_i0_ac3_frame_from_fields(
     Ok(Flat7xI0Ac3FrameAssemblyReceipt {
         frame: frame_receipt,
         bsi_tail: bsi_receipt,
+    })
+}
+
+/// Assembles the official-sample I0 BSI suffix with the source-bound six-block AC-3 candidate.
+///
+/// The caller provides the same selected-analysis identity that bound the pair profile and
+/// projection. Auxdata and the initial `crcrsv` bit remain explicit caller inputs. This returns
+/// an in-memory frame candidate carrying the provisional audio assumptions; it grants no AU or
+/// publication authority.
+pub fn assemble_flat7x_i0_ac3_frame_from_audio_series(
+    target: Flat7xI0D0TargetPlan,
+    expected_source_identity: &SharedAnalysisIdentity,
+    audio_series: &I0AudioBlockSeriesCandidate,
+    auxdata: I0AuxDataInput<'_>,
+    crcrsv_seed: CallerOwnedI0CrcrsvSeed,
+) -> Result<Flat7xI0Ac3AudioSeriesFrameCandidate, Flat7xI0FrameAssemblyError> {
+    validate_target(target)?;
+    if audio_series.receipt().source_identity() != expected_source_identity {
+        return Err(Flat7xI0FrameAssemblyError::SourceIdentityMismatch);
+    }
+
+    let expected_blocks = usize::from(target.audio_blocks_per_frame());
+    if audio_series.blocks().len() != expected_blocks
+        || audio_series.receipt().block_order().len() != expected_blocks
+        || audio_series.receipt().block_bit_lengths().len() != expected_blocks
+    {
+        return Err(Flat7xI0FrameAssemblyError::UnsupportedTargetContext);
+    }
+    for (index, ((block, block_order), reported_bit_length)) in audio_series
+        .blocks()
+        .iter()
+        .zip(audio_series.receipt().block_order())
+        .zip(audio_series.receipt().block_bit_lengths())
+        .enumerate()
+    {
+        let expected_index = u8::try_from(index).unwrap_or(u8::MAX);
+        if block_order.value() != expected_index {
+            return Err(Flat7xI0FrameAssemblyError::AudioBlockOrderMismatch {
+                index: expected_index,
+            });
+        }
+        if block.bit_length() != *reported_bit_length {
+            return Err(Flat7xI0FrameAssemblyError::AudioBlockLengthMismatch {
+                index: expected_index,
+            });
+        }
+    }
+
+    let header_fields = Flat7xI0Ac3FrameHeaderFields::official_demo_sample_non_crc_fields();
+    let mut bsi_scratch = [0_u8; I0_TARGET_FRAME_BYTES];
+    let bsi_tail_receipt = {
+        let mut bsi_writer = FrameBitWriter::new(&mut bsi_scratch, FrameBitCursor::new(70))?;
+        write_flat7x_i0_official_demo_bsi_tail(&mut bsi_writer)?
+    };
+    let bsi_tail = OpaqueI0Ac3BitSpan::new(
+        &bsi_scratch,
+        bsi_tail_receipt.start_bit(),
+        bsi_tail_receipt.bit_length(),
+    );
+
+    let mut frame_bytes = [0_u8; I0_TARGET_FRAME_BYTES];
+    let frame_receipt = {
+        let mut frame_writer = FrameBitWriter::new(&mut frame_bytes, FrameBitCursor::new(0))?;
+        assemble_flat7x_i0_ac3_frame(
+            target,
+            Flat7xI0FrameBitInput {
+                header_fields,
+                bsi_tail,
+                audio_blocks: audio_series.i0_bit_spans(),
+                auxdata,
+                crcrsv_seed,
+            },
+            &mut frame_writer,
+        )?
+    };
+
+    Ok(Flat7xI0Ac3AudioSeriesFrameCandidate {
+        target,
+        audio_series_receipt: audio_series.receipt().clone(),
+        bsi_tail_receipt,
+        frame_receipt,
+        frame_bytes,
     })
 }
 

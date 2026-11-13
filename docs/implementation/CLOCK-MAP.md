@@ -553,7 +553,7 @@
 | F12/flat7x-i0-ac3-header-segment | — | `One synchronous helper serializes an authored-value header segment at caller cursor zero.` |
 | F12/flat7x-i0-frame-bit-assembler | — | `The caller writer starts at bit zero and advances exactly 20480 frame bits after full staging; no media/source clock is introduced.` |
 | F12/flat7x-i0-ac3-bsi-tail-writer | `FrameBitCursor` | `The caller cursor must equal the approved header end at bit 62 or 70.`<br>`The receipt spans the exact BSI-tail start through end; no media/source clock is minted.` |
-| F12/flat7x-i0-typed-bsi-frame-assembly-entry | `FrameBitCursor` | `The BSI writer begins at the exact 62/70-bit header end cursor.`<br>`Six caller audio spans follow the BSI receipt in index order; the frame writer commits exactly 20480 bits from cursor zero.` |
+| F12/flat7x-i0-typed-bsi-frame-assembly-entry | `CodecSourceIndex`<br>`AnalysisOwnerGeneration`<br>`FrameBitCursor` | `The role-map binding and I0 series receipt must carry the same SharedAnalysisIdentity, including source index and analysis-after generation.`<br>`The official I0 BSI suffix starts at frame bit70 and ends at bit105; six ordered block spans, explicit auxdata and crcrsv seed, and the frame integrity fields must total exactly 20480 bits.` |
 | F12/flat7x-i0-ac3-audio-block-producer | — | `The standalone block prototype carries no codec-source or callback clock index.` |
 | F12/flat7x-d0-mixing-metadata-segment | — | `The helper appends one bounded BSI metadata segment at parent cursor 68 or 76.` |
 | F12/flat7x-d0-information-addbsi-suffix | — | `The suffix begins at the parent helper's returned frame-bit cursor and returns its ending cursor.` |

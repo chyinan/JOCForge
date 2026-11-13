@@ -1707,9 +1707,9 @@ mod i0_audio_block_series_tests {
 
     use super::{
         Ac3DeltaBitAllocationInput, Ac3MantissaQuantizerPolicy, CallerOwnedAc3Cplinu,
-        I0AudioBlockControlPolicy, I0AudioBlockIndex, I0AudioBlockSeriesBudget,
-        I0AudioBlockSeriesError, I0AudioBlockSeriesPolicy, I0BapCandidateQ,
-        produce_i0_audio_block_series,
+        I0AudioBlockAssumptionId, I0AudioBlockControlPolicy, I0AudioBlockIndex,
+        I0AudioBlockSeriesBudget, I0AudioBlockSeriesError, I0AudioBlockSeriesPolicy,
+        I0BapCandidateQ, produce_i0_audio_block_series,
     };
     use crate::{
         analysis::{
@@ -1727,6 +1727,10 @@ mod i0_audio_block_series_tests {
                 load_bap_parameters,
             },
             exponent_packing::pack_exponent_difference_group,
+            i0_frame_assembler::{
+                CallerOwnedI0CrcrsvSeed, Flat7xI0FrameAssemblyError, I0_TARGET_FRAME_BYTES,
+                I0AuxDataInput, OpaqueI0Ac3BitSpan, assemble_flat7x_i0_ac3_frame_from_audio_series,
+            },
             selected_frame_trial::{
                 BlockExponentPlan, CoefficientBlockInput, ConverterHeaderInput,
                 FullbandExponentLanePlan, LfeExponentPlan, MainExponentSyntax,
@@ -1977,6 +1981,113 @@ mod i0_audio_block_series_tests {
                 }
             ),
             "unexpected series error: {error:?}"
+        );
+    }
+
+    #[test]
+    fn six_block_candidate_composes_official_bsi_crc_and_source_identity_into_i0_frame() {
+        let mut transaction = source_transaction();
+        let numeric_receipt = transaction.prepare_numeric_plan(numeric_plan()).unwrap();
+        let audio_candidate = produce_i0_audio_block_series(
+            &numeric_receipt,
+            synthetic_policy(),
+            I0AudioBlockSeriesBudget::new(20_480),
+        )
+        .unwrap();
+        let target = crate::profile::Flat7xI0D0TargetPlan::approved_contract();
+
+        let assemble = |auxdata| {
+            assemble_flat7x_i0_ac3_frame_from_audio_series(
+                target,
+                numeric_receipt.identity(),
+                &audio_candidate,
+                auxdata,
+                CallerOwnedI0CrcrsvSeed { value: false },
+            )
+        };
+        // Synthetic caller-owned auxdata fills the fixed target extent for this structural vector.
+        let frame_candidate = match assemble(I0AuxDataInput::Absent) {
+            Ok(candidate) => candidate,
+            Err(Flat7xI0FrameAssemblyError::FrameSpanMismatch {
+                actual_bits,
+                required_bits,
+            }) if actual_bits < required_bits => {
+                let aux_payload_bits = required_bits - actual_bits;
+                let aux_payload_bytes = usize::try_from(aux_payload_bits.div_ceil(8)).unwrap();
+                let aux_payload = vec![0_u8; aux_payload_bytes];
+                assemble(I0AuxDataInput::Present(OpaqueI0Ac3BitSpan::new(
+                    &aux_payload,
+                    0,
+                    aux_payload_bits,
+                )))
+                .unwrap()
+            }
+            other => panic!("unexpected I0 frame assembly result: {other:?}"),
+        };
+
+        assert_eq!(frame_candidate.target(), target);
+        assert_eq!(
+            frame_candidate.source_identity(),
+            numeric_receipt.identity()
+        );
+        assert_eq!(frame_candidate.frame_bytes().len(), I0_TARGET_FRAME_BYTES);
+        assert_eq!(frame_candidate.bsi_tail_receipt().start_bit(), 70);
+        assert_eq!(frame_candidate.bsi_tail_receipt().end_bit(), 105);
+        assert_eq!(frame_candidate.bsi_tail_receipt().values().dmixmod(), 1);
+        assert_eq!(
+            frame_candidate.audio_assumptions(),
+            &[
+                I0AudioBlockAssumptionId::SelectedF12SpectrumAsI0Ac3SourceV1,
+                I0AudioBlockAssumptionId::SelectedF09F10ExponentStrategyAsAc3ExpstrV1,
+            ]
+        );
+        assert_eq!(frame_candidate.frame_receipt().audio_block_spans().len(), 6);
+        assert_eq!(
+            frame_candidate.frame_receipt().target_frame_bytes(),
+            I0_TARGET_FRAME_BYTES as u16
+        );
+        assert_eq!(
+            frame_candidate
+                .frame_receipt()
+                .integrity_receipts()
+                .crc1()
+                .residual(),
+            0
+        );
+        assert_eq!(
+            frame_candidate
+                .frame_receipt()
+                .integrity_receipts()
+                .crc2()
+                .residual(),
+            0
+        );
+        assert!(!frame_candidate.production_allowed());
+
+        let mut mismatched_transaction = SourceTransaction::new(
+            AttemptId::new(8),
+            CallbackTransactionId::new("i0-series-other-source").unwrap(),
+            CodecSourceIndex::new(5),
+            AnalysisOwnerGeneration::from_parent_snapshot(12),
+        );
+        mismatched_transaction
+            .prepare_shared_analysis(
+                AnalysisOwnerGeneration::from_parent_snapshot(13),
+                f07_proposal(),
+            )
+            .unwrap();
+        let mismatched_numeric_receipt = mismatched_transaction
+            .prepare_numeric_plan(numeric_plan())
+            .unwrap();
+        assert_eq!(
+            assemble_flat7x_i0_ac3_frame_from_audio_series(
+                target,
+                mismatched_numeric_receipt.identity(),
+                &audio_candidate,
+                I0AuxDataInput::Absent,
+                CallerOwnedI0CrcrsvSeed { value: false },
+            ),
+            Err(Flat7xI0FrameAssemblyError::SourceIdentityMismatch)
         );
     }
 }

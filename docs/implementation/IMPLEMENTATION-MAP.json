@@ -10377,7 +10377,7 @@
           "implementation_status": "LOCALLY_VERIFIED_TYPED_TARGET_AND_I0_D0_BYTE_SEQUENCE_CANDIDATE__NO_PRODUCTION_PATH",
           "implementation_requirement": true,
           "owner": "UNBOUND",
-          "scope": "Value-only I0=640 kbps plus D0=1024 kbps Flat7x AU target, using official-demo non-rate fields. I0 is AC-3 BSID6/acmod7/LFE/dmixmod1; D0 is E-AC-3 BSID16/acmod5/no-LFE/chanmap0x1A00/frmsiz2047. JOC spatial index1 and coefficient downmix index1 are distinct typed axes; object count15, complexity16, ADM physical rows, chanmap, extension0/phase-signaling-off, and EMDF IDs11/14 group0 stay separate. The existing 5.1 production row remains unchanged; this plan and byte candidate create no production path. I0 dmixmod1 requires a separate BSID6 xbs1e alternate-BSI group; associated mix-level target bytes remain NOT_CAPTURED and its writer gate stays open.",
+          "scope": "Value-only I0=640 kbps plus D0=1024 kbps Flat7x AU target, using official-demo non-rate fields. I0 is AC-3 BSID6/acmod7/LFE/dmixmod1; D0 is E-AC-3 BSID16/acmod5/no-LFE/chanmap0x1A00/frmsiz2047. JOC spatial index1 and coefficient downmix index1 are distinct typed axes; object count15, complexity16, ADM physical rows, chanmap, extension0/phase-signaling-off, and EMDF IDs11/14 group0 stay separate. The existing 5.1 production row remains unchanged. The selected ResolvedEncodingProfile and I0 BSI/frame candidate callsite are materialized; provisional audio assumptions, parent source-generation commit, and whole-pair publication remain gated.",
           "spec_files": [
             "docs/architecture/PROFILE-DIMENSIONS.md",
             "docs/architecture/ARCHITECTURE-DECISIONS.md",
@@ -10394,8 +10394,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 37193,
-              "sha256": "447ce471b905e13db8b3b8207af9c63026ac5eefb7a8dbfbe4321faf8819af8b"
+              "bytes": 37190,
+              "sha256": "52764ba2c02348092f84c4319d25d4e5edbddbe06e0fafb6feb0c9448b114ef9"
             },
             {
               "path": "crates/jocforge-domain/src/profile/mod.rs",
@@ -10406,8 +10406,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 37193,
-              "sha256": "447ce471b905e13db8b3b8207af9c63026ac5eefb7a8dbfbe4321faf8819af8b"
+              "bytes": 37190,
+              "sha256": "52764ba2c02348092f84c4319d25d4e5edbddbe06e0fafb6feb0c9448b114ef9"
             }
           ],
           "clock": {
@@ -10549,7 +10549,7 @@
                 "group_id": 0
               },
               "unbound_gates": [
-                "I0 BSI frame-assembly callsite",
+                "I0 audio-assumption evidence",
                 "ADM source-row to D0 role join",
                 "JOC algorithm-level mode and phase controls",
                 "runtime source-generation owner join",
@@ -10626,11 +10626,11 @@
             }
           ],
           "not_run": [
-            "No production EncodingProfile/CLI selection, E-AC-3 frame writer, D0 BSI writer, audio algorithm, ADM role join, integrity receipt, F15 source/output proposal, or AU publication is connected.",
-            "No real Flat7x 1664 output, W04, listening or official-demo structure acceptance; separate preflight/Wash timeline/GO required before any encoder run.",
-            "No substream syntax parsing, role/source-owner join, D0 audio/writer, F15 output-owner pair receipt, durable append, real output, W04, or listening acceptance."
+            "No CLI production profile selection, D0 audio producer/frame, pair integrity receipts, F15 output proposal, AU publication or W04.",
+            "No real Flat7x 1664 output, listening or official-demo acceptance; a separate preflight/Wash timeline/GO remains required before an encoder run.",
+            "No D0 role join, native D0 writer, whole-AU EMDF fit or durable output."
           ],
-          "validation_boundary": "Architecture-only typed target plan and noncommitting I0→D0 byte-sequence candidate. Supplied frame extents and CRCs are checked; substream syntax, runtime identity, output-owner authority, and publication are not established. production_allowed=false.",
+          "validation_boundary": "Value-only paired target and noncommitting I0/D0 candidate seams. The I0 source-bound frame candidate is production-disabled; D0 audio, parent source-generation commit, pair receipts and publication remain open.",
           "delivery_scope": "TYPED_FLAT7X_I0_D0_PLAN_AND_NONCOMMITTING_BYTE_SEQUENCE_CANDIDATE_ONLY"
         },
         {
@@ -10781,8 +10781,8 @@
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 13250,
-              "sha256": "937de7033eb739e534b00a501a8652a11837254b8e43abf3bbf6011f8c4082f0"
+              "bytes": 16484,
+              "sha256": "66b9aec484cb81410de32950b9601d51f63474cb98976a6b58435ae82cdb1610"
             }
           ],
           "test_inventory": [
@@ -10793,8 +10793,8 @@
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 13250,
-              "sha256": "937de7033eb739e534b00a501a8652a11837254b8e43abf3bbf6011f8c4082f0"
+              "bytes": 16484,
+              "sha256": "66b9aec484cb81410de32950b9601d51f63474cb98976a6b58435ae82cdb1610"
             }
           ]
         }
@@ -18900,8 +18900,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2214663,
-              "sha256": "2afe5eed0992af877bcceab8e9cb921132802c54dd496afd436849c2122c0563"
+              "bytes": 2200369,
+              "sha256": "4c1e64c0c06b2ed7f03f0231b752be1e87a22d02de65369ec1c17af8e046050e"
             }
           ],
           "test_modules": [
@@ -22427,8 +22427,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2214663,
-              "sha256": "2afe5eed0992af877bcceab8e9cb921132802c54dd496afd436849c2122c0563"
+              "bytes": 2200369,
+              "sha256": "4c1e64c0c06b2ed7f03f0231b752be1e87a22d02de65369ec1c17af8e046050e"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -45763,8 +45763,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 37193,
-              "sha256": "447ce471b905e13db8b3b8207af9c63026ac5eefb7a8dbfbe4321faf8819af8b"
+              "bytes": 37190,
+              "sha256": "52764ba2c02348092f84c4319d25d4e5edbddbe06e0fafb6feb0c9448b114ef9"
             }
           ],
           "test_inventory": [
@@ -47078,8 +47078,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
-              "bytes": 37614,
-              "sha256": "b9a6149ad01e35e4bd43dca1acd67d72e49332c8035fb657ace4165137c207f8"
+              "bytes": 42876,
+              "sha256": "21c24753e26f7898310164acabc362ed7698c3ca3017f2a6e398c11b5ebcd4f0"
             },
             {
               "path": "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
@@ -47354,7 +47354,7 @@
         {
           "slice_id": "flat7x-i0-ac3-bsi-tail-writer",
           "mapping_status": "MATERIALIZED_WASH_BOUNDED_I0_AC3_BSI_TAIL_SERIALIZER",
-          "implementation_status": "LOCALLY_VERIFIED_OFFICIAL_SAMPLE_I0_BSI_TAIL_THROUGH_ADDBSIE__FRAME_CALLSITE_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_OFFICIAL_SAMPLE_I0_BSI_TAIL_THROUGH_ADDBSIE_AND_FRAME_CANDIDATE__PRODUCTION_FALSE",
           "implementation_requirement": true,
           "owner": "codec",
           "scope": "Writes the bounded caller-authored I0 AC-3 BSI tail and the hash-bound official-sample suffix from the compr end at frame bit 70 through addbsie=0 at bit 105. The sample's 35-bit suffix includes Annex-D mix fields and all captured xbsi2e extension fields. The V2 package supersedes the earlier mix-level-only supplement for target use; BSI serialization remains separate from audblk/audio generation, complete-frame composition, and product calls.",
@@ -47387,8 +47387,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
-              "bytes": 37614,
-              "sha256": "b9a6149ad01e35e4bd43dca1acd67d72e49332c8035fb657ace4165137c207f8"
+              "bytes": 42876,
+              "sha256": "21c24753e26f7898310164acabc362ed7698c3ca3017f2a6e398c11b5ebcd4f0"
             }
           ],
           "test_modules": [
@@ -47612,22 +47612,24 @@
           ],
           "not_run": [
             "No generic XML-to-BSI mapping beyond the captured sample values.",
-            "Complete I0 frame assembly with audio spans, generated CRC fields and source callback callsite.",
-            "Same-generation I0/D0 receipts, pair publication, product output and W04 acceptance."
+            "Same-generation I0/D0 receipts, pair publication, product output and W04 acceptance.",
+            "The source-bound frame candidate is locally verified; audio-assumption evidence, parent source-generation commit and whole-pair publication remain open."
           ],
-          "validation_boundary": "Generic caller-authored BSI-tail checks plus exact hash-bound sample values from bit 70 through addbsie=0; no audio, full-frame callsite, pair publication or product output.",
+          "validation_boundary": "Generic caller-authored BSI-tail checks plus exact hash-bound sample values from bit70 through addbsie=0; the V2 tail is integrated with six source-bound candidate spans and ETSI CRC generation into a noncommitting I0 frame candidate; production_allowed=false.",
           "delivery_scope": "FLAT7X_I0_AC3_BSI_TAIL_SERIALIZATION_ONLY_NO_AUDIO_XML_MAPPING_OR_PRODUCTION"
         },
         {
           "slice_id": "flat7x-i0-typed-bsi-frame-assembly-entry",
-          "mapping_status": "MATERIALIZED_TYPED_I0_BSI_TO_FRAME_COMPOSITION_ENTRY",
-          "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_TYPED_I0_BSI_TO_FRAME_COMPOSITION__PRODUCTION_OPEN",
+          "mapping_status": "MATERIALIZED_SOURCE_BOUND_I0_FRAME_CANDIDATE_CALLSITE",
+          "implementation_status": "LOCALLY_VERIFIED_SOURCE_BOUND_SIX_BLOCK_I0_FRAME_CANDIDATE__ASSUMPTIONS_OPEN__PRODUCTION_FALSE",
           "implementation_requirement": true,
           "owner": "codec",
-          "scope": "Adds `assemble_flat7x_i0_ac3_frame_from_fields`, a typed entry that accepts authored I0 header values, the approved typed BSI-tail input, six opaque caller-owned audblk spans, optional auxdata and an initial crcrsv seed. It derives the BSI start from compr presence (62/70 bits), serializes the BSI tail into private scratch, then calls the existing opaque-span frame assembler. The whole frame is still preflighted/staged, CRC1/CRC2 are generated and residual-checked, and the caller writer is committed once only after all spans total exactly 20480 bits. The existing low-level opaque-span entry remains available; no audio-block content or production callsite is added.",
+          "scope": "Adds a source-bound I0 frame-candidate entry over the existing 2,560-byte assembler. It requires the selected Flat7x pair target, an expected SharedAnalysisIdentity, the existing six-block I0AudioBlockSeriesCandidate, and explicit caller auxdata/crcrsv inputs. It verifies the series source identity, six-block order and reported lengths; writes the official V2 header/35-bit BSI suffix through bit105; delegates full-frame staging and CRC1/CRC2 to the existing ETSI-backed assembler; and returns bytes, receipts and the two provisional audio-assumption IDs. The application pair seam supplies the identity and target from the role-map binding. No AU append or publication is performed; production_allowed=false.",
           "dependencies": [
             "F12/flat7x-i0-ac3-bsi-tail-writer",
-            "F12/flat7x-i0-frame-bit-assembler"
+            "F12/flat7x-i0-frame-bit-assembler",
+            "F12/flat7x-i0-ac3-audio-block-producer",
+            "F01E/flat7x-i0-d0-typed-target-plan"
           ],
           "spec_files": [
             "docs/architecture/adm-to-eac3joc-chain-status.md",
@@ -47640,13 +47642,14 @@
             "crates/jocforge-domain/src/codec/frame_builder.rs",
             "crates/jocforge-domain/src/codec/mod.rs",
             "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
-            "crates/jocforge-domain/src/integrity/mod.rs"
+            "crates/jocforge-domain/src/integrity/mod.rs",
+            "crates/jocforge-application/src/flat7x_pair_source.rs"
           ],
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
-              "bytes": 37614,
-              "sha256": "b9a6149ad01e35e4bd43dca1acd67d72e49332c8035fb657ace4165137c207f8"
+              "bytes": 42876,
+              "sha256": "21c24753e26f7898310164acabc362ed7698c3ca3017f2a6e398c11b5ebcd4f0"
             },
             {
               "path": "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
@@ -47672,16 +47675,27 @@
               "path": "crates/jocforge-domain/src/integrity/mod.rs",
               "bytes": 300,
               "sha256": "8cf3b9de9d577622322eb1ac7a71bb54158428db5a50529ae36e5b3e8abc8ff0"
+            },
+            {
+              "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
+              "bytes": 16484,
+              "sha256": "66b9aec484cb81410de32950b9601d51f63474cb98976a6b58435ae82cdb1610"
             }
           ],
           "test_modules": [
-            "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs"
+            "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs",
+            "crates/jocforge-domain/src/codec/ac3_audio_block.rs"
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs",
               "bytes": 44297,
               "sha256": "325a31f27e94bdffb9aa03dac69c7e38ccb798188c30683c4510b2a29b6479e7"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
+              "bytes": 78599,
+              "sha256": "882bd9b84a60c5d55d1219704f24c8ef2462f65ce8fa84eaa60883affb39a841"
             }
           ],
           "vector_inventory": [
@@ -47698,11 +47712,13 @@
           ],
           "clock": {
             "domains": [
+              "CodecSourceIndex",
+              "AnalysisOwnerGeneration",
               "FrameBitCursor"
             ],
             "covered_clauses": [
-              "The BSI writer begins at the exact 62/70-bit header end cursor.",
-              "Six caller audio spans follow the BSI receipt in index order; the frame writer commits exactly 20480 bits from cursor zero."
+              "The role-map binding and I0 series receipt must carry the same SharedAnalysisIdentity, including source index and analysis-after generation.",
+              "The official I0 BSI suffix starts at frame bit70 and ends at bit105; six ordered block spans, explicit auxdata and crcrsv seed, and the frame integrity fields must total exactly 20480 bits."
             ]
           },
           "parameters": {
@@ -47740,10 +47756,32 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/MANIFEST.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1/CRC-GENERATION-CONTRACT.json"
             ],
-            "validation_boundary": "Synthetic typed BSI serialization plus opaque audio-span composition; no audio, source-generation join, output publication or W04."
+            "validation_boundary": "Synthetic typed BSI serialization plus opaque audio-span composition; no audio, source-generation join, output publication or W04.",
+            "source_generation_binding": "The application seam passes Flat7xSourceRoleMapReceipt.shared_analysis_identity and requires exact equality with I0AudioBlockSeriesReceipt.source_identity; parent commit remains open.",
+            "frame_candidate": {
+              "target_rate_kbps": 640,
+              "target_frame_bytes": 2560,
+              "official_demo_i0_bsi_package": "OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2",
+              "official_demo_i0_bsi_manifest_sha256": "85dcd2dfc96bdc57a3caaa7c6affde4eb2be43331afd75bedabf11c62193fa1a",
+              "bsi_start_bit": 70,
+              "bsi_end_bit": 105,
+              "audio_blocks": 6,
+              "auxdata": "explicit caller input; the structural vector supplies synthetic extent filler",
+              "crcrsv_seed": "explicit caller input",
+              "crc_generation_package": "FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1",
+              "crc1_crc2": "generated and residual-verified by the existing frame assembler",
+              "audio_assumptions": [
+                "PROVISIONAL_I0_SELECTED_F12_51_SPECTRUM_V1",
+                "PROVISIONAL_I0_F09_F10_EXPSTR_TO_AC3_V1"
+              ],
+              "partial_i0_au_publication": false,
+              "production_allowed": false,
+              "selected_profile": "ResolvedEncodingProfile retained and checked as Flat7x with the paired 1024-kbps D0 base profile."
+            },
+            "selected_profile_binding": "Flat7xPairSourceBinding retains the checked ResolvedEncodingProfile and Flat7xI0D0TargetPlan alongside the exact SharedAnalysisIdentity role-map receipt."
           },
           "vectors": {
-            "kind": "SYNTHETIC_NOT_REAL_OUTPUT_TYPED_I0_BSI_FRAME_COMPOSITION",
+            "kind": "SYNTHETIC_SIX_BLOCK_AUDIO_CANDIDATE_PLUS_WASHED_OFFICIAL_I0_BSI_AND_CRC_CONTRACT",
             "authoritative_vectors": [
               "crates/jocforge-domain/tests/fixtures/i0_frame_assembler/INPUT-ONLY-VECTORS.json",
               "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json"
@@ -47752,10 +47790,13 @@
               "Washed all-optionals BSI vector ends at bit 142 for a compr header; the typed receipt matches the frame's BSI span.",
               "Six synthetic spans totalling 20320 bits follow the 72-bit typed BSI tail and 70-bit header; auxdatae and 17-bit errorcheck finish the 20480-bit frame.",
               "Generated CRC1/CRC2 residuals are zero on the synthetic assembled frame.",
-              "Invalid typed BSI fields and an incomplete audio-span extent fail before caller output bytes or cursor change."
+              "Invalid typed BSI fields and an incomplete audio-span extent fail before caller output bytes or cursor change.",
+              "six_block_candidate_composes_official_bsi_crc_and_source_identity_into_i0_frame",
+              "six_block_candidate_composes_official_bsi_crc_and_source_identity_into_i0_frame",
+              "The structural vector supplies explicit synthetic auxdata to reach the exact frame extent; the product auxdata policy remains open."
             ],
             "expected_outputs_included": true,
-            "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_TYPED_BSI_TO_FRAME_SPANS_CRC_AND_FAILURE_ATOMICITY"
+            "execution_status": "LOCALLY_VERIFIED_SOURCE_BOUND_SIX_BLOCK_FRAME_CANDIDATE_BSI_CRC_AND_IDENTITY_REJECTION"
           },
           "error_outcomes": [
             {
@@ -47781,20 +47822,19 @@
             }
           ],
           "not_run": [
-            "No AC-3 audio-block algorithm is run; six spans remain caller-owned.",
-            "No E-AC-3-to-AC-3 block reinterpretation is performed.",
-            "Same-generation source receipt, production admission, file output and W04 remain unbound or not run."
+            "The two F12/F09/F10-to-AC-3 audio projection assumptions have not cleared their evidence gate.",
+            "Parent source-generation commit, I0/D0 pair integrity receipts, D0 frame composition, AU publication, product output and W04 remain open."
           ],
-          "validation_boundary": "Synthetic only; the typed entry composes BSI fields and caller spans through the existing I0 frame assembler; production_allowed=false.",
-          "delivery_scope": "TYPED_I0_BSI_TO_OPAQUE_AUDIO_SPAN_FRAME_COMPOSITION_ONLY_NO_AUDIO_OR_PRODUCTION"
+          "validation_boundary": "Synthetic six-block candidate plus hash-bound official V2 BSI values are assembled into a source-identity-bound in-memory I0 frame candidate; explicit auxdata/CRCRSV inputs and ETSI CRC receipts are retained; production_allowed=false.",
+          "delivery_scope": "SOURCE_BOUND_SIX_BLOCK_I0_FRAME_CANDIDATE_WITH_OFFICIAL_V2_BSI_AND_ETSI_CRC__NO_AU_PUBLICATION_OR_PRODUCTION"
         },
         {
           "slice_id": "flat7x-i0-ac3-audio-block-producer",
-          "mapping_status": "MATERIALIZED_ETSI_AC3_BLOCK_ZERO_AUDIO_PRODUCER_PROTOTYPE",
-          "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_AC3_BLOCK_ZERO_AUDIO_BLOCK_AND_PARSER__SIX_BLOCK_RATE_FIT_OPEN",
+          "mapping_status": "MATERIALIZED_ETSI_AC3_SIX_BLOCK_CANDIDATE_TO_I0_FRAME_SEAM",
+          "implementation_status": "LOCALLY_VERIFIED_SIX_BLOCK_I0_FRAME_CANDIDATE_WITH_PROVISIONAL_ASSUMPTIONS__PRODUCTION_FALSE",
           "implementation_requirement": true,
           "owner": "codec",
-          "scope": "Production-disabled AC-3 block-zero audblk and additive six-block series candidate from one source-bound SelectedSourceNumericPlan receipt. The series emits six ordered spans, retains source identity and per-block BAP controls, and rejects unsupported exponent reuse or aggregate caller-budget overrun. F12/F09/F10-to-AC-3 projections remain provisional; complete frame assembly and production remain open.",
+          "scope": "Production-disabled AC-3 block-zero audblk and additive six-block series candidate from one source-bound SelectedSourceNumericPlan receipt. The series emits six ordered spans and retains source identity, per-block BAP controls and the explicit F12-spectrum/F09-F10-exponent assumption IDs. The source-bound frame seam now serializes those six spans with the official V2 I0 BSI and ETSI-backed CRC1/CRC2 into an exact 2,560-byte frame candidate when caller auxdata/crcrsv inputs satisfy the target extent. The spectrum and exponent projections remain provisional; no AU publication or production is enabled.",
           "dependencies": [
             "F12/flat7x-i0-frame-bit-assembler",
             "F12A/selected-f12a-public-bap-network",
@@ -47821,8 +47861,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
-              "bytes": 74130,
-              "sha256": "ebcf423cd84044b6b56da1490d5769acf210ad16b2729d9f1400bd2797ae73f6"
+              "bytes": 78599,
+              "sha256": "882bd9b84a60c5d55d1219704f24c8ef2462f65ce8fa84eaa60883affb39a841"
             },
             {
               "path": "crates/jocforge-domain/src/codec/bap.rs",
@@ -47831,8 +47871,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
-              "bytes": 37614,
-              "sha256": "b9a6149ad01e35e4bd43dca1acd67d72e49332c8035fb657ace4165137c207f8"
+              "bytes": 42876,
+              "sha256": "21c24753e26f7898310164acabc362ed7698c3ca3017f2a6e398c11b5ebcd4f0"
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
@@ -47859,8 +47899,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
-              "bytes": 74130,
-              "sha256": "ebcf423cd84044b6b56da1490d5769acf210ad16b2729d9f1400bd2797ae73f6"
+              "bytes": 78599,
+              "sha256": "882bd9b84a60c5d55d1219704f24c8ef2462f65ce8fa84eaa60883affb39a841"
             },
             {
               "path": "crates/jocforge-domain/src/codec/bap.rs",
@@ -47869,8 +47909,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
-              "bytes": 37614,
-              "sha256": "b9a6149ad01e35e4bd43dca1acd67d72e49332c8035fb657ace4165137c207f8"
+              "bytes": 42876,
+              "sha256": "21c24753e26f7898310164acabc362ed7698c3ca3017f2a6e398c11b5ebcd4f0"
             },
             {
               "path": "crates/jocforge-validation/src/ac3_audio_block_parser.rs",
@@ -47930,7 +47970,7 @@
             "delta_bit_allocation": "caller input; absent only in this prototype",
             "skip_field": "caller input; absent emits skiple=0",
             "lfeexpstr": "1 required for block zero",
-            "source_generation": "UNBOUND",
+            "source_generation": "SharedAnalysisIdentity retained by the series receipt and required to match the current pair source-role receipt; parent source-generation commit remains open.",
             "production_allowed": false,
             "validation_boundary": "Synthetic caller PCM and controls produce one exact block span; the validation parser checks the supported syntax and bit extent.",
             "six_block_series_candidate": {
@@ -47941,6 +47981,18 @@
                 "PROVISIONAL_I0_F09_F10_EXPSTR_TO_AC3_V1"
               ],
               "production_allowed": false
+            },
+            "frame_candidate": {
+              "target_rate_kbps": 640,
+              "target_frame_bytes": 2560,
+              "bsi": "OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2",
+              "crc": "FLAT7X-I0-AC3-CRC-GENERATION-ETSI-V1",
+              "caller_inputs": [
+                "auxdata (explicit; synthetic extent filler in the structural test)",
+                "crcrsv seed (explicit)"
+              ],
+              "production_allowed": false,
+              "selected_profile": "ResolvedEncodingProfile and Flat7xI0D0TargetPlan retained by the pair binding."
             }
           },
           "vectors": {
@@ -47965,14 +48017,16 @@
               "aggregate_budget_rejects_without_returning_a_partial_block_set",
               "six_ordered_blocks_retain_source_identity_and_caller_q_controls",
               "block_zero_exponent_reuse_rejects_the_series_before_returning_a_candidate",
-              "aggregate_budget_rejects_without_returning_a_partial_block_set"
+              "aggregate_budget_rejects_without_returning_a_partial_block_set",
+              "six_block_candidate_composes_official_bsi_crc_and_source_identity_into_i0_frame",
+              "six_block_candidate_composes_official_bsi_crc_and_source_identity_into_i0_frame"
             ],
             "expected_outputs_included": false,
-            "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_INPUT_AND_STRUCTURAL_PARSER"
+            "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_SIX_BLOCK_FRAME_CANDIDATE_AND_CRC"
           },
           "not_run": [
-            "Complete 2560-byte I0 frame assembly and target 640-kbps whole-frame fit.",
-            "I0/D0 source-generation parent transaction, D0 audio, product output, W04 and real PCM."
+            "The F12 spectrum and F09/F10 exponent projections remain provisional assumptions without their target-evidence gate.",
+            "Parent source-generation installation, D0 frame/audio producer, pair receipts, AU publication, product output, W04 and real PCM remain open."
           ],
           "error_outcomes": [
             {
@@ -47997,8 +48051,8 @@
               "caller_action": "Supply an explicit decoder exponent plan that covers the PCM block."
             }
           ],
-          "validation_boundary": "The validation-only parser checks the block-zero syntax branch, BAP-derived mantissa code spaces, padding bits and exact bit cursor; it does not decode PCM or grant product acceptance.",
-          "delivery_scope": "ONE_AC3_BLOCK_ZERO_AUDBLK_CANDIDATE_ONLY_NO_SIX_BLOCK_FRAME_OR_PRODUCTION"
+          "validation_boundary": "Synthetic caller PCM/controls produce six source-identified spans; the existing frame assembler composes them with washed sample BSI and approved CRC rules into a noncommitting I0 frame candidate.",
+          "delivery_scope": "SIX_SOURCE_BOUND_AC3_BLOCK_CANDIDATE_TO_2560_BYTE_I0_FRAME_CANDIDATE__ASSUMPTIONS_OPEN__NO_PAIR_PUBLICATION"
         },
         {
           "slice_id": "flat7x-d0-mixing-metadata-segment",
@@ -48223,8 +48277,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 37193,
-              "sha256": "447ce471b905e13db8b3b8207af9c63026ac5eefb7a8dbfbe4321faf8819af8b"
+              "bytes": 37190,
+              "sha256": "52764ba2c02348092f84c4319d25d4e5edbddbe06e0fafb6feb0c9448b114ef9"
             }
           ],
           "clock": {
@@ -48769,8 +48823,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 37193,
-              "sha256": "447ce471b905e13db8b3b8207af9c63026ac5eefb7a8dbfbe4321faf8819af8b"
+              "bytes": 37190,
+              "sha256": "52764ba2c02348092f84c4319d25d4e5edbddbe06e0fafb6feb0c9448b114ef9"
             }
           ],
           "clock": {
@@ -58620,8 +58674,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2214663,
-              "sha256": "2afe5eed0992af877bcceab8e9cb921132802c54dd496afd436849c2122c0563"
+              "bytes": 2200369,
+              "sha256": "4c1e64c0c06b2ed7f03f0231b752be1e87a22d02de65369ec1c17af8e046050e"
             }
           ],
           "test_inventory": [
