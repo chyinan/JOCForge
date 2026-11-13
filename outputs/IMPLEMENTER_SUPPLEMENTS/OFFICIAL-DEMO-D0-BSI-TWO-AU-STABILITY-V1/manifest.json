@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge-implementer-supplement-manifest-v1",
+  "package_id": "OFFICIAL-DEMO-D0-BSI-TWO-AU-STABILITY-V1",
+  "status": "WASH_APPROVED_SAMPLE_STRUCTURE_ONLY",
+  "production_allowed": false,
+  "files": [
+    {
+      "path": "CHECK.py",
+      "sha256": "f9c17dde8845d203895aad55726bfeac3f88641aae8ce4b1ccb1cafb842bf3dd"
+    },
+    {
+      "path": "FIELD-VALUES.json",
+      "sha256": "9984b902acea50b94a8fed3e562be9d2cd62fae5c8ac69222f76ba9a1ea0168e"
+    },
+    {
+      "path": "REPORT.md",
+      "sha256": "cd7377fe417075e77b4e99f93773e3892c79d31af3f47423824da4cc606693a2"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "sha256": "4b080f538886ba3105e04b32787ef1c3a9e758de5c55fd2d2434bae0be05ca1b"
+    }
+  ]
+}

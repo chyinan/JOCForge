@@ -1,0 +1,21 @@
+{
+  "schema": "wash-official-demo-d0-bsi-two-au-source-receipts-v1",
+  "sample_sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+  "sample_sha256_status": "INHERITED_FROM_SEALED_PARENT_RECEIPT; NOT_RECOMPUTED_BY_THIS_PROBE",
+  "source_wash_package": {
+    "package_id": "OFFICIAL-DEMO-D0-FIRST-TWO-AU-BSI-STABILITY-WASH-V1",
+    "manifest_sha256": "e99ccd94480f5d8a801da09bb154cf8cf0c062adb128d2b7acacc9e14031512f",
+    "seal_sha256": "b8cf8bfc6ebbbcd0f28358d915d5f630cc301f1eb8b96b7e91d6855bf96a2e52"
+  },
+  "block_index_convention_package": {
+    "package_id": "FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1",
+    "manifest_sha256": "da59cf0d1b8684750f90c936f07d90d495662215e367e6365a8cc22253ceadaf",
+    "seal_sha256": "427e5e34feca213d00daa9a969a8da0a6f14fff8872899c0062ba66611242131",
+    "result": "D0 block 2 is zero-based block_index 2, the third audio-block prefix"
+  },
+  "existing_bsi_supplement": {
+    "package_id": "OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1",
+    "manifest_sha256": "35a4527798ccfe6421ce94e380614d721d75a43738bdca0bb9235d2811f2b161",
+    "seal_sha256": "5d5902e0bdee4a9a0b8b0e0fe31c975c94ef315fa39f382ecef7cebc1f81c877"
+  }
+}

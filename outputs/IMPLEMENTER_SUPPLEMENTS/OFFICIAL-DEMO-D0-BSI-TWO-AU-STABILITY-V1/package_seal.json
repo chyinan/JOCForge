@@ -1,0 +1,7 @@
+{
+  "schema": "jocforge-implementer-supplement-seal-v1",
+  "package_id": "OFFICIAL-DEMO-D0-BSI-TWO-AU-STABILITY-V1",
+  "manifest_sha256": "1f373537d38169b4c1b7e3cba6d910fff030facf1afef6bde798b78ecb434feb",
+  "status": "SEALED_WASH_APPROVED",
+  "production_allowed": false
+}

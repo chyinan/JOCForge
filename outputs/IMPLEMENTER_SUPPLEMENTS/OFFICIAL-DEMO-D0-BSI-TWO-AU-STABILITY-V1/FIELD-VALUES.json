@@ -1,0 +1,149 @@
+{
+  "schema": "official-demo-d0-bsi-two-au-sample-v1",
+  "source_sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+  "sample_rate_kbps": 640,
+  "access_units": [
+    {
+      "au_index": 0,
+      "packet_index": 0,
+      "packet_offset": 5424,
+      "i0_offset": 5424,
+      "d0_offset": 7984,
+      "packet_bytes": 5120,
+      "i0_bytes": 2560,
+      "d0_bytes": 2560,
+      "order": [
+        "I0",
+        "D0"
+      ]
+    },
+    {
+      "au_index": 1,
+      "packet_index": 1,
+      "packet_offset": 10544,
+      "i0_offset": 10544,
+      "d0_offset": 13104,
+      "packet_bytes": 5120,
+      "i0_bytes": 2560,
+      "d0_bytes": 2560,
+      "order": [
+        "I0",
+        "D0"
+      ]
+    }
+  ],
+  "d0_bsi_fields": [
+    {
+      "name": "syncword",
+      "width": 16,
+      "value": "0x0B77",
+      "frame_bits": "[0,16)",
+      "status": "STABLE"
+    },
+    {
+      "name": "strmtyp",
+      "width": 2,
+      "value": 1,
+      "frame_bits": "[16,18)",
+      "status": "STABLE"
+    },
+    {
+      "name": "substreamid",
+      "width": 3,
+      "value": 0,
+      "frame_bits": "[18,21)",
+      "status": "STABLE"
+    },
+    {
+      "name": "frmsiz",
+      "width": 11,
+      "value": 1279,
+      "frame_bits": "[21,32)",
+      "status": "STABLE"
+    },
+    {
+      "name": "fscod",
+      "width": 2,
+      "value": 0,
+      "frame_bits": "[32,34)",
+      "status": "STABLE"
+    },
+    {
+      "name": "numblkscod",
+      "width": 2,
+      "value": 3,
+      "frame_bits": "[34,36)",
+      "status": "STABLE"
+    },
+    {
+      "name": "acmod",
+      "width": 3,
+      "value": 5,
+      "frame_bits": "[36,39)",
+      "status": "STABLE"
+    },
+    {
+      "name": "lfeon",
+      "width": 1,
+      "value": 0,
+      "frame_bits": "[39,40)",
+      "status": "STABLE"
+    },
+    {
+      "name": "bsid",
+      "width": 5,
+      "value": 16,
+      "frame_bits": "[40,45)",
+      "status": "STABLE"
+    },
+    {
+      "name": "dialnorm",
+      "width": 5,
+      "value": 31,
+      "frame_bits": "[45,50)",
+      "status": "STABLE_SAMPLE_VALUE"
+    },
+    {
+      "name": "compre",
+      "width": 1,
+      "value": 1,
+      "frame_bits": "[50,51)",
+      "status": "STABLE_SAMPLE_VALUE"
+    },
+    {
+      "name": "compr",
+      "width": 8,
+      "value": 1,
+      "frame_bits": "[51,59)",
+      "status": "STABLE_SAMPLE_VALUE"
+    },
+    {
+      "name": "chanmape",
+      "width": 1,
+      "value": 1,
+      "frame_bits": "[59,60)",
+      "status": "STABLE"
+    },
+    {
+      "name": "chanmap",
+      "width": 16,
+      "value": "0x1A00",
+      "frame_bits": "[60,76)",
+      "status": "STABLE"
+    }
+  ],
+  "probe": {
+    "source_bytes_read": 22,
+    "recomputed_full_source_hash": false,
+    "raw_packet_or_frame_bytes_saved": false,
+    "parsed_through": "chanmap",
+    "audio_blocks_or_skipfld_parsed": false,
+    "decoder_or_encoder_run": false
+  },
+  "explicit_limits": [
+    "One official sample; first two AUs only",
+    "640-kbps D0 sample values do not define the 1024-kbps target frame",
+    "dialnorm/compre/compr are sample values, not generic DRC defaults",
+    "No D0 audio span, ADM-row map, or native generation join"
+  ]
+}
