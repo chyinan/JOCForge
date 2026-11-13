@@ -18897,8 +18897,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2216643,
-              "sha256": "4d8f11033030005af2309f3122647b4aec3f7dcc775d602b77a17802022c3e54"
+              "bytes": 2217957,
+              "sha256": "bea36f187bd440c18f6ee9585c068f448b1b040574ba04e8e0abf3be19c8cf00"
             }
           ],
           "test_modules": [
@@ -22423,8 +22423,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2216643,
-              "sha256": "4d8f11033030005af2309f3122647b4aec3f7dcc775d602b77a17802022c3e54"
+              "bytes": 2217957,
+              "sha256": "bea36f187bd440c18f6ee9585c068f448b1b040574ba04e8e0abf3be19c8cf00"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -49513,14 +49513,16 @@
             "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
             "crates/jocforge-domain/src/transform/fullband_exponent_pipeline.rs",
             "crates/jocforge-application/src/flat7x_pair_output.rs",
-            "crates/jocforge-application/src/lib.rs"
+            "crates/jocforge-application/src/lib.rs",
+            "crates/jocforge-io/src/flat7x_au_append.rs"
           ],
           "test_modules": [
             "crates/jocforge-application/src/flat7x_pair_source.rs",
             "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
             "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
             "crates/jocforge-domain/tests/flat7x_access_unit_composer.rs",
-            "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs"
+            "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs",
+            "crates/jocforge-io/src/flat7x_au_append.rs"
           ],
           "clock": {
             "domains": [
@@ -49644,7 +49646,12 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1/manifest.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1/package_seal.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1/SOURCE-RECEIPTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1/SOURCE-RECEIPTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json",
+              "crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-wrapper-config.json",
+              "crates/jocforge-domain/tests/fixtures/integrity_owner/integrity-public-provider.json"
             ],
             "d0_source_range_boundary": {
               "package_id": "DEE67-PROENCODER-SOURCE-RANGE-METHODSET-BOUNDARY-V1",
@@ -49714,7 +49721,11 @@
               "committed_owner_unchanged": true,
               "append_proposal_created": false,
               "io_attempted": false,
-              "production_allowed": false
+              "production_allowed": false,
+              "io_adapter": "jocforge-io::flat7x_au_append::append_flat7x_au_to_staging_file",
+              "in_memory_test_sink": "Cursor<Vec<u8>>",
+              "non_durable_receipt_result": "AppendReceiptCandidateMismatch",
+              "filesystem_touched": false
             }
           },
           "vectors": {
@@ -49728,7 +49739,12 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1/SKIPFLD-VALUES.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-I0-D0-AU-COMPOSITION-BOUNDARY-V1/TARGET-AU-ORDER-VECTOR.json",
               "crates/jocforge-domain/tests/fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json",
-              "crates/jocforge-domain/tests/fixtures/flat7x_au_composer/INPUT-ONLY-VECTORS.json"
+              "crates/jocforge-domain/tests/fixtures/flat7x_au_composer/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json",
+              "crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-wrapper-config.json",
+              "crates/jocforge-domain/tests/fixtures/integrity_owner/integrity-public-provider.json"
             ],
             "case_pointers": [
               "The source-role map, I0 series and D0 producer identity must join by exact SharedAnalysisIdentity.",
@@ -49739,7 +49755,9 @@
               "Flat7x spatial index1, coefficient index1 and 15-object count are carried as separate target-plan values.",
               "The candidate remains in memory with production disabled and no CLI/AU-owner/file publication.",
               "The application wrapper is exercised with matching SharedAnalysisIdentity and role-map receipt, six caller-owned D0 spans, one block-index-2 field, I0-before-D0 extents, and production_allowed=false.",
-              "The application preflight validates the pair identity and extents, then uses the in-memory Flat7xAuOutputOwner with missing F13/F12 receipts to obtain a rejection retirement without an append proposal or I/O."
+              "The application preflight validates the pair identity and extents, then uses the in-memory Flat7xAuOutputOwner with missing F13/F12 receipts to obtain a rejection retirement without an append proposal or I/O.",
+              "The fully source-receipted F15 append proposal is written/read back in a Cursor sink; absent fsync/durability evidence causes atomic F15 completion rejection.",
+              "The in-memory I/O sink test uses a fully source-receipted synthetic F15 proposal and rejects its non-durable readback receipt; it does not create a file."
             ],
             "expected_outputs_included": false,
             "execution_status": "LOCALLY_VERIFIED_SOURCE_BOUND_PAIR_AU_AND_APPLICATION_F15_DISABLED_OUTPUT_GATE",
@@ -49748,6 +49766,13 @@
               "command": "cargo test -p jocforge-application --lib application_pair_candidate_composes_matching_i0_d0_frames_in_one_au --features test-support --locked -j1",
               "result": "PASS: 1 passed, 51 filtered out",
               "production_allowed": false
+            },
+            "io_memory_sink_test": {
+              "name": "in_memory_sink_rejects_non_durable_fully_receipted_pair_commit",
+              "command": "cargo test -p jocforge-io --lib in_memory_sink_rejects_non_durable_fully_receipted_pair_commit --locked -j1",
+              "result": "PASS: 1 passed, 36 filtered out",
+              "filesystem_touched": false,
+              "durable_receipt_created": false
             }
           },
           "error_outcomes": [
@@ -49777,7 +49802,8 @@
             "No raw skipfld/container/payload/frame bytes, parser or real media are included.",
             "No 640-kbps sample C is extrapolated to the 1024-kbps D0 target.",
             "The application output gate validates identity and extent and receives StageRejected(F13MetadataReceiptMissing) from an in-memory F15 owner; it creates no append proposal and performs no filesystem I/O. D0 audio generation, source-role producer join, F13/I0/D0 integrity join, CLI, file publication, GTC, production encode and W04 remain unconnected.",
-            "External ProEncoder range population and the source-generation-bound D0 span owner remain UNBOUND; source-range reads do not produce audio spans."
+            "External ProEncoder range population and the source-generation-bound D0 span owner remain UNBOUND; source-range reads do not produce audio spans.",
+            "The in-memory I/O sink is test-only; no staging File, .ec3, final exposure or durable receipt was created."
           ],
           "validation_boundary": "Synthetic opaque D0 spans and caller BSI values are assembled with the existing D0 frame and AU composers; Wash numeric packages supply only block-index/rate/size measurements. The target contract and pair source receipts are retained; production_allowed=false.",
           "delivery_scope": "SOURCE_BOUND_FLAT7X_PAIR_IN_MEMORY_AU_CANDIDATE_C511_C512_EXTENT_ORDER_AND_IDENTITY_REJECTIONS_NO_PRODUCTION",
@@ -49831,6 +49857,11 @@
               "path": "crates/jocforge-application/src/lib.rs",
               "bytes": 39292,
               "sha256": "dde52b4bf3145f72db6a75a2d08548a66e820ed04f32b7935bee2d2e35bc6b4e"
+            },
+            {
+              "path": "crates/jocforge-io/src/flat7x_au_append.rs",
+              "bytes": 16468,
+              "sha256": "f109deb293336d821aa9e89561abe7bcffe0ac9a14ddb7d02f317a287e4ee583"
             }
           ],
           "test_inventory": [
@@ -49858,6 +49889,11 @@
               "path": "crates/jocforge-domain/tests/flat7x_d0_frame_assembler.rs",
               "bytes": 18597,
               "sha256": "51ce3cc5d1db171b256339b7165d363b934ba41b0a5736d072706694aa0d218e"
+            },
+            {
+              "path": "crates/jocforge-io/src/flat7x_au_append.rs",
+              "bytes": 16468,
+              "sha256": "f109deb293336d821aa9e89561abe7bcffe0ac9a14ddb7d02f317a287e4ee583"
             }
           ],
           "vector_inventory": [
@@ -49905,6 +49941,31 @@
               "path": "crates/jocforge-domain/tests/fixtures/flat7x_au_composer/INPUT-ONLY-VECTORS.json",
               "bytes": 1225,
               "sha256": "33cd48142e8ca77a32ec94b3a4ab8cd0c3089d8374df0201225985256fe450ca"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 4037,
+              "sha256": "dbf02c22de6dac36da5bd2c90234f4add1c04ecb313d0e0fceb611c289ccd537"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json",
+              "bytes": 227297,
+              "sha256": "4271ce47e911ba107c1f76931cf872d8240e7152381d0f12bd5b17bf3e2eb023"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json",
+              "bytes": 1399,
+              "sha256": "6d94c55c8c011fd4762e60ec92ed491f19b17540c72ba82094a36f6e666f2ef7"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-wrapper-config.json",
+              "bytes": 1754,
+              "sha256": "722e93ad671e4faab6ae9f33125bd49f8f369f717db0c9a3600cd861cdbd5a56"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/fixtures/integrity_owner/integrity-public-provider.json",
+              "bytes": 687,
+              "sha256": "b0f52c55d38b9fba45ec39fc956cd8cd895ce2cfbc1f77d9493d99d2b8636a4d"
             }
           ]
         }
@@ -59124,8 +59185,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2216643,
-              "sha256": "4d8f11033030005af2309f3122647b4aec3f7dcc775d602b77a17802022c3e54"
+              "bytes": 2217957,
+              "sha256": "bea36f187bd440c18f6ee9585c068f448b1b040574ba04e8e0abf3be19c8cf00"
             }
           ],
           "test_inventory": [
@@ -60752,8 +60813,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-io/src/flat7x_au_append.rs",
-              "bytes": 12221,
-              "sha256": "a23a83cceed603750e4910a3a830c9be4e577efbe15a429aebb98226f00c7997"
+              "bytes": 16468,
+              "sha256": "f109deb293336d821aa9e89561abe7bcffe0ac9a14ddb7d02f317a287e4ee583"
             },
             {
               "path": "crates/jocforge-io/src/lib.rs",
@@ -60809,8 +60870,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-io/src/flat7x_au_append.rs",
-              "bytes": 12221,
-              "sha256": "a23a83cceed603750e4910a3a830c9be4e577efbe15a429aebb98226f00c7997"
+              "bytes": 16468,
+              "sha256": "f109deb293336d821aa9e89561abe7bcffe0ac9a14ddb7d02f317a287e4ee583"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/test_support.rs",

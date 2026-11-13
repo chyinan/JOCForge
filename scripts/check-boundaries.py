@@ -13080,6 +13080,7 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
     row = rows[0]
     app_path = root / "crates/jocforge-application/src/flat7x_pair_source.rs"
     pair_output_path = root / "crates/jocforge-application/src/flat7x_pair_output.rs"
+    pair_io_path = root / "crates/jocforge-io/src/flat7x_au_append.rs"
     composer_path = root / "crates/jocforge-domain/src/codec/access_unit_composer.rs"
     d0_assembler_path = root / "crates/jocforge-domain/src/codec/d0_frame_assembler.rs"
     ac3_test_path = root / "crates/jocforge-domain/src/codec/ac3_audio_block.rs"
@@ -13087,6 +13088,8 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
     cli_path = root / "crates/jocforge-cli/src/encode_request.rs"
     app = rust_code_without_comments(app_path.read_text(encoding="utf-8"))
     pair_output = rust_code_without_comments(pair_output_path.read_text(encoding="utf-8"))
+    pair_io_source = pair_io_path.read_text(encoding="utf-8")
+    pair_io = pair_io_source
     composer = rust_code_without_comments(composer_path.read_text(encoding="utf-8"))
     d0_assembler = rust_code_without_comments(d0_assembler_path.read_text(encoding="utf-8"))
     ac3_tests = ac3_test_path.read_text(encoding="utf-8")
@@ -13269,7 +13272,23 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         and "jocforge_io" not in pair_output,
         "application preflights same-source AU extents and captures an atomic production-disabled F15 retirement before I/O",
     )
-
+    memory_sink_start = pair_io_source.index("fn append_flat7x_au_to_memory_for_test<")
+    test_module_start = pair_io_source.index("mod tests {", memory_sink_start)
+    memory_sink = pair_io_source[memory_sink_start:test_module_start]
+    ck(
+        "pub fn append_flat7x_au_to_staging_file<" in pair_io
+        and "fn write_and_readback_sink<S>(" in pair_io
+        and "file.sync_all()?" in pair_io
+        and "file_fsync: bool" in pair_io
+        and "Cursor<Vec<u8>>" in memory_sink
+        and "write_and_readback_sink(" in memory_sink
+        and "|_| Ok(false)" in memory_sink
+        and "in_memory_sink_rejects_non_durable_fully_receipted_pair_commit" in pair_io_source
+        and "Flat7xAuAppendTestFixture::positive_pair" in pair_io
+        and "Flat7xAuAttemptRetirementReason::AppendReceiptCandidateMismatch" in pair_io
+        and "Cursor::new(Vec::new())" in pair_io,
+        "fully receipted F15 pair reaches the shared I/O core through a memory-only non-durable sink",
+    )
     ac3_tests = (root / "crates/jocforge-domain/src/codec/ac3_audio_block.rs").read_text(encoding="utf-8")
     skipfield_tests = (root / "crates/jocforge-domain/src/codec/emdf_skip_field.rs").read_text(encoding="utf-8")
     ck(
@@ -14729,10 +14748,11 @@ def check_partial_root_and_new_slice_mappings(root, d):
     flat7x_per_span_manifest = flat7x_per_span_root / "MANIFEST.json"
     flat7x_per_span_manifest_sha = hashlib.sha256(flat7x_per_span_manifest.read_bytes()).hexdigest()
     flat7x_append_code = rust_code_without_comments((root / "crates/jocforge-io/src/flat7x_au_append.rs").read_text(encoding="utf-8"))
-    flat7x_i0_span_call = flat7x_append_code.index("write_span(file, i0_bytes")
-    flat7x_d0_span_call = flat7x_append_code.index("write_span(file, d0_bytes")
-    flat7x_flush_call = flat7x_append_code.index("file.flush()", flat7x_d0_span_call)
-    ck(flat7x_per_span_manifest_sha == "03b80a61ccef6e83bcdcd6adc552936bdfbda6c9a357c503e6584cd921493c5c" and hashlib.sha256((flat7x_per_span_root / "PACKAGE-SEAL.json").read_bytes()).hexdigest() == "00d85343beebb48a96aa0eef4c50638ffac1b6334950fc1ae445fbe917858f91" and flat7x_i0_span_call < flat7x_d0_span_call < flat7x_flush_call, "Flat7x staging writes the I0 span before D0 and keeps the native span sink receipt separate")
+    flat7x_i0_span_call = flat7x_append_code.index("write_span(sink, i0_bytes")
+    flat7x_d0_span_call = flat7x_append_code.index("write_span(sink, d0_bytes")
+    flat7x_flush_call = flat7x_append_code.index("sink.flush()", flat7x_d0_span_call)
+    flat7x_sync_call = flat7x_append_code.index("let file_fsync = sync(sink)?", flat7x_flush_call)
+    ck(flat7x_per_span_manifest_sha == "03b80a61ccef6e83bcdcd6adc552936bdfbda6c9a357c503e6584cd921493c5c" and hashlib.sha256((flat7x_per_span_root / "PACKAGE-SEAL.json").read_bytes()).hexdigest() == "00d85343beebb48a96aa0eef4c50638ffac1b6334950fc1ae445fbe917858f91" and flat7x_i0_span_call < flat7x_d0_span_call < flat7x_flush_call < flat7x_sync_call and "file.sync_all()?" in flat7x_append_code, "Flat7x staging writes I0 before D0, flushes, and separates filesystem sync evidence")
     ck(flat7x_f15_io.get("implementation_status") == "LOCALLY_VERIFIED_F15_PAIR_APPEND_SESSION_ADAPTER__PRODUCT_CALLER_OPEN" and flat7x_f15_io.get("parameters", {}).get("target", {}).get("aggregate_bytes") == 6_656 and flat7x_f15_io.get("parameters", {}).get("target", {}).get("production_allowed") is False and flat7x_f15_io.get("parameters", {}).get("target", {}).get("encode_entry_connected") is False and flat7x_f15_io.get("parameters", {}).get("test_support") == {"feature": "test-support", "default_enabled": False, "io_activation": "jocforge-io dev-dependencies only", "production_receipts": False} and flat7x_f15_io.get("parameters", {}).get("per_span_writer_package", {}).get("manifest_sha256") == flat7x_per_span_manifest_sha and flat7x_f15_io.get("vectors", {}).get("execution_status") == "F15_PAIR_APPEND_STAGING_READBACK_CRC_SYNC_AND_RETIREMENT_TESTS_PASS" and any("F13 parser" in item for item in flat7x_f15_io.get("not_run", [])), "Flat7x F15 pair append adapter remains test-fixture-backed and outside product binding")
 
     ck(len(entries["F06OF"].get("direct_slices", [])) >= 38 and any(item.get("slice_id") == "adm-physical-row-u16-layout-map" and item.get("implementation_requirement") is False and item.get("parameters", {}).get("supplement_manifest_sha256") == "9c1e53e93a34f9b66172bc217c7cbc0aef54a9208c32db3cc588537b8737ee97" for item in entries["F06OF"]["direct_slices"]) and any(item.get("slice_id") == "prepared-adm-physical-pcm-row-cursor-binding" for item in entries["F06OF"]["direct_slices"]) and any(item.get("slice_id") == "fresh-zero-meter-drain-frontend-stage" for item in entries["F06OF"]["direct_slices"]), "F06OF keeps its mapped direct slices with separate physical-row binding and fresh-zero drain stages")

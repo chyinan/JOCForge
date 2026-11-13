@@ -102,6 +102,7 @@ struct StagingWriteEvidence {
     readback_sha256: [u8; 32],
     i0_crc_residual: u16,
     d0_crc_residual: u16,
+    file_fsync: bool,
 }
 
 /// Appends one proposal to a caller-owned staging file and consumes it on every outcome.
@@ -132,24 +133,7 @@ pub fn append_flat7x_au_to_staging_file<'a>(
         }
     };
 
-    let receipt = Flat7xAuAppendReceiptCandidate::new(
-        proposal.attempt_id().to_owned(),
-        ledger.au_index(),
-        expected_offset,
-        evidence.bytes_written,
-        evidence.write_calls,
-        evidence.readback_sha256,
-        evidence.i0_crc_residual,
-        evidence.d0_crc_residual,
-        true,
-        true,
-    );
-    proposal
-        .complete(receipt)
-        .map_err(|retirement| Flat7xAuAppendIoFailure {
-            error: Flat7xAuAppendIoError::ReceiptCandidateRejected,
-            retirement,
-        })
+    complete_staged_proposal(proposal, evidence)
 }
 
 fn write_and_readback_staging(
@@ -159,7 +143,31 @@ fn write_and_readback_staging(
     i0_frame_bytes: usize,
     d0_frame_bytes: usize,
 ) -> Result<StagingWriteEvidence, Flat7xAuAppendIoError> {
-    let actual_length = file.seek(SeekFrom::End(0))?;
+    write_and_readback_sink(
+        file,
+        expected_offset,
+        bytes,
+        i0_frame_bytes,
+        d0_frame_bytes,
+        |file| {
+            file.sync_all()?;
+            Ok(true)
+        },
+    )
+}
+
+fn write_and_readback_sink<S>(
+    sink: &mut S,
+    expected_offset: u64,
+    bytes: &[u8],
+    i0_frame_bytes: usize,
+    d0_frame_bytes: usize,
+    sync: impl FnOnce(&mut S) -> io::Result<bool>,
+) -> Result<StagingWriteEvidence, Flat7xAuAppendIoError>
+where
+    S: Read + Seek + Write,
+{
+    let actual_length = sink.seek(SeekFrom::End(0))?;
     if actual_length != expected_offset {
         return Err(Flat7xAuAppendIoError::StagingLengthMismatch {
             expected: expected_offset,
@@ -184,14 +192,14 @@ fn write_and_readback_staging(
     }
 
     let mut write_calls = Vec::new();
-    write_span(file, i0_bytes, &mut write_calls)?;
-    write_span(file, d0_bytes, &mut write_calls)?;
-    file.flush()?;
-    file.sync_all()?;
+    write_span(sink, i0_bytes, &mut write_calls)?;
+    write_span(sink, d0_bytes, &mut write_calls)?;
+    sink.flush()?;
+    let file_fsync = sync(sink)?;
 
-    file.seek(SeekFrom::Start(expected_offset))?;
+    sink.seek(SeekFrom::Start(expected_offset))?;
     let mut readback = vec![0_u8; bytes.len()];
-    file.read_exact(&mut readback)?;
+    sink.read_exact(&mut readback)?;
     if readback.as_slice() != bytes {
         return Err(Flat7xAuAppendIoError::ReadbackMismatch);
     }
@@ -214,17 +222,18 @@ fn write_and_readback_staging(
         readback_sha256: Sha256::digest(&readback).into(),
         i0_crc_residual,
         d0_crc_residual,
+        file_fsync,
     })
 }
 
-fn write_span(
-    file: &mut File,
+fn write_span<S: Write>(
+    sink: &mut S,
     span: &[u8],
     write_calls: &mut Vec<u64>,
 ) -> Result<(), Flat7xAuAppendIoError> {
     let mut remaining = span;
     while !remaining.is_empty() {
-        let written = file.write(remaining)?;
+        let written = sink.write(remaining)?;
         if written == 0 {
             return Err(Flat7xAuAppendIoError::WriteZero);
         }
@@ -236,23 +245,104 @@ fn write_span(
     Ok(())
 }
 
+fn complete_staged_proposal(
+    proposal: Flat7xAuAppendProposal<'_>,
+    evidence: StagingWriteEvidence,
+) -> Result<Flat7xAuOutputAfterProposal<'_>, Flat7xAuAppendIoFailure> {
+    let ledger = proposal.ledger_entry();
+    let receipt = Flat7xAuAppendReceiptCandidate::new(
+        proposal.attempt_id().to_owned(),
+        ledger.au_index(),
+        ledger.offset(),
+        evidence.bytes_written,
+        evidence.write_calls,
+        evidence.readback_sha256,
+        evidence.i0_crc_residual,
+        evidence.d0_crc_residual,
+        evidence.file_fsync,
+        evidence.file_fsync,
+    );
+    proposal
+        .complete(receipt)
+        .map_err(|retirement| Flat7xAuAppendIoFailure {
+            error: Flat7xAuAppendIoError::ReceiptCandidateRejected,
+            retirement,
+        })
+}
+
+#[cfg(test)]
+fn append_flat7x_au_to_memory_for_test<'a>(
+    sink: &mut std::io::Cursor<Vec<u8>>,
+    proposal: Flat7xAuAppendProposal<'a>,
+) -> Result<Flat7xAuOutputAfterProposal<'a>, Flat7xAuAppendIoFailure> {
+    let ledger = proposal.ledger_entry();
+    let (i0_frame_bytes, d0_frame_bytes) = ledger.frame_lengths();
+    let evidence = match write_and_readback_sink(
+        sink,
+        ledger.offset(),
+        proposal.bytes(),
+        usize::from(i0_frame_bytes),
+        usize::from(d0_frame_bytes),
+        |_| Ok(false),
+    ) {
+        Ok(evidence) => evidence,
+        Err(error) => {
+            return Err(Flat7xAuAppendIoFailure {
+                error,
+                retirement: proposal.retire_staging_failure(),
+            });
+        }
+    };
+    complete_staged_proposal(proposal, evidence)
+}
+
 #[cfg(test)]
 mod tests {
     use std::{
         fs::{self, File, OpenOptions},
-        io::{Read, Seek, Write},
+        io::{Cursor, Read, Seek, Write},
         path::PathBuf,
         time::{SystemTime, UNIX_EPOCH},
     };
 
-    use super::{Flat7xAuAppendIoError, write_and_readback_staging};
+    use super::{
+        Flat7xAuAppendIoError, append_flat7x_au_to_memory_for_test, write_and_readback_staging,
+    };
     use jocforge_domain::{
         codec::frame_size::Eac3FrameSize,
+        joc::emdf::metadata_owner::test_support::Flat7xReceiptGateMetadataTestInputs,
         profile::{
             D0EmdfSkipFieldExtent, D0FrameExtent, Flat7xAuCandidate, Flat7xSourceGeneration,
             I0FrameExtent, compose_flat7x_au_byte_sequence, validate_flat7x_au_candidate,
         },
+        publication::{Flat7xAuAttemptRetirementReason, test_support::Flat7xAuAppendTestFixture},
     };
+
+    const F15_PAIR_VECTORS: &[u8] = include_bytes!(
+        "../../../outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/INPUT-ONLY-VECTORS.json"
+    );
+    const METADATA_OWNER_VECTORS: &[u8] = include_bytes!(
+        "../../jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json"
+    );
+    const METADATA_PUBLIC_PROVIDER: &[u8] = include_bytes!(
+        "../../jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json"
+    );
+    const METADATA_WRAPPER_CONFIG: &[u8] = include_bytes!(
+        "../../jocforge-domain/tests/fixtures/metadata_owner/metadata-wrapper-config.json"
+    );
+    const KEYLESS_INTEGRITY_PROVIDER: &[u8] = include_bytes!(
+        "../../jocforge-domain/tests/fixtures/integrity_owner/integrity-public-provider.json"
+    );
+
+    fn source_receipted_pair_fixture() -> Flat7xAuAppendTestFixture {
+        Flat7xAuAppendTestFixture::positive_pair(Flat7xReceiptGateMetadataTestInputs {
+            f15_pair_vectors: F15_PAIR_VECTORS,
+            metadata_owner_vectors: METADATA_OWNER_VECTORS,
+            metadata_public_provider: METADATA_PUBLIC_PROVIDER,
+            metadata_wrapper_config: METADATA_WRAPPER_CONFIG,
+            keyless_integrity_provider: KEYLESS_INTEGRITY_PROVIDER,
+        })
+    }
 
     fn temp_staging_file() -> (PathBuf, File) {
         let unique = SystemTime::now()
@@ -372,5 +462,30 @@ mod tests {
         assert_eq!(fs::metadata(&path).unwrap().len(), 0);
         drop(file);
         fs::remove_file(path).unwrap();
+    }
+
+    #[test]
+    fn in_memory_sink_rejects_non_durable_fully_receipted_pair_commit() {
+        let fixture = source_receipted_pair_fixture();
+        let expected_bytes = fixture.expected_bytes();
+        let proposal = fixture.append_proposal(fixture.attempt_id()).unwrap();
+        let mut sink = Cursor::new(Vec::new());
+
+        let failure = match append_flat7x_au_to_memory_for_test(&mut sink, proposal) {
+            Ok(_) => panic!("an in-memory write must not produce a durable after-owner"),
+            Err(failure) => failure,
+        };
+
+        assert!(matches!(
+            failure.error(),
+            Flat7xAuAppendIoError::ReceiptCandidateRejected
+        ));
+        assert_eq!(
+            failure.retirement().reason(),
+            Flat7xAuAttemptRetirementReason::AppendReceiptCandidateMismatch
+        );
+        assert!(failure.retirement().committed_owner_unchanged());
+        assert!(failure.retirement().fresh_programme_cold_required());
+        assert_eq!(sink.into_inner(), expected_bytes);
     }
 }
