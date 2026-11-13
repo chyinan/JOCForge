@@ -573,6 +573,160 @@ fn f12_completed_frame_stage_binds_protected_emdf_at_dynamic_bit_cursor() {
 }
 
 #[test]
+fn flat7x_pair_f12_validates_role_rates_and_returns_one_shared_owner_transition() {
+    let provider_bytes = provider();
+    let provider_value = validate_keyless_provider(&provider_bytes).unwrap();
+    let mut owner = new_owner(0);
+    for source in 0..2 {
+        let identity = f12_identity(source);
+        let (programme_id, attempt, transaction_id, callback_identity) =
+            gtc_callback_identity(&identity);
+        let frame = crc_closed_frame(crate::profile::CodecRateProfile::Kbps1024);
+        owner = owner
+            .stage_f12_source_for_callback(
+                IntegrityF12SourceInput {
+                    identity,
+                    payload: F14kPayloadInput::AbsentPublishedPayloadV1,
+                    completed_frame: F12CompletedFrameInput {
+                        frame: &frame,
+                        emdf_container_start: None,
+                    },
+                },
+                &provider_value,
+                &programme_id,
+                attempt,
+                &transaction_id,
+                &callback_identity,
+            )
+            .unwrap()
+            .into_parts()
+            .0;
+    }
+
+    let zero_slot_container = [0x58, 0x38, 0x00, 0x07, 0x04, 0x80, 0, 0, 0, 0, 0];
+    let layout = serde_json::json!({
+        "bit_order": "MSB-first",
+        "terminal_id": { "value": 0, "start_bit": 32, "width_bits": 5 },
+        "primary_length_code": { "value": 2, "start_bit": 37, "width_bits": 2, "byte_count": 4 },
+        "secondary_length_code": { "value": 1, "start_bit": 39, "width_bits": 2, "byte_count": 1 },
+        "primary_protection_range_bits": [41, 73],
+        "secondary_protection_range_bits": [73, 81],
+        "terminal_padding_range_bits": [81, 88],
+        "terminal_padding_bits": 7,
+        "wire_bytes": 11,
+        "body_bytes": 7
+    });
+    let protected = super::super::keyless_checksum::protect_emdf_container(
+        &provider_value,
+        &zero_slot_container,
+        &layout,
+    )
+    .unwrap();
+    let d0_emdf_container_start = FrameBitCursor::new(517);
+    let i0_frame = crc_closed_frame(crate::profile::CodecRateProfile::Kbps640);
+    let d0_frame =
+        completed_frame_with_bit_cursor(d0_emdf_container_start.bit_offset(), protected.bytes());
+    let identity = f12_identity(2);
+    let (programme_id, attempt, transaction_id, callback_identity) =
+        gtc_callback_identity(&identity);
+    let owner_before = owner.owner_state_snapshot();
+
+    let proposal = owner
+        .stage_flat7x_i0_d0_f12_pair_for_callback(
+            Flat7xI0D0F12PairInput {
+                identity: identity.clone(),
+                rate_plan: Flat7xIntegrityPairRatePlan::flat7x_i0_640_d0_1024(),
+                i0_frame: &i0_frame,
+                d0_frame: &d0_frame,
+                d0_emdf_container_start,
+                d0_zero_slot_container: &zero_slot_container,
+                d0_protected_container: &protected,
+            },
+            &provider_value,
+            &programme_id,
+            attempt,
+            &transaction_id,
+            &callback_identity,
+        )
+        .unwrap();
+
+    let i0 = proposal.receipts().i0();
+    let d0 = proposal.receipts().d0();
+    assert_eq!(i0.au().identity(), &identity);
+    assert_eq!(d0.au().identity(), &identity);
+    assert_eq!(i0.dispatch().frame_bytes(), 2_560);
+    assert_eq!(d0.dispatch().frame_bytes(), 4_096);
+    assert_eq!(i0.dispatch().emdf_container_start(), None);
+    assert_eq!(
+        d0.dispatch().emdf_container_start(),
+        Some(d0_emdf_container_start)
+    );
+    assert_eq!(
+        i0.source().payload(),
+        IntegrityPayloadEvidence::AbsentPublishedPayloadV1
+    );
+    assert!(matches!(
+        d0.source().payload(),
+        IntegrityPayloadEvidence::ProtectedEmdf { .. }
+    ));
+    assert!(i0.au().published());
+    assert!(d0.au().published());
+    assert_eq!(i0.au().crc_residual(), 0);
+    assert_eq!(d0.au().crc_residual(), 0);
+    assert_eq!(i0.source().before_generation(), owner_before.generation());
+    assert_eq!(d0.source().before_generation(), owner_before.generation());
+    assert_eq!(
+        i0.source().proposed_after_generation(),
+        d0.source().proposed_after_generation()
+    );
+    assert_eq!(
+        proposal.owner_receipt_proposal().before_generation(),
+        owner_before.generation()
+    );
+    assert_eq!(
+        proposal.owner_receipt_proposal().after_generation(),
+        owner_before.generation() + 1
+    );
+    assert_eq!(
+        owner.committed_state().generation(),
+        owner_before.generation()
+    );
+    assert_eq!(
+        proposal
+            .after_owner()
+            .committed_state()
+            .published_au_count(),
+        1
+    );
+
+    let rejected = owner
+        .stage_flat7x_i0_d0_f12_pair_for_callback(
+            Flat7xI0D0F12PairInput {
+                identity,
+                rate_plan: Flat7xIntegrityPairRatePlan::flat7x_i0_640_d0_1024(),
+                i0_frame: &i0_frame,
+                d0_frame: &d0_frame,
+                d0_emdf_container_start: FrameBitCursor::new(
+                    d0_emdf_container_start.bit_offset() + 1,
+                ),
+                d0_zero_slot_container: &zero_slot_container,
+                d0_protected_container: &protected,
+            },
+            &provider_value,
+            &programme_id,
+            attempt,
+            &transaction_id,
+            &callback_identity,
+        )
+        .unwrap_err();
+    assert_eq!(rejected.code(), IntegrityErrorCode::ChecksumSlots);
+    assert_eq!(
+        owner.committed_state().generation(),
+        owner_before.generation()
+    );
+}
+
+#[test]
 fn f12_completed_frame_stage_rejects_absent_payload_with_unexpected_cursor() {
     let provider_bytes = provider();
     let provider_value = validate_keyless_provider(&provider_bytes).unwrap();

@@ -94,6 +94,46 @@ pub struct IntegrityF12SourceInput<'a> {
     pub completed_frame: F12CompletedFrameInput<'a>,
 }
 
+/// Both completed frames and D0's protected F13 payload for one Flat7x access unit.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Flat7xI0D0F12PairInput<'a> {
+    pub identity: IntegrityIdentity,
+    pub rate_plan: Flat7xIntegrityPairRatePlan,
+    pub i0_frame: &'a [u8],
+    pub d0_frame: &'a [u8],
+    pub d0_emdf_container_start: FrameBitCursor,
+    pub d0_zero_slot_container: &'a [u8],
+    pub d0_protected_container: &'a ProtectedEmdfContainer,
+}
+
+/// Fixed role-specific codec rates for the current Flat7x I0/D0 transaction model.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Flat7xIntegrityPairRatePlan {
+    independent_i0_rate: crate::profile::CodecRateProfile,
+    dependent_d0_rate: crate::profile::CodecRateProfile,
+}
+
+impl Flat7xIntegrityPairRatePlan {
+    pub const fn flat7x_i0_640_d0_1024() -> Self {
+        Self {
+            independent_i0_rate: crate::profile::CodecRateProfile::Kbps640,
+            dependent_d0_rate: crate::profile::CodecRateProfile::Kbps1024,
+        }
+    }
+
+    pub const fn independent_i0_rate(self) -> crate::profile::CodecRateProfile {
+        self.independent_i0_rate
+    }
+
+    pub const fn dependent_d0_rate(self) -> crate::profile::CodecRateProfile {
+        self.dependent_d0_rate
+    }
+
+    pub const fn production_allowed(self) -> bool {
+        false
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum IntegrityStage {
     Source,
@@ -808,6 +848,60 @@ impl IntegrityGtcF12SourceProposal {
     }
 }
 
+/// Typed I0/D0 frame receipts that share one AU identity and one owner transition.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Flat7xI0D0F12PairReceipts {
+    i0: IntegrityF12SourceReceipts,
+    d0: IntegrityF12SourceReceipts,
+}
+
+impl Flat7xI0D0F12PairReceipts {
+    pub const fn i0(&self) -> &IntegrityF12SourceReceipts {
+        &self.i0
+    }
+
+    pub const fn d0(&self) -> &IntegrityF12SourceReceipts {
+        &self.d0
+    }
+}
+
+/// Noncommitting Flat7x pair F12 receipts with one shared Integrity owner transition.
+#[must_use]
+#[derive(Debug, Eq, PartialEq)]
+pub struct IntegrityGtcFlat7xF12PairProposal {
+    after_owner: IntegrityProgrammeOwner,
+    receipts: Flat7xI0D0F12PairReceipts,
+    owner_receipt: IntegrityOwnerReceiptProposal,
+}
+
+impl IntegrityGtcFlat7xF12PairProposal {
+    pub const fn after_owner(&self) -> &IntegrityProgrammeOwner {
+        &self.after_owner
+    }
+
+    pub const fn receipts(&self) -> &Flat7xI0D0F12PairReceipts {
+        &self.receipts
+    }
+
+    pub const fn owner_receipt_proposal(&self) -> &IntegrityOwnerReceiptProposal {
+        &self.owner_receipt
+    }
+
+    pub const fn production_allowed(&self) -> bool {
+        false
+    }
+
+    pub fn into_parts(
+        self,
+    ) -> (
+        IntegrityProgrammeOwner,
+        Flat7xI0D0F12PairReceipts,
+        IntegrityOwnerReceiptProposal,
+    ) {
+        (self.after_owner, self.receipts, self.owner_receipt)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq)]
 pub struct IntegrityProgrammeOwner {
     state: IntegrityState,
@@ -1166,6 +1260,220 @@ impl IntegrityProgrammeOwner {
                 after_owner,
                 receipts,
             },
+            owner_receipt,
+        })
+    }
+
+    /// Stages I0 and D0 frame receipts with role-specific rates and one shared AU-level transition.
+    ///
+    /// I0 carries no F13 payload; D0 carries the one protected block-two EMDF container. Both
+    /// frame validations are proposals from the same committed owner root. The returned owner
+    /// after-state advances once for the pair and remains uninstalled until the parent admits the
+    /// durable F15 append receipt.
+    pub fn stage_flat7x_i0_d0_f12_pair_for_callback(
+        &self,
+        input: Flat7xI0D0F12PairInput<'_>,
+        provider: &KeylessIntegrityProvider,
+        programme_id: &ProgrammeId,
+        attempt: AttemptId,
+        transaction_id: &CallbackTransactionId,
+        callback_identity: &CallbackLineageIdentity,
+    ) -> Result<IntegrityGtcFlat7xF12PairProposal, IntegrityError> {
+        if self.retired {
+            return Err(IntegrityError::new(IntegrityErrorCode::AttemptRetired));
+        }
+        if self.state.finalized {
+            return Err(IntegrityError::new(IntegrityErrorCode::AlreadyFinalized));
+        }
+        if provider.profile_id() != PROFILE_ID
+            || provider.provider_sha256() != self.state.provider_sha256
+        {
+            return Err(IntegrityError::new(IntegrityErrorCode::ProviderValues));
+        }
+        let target = crate::profile::Flat7xI0D0TargetPlan::approved_contract();
+        let rate_plan = input.rate_plan;
+        if rate_plan.independent_i0_rate() != target.i0().rate()
+            || rate_plan.dependent_d0_rate() != target.d0().rate()
+            || self.codec_rate != rate_plan.dependent_d0_rate()
+        {
+            return Err(IntegrityError::new(IntegrityErrorCode::UnsupportedProfile));
+        }
+
+        validate_identity(&input.identity, self)?;
+        if input.identity.programme_id != programme_id.as_str()
+            || callback_identity.programme_id() != programme_id
+        {
+            return Err(IntegrityError::new(IntegrityErrorCode::ProgrammeIdentity));
+        }
+        if input.identity.attempt != attempt.value() || callback_identity.attempt_id() != attempt {
+            return Err(IntegrityError::new(IntegrityErrorCode::AttemptIdentity));
+        }
+        if transaction_id.as_str().is_empty()
+            || input.identity.transaction_id != transaction_id.as_str()
+        {
+            return Err(IntegrityError::new(IntegrityErrorCode::TransactionIdentity));
+        }
+        if source_for_callback(callback_identity.callback_index())
+            != Some(input.identity.source_index)
+        {
+            return Err(IntegrityError::new(IntegrityErrorCode::SourceOrder));
+        }
+        let expected_dispatch = input
+            .identity
+            .source_index
+            .dispatch()
+            .map_err(|_| IntegrityError::new(IntegrityErrorCode::DispatchOrder))?;
+        let expected_au = input
+            .identity
+            .source_index
+            .value()
+            .checked_sub(SUPPRESSED_SOURCE_COUNT)
+            .map(PublishedAuIndex::new);
+        if input.identity.source_index.value() < SUPPRESSED_SOURCE_COUNT
+            || input.identity.au_index.is_none()
+            || input.identity.dispatch != expected_dispatch
+            || input.identity.au_index != expected_au
+        {
+            return Err(IntegrityError::new(IntegrityErrorCode::AuOrder));
+        }
+
+        let (_, i0_crc16) =
+            validate_completed_f12_frame(input.i0_frame, rate_plan.independent_i0_rate())?;
+        let (_, d0_crc16) =
+            validate_completed_f12_frame(input.d0_frame, rate_plan.dependent_d0_rate())?;
+
+        let zero_slot_container = input.d0_zero_slot_container;
+        let protected_container = input.d0_protected_container;
+        if zero_slot_container.is_empty()
+            || zero_slot_container.len() > 511
+            || protected_container.bytes().len() != zero_slot_container.len()
+        {
+            return Err(IntegrityError::new(IntegrityErrorCode::ChecksumSlots));
+        }
+        let primary_crc32 = crc32_iso_hdlc(
+            zero_slot_container
+                .get(4..)
+                .ok_or_else(|| IntegrityError::new(IntegrityErrorCode::ChecksumSlots))?,
+        );
+        let secondary_crc8 = crc8_smbus(&primary_crc32.to_be_bytes());
+        if protected_container.input_sha256() != sha256(zero_slot_container)
+            || protected_container.output_sha256() != sha256(protected_container.bytes())
+            || protected_container.primary_crc32() != primary_crc32
+            || protected_container.secondary_crc8() != secondary_crc8
+            || !frame_contains_payload_at_cursor(
+                input.d0_frame,
+                input.d0_emdf_container_start,
+                protected_container.bytes(),
+            )
+        {
+            return Err(IntegrityError::new(IntegrityErrorCode::ChecksumSlots));
+        }
+
+        let before = IntegrityOwnerStateSnapshot::from_state(&self.state);
+        let after_generation = self
+            .state
+            .generation
+            .checked_add(1)
+            .ok_or_else(|| IntegrityError::new(IntegrityErrorCode::GenerationOverflow))?;
+        let next_source_index = input
+            .identity
+            .source_index
+            .value()
+            .checked_add(1)
+            .map(CodecSourceIndex::new)
+            .ok_or_else(|| IntegrityError::new(IntegrityErrorCode::SourceOrder))?;
+        let published_au_count = self
+            .state
+            .published_au_count
+            .checked_add(1)
+            .ok_or_else(|| IntegrityError::new(IntegrityErrorCode::GenerationOverflow))?;
+        let after_owner = self.with_state(IntegrityState {
+            generation: after_generation,
+            next_source_index,
+            published_au_count,
+            ..self.state.clone()
+        });
+        let after = after_owner.owner_state_snapshot();
+        let before_sha256 = before.state_sha256();
+        let after_sha256 = after.state_sha256();
+        let provider_sha256 = provider.provider_sha256();
+        let identity = input.identity;
+        let i0_sha256 = sha256(input.i0_frame);
+        let d0_sha256 = sha256(input.d0_frame);
+        let protected_evidence = IntegrityPayloadEvidence::ProtectedEmdf {
+            zero_slot_sha256: protected_container.input_sha256(),
+            protected_sha256: protected_container.output_sha256(),
+            message_sha256: sha256(&zero_slot_container[4..]),
+            primary_crc32,
+            secondary_crc8,
+            primary_range: protected_container.primary_range(),
+            secondary_range: protected_container.secondary_range(),
+            container_bytes: protected_container.bytes().len(),
+        };
+        let receipts = Flat7xI0D0F12PairReceipts {
+            i0: IntegrityF12SourceReceipts {
+                source: IntegrityF12SourceReceipt {
+                    identity: identity.clone(),
+                    before_generation: before.generation(),
+                    proposed_after_generation: after.generation(),
+                    before_sha256,
+                    proposed_after_sha256: after_sha256,
+                    provider_sha256,
+                    payload: IntegrityPayloadEvidence::AbsentPublishedPayloadV1,
+                },
+                dispatch: IntegrityF12DispatchReceipt {
+                    identity: identity.clone(),
+                    frame_sha256: i0_sha256,
+                    frame_bytes: input.i0_frame.len(),
+                    emdf_container_start: None,
+                    source_payload_sha256: None,
+                },
+                au: IntegrityF12AuReceipt {
+                    identity: identity.clone(),
+                    frame_sha256: i0_sha256,
+                    crc16: i0_crc16,
+                    crc_residual: 0,
+                    published: true,
+                },
+            },
+            d0: IntegrityF12SourceReceipts {
+                source: IntegrityF12SourceReceipt {
+                    identity: identity.clone(),
+                    before_generation: before.generation(),
+                    proposed_after_generation: after.generation(),
+                    before_sha256,
+                    proposed_after_sha256: after_sha256,
+                    provider_sha256,
+                    payload: protected_evidence,
+                },
+                dispatch: IntegrityF12DispatchReceipt {
+                    identity: identity.clone(),
+                    frame_sha256: d0_sha256,
+                    frame_bytes: input.d0_frame.len(),
+                    emdf_container_start: Some(input.d0_emdf_container_start),
+                    source_payload_sha256: Some(protected_container.output_sha256()),
+                },
+                au: IntegrityF12AuReceipt {
+                    identity: identity.clone(),
+                    frame_sha256: d0_sha256,
+                    crc16: d0_crc16,
+                    crc_residual: 0,
+                    published: true,
+                },
+            },
+        };
+        let owner_receipt = IntegrityOwnerReceiptProposal {
+            programme_id: programme_id.clone(),
+            attempt,
+            transaction_id: transaction_id.clone(),
+            callback_identity: callback_identity.clone(),
+            before,
+            after,
+            changed: true,
+        };
+        Ok(IntegrityGtcFlat7xF12PairProposal {
+            after_owner,
+            receipts,
             owner_receipt,
         })
     }

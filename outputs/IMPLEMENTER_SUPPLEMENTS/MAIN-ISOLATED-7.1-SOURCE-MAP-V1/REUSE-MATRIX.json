@@ -1,0 +1,80 @@
+{
+  "schema": "jocforge.wash.main_isolated_source_map.v1",
+  "package_id": "JOCFORGE-MAIN-ISOLATED-7.1-SOURCE-MAP-WASH-V1",
+  "evidence_class": "READ_ONLY_SOURCE_ARCHITECTURE_COMPARISON",
+  "production_allowed": false,
+  "target": {
+    "sample_rate_hz": 48000,
+    "blocks_per_frame": 6,
+    "i0_rate_kbps": 640,
+    "i0_frame_bytes": 2560,
+    "d0_rate_kbps": 1024,
+    "d0_frame_bytes": 4096,
+    "aggregate_rate_kbps": 1664,
+    "aggregate_frame_bytes": 6656,
+    "d0_chanmap": "0x1A00",
+    "joc_layout": "Flat7x",
+    "joc_index": 1,
+    "d0_coded_channels": ["Ls", "Rs", "Lrs", "Rrs"],
+    "joc_reconstruction_carriers": 7
+  },
+  "reuse_decisions": [
+    {
+      "area": "ordered_au_assembly",
+      "main": ["writer.rs::package_source_derived_access_unit_with_frame_sizes", "writer.rs::package_multi_dependent_source_derived_access_unit_with_plan"],
+      "isolated": ["codec::access_unit_composer::assemble_flat7x_i0_d0_au_candidate_with_tail_policy", "application::flat7x_pair_source::assemble_flat7x_pair_access_unit_candidate"],
+      "reuse": "explicit I0 then D0 role order and one pair-level candidate",
+      "transfer": "architecture only; main's vector concatenation does not establish durable publication"
+    },
+    {
+      "area": "ownership_and_source_identity",
+      "main": ["conformance.rs::DependentPlan", "conformance.rs::OwnershipPlan"],
+      "isolated": ["Flat7xI0D0TargetPlan", "Flat7xPairSourceBinding", "Flat7xD0SourceIdentity", "Flat7xAuOutputOwner", "F13/I0/D0 receipts"],
+      "reuse": "separate frame-role ownership from frame bytes",
+      "transfer": "retain isolated typed receipt and generation model; do not copy legacy plan values"
+    },
+    {
+      "area": "profile_and_rate",
+      "main": ["profile.rs::JocProfileSpec", "rate.rs::rate_budget"],
+      "isolated": ["profile::Flat7xI0D0TargetPlan", "encode_request::EncodeRequestRoute"],
+      "reuse": "profile owns explicit per-substream frame targets",
+      "transfer": "reject legacy chanmap 0x0200 and 1024+640 allocation; target is 640+1024 and 0x1A00"
+    },
+    {
+      "area": "i0_audio_and_frame",
+      "main": ["writer.rs receives externally produced I0 bytes"],
+      "isolated": ["codec::i0_frame_assembler::assemble_flat7x_i0_ac3_frame_from_audio_series", "application::flat7x_pair_source::assemble_flat7x_pair_i0_frame_candidate"],
+      "reuse": "isolated I0 frame assembler and source lineage",
+      "transfer": "keep selected 5.1 E-AC-3 I0 path intact"
+    },
+    {
+      "area": "d0_audio_and_bsi",
+      "main": ["writer.rs::write_source_dependent_frame"],
+      "isolated": ["codec::flat7x_d0_pcm_source::produce_flat7x_d0_frame_from_pcm_source", "codec::d0_frame_assembler", "codec::frame_builder"],
+      "reuse": "no main audio implementation reuse",
+      "transfer": "continue isolated D0-specific implementation; preserve native/production evidence gates"
+    },
+    {
+      "area": "adm_row_roles",
+      "main": ["profile.rs legacy d0_source_indices"],
+      "isolated": ["profile::flat7x_source_role_map", "application::source_frame_bridge::build_flat7x_source_pcm_projection"],
+      "reuse": "none from old source indices",
+      "transfer": "keep role map typed and replaceable until Wash closes the semantic join"
+    },
+    {
+      "area": "publication",
+      "main": ["writer.rs returns a Vec<u8>"],
+      "isolated": ["application::flat7x_pair_output", "cli::ProgrammeOutputStaging::append_flat7x_pair", "io::AtomicOutputStaging::append_flat7x_au"],
+      "reuse": "isolated F15 and atomic-staging seams",
+      "transfer": "wire only one complete receipt-bound AU append; current CLI pair caller is uncalled"
+    }
+  ],
+  "current_connection_status": {
+    "encode_route_selects_flat7x_pair": true,
+    "cli_injects_disabled_d0_source": true,
+    "complete_pair_candidate_referenced_by_production_cli": false,
+    "flat7x_pair_append_called_by_production_cli": false,
+    "full_encode_run": "NOT_RUN",
+    "output_validation": "NOT_RUN"
+  }
+}

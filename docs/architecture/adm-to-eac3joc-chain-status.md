@@ -1991,3 +1991,13 @@ Synthetic D0 frame candidate tests passed (3); D0 frame assembler tests passed (
 The application wrapper `produce_flat7x_pair_d0_pcm_frame_candidate` now takes the exact four rows from `Flat7xPairSourceBinding` and carries its D0 source identity and role-map receipt beside the frame/history proposal; its focused source-binding test passed. This is the first complete source-bound D0 frame candidate path.
 
 The route still needs a programme-owned generation/history root, an exact policy for history over suppressed source indices 0/1, EOF valid/padded counts, same-source I0/D0/F13/F12 receipts, the CLI pair caller, and F15 durable final-output wiring. The current source-stage D0 gate still returns `Flat7xD0AudioProducerUnavailable`; W04 and real-output acceptance remain open.
+
+## 2026-11-14 Flat7x role-specific F12 pair receipt candidate
+
+`IntegrityProgrammeOwner::stage_flat7x_i0_d0_f12_pair_for_callback` now emits I0 and D0 F12 receipt sets from one noncommitting pair proposal. Its explicit fixed rate plan validates I0 640 kbps / 2,560 bytes and D0 1,024 kbps / 4,096 bytes; I0 has no F13 payload, D0 binds the protected block-two container, and both receipts share one AU identity and one Integrity state-generation transition. A focused test verifies each CRC residual and that staging leaves the committed owner unchanged.
+
+The application candidate is not yet joined to the actual F13 metadata source or F15 pair append. Source generation, callback PCM extents/tail policy, parent installation and final output remain open; the source-stage CLI D0 gate remains closed and `production_allowed=false`.
+
+## 2026-11-14 source-map package scope
+
+Registered Wash package `JOCFORGE-MAIN-ISOLATED-7.1-SOURCE-MAP-WASH-V1` (manifest `1c66063cd651daa8c7b0fc1b205db4d9521a54ca33b645e711ebd13989a3dd58`). Its locally verified reusable shape is typed role separation plus I0-before-D0 pair composition. The map explicitly leaves the production CLI caller and pair append unconnected; isolated audio/rate implementation continues from Wash contracts and local code only.

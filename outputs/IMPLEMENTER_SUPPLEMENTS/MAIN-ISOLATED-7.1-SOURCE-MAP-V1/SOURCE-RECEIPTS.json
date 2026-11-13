@@ -1,0 +1,227 @@
+{
+  "schema": "jocforge.wash.main_isolated_source_receipts.v1",
+  "package_id": "JOCFORGE-MAIN-ISOLATED-7.1-SOURCE-MAP-WASH-V1",
+  "main_reference": {
+    "repository": "D:/Programs/JOCForge",
+    "ref": "main",
+    "commit": "05a4108e0c6288130dec1203b301979a91475fca",
+    "checked_out_worktree": {
+      "branch": "codex/backend-cleanup-migration",
+      "head": "469cc61cb4345c89dc96cb205f991ac23c26457b",
+      "read_method": "git show main:<path>; working-tree files were not treated as main"
+    },
+    "files": [
+      {
+        "path": "crates/jocforge-core/src/writer.rs",
+        "git_blob": "13f70f418776dd7b64d1ad2d655123853005627f",
+        "locations": [
+          "801-820",
+          "1164-1224",
+          "1925-1999"
+        ]
+      },
+      {
+        "path": "crates/jocforge-core/src/conformance.rs",
+        "git_blob": "7222dae44be291db0ce808142847cffa891b7ee3",
+        "locations": [
+          "201-244"
+        ]
+      },
+      {
+        "path": "crates/jocforge-core/src/profile.rs",
+        "git_blob": "125e7255a90e6328c892f8916c0d776a02b751e2",
+        "locations": [
+          "7-15",
+          "135-143"
+        ]
+      },
+      {
+        "path": "crates/jocforge-core/src/rate.rs",
+        "git_blob": "af2a69cef6612271edb47e7dafa3d28eeac1149d",
+        "locations": [
+          "38-97"
+        ]
+      }
+    ],
+    "legacy_profile_observations": {
+      "idx1_channel_map": "0x0200",
+      "rate_budget_1664_kbps": [
+        1024,
+        640
+      ],
+      "old_d0_writer_characterization": "source-derived conventional mantissa bridge; not a perceptual E-AC-3 encoder"
+    }
+  },
+  "isolated_snapshot": {
+    "repository": "D:/Programs/JOCForge-isolated",
+    "branch": "experimental/independent-encoder",
+    "head": "1acf9c2610edb7da54383481784bf0278e28a0cf",
+    "worktree": "DIRTY in documentation/scratch paths; selected Rust source paths had no working-tree diff",
+    "modified_by_this_review": false,
+    "files": [
+      {
+        "path": "crates/jocforge-domain/src/profile/production.rs",
+        "sha256": "0914633c0c628cef2cdbec6c71758c4489ef3d3183d1de0d8fac88059c97a83f",
+        "locations": [
+          "17-54",
+          "165-219",
+          "288-323"
+        ]
+      },
+      {
+        "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
+        "sha256": "e18c1f3378b1be9f95a0ee530a8424c31ef4828135423a712840584eb133f0e7",
+        "locations": [
+          "120-178",
+          "237-347",
+          "378-395",
+          "466-475",
+          "580-766"
+        ]
+      },
+      {
+        "path": "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
+        "sha256": "555f07c12e1d2f9deec679a1ed909ce0913c76ee871a9656d22730a9cc5d4c37",
+        "locations": [
+          "role enums and provisional map builder"
+        ]
+      },
+      {
+        "path": "crates/jocforge-application/src/source_frame_bridge.rs",
+        "sha256": "591fc3efd5cd64ca9b12fbcb6ad5263a59339d45ba4c1cc58b7a89dfc99c9ada",
+        "locations": [
+          "59-64",
+          "209 onward"
+        ]
+      },
+      {
+        "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
+        "sha256": "21c24753e26f7898310164acabc362ed7698c3ca3017f2a6e398c11b5ebcd4f0",
+        "locations": [
+          "944 onward"
+        ]
+      },
+      {
+        "path": "crates/jocforge-domain/src/codec/d0_frame_assembler.rs",
+        "sha256": "4ae13ce8aec0109c9080dd6b65ddaedc14508e3b14843f4e7596268e273071be",
+        "locations": [
+          "304-339"
+        ]
+      },
+      {
+        "path": "crates/jocforge-domain/src/codec/flat7x_d0_pcm_source.rs",
+        "sha256": "f989b5fcb34e0850c106d84bd6df855ccac02488e5750682272dcf1940261492",
+        "locations": [
+          "160-188",
+          "195 onward"
+        ]
+      },
+      {
+        "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
+        "sha256": "992fa2b5c5f5ff47aef536e0289474432bdf8919f224407af34b5b8c6c761f64",
+        "locations": [
+          "108",
+          "196",
+          "242",
+          "311"
+        ]
+      },
+      {
+        "path": "crates/jocforge-domain/src/codec/access_unit_composer.rs",
+        "sha256": "5117114aa46744649ec0bdc77137f85ec626b020eb4c6d6534d3af530533e17c",
+        "locations": [
+          "179-285"
+        ]
+      },
+      {
+        "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
+        "sha256": "57998e6b5054bd6e303c8e18acc127c84719f8fd2b4e35069e7c55859ae1e3b8",
+        "locations": [
+          "232-333",
+          "391-493",
+          "498-635",
+          "641-663"
+        ]
+      },
+      {
+        "path": "crates/jocforge-application/src/flat7x_pair_output.rs",
+        "sha256": "421ff5eeeee65632f242a8d5ec015b05771e1415110c5e3bb916d55a6d051208",
+        "locations": [
+          "120-234",
+          "301-435"
+        ]
+      },
+      {
+        "path": "crates/jocforge-cli/src/encode_request.rs",
+        "sha256": "13ac367bd788d76d2cd1ec50eac3ca24d325f8f24e5efa3b1992da42b4f0f7f2",
+        "locations": [
+          "231-288"
+        ]
+      },
+      {
+        "path": "crates/jocforge-cli/src/source_execution.rs",
+        "sha256": "0a0fe4b5580d0fd6a220e719fbd23af707c01b2938b692162467f16d9920534a",
+        "locations": [
+          "307-351"
+        ]
+      },
+      {
+        "path": "crates/jocforge-cli/src/output_publication.rs",
+        "sha256": "d72ee6c5621b8bbe63c2b8835eac1861395e374a6b3987a9823d32c67a973c67",
+        "locations": [
+          "186-240",
+          "463-487",
+          "509-555"
+        ]
+      },
+      {
+        "path": "crates/jocforge-io/src/atomic_output/mod.rs",
+        "sha256": "281cb6cb1ce03ac476875a96bd80b206a25878d61932665eef7d85fc4dc3c794",
+        "locations": [
+          "317-352"
+        ]
+      },
+      {
+        "path": "crates/jocforge-io/src/flat7x_au_append.rs",
+        "sha256": "283cdbf25e21d14b86d8dadabf1709224c61e77754c20b625ccf10cffca4fb5a",
+        "locations": [
+          "113 onward"
+        ]
+      },
+      {
+        "path": "crates/jocforge-domain/src/codec/rate_profile.rs",
+        "sha256": "0bea955eca23ad663567e817ca83c63ea6ff8cce1b4b82c2530a2f65baca067c",
+        "locations": [
+          "module contract only"
+        ]
+      },
+      {
+        "path": "crates/jocforge-domain/src/codec/substream_topology.rs",
+        "sha256": "a34e58d40b3fed19cd99bb687b61813eb3865a06a42996e144894d7713a02eb4",
+        "locations": [
+          "module contract only"
+        ]
+      }
+    ]
+  },
+  "prior_reference_packages": [
+    {
+      "package_id": "JOCFORGE-MAIN-ISOLATED-I0-D0-REFERENCE-V1",
+      "manifest_sha256": "845e66208f997e14741b54f9fbc0458dd3bee0d7c97372fbc1b5c863e740647c",
+      "scope": "main ordered assembly and ownership-plan shape"
+    },
+    {
+      "package_id": "FLAT7X-MAIN-ARCHITECTURE-REUSE-MATRIX-V1",
+      "manifest_sha256": "3d54cf6d72c56eb24ac5565712c71ce3f59375ffb5851cab426db31fba157e1a",
+      "isolated_snapshot": "9456d4ca2c105ba2c799bf24a1545af2eb3e1d48",
+      "refresh_reason": "current isolated HEAD now contains additional D0 PCM frame-candidate and pair-source code"
+    }
+  ],
+  "review_actions": {
+    "repositories_modified": false,
+    "codec_or_encoder_run": "NOT_RUN",
+    "tests_run": "NOT_RUN",
+    "media_pcm_or_payload_read": "NOT_RUN",
+    "main_source_copied": false
+  }
+}

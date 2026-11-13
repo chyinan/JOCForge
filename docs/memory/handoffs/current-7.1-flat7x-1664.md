@@ -355,3 +355,13 @@ The three PCM-series unit tests, four D0 frame integration tests, and workspace 
 The application seam `produce_flat7x_pair_d0_pcm_frame_candidate` now takes the exact four D0 rows from `Flat7xPairSourceBinding` and keeps the binding's D0 source identity and role-map receipt with the frame/history candidate. Its focused application test passed (1).
 
 Still open: install history in a programme/attempt/source-generation owner; resolve history over suppressed source indices 0/1 under the F15-only commit rule; carry valid/padded counts; issue same-source I0/D0/F13/F12 receipts; and connect the CLI pair caller, parent commit and durable output. No production caller or file output was added. Fresh Wash GO remains required for an encoder run.
+
+## 2026-11-14 role-specific F12 pair receipt proposal
+
+Added `Flat7xIntegrityPairRatePlan::flat7x_i0_640_d0_1024` and the noncommitting `IntegrityProgrammeOwner::stage_flat7x_i0_d0_f12_pair_for_callback`. One pair proposal validates I0 at 640 kbps / 2,560 bytes with `AbsentPublishedPayloadV1`, validates D0 at 1,024 kbps / 4,096 bytes with one protected block-two EMDF at the supplied bit cursor, and returns two F12 receipt sets with the same programme/attempt/transaction/source/dispatch/AU identity, before generation, after generation and one owner receipt. The committed Integrity root remains unchanged until a parent installs the after-root.
+
+The focused pair test passed (1): it checks both role-specific frame sizes, the I0 no-payload cursor, the D0 protected container position, CRC residual zero for each frame, one shared generation step, and failure atomicity for a wrong D0 container cursor. Existing 5.1 scalar integrity staging is unchanged. Still open are actual F13/source identity joining, source-generation and valid/padded extents, application/CLI pair staging, and F15 durable append installation. `production_allowed=false`.
+
+## 2026-11-14 Wash source-map role and AU-shape refresh
+
+Registered `JOCFORGE-MAIN-ISOLATED-7.1-SOURCE-MAP-WASH-V1` (manifest `1c66063cd651daa8c7b0fc1b205db4d9521a54ca33b645e711ebd13989a3dd58`, seal `e799eebf51702a863212fb2f5a27b9ad2c773768e384ecdc2b95cb844f8f4d81`). The package-only checker passed in normal and optimized Python; all 18 isolated snapshot file hashes match the recorded HEAD. This implementation mapping consumes only typed row/carrier role separation and explicit I0→D0 AU order; legacy audio/rate paths remain excluded as implementation inputs. The package keeps `production_allowed=false` and reports the CLI pair route uncalled.

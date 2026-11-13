@@ -136,3 +136,14 @@ The approved U4/U7 writer boundary is now locally materialized as `codec::expone
 - Added application seam `produce_flat7x_pair_d0_pcm_frame_candidate`: it consumes the exact D0 rows from `Flat7xPairSourceBinding` and carries that binding's source identity and role-map receipt beside the frame/history candidate.
 - PCM-series unit tests (3), the D0 frame integration suite (4), format check, and workspace `cargo check --locked` passed. Full package test linking hit stale PDB failures in unrelated integration binaries. Strict domain Clippy still reports 9 existing errors outside the new module.
 - Verification also includes the application source-binding test (1 passed). Remaining: programme/attempt/source-generation history owner; policy for suppressed sources 0/1 and F15-only commit; valid/padded sample lineage; same-source I0/D0/F13/F12 receipts; CLI pair caller and durable final-output lifecycle. `production_allowed=false`; no file output was created.
+
+## 2026-11-14 role-specific Flat7x F12 pair candidate
+
+- Added `Flat7xIntegrityPairRatePlan::flat7x_i0_640_d0_1024` and `IntegrityProgrammeOwner::stage_flat7x_i0_d0_f12_pair_for_callback`. It validates I0 at 640 kbps and D0 at 1,024 kbps, issues I0 `AbsentPublishedPayloadV1` and D0 protected-EMDF receipts, and returns both with one shared before/after Integrity generation and one owner receipt.
+- The focused pair-receipt test passed (1), including 2,560/4,096-byte frame extents, D0 cursor binding, zero CRC16 residuals, and unchanged committed owner before parent installation.
+- Remaining: bind both receipts to the actual F13 metadata proposal and pair source at the application/CLI seam; provide the rate/extent receipt at the product callback; connect pair F15 staging and install the one Integrity/D0 history proposal only after durable append. Production remains false.
+
+## 2026-11-14 Wash source-map package
+
+- Registered `JOCFORGE-MAIN-ISOLATED-7.1-SOURCE-MAP-WASH-V1`, manifest `1c66063cd651daa8c7b0fc1b205db4d9521a54ca33b645e711ebd13989a3dd58`, seal `e799eebf51702a863212fb2f5a27b9ad2c773768e384ecdc2b95cb844f8f4d81`.
+- Normal/optimized package-only checkers passed and 18 isolated source snapshot hashes matched HEAD. The mapped reuse scope is role separation and I0→D0 pair order only; legacy main audio/rate paths are excluded. The production CLI pair caller remains absent.

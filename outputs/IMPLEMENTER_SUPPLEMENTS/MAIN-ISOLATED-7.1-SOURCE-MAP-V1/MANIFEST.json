@@ -1,0 +1,37 @@
+{
+  "schema": "jocforge.wash_source_map_manifest.v1",
+  "package_id": "JOCFORGE-MAIN-ISOLATED-7.1-SOURCE-MAP-WASH-V1",
+  "payload_count": 6,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 1762,
+      "sha256": "712f49a77d5e82b431eb9ba81778fbffef852c08ae4de0115301d8622e1b6fbb"
+    },
+    {
+      "path": "SOURCE-MAP.md",
+      "bytes": 11618,
+      "sha256": "3384981fb8cb6af91253d3bb3e8254e8599e5aeb355ebf06b62262f851e104a2"
+    },
+    {
+      "path": "REUSE-MATRIX.json",
+      "bytes": 3982,
+      "sha256": "5b90b843380e86242fda50b22b42e294e18e313c18dcb84c4512540efa6e841c"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 7521,
+      "sha256": "a40fdbb81d70f9f210b8a18c773aa976acf6807c3af5ef20d51d0332a84d257f"
+    },
+    {
+      "path": "build_source_map_package.py",
+      "bytes": 1997,
+      "sha256": "9d39c789a2efdb96ea031a685fd81210b2ce824aee21b2595b4e780f97fae536"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 5193,
+      "sha256": "0a84d55cda0f67a8650ad3bdd5c49174c54b5c61bde46635960618728b9423c9"
+    }
+  ]
+}

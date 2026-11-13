@@ -3,7 +3,7 @@ status: current
 topic: washed-evidence-index
 spec: JOCForge
 confidence: package-hash-verified
-last_updated: 2026-11-13
+last_updated: 2026-11-14
 tags:
   - evidence
   - Wash
@@ -64,3 +64,4 @@ tags:
 | `DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1` | `bf2f7e43a4cecd315e21d993c7fddcd8534089224747db1d9d2fc805f914e95d` | `2d906abfdb78fe2ca17ed21e1a0aeb3075e95181dfedd6209a6957d3866033d9` | Normal and optimized checker pass; no same-object Config+0x58 read in the bounded slot-0 method; profile_index=1 consumer remains UNBOUND | `outputs/IMPLEMENTER_SUPPLEMENTS/DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1` |
 | `DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1` | `ba65817c81f8097dda3cc3897f337da81c9a46fee0a892051d553c49089e8f04` | `92ffa1712763fccffd6006f8d9b2b35b7cc4b7660bef304b28b1bb0f3bc68dfa` | Normal and optimized checker pass; callback-buffer and FileWriter paths have no proven I0/D0 same-generation join or durable pair commit | `outputs/IMPLEMENTER_SUPPLEMENTS/DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1` |
 | `FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1` | `689d5e4f3b27fd79110f6fb99189d4407384424929b3a74d20ba3447698f545b` | `5f0c525745784e7b41714d04e5dc432fc2689ccf6ae74e925afe3cf7662e82b6` | Provisional ETSI-constrained D0 4×253-bin policy; additive D0 BAP provider required; 5.1 provider remains separate; input vectors NOT_RUN | `outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1` |
+| `JOCFORGE-MAIN-ISOLATED-7.1-SOURCE-MAP-WASH-V1` | `1c66063cd651daa8c7b0fc1b205db4d9521a54ca33b645e711ebd13989a3dd58` | `e799eebf51702a863212fb2f5a27b9ad2c773768e384ecdc2b95cb844f8f4d81` | Package-only normal/optimized checks and 18 isolated snapshot hashes pass; reuse limited to typed role separation and I0→D0 order, legacy audio/rate paths excluded; source-clock parity and output NOT_RUN; production false | `outputs/IMPLEMENTER_SUPPLEMENTS/MAIN-ISOLATED-7.1-SOURCE-MAP-V1` |
