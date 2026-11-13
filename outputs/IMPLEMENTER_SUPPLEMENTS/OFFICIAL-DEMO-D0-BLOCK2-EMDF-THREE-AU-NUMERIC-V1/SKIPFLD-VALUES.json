@@ -1,0 +1,87 @@
+{
+  "schema": "official-demo-d0-block2-emdf-three-au-numeric-v1",
+  "mka_sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+  "mka_sha256_status": "INHERITED_FROM_SEALED_PARENT_RECEIPTS",
+  "block_index_convention": "zero-based third audio-block prefix",
+  "samples": [
+    {
+      "au_index": 0,
+      "d0_offset": 7984,
+      "frame_bytes": 2560,
+      "rate_kbps": 640,
+      "block_index": 2,
+      "zero_based": true,
+      "skipfld_present": true,
+      "C": 314,
+      "consumed": 314,
+      "trailing": 0,
+      "payloads": [
+        {
+          "id": 11,
+          "data_bytes": 79
+        },
+        {
+          "id": 14,
+          "data_bytes": 216
+        }
+      ],
+      "manifest": "95d0f596c089fd0c43eee3e2a0f877177da897bda11b17387e1e4a6727d9cfcd",
+      "seal": "9c04149e8c9c8a3c71e14b57777a66ad4e4317a8221972db46ec76c3ddc0642a"
+    },
+    {
+      "au_index": 1,
+      "d0_offset": 13104,
+      "frame_bytes": 2560,
+      "rate_kbps": 640,
+      "block_index": 2,
+      "zero_based": true,
+      "skipfld_present": true,
+      "C": 301,
+      "consumed": 301,
+      "trailing": 0,
+      "payloads": [
+        {
+          "id": 11,
+          "data_bytes": 66
+        },
+        {
+          "id": 14,
+          "data_bytes": 216
+        }
+      ],
+      "manifest": "972982a4051da5ce3136274c74d5864fc7fdb750bf5ca17c4b6613a75c417f9f",
+      "seal": "1d641fddeee089e160ac7f1c4000d285cafdd59d4b2b498d8f44c4b3e6ff3495"
+    },
+    {
+      "au_index": 2,
+      "d0_offset": 18224,
+      "frame_bytes": 2560,
+      "rate_kbps": 640,
+      "block_index": 2,
+      "zero_based": true,
+      "skipfld_present": true,
+      "C": 301,
+      "consumed": 301,
+      "trailing": 0,
+      "payloads": [
+        {
+          "id": 11,
+          "data_bytes": 66
+        },
+        {
+          "id": 14,
+          "data_bytes": 216
+        }
+      ],
+      "manifest": "80f01ec37f6d37db36d22db72e1eeaae1f6ed4440112bc21fc370e07e6d56a1f",
+      "seal": "e75d6ca7affacc3d425ede4a06585fc63e69a8a5d0141e4b8a953935b31a7568"
+    }
+  ],
+  "target_contract": {
+    "max_C": 511,
+    "overflow": "REJECT",
+    "cross_skipfld_continuation": "DISALLOWED",
+    "production_allowed": false
+  },
+  "scope": "three sample AUs from one 640-kbps official MKA only; no 1024-kbps extrapolation; numeric values only"
+}

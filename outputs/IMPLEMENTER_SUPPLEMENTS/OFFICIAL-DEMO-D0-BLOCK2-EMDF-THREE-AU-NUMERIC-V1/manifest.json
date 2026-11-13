@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge-implementer-supplement-manifest-v1",
+  "package_id": "OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1",
+  "status": "WASH_APPROVED_SAMPLE_STRUCTURE_ONLY",
+  "production_allowed": false,
+  "files": [
+    {
+      "path": "CHECK.py",
+      "sha256": "c0196288357e54ad1ad99af2eab6b1f05afc1bb0ae9a4b9d506f36075f53d414"
+    },
+    {
+      "path": "REPORT.md",
+      "sha256": "f2d94ddf15b0399f3e27ca6cb8d12967fc9641710973e2372fe3c1032e014e05"
+    },
+    {
+      "path": "SKIPFLD-VALUES.json",
+      "sha256": "e1340016087f66a609fd7f5fc37b559518a61fa7590782700359f3b64e127f18"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "sha256": "3d065485c808ccf89a274b52b02633da6d678b06f1dcd01a93ba0237be5ab755"
+    }
+  ]
+}

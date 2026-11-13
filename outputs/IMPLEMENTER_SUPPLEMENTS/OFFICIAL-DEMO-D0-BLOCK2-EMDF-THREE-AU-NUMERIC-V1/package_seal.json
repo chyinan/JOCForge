@@ -1,0 +1,7 @@
+{
+  "schema": "jocforge-implementer-supplement-seal-v1",
+  "package_id": "OFFICIAL-DEMO-D0-BLOCK2-EMDF-THREE-AU-NUMERIC-V1",
+  "manifest_sha256": "940bdf73dad449fef39f5533d458876c08b177cdb6f514a2620e8f696b917ac3",
+  "status": "SEALED_WASH_APPROVED",
+  "production_allowed": false
+}
