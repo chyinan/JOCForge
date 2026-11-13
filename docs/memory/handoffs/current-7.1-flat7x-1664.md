@@ -266,3 +266,9 @@ Commands and results:
 - `cargo test -p jocforge --lib selected_five_point_one_keeps_every_supported_rate_on_its_single_frame_route --locked -j1` — 1 passed; `origin/experimental/independent-encoder` was at `514442cade7246d5b7108ef999a1f42c448f8944` when run.
 
 The next implementation edge remains the real source-generation-bound D0 span producer and the durable I0/D0 pair commit. This application test validates the in-memory seam only.
+
+## 2026-11-13 application-to-output staging gate
+
+`preflight_flat7x_pair_io_stage` validates a completed application candidate against the expected `SharedAnalysisIdentity`, the role-map/D0 identity join, the I0/D0 extents, and the I0-before-D0 AU spans. It then exercises the existing `Flat7xAuOutputOwner` in memory with absent F13/I0/D0 receipts. The expected result is a `StageRejected(F13MetadataReceiptMissing)` retirement with unchanged committed owner state; the receipt records no append proposal and no I/O attempt. The candidate remains `production_allowed=false`, and the CLI route remains `Flat7xPairNotReady`.
+
+Verification: the application pair integration test passed (1), the application pair-source tests passed (3), and the selected 5.1 all-rate regression passed (1). `cargo check -p jocforge-domain -p jocforge-application --locked -j1`, fmt, scoped Clippy, map rendering and boundary check passed. No file, DEE run or encoder run was produced.

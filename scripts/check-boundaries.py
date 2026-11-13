@@ -13079,12 +13079,14 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
 
     row = rows[0]
     app_path = root / "crates/jocforge-application/src/flat7x_pair_source.rs"
+    pair_output_path = root / "crates/jocforge-application/src/flat7x_pair_output.rs"
     composer_path = root / "crates/jocforge-domain/src/codec/access_unit_composer.rs"
     d0_assembler_path = root / "crates/jocforge-domain/src/codec/d0_frame_assembler.rs"
     ac3_test_path = root / "crates/jocforge-domain/src/codec/ac3_audio_block.rs"
     skipfield_test_path = root / "crates/jocforge-domain/src/codec/emdf_skip_field.rs"
     cli_path = root / "crates/jocforge-cli/src/encode_request.rs"
     app = rust_code_without_comments(app_path.read_text(encoding="utf-8"))
+    pair_output = rust_code_without_comments(pair_output_path.read_text(encoding="utf-8"))
     composer = rust_code_without_comments(composer_path.read_text(encoding="utf-8"))
     d0_assembler = rust_code_without_comments(d0_assembler_path.read_text(encoding="utf-8"))
     ac3_tests = ac3_test_path.read_text(encoding="utf-8")
@@ -13252,6 +13254,20 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         and "NumericPlanReceipt::from_parent_for_test" in app
         and no_cli_pair_candidate,
         "application tests the source-bound in-memory pair candidate while CLI publication stays disabled",
+    )
+    ck(
+        "pub fn preflight_flat7x_pair_io_stage(" in pair_output
+        and "candidate.source_identity() != expected_source_identity" in pair_output
+        and "d0_identity.source_transaction_id() != source_stage.transaction_id()" in pair_output
+        and "candidate.access_unit_bytes().len()" in pair_output
+        and "composition.i0_span().start_byte()" in pair_output
+        and ".stage_next_access_unit(" in pair_output
+        and "Flat7xAuSourceReceiptInput::new(None, None, None)" in pair_output
+        and "Flat7xAuOutputOwnerError::F13MetadataReceiptMissing" in pair_output
+        and "retirement.committed_owner_unchanged()" in pair_output
+        and "io_attempted" in pair_output
+        and "jocforge_io" not in pair_output,
+        "application preflights same-source AU extents and captures an atomic production-disabled F15 retirement before I/O",
     )
 
     ac3_tests = (root / "crates/jocforge-domain/src/codec/ac3_audio_block.rs").read_text(encoding="utf-8")

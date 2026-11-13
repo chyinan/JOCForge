@@ -622,7 +622,11 @@ mod pair_access_unit_integration_tests {
     };
     use crate::{
         PreparedJobInput, SelectedAdmResourcePayloads, SelectedWaveDescriptor,
-        prepare_selected_job_input, source_frame_bridge::build_flat7x_source_pcm_projection,
+        flat7x_pair_output::{
+            Flat7xPairIoStageDisposition, Flat7xPairIoStageError, preflight_flat7x_pair_io_stage,
+        },
+        prepare_selected_job_input,
+        source_frame_bridge::build_flat7x_source_pcm_projection,
     };
     use jocforge_domain::{
         analysis::{
@@ -661,6 +665,9 @@ mod pair_access_unit_integration_tests {
             EncodingProfile, Flat7xI0D0TargetPlan, JocReconstructionLayout,
             resolve_selected_profile,
         },
+        publication::{
+            Flat7xAuAttemptRetirementReason, Flat7xAuOutputOwner, Flat7xAuOutputOwnerError,
+        },
         timeline::{CodecSourceIndex, FrontendCallbackIndex},
         transaction::{AttemptId, CallbackLineageIdentity, CallbackTransactionId, ProgrammeId},
         transform::{
@@ -694,7 +701,6 @@ mod pair_access_unit_integration_tests {
     );
     const PHYSICAL_CHANNELS: u16 = 38;
     const PHYSICAL_PCM_SAMPLES: usize = 1_536;
-    const CHNA_RECORD_BYTES: usize = 40;
     const FULLBAND_CHANNELS: usize = 5;
     const FULLBAND_BINS: usize = 217;
     const LFE_BINS: usize = 7;
@@ -841,7 +847,10 @@ mod pair_access_unit_integration_tests {
         start..end
     }
 
-    fn analysis_numeric_stage(prepared: &PreparedJobInput) -> AnalysisNumericPlanStage {
+    fn analysis_numeric_stage(
+        prepared: &PreparedJobInput,
+        transaction_id: &str,
+    ) -> AnalysisNumericPlanStage {
         let root =
             AnalysisOwnerRoot::cold_for_prepared_input(prepared.domain_identity_capability());
         let installed_audio: Box<InstalledAudioSourceFrame> =
@@ -856,7 +865,7 @@ mod pair_access_unit_integration_tests {
             load_policy_parameters(PolicyProfile::selected(), Some(POLICY_PARAMETERS)).unwrap();
         root.prepare_f07_source(
             AttemptId::new(2),
-            CallbackTransactionId::new("flat7x-pair-integration-source").unwrap(),
+            CallbackTransactionId::new(transaction_id).unwrap(),
             CodecSourceIndex::new(0),
             &installed_audio,
             [false; F07_FULLBAND_LANES],
@@ -954,7 +963,7 @@ mod pair_access_unit_integration_tests {
     #[test]
     fn application_pair_candidate_composes_matching_i0_d0_frames_in_one_au() {
         let prepared = selected_prepared_input();
-        let analysis = analysis_numeric_stage(&prepared);
+        let analysis = analysis_numeric_stage(&prepared, "flat7x-pair-integration-source");
         let bap_parameters: Arc<BapParameters> =
             Arc::new(load_bap_parameters(Some(BAP_PROVIDER)).unwrap());
         // Test support binds synthetic codec values to the exact prepared-source analysis receipt.
@@ -1072,5 +1081,43 @@ mod pair_access_unit_integration_tests {
             i0_frame.i0_frame().frame_bytes()
         );
         assert!(!candidate.production_allowed());
+
+        let output_owner = Flat7xAuOutputOwner::cold("flat7x-pair-integration", 1).unwrap();
+        let stage_receipt =
+            preflight_flat7x_pair_io_stage(&candidate, numeric_plan.identity(), output_owner)
+                .unwrap();
+        assert_eq!(stage_receipt.source_identity(), numeric_plan.identity());
+        assert_eq!(stage_receipt.i0_frame_bytes(), 2_560);
+        assert_eq!(stage_receipt.d0_frame_bytes(), 4_096);
+        assert_eq!(stage_receipt.access_unit_bytes(), 6_656);
+        assert_eq!(stage_receipt.d0_skipfield_block(), 2);
+        assert_eq!(stage_receipt.d0_skipfield_bytes(), 1);
+        assert_eq!(
+            stage_receipt.disposition(),
+            Flat7xPairIoStageDisposition::RejectedProductionDisabled
+        );
+        assert!(!stage_receipt.production_allowed());
+        assert!(!stage_receipt.append_proposal_created());
+        assert!(!stage_receipt.io_attempted());
+        assert_eq!(
+            stage_receipt.retirement().reason(),
+            Flat7xAuAttemptRetirementReason::StageRejected(
+                Flat7xAuOutputOwnerError::F13MetadataReceiptMissing
+            )
+        );
+        assert!(stage_receipt.retirement().committed_owner_unchanged());
+        assert!(stage_receipt.retirement().fresh_programme_cold_required());
+        assert_eq!(stage_receipt.retirement().next_access_unit().value(), 0);
+        assert_eq!(stage_receipt.retirement().durable_length(), 0);
+
+        let mismatched_analysis = analysis_numeric_stage(&prepared, "different-source-stage");
+        assert_eq!(
+            preflight_flat7x_pair_io_stage(
+                &candidate,
+                mismatched_analysis.shared_analysis().unwrap().identity(),
+                Flat7xAuOutputOwner::cold("mismatched-source", 1).unwrap(),
+            ),
+            Err(Flat7xPairIoStageError::SourceIdentityMismatch)
+        );
     }
 }
