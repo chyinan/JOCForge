@@ -1,0 +1,17 @@
+{
+  "schema": "wash-official-demo-d0-block2-emdf-two-au-source-receipts-v1",
+  "mka_sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+  "mka_sha256_status": "INHERITED_FROM_SEALED_PARENT_RECEIPTS",
+  "block_index_package": {
+    "manifest_sha256": "da59cf0d1b8684750f90c936f07d90d495662215e367e6365a8cc22253ceadaf",
+    "seal_sha256": "427e5e34feca213d00daa9a969a8da0a6f14fff8872899c0062ba66611242131"
+  },
+  "au0_package": {
+    "manifest_sha256": "95d0f596c089fd0c43eee3e2a0f877177da897bda11b17387e1e4a6727d9cfcd",
+    "seal_sha256": "9c04149e8c9c8a3c71e14b57777a66ad4e4317a8221972db46ec76c3ddc0642a"
+  },
+  "au1_package": {
+    "manifest_sha256": "972982a4051da5ce3136274c74d5864fc7fdb750bf5ca17c4b6613a75c417f9f",
+    "seal_sha256": "1d641fddeee089e160ac7f1c4000d285cafdd59d4b2b498d8f44c4b3e6ff3495"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "schema": "official-demo-d0-block2-emdf-two-au-numeric-v1",
+  "source_sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+  "source_hash_status": "INHERITED_FROM_SEALED_PARENT_RECEIPTS; NOT_RECOMPUTED_BY_THESE_PROBES",
+  "block_index": {
+    "value": 2,
+    "base": "zero-based",
+    "audio_block_prefix_ordinal": 3
+  },
+  "sample_rate_kbps": 640,
+  "samples": [
+    {
+      "au_index": 0,
+      "d0_file_offset": 7984,
+      "d0_frame_bytes": 2560,
+      "skipfld_present": true,
+      "C_bytes": 314,
+      "emdf_container_consumed_bytes": 314,
+      "trailing_bytes": 0,
+      "payloads": [
+        {
+          "id": 11,
+          "data_bytes": 79
+        },
+        {
+          "id": 14,
+          "data_bytes": 216
+        }
+      ],
+      "source_package_manifest": "95d0f596c089fd0c43eee3e2a0f877177da897bda11b17387e1e4a6727d9cfcd",
+      "source_package_seal": "9c04149e8c9c8a3c71e14b57777a66ad4e4317a8221972db46ec76c3ddc0642a"
+    },
+    {
+      "au_index": 1,
+      "d0_file_offset": 13104,
+      "d0_frame_bytes": 2560,
+      "skipfld_present": true,
+      "C_bytes": 301,
+      "emdf_container_consumed_bytes": 301,
+      "trailing_bytes": 0,
+      "payloads": [
+        {
+          "id": 11,
+          "data_bytes": 66
+        },
+        {
+          "id": 14,
+          "data_bytes": 216
+        }
+      ],
+      "source_package_manifest": "972982a4051da5ce3136274c74d5864fc7fdb750bf5ca17c4b6613a75c417f9f",
+      "source_package_seal": "1d641fddeee089e160ac7f1c4000d285cafdd59d4b2b498d8f44c4b3e6ff3495"
+    }
+  ],
+  "target_contract": {
+    "max_C_bytes": 511,
+    "overflow": "REJECT",
+    "continuation_across_skipfields": "DISALLOWED",
+    "production_allowed": false
+  },
+  "sample_limits": [
+    "Two AUs from one official MKA only",
+    "Sample D0 is 640 kbps; no 1024-kbps extrapolation",
+    "Numeric lengths only; raw skipfld/payload/frame bytes absent",
+    "No decoder or encoder run; no PCM"
+  ]
+}

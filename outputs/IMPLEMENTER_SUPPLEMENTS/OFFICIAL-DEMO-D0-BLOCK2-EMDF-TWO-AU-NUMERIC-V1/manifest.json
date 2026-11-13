@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge-implementer-supplement-manifest-v1",
+  "package_id": "OFFICIAL-DEMO-D0-BLOCK2-EMDF-TWO-AU-NUMERIC-V1",
+  "status": "WASH_APPROVED_SAMPLE_STRUCTURE_ONLY",
+  "production_allowed": false,
+  "files": [
+    {
+      "path": "CHECK.py",
+      "sha256": "aae39e427dbca58f96af8457db58f6b2f186e3156dea9da6c21d2240a3a8b5dd"
+    },
+    {
+      "path": "REPORT.md",
+      "sha256": "e1f9282717f9a7d69b655fc64ff417711c75a5ac44cbad5b987f07373c188970"
+    },
+    {
+      "path": "SKIPFLD-VALUES.json",
+      "sha256": "9c55cf7753c14c33e3c74083d80e057b67f56c91befc218cc911ed1bd3792488"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "sha256": "fef9009e4cf0330a715947cc8626cfea2797edaf7a016349525c093f9354a1a4"
+    }
+  ]
+}
