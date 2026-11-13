@@ -147,3 +147,9 @@ The approved U4/U7 writer boundary is now locally materialized as `codec::expone
 
 - Registered `JOCFORGE-MAIN-ISOLATED-7.1-SOURCE-MAP-WASH-V1`, manifest `1c66063cd651daa8c7b0fc1b205db4d9521a54ca33b645e711ebd13989a3dd58`, seal `e799eebf51702a863212fb2f5a27b9ad2c773768e384ecdc2b95cb844f8f4d81`.
 - Normal/optimized package-only checkers passed and 18 isolated source snapshot hashes matched HEAD. The mapped reuse scope is role separation and I0→D0 pair order only; legacy main audio/rate paths are excluded. The production CLI pair caller remains absent.
+
+## 2026-11-14 source-bound pair F15 candidate
+
+- Added `stage_flat7x_pcm_pair_for_f15`, which takes source-bound I0/D0 frame candidates, one Integrity F12 pair proposal, F13 metadata, explicit source generation and the F15 output owner. It returns one whole-AU append proposal plus D0 after-history and retains access to the matching Integrity after-root/owner receipt; all state remains pending for the caller's durable append transaction.
+- Focused application integration passed (1): exact 2,560+4,096 extents, ordered 6,656-byte AU, F13 identity, F12 roles and carried D0 history. No filesystem write or parent root install was performed.
+- Remaining: replace test-fixture F13 inputs with the production metadata proposal; bind source PCM interval/generation/tail extent; connect the CLI callback and durable I/O receipt to one parent swap.

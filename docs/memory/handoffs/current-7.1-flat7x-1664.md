@@ -365,3 +365,9 @@ The focused pair test passed (1): it checks both role-specific frame sizes, the 
 ## 2026-11-14 Wash source-map role and AU-shape refresh
 
 Registered `JOCFORGE-MAIN-ISOLATED-7.1-SOURCE-MAP-WASH-V1` (manifest `1c66063cd651daa8c7b0fc1b205db4d9521a54ca33b645e711ebd13989a3dd58`, seal `e799eebf51702a863212fb2f5a27b9ad2c773768e384ecdc2b95cb844f8f4d81`). The package-only checker passed in normal and optimized Python; all 18 isolated snapshot file hashes match the recorded HEAD. This implementation mapping consumes only typed row/carrier role separation and explicit I0→D0 AU order; legacy audio/rate paths remain excluded as implementation inputs. The package keeps `production_allowed=false` and reports the CLI pair route uncalled.
+
+## 2026-11-14 source-bound pair F15 append candidate
+
+Added `stage_flat7x_pcm_pair_for_f15`: it joins the source-bound I0 and D0 frame candidates, the role-specific F12 pair proposal, F13 metadata and an explicit `Flat7xSourceGeneration` into one ordered in-memory F15 AU append proposal. The candidate carries D0 `after_history` and access to the matching Integrity after-root/owner receipt. Neither state is installed until F15 reports durable append success.
+
+The focused application integration test passed (1), using the test-only receipt-gate metadata fixture and generated I0/D0 frame candidates. It verifies the 6,656-byte I0→D0 sequence, one F13 identity, shared F12 pair identity, and retained D0 history. No file I/O or owner installation occurs here; production and valid/padded source extents remain open.

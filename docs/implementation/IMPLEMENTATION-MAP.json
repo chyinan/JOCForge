@@ -10778,8 +10778,8 @@
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 66027,
-              "sha256": "57998e6b5054bd6e303c8e18acc127c84719f8fd2b4e35069e7c55859ae1e3b8"
+              "bytes": 77447,
+              "sha256": "4ff60f56c68448b5766714fb13363953684f7699a739d84638b8e7434f3d60bb"
             }
           ],
           "test_inventory": [
@@ -10790,8 +10790,8 @@
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 66027,
-              "sha256": "57998e6b5054bd6e303c8e18acc127c84719f8fd2b4e35069e7c55859ae1e3b8"
+              "bytes": 77447,
+              "sha256": "4ff60f56c68448b5766714fb13363953684f7699a739d84638b8e7434f3d60bb"
             }
           ]
         }
@@ -18897,8 +18897,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2250669,
-              "sha256": "70157bd108478d3207b64e239c8af19e73720a21b376825cded1875915226082"
+              "bytes": 2250649,
+              "sha256": "bb04b5c87ccb3076092f024778da057703df0bcaf781a8106dbb1cb61e9d5113"
             }
           ],
           "test_modules": [
@@ -22423,8 +22423,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2250669,
-              "sha256": "70157bd108478d3207b64e239c8af19e73720a21b376825cded1875915226082"
+              "bytes": 2250649,
+              "sha256": "bb04b5c87ccb3076092f024778da057703df0bcaf781a8106dbb1cb61e9d5113"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -47707,8 +47707,8 @@
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 66027,
-              "sha256": "57998e6b5054bd6e303c8e18acc127c84719f8fd2b4e35069e7c55859ae1e3b8"
+              "bytes": 77447,
+              "sha256": "4ff60f56c68448b5766714fb13363953684f7699a739d84638b8e7434f3d60bb"
             }
           ],
           "test_modules": [
@@ -49518,11 +49518,11 @@
         },
         {
           "slice_id": "flat7x-source-bound-i0-d0-au-candidate",
-          "mapping_status": "MATERIALIZED_D0_PCM_FRAME_AND_ROLE_RATE_F12_PAIR_RECEIPTS__F13_F15_CLI_OPEN",
-          "implementation_status": "LOCALLY_VERIFIED_SOURCE_BOUND_D0_FRAME_AND_SHARED_GENERATION_F12_PAIR_RECEIPTS__F13_F15_CLI_OPEN",
+          "mapping_status": "MATERIALIZED_PCM_TO_SOURCE_BOUND_D0_FRAME_F12_F13_F15_PAIR_APPEND_CANDIDATE__PRODUCTION_CLI_AND_EXTENT_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_SOURCE_BOUND_PCM_F12_F13_PAIR_F15_APPEND_CANDIDATE__TAIL_AND_CLI_OPEN",
           "implementation_requirement": true,
           "owner": "application",
-          "scope": "The Flat7x pair source binding feeds a complete D0 PCM/frame candidate and preserves the source identity and role-map receipt. The Integrity owner stages one role-aware F12 pair proposal with an explicit fixed rate plan (I0 640 kbps, D0 1024 kbps), no F13 payload on I0, and one protected block-two F13 container on D0. Both frame receipt sets share the same AU identity and one Integrity before/after generation transition. Parent installation remains after durable pair append. Source-generation/timebase/tail extent, metadata/F13 production join, F15 CLI caller and final output remain open; production_allowed=false. The source-map supplement is used only for its ordered I0→D0 pair candidate shape and the distinction between PCM row roles and reconstruction carriers; legacy audio/rate paths remain excluded as implementation sources.",
+          "scope": "The Flat7x pair source binding feeds a complete D0 PCM/frame candidate and preserves its source identity and role-map receipt. The Integrity owner stages one role-aware F12 pair proposal with fixed I0 640-kbps / D0 1024-kbps rates, I0 AbsentPublishedPayloadV1, and one protected block-two F13 container on D0. The application F15 candidate composes source-bound I0/D0 frames and receipts in order, retaining the Integrity after-root/owner receipt proposal and D0 after-history beside one in-memory AU append proposal. Parent installation remains after durable append. Tail valid/padded extent, source-generation continuity, real metadata producer, CLI caller, durable output and validation remain open; production_allowed=false.",
           "dependencies": [
             "F12/flat7x-i0-typed-bsi-frame-assembly-entry",
             "F12/flat7x-d0-frame-bit-assembler",
@@ -50209,31 +50209,26 @@
             }
           ],
           "not_run": [
-            "No raw skipfld/container/payload/frame bytes, parser or real media are included.",
-            "No 640-kbps sample C is extrapolated to the 1024-kbps D0 target.",
-            "External ProEncoder range population and the source-generation-bound D0 span owner remain UNBOUND; source-range reads do not produce audio spans.",
-            "The in-memory I/O sink is test-only; no staging File, .ec3, final exposure or durable receipt was created.",
-            "The CLI source route reaches the D0 span producer input and returns NoApprovedAudioProductionRule for the current source; it does not stage a partial I0 AU.",
-            "The D0 audio-frame candidate consumes synthetic/caller-provided six-block spectra and BSI/EMDF; callback history/role-map production and all owner receipt joins remain unimplemented.",
-            "The pair proposal and atomic staging APIs are connected for receipt-bearing callers, but current CLI execution has no D0 producer receipts and no parent F15 pair-root commit/final exposure path.",
-            "No encoder, DEE, staging file, .ec3, or final output was created.",
-            "The new typed D0 BAP provider has no CLI producer caller or source-generation-bound F12 receipt yet.",
-            "The typed D0 BAP provider has no CLI producer caller or source-generation-bound F12 receipt yet.",
-            "Callback PCM-to-six-block D0 history, same-source BSI/DRC and F13 receipt binding, D0 F12 integrity receipt, CLI producer caller, and parent F15 atomic commit remain NOT_RUN.",
-            "The selected JOCForge lower-only D15 preprocessor is a replaceable model choice; final audio-block and source-receipt integration remains pending."
+            "Callback-to-source PCM interval, cached-drain row, and EOF valid/padded extent are UNBOUND.",
+            "Programme/attempt/source-generation D0 history owner and parent installation after F15 durability are NOT_RUN.",
+            "Production F13 metadata proposal is not joined to the source-bound D0 candidate; current pair tests use sealed input-only metadata fixtures.",
+            "The CLI source route still returns NoApprovedAudioProductionRule and does not call the pair candidate or append proposal.",
+            "F15 pair append proposal is in-memory; filesystem durability, rollback, final exposure, .ec3 output and W04 are NOT_RUN.",
+            "No encoder or DEE execution occurred; no real output was validated.",
+            "No raw skipfld/container/payload/frame bytes or real media are included."
           ],
           "validation_boundary": "Synthetic opaque D0 spans and caller BSI values are assembled with the existing D0 frame and AU composers. The E-AC-3 exponent-row helper separately verifies caller-supplied U4/U7 field order, width, cursor extent, and whole-row capacity atomicity. The row seed, group-count and D0 lane join remain caller-owned; production_allowed=false.",
           "delivery_scope": "RECEIPTED_I0_D0_PAIR_CANDIDATE_WITH_D0_SPECTRUM_BAP_D15_ROWS__NO_FULL_AUDBLK_OR_PRODUCTION",
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/flat7x_pair_output.rs",
-              "bytes": 25319,
-              "sha256": "421ff5eeeee65632f242a8d5ec015b05771e1415110c5e3bb916d55a6d051208"
+              "bytes": 29533,
+              "sha256": "b07daf20e49a28e06b948a8762cde8d719de50dc0700c2a661be7047e1d9308c"
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 66027,
-              "sha256": "57998e6b5054bd6e303c8e18acc127c84719f8fd2b4e35069e7c55859ae1e3b8"
+              "bytes": 77447,
+              "sha256": "4ff60f56c68448b5766714fb13363953684f7699a739d84638b8e7434f3d60bb"
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
@@ -50417,15 +50412,15 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2250669,
-              "sha256": "70157bd108478d3207b64e239c8af19e73720a21b376825cded1875915226082"
+              "bytes": 2250649,
+              "sha256": "bb04b5c87ccb3076092f024778da057703df0bcaf781a8106dbb1cb61e9d5113"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 66027,
-              "sha256": "57998e6b5054bd6e303c8e18acc127c84719f8fd2b4e35069e7c55859ae1e3b8"
+              "bytes": 77447,
+              "sha256": "4ff60f56c68448b5766714fb13363953684f7699a739d84638b8e7434f3d60bb"
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
@@ -59879,8 +59874,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2250669,
-              "sha256": "70157bd108478d3207b64e239c8af19e73720a21b376825cded1875915226082"
+              "bytes": 2250649,
+              "sha256": "bb04b5c87ccb3076092f024778da057703df0bcaf781a8106dbb1cb61e9d5113"
             }
           ],
           "test_inventory": [

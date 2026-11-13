@@ -11,6 +11,7 @@ use jocforge_domain::{
             Flat7xI0D0AuCandidate, Flat7xI0D0AuCandidateError,
             assemble_flat7x_i0_d0_au_candidate_with_tail_policy,
         },
+        bitio::FrameBitCursor,
         d0_frame_assembler::{Flat7xD0FrameBitInput, Flat7xD0FrameTailPolicy},
         flat7x_d0_pcm_source::{
             Flat7xD0PcmFrameCandidate, Flat7xD0PcmFrameInput, Flat7xD0PcmFrameSettings,
@@ -301,6 +302,20 @@ impl Flat7xPairD0PcmFrameCandidate {
         &self,
     ) -> &jocforge_domain::codec::flat7x_d0_pcm_source::Flat7xD0OverlapHistory {
         self.frame_candidate.after_history()
+    }
+
+    /// Returns the first payload bit after the D0 block-two `skipfld` header.
+    pub fn emdf_container_start(&self) -> Option<FrameBitCursor> {
+        let skip = self
+            .frame_candidate
+            .frame()
+            .receipt()
+            .frame_assembly()
+            .layout()
+            .block_two_skip_field();
+        let payload_bits = u32::from(skip.payload_bytes()).checked_mul(8)?;
+        let payload_start = skip.bit_span().end_bit().checked_sub(payload_bits)?;
+        Some(FrameBitCursor::new(payload_start))
     }
 
     pub const fn production_allowed(&self) -> bool {
@@ -803,7 +818,7 @@ mod pair_access_unit_integration_tests {
         PreparedJobInput, SelectedAdmResourcePayloads, SelectedWaveDescriptor,
         flat7x_pair_output::{
             Flat7xOpaqueD0FrameInput, Flat7xPairAppendProposalError, Flat7xPairIoStageDisposition,
-            Flat7xPairIoStageError, preflight_flat7x_pair_io_stage,
+            Flat7xPairIoStageError, preflight_flat7x_pair_io_stage, stage_flat7x_pcm_pair_for_f15,
             stage_receipted_i0_with_opaque_d0,
         },
         prepare_selected_job_input,
@@ -823,6 +838,7 @@ mod pair_access_unit_integration_tests {
                 I0AudioBlockSeriesBudget, I0AudioBlockSeriesPolicy, I0BapCandidateQ,
             },
             bap::{BapParameters, Flat7xD0BapParameters, load_bap_parameters},
+            bitio::FrameBitCursor,
             d0_frame_assembler::{
                 D0_CRC2_FIELD_BITS, D0Block2SkipFieldInput, D0BlockTwoAudioSpans,
                 D0FrameAudioBlockInput, Flat7xD0FrameBitInput, Flat7xD0FrameTailPolicy,
@@ -847,8 +863,17 @@ mod pair_access_unit_integration_tests {
                 SelectedSourceNumericPlan,
             },
         },
-        integrity::programme_owner::IntegrityIdentity,
-        joc::emdf::metadata_owner::test_support::Flat7xReceiptGateMetadataTestInputs,
+        integrity::{
+            keyless_checksum::validate_keyless_provider,
+            programme_owner::{
+                F12CompletedFrameInput, F14kPayloadInput, Flat7xI0D0F12PairInput,
+                Flat7xIntegrityPairRatePlan, IntegrityF12SourceInput, IntegrityIdentity,
+                IntegrityProgrammeOwner,
+            },
+        },
+        joc::emdf::metadata_owner::test_support::{
+            Flat7xReceiptGateMetadataTestInputs, flat7x_receipt_gate_metadata_for_test,
+        },
         profile::{
             D0EmdfSkipFieldExtent, EncodingProfile, Flat7xI0D0TargetPlan, Flat7xSourceGeneration,
             JocReconstructionLayout, resolve_selected_profile,
@@ -859,7 +884,8 @@ mod pair_access_unit_integration_tests {
             test_support::Flat7xAuAppendTestFixture,
         },
         timeline::{
-            CodecSourceIndex, FrontendCallbackIndex, PublicationDisposition, publication_for_source,
+            CodecSourceIndex, FrontendCallbackIndex, PublicationDisposition, PublishedAuIndex,
+            publication_for_source,
         },
         transaction::{AttemptId, CallbackLineageIdentity, CallbackTransactionId, ProgrammeId},
         transform::{
@@ -1275,6 +1301,238 @@ mod pair_access_unit_integration_tests {
             binding.d0_rows().rows()[0][1_280..]
         );
         assert!(!frame.production_allowed());
+    }
+
+    #[test]
+    fn d0_pcm_pair_stages_role_receipts_and_history_with_one_f15_candidate() {
+        let prepared = selected_prepared_input();
+        let source_transaction = "jocforge-source-2";
+        let analysis = analysis_numeric_stage_for_source(
+            &prepared,
+            source_transaction,
+            CodecSourceIndex::new(2),
+        );
+        let source_identity = analysis.shared_analysis().unwrap().identity();
+        let attempt = source_identity.source_stage_key().attempt_id();
+        let source_index = source_identity.source_index();
+        let dispatch = source_index.dispatch().unwrap();
+        let callback_index = FrontendCallbackIndex::new(4);
+        let callback_lineage =
+            CallbackLineageIdentity::new(prepared.programme_id().clone(), attempt, callback_index);
+        let bap_parameters: Arc<BapParameters> =
+            Arc::new(load_bap_parameters(Some(BAP_PROVIDER)).unwrap());
+        let numeric_plan = NumericPlanReceipt::from_parent_for_test(
+            analysis.shared_analysis().unwrap(),
+            synthetic_selected_numeric_plan(Arc::clone(&bap_parameters)),
+        );
+        let target = Flat7xI0D0TargetPlan::approved_contract();
+        let physical_pcm_rows: Vec<Vec<u32>> = (0..usize::from(PHYSICAL_CHANNELS))
+            .map(|row_index| {
+                let mut row = vec![0.0_f32.to_bits(); PHYSICAL_PCM_SAMPLES];
+                for block in 0..6 {
+                    row[block * 256 + 13 + row_index % 23] = 0.5_f32.to_bits();
+                    row[block * 256 + 129 + row_index % 17] = (-0.25_f32).to_bits();
+                }
+                row
+            })
+            .collect();
+        let projection = build_flat7x_source_pcm_projection(
+            &prepared,
+            target,
+            &callback_lineage,
+            source_index,
+            source_identity.source_stage_key().transaction_id(),
+            source_identity,
+            &physical_pcm_rows,
+        )
+        .unwrap();
+        let resolved_profile =
+            resolve_selected_profile(&EncodingProfile::selected_with_joc_reconstruction_layout(
+                JocReconstructionLayout::Flat7x,
+            ))
+            .unwrap();
+        let binding =
+            bind_flat7x_pair_source(resolved_profile, &projection, &numeric_plan).unwrap();
+
+        let mut vectors: Value = serde_json::from_slice(F15_PAIR_VECTORS).unwrap();
+        let metadata_identity = &mut vectors["positive_pair"]["integrity_identity"];
+        metadata_identity["programme_id"] =
+            Value::String(prepared.programme_id().as_str().to_owned());
+        metadata_identity["attempt"] = Value::from(attempt.value());
+        metadata_identity["transaction_id"] = Value::String(source_transaction.to_owned());
+        metadata_identity["source_index"] = Value::from(source_index.value());
+        metadata_identity["dispatch"] = Value::from(dispatch.value());
+        metadata_identity["published_au_index"] = Value::from(0_u64);
+        let f15_vectors = serde_json::to_vec(&vectors).unwrap();
+        let metadata_inputs = Flat7xReceiptGateMetadataTestInputs {
+            f15_pair_vectors: &f15_vectors,
+            metadata_owner_vectors: METADATA_OWNER_VECTORS,
+            metadata_public_provider: METADATA_PUBLIC_PROVIDER,
+            metadata_wrapper_config: METADATA_WRAPPER_CONFIG,
+            keyless_integrity_provider: KEYLESS_INTEGRITY_PROVIDER,
+        };
+        let (metadata, zero_slot_container, protected_container) =
+            flat7x_receipt_gate_metadata_for_test(metadata_inputs);
+
+        let i0_frame = match assemble_flat7x_i0_frame_candidate_from_binding(
+            &binding,
+            &numeric_plan,
+            synthetic_i0_policy(),
+            I0AudioBlockSeriesBudget::new(20_480),
+            I0AuxDataInput::Absent,
+            CallerOwnedI0CrcrsvSeed { value: false },
+        ) {
+            Ok(frame) => frame,
+            Err(Flat7xPairSourceError::I0FrameAssembly(
+                Flat7xI0FrameAssemblyError::FrameSpanMismatch {
+                    actual_bits,
+                    required_bits,
+                },
+            )) if actual_bits < required_bits => {
+                let aux_bits = required_bits - actual_bits;
+                let auxdata = vec![0_u8; usize::try_from(aux_bits.div_ceil(8)).unwrap()];
+                assemble_flat7x_i0_frame_candidate_from_binding(
+                    &binding,
+                    &numeric_plan,
+                    synthetic_i0_policy(),
+                    I0AudioBlockSeriesBudget::new(20_480),
+                    I0AuxDataInput::Present(OpaqueI0Ac3BitSpan::new(&auxdata, 0, aux_bits)),
+                    CallerOwnedI0CrcrsvSeed { value: false },
+                )
+                .unwrap()
+            }
+            other => panic!("unexpected I0 candidate result: {other:?}"),
+        };
+
+        let transform_parameters =
+            MathGeneratedTransformParameters::selected_math_generated_v1().unwrap();
+        let d0_bap_parameters = Flat7xD0BapParameters::etsi_ts_102_366_v1_4_1();
+        let d0_frame = produce_flat7x_pair_d0_pcm_frame_candidate(
+            &binding,
+            Flat7xD0PcmFrameSettings {
+                before: &Flat7xD0OverlapHistory::cold(),
+                transform_parameters: &transform_parameters,
+                target,
+                bsi_structure: synthetic_d0_bsi(),
+                complete_emdf_container: protected_container.bytes(),
+                bap_parameters: &d0_bap_parameters,
+                dynamic_range_codes: [None; 6],
+            },
+        )
+        .unwrap();
+
+        let keyless_provider = validate_keyless_provider(KEYLESS_INTEGRITY_PROVIDER).unwrap();
+        let mut integrity_owner = IntegrityProgrammeOwner::cold_from_provider_for_rate(
+            prepared.programme_id().as_str(),
+            attempt.value(),
+            5,
+            &keyless_provider,
+            jocforge_domain::profile::CodecRateProfile::Kbps1024,
+        )
+        .unwrap();
+        for suppressed_source in 0..2_u64 {
+            let suppressed_index = CodecSourceIndex::new(suppressed_source);
+            let suppressed_identity = IntegrityIdentity {
+                programme_id: prepared.programme_id().as_str().to_owned(),
+                attempt: attempt.value(),
+                transaction_id: format!("jocforge-source-{suppressed_source}"),
+                source_index: suppressed_index,
+                dispatch: suppressed_index.dispatch().unwrap(),
+                au_index: None,
+            };
+            let suppressed_callback = CallbackLineageIdentity::new(
+                prepared.programme_id().clone(),
+                attempt,
+                FrontendCallbackIndex::new(u32::try_from(suppressed_source + 2).unwrap()),
+            );
+            let suppressed_frame = vec![0_u8; 4_096];
+            integrity_owner = integrity_owner
+                .stage_f12_source_for_callback(
+                    IntegrityF12SourceInput {
+                        identity: suppressed_identity,
+                        payload: F14kPayloadInput::AbsentPublishedPayloadV1,
+                        completed_frame: F12CompletedFrameInput {
+                            frame: &suppressed_frame,
+                            emdf_container_start: None,
+                        },
+                    },
+                    &keyless_provider,
+                    prepared.programme_id(),
+                    attempt,
+                    &CallbackTransactionId::new(&format!("jocforge-source-{suppressed_source}"))
+                        .unwrap(),
+                    &suppressed_callback,
+                )
+                .unwrap()
+                .into_parts()
+                .0;
+        }
+
+        let d0_emdf_container_start = d0_frame.emdf_container_start().unwrap();
+        let f12_pair = integrity_owner
+            .stage_flat7x_i0_d0_f12_pair_for_callback(
+                Flat7xI0D0F12PairInput {
+                    identity: IntegrityIdentity {
+                        programme_id: prepared.programme_id().as_str().to_owned(),
+                        attempt: attempt.value(),
+                        transaction_id: source_transaction.to_owned(),
+                        source_index,
+                        dispatch,
+                        au_index: Some(PublishedAuIndex::new(0)),
+                    },
+                    rate_plan: Flat7xIntegrityPairRatePlan::flat7x_i0_640_d0_1024(),
+                    i0_frame: i0_frame.i0_frame().frame_bytes(),
+                    d0_frame: d0_frame.frame_candidate().frame().frame_bytes(),
+                    d0_emdf_container_start,
+                    d0_zero_slot_container: &zero_slot_container,
+                    d0_protected_container: &protected_container,
+                },
+                &keyless_provider,
+                prepared.programme_id(),
+                attempt,
+                source_identity.source_stage_key().transaction_id(),
+                &callback_lineage,
+            )
+            .unwrap();
+
+        let output_candidate = stage_flat7x_pcm_pair_for_f15(
+            &i0_frame,
+            &d0_frame,
+            Flat7xSourceGeneration::new(0),
+            &metadata,
+            &f12_pair,
+            Flat7xAuOutputOwner::cold(&attempt.value().to_string(), 1).unwrap(),
+        )
+        .unwrap();
+
+        assert_eq!(output_candidate.append_proposal().bytes().len(), 6_656);
+        assert_eq!(
+            output_candidate.append_proposal().source_identities().0,
+            &IntegrityIdentity {
+                programme_id: prepared.programme_id().as_str().to_owned(),
+                attempt: attempt.value(),
+                transaction_id: source_transaction.to_owned(),
+                source_index,
+                dispatch,
+                au_index: Some(PublishedAuIndex::new(0)),
+            }
+        );
+        assert_eq!(output_candidate.after_history(), d0_frame.after_history());
+        assert_eq!(f12_pair.owner_receipt_proposal().after_generation(), 3);
+        assert_eq!(
+            output_candidate
+                .integrity_after_owner()
+                .committed_state()
+                .generation(),
+            3
+        );
+        assert_eq!(
+            output_candidate
+                .integrity_owner_receipt()
+                .after_generation(),
+            3
+        );
+        assert!(!output_candidate.production_allowed());
     }
 
     #[test]

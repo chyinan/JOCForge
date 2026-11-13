@@ -3,12 +3,18 @@
 
 use jocforge_domain::{
     analysis::source_frame::SharedAnalysisIdentity,
+    codec::flat7x_d0_pcm_source::Flat7xD0OverlapHistory,
+    integrity::programme_owner::{
+        IntegrityGtcFlat7xF12PairProposal, IntegrityOwnerReceiptProposal, IntegrityProgrammeOwner,
+    },
     profile::{
         D0EmdfSkipFieldExtent, D0FrameExtent, Flat7xAuByteSequenceError, Flat7xAuCandidate,
         Flat7xAuPlanValidationError, Flat7xI0D0TargetPlan, I0FrameExtent,
         compose_flat7x_au_byte_sequence, validate_flat7x_au_candidate,
     },
-    publication::{Flat7xAuAttemptRetirementReason, Flat7xAuOutputOwnerError},
+    publication::{
+        Flat7xAuAttemptRetirementReason, Flat7xAuIntegrityFrameReceipt, Flat7xAuOutputOwnerError,
+    },
 };
 
 pub use jocforge_domain::profile::Flat7xSourceGeneration;
@@ -20,7 +26,8 @@ pub use jocforge_domain::publication::{
 use crate::flat7x_pair_source::Flat7xPairAccessUnitCandidate;
 
 use crate::flat7x_pair_source::{
-    Flat7xD0SourceIdentity, Flat7xPairI0FrameCandidate, d0_identity_matches_role_map,
+    Flat7xD0SourceIdentity, Flat7xPairD0PcmFrameCandidate, Flat7xPairI0FrameCandidate,
+    d0_identity_matches_role_map,
 };
 
 use jocforge_domain::{
@@ -432,6 +439,118 @@ pub fn stage_receipted_i0_with_opaque_d0<'a>(
     output_owner
         .stage_next_access_unit(sequence, receipt_input)
         .map_err(Flat7xPairAppendProposalError::OutputOwnerRetirement)
+}
+
+/// Stages one F15 proposal from the source-bound I0 and D0 PCM/frame candidates and role receipts.
+///
+/// The `Flat7xSourceGeneration` is explicit caller state. The D0 skip-field extent comes from the
+/// completed frame receipt, and the two Integrity receipts retain their typed I0/D0 roles.
+pub fn stage_flat7x_pcm_pair_for_f15<'a>(
+    i0_frame: &Flat7xPairI0FrameCandidate,
+    d0_frame: &Flat7xPairD0PcmFrameCandidate,
+    source_generation: Flat7xSourceGeneration,
+    f13_metadata: &'a jocforge_domain::joc::emdf::metadata_owner::MetadataSourceProposal,
+    f12_pair: &'a IntegrityGtcFlat7xF12PairProposal,
+    output_owner: Flat7xAuOutputOwner,
+) -> Result<Flat7xPcmPairF15Candidate<'a>, Flat7xPairAppendProposalError> {
+    if i0_frame.source_role_map_receipt() != d0_frame.source_role_map_receipt()
+        || i0_frame.source_identity()
+            != d0_frame
+                .source_role_map_receipt()
+                .shared_analysis_identity()
+    {
+        return Err(Flat7xPairAppendProposalError::PairSourceIdentityMismatch);
+    }
+    let target = Flat7xI0D0TargetPlan::approved_contract();
+    let layout = d0_frame
+        .frame_candidate()
+        .frame()
+        .receipt()
+        .frame_assembly()
+        .layout();
+    let skip = layout.block_two_skip_field();
+    let skip_target = target.d0_emdf_skip_field();
+    let skip_extent = D0EmdfSkipFieldExtent::new(
+        source_generation,
+        skip_target.zero_based_audio_block(),
+        skip_target.field_count(),
+        Some(skip.payload_bytes()),
+        skip_target.fragmentation_allowed(),
+    );
+    let d0_source_identity = d0_frame.d0_source_identity();
+    let d0_bytes = d0_frame.frame_candidate().frame().frame_bytes();
+    let opaque_d0 =
+        Flat7xOpaqueD0FrameInput::new(d0_source_identity, source_generation, d0_bytes, skip_extent);
+    let receipt_input = Flat7xAuSourceReceiptInput::new(
+        Some(f13_metadata),
+        Some(Flat7xAuIntegrityFrameReceipt::independent_i0(
+            f12_pair.receipts().i0(),
+        )),
+        Some(Flat7xAuIntegrityFrameReceipt::dependent_d0(
+            f12_pair.receipts().d0(),
+        )),
+    );
+    let append_proposal = stage_receipted_i0_with_opaque_d0(
+        i0_frame,
+        source_generation,
+        opaque_d0,
+        output_owner,
+        receipt_input,
+    )?;
+    Ok(Flat7xPcmPairF15Candidate {
+        append_proposal,
+        after_history: d0_frame.after_history().clone(),
+        source_generation,
+        f12_pair,
+    })
+}
+
+/// Whole-AU F15 proposal paired with its D0 after-history candidate.
+///
+/// The caller keeps this value pending until its durable append receipt succeeds, then installs
+/// the D0 history and Integrity after-root in the same programme replacement.
+#[must_use]
+pub struct Flat7xPcmPairF15Candidate<'a> {
+    append_proposal: Flat7xAuAppendProposal<'a>,
+    after_history: Flat7xD0OverlapHistory,
+    source_generation: Flat7xSourceGeneration,
+    f12_pair: &'a IntegrityGtcFlat7xF12PairProposal,
+}
+
+impl<'a> Flat7xPcmPairF15Candidate<'a> {
+    pub const fn append_proposal(&self) -> &Flat7xAuAppendProposal<'a> {
+        &self.append_proposal
+    }
+
+    pub const fn after_history(&self) -> &Flat7xD0OverlapHistory {
+        &self.after_history
+    }
+
+    pub const fn source_generation(&self) -> Flat7xSourceGeneration {
+        self.source_generation
+    }
+
+    pub const fn integrity_after_owner(&self) -> &IntegrityProgrammeOwner {
+        self.f12_pair.after_owner()
+    }
+
+    pub const fn integrity_owner_receipt(&self) -> &IntegrityOwnerReceiptProposal {
+        self.f12_pair.owner_receipt_proposal()
+    }
+
+    pub const fn production_allowed(&self) -> bool {
+        false
+    }
+
+    pub fn into_parts(
+        self,
+    ) -> (
+        Flat7xAuAppendProposal<'a>,
+        Flat7xD0OverlapHistory,
+        &'a IntegrityGtcFlat7xF12PairProposal,
+    ) {
+        (self.append_proposal, self.after_history, self.f12_pair)
+    }
 }
 
 /// Expected F15 output identity and extents supplied by the output-stage caller.

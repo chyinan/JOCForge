@@ -2001,3 +2001,9 @@ The application candidate is not yet joined to the actual F13 metadata source or
 ## 2026-11-14 source-map package scope
 
 Registered Wash package `JOCFORGE-MAIN-ISOLATED-7.1-SOURCE-MAP-WASH-V1` (manifest `1c66063cd651daa8c7b0fc1b205db4d9521a54ca33b645e711ebd13989a3dd58`). Its locally verified reusable shape is typed role separation plus I0-before-D0 pair composition. The map explicitly leaves the production CLI caller and pair append unconnected; isolated audio/rate implementation continues from Wash contracts and local code only.
+
+## 2026-11-14 source-bound F15 pair candidate
+
+`stage_flat7x_pcm_pair_for_f15` now joins source-bound I0/D0 frame candidates with the role-aware F12 pair proposal, one F13 metadata proposal and an explicit source-generation label. It returns one 6,656-byte I0→D0 append proposal with the D0 `after_history` candidate and matching Integrity after-root/owner receipt accessible for a later parent swap. No state installation or I/O occurs in this candidate stage. One focused application integration test passed.
+
+The remaining connection is the production callback's source-indexed PCM/extent input and actual F13/F12 candidate feed, followed by durable F15 append and one parent swap of Integrity/history. Cached-drain mapping and EOF valid/padded extents remain UNBOUND; CLI route and real output remain closed.
