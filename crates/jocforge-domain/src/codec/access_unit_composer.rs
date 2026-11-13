@@ -5,7 +5,8 @@ use super::{
     bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError},
     d0_frame_assembler::{
         D0_TARGET_FRAME_BYTES, Flat7xD0FrameAssemblyError, Flat7xD0FrameAssemblyReceipt,
-        Flat7xD0FrameBitInput, assemble_flat7x_d0_frame_bits,
+        Flat7xD0FrameBitInput, Flat7xD0FrameTailPolicy, assemble_flat7x_d0_frame_bits,
+        assemble_flat7x_d0_frame_bits_with_tail_policy,
     },
     frame_builder::Flat7xD0BsiStructure,
     i0_frame_assembler::Flat7xI0Ac3AudioSeriesFrameCandidate,
@@ -182,6 +183,46 @@ pub fn assemble_flat7x_i0_d0_au_candidate(
     d0_bsi: Flat7xD0BsiStructure<'_>,
     d0_audio_blocks: Flat7xD0FrameBitInput<'_>,
 ) -> Result<Flat7xI0D0AuCandidate, Flat7xI0D0AuCandidateError> {
+    assemble_flat7x_i0_d0_au_candidate_inner(
+        target,
+        expected_source_identity,
+        i0_frame,
+        d0_bsi,
+        &d0_audio_blocks,
+        None,
+    )
+}
+
+/// Builds an in-memory I0→D0 AU candidate using a typed D0 frame-tail policy.
+///
+/// The selected policy emits `auxdatae=0` and zero-fills the unused frame-level auxbits after the
+/// six audio blocks and before generated D0 CRC2.
+pub fn assemble_flat7x_i0_d0_au_candidate_with_tail_policy(
+    target: Flat7xI0D0TargetPlan,
+    expected_source_identity: &SharedAnalysisIdentity,
+    i0_frame: Flat7xI0Ac3AudioSeriesFrameCandidate,
+    d0_bsi: Flat7xD0BsiStructure<'_>,
+    d0_audio_blocks: Flat7xD0FrameBitInput<'_>,
+    d0_frame_tail_policy: Flat7xD0FrameTailPolicy,
+) -> Result<Flat7xI0D0AuCandidate, Flat7xI0D0AuCandidateError> {
+    assemble_flat7x_i0_d0_au_candidate_inner(
+        target,
+        expected_source_identity,
+        i0_frame,
+        d0_bsi,
+        &d0_audio_blocks,
+        Some(d0_frame_tail_policy),
+    )
+}
+
+fn assemble_flat7x_i0_d0_au_candidate_inner(
+    target: Flat7xI0D0TargetPlan,
+    expected_source_identity: &SharedAnalysisIdentity,
+    i0_frame: Flat7xI0Ac3AudioSeriesFrameCandidate,
+    d0_bsi: Flat7xD0BsiStructure<'_>,
+    d0_audio_blocks: &Flat7xD0FrameBitInput<'_>,
+    d0_frame_tail_policy: Option<Flat7xD0FrameTailPolicy>,
+) -> Result<Flat7xI0D0AuCandidate, Flat7xI0D0AuCandidateError> {
     if target != Flat7xI0D0TargetPlan::approved_contract() || i0_frame.target() != target {
         return Err(Flat7xI0D0AuCandidateError::UnsupportedTargetContext);
     }
@@ -192,8 +233,17 @@ pub fn assemble_flat7x_i0_d0_au_candidate(
     let mut d0_frame_bytes = [0_u8; D0_TARGET_FRAME_BYTES];
     let d0_frame_receipt = {
         let mut d0_writer = FrameBitWriter::new(&mut d0_frame_bytes, FrameBitCursor::new(0))?;
-        assemble_flat7x_d0_frame_bits(target, d0_bsi, d0_audio_blocks, &mut d0_writer)
-            .map_err(Flat7xI0D0AuCandidateError::D0FrameAssembly)?
+        match d0_frame_tail_policy {
+            Some(policy) => assemble_flat7x_d0_frame_bits_with_tail_policy(
+                target,
+                d0_bsi,
+                *d0_audio_blocks,
+                policy,
+                &mut d0_writer,
+            ),
+            None => assemble_flat7x_d0_frame_bits(target, d0_bsi, *d0_audio_blocks, &mut d0_writer),
+        }
+        .map_err(Flat7xI0D0AuCandidateError::D0FrameAssembly)?
     };
 
     let d0_skip_target = target.d0_emdf_skip_field();

@@ -75,6 +75,42 @@ pub struct Flat7xD0FrameBitInput<'a> {
     pub audio_blocks: [D0FrameAudioBlockInput<'a>; D0_AUDIO_BLOCK_COUNT],
 }
 
+/// Opaque caller-owned frame-level aux-data syntax located after all six `audblk`s and before CRC2.
+///
+/// The span includes the caller's `auxdatae`/`auxbits` representation. This type assigns no
+/// default value and does not parse the frame-level tail.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct OpaqueD0FrameAuxDataSpan<'a> {
+    bytes: &'a [u8],
+    source_start_bit: u32,
+    bit_length: u32,
+}
+
+impl<'a> OpaqueD0FrameAuxDataSpan<'a> {
+    pub const fn new(bytes: &'a [u8], source_start_bit: u32, bit_length: u32) -> Self {
+        Self {
+            bytes,
+            source_start_bit,
+            bit_length,
+        }
+    }
+
+    pub const fn source_start_bit(self) -> u32 {
+        self.source_start_bit
+    }
+
+    pub const fn bit_length(self) -> u32 {
+        self.bit_length
+    }
+}
+
+/// The selected D0 frame-tail policy for unused frame-level aux-data capacity.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Flat7xD0FrameTailPolicy {
+    /// Emit `auxdatae=0`, then zero-fill the remaining frame-level auxbits before CRC2.
+    ZeroFillUnusedAuxBits,
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct D0Crc2BitSpan {
     start_bit: u32,
@@ -118,6 +154,9 @@ impl D0Crc2IntegrityReceipt {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Flat7xD0FrameAssemblyReceipt {
     layout: Flat7xD0SixBlockLayout,
+    frame_aux_data_span: D0FrameBitSpan,
+    frame_tail_policy: Option<Flat7xD0FrameTailPolicy>,
+    zero_filled_auxbits: u32,
     crc2_span: D0Crc2BitSpan,
     crc2_integrity: D0Crc2IntegrityReceipt,
 }
@@ -125,6 +164,25 @@ pub struct Flat7xD0FrameAssemblyReceipt {
 impl Flat7xD0FrameAssemblyReceipt {
     pub const fn layout(self) -> Flat7xD0SixBlockLayout {
         self.layout
+    }
+
+    pub const fn frame_aux_data_span(self) -> D0FrameBitSpan {
+        self.frame_aux_data_span
+    }
+
+    pub const fn frame_tail_policy(self) -> Option<Flat7xD0FrameTailPolicy> {
+        self.frame_tail_policy
+    }
+
+    pub const fn auxdatae_value(self) -> Option<bool> {
+        match self.frame_tail_policy {
+            Some(Flat7xD0FrameTailPolicy::ZeroFillUnusedAuxBits) => Some(false),
+            None => None,
+        }
+    }
+
+    pub const fn zero_filled_auxbits(self) -> u32 {
+        self.zero_filled_auxbits
     }
 
     pub const fn crc2_span(self) -> D0Crc2BitSpan {
@@ -169,6 +227,14 @@ pub enum Flat7xD0FrameAssemblyError {
         block_index: u8,
         required_end_bit: u32,
         available_source_bits: u64,
+    },
+    FrameAuxDataSourceSpanOverflow,
+    FrameAuxDataSourceSpanOutOfBounds {
+        required_end_bit: u32,
+        available_source_bits: u64,
+    },
+    FrameTailNoSpace {
+        available_bits: u32,
     },
     FrameSpanMismatch {
         actual_bits: u32,
@@ -222,6 +288,60 @@ pub fn assemble_flat7x_d0_frame_bits(
     target: Flat7xI0D0TargetPlan,
     bsi_structure: Flat7xD0BsiStructure<'_>,
     input: Flat7xD0FrameBitInput<'_>,
+    writer: &mut FrameBitWriter<'_>,
+) -> Result<Flat7xD0FrameAssemblyReceipt, Flat7xD0FrameAssemblyError> {
+    assemble_flat7x_d0_frame_bits_inner(target, bsi_structure, &input, None, None, writer)
+}
+
+/// Assembles the selected D0 frame with a typed, zero-filled frame-level aux-data tail.
+///
+/// The writer places a zero-valued `auxdatae` bit after all six audio blocks, fills each remaining
+/// bit before CRC2 with zero, and keeps CRC2 at the final 16 bits of the frame.
+pub fn assemble_flat7x_d0_frame_bits_with_tail_policy(
+    target: Flat7xI0D0TargetPlan,
+    bsi_structure: Flat7xD0BsiStructure<'_>,
+    input: Flat7xD0FrameBitInput<'_>,
+    tail_policy: Flat7xD0FrameTailPolicy,
+    writer: &mut FrameBitWriter<'_>,
+) -> Result<Flat7xD0FrameAssemblyReceipt, Flat7xD0FrameAssemblyError> {
+    assemble_flat7x_d0_frame_bits_inner(
+        target,
+        bsi_structure,
+        &input,
+        None,
+        Some(tail_policy),
+        writer,
+    )
+}
+
+/// Assembles a D0 frame with a caller-owned frame-level aux-data tail.
+///
+/// The complete opaque tail is placed after the six ordered audio blocks and before generated
+/// CRC2. The caller supplies all encoded bits, including any presence/padding fields.
+#[cfg(feature = "test-support")]
+pub fn assemble_flat7x_d0_frame_bits_with_aux_data(
+    target: Flat7xI0D0TargetPlan,
+    bsi_structure: Flat7xD0BsiStructure<'_>,
+    input: Flat7xD0FrameBitInput<'_>,
+    frame_aux_data: OpaqueD0FrameAuxDataSpan<'_>,
+    writer: &mut FrameBitWriter<'_>,
+) -> Result<Flat7xD0FrameAssemblyReceipt, Flat7xD0FrameAssemblyError> {
+    assemble_flat7x_d0_frame_bits_inner(
+        target,
+        bsi_structure,
+        &input,
+        Some(frame_aux_data),
+        None,
+        writer,
+    )
+}
+
+fn assemble_flat7x_d0_frame_bits_inner(
+    target: Flat7xI0D0TargetPlan,
+    bsi_structure: Flat7xD0BsiStructure<'_>,
+    input: &Flat7xD0FrameBitInput<'_>,
+    frame_aux_data: Option<OpaqueD0FrameAuxDataSpan<'_>>,
+    frame_tail_policy: Option<Flat7xD0FrameTailPolicy>,
     writer: &mut FrameBitWriter<'_>,
 ) -> Result<Flat7xD0FrameAssemblyReceipt, Flat7xD0FrameAssemblyError> {
     let actual_cursor = writer.cursor().bit_offset();
@@ -298,6 +418,9 @@ pub fn assemble_flat7x_d0_frame_bits(
         }),
     };
     let layout = propose_flat7x_d0_six_block_layout(target, bsi_structure, layout_input)?;
+    if let Some(frame_aux_data) = frame_aux_data {
+        validate_frame_aux_data_source_span(frame_aux_data)?;
+    }
     let frame_bytes = target.d0().frame_bytes();
     let required_frame_bits = u32::from(frame_bytes).checked_mul(8).ok_or(
         Flat7xD0FrameAssemblyError::FrameSpanMismatch {
@@ -305,13 +428,39 @@ pub fn assemble_flat7x_d0_frame_bits(
             required_bits: D0_TARGET_FRAME_BITS,
         },
     )?;
-    let full_span_bits = layout
-        .total_frame_span_bits()
-        .checked_add(D0_CRC2_FIELD_BITS)
-        .ok_or(Flat7xD0FrameAssemblyError::FrameSpanMismatch {
-            actual_bits: layout.total_frame_span_bits(),
+    let required_crc2_start_bit = required_frame_bits.checked_sub(D0_CRC2_FIELD_BITS).ok_or(
+        Flat7xD0FrameAssemblyError::FrameSpanMismatch {
+            actual_bits: required_frame_bits,
+            required_bits: D0_CRC2_FIELD_BITS,
+        },
+    )?;
+    let (frame_aux_data_bits, crc2_start_bit, zero_filled_auxbits) =
+        if let Some(Flat7xD0FrameTailPolicy::ZeroFillUnusedAuxBits) = frame_tail_policy {
+            let available_bits = required_crc2_start_bit
+                .checked_sub(layout.total_frame_span_bits())
+                .ok_or(Flat7xD0FrameAssemblyError::FrameTailNoSpace { available_bits: 0 })?;
+            if available_bits == 0 {
+                return Err(Flat7xD0FrameAssemblyError::FrameTailNoSpace { available_bits });
+            }
+            (available_bits, required_crc2_start_bit, available_bits - 1)
+        } else {
+            let frame_aux_data_bits =
+                frame_aux_data.map_or(0, OpaqueD0FrameAuxDataSpan::bit_length);
+            let crc2_start_bit = layout
+                .total_frame_span_bits()
+                .checked_add(frame_aux_data_bits)
+                .ok_or(Flat7xD0FrameAssemblyError::FrameSpanMismatch {
+                    actual_bits: layout.total_frame_span_bits(),
+                    required_bits: required_frame_bits,
+                })?;
+            (frame_aux_data_bits, crc2_start_bit, 0)
+        };
+    let full_span_bits = crc2_start_bit.checked_add(D0_CRC2_FIELD_BITS).ok_or(
+        Flat7xD0FrameAssemblyError::FrameSpanMismatch {
+            actual_bits: crc2_start_bit,
             required_bits: required_frame_bits,
-        })?;
+        },
+    )?;
     if required_frame_bits != D0_TARGET_FRAME_BITS || full_span_bits != required_frame_bits {
         return Err(Flat7xD0FrameAssemblyError::FrameSpanMismatch {
             actual_bits: full_span_bits,
@@ -395,7 +544,14 @@ pub fn assemble_flat7x_d0_frame_bits(
         }
     }
 
-    let crc2_start_bit = layout.total_frame_span_bits();
+    let frame_aux_data_span =
+        D0FrameBitSpan::new(layout.total_frame_span_bits(), frame_aux_data_bits);
+    if frame_tail_policy.is_some() {
+        write_zero_filled_frame_tail(&mut staging, frame_aux_data_span)?;
+    } else if let Some(frame_aux_data) = frame_aux_data {
+        copy_opaque_frame_aux_data(&mut staging, frame_aux_data_span, frame_aux_data)?;
+    }
+
     if crc2_start_bit % 8 != 0 {
         return Err(Flat7xD0FrameAssemblyError::Crc2FieldNotByteAligned {
             start_bit: crc2_start_bit,
@@ -443,6 +599,9 @@ pub fn assemble_flat7x_d0_frame_bits(
     writer.write_bytes(&staging)?;
     Ok(Flat7xD0FrameAssemblyReceipt {
         layout,
+        frame_aux_data_span,
+        frame_tail_policy,
+        zero_filled_auxbits,
         crc2_span: D0Crc2BitSpan {
             start_bit: crc2_start_bit,
         },
@@ -451,6 +610,17 @@ pub fn assemble_flat7x_d0_frame_bits(
             verified_residual,
         },
     })
+}
+
+fn write_zero_filled_frame_tail(
+    output: &mut [u8],
+    span: D0FrameBitSpan,
+) -> Result<(), Flat7xD0FrameAssemblyError> {
+    let mut writer = FrameBitWriter::new(output, FrameBitCursor::new(span.start_bit()))?;
+    for _ in 0..span.bit_length() {
+        writer.write_bit(false)?;
+    }
+    Ok(())
 }
 
 fn validate_source_span(
@@ -470,6 +640,27 @@ fn validate_source_span(
             required_end_bit,
             available_source_bits,
         });
+    }
+    Ok(())
+}
+
+fn validate_frame_aux_data_source_span(
+    span: OpaqueD0FrameAuxDataSpan<'_>,
+) -> Result<(), Flat7xD0FrameAssemblyError> {
+    let required_end_bit = span
+        .source_start_bit()
+        .checked_add(span.bit_length())
+        .ok_or(Flat7xD0FrameAssemblyError::FrameAuxDataSourceSpanOverflow)?;
+    let available_source_bits = u64::try_from(span.bytes.len())
+        .unwrap_or(u64::MAX)
+        .saturating_mul(8);
+    if u64::from(required_end_bit) > available_source_bits {
+        return Err(
+            Flat7xD0FrameAssemblyError::FrameAuxDataSourceSpanOutOfBounds {
+                required_end_bit,
+                available_source_bits,
+            },
+        );
     }
     Ok(())
 }
@@ -496,6 +687,34 @@ fn copy_opaque_audio_span(
             .ok_or(Flat7xD0FrameAssemblyError::SourceSpanOverflow { block_index })?;
         let source_byte = usize::try_from(source_bit / 8)
             .map_err(|_| Flat7xD0FrameAssemblyError::SourceSpanOverflow { block_index })?;
+        let shift = 7 - source_bit % 8;
+        let value = source.bytes[source_byte] & (1_u8 << shift) != 0;
+        writer.write_bit(value)?;
+    }
+    Ok(())
+}
+
+fn copy_opaque_frame_aux_data(
+    output: &mut [u8],
+    destination: D0FrameBitSpan,
+    source: OpaqueD0FrameAuxDataSpan<'_>,
+) -> Result<(), Flat7xD0FrameAssemblyError> {
+    if destination.bit_length() != source.bit_length() {
+        return Err(Flat7xD0FrameAssemblyError::FrameSpanMismatch {
+            actual_bits: source.bit_length(),
+            required_bits: destination.bit_length(),
+        });
+    }
+    validate_frame_aux_data_source_span(source)?;
+    let mut writer = FrameBitWriter::new(output, FrameBitCursor::new(destination.start_bit()))?;
+    writer.preflight_capacity(destination.bit_length())?;
+    for offset in 0..source.bit_length() {
+        let source_bit = source
+            .source_start_bit()
+            .checked_add(offset)
+            .ok_or(Flat7xD0FrameAssemblyError::FrameAuxDataSourceSpanOverflow)?;
+        let source_byte = usize::try_from(source_bit / 8)
+            .map_err(|_| Flat7xD0FrameAssemblyError::FrameAuxDataSourceSpanOverflow)?;
         let shift = 7 - source_bit % 8;
         let value = source.bytes[source_byte] & (1_u8 << shift) != 0;
         writer.write_bit(value)?;

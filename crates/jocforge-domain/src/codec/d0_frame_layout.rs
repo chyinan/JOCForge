@@ -78,7 +78,7 @@ pub struct D0FrameBitSpan {
 }
 
 impl D0FrameBitSpan {
-    const fn new(start_bit: u32, bit_length: u32) -> Self {
+    pub(super) const fn new(start_bit: u32, bit_length: u32) -> Self {
         Self {
             start_bit,
             bit_length,

@@ -1,0 +1,35 @@
+{
+  "schema": "wash-flat7x-d0-encoder-policy-manifest.v1",
+  "package_id": "FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1",
+  "status": "PROVISIONAL_IMPLEMENTATION_CONTRACT",
+  "base_isolated_commit": "1099a56115e659415ef2dcc1d373046b1bd33fdf",
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "sha256": "88353047205d0edbaba369fc7ea9d9d1535ccdd316d4e682decdce164856d387"
+    },
+    {
+      "path": "POLICY.json",
+      "sha256": "665c7d3b585058b203e1f0a4b76d2725e7bacb4c1a80443c7b548890de0012fd"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "sha256": "087ab39d07807aee179e5157ee10f408a1a0f16c54a4430c2d1b024a40af62c8"
+    },
+    {
+      "path": "SOURCE-REFERENCES.json",
+      "sha256": "af7e5096ba884ddced86e8717f9fbb14c77d571649ecb728dd2d2051eac5220a"
+    },
+    {
+      "path": "CHECK.py",
+      "sha256": "50e72095b8ccc31de57240fa0e04f01d0f89ac23181f43693f3fd2a82421820a"
+    },
+    {
+      "path": "build_seal.py",
+      "sha256": "30690702286689e46603347c6f8772727ce03ce05fd727c03157c8ea9f983037"
+    }
+  ],
+  "source_references_sha256": "af7e5096ba884ddced86e8717f9fbb14c77d571649ecb728dd2d2051eac5220a",
+  "execution_status": "NOT_RUN",
+  "production_allowed": false
+}

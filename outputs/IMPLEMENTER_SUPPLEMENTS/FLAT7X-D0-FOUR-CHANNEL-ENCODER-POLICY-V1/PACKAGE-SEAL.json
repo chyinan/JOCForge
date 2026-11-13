@@ -1,0 +1,15 @@
+{
+  "schema": "wash-flat7x-d0-encoder-policy-seal.v1",
+  "package_id": "FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1",
+  "manifest_sha256": "689d5e4f3b27fd79110f6fb99189d4407384424929b3a74d20ba3447698f545b",
+  "files": {
+    "build_seal.py": "30690702286689e46603347c6f8772727ce03ce05fd727c03157c8ea9f983037",
+    "CHECK.py": "50e72095b8ccc31de57240fa0e04f01d0f89ac23181f43693f3fd2a82421820a",
+    "CONTRACT.md": "88353047205d0edbaba369fc7ea9d9d1535ccdd316d4e682decdce164856d387",
+    "INPUT-ONLY-VECTORS.json": "087ab39d07807aee179e5157ee10f408a1a0f16c54a4430c2d1b024a40af62c8",
+    "MANIFEST.json": "689d5e4f3b27fd79110f6fb99189d4407384424929b3a74d20ba3447698f545b",
+    "POLICY.json": "665c7d3b585058b203e1f0a4b76d2725e7bacb4c1a80443c7b548890de0012fd",
+    "SOURCE-REFERENCES.json": "af7e5096ba884ddced86e8717f9fbb14c77d571649ecb728dd2d2051eac5220a"
+  },
+  "seal_excluded_from_its_own_hash_list": true
+}

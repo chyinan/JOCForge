@@ -1,0 +1,203 @@
+{
+  "schema": "jocforge-flat7x-d0-audio-policy.v1",
+  "package_id": "FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1",
+  "authority": "USER_AUTHORIZED_INCREMENTAL_IMPLEMENTATION_WITH_ETSI_CONSTRAINED_POLICY",
+  "base_isolated_commit": "1099a56115e659415ef2dcc1d373046b1bd33fdf",
+  "target": {
+    "profile_id": "atmos71_flat7x_i0_640_d0_1024_v1",
+    "substream_role": "DependentD0",
+    "substream_id": 0,
+    "sample_rate_hz": 48000,
+    "acmod": 5,
+    "lfeon": false,
+    "chanmap": "0x1A00",
+    "coded_channel_locations": [
+      "Ls",
+      "Rs",
+      "Lrs",
+      "Rrs"
+    ],
+    "samples_per_frame": 1536,
+    "audio_block_count": 6,
+    "samples_per_block": 256,
+    "frame_bytes": 4096,
+    "frmsiz": 2047,
+    "bitrate_kbps": 1024,
+    "joc_reconstruction_carriers": [
+      "L",
+      "R",
+      "C",
+      "Ls",
+      "Rs",
+      "Lrs",
+      "Rrs"
+    ],
+    "joc_reconstruction_profile": "flat7x/index1"
+  },
+  "source_projection": {
+    "status": "PROVISIONAL_REPLACEABLE",
+    "owner": "current Flat7xSourceRoleMapReceipt",
+    "rule": "read the four D0 coded rows by semantic role; do not derive them from ADM row ordinal",
+    "channel_domains_are_separate": [
+      "ADM physical rows",
+      "D0 chanmap locations",
+      "JOC reconstruction carriers"
+    ]
+  },
+  "encoder_policy": {
+    "transform": {
+      "window_source": "ETSI TS 102 366 Table 6.33",
+      "mode": "long_only",
+      "blkswe": 0,
+      "samples_per_window": 512,
+      "history_samples_per_channel": 256,
+      "new_samples_per_block": 256,
+      "block_switching": false
+    },
+    "channel_tools": {
+      "coupling": false,
+      "ahte": false,
+      "spectral_extension": false,
+      "transient_pre_noise": false
+    },
+    "exponent": {
+      "expstre": 1,
+      "chexpstr_code": 1,
+      "strategy": "D15",
+      "strategy_each_block_each_channel": true,
+      "chbwcod": 60,
+      "endmant": 253,
+      "differential_exponents_per_channel_block": 252,
+      "u7_groups_per_channel_block": 84,
+      "u4_seed_bits": 4,
+      "u7_group_bits": 7,
+      "u7_mapping": "25*(d0+2)+5*(d1+2)+(d2+2)"
+    },
+    "bit_allocation": {
+      "method": "ETSI TS 102 366 V1.4.1 Clause 6.2",
+      "channels_share_frame_bit_pool": true,
+      "bamode": 0,
+      "default_parameters": {
+        "sdcycod": 2,
+        "fdcycod": 1,
+        "sgaincod": 1,
+        "dbpbcod": 2,
+        "floorcod": 7
+      },
+      "snroffststr": 0,
+      "snr_strategy": "strategy 1",
+      "frmcsnroffst": 0,
+      "frmfsnroffst": 0,
+      "target_frame_overflow": "reject complete D0 candidate before F12/F15",
+      "d0_provider": {
+        "profile": "FLAT7X_D0_FBW253_4CH_NO_LFE_V1",
+        "channels": 4,
+        "active_bins_per_channel": 253,
+        "lfe_bins": 0,
+        "source": "ETSI TS 102 366 V1.4.1 Clause 6.2.3 and Tables 6.6-6.12, 6.14-6.16",
+        "reuse_existing_fbw217_lfe7_provider": false,
+        "compatibility_action": "add D0-only typed provider; leave selected 5.1 provider unchanged"
+      }
+    },
+    "mantissa": {
+      "method": "ETSI TS 102 366 V1.4.1 Clause 6.3",
+      "b1_group_count": 3,
+      "b1_group_bits": 5,
+      "b2_group_count": 3,
+      "b2_group_bits": 7,
+      "b4_group_count": 2,
+      "b4_group_bits": 7,
+      "b3_valid_codes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "b3_code_7": "REJECT",
+      "bap0_dithflag": 0,
+      "dither_enabled": false,
+      "grouped_values_may_cross_exponent_sets": true,
+      "final_partial_group": "pad with decoder-ignored dummy mantissas per ETSI"
+    },
+    "per_frame_fields": {
+      "dithflage": 1,
+      "dithflag_all_blocks_channels": 0,
+      "frmfgaincode": 0,
+      "dbaflde": 0,
+      "skipflde": 1,
+      "spxattene": 0
+    },
+    "gainrng": {
+      "policy": "derive from maximum absolute value in each 512-sample analysis window using ETSI Table 6.33a",
+      "fallback_if_not_measured": 0
+    },
+    "frame_tail": {
+      "auxdatae": 0,
+      "unused_auxbits": "zero",
+      "placement": "frame-level after all six audblk and the block-2 skipfld, before CRC2",
+      "do_not_append_to_block5_mantissa": true
+    },
+    "emdf": {
+      "producer": "existing F13 MetadataSourceProposal",
+      "carrier_block_zero_based": 2,
+      "skip_fields_in_frame": 1,
+      "container_length_bytes_min": 1,
+      "container_length_bytes_max": 511,
+      "overflow": "fail closed before AU append",
+      "fragmentation": false,
+      "vendor_and_etsi_validation": "report separately using existing disposition contract"
+    },
+    "drc_bsi": {
+      "source": "same-source F06ND/F12 receipt",
+      "fallback": "typed missing-receipt error",
+      "independent_hardcoded_d0_value": false
+    }
+  },
+  "state_and_receipts": {
+    "state_owner": "new Flat7xD0EncoderState",
+    "state_scope": "programme+attempt+source identity+Flat7xSourceGeneration",
+    "per_channel_history_samples": 256,
+    "cold_start_seed": "zero",
+    "reset_on": [
+      "seek",
+      "source-discontinuity",
+      "sample-rate-change",
+      "role-map-change",
+      "attempt-retirement"
+    ],
+    "state_commit_point": "after durable atomic F15 I0+D0 append",
+    "f12_receipt": "IntegrityF12SourceReceipts bound to one role-tagged D0 frame",
+    "f13_receipt": "MetadataSourceProposal from current F13 owner",
+    "f15_receipt": "Flat7xAuSourceReceiptInput requiring F13+I0+D0 integrity receipts",
+    "do_not_merge_generation_domains": [
+      "SharedAnalysisIdentity",
+      "analysis_generation",
+      "Flat7xSourceGeneration",
+      "F12 generation",
+      "F13 owner generation"
+    ]
+  },
+  "eof_policy": {
+    "full_frame_samples": 1536,
+    "partial_final_frame": "zero-pad to 1536",
+    "zero_valid_samples": "do not emit another AU",
+    "receipt_fields": [
+      "valid_samples",
+      "padded_samples"
+    ],
+    "raw_ec3_tail": "decoded duration includes the padded samples; no sample-accurate trim claim",
+    "pair_receipt_rule": "I0 and D0 valid_samples/padded_samples must match; mismatch rejects complete AU before F15; no I0-only publication"
+  },
+  "contract_status": "PROVISIONAL_IMPLEMENTATION_CONTRACT",
+  "implementation_status": {
+    "code_implemented": false,
+    "input_only_vectors": "NOT_EXECUTED",
+    "dee_run": "NOT_RUN",
+    "encoder_run": "NOT_RUN",
+    "ec3_output": "NOT_RUN",
+    "production_allowed": false
+  }
+}

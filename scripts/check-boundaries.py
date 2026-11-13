@@ -13276,9 +13276,11 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         "pub struct Flat7xPairAccessUnitCandidate" in app
         and "pub fn assemble_flat7x_pair_access_unit_candidate(" in app
         and "d0_identity_matches_role_map(" in app
-        and "assemble_flat7x_i0_d0_au_candidate(" in app
+        and "assemble_flat7x_i0_d0_au_candidate_with_tail_policy(" in app
         and "pub fn assemble_flat7x_i0_d0_au_candidate(" in composer
+        and "pub fn assemble_flat7x_i0_d0_au_candidate_with_tail_policy(" in composer
         and "assemble_flat7x_d0_frame_bits(" in composer
+        and "assemble_flat7x_d0_frame_bits_with_tail_policy(" in composer
         and "write_flat7x_i0_d0_access_unit_bytes(" in composer
         and "D0FrameAudioBlockInput" in d0_assembler
         and "D0_BLOCK_TWO_INDEX: usize = 2" in d0_assembler

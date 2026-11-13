@@ -10,8 +10,9 @@ use jocforge_domain::{
         bitio::{FrameBitCursor, FrameBitWriter},
         d0_frame_assembler::{
             D0Block2SkipFieldInput, D0BlockTwoAudioSpans, D0FrameAudioBlockInput,
-            Flat7xD0FrameAssemblyError, Flat7xD0FrameBitInput, OpaqueD0AudioBitSpan,
-            assemble_flat7x_d0_frame_bits,
+            Flat7xD0FrameAssemblyError, Flat7xD0FrameBitInput, Flat7xD0FrameTailPolicy,
+            OpaqueD0AudioBitSpan, assemble_flat7x_d0_frame_bits,
+            assemble_flat7x_d0_frame_bits_with_tail_policy,
         },
         d0_frame_layout::{CallerOwnedUnboundD0Block2InsertionPoint, D0SixBlockLayoutError},
         elementary_stream_composer::{
@@ -23,6 +24,11 @@ use jocforge_domain::{
     profile::Flat7xI0D0TargetPlan,
 };
 use serde_json::Value;
+
+#[cfg(feature = "test-support")]
+use jocforge_domain::codec::d0_frame_assembler::{
+    OpaqueD0FrameAuxDataSpan, assemble_flat7x_d0_frame_bits_with_aux_data,
+};
 
 const FRAME_VECTORS: &str =
     include_str!("fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json");
@@ -298,6 +304,212 @@ fn synthetic_assembler_copies_opaque_spans_and_generates_crc2_for_exact_target_e
         0,
         lengths[5],
     );
+}
+
+#[cfg(feature = "test-support")]
+#[test]
+fn frame_level_aux_data_follows_block_five_and_precedes_crc2() {
+    let case = frame_case();
+    let data = synthetic_frame_data(&case);
+    let original_lengths = bit_lengths(&case);
+    assert!(original_lengths[5] >= 8);
+    let mut block_lengths = original_lengths;
+    block_lengths[5] -= 8;
+    let insertion_offset = case["block_two_insertion_offset_bits"].as_u64().unwrap() as u32;
+    let skipfield_fields = [D0Block2SkipFieldInput {
+        insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(insertion_offset),
+        complete_emdf_container: &data.skipfield_container,
+    }];
+    let input = frame_input(
+        &data,
+        block_lengths,
+        [0; 6],
+        insertion_offset,
+        &skipfield_fields,
+        2,
+    );
+    let tail = OpaqueD0FrameAuxDataSpan::new(&data.audio_blocks[5], original_lengths[5] - 8, 8);
+    let mut output = vec![0xa5; 4096];
+    let receipt;
+    let cursor;
+    {
+        let mut writer = FrameBitWriter::new(&mut output, FrameBitCursor::new(0)).unwrap();
+        receipt = assemble_flat7x_d0_frame_bits_with_aux_data(
+            Flat7xI0D0TargetPlan::approved_contract(),
+            baseline_bsi_structure(),
+            input,
+            tail,
+            &mut writer,
+        )
+        .unwrap();
+        cursor = writer.cursor().bit_offset();
+    }
+
+    let frame_tail = receipt.frame_aux_data_span();
+    assert_eq!(
+        frame_tail.start_bit(),
+        receipt.layout().total_frame_span_bits()
+    );
+    assert_eq!(frame_tail.bit_length(), 8);
+    assert_eq!(receipt.crc2_span().start_bit(), frame_tail.end_bit());
+    assert_eq!(cursor, 32_768);
+    assert_span_copied(
+        &output,
+        frame_tail.start_bit(),
+        &data.audio_blocks[5],
+        original_lengths[5] - 8,
+        8,
+    );
+    assert_eq!(eac3_crc16(&output[2..]), 0);
+    assert!(!receipt.production_allowed());
+}
+
+#[cfg(feature = "test-support")]
+#[test]
+fn invalid_frame_aux_data_source_span_rejects_before_mutation() {
+    let case = frame_case();
+    let data = synthetic_frame_data(&case);
+    let lengths = bit_lengths(&case);
+    let insertion_offset = case["block_two_insertion_offset_bits"].as_u64().unwrap() as u32;
+    let skipfield_fields = [D0Block2SkipFieldInput {
+        insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(insertion_offset),
+        complete_emdf_container: &data.skipfield_container,
+    }];
+    let input = frame_input(
+        &data,
+        lengths,
+        [0; 6],
+        insertion_offset,
+        &skipfield_fields,
+        2,
+    );
+    let invalid_tail = [0_u8; 1];
+    let aux_data = OpaqueD0FrameAuxDataSpan::new(&invalid_tail, 0, 9);
+    let mut output = vec![0xa5; 4096];
+    let before = output.clone();
+    let result;
+    let cursor;
+    {
+        let mut writer = FrameBitWriter::new(&mut output, FrameBitCursor::new(0)).unwrap();
+        result = assemble_flat7x_d0_frame_bits_with_aux_data(
+            Flat7xI0D0TargetPlan::approved_contract(),
+            baseline_bsi_structure(),
+            input,
+            aux_data,
+            &mut writer,
+        );
+        cursor = writer.cursor().bit_offset();
+    }
+
+    assert!(matches!(
+        result,
+        Err(
+            Flat7xD0FrameAssemblyError::FrameAuxDataSourceSpanOutOfBounds {
+                required_end_bit: 9,
+                available_source_bits: 8,
+            }
+        )
+    ));
+    assert_eq!(cursor, 0);
+    assert_eq!(output, before);
+}
+
+#[test]
+fn typed_frame_tail_policy_sets_auxdatae_zero_and_zero_fills_remaining_bits() {
+    let case = frame_case();
+    let data = synthetic_frame_data(&case);
+    let mut lengths = bit_lengths(&case);
+    lengths[5] -= 8;
+    let insertion_offset = case["block_two_insertion_offset_bits"].as_u64().unwrap() as u32;
+    let skipfield_fields = [D0Block2SkipFieldInput {
+        insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(insertion_offset),
+        complete_emdf_container: &data.skipfield_container,
+    }];
+    let input = frame_input(
+        &data,
+        lengths,
+        [0; 6],
+        insertion_offset,
+        &skipfield_fields,
+        2,
+    );
+    let mut output = vec![0xa5; 4096];
+    let receipt;
+    let cursor;
+    {
+        let mut writer = FrameBitWriter::new(&mut output, FrameBitCursor::new(0)).unwrap();
+        receipt = assemble_flat7x_d0_frame_bits_with_tail_policy(
+            Flat7xI0D0TargetPlan::approved_contract(),
+            baseline_bsi_structure(),
+            input,
+            Flat7xD0FrameTailPolicy::ZeroFillUnusedAuxBits,
+            &mut writer,
+        )
+        .unwrap();
+        cursor = writer.cursor().bit_offset();
+    }
+
+    let frame_tail = receipt.frame_aux_data_span();
+    assert_eq!(
+        frame_tail.start_bit(),
+        receipt.layout().total_frame_span_bits()
+    );
+    assert_eq!(frame_tail.bit_length(), 8);
+    assert_eq!(
+        receipt.frame_tail_policy(),
+        Some(Flat7xD0FrameTailPolicy::ZeroFillUnusedAuxBits)
+    );
+    assert_eq!(receipt.auxdatae_value(), Some(false));
+    assert_eq!(receipt.zero_filled_auxbits(), 7);
+    assert_eq!(receipt.crc2_span().start_bit(), frame_tail.end_bit());
+    assert_eq!(cursor, 32_768);
+    for bit_offset in frame_tail.start_bit()..frame_tail.end_bit() {
+        assert!(!read_bit(&output, bit_offset));
+    }
+    assert_eq!(eac3_crc16(&output[2..]), 0);
+    assert!(!receipt.production_allowed());
+}
+
+#[test]
+fn typed_frame_tail_policy_rejects_when_audio_spans_leave_no_flag_bit() {
+    let case = frame_case();
+    let data = synthetic_frame_data(&case);
+    let lengths = bit_lengths(&case);
+    let insertion_offset = case["block_two_insertion_offset_bits"].as_u64().unwrap() as u32;
+    let skipfield_fields = [D0Block2SkipFieldInput {
+        insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(insertion_offset),
+        complete_emdf_container: &data.skipfield_container,
+    }];
+    let input = frame_input(
+        &data,
+        lengths,
+        [0; 6],
+        insertion_offset,
+        &skipfield_fields,
+        2,
+    );
+    let mut output = vec![0xa5; 4096];
+    let original = output.clone();
+    let result;
+    let cursor;
+    {
+        let mut writer = FrameBitWriter::new(&mut output, FrameBitCursor::new(0)).unwrap();
+        result = assemble_flat7x_d0_frame_bits_with_tail_policy(
+            Flat7xI0D0TargetPlan::approved_contract(),
+            baseline_bsi_structure(),
+            input,
+            Flat7xD0FrameTailPolicy::ZeroFillUnusedAuxBits,
+            &mut writer,
+        );
+        cursor = writer.cursor().bit_offset();
+    }
+
+    assert_eq!(
+        result,
+        Err(Flat7xD0FrameAssemblyError::FrameTailNoSpace { available_bits: 0 })
+    );
+    assert_eq!(cursor, 0);
+    assert_eq!(output, original);
 }
 
 #[test]

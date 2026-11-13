@@ -1,0 +1,231 @@
+{
+  "schema": "wash-approved-implementer-contract-source-references.v1",
+  "package_id": "FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1",
+  "base_isolated_commit": "1099a56115e659415ef2dcc1d373046b1bd33fdf",
+  "external_standards": [
+    {
+      "id": "ETSI TS 102 366 V1.4.1",
+      "edition_date": "2017-09",
+      "url": "https://www.etsi.org/deliver/etsi_ts/102300_102399/102366/01.04.01_60/ts_102366v010401p.pdf",
+      "clauses": [
+        "3.1",
+        "4.4.3.24",
+        "4.4.4",
+        "6.1.2",
+        "6.1.3",
+        "6.2",
+        "6.3",
+        "7.2.3",
+        "E.1.3.1.3-E.1.3.1.8",
+        "E.1.3.2",
+        "E.1.3.3"
+      ],
+      "implementation_use": "E-AC-3 syntax, transform, exponent, bit-allocation, quantizer and aux-data rules."
+    },
+    {
+      "id": "ETSI TS 103 420 V1.2.1",
+      "edition_date": "2018-10",
+      "url": "https://www.etsi.org/deliver/etsi_ts/103400_103499/103420/01.02.01_60/ts_103420v010201p.pdf",
+      "clauses": [
+        "8.2"
+      ],
+      "implementation_use": "EMDF container and last-dependent-substream carriage requirements. Exact D0 zero-based block 2 placement is the user-approved profile target."
+    }
+  ],
+  "approved_wash_packages": [
+    {
+      "package_id": "JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+      "path": "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1",
+      "manifest_file": "MANIFEST.json",
+      "manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+      "seal_file": "package_seal.json",
+      "seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+      "relevant_files": [
+        [
+          "PROFILE-ROW.json",
+          "9a7f1f92da546dfd4d5d19b7c778423b0ab7f41143c7314c1ecc698e73cec137"
+        ],
+        [
+          "ARCHITECTURE-DECISION-ADDENDUM.md",
+          "a35db11231e5226e2dc61447665021c8683e16941d72d0902f271f89ed78abea"
+        ],
+        [
+          "EMDF-AND-VALIDATION-DISPOSITION.json",
+          "4375e778eda68482035abecf6dea115aaa7ee289deff07babecf0d85b6f7115a"
+        ]
+      ],
+      "reviewed_normal_and_python_O": "PASS"
+    },
+    {
+      "package_id": "EAC3-DEPENDENT-D0-FIXED-PREFIX-V1",
+      "path": "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-FIXED-PREFIX-V1",
+      "manifest_file": "MANIFEST.json",
+      "manifest_sha256": "686a51ef28e480d313e39c8d977faaa3e998214b87606fca7544596e913ccd24",
+      "seal_file": "PACKAGE-SEAL.json",
+      "seal_sha256": "11fe6023706236c6d1c1050dcb1b0139f5c63a12767d87e313e6eca6212d4687",
+      "relevant_files": [
+        [
+          "CONTRACT.md",
+          "e7451a10fef23f11c013ecee5aa957941ee899f757d4d060ae664645c99f657e"
+        ],
+        [
+          "CONTRACT.json",
+          "8cbebcfe72c743b83291184603cce4e6ad43ded917b2e189f3ae5203600e4ed1"
+        ],
+        [
+          "INPUT-ONLY-VECTORS.json",
+          "1f33b9a7f8ecdc2744150a00212923d247284840afe378326f8562fb85a2689e"
+        ]
+      ],
+      "reviewed_normal_and_python_O": "PASS"
+    },
+    {
+      "package_id": "EAC3-DEPENDENT-D0-BSI-SEGMENT-V1",
+      "path": "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-BSI-SEGMENT-V1",
+      "manifest_file": "MANIFEST.json",
+      "manifest_sha256": "cf24050c7539262f53f220366f3c4328d766147a39daeb37e3e89f27817b88db",
+      "seal_file": "PACKAGE-SEAL.json",
+      "seal_sha256": "5af97a494b53190ce7014f47829352fc71dc58d9bdf3354554469ed1676f7be2",
+      "relevant_files": [
+        [
+          "CONTRACT.md",
+          "c46927b902b8745a206ed972aaf02dd991e9edc82dcd193095c1696336050f2c"
+        ],
+        [
+          "CONTRACT.json",
+          "841234a74cbb42b345f5fce54c72850b5fa30325a853eb49a77748eb64abd70b"
+        ],
+        [
+          "INPUT-ONLY-VECTORS.json",
+          "cb00b726ae9776eae8f715a51c3643d3a3437ceb328ed43dfecae800a4968e8d"
+        ]
+      ],
+      "reviewed_normal_and_python_O": "PASS"
+    },
+    {
+      "package_id": "EAC3-DEPENDENT-CHANMAP-FIELD-WRITER-V1",
+      "path": "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-CHANMAP-FIELD-WRITER-V1",
+      "manifest_file": "MANIFEST.json",
+      "manifest_sha256": "fe364375e3a4ac4ae7a7959807d10d48f1f745e43077f4629fe2a16718702c43",
+      "seal_file": "PACKAGE-SEAL.json",
+      "seal_sha256": "8d845b829d5a4488674953235df6c32ac7e8c9fd87b1cebdd32e80e64ff807b2",
+      "relevant_files": [
+        [
+          "CONTRACT.md",
+          "509d974d3d04b4ff8bac95926f58de98e476fb5438917252986ce4dfc9c29e6f"
+        ],
+        [
+          "CONTRACT.json",
+          "4f67c97ea6e5a14f2f3223b639532977aa2ea24ebc1dde4534b4480e3a01d41c"
+        ],
+        [
+          "INPUT-ONLY-VECTORS.json",
+          "681103b4cbdd68634c9a40da4fd03bc219f87357847e526366097c7db9e00a6f"
+        ]
+      ],
+      "reviewed_normal_and_python_O": "PASS"
+    },
+    {
+      "package_id": "EAC3-EXPONENT-CODE-PRODUCER-U4-U7-V1",
+      "path": "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-EXPONENT-CODE-PRODUCER-U4-U7-V1",
+      "manifest_file": "MANIFEST.json",
+      "manifest_sha256": "1ead416c45cac51589738123219f0f2901e90c45ef4bba7e15592672054dc7b1",
+      "relevant_files": [
+        [
+          "REPORT.md",
+          "fc5d727c5392823bd60ffe66846cf58eb33ea7ebb9995495dee81aed4aa40c49"
+        ],
+        [
+          "INPUT-ONLY-VECTORS.json",
+          "e8e41ae2b39a287c019a0f5777ddc9bd40145f93d46cdf0dc9cbf6d61dc8c94e"
+        ]
+      ],
+      "reviewed_normal_and_python_O": "PASS"
+    },
+    {
+      "package_id": "EAC3-EXPONENT-U4-U7-WRITER-BOUNDARY-V1",
+      "path": "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-EXPONENT-U4-U7-WRITER-BOUNDARY-V1",
+      "manifest_file": "MANIFEST.json",
+      "manifest_sha256": "d1fb9e452554c04bb6c630d143e8124a8790d8610ac20deb61838d14e2f7a2e9",
+      "relevant_files": [
+        [
+          "REPORT.md",
+          "3ac1597aae15cd0a68b63abaf9ec1a4aefba5117677bcc28833cda87a99ed1e1"
+        ],
+        [
+          "INPUT-ONLY-VECTORS.json",
+          "b081d55b220a9b971c3ec8a1475f53f6f8aac854d5d781f3b6a0d3ca51dd42e1"
+        ]
+      ],
+      "reviewed_normal_and_python_O": "PASS"
+    },
+    {
+      "package_id": "EAC3-CORE-ROW-QUANTIZER-BOUNDARY-V1",
+      "path": "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-CORE-ROW-QUANTIZER-BOUNDARY-V1",
+      "manifest_file": "MANIFEST.json",
+      "manifest_sha256": "38a8933609a5a8c10c13aabdf7125b8f6e5f99ee41df39c40a50c6d70944dd66",
+      "seal_file": "package_seal.json",
+      "seal_sha256": "0e151858baf67999f948b88526a1cc0a65f115052421343be39bec6f523d3788",
+      "relevant_files": [
+        [
+          "REPORT.md",
+          "04018cda0a0ddb78b24008118a1bdb2fdccd70c2dc75cbacf4897a8089ffb22f"
+        ],
+        [
+          "INPUT-ONLY-VECTOR.json",
+          "50337777821252d2dca3366efc26773fa104d793f1e621be861c951392a6fe8f"
+        ]
+      ],
+      "reviewed_normal_and_python_O": "PASS"
+    },
+    {
+      "package_id": "FLAT7X-EMDF-SINGLE-FIELD-FAIL-CLOSED-CONTRACT-V1",
+      "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-EMDF-SINGLE-FIELD-FAIL-CLOSED-CONTRACT-V1",
+      "manifest_file": "MANIFEST.json",
+      "manifest_sha256": "759162aef0c2cbae7b4f14a5cb30608f4b03526c61016d2ea775e767738fcfd4",
+      "seal_file": "PACKAGE-SEAL.json",
+      "seal_sha256": "ac607731e814bfcfe7186ffa237034940f0f477aa5fa35c8fdfcec749a4838f8",
+      "relevant_files": [
+        [
+          "FIELD-CONTRACT.json",
+          "d0bea5a0e5747e80c01a4ac7752bbac6acb51987ed263be16b3bd5dd48944d0b"
+        ],
+        [
+          "FINDINGS.md",
+          "15eeec9e7cfac758c40221f86a9efd31894db156efb5a7403866a4391b3bbbf0"
+        ]
+      ],
+      "reviewed_normal_and_python_O": "PASS"
+    },
+    {
+      "package_id": "FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1",
+      "path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1",
+      "manifest_file": "MANIFEST.json",
+      "manifest_sha256": "1034ef415113b666acc5aefaa3207230040f05d9ebc05a33933bffc50b4ff088",
+      "seal_file": "PACKAGE-SEAL.json",
+      "seal_sha256": "16d925352e9b197e016b2554f9c2ae609e8f8890e3dca81c4eb591f737b41210",
+      "relevant_files": [
+        [
+          "IMPLEMENTER-HANDOFF.md",
+          "3f6785b2efe1ee229c8c569640b987ca3dd1b9c412dedfd7025e5f8b5e160ba5"
+        ],
+        [
+          "INPUT-ONLY-VECTORS.json",
+          "dbf02c22de6dac36da5bd2c90234f4add1c04ecb313d0e0fceb611c289ccd537"
+        ]
+      ],
+      "reviewed_normal_and_python_O": "PASS"
+    }
+  ],
+  "note": "All referenced Wash package checkers were independently run in normal Python and python -O immediately before this contract was created.",
+  "excluded_materials": [
+    {
+      "package_id": "CODEC-PUBLIC-BAP-PROVIDER-V1",
+      "path": "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-PUBLIC-BAP-PROVIDER-V1",
+      "manifest_sha256": "75e62efa34b046358aeb2231624f1e7d339b7bd241513d39017adf0e475f49e1",
+      "delivery_sha256": "ee7f10ff6de7242cffd819727806a4aed1b4a04c9e6b0eec869fc47780a67238",
+      "provider_sha256": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3",
+      "reason": "provider profile is 217 full-band bins plus LFE7 and marks public/third-party distribution NOT_AUTHORIZED; excluded from D0 contract and implementation inputs"
+    }
+  ]
+}

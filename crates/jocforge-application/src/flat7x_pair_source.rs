@@ -8,9 +8,10 @@ use jocforge_domain::{
             I0AudioBlockSeriesPolicy, produce_i0_audio_block_series,
         },
         access_unit_composer::{
-            Flat7xI0D0AuCandidate, Flat7xI0D0AuCandidateError, assemble_flat7x_i0_d0_au_candidate,
+            Flat7xI0D0AuCandidate, Flat7xI0D0AuCandidateError,
+            assemble_flat7x_i0_d0_au_candidate_with_tail_policy,
         },
-        d0_frame_assembler::Flat7xD0FrameBitInput,
+        d0_frame_assembler::{Flat7xD0FrameBitInput, Flat7xD0FrameTailPolicy},
         frame_builder::Flat7xD0BsiStructure,
         i0_frame_assembler::{
             CallerOwnedI0CrcrsvSeed, Flat7xI0Ac3AudioSeriesFrameCandidate,
@@ -125,18 +126,20 @@ impl Flat7xD0SourceIdentity {
 pub struct Flat7xD0AudioSpanReceipt<'a> {
     source_identity: Flat7xD0SourceIdentity,
     audio_blocks: Flat7xD0FrameBitInput<'a>,
+    frame_tail_policy: Flat7xD0FrameTailPolicy,
 }
 
 impl<'a> Flat7xD0AudioSpanReceipt<'a> {
-    /// Binds caller-owned opaque block spans to the source identity established by pair admission.
-    /// This does not produce or inspect audio bits; the D0 frame assembler validates their layout.
+    /// Binds D0 block spans and a typed frame-tail policy to the admitted source.
     pub fn from_source_bound_producer(
         binding: &Flat7xPairSourceBinding<'_>,
         audio_blocks: Flat7xD0FrameBitInput<'a>,
+        frame_tail_policy: Flat7xD0FrameTailPolicy,
     ) -> Self {
         Self {
             source_identity: binding.d0_source_identity.clone(),
             audio_blocks,
+            frame_tail_policy,
         }
     }
 }
@@ -152,6 +155,23 @@ impl Flat7xD0AudioSpanReceipt<'_> {
 pub enum Flat7xD0AudioSpanInput<'a> {
     Disabled(Flat7xD0AudioSpanProducerState),
     Provided(Box<Flat7xD0AudioSpanReceipt<'a>>),
+}
+
+/// D0 audio-block spans and the selected frame-tail policy.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Flat7xD0FrameInput<'a> {
+    audio_blocks: Flat7xD0FrameBitInput<'a>,
+    frame_tail_policy: Flat7xD0FrameTailPolicy,
+}
+
+impl<'a> Flat7xD0FrameInput<'a> {
+    pub const fn audio_blocks(self) -> Flat7xD0FrameBitInput<'a> {
+        self.audio_blocks
+    }
+
+    pub const fn frame_tail_policy(self) -> Flat7xD0FrameTailPolicy {
+        self.frame_tail_policy
+    }
 }
 
 /// Errors while binding the profile and current source projection to the I0/D0 frame inputs.
@@ -172,6 +192,15 @@ pub fn require_flat7x_d0_audio_blocks<'a>(
     input: Flat7xD0AudioSpanInput<'a>,
     expected_source_identity: &Flat7xD0SourceIdentity,
 ) -> Result<Flat7xD0FrameBitInput<'a>, Flat7xPairSourceError> {
+    require_flat7x_d0_frame_input(input, expected_source_identity)
+        .map(Flat7xD0FrameInput::audio_blocks)
+}
+
+/// Resolves the full source-bound D0 frame input and its tail policy.
+pub fn require_flat7x_d0_frame_input<'a>(
+    input: Flat7xD0AudioSpanInput<'a>,
+    expected_source_identity: &Flat7xD0SourceIdentity,
+) -> Result<Flat7xD0FrameInput<'a>, Flat7xPairSourceError> {
     match input {
         Flat7xD0AudioSpanInput::Disabled(reason) => {
             Err(Flat7xPairSourceError::D0AudioSpanProducerDisabled(reason))
@@ -181,7 +210,10 @@ pub fn require_flat7x_d0_audio_blocks<'a>(
             if receipt.source_identity != *expected_source_identity {
                 return Err(Flat7xPairSourceError::D0AudioSpanSourceIdentityMismatch);
             }
-            Ok(receipt.audio_blocks)
+            Ok(Flat7xD0FrameInput {
+                audio_blocks: receipt.audio_blocks,
+                frame_tail_policy: receipt.frame_tail_policy,
+            })
         }
     }
 }
@@ -247,6 +279,7 @@ pub struct Flat7xPairAudioBlockCandidate<'pcm, 'd0> {
     binding: Flat7xPairSourceBinding<'pcm>,
     i0_audio_blocks: I0AudioBlockSeriesCandidate,
     d0_audio_blocks: Flat7xD0FrameBitInput<'d0>,
+    d0_frame_tail_policy: Flat7xD0FrameTailPolicy,
 }
 
 impl<'pcm, 'd0> Flat7xPairAudioBlockCandidate<'pcm, 'd0> {
@@ -280,6 +313,10 @@ impl<'pcm, 'd0> Flat7xPairAudioBlockCandidate<'pcm, 'd0> {
 
     pub const fn d0_audio_blocks(&self) -> Flat7xD0FrameBitInput<'d0> {
         self.d0_audio_blocks
+    }
+
+    pub const fn d0_frame_tail_policy(&self) -> Flat7xD0FrameTailPolicy {
+        self.d0_frame_tail_policy
     }
 }
 
@@ -464,12 +501,13 @@ pub fn assemble_flat7x_pair_access_unit_candidate(
         return Err(Flat7xPairSourceError::SourceIdentityMismatch);
     }
 
-    let access_unit = assemble_flat7x_i0_d0_au_candidate(
+    let access_unit = assemble_flat7x_i0_d0_au_candidate_with_tail_policy(
         binding.target,
         shared_identity,
         i0_frame.i0_frame.clone(),
         d0_bsi,
         pair_audio.d0_audio_blocks,
+        pair_audio.d0_frame_tail_policy,
     )
     .map_err(Flat7xPairSourceError::AccessUnitAssembly)?;
 
@@ -550,14 +588,15 @@ pub fn prepare_flat7x_pair_audio_blocks<'pcm, 'd0>(
     {
         return Err(Flat7xPairSourceError::SourceIdentityMismatch);
     }
-    let d0_audio_blocks = require_flat7x_d0_audio_blocks(d0_audio, binding.d0_source_identity())?;
+    let d0_frame_input = require_flat7x_d0_frame_input(d0_audio, binding.d0_source_identity())?;
     let i0_audio_blocks = produce_i0_audio_block_series(numeric_plan, i0_policy, i0_budget)
         .map_err(Flat7xPairSourceError::I0AudioBlockSeries)?;
 
     Ok(Flat7xPairAudioBlockCandidate {
         binding,
         i0_audio_blocks,
-        d0_audio_blocks,
+        d0_audio_blocks: d0_frame_input.audio_blocks(),
+        d0_frame_tail_policy: d0_frame_input.frame_tail_policy(),
     })
 }
 
@@ -565,8 +604,8 @@ pub fn prepare_flat7x_pair_audio_blocks<'pcm, 'd0>(
 mod tests {
     use super::{
         Flat7xAnalysisGeneration, Flat7xD0AudioSpanInput, Flat7xD0AudioSpanProducerState,
-        Flat7xD0AudioSpanReceipt, Flat7xD0SourceIdentity, Flat7xPairSourceError,
-        require_flat7x_d0_audio_blocks,
+        Flat7xD0AudioSpanReceipt, Flat7xD0FrameTailPolicy, Flat7xD0SourceIdentity,
+        Flat7xPairSourceError, require_flat7x_d0_audio_blocks, require_flat7x_d0_frame_input,
     };
     use jocforge_domain::codec::d0_frame_assembler::{
         D0FrameAudioBlockInput, Flat7xD0FrameBitInput, OpaqueD0AudioBitSpan,
@@ -597,6 +636,7 @@ mod tests {
             audio_blocks: Flat7xD0FrameBitInput {
                 audio_blocks: [block; 6],
             },
+            frame_tail_policy: Flat7xD0FrameTailPolicy::ZeroFillUnusedAuxBits,
         }
     }
 
@@ -659,6 +699,25 @@ mod tests {
             Err(Flat7xPairSourceError::D0AudioSpanSourceIdentityMismatch)
         );
     }
+
+    #[test]
+    fn source_bound_d0_frame_input_carries_tail_policy_with_the_receipt() {
+        let byte = [0xa5_u8];
+        let expected = fixture_source_identity(9);
+        let receipt = fixture_span_receipt(expected.clone(), &byte);
+
+        let input = require_flat7x_d0_frame_input(
+            Flat7xD0AudioSpanInput::Provided(Box::new(receipt)),
+            &expected,
+        )
+        .unwrap();
+
+        assert_eq!(input.audio_blocks().audio_blocks.len(), 6);
+        assert_eq!(
+            input.frame_tail_policy(),
+            Flat7xD0FrameTailPolicy::ZeroFillUnusedAuxBits
+        );
+    }
 }
 
 #[cfg(all(test, feature = "test-support"))]
@@ -697,7 +756,8 @@ mod pair_access_unit_integration_tests {
             bap::{BapParameters, load_bap_parameters},
             d0_frame_assembler::{
                 D0_CRC2_FIELD_BITS, D0Block2SkipFieldInput, D0BlockTwoAudioSpans,
-                D0FrameAudioBlockInput, Flat7xD0FrameBitInput, OpaqueD0AudioBitSpan,
+                D0FrameAudioBlockInput, Flat7xD0FrameBitInput, Flat7xD0FrameTailPolicy,
+                OpaqueD0AudioBitSpan,
             },
             d0_frame_layout::CallerOwnedUnboundD0Block2InsertionPoint,
             emdf_skip_field::flat7x_d0_block2_skipfld_bit_length,
@@ -792,13 +852,15 @@ mod pair_access_unit_integration_tests {
             target: Flat7xI0D0TargetPlan,
             bsi: &Flat7xD0BsiStructure<'_>,
             container_bytes: u16,
+            frame_tail_bits: u32,
         ) -> Self {
             let bsi_bits = measure_flat7x_d0_bsi_structure(target, bsi)
                 .unwrap()
                 .value();
             let skipfield_bits = flat7x_d0_block2_skipfld_bit_length(container_bytes).unwrap();
             let frame_bits = u32::from(target.d0().frame_bytes()) * 8;
-            let audio_bits = frame_bits - D0_CRC2_FIELD_BITS - bsi_bits - skipfield_bits;
+            let audio_bits =
+                frame_bits - D0_CRC2_FIELD_BITS - bsi_bits - skipfield_bits - frame_tail_bits;
             let even_bits = audio_bits / 6;
             let remainder = audio_bits % 6;
             let bit_lengths = std::array::from_fn(|index| {
@@ -1099,14 +1161,17 @@ mod pair_access_unit_integration_tests {
 
         let d0_bsi = synthetic_d0_bsi();
         let emdf_container = [0xa5_u8];
-        let d0_audio = SyntheticD0AudioSpans::new(target, &d0_bsi, 1);
+        let d0_audio = SyntheticD0AudioSpans::new(target, &d0_bsi, 1, 8);
         let d0_skip_fields = [D0Block2SkipFieldInput {
             insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(d0_audio.prefix_bits),
             complete_emdf_container: &emdf_container,
         }];
         let d0_audio_blocks = d0_audio.frame_input(&d0_skip_fields);
-        let d0_receipt =
-            Flat7xD0AudioSpanReceipt::from_source_bound_producer(&binding, d0_audio_blocks);
+        let d0_receipt = Flat7xD0AudioSpanReceipt::from_source_bound_producer(
+            &binding,
+            d0_audio_blocks,
+            Flat7xD0FrameTailPolicy::ZeroFillUnusedAuxBits,
+        );
         let pair_audio = prepare_flat7x_pair_audio_blocks(
             binding,
             &numeric_plan,
@@ -1155,6 +1220,19 @@ mod pair_access_unit_integration_tests {
         assert_eq!(candidate.access_unit().d0_frame_bytes().len(), 4_096);
         let d0_receipt = candidate.access_unit().d0_frame_receipt();
         assert_eq!(d0_receipt.target_frame_bytes(), 4_096);
+        assert_eq!(d0_receipt.frame_aux_data_span().bit_length(), 8);
+        assert_eq!(
+            d0_receipt.frame_tail_policy(),
+            Some(Flat7xD0FrameTailPolicy::ZeroFillUnusedAuxBits)
+        );
+        assert_eq!(d0_receipt.auxdatae_value(), Some(false));
+        assert_eq!(d0_receipt.zero_filled_auxbits(), 7);
+        assert_eq!(d0_receipt.frame_aux_data_span().start_bit() % 8, 0);
+        let tail_start = usize::try_from(d0_receipt.frame_aux_data_span().start_bit() / 8).unwrap();
+        assert_eq!(
+            &candidate.access_unit_bytes()[2_560 + tail_start..2_560 + tail_start + 1],
+            &[0]
+        );
         assert_eq!(
             d0_receipt.layout().audio_blocks()[2]
                 .block_index()
