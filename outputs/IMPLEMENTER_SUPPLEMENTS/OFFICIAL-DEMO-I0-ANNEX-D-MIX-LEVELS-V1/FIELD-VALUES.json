@@ -1,0 +1,141 @@
+{
+  "schema": "jocforge.wash.official_demo_i0_annex_d_fields.v1",
+  "evidence_class": "WASHED_SAMPLE_OBSERVATION",
+  "production_allowed": false,
+  "sample": {
+    "source_sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+    "aggregate_rate_kbps": 1280,
+    "i0_rate_kbps": 640,
+    "d0_rate_kbps": 640,
+    "i0_frame_offset_bytes": 5424,
+    "i0_frame_bytes": 2560,
+    "i0_header": {
+      "syncword": "0x0B77",
+      "fscod": 0,
+      "frmsizecod": 36,
+      "bsid": 6,
+      "bsmod": 0,
+      "acmod": 7,
+      "cmixlev": 0,
+      "surmixlev": 0,
+      "lfeon": 1
+    }
+  },
+  "annex_d_bsi": {
+    "frame_bit_origin": "syncword_bit_0",
+    "fields": [
+      {
+        "name": "xbsi1e",
+        "width_bits": 1,
+        "value": 1,
+        "frame_bits": [
+          74,
+          75
+        ],
+        "file_bits": [
+          43466,
+          43467
+        ]
+      },
+      {
+        "name": "dmixmod",
+        "width_bits": 2,
+        "value": 1,
+        "meaning": "Lt/Rt preferred",
+        "frame_bits": [
+          75,
+          77
+        ],
+        "file_bits": [
+          43467,
+          43469
+        ]
+      },
+      {
+        "name": "ltrtcmixlev",
+        "width_bits": 3,
+        "value": 4,
+        "decoded_level": "0.707 (-3 dB)",
+        "frame_bits": [
+          77,
+          80
+        ],
+        "file_bits": [
+          43469,
+          43472
+        ]
+      },
+      {
+        "name": "ltrtsurmixlev",
+        "width_bits": 3,
+        "value": 4,
+        "decoded_level": "0.707 (-3 dB)",
+        "frame_bits": [
+          80,
+          83
+        ],
+        "file_bits": [
+          43472,
+          43475
+        ]
+      },
+      {
+        "name": "lorocmixlev",
+        "width_bits": 3,
+        "value": 4,
+        "decoded_level": "0.707 (-3 dB)",
+        "frame_bits": [
+          83,
+          86
+        ],
+        "file_bits": [
+          43475,
+          43478
+        ]
+      },
+      {
+        "name": "lorosurmixlev",
+        "width_bits": 3,
+        "value": 4,
+        "decoded_level": "0.707 (-3 dB)",
+        "frame_bits": [
+          86,
+          89
+        ],
+        "file_bits": [
+          43478,
+          43481
+        ]
+      },
+      {
+        "name": "xbsi2e",
+        "width_bits": 1,
+        "value": 1,
+        "frame_bits": [
+          89,
+          90
+        ],
+        "file_bits": [
+          43481,
+          43482
+        ]
+      }
+    ],
+    "xbsi2e_following_14_bits": "NOT_CAPTURED",
+    "parse_stop_file_bit": 43482
+  },
+  "user_target_transfer": {
+    "target_aggregate_rate_kbps": 1664,
+    "target_i0_rate_kbps": 640,
+    "target_d0_rate_kbps": 1024,
+    "rule": "Use the user-designated sample's non-rate I0 fields; override only D0 rate to 1024 kbps.",
+    "target_is_observed_output": false,
+    "target_i0_annex_d_values": "USER_DIRECTED_TRANSFER_FROM_HASH_BOUND_SAMPLE_OBSERVATION"
+  },
+  "remaining_gates": {
+    "i0_fields_after_xbsi2e": "NOT_CAPTURED",
+    "complete_i0_frame": "NOT_RUN",
+    "complete_1664_kbps_output": "NOT_RUN",
+    "d0_audio_algorithm": "UNBOUND"
+  }
+}

@@ -11799,9 +11799,11 @@ def check_f12_d0_bsi_structure_slice(root, d):
     builder_path = root / "crates/jocforge-domain/src/codec/frame_builder.rs"
     assembler_path = root / "crates/jocforge-domain/src/codec/d0_frame_assembler.rs"
     test_path = root / "crates/jocforge-domain/tests/flat7x_d0_bsi_structure.rs"
+    official_sample_test_path = root / "crates/jocforge-domain/tests/official_demo_d0_bsi.rs"
     builder = rust_code_without_comments(builder_path.read_text(encoding="utf-8"))
     assembler_source = rust_code_without_comments(assembler_path.read_text(encoding="utf-8"))
     test_source = test_path.read_text(encoding="utf-8")
+    official_sample_test_source = official_sample_test_path.read_text(encoding="utf-8")
     function_start = builder.index("pub fn write_flat7x_d0_bsi_structure(")
     function_end = builder.index("pub enum SelectedComplexityFieldWriteError", function_start)
     function = builder[function_start:function_end]
@@ -11828,6 +11830,7 @@ def check_f12_d0_bsi_structure_slice(root, d):
         "eac3-dependent-d0-bsi-segment-v1": "cf24050c7539262f53f220366f3c4328d766147a39daeb37e3e89f27817b88db",
         "eac3-dependent-d0-mixing-metadata-v1": "a7d8bb0e724dd94b9a31fa860c4296daecc957e4570dfdb9f32bf5ef17c3aa12",
         "eac3-dependent-d0-info-addbsi-segment-v1": "e8f1908d3572571c4dcb19aedd898b0e068464d6921ed54569fd8df4cb3a7cdb",
+        "OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1": "35a4527798ccfe6421ce94e380614d721d75a43738bdca0bb9235d2811f2b161",
     }
     actual_packages = {
         item["package_id"]: item["manifest_sha256"]
@@ -11859,19 +11862,60 @@ def check_f12_d0_bsi_structure_slice(root, d):
     )
     ck(
         row["implementation_status"]
-        == "LOCALLY_VERIFIED_TYPED_D0_BSI_COMPOSITION_AND_ATOMIC_PREFLIGHT__FULL_FRAME_OPEN"
+        == "LOCALLY_VERIFIED_TYPED_D0_BSI_COMPOSITION_AND_OFFICIAL_SAMPLE_FIELD_REPLAY__FULL_FRAME_OPEN"
         and row["owner"] == "codec"
         and row["implementation_requirement"] is True
         and actual_packages == expected_packages
         and row["parameters"]["production_allowed"] is False
         and row["parameters"]["target_context"]["chanmap"] == "0x1A00"
+        and row["parameters"]["target_context"]["frmsiz"] == 2047
         and row["parameters"]["maximum_staged_bits"] == 664
         and row["parameters"]["maximum_staging_bytes"] == 83
-        and row["vectors"]["expected_outputs_included"] is False
+        and row["parameters"]["official_sample_d0_bsi"]
+        == {
+            "package_id": "OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1",
+            "manifest_sha256": "35a4527798ccfe6421ce94e380614d721d75a43738bdca0bb9235d2811f2b161",
+            "package_seal_sha256": "5d5902e0bdee4a9a0b8b0e0fe31c975c94ef315fa39f382ecef7cebc1f81c877",
+            "source_sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+            "sample_rate_kbps": 640,
+            "sample_frame_bytes": 2560,
+            "sample_frmsiz": 1279,
+            "target_rate_contract": {
+                "package_id": "FLAT7X-D0-RATE-FRMSIZ-TARGET-V1",
+                "manifest_sha256": "1eb4311e3f63ec84c57c7fe636a8a21773bd633ae3f4fe9b0739b88e09e66139",
+                "target_rate_kbps": 1024,
+                "target_frame_bytes": 4096,
+                "target_frmsiz": 2047,
+            },
+            "fields_through_chanmap": {
+                "strmtyp": 1,
+                "substreamid": 0,
+                "fscod": 0,
+                "numblkscod": 3,
+                "acmod": 5,
+                "lfeon": 0,
+                "bsid": 16,
+                "dialnorm": 31,
+                "compre": 1,
+                "compr": 1,
+                "chanmape": 1,
+                "chanmap": "0x1A00",
+                "end_bit": 76,
+            },
+            "dialnorm_compre_compr_scope": "SAMPLE_VECTOR_ONLY_NOT_GENERIC_XML_DEFAULTS",
+            "production_allowed": False,
+        }
+        and row["vectors"]["expected_outputs_included"] is True
         and row["vectors"]["execution_status"]
-        == "LOCALLY_VERIFIED_COMPONENT_EQUIVALENCE_AND_ATOMIC_CALLER_PREFLIGHT"
+        == "LOCALLY_VERIFIED_COMPONENT_EQUIVALENCE_ATOMIC_PREFLIGHT_AND_WASHED_SAMPLE_FIELD_REPLAY"
         and row["implementation_files"] == ["crates/jocforge-domain/src/codec/frame_builder.rs"]
-        and row["test_modules"] == ["crates/jocforge-domain/tests/flat7x_d0_bsi_structure.rs"]
+        and row["test_modules"]
+        == [
+            "crates/jocforge-domain/tests/flat7x_d0_bsi_structure.rs",
+            "crates/jocforge-domain/tests/official_demo_d0_bsi.rs",
+        ]
+        and "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1/FIELD-VALUES.json"
+        in row["vectors"]["authoritative_vectors"]
         and all(
             marker in test_source
             for marker in (
@@ -11880,8 +11924,59 @@ def check_f12_d0_bsi_structure_slice(root, d):
                 "nonzero_start_cursor_rejects_without_mutation",
             )
         ),
-        "D0 BSI structure map binds the three Wash fragments and local equivalence/failure tests",
+        "D0 BSI structure map binds the component fragments and official sample field replay",
     )
+
+    official_d0_package = root / "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1"
+    official_d0_manifest_bytes = (official_d0_package / "MANIFEST.json").read_bytes()
+    official_d0_seal_bytes = (official_d0_package / "package_seal.json").read_bytes()
+    official_d0_values = json.loads((official_d0_package / "FIELD-VALUES.json").read_bytes())
+    official_d0_sample = official_d0_values["d0_sample_frame"]
+    official_d0_target = official_d0_values["target_rate_contract"]
+    official_d0_fields = official_d0_sample["fields_through_chanmap"]
+    official_d0_catalog = (root / "outputs/IMPLEMENTER_SUPPLEMENTS/CATALOG.md").read_text(encoding="utf-8")
+    official_d0_manifest = "35a4527798ccfe6421ce94e380614d721d75a43738bdca0bb9235d2811f2b161"
+    official_d0_seal = "5d5902e0bdee4a9a0b8b0e0fe31c975c94ef315fa39f382ecef7cebc1f81c877"
+    official_d0_vector_matches = (
+        official_d0_values.get("source_sha256") == "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd"
+        and official_d0_sample.get("sample_rate_kbps") == 640
+        and official_d0_sample.get("frame_bytes") == 2560
+        and official_d0_sample.get("observed_frmsiz") == 1279
+        and [item["name"] for item in official_d0_fields]
+        == ["syncword", "strmtyp", "substreamid", "frmsiz", "fscod", "numblkscod", "acmod", "lfeon", "bsid", "dialnorm", "compre", "compr", "chanmape", "chanmap"]
+        and [item["value"] for item in official_d0_fields]
+        == [2935, 1, 0, 1279, 0, 3, 5, 0, 16, 31, 1, 1, 1, 6656]
+        and official_d0_fields[-1].get("frame_bit_end") == 76
+        and official_d0_sample.get("stop_after") == "chanmap"
+        and official_d0_sample.get("next_field_read") is False
+        and official_d0_target.get("target_rate_kbps") == 1024
+        and official_d0_target.get("target_frame_bytes") == 4096
+        and official_d0_target.get("target_frmsiz") == 2047
+    )
+    ck(
+        hashlib.sha256(official_d0_manifest_bytes).hexdigest() == official_d0_manifest
+        and hashlib.sha256(official_d0_seal_bytes).hexdigest() == official_d0_seal
+        and official_d0_vector_matches
+        and "OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1 | " + official_d0_manifest in official_d0_catalog
+        and "official_demo_d0_bsi_matches_through_chanmap_with_target_rate_override" in official_sample_test_source
+        and 'if name == "frmsiz"' in official_sample_test_source
+        and "D0 audio" not in official_sample_test_source,
+        "official D0 sample BSI vector is hash-bound through chanmap with target frmsiz kept separate",
+    )
+    for optimized in (False, True):
+        command = [sys.executable] + (["-O"] if optimized else []) + ["-X", "utf8", "-B", str(official_d0_package / "CHECK.py")]
+        result = subprocess.run(
+            command,
+            cwd=official_d0_package,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        ck(
+            result.returncode == 0
+            and "PACKAGE_CHECK=PASS package=OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1" in result.stdout,
+            "official D0 BSI package checker " + ("optimized" if optimized else "normal"),
+        )
 
 
 def check_f12_d0_six_block_layout_slice(root, d):
@@ -12361,6 +12456,7 @@ def check_f12_flat7x_i0_ac3_bsi_tail_writer(root, d):
     codec_module = rust_code_without_comments(codec_module_path.read_text(encoding="utf-8"))
     test_source = test_path.read_text(encoding="utf-8")
     vectors = json.loads(fixture_path.read_bytes())
+    map_vectors = row.get("vectors", {})
     manifest_bytes = (package / "MANIFEST.json").read_bytes()
     seal_bytes = (package / "PACKAGE-SEAL.json").read_bytes()
     manifest = json.loads(manifest_bytes)
@@ -12445,30 +12541,119 @@ def check_f12_flat7x_i0_ac3_bsi_tail_writer(root, d):
 
     parameters = row.get("parameters", {})
     target = parameters.get("target", {})
+    expected_official_demo_i0_bsi_v2 = {
+            "package_id": "OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2",
+            "manifest_sha256": "85dcd2dfc96bdc57a3caaa7c6affde4eb2be43331afd75bedabf11c62193fa1a",
+            "package_seal_sha256": "a977d2cb4af36a8d1ff44642b15bbf78a90535be94fbdf34866b8126c8ffa716",
+            "source_sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+            "sample_rate_kbps": {"i0": 640, "d0": 640, "aggregate": 1280},
+            "target_transfer_kbps": {"i0": 640, "d0": 1024, "aggregate": 1664},
+            "header_values": {
+                "fscod": 0,
+                "frmsizecod": 36,
+                "bsid": 6,
+                "bsmod": 0,
+                "acmod": 7,
+                "cmixlev": 0,
+                "surmixlev": 0,
+                "lfeon": 1,
+                "dialnorm": 31,
+                "compre": 1,
+                "compr": 1,
+                "crc1": "generated from assembled target frame",
+            },
+            "bsi_tail": {
+                "start_bit": 70,
+                "end_bit": 105,
+                "langcode": 0,
+                "audprodie": 0,
+                "copyrightb": 1,
+                "origbs": 1,
+                "xbsi1e": 1,
+                "dmixmod": 1,
+                "ltrtcmixlev": 4,
+                "ltrtsurmixlev": 4,
+                "lorocmixlev": 4,
+                "lorosurmixlev": 4,
+                "xbsi2e": 1,
+                "dsurexmod": 1,
+                "dheadphonmod": 0,
+                "adconvtyp": 0,
+                "xbsi2": 0,
+                "encinfo": 0,
+                "addbsie": 0,
+                "addbsi_payload_present": False,
+            },
+            "production_allowed": False,
+    }
     ck(
-        row.get("implementation_status") == "LOCALLY_VERIFIED_SYNTHETIC_I0_BSI_TAIL_FIELD_SERIALIZATION__PRODUCTION_OPEN"
-        and parameters.get("production_allowed") is False
-        and parameters.get("continuation_manifest_sha256") == expected_manifest
-        and target.get("acmod") == 7
-        and target.get("header_end_bits") == [62, 70]
-        and parameters.get("max_additional_bsi_bytes") == 64
-        and parameters.get("max_serialized_bsi_tail_bits") == 568
-        and row.get("implementation_files")
-        == ["crates/jocforge-domain/src/codec/ac3_bsi_tail.rs", "crates/jocforge-domain/src/codec/mod.rs"]
-        and row.get("test_modules") == [test_path.relative_to(root).as_posix()]
-        and vectors.get("classification") == "SYNTHETIC_NOT_REAL_OUTPUT_BSI_SYNTAX"
+        row.get("implementation_status")
+        == "LOCALLY_VERIFIED_OFFICIAL_SAMPLE_I0_BSI_TAIL_THROUGH_ADDBSIE__FRAME_CALLSITE_OPEN",
+        "I0 BSI-tail slice status is scoped to the sample BSI and the open frame callsite",
+    )
+    ck(parameters.get("production_allowed") is False, "I0 BSI-tail writer remains production-disabled")
+    ck(
+        parameters.get("continuation_manifest_sha256") == expected_manifest,
+        "generic I0 BSI continuation package identity stays pinned",
+    )
+    ck(
+        parameters.get("official_demo_i0_bsi_v2") == expected_official_demo_i0_bsi_v2,
+        "official sample I0 BSI V2 values and rate transfer are exact in the implementation map",
+    )
+    ck(target.get("acmod") == 7 and target.get("header_end_bits") == [62, 70], "I0 target header boundary stays selected")
+    ck(
+        parameters.get("max_additional_bsi_bytes") == 64
+        and parameters.get("max_serialized_bsi_tail_bits") == 568,
+        "generic BSI-tail capacity bounds remain mapped",
+    )
+    ck(
+        row.get("implementation_files")
+        == [
+            "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
+            "crates/jocforge-domain/src/codec/mod.rs",
+            "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
+        ],
+        "I0 BSI implementation inventory names both tail and sample-header field modules",
+    )
+    ck(
+        row.get("test_modules") == [test_path.relative_to(root).as_posix()],
+        "I0 BSI tests remain in the semantic BSI-tail module",
+    )
+    ck(
+        vectors.get("classification") == "SYNTHETIC_NOT_REAL_OUTPUT_BSI_SYNTAX"
         and vectors.get("contains_pcm_or_real_audio_bytes") is False
-        and vectors.get("continuation_package_manifest_sha256") == expected_manifest
-        and all(
+        and vectors.get("continuation_package_manifest_sha256") == expected_manifest,
+        "generic I0 BSI-tail vectors remain synthetic and bound to the ETSI continuation contract",
+    )
+    ck(
+        map_vectors.get("kind") == "SYNTHETIC_BSI_TAIL_PLUS_WASHED_SAMPLE_I0_BSI_THROUGH_ADDBSIE",
+        "I0 BSI vector kind names the synthetic tail plus V2 sample BSI",
+    )
+    ck(map_vectors.get("expected_outputs_included") is True, "I0 BSI fixture expectation files are included")
+    ck(
+        "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2/FIELD-VALUES.json"
+        in map_vectors.get("authoritative_vectors", []),
+        "I0 BSI vector map references the V2 field ledger",
+    )
+    ck(
+        map_vectors.get("execution_status")
+        == "SYNTHETIC_BSI_TAIL_AND_WASHED_SAMPLE_I0_BSI_THROUGH_ADDBSIE_TESTS_PASS",
+        "I0 BSI map records local full-tail writer vectors",
+    )
+    ck(
+        all(
             marker in test_source
             for marker in (
                 "writes_the_mandatory_seven_tail_bits_at_the_header_boundary",
                 "writes_optional_fields_and_reports_the_exact_unaligned_addbsi_extent",
                 "accepts_the_maximum_addbsi_length_represented_by_u6",
                 "rejects_invalid_fields_lengths_cursor_and_capacity_before_mutation",
+                "official_demo_header_fields_match_the_v2_bsi_receipt_without_sample_crc1",
+                "writes_official_demo_bsi_tail_through_absent_addbsie",
+                "official_demo_bsi_tail_rejects_wrong_cursor_and_short_capacity_before_mutation",
             )
         ),
-        "I0 BSI-tail map, vectors and production boundary are explicit",
+        "I0 BSI tests cover the official sample header and tail fields plus fail-before-write cases",
     )
 
     for optimized in (False, True):
@@ -12483,6 +12668,109 @@ def check_f12_flat7x_i0_ac3_bsi_tail_writer(root, d):
         ck(
             result.returncode == 0 and "I0_BSI_CONTINUATION_ORDER=BOUND_BY_ETSI" in result.stdout,
             "I0 BSI continuation package checker " + ("optimized" if optimized else "normal"),
+        )
+
+    annex_package = root / "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2"
+    annex_manifest_bytes = (annex_package / "MANIFEST.json").read_bytes()
+    annex_seal_bytes = (annex_package / "package_seal.json").read_bytes()
+    annex_values = json.loads((annex_package / "FIELD-VALUES.json").read_bytes())
+    bsi_fields = annex_values["bsi_fields"]
+    tail_names = [
+        "langcode", "audprodie", "copyrightb", "origbs", "xbsi1e", "dmixmod",
+        "ltrtcmixlev", "ltrtsurmixlev", "lorocmixlev", "lorosurmixlev", "xbsi2e",
+        "dsurexmod", "dheadphonmod", "adconvtyp", "xbsi2", "encinfo", "addbsie",
+    ]
+    tail_start = next(index for index, field in enumerate(bsi_fields) if field["name"] == "langcode")
+    tail_end = next(index for index, field in enumerate(bsi_fields) if field["name"] == "addbsie")
+    bsi_tail_fields = bsi_fields[tail_start : tail_end + 1]
+    bsi_field_values = {field["name"]: field["value"] for field in bsi_fields}
+    all_bsi_fields = {field["name"]: field for field in bsi_fields}
+    expected_tail_values = [0, 0, 1, 1, 1, 1, 4, 4, 4, 4, 1, 1, 0, 0, 0, 0, 0]
+    header_module = rust_code_without_comments(
+        (root / "crates/jocforge-domain/src/codec/i0_frame_assembler.rs").read_text(encoding="utf-8")
+    )
+    annex_writer_start = module.index("pub fn write_flat7x_i0_official_demo_bsi_tail(")
+    annex_writer_end = module.index("fn validate_input(", annex_writer_start)
+    annex_writer = module[annex_writer_start:annex_writer_end]
+    annex_catalog = (root / "outputs/IMPLEMENTER_SUPPLEMENTS/CATALOG.md").read_text(encoding="utf-8")
+    expected_annex_manifest = "85dcd2dfc96bdc57a3caaa7c6affde4eb2be43331afd75bedabf11c62193fa1a"
+    expected_annex_seal = "a977d2cb4af36a8d1ff44642b15bbf78a90535be94fbdf34866b8126c8ffa716"
+    observed_header = annex_values["i0_frame"]
+    v2_tail_matches = (
+        [field["name"] for field in bsi_tail_fields] == tail_names
+        and [field["value"] for field in bsi_tail_fields] == expected_tail_values
+        and bsi_tail_fields[0]["frame_bits"] == [70, 71]
+        and bsi_tail_fields[-1]["frame_bits"] == [104, 105]
+        and all(left["frame_bits"][1] == right["frame_bits"][0] for left, right in zip(bsi_tail_fields, bsi_tail_fields[1:]))
+        and annex_values.get("addbsi_payload") == {"present": False, "bytes": 0}
+        and annex_values.get("target_transfer", {}).get("user_target_rates_kbps")
+        == {"i0": 640, "d0": 1024, "aggregate": 1664}
+        and observed_header.get("frmsizecod") == 36
+        and observed_header.get("bsid") == 6
+        and observed_header.get("acmod") == 7
+        and observed_header.get("lfeon") == 1
+        and [bsi_field_values[name] for name in ("dialnorm", "compre", "compr")] == [31, 1, 1]
+        and [all_bsi_fields[name]["value"] for name in ("dialnorm", "compre", "compr")] == [31, 1, 1]
+    )
+    annex_writer_order = [
+        "writer.write_bit(values.langcode_present())?;",
+        "writer.write_bit(values.audprodie_present())?;",
+        "writer.write_bit(values.copyrightb())?;",
+        "writer.write_bit(values.original_bitstream())?;",
+        "writer.write_bit(values.xbsi1e())?;",
+        "writer.write_unsigned(u32::from(values.dmixmod()), 2)?;",
+        "writer.write_unsigned(u32::from(values.ltrtcmixlev()), 3)?;",
+        "writer.write_unsigned(u32::from(values.ltrtsurmixlev()), 3)?;",
+        "writer.write_unsigned(u32::from(values.lorocmixlev()), 3)?;",
+        "writer.write_unsigned(u32::from(values.lorosurmixlev()), 3)?;",
+        "writer.write_bit(values.xbsi2e())?;",
+        "writer.write_unsigned(u32::from(values.dsurexmod()), 2)?;",
+        "writer.write_unsigned(u32::from(values.dheadphonmod()), 2)?;",
+        "writer.write_bit(values.adconvtyp())?;",
+        "writer.write_unsigned(u32::from(values.xbsi2()), 8)?;",
+        "writer.write_bit(values.encinfo())?;",
+        "writer.write_bit(values.addbsie_present())?;",
+    ]
+    annex_writer_positions = [annex_writer.index(marker) for marker in annex_writer_order]
+    annex_header_fields = [
+        "frmsizecod: 36", "bsmod: 0", "cmixlev: 0", "surmixlev: 0", "dialnorm: 31", "compr: Some(1)"
+    ]
+    annex_catalog_entry = "OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2 | " + expected_annex_manifest
+    no_official_sample_tail_product_call = all(
+        "write_flat7x_i0_official_demo_bsi_tail(" not in path.read_text(encoding="utf-8")
+        for path in (root / "crates").glob("jocforge-*/src/**/*.rs")
+        if path != module_path
+    )
+    ck(
+        hashlib.sha256(annex_manifest_bytes).hexdigest() == expected_annex_manifest
+        and hashlib.sha256(annex_seal_bytes).hexdigest() == expected_annex_seal
+        and v2_tail_matches
+        and annex_catalog_entry in annex_catalog
+        and "OFFICIAL_DEMO_I0_BSI_TAIL_START_BIT: u32 = 70" in module
+        and "OFFICIAL_DEMO_I0_BSI_TAIL_BITS: u32 = 35" in module
+        and "Flat7xI0ObservedBsiTailValues::official_demo_sample()" in annex_writer
+        and annex_writer.index("writer.preflight_capacity(OFFICIAL_DEMO_I0_BSI_TAIL_BITS)?")
+        < min(annex_writer_positions)
+        and annex_writer_positions == sorted(annex_writer_positions)
+        and "official_demo_sample_non_crc_fields" in header_module
+        and all(token in header_module for token in annex_header_fields)
+        and "writer.write_bytes" not in annex_writer
+        and no_official_sample_tail_product_call,
+        "official sample I0 BSI through addbsie matches V2 and preserves audio/CRC as separate inputs",
+    )
+    for optimized in (False, True):
+        command = [sys.executable] + (["-O"] if optimized else []) + ["-X", "utf8", "-B", str(annex_package / "CHECK.py")]
+        result = subprocess.run(
+            command,
+            cwd=annex_package,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        ck(
+            result.returncode == 0
+            and "PASS package=OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2" in result.stdout,
+            "official-demo I0 BSI V2 package checker " + ("optimized" if optimized else "normal"),
         )
 
 def check_f12_flat7x_i0_typed_bsi_frame_assembly(root, d):
@@ -14110,8 +14398,33 @@ def check_partial_root_and_new_slice_mappings(root, d):
 
 
     flat7x_i0_d0_plan = next(item for item in entries["F01E"]["direct_slices"] if item["slice_id"] == "flat7x-i0-d0-typed-target-plan")
-    flat7x_open_gates = set(flat7x_i0_d0_plan.get("parameters", {}).get("target", {}).get("unbound_gates", []))
-    ck(flat7x_i0_d0_plan.get("implementation_status") == "LOCALLY_VERIFIED_TYPED_TARGET_AND_I0_D0_BYTE_SEQUENCE_CANDIDATE__NO_PRODUCTION_PATH" and flat7x_i0_d0_plan.get("parameters", {}).get("production_allowed") is False and flat7x_i0_d0_plan.get("parameters", {}).get("implementation_ready_for_audio") is False and "Flat7xAuByteSequenceError" in " ".join(item.get("error_code", "") for item in flat7x_i0_d0_plan.get("error_outcomes", [])) and {"ADM source-row to D0 role join", "native D0 audio algorithm", "native D0 writer owner", "all-AU EMDF fit"}.issubset(flat7x_open_gates), "Flat7x I0/D0 target and byte-sequence candidate keep syntax/audio/role gates open")
+    flat7x_target = flat7x_i0_d0_plan.get("parameters", {}).get("target", {})
+    flat7x_open_gates = set(flat7x_target.get("unbound_gates", []))
+    flat7x_i0_alternate_bsi = flat7x_target.get("i0", {}).get("alternate_bsi", {})
+    expected_flat7x_i0_alternate_bsi = {
+        "syntax": "ETSI TS 102 366 V1.4.1 Annex D xbs1e/xbsi2e",
+        "package_id": "OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2",
+        "supplement_manifest_sha256": "85dcd2dfc96bdc57a3caaa7c6affde4eb2be43331afd75bedabf11c62193fa1a",
+        "langcode": 0,
+        "audprodie": 0,
+        "copyrightb": 1,
+        "origbs": 1,
+        "xbsi1e": 1,
+        "dmixmod": 1,
+        "ltrtcmixlev": 4,
+        "ltrtsurmixlev": 4,
+        "lorocmixlev": 4,
+        "lorosurmixlev": 4,
+        "xbsi2e": 1,
+        "dsurexmod": 1,
+        "dheadphonmod": 0,
+        "adconvtyp": 0,
+        "xbsi2": 0,
+        "encinfo": 0,
+        "addbsie": 0,
+        "addbsi_payload_present": False,
+    }
+    ck(flat7x_i0_d0_plan.get("implementation_status") == "LOCALLY_VERIFIED_TYPED_TARGET_AND_I0_D0_BYTE_SEQUENCE_CANDIDATE__NO_PRODUCTION_PATH" and flat7x_i0_d0_plan.get("parameters", {}).get("production_allowed") is False and flat7x_i0_d0_plan.get("parameters", {}).get("implementation_ready_for_audio") is False and "Flat7xAuByteSequenceError" in " ".join(item.get("error_code", "") for item in flat7x_i0_d0_plan.get("error_outcomes", [])) and {"I0 BSI frame-assembly callsite", "ADM source-row to D0 role join", "native D0 audio algorithm", "native D0 writer owner", "all-AU EMDF fit"}.issubset(flat7x_open_gates) and flat7x_i0_alternate_bsi == expected_flat7x_i0_alternate_bsi, "Flat7x target binds the full washed I0 BSI while preserving frame-callsite/audio gates")
 
     flat7x_skip = next(item for item in entries["F12"]["direct_slices"] if item["slice_id"] == "flat7x-d0-block2-skipfld-serializer")
     flat7x_skip_target = flat7x_skip.get("parameters", {}).get("target", {})
@@ -15901,7 +16214,7 @@ def run(root=ROOT):
 
  d0_info_addbsi=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-d0-information-addbsi-suffix');verified_scopes+=(d0_info_addbsi['implementation_status']=='LOCALLY_VERIFIED_D0_INFORMATION_AND_ADDBSI_SUFFIX__FULL_FRAME_OPEN');ck(verified_scopes==80,'locally verified scoped-task count including the D0 informational/addbsi suffix')
 
- d0_bsi_structure=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-d0-bsi-structure-composition');verified_scopes+=(d0_bsi_structure['implementation_status']=='LOCALLY_VERIFIED_TYPED_D0_BSI_COMPOSITION_AND_ATOMIC_PREFLIGHT__FULL_FRAME_OPEN');ck(verified_scopes==81,'locally verified scoped-task count including typed D0 BSI composition')
+ d0_bsi_structure=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-d0-bsi-structure-composition');verified_scopes+=(d0_bsi_structure['implementation_status']=='LOCALLY_VERIFIED_TYPED_D0_BSI_COMPOSITION_AND_OFFICIAL_SAMPLE_FIELD_REPLAY__FULL_FRAME_OPEN');ck(verified_scopes==81,'locally verified scoped-task count including typed D0 BSI composition')
 
  d0_layout=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-d0-six-block-layout-proposal');verified_scopes+=(d0_layout['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_SIX_BLOCK_LAYOUT_AND_REJECTIONS__NO_FRAME_BYTES');ck(verified_scopes==82,'locally verified scoped-task count including the six-block D0 layout proposal')
 
@@ -15909,7 +16222,7 @@ def run(root=ROOT):
 
  d0_frame_assembler=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-d0-frame-bit-assembler');verified_scopes+=(d0_frame_assembler['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_EXACT_FRAME_ASSEMBLY_CRC2_AND_FAILURE_ATOMICITY__PRODUCTION_OPEN');ck(verified_scopes==84,'locally verified scoped-task count including generated D0 frame CRC2')
 
- opaque_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-d0-opaque-au-byte-composer');verified_scopes+=(opaque_au['implementation_status']=='LOCALLY_VERIFIED_TARGET_EXTENTS_ORDER_AND_ATOMIC_COMMIT__NO_CRC_OR_GENERATION');sequence_composer=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-sequence-composer');verified_scopes+=(sequence_composer['implementation_status']=='LOCALLY_VERIFIED_SEQUENCE_AND_D0_TO_AU_TO_STREAM_CHAIN__NO_PRODUCTION');stream_stage=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F15')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-staged-file-adapter');verified_scopes+=(stream_stage['implementation_status']=='LOCALLY_VERIFIED_F15_FINALIZE_LEDGER_STAGE_RECEIPT_JOIN_AND_TEMP_IO__SOURCE_CALLBACK_OPEN');ck(verified_scopes==87,'locally verified scoped-task count including Flat7x F15 finalize-to-stage integration');i0_frame_assembler=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-frame-bit-assembler');verified_scopes+=(i0_frame_assembler['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_ASSEMBLY_GENERATED_CRC1_CRC2_RESIDUALS__PRODUCTION_OPEN');ck(verified_scopes==88,'locally verified scoped-task count including I0 AC-3 structure assembly');i0_bsi_tail=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-ac3-bsi-tail-writer');verified_scopes+=(i0_bsi_tail['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_I0_BSI_TAIL_FIELD_SERIALIZATION__PRODUCTION_OPEN');ck(verified_scopes==89,'locally verified scoped-task count including I0 AC-3 BSI-tail serialization');i0_typed_frame=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-typed-bsi-frame-assembly-entry');verified_scopes+=(i0_typed_frame['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_TYPED_I0_BSI_TO_FRAME_COMPOSITION__PRODUCTION_OPEN');ck(verified_scopes==90,'locally verified scoped-task count including typed I0 BSI-to-frame composition');i0_ac3_audio=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-ac3-audio-block-producer');verified_scopes+=(i0_ac3_audio['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_AC3_BLOCK_ZERO_AUDIO_BLOCK_AND_PARSER__SIX_BLOCK_RATE_FIT_OPEN');ck(verified_scopes==91,'locally verified scoped-task count including AC-3 block-zero prototype')
+ opaque_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-d0-opaque-au-byte-composer');verified_scopes+=(opaque_au['implementation_status']=='LOCALLY_VERIFIED_TARGET_EXTENTS_ORDER_AND_ATOMIC_COMMIT__NO_CRC_OR_GENERATION');sequence_composer=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-sequence-composer');verified_scopes+=(sequence_composer['implementation_status']=='LOCALLY_VERIFIED_SEQUENCE_AND_D0_TO_AU_TO_STREAM_CHAIN__NO_PRODUCTION');stream_stage=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F15')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-staged-file-adapter');verified_scopes+=(stream_stage['implementation_status']=='LOCALLY_VERIFIED_F15_FINALIZE_LEDGER_STAGE_RECEIPT_JOIN_AND_TEMP_IO__SOURCE_CALLBACK_OPEN');ck(verified_scopes==87,'locally verified scoped-task count including Flat7x F15 finalize-to-stage integration');i0_frame_assembler=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-frame-bit-assembler');verified_scopes+=(i0_frame_assembler['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_ASSEMBLY_GENERATED_CRC1_CRC2_RESIDUALS__PRODUCTION_OPEN');ck(verified_scopes==88,'locally verified scoped-task count including I0 AC-3 structure assembly');i0_bsi_tail=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-ac3-bsi-tail-writer');verified_scopes+=(i0_bsi_tail['implementation_status']=='LOCALLY_VERIFIED_OFFICIAL_SAMPLE_I0_BSI_TAIL_THROUGH_ADDBSIE__FRAME_CALLSITE_OPEN');ck(verified_scopes==89,'locally verified scoped-task count including I0 BSI-tail through addbsie');i0_typed_frame=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-typed-bsi-frame-assembly-entry');verified_scopes+=(i0_typed_frame['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_TYPED_I0_BSI_TO_FRAME_COMPOSITION__PRODUCTION_OPEN');ck(verified_scopes==90,'locally verified scoped-task count including typed I0 BSI-to-frame composition');i0_ac3_audio=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-ac3-audio-block-producer');verified_scopes+=(i0_ac3_audio['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_AC3_BLOCK_ZERO_AUDIO_BLOCK_AND_PARSER__SIX_BLOCK_RATE_FIT_OPEN');ck(verified_scopes==91,'locally verified scoped-task count including AC-3 block-zero prototype')
 
  dep=d['approved_dependencies']['sha2']
 

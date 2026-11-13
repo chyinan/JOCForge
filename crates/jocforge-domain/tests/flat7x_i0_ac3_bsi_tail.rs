@@ -4,9 +4,11 @@
 use jocforge_domain::codec::{
     ac3_bsi_tail::{
         Flat7xI0Ac3AudioProductionInfo, Flat7xI0Ac3BsiTailError, Flat7xI0Ac3BsiTailInput,
-        I0Ac3TimeCodeField, write_flat7x_i0_ac3_bsi_tail,
+        Flat7xI0OfficialDemoBsiTailError, I0Ac3TimeCodeField, write_flat7x_i0_ac3_bsi_tail,
+        write_flat7x_i0_official_demo_bsi_tail,
     },
     bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError},
+    i0_frame_assembler::Flat7xI0Ac3FrameHeaderFields,
 };
 use serde_json::Value;
 
@@ -364,4 +366,116 @@ fn rejects_invalid_fields_lengths_cursor_and_capacity_before_mutation() {
         8,
         Flat7xI0Ac3BsiTailError::BitWriter(FrameBitWriterError::BufferTooSmall),
     );
+}
+
+#[test]
+fn official_demo_header_fields_match_the_v2_bsi_receipt_without_sample_crc1() {
+    let header = Flat7xI0Ac3FrameHeaderFields::official_demo_sample_non_crc_fields();
+    assert_eq!(header.frmsizecod, 36);
+    assert_eq!(header.bsmod, 0);
+    assert_eq!(header.cmixlev, 0);
+    assert_eq!(header.surmixlev, 0);
+    assert_eq!(header.dialnorm, 31);
+    assert_eq!(header.compr, Some(1));
+}
+
+#[test]
+fn writes_official_demo_bsi_tail_through_absent_addbsie() {
+    let mut bytes = [0_u8; 14];
+    let before = bytes;
+    let receipt;
+    let cursor;
+    {
+        let mut writer = FrameBitWriter::new(&mut bytes, FrameBitCursor::new(70)).unwrap();
+        receipt = write_flat7x_i0_official_demo_bsi_tail(&mut writer).unwrap();
+        cursor = writer.cursor().bit_offset();
+    }
+
+    assert_eq!(receipt.start_bit(), 70);
+    assert_eq!(receipt.end_bit(), 105);
+    assert_eq!(receipt.bit_length(), 35);
+    assert_eq!(cursor, 105);
+    assert!(!receipt.values().langcode_present());
+    assert!(!receipt.values().audprodie_present());
+    assert!(receipt.values().copyrightb());
+    assert!(receipt.values().original_bitstream());
+    assert!(receipt.values().xbsi1e());
+    assert_eq!(receipt.values().dmixmod(), 1);
+    assert_eq!(receipt.values().ltrtcmixlev(), 4);
+    assert_eq!(receipt.values().ltrtsurmixlev(), 4);
+    assert_eq!(receipt.values().lorocmixlev(), 4);
+    assert_eq!(receipt.values().lorosurmixlev(), 4);
+    assert!(receipt.values().xbsi2e());
+    assert_eq!(receipt.values().dsurexmod(), 1);
+    assert_eq!(receipt.values().dheadphonmod(), 0);
+    assert!(!receipt.values().adconvtyp());
+    assert_eq!(receipt.values().xbsi2(), 0);
+    assert!(!receipt.values().encinfo());
+    assert!(!receipt.values().addbsie_present());
+    assert!(!receipt.production_allowed());
+    for (start, width, value) in [
+        (70, 1, 0),
+        (71, 1, 0),
+        (72, 1, 1),
+        (73, 1, 1),
+        (74, 1, 1),
+        (75, 2, 1),
+        (77, 3, 4),
+        (80, 3, 4),
+        (83, 3, 4),
+        (86, 3, 4),
+        (89, 1, 1),
+        (90, 2, 1),
+        (92, 2, 0),
+        (94, 1, 0),
+        (95, 8, 0),
+        (103, 1, 0),
+        (104, 1, 0),
+    ] {
+        assert_eq!(
+            read_bits(&bytes, start, width),
+            value,
+            "frame bits {start}..{}",
+            start + u32::from(width)
+        );
+    }
+    assert_outside_extent_unchanged(&before, &bytes, 70, 105);
+}
+
+#[test]
+fn official_demo_bsi_tail_rejects_wrong_cursor_and_short_capacity_before_mutation() {
+    let mut wrong_cursor_bytes = [0x5a_u8; 12];
+    let wrong_cursor_before = wrong_cursor_bytes;
+    let wrong_cursor_result;
+    let wrong_cursor_after;
+    {
+        let mut writer =
+            FrameBitWriter::new(&mut wrong_cursor_bytes, FrameBitCursor::new(69)).unwrap();
+        wrong_cursor_result = write_flat7x_i0_official_demo_bsi_tail(&mut writer);
+        wrong_cursor_after = writer.cursor().bit_offset();
+    }
+    assert_eq!(
+        wrong_cursor_result,
+        Err(Flat7xI0OfficialDemoBsiTailError::StartCursorMismatch { actual: 69 })
+    );
+    assert_eq!(wrong_cursor_after, 69);
+    assert_eq!(wrong_cursor_bytes, wrong_cursor_before);
+
+    let mut short_bytes = [0x96_u8; 13];
+    let short_before = short_bytes;
+    let short_result;
+    let short_cursor;
+    {
+        let mut writer = FrameBitWriter::new(&mut short_bytes, FrameBitCursor::new(70)).unwrap();
+        short_result = write_flat7x_i0_official_demo_bsi_tail(&mut writer);
+        short_cursor = writer.cursor().bit_offset();
+    }
+    assert!(matches!(
+        short_result,
+        Err(Flat7xI0OfficialDemoBsiTailError::BitWriter(
+            FrameBitWriterError::BufferTooSmall
+        ))
+    ));
+    assert_eq!(short_cursor, 70);
+    assert_eq!(short_bytes, short_before);
 }

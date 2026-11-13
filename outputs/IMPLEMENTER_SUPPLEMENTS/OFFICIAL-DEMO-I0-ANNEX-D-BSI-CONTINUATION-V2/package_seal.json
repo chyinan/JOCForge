@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-implementer-supplement-seal.v1",
+  "package_id": "OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2",
+  "manifest_sha256": "85dcd2dfc96bdc57a3caaa7c6affde4eb2be43331afd75bedabf11c62193fa1a",
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 4382,
+      "sha256": "ff048b7ff3937c159d5f1e86b0d4575b09010bc25072ee77817dae405431304b"
+    },
+    {
+      "path": "FIELD-VALUES.json",
+      "bytes": 7384,
+      "sha256": "fc63f28110d8d6b9402203ece59bf3352d98aef506b5c3b7d8667a6a1530e358"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 1080,
+      "sha256": "e6db6e43dc46c21311503ce609c4aff7ec50da537807d6c404ea26a31ec1f7c8"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 1996,
+      "sha256": "b2e1028ad701450d2a7b2465d497c7b34918727cb84d38f1a7e30afb6c5e4953"
+    }
+  ]
+}

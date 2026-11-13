@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge.wash.official_demo_i0_bsi_provenance.v2",
+  "source": {
+    "attribution": "USER_DESIGNATED",
+    "sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+    "size_bytes": 118008186,
+    "source_path_included": false,
+    "raw_media_or_frame_bytes_included": false
+  },
+  "parent_receipts": [
+    {
+      "package_id": "OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1",
+      "manifest_sha256": "f7f8630c3f18e990324f013e70486c561de6816a844f852f18f03a82ce28fbfc",
+      "seal_sha256": "2d883e278bb83fa0d617610f94b8a87fa5849ac7bf19bdf08818d8d30d50740e"
+    },
+    {
+      "package_id": "OFFICIAL-DEMO-I0-ANNEX-D-MIX-LEVELS-V1",
+      "manifest_sha256": "7fd8ce2815164823c6389a3551c78e813749798526fd22848e451b830a397399",
+      "seal_sha256": "6f9386b3fc363d67832d5eaa7871d341f98a0253285422135cdc9a01dd09c826",
+      "field_ledger_sha256": "02542eb8bbcf201d4364819c073b25b14d9510af8c656cc7c43f482a150d3c92"
+    },
+    {
+      "package_id": "OFFICIAL-DEMO-I0-ANNEX-D-XBSI2-FOLLOW-ON-WASH-2026-11-13",
+      "manifest_sha256": "3817e6a9545e0af3489d1c72c1f4bb01597f2b20b6a504708d85560f091992f9",
+      "seal_sha256": "ee92b1b57b47c63429c7b66d243e786e3b59c40d730f72d8eaf4d1292c5d058b",
+      "field_ledger_sha256": "89ab1160bb270cf6cc11a6e05abc8b0437b8243051da02351af28856a1b23a46"
+    },
+    {
+      "package_id": "OFFICIAL-DEMO-I0-ANNEX-D-ADDBSI-LENGTH-WASH-2026-11-13",
+      "manifest_sha256": "94c5566503e7cbd90373db52a4b984c137d3704f1514c6783afc6c575bcc7ecc",
+      "seal_sha256": "48dcfa68e5ae3a758eec69ce953a0e7a275208505b1eb165f33d804631f0a04e",
+      "field_ledger_sha256": "df4463d42c0f8420651d90afb3dee52256805d291dc5b771f7edb3be8816e34f"
+    }
+  ],
+  "independent_wash_checks": {
+    "source_hash_recomputed": true,
+    "parser_replay_field_ledgers_byte_identical": true,
+    "parser_scripts_forwarded": false,
+    "dee_or_encoder_run": "NOT_RUN",
+    "audio_decode_or_listen": "NOT_RUN"
+  },
+  "standard_reference": "ETSI TS 102 366 V1.4.1 Annex D"
+}

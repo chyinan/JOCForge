@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge.official_demo_d0_bsi_provenance.v1",
+  "package_id": "OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1",
+  "audience": "IMPLEMENTATION_EVIDENCE_ONLY",
+  "source": {
+    "attribution": "USER_DESIGNATED",
+    "sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+    "size_bytes": 118008186,
+    "raw_media_or_frame_bytes_in_package": false,
+    "parser_source_in_package": false
+  },
+  "wash_package": {
+    "package_id": "OFFICIAL-DEMO-D0-EAC3-BSI-WASH-2026-11-13",
+    "manifest_sha256": "4766e4a1c80fc46826c92dd08a27552daee2ff7e22e952fe1761bf064c0cfea0",
+    "package_seal_sha256": "0f2a23ad002c3e8e17e8da58f6a75f52fd6f69403a3069c7832a9d103c6b4dd9",
+    "source_rehashed_by_wash": true,
+    "normal_checker": "PASS",
+    "python_optimized_checker": "PASS",
+    "local_shared_file_copy": "8_FILES_BYTE_IDENTICAL"
+  },
+  "structure_receipts": {
+    "official_demo_structure_package_id": "OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1",
+    "manifest_sha256": "f7f8630c3f18e990324f013e70486c561de6816a844f852f18f03a82ce28fbfc",
+    "package_seal_sha256": "2d883e278bb83fa0d617610f94b8a87fa5849ac7bf19bdf08818d8d30d50740e",
+    "sequential_receipt_sha256": "b1ec8446dcf810905b8cf597a7633c1f5cf0802c59255f03ff1bd943fbe7e378",
+    "packet_boundary_manifest_sha256": "13b691cc9dfc67667b1f02eb28f2257516d284992a58cc80a14569c5ef5ecd9d",
+    "packet_frame_order": ["I0_LEGACY_INDEPENDENT", "D0_DEPENDENT"]
+  },
+  "interpretation": {
+    "observed_sample_rate": "I0 640 kbps + D0 640 kbps = 1280 kbps aggregate",
+    "approved_target_rate": "I0 640 kbps + D0 1024 kbps = 1664 kbps aggregate",
+    "sample_d0_frmsiz_is_target_value": false,
+    "dialnorm_and_compression_values_are_sample_specific": true,
+    "xml_or_adm_drc_mapping_provided": false
+  },
+  "processing_scope": {
+    "read_through": "D0 BSI chanmap field",
+    "audio_decode": "NOT_RUN",
+    "dee_or_encoder": "NOT_RUN",
+    "raw_payload_export": "NOT_RUN",
+    "implementation_audio_algorithm": "NOT_PROVIDED"
+  }
+}

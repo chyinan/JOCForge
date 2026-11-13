@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-implementer-supplement-seal.v1",
+  "package_id": "OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1",
+  "manifest_sha256": "35a4527798ccfe6421ce94e380614d721d75a43738bdca0bb9235d2811f2b161",
+  "file_count": 4,
+  "seal_excludes_itself": true,
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 4433,
+      "sha256": "8335535e49eaddb9bd3ff1aaa711294618a9c4db88ad7b77b0be0969c27067a9"
+    },
+    {
+      "path": "FIELD-VALUES.json",
+      "bytes": 3457,
+      "sha256": "88fd39b84788b7abd0de47cd563fe501134decea8c84589268b9da8fa3800cbf"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 1393,
+      "sha256": "9d133e9974cedfdcd61047a04b4e751544fd301318c0903853e01a61a0301a25"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 2007,
+      "sha256": "ead9e282e8c0321a49da0f2014e9daca9e17a1955ffc0f081fed971f76f19030"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "schema": "jocforge.official_demo_d0_bsi_input_vector.v1",
+  "package_id": "OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1",
+  "evidence_kind": "OBSERVED_OFFICIAL_SAMPLE_FIELDS",
+  "source_sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+  "reference_access_unit": {
+    "track_number": 1,
+    "codec_id": "A_EAC3",
+    "laced_packet_index": 0,
+    "laced_packet_count": 8,
+    "packet_offset_bytes": 5424,
+    "packet_bytes": 5120,
+    "frame_order": ["I0", "D0"],
+    "sample_aggregate_rate_kbps": 1280
+  },
+  "i0_locator": {
+    "file_byte_offset": 5424,
+    "frame_bytes": 2560,
+    "bsid": 6,
+    "acmod": 7,
+    "lfeon": 1
+  },
+  "d0_sample_frame": {
+    "file_byte_offset": 7984,
+    "frame_bytes": 2560,
+    "sample_rate_kbps": 640,
+    "observed_frmsiz": 1279,
+    "fields_through_chanmap": [
+      {"name": "syncword", "width_bits": 16, "value": 2935, "hex_value": "0x0B77", "frame_bit_start": 0, "frame_bit_end": 16, "file_bit_start": 63872, "file_bit_end": 63888},
+      {"name": "strmtyp", "width_bits": 2, "value": 1, "frame_bit_start": 16, "frame_bit_end": 18, "file_bit_start": 63888, "file_bit_end": 63890},
+      {"name": "substreamid", "width_bits": 3, "value": 0, "frame_bit_start": 18, "frame_bit_end": 21, "file_bit_start": 63890, "file_bit_end": 63893},
+      {"name": "frmsiz", "width_bits": 11, "value": 1279, "frame_bit_start": 21, "frame_bit_end": 32, "file_bit_start": 63893, "file_bit_end": 63904},
+      {"name": "fscod", "width_bits": 2, "value": 0, "frame_bit_start": 32, "frame_bit_end": 34, "file_bit_start": 63904, "file_bit_end": 63906},
+      {"name": "numblkscod", "width_bits": 2, "value": 3, "frame_bit_start": 34, "frame_bit_end": 36, "file_bit_start": 63906, "file_bit_end": 63908},
+      {"name": "acmod", "width_bits": 3, "value": 5, "frame_bit_start": 36, "frame_bit_end": 39, "file_bit_start": 63908, "file_bit_end": 63911},
+      {"name": "lfeon", "width_bits": 1, "value": 0, "frame_bit_start": 39, "frame_bit_end": 40, "file_bit_start": 63911, "file_bit_end": 63912},
+      {"name": "bsid", "width_bits": 5, "value": 16, "frame_bit_start": 40, "frame_bit_end": 45, "file_bit_start": 63912, "file_bit_end": 63917},
+      {"name": "dialnorm", "width_bits": 5, "value": 31, "frame_bit_start": 45, "frame_bit_end": 50, "file_bit_start": 63917, "file_bit_end": 63922},
+      {"name": "compre", "width_bits": 1, "value": 1, "frame_bit_start": 50, "frame_bit_end": 51, "file_bit_start": 63922, "file_bit_end": 63923},
+      {"name": "compr", "width_bits": 8, "value": 1, "frame_bit_start": 51, "frame_bit_end": 59, "file_bit_start": 63923, "file_bit_end": 63931},
+      {"name": "chanmape", "width_bits": 1, "value": 1, "frame_bit_start": 59, "frame_bit_end": 60, "file_bit_start": 63931, "file_bit_end": 63932},
+      {"name": "chanmap", "width_bits": 16, "value": 6656, "hex_value": "0x1A00", "frame_bit_start": 60, "frame_bit_end": 76, "file_bit_start": 63932, "file_bit_end": 63948}
+    ],
+    "stop_after": "chanmap",
+    "next_field_read": false
+  },
+  "target_rate_contract": {
+    "package_id": "FLAT7X-D0-RATE-FRMSIZ-TARGET-V1",
+    "manifest_sha256": "1eb4311e3f63ec84c57c7fe636a8a21773bd633ae3f4fe9b0739b88e09e66139",
+    "package_seal_sha256": "136c7f4f22687b0508527799ee2a1b783546cdf449d20786bd8a7134894533c9",
+    "target_rate_kbps": 1024,
+    "target_frame_bytes": 4096,
+    "target_frmsiz": 2047,
+    "evidence_kind": "SEPARATE_TARGET_CONTRACT_NOT_SAMPLE_OBSERVATION"
+  }
+}

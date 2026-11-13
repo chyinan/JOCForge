@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-implementer-supplement-seal.v1",
+  "package_id": "OFFICIAL-DEMO-I0-ANNEX-D-MIX-LEVELS-V1",
+  "manifest_sha256": "7fd8ce2815164823c6389a3551c78e813749798526fd22848e451b830a397399",
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 3641,
+      "sha256": "1d765b0ed04a54ca29fb1679cd34ea97165cff3dd571f4bd2af23488e3e94f10"
+    },
+    {
+      "path": "FIELD-VALUES.json",
+      "bytes": 3084,
+      "sha256": "fc8265cad2d8304bdcaea7973ea66f812e05a985a032149ed6ccfe7079e2466c"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 1122,
+      "sha256": "1ade9454926a65041c0693fe373d66e86b9eeadf0d74585882e75fcd05f53dfa"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 1597,
+      "sha256": "9f9e6e6caf384c9feaf6321a311a5935baccd96a729c11b89a90dddef791ce54"
+    }
+  ]
+}

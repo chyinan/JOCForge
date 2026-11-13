@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.wash.official_demo_i0_annex_d_provenance.v1",
+  "source": {
+    "attribution": "USER_DESIGNATED",
+    "sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+    "bytes": 118008186,
+    "source_path_included": false,
+    "raw_media_or_frame_bytes_included": false
+  },
+  "verified_parent_receipts": [
+    {
+      "package_id": "OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V1",
+      "manifest_sha256": "f7f8630c3f18e990324f013e70486c561de6816a844f852f18f03a82ce28fbfc",
+      "seal_sha256": "2d883e278bb83fa0d617610f94b8a87fa5849ac7bf19bdf08818d8d30d50740e"
+    },
+    {
+      "package_id": "DEE-ADM-MKA-SEQUENTIAL-I0-D0-REVIEW-RECEIPT",
+      "receipt_sha256": "b1ec8446dcf810905b8cf597a7633c1f5cf0802c59255f03ff1bd943fbe7e378",
+      "packet_boundary_manifest_sha256": "13b691cc9dfc67667b1f02eb28f2257516d284992a58cc80a14569c5ef5ecd9d"
+    },
+    {
+      "package_id": "OFFICIAL-DEMO-I0-ANNEX-D-BSI-WASH-2026-11-13",
+      "manifest_sha256": "3ec6761e4b3e7b0cc23ac04e74c3f763c064ea41a31c86c0a3335c92b9549b99",
+      "seal_sha256": "b2b8407e35e1fb85f3f01bc878e3a15caf843245547e27445359150301afc9a4",
+      "replayed_field_ledger_sha256": "02542eb8bbcf201d4364819c073b25b14d9510af8c656cc7c43f482a150d3c92"
+    }
+  ],
+  "verification": {
+    "source_hash_recomputed_by_wash": true,
+    "parser_replay_field_ledger_byte_identical": true,
+    "raw_parser_source_delivered_to_implementation": false,
+    "dee_or_encoder_run": "NOT_RUN",
+    "audio_decode_or_listen": "NOT_RUN"
+  },
+  "standard_reference": "ETSI TS 102 366 V1.4.1 Annex D, clauses D.1.2-D.1.3"
+}

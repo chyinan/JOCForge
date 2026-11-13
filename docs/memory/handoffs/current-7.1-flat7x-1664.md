@@ -201,7 +201,7 @@ Wash package `FLAT7X-ID14-OBJECT-COUNT-DOWNMIX-AND-COMPLEXITY-FIELDS-V1` was cop
 
 The official sample does not bind algorithm-level JOC mode/phase controls or the native F12 complexity candidate to this target profile or generation. Those joins remain open. Selecting the measured structure does not assert output acceptance or production readiness; `production_allowed=false` remains in force.
 
-The I0 target records the demo-observed `dmixmod=1`, but the AC-3 BSID6 wire path carries this in ETSI TS 102 366 V1.4.1 Annex D's `xbs1e` group with four additional 3-bit mixing levels. The current I0 BSI writer has no typed `xbs1e`/mix-level input; the four values are `NOT_CAPTURED` in the registered demo supplements, so `I0AlternateBsiMixMetadataWriter` remains an explicit open gate. The existing optional U14 time-code inputs are not treated as a substitute.
+The AC-3 BSID6 wire path carries `dmixmod=1` in the Annex-D `xbs1e` group. The V1 mix-level subset established the four code-4 levels; the later V2 continuation supersedes it for target use by providing the complete observed suffix through `addbsie=0`.
 
 Wash package `FLAT7X-D0-RATE-FRMSIZ-TARGET-V1` passes normal and optimized checks (manifest SHA-256 `1eb4311e3f63ec84c57c7fe636a8a21773bd633ae3f4fe9b0739b88e09e66139`, seal SHA-256 `136c7f4f22687b0508527799ee2a1b783546cdf449d20786bd8a7134894533c9`). The typed target tests now keep the D0 E-AC-3 code 2047 separate from I0 AC-3 `frmsizecod`, frame byte counts, and AU aggregate rate. Native runtime rate-slot/generation joins remain open.
 
@@ -209,10 +209,26 @@ Wash package `FLAT7X-D0-RATE-FRMSIZ-TARGET-V1` passes normal and optimized check
 
 The F15 staging adapter writes one validated pair proposal in per-span order (I0, then D0) and returns its after-owner only after write/sync/readback and CRC checks for both spans. Wrong attempt, offset mismatch or write/readback failure retires and abandons the staging session; the 5.1 append path is unchanged. Its synthetic receipt fixture bypasses F13/F12 producer stages, and the adapter has no product CLI caller or final-file exposure.
 
+## 2026-11-13 official sample I0 BSI continuation
+
+Wash package `OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2` passed normal and optimized checkers. Manifest SHA-256 is `85dcd2dfc96bdc57a3caaa7c6affde4eb2be43331afd75bedabf11c62193fa1a`; `package_seal.json` SHA-256 is `a977d2cb4af36a8d1ff44642b15bbf78a90535be94fbdf34866b8126c8ffa716`. It records header and BSI through `addbsie=0`: sample `frmsizecod=36`, `dialnorm=31`, `compre=1`/`compr=1`; Annex-D `xbsi1e=1`, `dmixmod=1`, four mix levels code 4; `xbsi2e=1`, `dsurexmod=1`, `dheadphonmod=0`, `adconvtyp=0`, `xbsi2=0`, `encinfo=0`; and `addbsie=0` with no payload. The sample I0 rate is 640 kbps and the target remains I0 640 + D0 1024 = 1664 kbps.
+
+## 2026-11-13 official sample D0 BSI through chanmap
+
+Wash package `OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1` passed normal and optimized checks. Manifest SHA-256 is `35a4527798ccfe6421ce94e380614d721d75a43738bdca0bb9235d2811f2b161`; seal SHA-256 is `5d5902e0bdee4a9a0b8b0e0fe31c975c94ef315fa39f382ecef7cebc1f81c877`. Wash independently recomputed the user-designated MKA SHA and synchronized an 8-file sanitized receipt copy. The first AU is I0 then D0; D0 begins at byte 7,984 and the observed BSI ends at frame bit 76 with `chanmape=1`, `chanmap=0x1A00`.
+
+The observed sample D0 is 640 kbps/2,560 bytes with `frmsiz=1279`. The separate 1,024-kbps target contract remains 4,096 bytes/`frmsiz=2047`. The sample's `dialnorm=31` and `compre=1`/`compr=1` stay sample-specific; this package does not define XML/ADM DRC mapping. The D0 header vector is available for structural serialization; D0 audio generation and complete output remain open.
+
+The local `official_demo_d0_bsi` test replays the sanitized vector through `chanmap` at bit 76 with the existing structural writer. It keeps sample `dialnorm`/`compre`/`compr` as vector inputs and replaces only `frmsiz` with target value 2047. This verifies the captured D0 BSI field sequence and keeps the 640-kbps sample frame separate from the 1,024-kbps target frame; D0 audio-span production remains gated.
+
+`Flat7xI0Ac3FrameHeaderFields::official_demo_sample_non_crc_fields` supplies the observed variable header values while the assembler continues to generate CRC1 from the assembled target frame. `write_flat7x_i0_official_demo_bsi_tail` writes the complete 35-bit suffix from frame bit 70 through addbsie at bit 105. The focused BSI-tail suite passes 7 tests, including all sample field values, exact extent, wrong-cursor rejection, and short-capacity atomicity. The boundary checker replays the V2 package normally and with `python -O`.
+
+The remaining I0 gate is `I0BsiFrameAssemblyCallsite`; complete I0 frame assembly with audio and its production callback remain open. The 1,664-kbps target retains I0 640 + D0 1024; V2 supplies sample non-rate I0 values from the 1,280-kbps reference.
+
 ## 2026-11-13 callback source-to-pair input seam
 
 `stage_source_frame` now joins the selected 1664-kbps target, current provisional PCM-row projection, and same-source F12 numeric-plan receipt by `SharedAnalysisIdentity`. The pair-source binding preserves the projection receipt and actual row views for the I0/D0 frame assemblers.
 
 D0 block spans require `Flat7xD0AudioSpanReceipt` with the attempt, source transaction, source index and analysis-after generation. Receipt identity mismatch rejects the pair candidate. The current production callback supplies the typed disabled state `NoApprovedAudioProductionRule` and exits before the selected single-frame output staging seam. `Provided` spans can currently be constructed only by module tests; the I0/D0 audio-block candidate helper is ready for an approved producer and explicit I0 caller policy.
 
-Validation: formatting, scoped workspace check, the two D0 receipt boundary tests, the selected 5.1 all-rate route regression, and boundary inventory passed (`91` scoped tasks, `104` IDs, `0` unmaterialized roots, `6` partial roots). The first-file blocker is still a Wash-approved D0 audio-span producer with a same-source receipt. Complete pair frame assembly, the pair F13/I0/D0 integrity receipt join, product output, and W04 remain open. The official-demo I0 Annex-D mix-level values remain `NOT_CAPTURED`.
+Validation: formatting, scoped workspace check, the two D0 receipt boundary tests, the selected 5.1 all-rate route regression, and boundary inventory passed (`91` scoped tasks, `104` IDs, `0` unmaterialized roots, `6` partial roots). The first-file blocker is still a Wash-approved D0 audio-span producer with a same-source receipt. The V2 sample BSI is now structurally writable through `addbsie=0`; the full I0 frame callsite, pair F13/I0/D0 integrity receipt join, product output, and W04 remain open.

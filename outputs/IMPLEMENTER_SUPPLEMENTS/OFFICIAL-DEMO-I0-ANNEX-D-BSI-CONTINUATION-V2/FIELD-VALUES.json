@@ -1,0 +1,452 @@
+{
+  "schema": "jocforge.wash.official_demo_i0_bsi.v2",
+  "evidence_class": "WASHED_SAMPLE_OBSERVATION",
+  "production_allowed": false,
+  "source_sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+  "sample_rates_kbps": {
+    "i0": 640,
+    "d0": 640,
+    "aggregate": 1280
+  },
+  "i0_frame": {
+    "classification": "AC3_BSID6_LEGACY_INDEPENDENT",
+    "offset_bytes": 5424,
+    "frame_bytes": 2560,
+    "syncword": "0x0B77",
+    "fscod": 0,
+    "frmsizecod": 36,
+    "bsid": 6,
+    "bsmod": 0,
+    "acmod": 7,
+    "cmixlev": 0,
+    "surmixlev": 0,
+    "lfeon": 1
+  },
+  "bsi_fields": [
+    {
+      "name": "syncword",
+      "present": true,
+      "width_bits": 16,
+      "value": 2935,
+      "frame_bits": [
+        0,
+        16
+      ],
+      "file_bits": [
+        43392,
+        43408
+      ]
+    },
+    {
+      "name": "fscod",
+      "present": true,
+      "width_bits": 2,
+      "value": 0,
+      "frame_bits": [
+        32,
+        34
+      ],
+      "file_bits": [
+        43424,
+        43426
+      ]
+    },
+    {
+      "name": "frmsizecod",
+      "present": true,
+      "width_bits": 6,
+      "value": 36,
+      "frame_bits": [
+        34,
+        40
+      ],
+      "file_bits": [
+        43426,
+        43432
+      ]
+    },
+    {
+      "name": "bsid",
+      "present": true,
+      "width_bits": 5,
+      "value": 6,
+      "frame_bits": [
+        40,
+        45
+      ],
+      "file_bits": [
+        43432,
+        43437
+      ]
+    },
+    {
+      "name": "bsmod",
+      "present": true,
+      "width_bits": 3,
+      "value": 0,
+      "frame_bits": [
+        45,
+        48
+      ],
+      "file_bits": [
+        43437,
+        43440
+      ]
+    },
+    {
+      "name": "acmod",
+      "present": true,
+      "width_bits": 3,
+      "value": 7,
+      "frame_bits": [
+        48,
+        51
+      ],
+      "file_bits": [
+        43440,
+        43443
+      ]
+    },
+    {
+      "name": "cmixlev",
+      "present": true,
+      "width_bits": 2,
+      "value": 0,
+      "frame_bits": [
+        51,
+        53
+      ],
+      "file_bits": [
+        43443,
+        43445
+      ]
+    },
+    {
+      "name": "surmixlev",
+      "present": true,
+      "width_bits": 2,
+      "value": 0,
+      "frame_bits": [
+        53,
+        55
+      ],
+      "file_bits": [
+        43445,
+        43447
+      ]
+    },
+    {
+      "name": "lfeon",
+      "present": true,
+      "width_bits": 1,
+      "value": 1,
+      "frame_bits": [
+        55,
+        56
+      ],
+      "file_bits": [
+        43447,
+        43448
+      ]
+    },
+    {
+      "name": "dialnorm",
+      "present": true,
+      "width_bits": 5,
+      "value": 31,
+      "frame_bits": [
+        56,
+        61
+      ],
+      "file_bits": [
+        43448,
+        43453
+      ]
+    },
+    {
+      "name": "compre",
+      "present": true,
+      "width_bits": 1,
+      "value": 1,
+      "frame_bits": [
+        61,
+        62
+      ],
+      "file_bits": [
+        43453,
+        43454
+      ]
+    },
+    {
+      "name": "compr",
+      "present": true,
+      "width_bits": 8,
+      "value": 1,
+      "frame_bits": [
+        62,
+        70
+      ],
+      "file_bits": [
+        43454,
+        43462
+      ]
+    },
+    {
+      "name": "langcode",
+      "present": true,
+      "width_bits": 1,
+      "value": 0,
+      "frame_bits": [
+        70,
+        71
+      ],
+      "file_bits": [
+        43462,
+        43463
+      ]
+    },
+    {
+      "name": "audprodie",
+      "present": true,
+      "width_bits": 1,
+      "value": 0,
+      "frame_bits": [
+        71,
+        72
+      ],
+      "file_bits": [
+        43463,
+        43464
+      ]
+    },
+    {
+      "name": "copyrightb",
+      "present": true,
+      "width_bits": 1,
+      "value": 1,
+      "frame_bits": [
+        72,
+        73
+      ],
+      "file_bits": [
+        43464,
+        43465
+      ]
+    },
+    {
+      "name": "origbs",
+      "present": true,
+      "width_bits": 1,
+      "value": 1,
+      "frame_bits": [
+        73,
+        74
+      ],
+      "file_bits": [
+        43465,
+        43466
+      ]
+    },
+    {
+      "name": "xbsi1e",
+      "present": true,
+      "width_bits": 1,
+      "value": 1,
+      "frame_bits": [
+        74,
+        75
+      ],
+      "file_bits": [
+        43466,
+        43467
+      ]
+    },
+    {
+      "name": "dmixmod",
+      "present": true,
+      "width_bits": 2,
+      "value": 1,
+      "frame_bits": [
+        75,
+        77
+      ],
+      "file_bits": [
+        43467,
+        43469
+      ]
+    },
+    {
+      "name": "ltrtcmixlev",
+      "present": true,
+      "width_bits": 3,
+      "value": 4,
+      "frame_bits": [
+        77,
+        80
+      ],
+      "file_bits": [
+        43469,
+        43472
+      ]
+    },
+    {
+      "name": "ltrtsurmixlev",
+      "present": true,
+      "width_bits": 3,
+      "value": 4,
+      "frame_bits": [
+        80,
+        83
+      ],
+      "file_bits": [
+        43472,
+        43475
+      ]
+    },
+    {
+      "name": "lorocmixlev",
+      "present": true,
+      "width_bits": 3,
+      "value": 4,
+      "frame_bits": [
+        83,
+        86
+      ],
+      "file_bits": [
+        43475,
+        43478
+      ]
+    },
+    {
+      "name": "lorosurmixlev",
+      "present": true,
+      "width_bits": 3,
+      "value": 4,
+      "frame_bits": [
+        86,
+        89
+      ],
+      "file_bits": [
+        43478,
+        43481
+      ]
+    },
+    {
+      "name": "xbsi2e",
+      "present": true,
+      "width_bits": 1,
+      "value": 1,
+      "frame_bits": [
+        89,
+        90
+      ],
+      "file_bits": [
+        43481,
+        43482
+      ]
+    },
+    {
+      "name": "dsurexmod",
+      "present": true,
+      "width_bits": 2,
+      "value": 1,
+      "frame_bits": [
+        90,
+        92
+      ],
+      "file_bits": [
+        43482,
+        43484
+      ]
+    },
+    {
+      "name": "dheadphonmod",
+      "present": true,
+      "width_bits": 2,
+      "value": 0,
+      "frame_bits": [
+        92,
+        94
+      ],
+      "file_bits": [
+        43484,
+        43486
+      ]
+    },
+    {
+      "name": "adconvtyp",
+      "present": true,
+      "width_bits": 1,
+      "value": 0,
+      "frame_bits": [
+        94,
+        95
+      ],
+      "file_bits": [
+        43486,
+        43487
+      ]
+    },
+    {
+      "name": "xbsi2",
+      "present": true,
+      "width_bits": 8,
+      "value": 0,
+      "frame_bits": [
+        95,
+        103
+      ],
+      "file_bits": [
+        43487,
+        43495
+      ]
+    },
+    {
+      "name": "encinfo",
+      "present": true,
+      "width_bits": 1,
+      "value": 0,
+      "frame_bits": [
+        103,
+        104
+      ],
+      "file_bits": [
+        43495,
+        43496
+      ]
+    },
+    {
+      "name": "addbsie",
+      "present": true,
+      "width_bits": 1,
+      "value": 0,
+      "frame_bits": [
+        104,
+        105
+      ],
+      "file_bits": [
+        43496,
+        43497
+      ]
+    }
+  ],
+  "addbsi_payload": {
+    "present": false,
+    "bytes": 0
+  },
+  "target_transfer": {
+    "user_target_rates_kbps": {
+      "i0": 640,
+      "d0": 1024,
+      "aggregate": 1664
+    },
+    "rule": "Transfer all observed sample I0 non-rate fields to the target; override only the D0 rate as user-directed.",
+    "target_output_observed": false
+  },
+  "remaining_gates": {
+    "audblk_generation": "NOT_RUN",
+    "complete_i0_frame": "NOT_RUN",
+    "d0_audio_algorithm": "UNBOUND",
+    "complete_1664_kbps_output": "NOT_RUN"
+  }
+}

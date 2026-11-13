@@ -10394,8 +10394,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 37208,
-              "sha256": "d92a8d5e0d5c4a6eeabfd509379ff228f254e43c05781811d8b6e5bd43e289e6"
+              "bytes": 37193,
+              "sha256": "447ce471b905e13db8b3b8207af9c63026ac5eefb7a8dbfbe4321faf8819af8b"
             },
             {
               "path": "crates/jocforge-domain/src/profile/mod.rs",
@@ -10406,8 +10406,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 37208,
-              "sha256": "d92a8d5e0d5c4a6eeabfd509379ff228f254e43c05781811d8b6e5bd43e289e6"
+              "bytes": 37193,
+              "sha256": "447ce471b905e13db8b3b8207af9c63026ac5eefb7a8dbfbe4321faf8819af8b"
             }
           ],
           "clock": {
@@ -10456,13 +10456,27 @@
                 "bsid": 6,
                 "dmixmod": 1,
                 "alternate_bsi": {
-                  "syntax": "ETSI TS 102 366 V1.4.1 Annex D xbs1e",
-                  "xbs1e": "PRESENT_TO_CARRY_DMIXMOD",
+                  "syntax": "ETSI TS 102 366 V1.4.1 Annex D xbs1e/xbsi2e",
+                  "package_id": "OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2",
+                  "supplement_manifest_sha256": "85dcd2dfc96bdc57a3caaa7c6affde4eb2be43331afd75bedabf11c62193fa1a",
+                  "langcode": 0,
+                  "audprodie": 0,
+                  "copyrightb": 1,
+                  "origbs": 1,
+                  "xbsi1e": 1,
                   "dmixmod": 1,
-                  "ltrtcmixlev": "NOT_CAPTURED",
-                  "ltrtsurmixlev": "NOT_CAPTURED",
-                  "lorocmixlev": "NOT_CAPTURED",
-                  "lorosurmixlev": "NOT_CAPTURED"
+                  "ltrtcmixlev": 4,
+                  "ltrtsurmixlev": 4,
+                  "lorocmixlev": 4,
+                  "lorosurmixlev": 4,
+                  "xbsi2e": 1,
+                  "dsurexmod": 1,
+                  "dheadphonmod": 0,
+                  "adconvtyp": 0,
+                  "xbsi2": 0,
+                  "encinfo": 0,
+                  "addbsie": 0,
+                  "addbsi_payload_present": false
                 }
               },
               "d0": {
@@ -10535,7 +10549,7 @@
                 "group_id": 0
               },
               "unbound_gates": [
-                "I0 BSID6 alternate xbs1e mix metadata writer and demo mix levels",
+                "I0 BSI frame-assembly callsite",
                 "ADM source-row to D0 role join",
                 "JOC algorithm-level mode and phase controls",
                 "runtime source-generation owner join",
@@ -18886,8 +18900,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2198162,
-              "sha256": "5f28782ac45a73a0ae456acb53ec77dc0f2f05f6ee3bc42338179eafb98c25e8"
+              "bytes": 2214663,
+              "sha256": "2afe5eed0992af877bcceab8e9cb921132802c54dd496afd436849c2122c0563"
             }
           ],
           "test_modules": [
@@ -22413,8 +22427,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2198162,
-              "sha256": "5f28782ac45a73a0ae456acb53ec77dc0f2f05f6ee3bc42338179eafb98c25e8"
+              "bytes": 2214663,
+              "sha256": "2afe5eed0992af877bcceab8e9cb921132802c54dd496afd436849c2122c0563"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -45749,8 +45763,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 37208,
-              "sha256": "d92a8d5e0d5c4a6eeabfd509379ff228f254e43c05781811d8b6e5bd43e289e6"
+              "bytes": 37193,
+              "sha256": "447ce471b905e13db8b3b8207af9c63026ac5eefb7a8dbfbe4321faf8819af8b"
             }
           ],
           "test_inventory": [
@@ -47064,13 +47078,13 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
-              "bytes": 37265,
-              "sha256": "b1752ad6c61f78c344937226907c6ff7c695b76bc144c13523fc245db1f524b0"
+              "bytes": 37614,
+              "sha256": "b9a6149ad01e35e4bd43dca1acd67d72e49332c8035fb657ace4165137c207f8"
             },
             {
               "path": "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
-              "bytes": 8747,
-              "sha256": "b3bbb2edfc28d66b46b2d37f3a00aa2ba653996f6331c5aeb79ffb587a4ce719"
+              "bytes": 13200,
+              "sha256": "48c09e069a8bbf0a0b54df9c127f8a64f1bf367a223e89ceac02c720bfc69dbc"
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
@@ -47340,10 +47354,10 @@
         {
           "slice_id": "flat7x-i0-ac3-bsi-tail-writer",
           "mapping_status": "MATERIALIZED_WASH_BOUNDED_I0_AC3_BSI_TAIL_SERIALIZER",
-          "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_BSI_TAIL_FIELD_SERIALIZATION__PRODUCTION_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_OFFICIAL_SAMPLE_I0_BSI_TAIL_THROUGH_ADDBSIE__FRAME_CALLSITE_OPEN",
           "implementation_requirement": true,
           "owner": "codec",
-          "scope": "Writes the AC-3 BSI tail after the selected I0 header cursor at bit 62 or 70. Presence flags control optional langcode U8, audprodie mixlevel U5 plus roomtyp U2, two U14 timecodes and addbsil U6 plus exactly addbsil+1 additional-BSI bytes. The target is fixed at acmod=7, so dual-mono acmod=0 fields are omitted. It validates field widths, the 1..64-byte payload bound, total extent and caller capacity before writing, then returns an exact tail/payload extent receipt. It maps no XML values, creates no audio, and is not connected to production.",
+          "scope": "Writes the bounded caller-authored I0 AC-3 BSI tail and the hash-bound official-sample suffix from the compr end at frame bit 70 through addbsie=0 at bit 105. The sample's 35-bit suffix includes Annex-D mix fields and all captured xbsi2e extension fields. The V2 package supersedes the earlier mix-level-only supplement for target use; BSI serialization remains separate from audblk/audio generation, complete-frame composition, and product calls.",
           "dependencies": [
             "F12/flat7x-i0-ac3-header-segment",
             "F12/flat7x-i0-frame-bit-assembler"
@@ -47352,22 +47366,29 @@
             "docs/architecture/PROFILE-DIMENSIONS.md",
             "docs/architecture/adm-to-eac3joc-chain-status.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/FINDINGS.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2/REPORT.md"
           ],
           "implementation_files": [
             "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
-            "crates/jocforge-domain/src/codec/mod.rs"
+            "crates/jocforge-domain/src/codec/mod.rs",
+            "crates/jocforge-domain/src/codec/i0_frame_assembler.rs"
           ],
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
-              "bytes": 8747,
-              "sha256": "b3bbb2edfc28d66b46b2d37f3a00aa2ba653996f6331c5aeb79ffb587a4ce719"
+              "bytes": 13200,
+              "sha256": "48c09e069a8bbf0a0b54df9c127f8a64f1bf367a223e89ceac02c720bfc69dbc"
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
               "bytes": 1141,
               "sha256": "310555b04e94adfb45606a8a7b025fa5550aa18eba8ae712dbae11d972673c34"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
+              "bytes": 37614,
+              "sha256": "b9a6149ad01e35e4bd43dca1acd67d72e49332c8035fb657ace4165137c207f8"
             }
           ],
           "test_modules": [
@@ -47376,8 +47397,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/flat7x_i0_ac3_bsi_tail.rs",
-              "bytes": 11758,
-              "sha256": "2b0b37e3975623b051a71fa5f2bb697c1ce1daa1d599885436ec0a9976f75a95"
+              "bytes": 15679,
+              "sha256": "fda4f49d87da0ca1313f3a32e23daecbf81918f95f08f0bb3ce85e750cc702ef"
             }
           ],
           "vector_inventory": [
@@ -47385,6 +47406,11 @@
               "path": "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json",
               "bytes": 2614,
               "sha256": "c1fda6dd82f72fed627ad967544002ccefa745c94fe81e469b5d0baa1f1fcf33"
+            },
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2/FIELD-VALUES.json",
+              "bytes": 7384,
+              "sha256": "fc63f28110d8d6b9402203ece59bf3352d98aef506b5c3b7d8667a6a1530e358"
             }
           ],
           "clock": {
@@ -47405,7 +47431,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/MANIFEST.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/PACKAGE-SEAL.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/I0-AC3-BSI-CONTINUATION.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/verify_package.py"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-BSI-CONTINUATION-ETSI-V1/verify_package.py",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2/FIELD-VALUES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2/CHECK.py"
             ],
             "target": {
               "role": "IndependentI0",
@@ -47459,18 +47489,74 @@
             "field_presence": "OPTIONAL_VALUES_DRIVE_THEIR_PRESENCE_FLAGS",
             "extent_receipt": "start_bit,end_bit,bit_length,additional_bsi_payload_start_and_extent",
             "production_allowed": false,
-            "validation_boundary": "Synthetic bitfield serialization only; no XML mapping, audio, full I0 frame, source lineage or production callsite."
+            "validation_boundary": "Synthetic bitfield serialization only; no XML mapping, audio, full I0 frame, source lineage or production callsite.",
+            "official_demo_i0_bsi_v2": {
+              "package_id": "OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2",
+              "manifest_sha256": "85dcd2dfc96bdc57a3caaa7c6affde4eb2be43331afd75bedabf11c62193fa1a",
+              "package_seal_sha256": "a977d2cb4af36a8d1ff44642b15bbf78a90535be94fbdf34866b8126c8ffa716",
+              "source_sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+              "sample_rate_kbps": {
+                "i0": 640,
+                "d0": 640,
+                "aggregate": 1280
+              },
+              "target_transfer_kbps": {
+                "i0": 640,
+                "d0": 1024,
+                "aggregate": 1664
+              },
+              "header_values": {
+                "fscod": 0,
+                "frmsizecod": 36,
+                "bsid": 6,
+                "bsmod": 0,
+                "acmod": 7,
+                "cmixlev": 0,
+                "surmixlev": 0,
+                "lfeon": 1,
+                "dialnorm": 31,
+                "compre": 1,
+                "compr": 1,
+                "crc1": "generated from assembled target frame"
+              },
+              "bsi_tail": {
+                "start_bit": 70,
+                "end_bit": 105,
+                "langcode": 0,
+                "audprodie": 0,
+                "copyrightb": 1,
+                "origbs": 1,
+                "xbsi1e": 1,
+                "dmixmod": 1,
+                "ltrtcmixlev": 4,
+                "ltrtsurmixlev": 4,
+                "lorocmixlev": 4,
+                "lorosurmixlev": 4,
+                "xbsi2e": 1,
+                "dsurexmod": 1,
+                "dheadphonmod": 0,
+                "adconvtyp": 0,
+                "xbsi2": 0,
+                "encinfo": 0,
+                "addbsie": 0,
+                "addbsi_payload_present": false
+              },
+              "production_allowed": false
+            }
           },
           "vectors": {
-            "kind": "SYNTHETIC_NOT_REAL_OUTPUT_BSI_TAIL_SERIALIZATION",
+            "kind": "SYNTHETIC_BSI_TAIL_PLUS_WASHED_SAMPLE_I0_BSI_THROUGH_ADDBSIE",
             "authoritative_vectors": [
-              "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json"
+              "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2/FIELD-VALUES.json"
             ],
             "case_pointers": [
-              "The minimum case emits the seven mandatory presence/control bits from the no-compr header cursor.",
-              "The all-optionals case verifies langcode, audprodie, copyright/origbs, both timecodes, addbsil=1, payload bytes and unaligned payload extent.",
-              "The maximum case emits 64 addbsi bytes with addbsil=63 and reports a 512-bit payload span.",
-              "Invalid mixlevel/roomtyp/timecode, empty/oversize addbsi, wrong header cursor and short capacity reject before caller bytes or cursor change."
+              "The minimum generic tail emits its mandatory seven presence/control bits at the no-compr header cursor.",
+              "The generic all-optionals vector checks langcode, audprodie, copyright/origbs, timecodes and addbsi extent.",
+              "The maximum generic addbsi vector checks the U6 length and 64-byte payload bound.",
+              "The V2 official sample BSI suffix begins at bit 70 and ends at addbsie=0 at bit 105.",
+              "The Annex-D mix fields and xbsi2e extension fields match every V2 field-ledger value.",
+              "The sample addbsie=0, so no addbsi length or payload follows."
             ],
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json",
@@ -47478,7 +47564,7 @@
               "sha256": "c1fda6dd82f72fed627ad967544002ccefa745c94fe81e469b5d0baa1f1fcf33"
             },
             "expected_outputs_included": true,
-            "execution_status": "LOCALLY_VERIFIED_SYNTHETIC_I0_BSI_FIELD_ORDER_WIDTHS_EXTENTS_AND_REJECTIONS"
+            "execution_status": "SYNTHETIC_BSI_TAIL_AND_WASHED_SAMPLE_I0_BSI_THROUGH_ADDBSIE_TESTS_PASS"
           },
           "error_outcomes": [
             {
@@ -47515,14 +47601,21 @@
               "trigger": "The complete measured tail does not fit after the header cursor.",
               "result": "Capacity failure before caller bytes or cursor change.",
               "caller_action": "Provide capacity for the entire BSI tail."
+            },
+            {
+              "error_code": "I0_OFFICIAL_BSI_TAIL_START_CURSOR_MISMATCH",
+              "category": "sample-bound I0 BSI-tail insertion point",
+              "trigger": "The caller cursor differs from the V2 sample header end at frame bit 70.",
+              "result": "Typed failure before mutating bytes or cursor.",
+              "caller_action": "Continue from the exact sample header receipt ending at bit 70."
             }
           ],
           "not_run": [
-            "XML-to-BSI value mapping and semantics beyond caller-authored fields.",
-            "Real I0 BSI bytes, audio blocks, complete frame parse, decoder acceptance and product output.",
-            "No production caller or runtime source-generation binding is installed."
+            "No generic XML-to-BSI mapping beyond the captured sample values.",
+            "Complete I0 frame assembly with audio spans, generated CRC fields and source callback callsite.",
+            "Same-generation I0/D0 receipts, pair publication, product output and W04 acceptance."
           ],
-          "validation_boundary": "Synthetic caller values verify BSI field order, widths, length arithmetic, cursor extent and rejection atomicity; production_allowed=false.",
+          "validation_boundary": "Generic caller-authored BSI-tail checks plus exact hash-bound sample values from bit 70 through addbsie=0; no audio, full-frame callsite, pair publication or product output.",
           "delivery_scope": "FLAT7X_I0_AC3_BSI_TAIL_SERIALIZATION_ONLY_NO_AUDIO_XML_MAPPING_OR_PRODUCTION"
         },
         {
@@ -47552,13 +47645,13 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
-              "bytes": 37265,
-              "sha256": "b1752ad6c61f78c344937226907c6ff7c695b76bc144c13523fc245db1f524b0"
+              "bytes": 37614,
+              "sha256": "b9a6149ad01e35e4bd43dca1acd67d72e49332c8035fb657ace4165137c207f8"
             },
             {
               "path": "crates/jocforge-domain/src/codec/ac3_bsi_tail.rs",
-              "bytes": 8747,
-              "sha256": "b3bbb2edfc28d66b46b2d37f3a00aa2ba653996f6331c5aeb79ffb587a4ce719"
+              "bytes": 13200,
+              "sha256": "48c09e069a8bbf0a0b54df9c127f8a64f1bf367a223e89ceac02c720bfc69dbc"
             },
             {
               "path": "crates/jocforge-domain/src/codec/frame_builder.rs",
@@ -47738,8 +47831,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
-              "bytes": 37265,
-              "sha256": "b1752ad6c61f78c344937226907c6ff7c695b76bc144c13523fc245db1f524b0"
+              "bytes": 37614,
+              "sha256": "b9a6149ad01e35e4bd43dca1acd67d72e49332c8035fb657ace4165137c207f8"
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
@@ -47776,8 +47869,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
-              "bytes": 37265,
-              "sha256": "b1752ad6c61f78c344937226907c6ff7c695b76bc144c13523fc245db1f524b0"
+              "bytes": 37614,
+              "sha256": "b9a6149ad01e35e4bd43dca1acd67d72e49332c8035fb657ace4165137c207f8"
             },
             {
               "path": "crates/jocforge-validation/src/ac3_audio_block_parser.rs",
@@ -48130,8 +48223,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 37208,
-              "sha256": "d92a8d5e0d5c4a6eeabfd509379ff228f254e43c05781811d8b6e5bd43e289e6"
+              "bytes": 37193,
+              "sha256": "447ce471b905e13db8b3b8207af9c63026ac5eefb7a8dbfbe4321faf8819af8b"
             }
           ],
           "clock": {
@@ -48294,10 +48387,10 @@
         {
           "slice_id": "flat7x-d0-bsi-structure-composition",
           "mapping_status": "MATERIALIZED_D0_BSI_STRUCTURE_FROM_THREE_WASHED_SEGMENTS",
-          "implementation_status": "LOCALLY_VERIFIED_TYPED_D0_BSI_COMPOSITION_AND_ATOMIC_PREFLIGHT__FULL_FRAME_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_TYPED_D0_BSI_COMPOSITION_AND_OFFICIAL_SAMPLE_FIELD_REPLAY__FULL_FRAME_OPEN",
           "implementation_requirement": true,
           "owner": "codec",
-          "scope": "From cursor zero, accepts one typed Flat7xD0BsiStructure and composes the approved fixed prefix, caller BSI fields through chanmap, mixing/block metadata, infomdate-selected information, and opaque addbsi suffix in the existing component order. A pure measure step validates every component, reads opaque addbsi length only, and computes the complete bit extent; the caller writer is capacity-preflighted before bounded private serialization and bit copy. It admits only the exact approved D0 target row. Any invalid component, unsupported target, nonzero start cursor, or short caller buffer leaves caller bytes and cursor unchanged. This is a BSI structure entry only; it creates no audio, CRC, JOC interpretation, full D0 frame/AU, production, GTC, or encoder call.",
+          "scope": "Composes the existing target D0 BSI through chanmap and locally replays the sealed official sample vector through the same writer. The test compares every field through chanmap while transferring only the D0 frmsiz/rate field to the 1024-kbps target. Sample dialnorm/compre/compr are explicit fixture values, not generic DRC defaults. No D0 audio, later BSI fields, full frame, or product callsite is created.",
           "dependencies": [
             "F01E/flat7x-i0-d0-typed-target-plan",
             "F12/flat7x-d0-bsi-segment-through-chanmap",
@@ -48310,7 +48403,8 @@
             "docs/architecture/adm-to-eac3joc-chain-status.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-BSI-SEGMENT-V1/CONTRACT.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-MIXING-METADATA-V1/CONTRACT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/CONTRACT.md"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/CONTRACT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1/REPORT.md"
           ],
           "implementation_files": [
             "crates/jocforge-domain/src/codec/frame_builder.rs"
@@ -48323,13 +48417,19 @@
             }
           ],
           "test_modules": [
-            "crates/jocforge-domain/tests/flat7x_d0_bsi_structure.rs"
+            "crates/jocforge-domain/tests/flat7x_d0_bsi_structure.rs",
+            "crates/jocforge-domain/tests/official_demo_d0_bsi.rs"
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/tests/flat7x_d0_bsi_structure.rs",
               "bytes": 6612,
               "sha256": "63636328735c6f90c3b3befaba1b096d0fc15fd972f686e33531b18f44f0107a"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/official_demo_d0_bsi.rs",
+              "bytes": 2856,
+              "sha256": "b2a3083fe522568420fa21762446d9841902ae55691d21ec1a66a776f8efb352"
             }
           ],
           "clock": {
@@ -48355,6 +48455,11 @@
                 "package_id": "eac3-dependent-d0-info-addbsi-segment-v1",
                 "manifest_sha256": "e8f1908d3572571c4dcb19aedd898b0e068464d6921ed54569fd8df4cb3a7cdb",
                 "seal_sha256": "d94fd72b890c522849cca6380f7630eddf1637764fda09807a61aa8ce3385f5d"
+              },
+              {
+                "package_id": "OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1",
+                "manifest_sha256": "35a4527798ccfe6421ce94e380614d721d75a43738bdca0bb9235d2811f2b161",
+                "seal_sha256": "5d5902e0bdee4a9a0b8b0e0fe31c975c94ef315fa39f382ecef7cebc1f81c877"
               }
             ],
             "provider_files": [
@@ -48363,7 +48468,11 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-MIXING-METADATA-V1/CONTRACT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-MIXING-METADATA-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/INPUT-ONLY-VECTORS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1/package_seal.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1/FIELD-VALUES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1/CHECK.py"
             ],
             "target_context": {
               "strmtyp": 1,
@@ -48374,21 +48483,56 @@
               "lfeon": 0,
               "chanmap": "0x1A00",
               "bit_rate_kbps": 1024,
-              "frame_bytes": 4096
+              "frame_bytes": 4096,
+              "frmsiz": 2047
             },
             "start_cursor_bits": 0,
             "maximum_staged_bits": 664,
             "maximum_staging_bytes": 83,
             "complete_caller_capacity_preflight": true,
             "production_allowed": false,
-            "validation_boundary": "Local component composition and atomic caller-buffer admission only; no Wash composite expected bytes or full D0 frame/AU acceptance is claimed."
+            "validation_boundary": "Local component composition and atomic caller-buffer admission only; no Wash composite expected bytes or full D0 frame/AU acceptance is claimed.",
+            "official_sample_d0_bsi": {
+              "package_id": "OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1",
+              "manifest_sha256": "35a4527798ccfe6421ce94e380614d721d75a43738bdca0bb9235d2811f2b161",
+              "package_seal_sha256": "5d5902e0bdee4a9a0b8b0e0fe31c975c94ef315fa39f382ecef7cebc1f81c877",
+              "source_sha256": "f976aba7a4750be80b4373a5d7fabf2ad101e0c227fc4bd77716b76879d546cd",
+              "sample_rate_kbps": 640,
+              "sample_frame_bytes": 2560,
+              "sample_frmsiz": 1279,
+              "target_rate_contract": {
+                "package_id": "FLAT7X-D0-RATE-FRMSIZ-TARGET-V1",
+                "manifest_sha256": "1eb4311e3f63ec84c57c7fe636a8a21773bd633ae3f4fe9b0739b88e09e66139",
+                "target_rate_kbps": 1024,
+                "target_frame_bytes": 4096,
+                "target_frmsiz": 2047
+              },
+              "fields_through_chanmap": {
+                "strmtyp": 1,
+                "substreamid": 0,
+                "fscod": 0,
+                "numblkscod": 3,
+                "acmod": 5,
+                "lfeon": 0,
+                "bsid": 16,
+                "dialnorm": 31,
+                "compre": 1,
+                "compr": 1,
+                "chanmape": 1,
+                "chanmap": "0x1A00",
+                "end_bit": 76
+              },
+              "dialnorm_compre_compr_scope": "SAMPLE_VECTOR_ONLY_NOT_GENERIC_XML_DEFAULTS",
+              "production_allowed": false
+            }
           },
           "vectors": {
-            "kind": "INPUT_ONLY_COMPONENT_EQUIVALENCE_AND_ATOMIC_REJECTION_CASES",
+            "kind": "WASHED_SAMPLE_D0_BSI_THROUGH_CHANMAP_WITH_TARGET_FRMSIZ_OVERRIDE",
             "authoritative_vectors": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-BSI-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-MIXING-METADATA-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/INPUT-ONLY-VECTORS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1/FIELD-VALUES.json"
             ],
             "case_pointers": [
               "Two typed requests compare the combined entry byte-for-byte with the three approved component writers in order.",
@@ -48396,10 +48540,11 @@
               "Dialnorm, mixing, information, and addbsi length failures preserve caller bytes and cursor.",
               "A 101-bit composed request in a 96-bit buffer rejects before caller mutation.",
               "A nonzero caller cursor rejects before caller mutation.",
-              "Expected composite bytes are locally compared only; Wash supplied no composite expected-output vector."
+              "Expected composite bytes are locally compared only; Wash supplied no composite expected-output vector.",
+              "The official sample D0 BSI through frame bit 76 is replayed with only frmsiz transferred to target code 2047."
             ],
-            "expected_outputs_included": false,
-            "execution_status": "LOCALLY_VERIFIED_COMPONENT_EQUIVALENCE_AND_ATOMIC_CALLER_PREFLIGHT"
+            "expected_outputs_included": true,
+            "execution_status": "LOCALLY_VERIFIED_COMPONENT_EQUIVALENCE_ATOMIC_PREFLIGHT_AND_WASHED_SAMPLE_FIELD_REPLAY"
           },
           "error_outcomes": [
             {
@@ -48419,10 +48564,19 @@
           ],
           "not_run": [
             "No real frame, audio blocks, CRC, JOC payload interpretation, AU/GTC integration, encoder call, production path, or W04 is run.",
-            "No Wash-provided expected composite byte vector exists; test compares the combined entry with the already-tested component writer sequence."
+            "No Wash-provided expected composite byte vector exists; test compares the combined entry with the already-tested component writer sequence.",
+            "D0 fields after chanmap, D0 audio spans, 4096-byte frame assembly and complete AU output.",
+            "Sample dialnorm/compre/compr are not generalized as XML or ADM DRC defaults."
           ],
           "validation_boundary": "Typed structural BSI composition across the three registered Wash fragments; production_allowed=false.",
-          "delivery_scope": "FLAT7X_D0_BSI_STRUCTURE_COMPOSITION_ONLY_NO_AUDIO_FRAME_AU_GTC_OR_PRODUCTION_CLAIM"
+          "delivery_scope": "FLAT7X_D0_BSI_STRUCTURE_COMPOSITION_ONLY_NO_AUDIO_FRAME_AU_GTC_OR_PRODUCTION_CLAIM",
+          "vector_inventory": [
+            {
+              "path": "outputs/IMPLEMENTER_SUPPLEMENTS/OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1/FIELD-VALUES.json",
+              "bytes": 3457,
+              "sha256": "88fd39b84788b7abd0de47cd563fe501134decea8c84589268b9da8fa3800cbf"
+            }
+          ]
         },
         {
           "slice_id": "flat7x-d0-six-block-layout-proposal",
@@ -48615,8 +48769,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
-              "bytes": 37208,
-              "sha256": "d92a8d5e0d5c4a6eeabfd509379ff228f254e43c05781811d8b6e5bd43e289e6"
+              "bytes": 37193,
+              "sha256": "447ce471b905e13db8b3b8207af9c63026ac5eefb7a8dbfbe4321faf8819af8b"
             }
           ],
           "clock": {
@@ -58466,8 +58620,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2198162,
-              "sha256": "5f28782ac45a73a0ae456acb53ec77dc0f2f05f6ee3bc42338179eafb98c25e8"
+              "bytes": 2214663,
+              "sha256": "2afe5eed0992af877bcceab8e9cb921132802c54dd496afd436849c2122c0563"
             }
           ],
           "test_inventory": [

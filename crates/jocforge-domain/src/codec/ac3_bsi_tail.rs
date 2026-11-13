@@ -12,6 +12,8 @@ const AUDIO_PRODUCTION_ROOM_TYPE_WIDTH: u8 = 2;
 const TIMECODE_WIDTH: u8 = 14;
 const ADDBSI_LENGTH_WIDTH: u8 = 6;
 const MAX_ADDBSI_BYTES: usize = 64;
+const OFFICIAL_DEMO_I0_BSI_TAIL_START_BIT: u32 = 70;
+const OFFICIAL_DEMO_I0_BSI_TAIL_BITS: u32 = 35;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Flat7xI0Ac3AudioProductionInfo {
@@ -229,6 +231,168 @@ pub fn write_flat7x_i0_ac3_bsi_tail(
         additional_bsi_start,
         additional_bsi_bit_length,
         additional_bsi_byte_length,
+    })
+}
+
+/// Sample-observed I0 BSI-tail fields after the official sample header ending at bit 70.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Flat7xI0ObservedBsiTailValues;
+
+impl Flat7xI0ObservedBsiTailValues {
+    /// BSI-tail values observed in `OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2`.
+    pub const fn official_demo_sample() -> Self {
+        Self
+    }
+
+    pub const fn dmixmod(self) -> u8 {
+        1
+    }
+
+    pub const fn ltrtcmixlev(self) -> u8 {
+        4
+    }
+
+    pub const fn ltrtsurmixlev(self) -> u8 {
+        4
+    }
+
+    pub const fn lorocmixlev(self) -> u8 {
+        4
+    }
+
+    pub const fn lorosurmixlev(self) -> u8 {
+        4
+    }
+
+    pub const fn dsurexmod(self) -> u8 {
+        1
+    }
+
+    pub const fn dheadphonmod(self) -> u8 {
+        0
+    }
+
+    pub const fn xbsi2(self) -> u8 {
+        0
+    }
+
+    pub const fn addbsie_present(self) -> bool {
+        false
+    }
+
+    pub const fn langcode_present(self) -> bool {
+        false
+    }
+
+    pub const fn audprodie_present(self) -> bool {
+        false
+    }
+
+    pub const fn copyrightb(self) -> bool {
+        true
+    }
+
+    pub const fn original_bitstream(self) -> bool {
+        true
+    }
+
+    pub const fn xbsi1e(self) -> bool {
+        true
+    }
+
+    pub const fn xbsi2e(self) -> bool {
+        true
+    }
+
+    pub const fn adconvtyp(self) -> bool {
+        false
+    }
+
+    pub const fn encinfo(self) -> bool {
+        false
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Flat7xI0OfficialDemoBsiTailError {
+    StartCursorMismatch { actual: u32 },
+    BitWriter(FrameBitWriterError),
+}
+
+impl From<FrameBitWriterError> for Flat7xI0OfficialDemoBsiTailError {
+    fn from(error: FrameBitWriterError) -> Self {
+        Self::BitWriter(error)
+    }
+}
+
+/// Exact extent of the sample-observed I0 BSI tail through `addbsie=0`.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Flat7xI0OfficialDemoBsiTailReceipt {
+    start: FrameBitCursor,
+    end: FrameBitCursor,
+    values: Flat7xI0ObservedBsiTailValues,
+}
+
+impl Flat7xI0OfficialDemoBsiTailReceipt {
+    pub const fn start_bit(self) -> u32 {
+        self.start.bit_offset()
+    }
+
+    pub const fn end_bit(self) -> u32 {
+        self.end.bit_offset()
+    }
+
+    pub const fn bit_length(self) -> u32 {
+        self.end.bit_offset() - self.start.bit_offset()
+    }
+
+    pub const fn values(self) -> Flat7xI0ObservedBsiTailValues {
+        self.values
+    }
+
+    pub const fn production_allowed(self) -> bool {
+        false
+    }
+}
+
+/// Writes the official sample's exact I0 BSI tail from the `compr` end through `addbsie=0`.
+///
+/// The sample header ends at bit 70. The 35-bit tail includes the Annex-D mix fields, the
+/// observed `xbsi2e` extension fields, and the absent addbsi marker; it copies no audio.
+pub fn write_flat7x_i0_official_demo_bsi_tail(
+    writer: &mut FrameBitWriter<'_>,
+) -> Result<Flat7xI0OfficialDemoBsiTailReceipt, Flat7xI0OfficialDemoBsiTailError> {
+    let start = writer.cursor();
+    if start.bit_offset() != OFFICIAL_DEMO_I0_BSI_TAIL_START_BIT {
+        return Err(Flat7xI0OfficialDemoBsiTailError::StartCursorMismatch {
+            actual: start.bit_offset(),
+        });
+    }
+    writer.preflight_capacity(OFFICIAL_DEMO_I0_BSI_TAIL_BITS)?;
+
+    let values = Flat7xI0ObservedBsiTailValues::official_demo_sample();
+    writer.write_bit(values.langcode_present())?;
+    writer.write_bit(values.audprodie_present())?;
+    writer.write_bit(values.copyrightb())?;
+    writer.write_bit(values.original_bitstream())?;
+    writer.write_bit(values.xbsi1e())?;
+    writer.write_unsigned(u32::from(values.dmixmod()), 2)?;
+    writer.write_unsigned(u32::from(values.ltrtcmixlev()), 3)?;
+    writer.write_unsigned(u32::from(values.ltrtsurmixlev()), 3)?;
+    writer.write_unsigned(u32::from(values.lorocmixlev()), 3)?;
+    writer.write_unsigned(u32::from(values.lorosurmixlev()), 3)?;
+    writer.write_bit(values.xbsi2e())?;
+    writer.write_unsigned(u32::from(values.dsurexmod()), 2)?;
+    writer.write_unsigned(u32::from(values.dheadphonmod()), 2)?;
+    writer.write_bit(values.adconvtyp())?;
+    writer.write_unsigned(u32::from(values.xbsi2()), 8)?;
+    writer.write_bit(values.encinfo())?;
+    writer.write_bit(values.addbsie_present())?;
+
+    Ok(Flat7xI0OfficialDemoBsiTailReceipt {
+        start,
+        end: writer.cursor(),
+        values,
     })
 }
 

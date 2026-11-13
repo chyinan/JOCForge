@@ -1,0 +1,44 @@
+{
+  "schema": "jocforge-implementer-supplement.v1",
+  "package_id": "OFFICIAL-DEMO-D0-BSI-THROUGH-CHANMAP-V1",
+  "audience": "IMPLEMENTATION_EVIDENCE_ONLY",
+  "status": "WASH_APPROVED_SAMPLE_D0_BSI_THROUGH_CHANMAP; PRODUCT_AUDIO_NOT_READY",
+  "implementation_ready": "STRUCTURAL_BSI_SAMPLE_VECTOR_ONLY",
+  "scope": "Observed first official-demo D0 frame header/BSI through chanmap; sample fields are a validation vector, while target rate/frame-size comes from a separate approved contract.",
+  "files": [
+    {
+      "path": "CHECK.py",
+      "bytes": 4433,
+      "sha256": "8335535e49eaddb9bd3ff1aaa711294618a9c4db88ad7b77b0be0969c27067a9"
+    },
+    {
+      "path": "FIELD-VALUES.json",
+      "bytes": 3457,
+      "sha256": "88fd39b84788b7abd0de47cd563fe501134decea8c84589268b9da8fa3800cbf"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 1393,
+      "sha256": "9d133e9974cedfdcd61047a04b4e751544fd301318c0903853e01a61a0301a25"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "bytes": 2007,
+      "sha256": "ead9e282e8c0321a49da0f2014e9daca9e17a1955ffc0f081fed971f76f19030"
+    }
+  ],
+  "parent_receipts": [
+    {
+      "package_id": "OFFICIAL-DEMO-D0-EAC3-BSI-WASH-2026-11-13",
+      "manifest_sha256": "4766e4a1c80fc46826c92dd08a27552daee2ff7e22e952fe1761bf064c0cfea0",
+      "package_seal_sha256": "0f2a23ad002c3e8e17e8da58f6a75f52fd6f69403a3069c7832a9d103c6b4dd9"
+    },
+    {
+      "package_id": "FLAT7X-D0-RATE-FRMSIZ-TARGET-V1",
+      "manifest_sha256": "1eb4311e3f63ec84c57c7fe636a8a21773bd633ae3f4fe9b0739b88e09e66139",
+      "package_seal_sha256": "136c7f4f22687b0508527799ee2a1b783546cdf449d20786bd8a7134894533c9"
+    }
+  ],
+  "production_allowed": false,
+  "dee_or_encoder_run": "NOT_RUN"
+}
