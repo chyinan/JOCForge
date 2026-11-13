@@ -1988,4 +1988,6 @@ Synthetic D0 frame candidate tests passed (3); D0 frame assembler tests passed (
 
 `codec::flat7x_d0_pcm_source::stage_flat7x_d0_pcm_block_series` now connects projected four-channel source PCM to six D0 spectrum/D15 block candidates. `produce_flat7x_d0_frame_from_pcm_source` sends those rows through the existing q-search/frame composer and returns a complete 4,096-byte D0 frame candidate with the following 256-sample overlap history proposal. Focused PCM tests, the D0 frame integration suite and workspace compile passed; the result remains nonpublishing.
 
+The application wrapper `produce_flat7x_pair_d0_pcm_frame_candidate` now takes the exact four rows from `Flat7xPairSourceBinding` and carries its D0 source identity and role-map receipt beside the frame/history proposal; its focused source-binding test passed. This is the first complete source-bound D0 frame candidate path.
+
 The route still needs a programme-owned generation/history root, an exact policy for history over suppressed source indices 0/1, EOF valid/padded counts, same-source I0/D0/F13/F12 receipts, the CLI pair caller, and F15 durable final-output wiring. The current source-stage D0 gate still returns `Flat7xD0AudioProducerUnavailable`; W04 and real-output acceptance remain open.

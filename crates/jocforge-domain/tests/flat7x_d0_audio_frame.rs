@@ -7,7 +7,8 @@ use jocforge_domain::{
         flat7x_d0_audio_frame::{Flat7xD0AudioFrameInput, produce_flat7x_d0_audio_frame},
         flat7x_d0_exponents::{Flat7xD0ExponentRow, prepare_flat7x_d0_d15_exponent_row},
         flat7x_d0_pcm_source::{
-            Flat7xD0OverlapHistory, Flat7xD0PcmFrameInput, produce_flat7x_d0_frame_from_pcm_source,
+            Flat7xD0OverlapHistory, Flat7xD0PcmFrameInput, Flat7xD0PcmFrameSettings,
+            produce_flat7x_d0_frame_from_pcm_source,
         },
         flat7x_d0_spectrum::{
             D0_PCM_SAMPLES_PER_BLOCK, Flat7xD0PcmBlockInput, Flat7xD0PcmWindow,
@@ -174,20 +175,22 @@ fn d0_pcm_source_feeds_the_complete_frame_candidate_and_keeps_history_with_it() 
 
     let candidate = produce_flat7x_d0_frame_from_pcm_source(Flat7xD0PcmFrameInput {
         pcm_rows: pcm_row_refs,
-        before: &Flat7xD0OverlapHistory::cold(),
-        transform_parameters: &transform_parameters,
-        target: Flat7xI0D0TargetPlan::approved_contract(),
-        bsi_structure: Flat7xD0BsiStructure {
-            dialnorm: 16,
-            compr: None,
-            mixing: None,
-            block_mix: [None; 6],
-            information: None,
-            addbsi: None,
+        settings: Flat7xD0PcmFrameSettings {
+            before: &Flat7xD0OverlapHistory::cold(),
+            transform_parameters: &transform_parameters,
+            target: Flat7xI0D0TargetPlan::approved_contract(),
+            bsi_structure: Flat7xD0BsiStructure {
+                dialnorm: 16,
+                compr: None,
+                mixing: None,
+                block_mix: [None; 6],
+                information: None,
+                addbsi: None,
+            },
+            complete_emdf_container: &emdf_container,
+            bap_parameters: &bap_parameters,
+            dynamic_range_codes: [None; 6],
         },
-        complete_emdf_container: &emdf_container,
-        bap_parameters: &bap_parameters,
-        dynamic_range_codes: [None; 6],
     })
     .unwrap();
 

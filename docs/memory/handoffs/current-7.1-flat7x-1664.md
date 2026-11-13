@@ -352,4 +352,6 @@ Added `codec::flat7x_d0_pcm_source::stage_flat7x_d0_pcm_block_series` and `produ
 
 The three PCM-series unit tests, four D0 frame integration tests, and workspace `cargo check --locked` passed. Strict domain Clippy still reports 9 pre-existing diagnostics in analysis, DRC and JOC modules; none point to this slice. Full package test linking hit stale Windows PDB failures in unrelated integration-test binaries; the directly scoped D0 frame suite linked and passed.
 
-Still open: bind history to programme/attempt/source-generation; resolve history over suppressed source indices 0/1 under the F15-only commit rule; carry valid/padded counts; feed the six-block frame producer; issue same-source I0/D0/F13/F12 receipts; and connect CLI parent commit and durable output. No production caller or file output was added. Fresh Wash GO remains required for an encoder run.
+The application seam `produce_flat7x_pair_d0_pcm_frame_candidate` now takes the exact four D0 rows from `Flat7xPairSourceBinding` and keeps the binding's D0 source identity and role-map receipt with the frame/history candidate. Its focused application test passed (1).
+
+Still open: install history in a programme/attempt/source-generation owner; resolve history over suppressed source indices 0/1 under the F15-only commit rule; carry valid/padded counts; issue same-source I0/D0/F13/F12 receipts; and connect the CLI pair caller, parent commit and durable output. No production caller or file output was added. Fresh Wash GO remains required for an encoder run.

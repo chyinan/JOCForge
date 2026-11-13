@@ -10778,8 +10778,8 @@
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 59980,
-              "sha256": "eed42dc26f71f167977e88e7f5473c819dce33315fb8286a04879b6490e99625"
+              "bytes": 66027,
+              "sha256": "57998e6b5054bd6e303c8e18acc127c84719f8fd2b4e35069e7c55859ae1e3b8"
             }
           ],
           "test_inventory": [
@@ -10790,8 +10790,8 @@
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 59980,
-              "sha256": "eed42dc26f71f167977e88e7f5473c819dce33315fb8286a04879b6490e99625"
+              "bytes": 66027,
+              "sha256": "57998e6b5054bd6e303c8e18acc127c84719f8fd2b4e35069e7c55859ae1e3b8"
             }
           ]
         }
@@ -18897,8 +18897,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2248338,
-              "sha256": "f4ed9e0d3d8ba27369c0287946ed146854824dc5250aeaa3dc6d7c02b900b80b"
+              "bytes": 2248326,
+              "sha256": "8e1e0517d5ba31a7d440dd87ca9084c473f1e36e48aed5460c029baba8ba643d"
             }
           ],
           "test_modules": [
@@ -22423,8 +22423,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2248338,
-              "sha256": "f4ed9e0d3d8ba27369c0287946ed146854824dc5250aeaa3dc6d7c02b900b80b"
+              "bytes": 2248326,
+              "sha256": "8e1e0517d5ba31a7d440dd87ca9084c473f1e36e48aed5460c029baba8ba643d"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -47707,8 +47707,8 @@
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 59980,
-              "sha256": "eed42dc26f71f167977e88e7f5473c819dce33315fb8286a04879b6490e99625"
+              "bytes": 66027,
+              "sha256": "57998e6b5054bd6e303c8e18acc127c84719f8fd2b4e35069e7c55859ae1e3b8"
             }
           ],
           "test_modules": [
@@ -49518,11 +49518,11 @@
         },
         {
           "slice_id": "flat7x-source-bound-i0-d0-au-candidate",
-          "mapping_status": "MATERIALIZED_D0_PCM_SIX_BLOCK_SPECTRUM_D15_AND_HISTORY_CANDIDATE__COMMITTED_HISTORY_AND_PRODUCT_ROUTE_OPEN",
-          "implementation_status": "LOCALLY_VERIFIED_D0_PCM_TO_SIX_BLOCK_SPECTRUM_D15_AND_NEXT_HISTORY_CANDIDATE__OWNER_RECEIPTS_AND_PRODUCT_ROUTE_OPEN",
+          "mapping_status": "MATERIALIZED_SOURCE_BOUND_D0_FRAME_AND_HISTORY_CANDIDATE__COMMITTED_HISTORY_AND_PRODUCT_ROUTE_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_SOURCE_BOUND_D0_PCM_TO_FRAME_AND_HISTORY_CANDIDATE__OWNER_RECEIPTS_AND_PRODUCT_ROUTE_OPEN",
           "implementation_requirement": true,
           "owner": "application",
-          "scope": "The selected Flat7x source projection feeds a D0 PCM block-series and full-frame candidate. The producer consumes four coded rows in [Ls, Rs, Lrs, Rrs] order, stages six consecutive 512-sample long-transform windows from committed overlap history, derives D15 rows, and passes them to the existing D0 BAP/q-search/audblk/frame composer with caller-owned BSI, EMDF, BAP parameters and dynamic-range codes. It returns a complete frame candidate and next-history proposal. Programme/source-generation binding, valid/padded counts, owner installation, same-source F12/F13/F15 join, AU publication and product output remain open; production_allowed=false.",
+          "scope": "The selected Flat7x pair-source binding now feeds the D0 PCM block-series and complete frame candidate from its exact four projected rows. The application candidate carries the D0 source identity and replaceable role-map receipt beside the 4,096-byte frame and next history proposal. Frame controls remain caller-owned. Programme/source-generation history installation, valid/padded counts, same-source F12/F13/F15 join, CLI caller, AU publication and product output remain open; production_allowed=false.",
           "dependencies": [
             "F12/flat7x-i0-typed-bsi-frame-assembly-entry",
             "F12/flat7x-d0-frame-bit-assembler",
@@ -50227,8 +50227,8 @@
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 59980,
-              "sha256": "eed42dc26f71f167977e88e7f5473c819dce33315fb8286a04879b6490e99625"
+              "bytes": 66027,
+              "sha256": "57998e6b5054bd6e303c8e18acc127c84719f8fd2b4e35069e7c55859ae1e3b8"
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
@@ -50322,8 +50322,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/flat7x_d0_pcm_source.rs",
-              "bytes": 13260,
-              "sha256": "ca7ba0ef0cf11634ae0d62d571448b6e5a03c1cce6a962a5350d0d636091a892"
+              "bytes": 13549,
+              "sha256": "f989b5fcb34e0850c106d84bd6df855ccac02488e5750682272dcf1940261492"
             },
             {
               "path": "crates/jocforge-domain/src/codec/flat7x_d0_spectrum.rs",
@@ -50407,15 +50407,15 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2248338,
-              "sha256": "f4ed9e0d3d8ba27369c0287946ed146854824dc5250aeaa3dc6d7c02b900b80b"
+              "bytes": 2248326,
+              "sha256": "8e1e0517d5ba31a7d440dd87ca9084c473f1e36e48aed5460c029baba8ba643d"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 59980,
-              "sha256": "eed42dc26f71f167977e88e7f5473c819dce33315fb8286a04879b6490e99625"
+              "bytes": 66027,
+              "sha256": "57998e6b5054bd6e303c8e18acc127c84719f8fd2b4e35069e7c55859ae1e3b8"
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
@@ -50459,8 +50459,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/flat7x_d0_pcm_source.rs",
-              "bytes": 13260,
-              "sha256": "ca7ba0ef0cf11634ae0d62d571448b6e5a03c1cce6a962a5350d0d636091a892"
+              "bytes": 13549,
+              "sha256": "f989b5fcb34e0850c106d84bd6df855ccac02488e5750682272dcf1940261492"
             },
             {
               "path": "crates/jocforge-domain/src/codec/flat7x_d0_spectrum.rs",
@@ -50489,8 +50489,8 @@
             },
             {
               "path": "crates/jocforge-domain/tests/flat7x_d0_audio_frame.rs",
-              "bytes": 10310,
-              "sha256": "b4dd643d9f2dd91a8ac292115acee6280e70c70fd0def6cd3986ffe4a8204d6f"
+              "bytes": 10460,
+              "sha256": "4f3673ccdc82eb913908229d0b9839b86e5dfed35be6e93d764153f629fdd9dc"
             },
             {
               "path": "crates/jocforge-domain/tests/flat7x_d0_bap.rs",
@@ -59864,8 +59864,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2248338,
-              "sha256": "f4ed9e0d3d8ba27369c0287946ed146854824dc5250aeaa3dc6d7c02b900b80b"
+              "bytes": 2248326,
+              "sha256": "8e1e0517d5ba31a7d440dd87ca9084c473f1e36e48aed5460c029baba8ba643d"
             }
           ],
           "test_inventory": [

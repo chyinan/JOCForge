@@ -107,10 +107,9 @@ impl Flat7xD0PcmFrameCandidate {
     }
 }
 
-/// Inputs to the source-PCM-to-D0-frame functional core.
+/// Caller-owned frame controls for a source-PCM-to-D0-frame candidate.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct Flat7xD0PcmFrameInput<'a> {
-    pub pcm_rows: [&'a [u32]; FLAT7X_D0_BAP_CHANNEL_COUNT],
+pub struct Flat7xD0PcmFrameSettings<'a> {
     pub before: &'a Flat7xD0OverlapHistory,
     pub transform_parameters: &'a MathGeneratedTransformParameters,
     pub target: Flat7xI0D0TargetPlan,
@@ -118,6 +117,13 @@ pub struct Flat7xD0PcmFrameInput<'a> {
     pub complete_emdf_container: &'a [u8],
     pub bap_parameters: &'a Flat7xD0BapParameters,
     pub dynamic_range_codes: [Option<u8>; FLAT7X_D0_BAP_BLOCK_COUNT],
+}
+
+/// Inputs to the source-PCM-to-D0-frame functional core.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Flat7xD0PcmFrameInput<'a> {
+    pub pcm_rows: [&'a [u32]; FLAT7X_D0_BAP_CHANNEL_COUNT],
+    pub settings: Flat7xD0PcmFrameSettings<'a>,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -158,16 +164,20 @@ impl Flat7xD0PcmSourceError {
 pub fn produce_flat7x_d0_frame_from_pcm_source(
     input: Flat7xD0PcmFrameInput<'_>,
 ) -> Result<Flat7xD0PcmFrameCandidate, Flat7xD0PcmSourceError> {
-    let block_series =
-        stage_flat7x_d0_pcm_block_series(input.pcm_rows, input.before, input.transform_parameters)?;
+    let settings = input.settings;
+    let block_series = stage_flat7x_d0_pcm_block_series(
+        input.pcm_rows,
+        settings.before,
+        settings.transform_parameters,
+    )?;
     let frame = produce_flat7x_d0_audio_frame(&Flat7xD0AudioFrameInput {
-        target: input.target,
-        bsi_structure: input.bsi_structure,
-        complete_emdf_container: input.complete_emdf_container,
-        bap_parameters: input.bap_parameters,
+        target: settings.target,
+        bsi_structure: settings.bsi_structure,
+        complete_emdf_container: settings.complete_emdf_container,
+        bap_parameters: settings.bap_parameters,
         spectrum_by_block: block_series.spectra(),
         exponent_rows_by_block: block_series.exponent_rows(),
-        dynamic_range_codes: input.dynamic_range_codes,
+        dynamic_range_codes: settings.dynamic_range_codes,
     })
     .map_err(Flat7xD0PcmSourceError::AudioFrame)?;
 

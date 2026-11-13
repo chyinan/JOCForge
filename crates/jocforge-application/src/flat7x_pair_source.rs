@@ -12,6 +12,10 @@ use jocforge_domain::{
             assemble_flat7x_i0_d0_au_candidate_with_tail_policy,
         },
         d0_frame_assembler::{Flat7xD0FrameBitInput, Flat7xD0FrameTailPolicy},
+        flat7x_d0_pcm_source::{
+            Flat7xD0PcmFrameCandidate, Flat7xD0PcmFrameInput, Flat7xD0PcmFrameSettings,
+            Flat7xD0PcmSourceError, produce_flat7x_d0_frame_from_pcm_source,
+        },
         frame_builder::Flat7xD0BsiStructure,
         i0_frame_assembler::{
             CallerOwnedI0CrcrsvSeed, Flat7xI0Ac3AudioSeriesFrameCandidate,
@@ -182,6 +186,7 @@ pub enum Flat7xPairSourceError {
     SourceIdentityMismatch,
     D0AudioSpanProducerDisabled(Flat7xD0AudioSpanProducerState),
     D0AudioSpanSourceIdentityMismatch,
+    D0PcmFrame(Flat7xD0PcmSourceError),
     I0AudioBlockSeries(I0AudioBlockSeriesError),
     I0FrameAssembly(Flat7xI0FrameAssemblyError),
     AccessUnitAssembly(Flat7xI0D0AuCandidateError),
@@ -268,6 +273,63 @@ impl Flat7xPairSourceBinding<'_> {
             && self.i0_rows == projection.i0_rows()
             && self.d0_rows == projection.d0_rows()
     }
+}
+
+/// Full D0 frame candidate bound to the pair source's D0 role-map and analysis lineage.
+#[must_use]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Flat7xPairD0PcmFrameCandidate {
+    source_identity: Flat7xD0SourceIdentity,
+    source_role_map_receipt: Flat7xSourceRoleMapReceipt,
+    frame_candidate: Flat7xD0PcmFrameCandidate,
+}
+
+impl Flat7xPairD0PcmFrameCandidate {
+    pub const fn d0_source_identity(&self) -> &Flat7xD0SourceIdentity {
+        &self.source_identity
+    }
+
+    pub const fn source_role_map_receipt(&self) -> &Flat7xSourceRoleMapReceipt {
+        &self.source_role_map_receipt
+    }
+
+    pub const fn frame_candidate(&self) -> &Flat7xD0PcmFrameCandidate {
+        &self.frame_candidate
+    }
+
+    pub const fn after_history(
+        &self,
+    ) -> &jocforge_domain::codec::flat7x_d0_pcm_source::Flat7xD0OverlapHistory {
+        self.frame_candidate.after_history()
+    }
+
+    pub const fn production_allowed(&self) -> bool {
+        false
+    }
+}
+
+/// Runs the PCM-to-frame candidate against the exact D0 rows carried by a bound pair source.
+///
+/// The returned proposal keeps the D0 source identity and replaceable role-map receipt beside the
+/// frame/history candidate. It does not create F12/F13/F15 receipts or install an owner root.
+pub fn produce_flat7x_pair_d0_pcm_frame_candidate(
+    binding: &Flat7xPairSourceBinding<'_>,
+    settings: Flat7xD0PcmFrameSettings<'_>,
+) -> Result<Flat7xPairD0PcmFrameCandidate, Flat7xPairSourceError> {
+    if settings.target != binding.target {
+        return Err(Flat7xPairSourceError::ProfileTargetMismatch);
+    }
+    let frame_candidate = produce_flat7x_d0_frame_from_pcm_source(Flat7xD0PcmFrameInput {
+        pcm_rows: binding.d0_rows.rows(),
+        settings,
+    })
+    .map_err(Flat7xPairSourceError::D0PcmFrame)?;
+
+    Ok(Flat7xPairD0PcmFrameCandidate {
+        source_identity: binding.d0_source_identity.clone(),
+        source_role_map_receipt: binding.role_map_receipt.clone(),
+        frame_candidate,
+    })
 }
 
 /// Source-bound audio-block inputs ready for the existing I0/D0 frame assemblers.
@@ -735,6 +797,7 @@ mod pair_access_unit_integration_tests {
         assemble_flat7x_i0_frame_candidate_from_binding,
         assemble_flat7x_pair_access_unit_candidate, assemble_flat7x_pair_i0_frame_candidate,
         bind_flat7x_pair_source, prepare_flat7x_pair_audio_blocks,
+        produce_flat7x_pair_d0_pcm_frame_candidate,
     };
     use crate::{
         PreparedJobInput, SelectedAdmResourcePayloads, SelectedWaveDescriptor,
@@ -759,7 +822,7 @@ mod pair_access_unit_integration_tests {
                 Ac3DeltaBitAllocationInput, Ac3MantissaQuantizerPolicy, I0AudioBlockControlPolicy,
                 I0AudioBlockSeriesBudget, I0AudioBlockSeriesPolicy, I0BapCandidateQ,
             },
-            bap::{BapParameters, load_bap_parameters},
+            bap::{BapParameters, Flat7xD0BapParameters, load_bap_parameters},
             d0_frame_assembler::{
                 D0_CRC2_FIELD_BITS, D0Block2SkipFieldInput, D0BlockTwoAudioSpans,
                 D0FrameAudioBlockInput, Flat7xD0FrameBitInput, Flat7xD0FrameTailPolicy,
@@ -768,6 +831,10 @@ mod pair_access_unit_integration_tests {
             d0_frame_layout::CallerOwnedUnboundD0Block2InsertionPoint,
             emdf_skip_field::flat7x_d0_block2_skipfld_bit_length,
             exponent_packing::pack_exponent_difference_group,
+            flat7x_d0_frame_controls::{
+                Flat7xD0AllocationCandidateQ, Flat7xD0AudioFrameControlPolicy,
+            },
+            flat7x_d0_pcm_source::{Flat7xD0OverlapHistory, Flat7xD0PcmFrameSettings},
             frame_builder::{Flat7xD0BsiStructure, measure_flat7x_d0_bsi_structure},
             i0_frame_assembler::{
                 CallerOwnedAc3Cplinu, CallerOwnedI0CrcrsvSeed, Flat7xI0FrameAssemblyError,
@@ -1128,6 +1195,86 @@ mod pair_access_unit_integration_tests {
             information: None,
             addbsi: None,
         }
+    }
+
+    #[test]
+    fn pair_binding_produces_a_source_bound_d0_frame_from_its_projected_pcm_rows() {
+        let prepared = selected_prepared_input();
+        let analysis = analysis_numeric_stage(&prepared, "flat7x-d0-pcm-binding-source");
+        let bap_parameters: Arc<BapParameters> =
+            Arc::new(load_bap_parameters(Some(BAP_PROVIDER)).unwrap());
+        let numeric_plan = NumericPlanReceipt::from_parent_for_test(
+            analysis.shared_analysis().unwrap(),
+            synthetic_selected_numeric_plan(Arc::clone(&bap_parameters)),
+        );
+        let target = Flat7xI0D0TargetPlan::approved_contract();
+        let source_identity = numeric_plan.identity();
+        let callback_index = FrontendCallbackIndex::new(2);
+        let callback_lineage = CallbackLineageIdentity::new(
+            prepared.programme_id().clone(),
+            source_identity.source_stage_key().attempt_id(),
+            callback_index,
+        );
+        let physical_pcm_rows: Vec<Vec<u32>> = (0..usize::from(PHYSICAL_CHANNELS))
+            .map(|row_index| {
+                let mut row = vec![0.0_f32.to_bits(); PHYSICAL_PCM_SAMPLES];
+                for block in 0..6 {
+                    row[block * 256 + 13 + row_index % 23] = 0.5_f32.to_bits();
+                    row[block * 256 + 129 + row_index % 17] = (-0.25_f32).to_bits();
+                }
+                row
+            })
+            .collect();
+        let projection = build_flat7x_source_pcm_projection(
+            &prepared,
+            target,
+            &callback_lineage,
+            source_identity.source_index(),
+            source_identity.source_stage_key().transaction_id(),
+            source_identity,
+            &physical_pcm_rows,
+        )
+        .unwrap();
+        let resolved_profile =
+            resolve_selected_profile(&EncodingProfile::selected_with_joc_reconstruction_layout(
+                JocReconstructionLayout::Flat7x,
+            ))
+            .unwrap();
+        let binding =
+            bind_flat7x_pair_source(resolved_profile, &projection, &numeric_plan).unwrap();
+        let transform_parameters =
+            MathGeneratedTransformParameters::selected_math_generated_v1().unwrap();
+        let d0_bap_parameters = Flat7xD0BapParameters::etsi_ts_102_366_v1_4_1();
+        let emdf_container = [0xa5_u8];
+        let frame = produce_flat7x_pair_d0_pcm_frame_candidate(
+            &binding,
+            Flat7xD0PcmFrameSettings {
+                before: &Flat7xD0OverlapHistory::cold(),
+                transform_parameters: &transform_parameters,
+                target,
+                bsi_structure: Flat7xD0BsiStructure {
+                    dialnorm: 16,
+                    compr: None,
+                    mixing: None,
+                    block_mix: [None; 6],
+                    information: None,
+                    addbsi: None,
+                },
+                complete_emdf_container: &emdf_container,
+                bap_parameters: &d0_bap_parameters,
+                dynamic_range_codes: [None; 6],
+            },
+        )
+        .unwrap();
+
+        assert_eq!(frame.d0_source_identity(), binding.d0_source_identity());
+        assert_eq!(frame.source_role_map_receipt(), binding.role_map_receipt());
+        assert_eq!(frame.frame_candidate().frame().frame_bytes().len(), 4_096);
+        assert_eq!(
+            frame.after_history().samples_by_channel()[0],
+            binding.d0_rows().rows()[0][1_280..]
+        );
+        assert!(!frame.production_allowed());
     }
 
     #[test]
