@@ -1,0 +1,21 @@
+{
+  "package": "FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1",
+  "schema_version": 1,
+  "files": [
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 2352,
+      "sha256": "0fcb4b0a7b41b7f252f8329a81ac7ad9c4b75a4f930ec96f376ca089ffeeb2a6"
+    },
+    {
+      "path": "FINDINGS.md",
+      "bytes": 1221,
+      "sha256": "ac89e09bf2130d6b040d386e784bc274d14ff0afd941b60a75859fb0973954b2"
+    },
+    {
+      "path": "verify_package.py",
+      "bytes": 2452,
+      "sha256": "6330f7cfcab457c2a0c0db2a6ce5228365e2f2e1c06802491b8b0354b50744f8"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "FLAT7X-D0-BLOCK-INDEX-CONVENTION-V1",
+  "resolution": {
+    "contract_d0_emdf_block_index": 2,
+    "contract_index_base": "ZERO_BASED",
+    "parser_block_index": 2,
+    "parser_index_base": "ZERO_BASED",
+    "audio_block_prefix_position_one_based": 3,
+    "same_slot": true
+  },
+  "target_contract_package": {
+    "package_id": "FLAT7X-D0-SKIPFLD-STRUCTURE-V1",
+    "manifest_sha256": "1b14343db4128bda45c254a024de2662ac59516e2e83aa7d3191e3c4d80ca1c3",
+    "package_seal_sha256": "7c31c485368c3755de23f7fee981a141c3607eef86d7110a4cdf1661c6a15024",
+    "evidence_path": "outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-D0-SKIPFLD-STRUCTURE-V1/EVIDENCE.json",
+    "target_field": "target_contract.d0_emdf_block_index",
+    "target_value": 2
+  },
+  "wash_handoff_record": {
+    "path": "docs/memory/handoffs/current-7.1-flat7x-1664.md",
+    "sha256": "c9b6f1594750a8c2558ee90c4a9ffa497a01303977ba88e7d3d06d424b7a079b",
+    "line": 69,
+    "statement": "approved target's D0 block-2 skip field is zero-based"
+  },
+  "openjoc_parser": {
+    "repository_head": "9654475f10ea9ead020b9ae148dae8b01ab2bef3",
+    "source_path": "crates/openjoc-eac3/src/audio_block.rs",
+    "source_sha256": "969303c175302b6002e13a979d9d466d4dfcc36ae66e9f46a605536747104074",
+    "zero_based_field_doc_line": 120,
+    "zero_origin_loop_line": 1171,
+    "eac3_prefix_parser_line": 1182,
+    "callback_index_and_skipfield_lines": [1200, 1203]
+  },
+  "official_sample_receipt": {
+    "package_id": "OFFICIAL-DEMO-D0-BLOCK-2-SKIPFLD-EMDF-NUMERIC-WASH-V1",
+    "manifest_sha256": "95d0f596c089fd0c43eee3e2a0f877177da897bda11b17387e1e4a6727d9cfcd",
+    "package_seal_sha256": "9c04149e8c9c8a3c71e14b57777a66ad4e4317a8221972db46ec76c3ddc0642a",
+    "selected_block_index_zero_based": 2,
+    "same_slot_human_position_one_based": 3,
+    "sample_d0_rate_kbps": 640,
+    "target_d0_rate_kbps": 1024,
+    "target_behavior_inferred": false
+  },
+  "wire_field_status": {
+    "block_index_origin": "PARSER_SEQUENTIAL_POSITION_WITHIN_SYNCFRAME",
+    "separate_bsi_block_ordinal_field": "NOT_IDENTIFIED",
+    "parser_rerun": false,
+    "raw_bytes_read_or_exported": false,
+    "pcm_decoded": false,
+    "dee_or_encoder_run": false
+  },
+  "open_boundaries": {
+    "native_d0_insertion_owner": "UNBOUND",
+    "d0_audio_source_generation": "UNBOUND",
+    "production_output": "NOT_RUN"
+  }
+}
