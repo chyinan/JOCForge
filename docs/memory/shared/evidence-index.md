@@ -3,7 +3,7 @@ status: current
 topic: washed-evidence-index
 spec: JOCForge
 confidence: package-hash-verified
-last_updated: 2026-11-12
+last_updated: 2026-11-13
 tags:
   - evidence
   - Wash
@@ -26,6 +26,7 @@ tags:
 | `eac3-dependent-d0-mixing-metadata-v1` | `a7d8bb0e724dd94b9a31fa860c4296daecc957e4570dfdb9f32bf5ef17c3aa12` | `a7fcace5ab491fb3f7f82927146a6c9e33f7fa6321bf875d0bb4c11b7c004a7e` | D0 mixing/infomdate BSI tail vectors locally verified; explicit mixing/block values, 68/76 parent cursor, no audio/XML mapping; capacity vector's 16 bits adapted to 12 byte-representable bits pending Wash correction | `outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-MIXING-METADATA-V1` |
 | `eac3-dependent-d0-info-addbsi-segment-v1` | `e8f1908d3572571c4dcb19aedd898b0e068464d6921ed54569fd8df4cb3a7cdb` | `d94fd72b890c522849cca6380f7630eddf1637764fda09807a61aa8ce3385f5d` | D0 informational BSI and opaque addbsi suffix vectors locally verified; caller-owned values, 1..64-byte length, complete-capacity preflight; JOC interpretation, audio, full frame/AU and production remain open | `outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-DEPENDENT-D0-INFO-ADDBSI-SEGMENT-V1` |
 | `flat7x-i0-ac3-header-segment-v1` | `285bff275095c945a3f6f4b5040de20111779cec466602fb1aea29ca8c4ad8e1` | `19a1923a4ec264eca0f55c63eaab3065d6587ef1e86ef0e6af2d288f950acc9d` | I0 AC-3 header fields through optional compr locally verified at 62/70 bits; caller-supplied CRC1/DRC values, no CRC or audio computation; full I0 frame/AU and production remain open | `outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-I0-AC3-HEADER-SEGMENT-V1` |
+| `EAC3-EXPONENT-U4-U7-WRITER-BOUNDARY-V1` | `d1fb9e452554c04bb6c630d143e8124a8790d8610ac20deb61838d14e2f7a2e9` | `NO_SEPARATE_SEAL` | Manifest and normal/optimized checker pass; U4/U7 field order, widths and cursor are bounded; real group-count producer, U4 seed producer and D0 lane join remain unbound | `outputs/IMPLEMENTER_SUPPLEMENTS/EAC3-EXPONENT-U4-U7-WRITER-BOUNDARY-V1` |
 | `DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1` | `98697c0b352bb11379d0cc942911ad34b23350a554b2432cf9e9b8405f4523a6` | `fbec0caef75f1fd2f49d6e390b090127979b189861d0482381c337d511dfa61e` | Partial static writer boundaries；I0/D0 role、AU order、source generation 和 atomic commit 未绑定；vectors `NOT_RUN` | `outputs/IMPLEMENTER_SUPPLEMENTS/DEE-ATMOS71-I0-D0-AU-TRANSACTION-BOUNDARY-PARTIAL-V1` |
 | `JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1` | `9f500f0785c569d67b846fa54f121b4e42c6b5b179ace98c4bdf19463c906109` | `a5ea37646195925f69cc2d53792b474a882b536cac3b26699ff4aa8679b16b3f` | Official I0 exact BSID `NOT_CAPTURED`；BSID16/strmtyp0 prefix equivalence `UNBOUND`；no prefix change authorized；production disabled | `outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-I0-FRAME-SYNTAX-GAP-V1` |
 | `JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1` | `509a4d61dbc0b20a0044a05043a99e83a7b60224aefd3df144cb394d1b30048b` | `bcce271fa5cfc7d725e4833337111c0a882a0dc09a9ebba3dfe2aeac7749b4dd` | Partial profile/header implementation authorized；`joc_dmx_config_idx=1`；full stream and official-demo acceptance `NOT_RUN` | `outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-FLAT7X-1024-PARTIAL-STRUCTURE-V1` |
