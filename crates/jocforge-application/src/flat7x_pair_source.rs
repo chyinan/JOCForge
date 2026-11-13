@@ -610,3 +610,467 @@ mod tests {
         );
     }
 }
+
+#[cfg(all(test, feature = "test-support"))]
+mod pair_access_unit_integration_tests {
+    use std::{ops::Range, sync::Arc};
+
+    use super::{
+        Flat7xD0AudioSpanInput, Flat7xD0AudioSpanReceipt, Flat7xPairSourceError,
+        assemble_flat7x_pair_access_unit_candidate, assemble_flat7x_pair_i0_frame_candidate,
+        bind_flat7x_pair_source, prepare_flat7x_pair_audio_blocks,
+    };
+    use crate::{
+        PreparedJobInput, SelectedAdmResourcePayloads, SelectedWaveDescriptor,
+        prepare_selected_job_input, source_frame_bridge::build_flat7x_source_pcm_projection,
+    };
+    use jocforge_domain::{
+        analysis::{
+            input_history::INPUT_HISTORY_BLOCK_SAMPLES,
+            owner::{AnalysisNumericPlanStage, AnalysisOwnerRoot},
+            source_frame::InstalledAudioSourceFrame,
+            structure_refresh::{F07_BLOCKS_PER_FRAME, F07_FULLBAND_LANES},
+            transient_parameters::load_transient_parameters,
+        },
+        codec::{
+            ac3_audio_block::{
+                Ac3DeltaBitAllocationInput, Ac3MantissaQuantizerPolicy, I0AudioBlockControlPolicy,
+                I0AudioBlockSeriesBudget, I0AudioBlockSeriesPolicy, I0BapCandidateQ,
+            },
+            bap::{BapParameters, load_bap_parameters},
+            d0_frame_assembler::{
+                D0_CRC2_FIELD_BITS, D0Block2SkipFieldInput, D0BlockTwoAudioSpans,
+                D0FrameAudioBlockInput, Flat7xD0FrameBitInput, OpaqueD0AudioBitSpan,
+            },
+            d0_frame_layout::CallerOwnedUnboundD0Block2InsertionPoint,
+            emdf_skip_field::flat7x_d0_block2_skipfld_bit_length,
+            exponent_packing::pack_exponent_difference_group,
+            frame_builder::{Flat7xD0BsiStructure, measure_flat7x_d0_bsi_structure},
+            i0_frame_assembler::{
+                CallerOwnedAc3Cplinu, CallerOwnedI0CrcrsvSeed, Flat7xI0FrameAssemblyError,
+                I0AuxDataInput, OpaqueI0Ac3BitSpan,
+            },
+            policy_parameters::{PolicyProfile, load_policy_parameters},
+            selected_frame_trial::{
+                BlockExponentPlan, CoefficientBlockInput, ConverterHeaderInput,
+                FullbandExponentLanePlan, LfeExponentPlan, MainExponentSyntax,
+                SelectedSourceNumericPlan,
+            },
+        },
+        profile::{
+            EncodingProfile, Flat7xI0D0TargetPlan, JocReconstructionLayout,
+            resolve_selected_profile,
+        },
+        timeline::{CodecSourceIndex, FrontendCallbackIndex},
+        transaction::{AttemptId, CallbackLineageIdentity, CallbackTransactionId, ProgrammeId},
+        transform::{
+            fullband_exponent_pipeline::NumericPlanReceipt,
+            math_generated_parameters::MathGeneratedTransformParameters,
+        },
+    };
+    use serde_json::Value;
+
+    const INPUT_XML_VECTORS: &[u8] = include_bytes!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    );
+    const AXML: &[u8] = include_bytes!(
+        "../../jocforge-domain/tests/fixtures/selected_adm_graph/source_metadata.xml"
+    );
+    const CHNA: &[u8] = include_bytes!(
+        "../../jocforge-domain/tests/fixtures/selected_adm_graph/source_track_associations.bin"
+    );
+    const DBMD: &[u8] = include_bytes!(
+        "../../jocforge-domain/tests/fixtures/selected_adm_graph/source_metadata.dbmd"
+    );
+    const TRANSIENT_PARAMETERS: &[u8] =
+        include_bytes!("../../jocforge-domain/tests/fixtures/transient_channel/PARAMETERS.json");
+    const F08_PARAMETERS: &[u8] = include_bytes!(
+        "../../jocforge-domain/src/transform/ordinary_transform_math_parameters.json"
+    );
+    const POLICY_PARAMETERS: &[u8] =
+        include_bytes!("../../jocforge-domain/tests/fixtures/policy_authorized/PARAMETERS.json");
+    const BAP_PROVIDER: &[u8] = include_bytes!(
+        "../../../outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-PUBLIC-BAP-PROVIDER-V1/public-bap-48k-v1.json"
+    );
+    const PHYSICAL_CHANNELS: u16 = 38;
+    const PHYSICAL_PCM_SAMPLES: usize = 1_536;
+    const CHNA_RECORD_BYTES: usize = 40;
+    const FULLBAND_CHANNELS: usize = 5;
+    const FULLBAND_BINS: usize = 217;
+    const LFE_BINS: usize = 7;
+
+    struct SyntheticD0AudioSpans {
+        audio_bytes: [Vec<u8>; 6],
+        prefix_bytes: Vec<u8>,
+        suffix_bytes: Vec<u8>,
+        bit_lengths: [u32; 6],
+        prefix_bits: u32,
+    }
+
+    impl SyntheticD0AudioSpans {
+        fn new(
+            target: Flat7xI0D0TargetPlan,
+            bsi: &Flat7xD0BsiStructure<'_>,
+            container_bytes: u16,
+        ) -> Self {
+            let bsi_bits = measure_flat7x_d0_bsi_structure(target, bsi)
+                .unwrap()
+                .value();
+            let skipfield_bits = flat7x_d0_block2_skipfld_bit_length(container_bytes).unwrap();
+            let frame_bits = u32::from(target.d0().frame_bytes()) * 8;
+            let audio_bits = frame_bits - D0_CRC2_FIELD_BITS - bsi_bits - skipfield_bits;
+            let even_bits = audio_bits / 6;
+            let remainder = audio_bits % 6;
+            let bit_lengths = std::array::from_fn(|index| {
+                even_bits + u32::from(u32::try_from(index).unwrap() < remainder)
+            });
+            let audio_bytes = std::array::from_fn(|index| {
+                vec![
+                    0x30 + u8::try_from(index).unwrap();
+                    usize::try_from(bit_lengths[index].div_ceil(8)).unwrap()
+                ]
+            });
+            let prefix_bits = bit_lengths[2] / 2;
+            let suffix_bits = bit_lengths[2] - prefix_bits;
+            let prefix_bytes = vec![0x52; usize::try_from(prefix_bits.div_ceil(8)).unwrap()];
+            let suffix_bytes = vec![0x73; usize::try_from(suffix_bits.div_ceil(8)).unwrap()];
+
+            Self {
+                audio_bytes,
+                prefix_bytes,
+                suffix_bytes,
+                bit_lengths,
+                prefix_bits,
+            }
+        }
+
+        fn frame_input<'a>(
+            &'a self,
+            skip_fields: &'a [D0Block2SkipFieldInput<'a>],
+        ) -> Flat7xD0FrameBitInput<'a> {
+            let audio_blocks = std::array::from_fn(|index| {
+                if index == 2 {
+                    D0FrameAudioBlockInput::BlockTwo(D0BlockTwoAudioSpans {
+                        before_skipfield: OpaqueD0AudioBitSpan::new(
+                            &self.prefix_bytes,
+                            0,
+                            self.prefix_bits,
+                        ),
+                        skip_fields,
+                        after_skipfield: OpaqueD0AudioBitSpan::new(
+                            &self.suffix_bytes,
+                            0,
+                            self.bit_lengths[2] - self.prefix_bits,
+                        ),
+                    })
+                } else {
+                    D0FrameAudioBlockInput::Opaque(OpaqueD0AudioBitSpan::new(
+                        &self.audio_bytes[index],
+                        0,
+                        self.bit_lengths[index],
+                    ))
+                }
+            });
+            Flat7xD0FrameBitInput { audio_blocks }
+        }
+    }
+
+    fn selected_prepared_input() -> PreparedJobInput {
+        let vectors: Value = serde_json::from_slice(INPUT_XML_VECTORS).unwrap();
+        let case = &vectors["config_cases"][0];
+        let input_xml = case["input_xml"].as_str().unwrap();
+        let descriptor = &case["pcm_descriptor"];
+        let (resource, spans) = selected_wave_resource();
+        let metadata = SelectedAdmResourcePayloads::new(
+            &resource[spans[0].clone()],
+            &resource[spans[1].clone()],
+            &resource[spans[2].clone()],
+        );
+        prepare_selected_job_input(
+            ProgrammeId::new("flat7x-pair-integration-test").unwrap(),
+            input_xml.as_bytes(),
+            SelectedWaveDescriptor::new(
+                u32::try_from(descriptor["sample_rate"].as_u64().unwrap()).unwrap(),
+                PHYSICAL_CHANNELS,
+                u16::try_from(descriptor["pcm_bits"].as_u64().unwrap()).unwrap(),
+            ),
+            1,
+            Arc::clone(&resource),
+            metadata,
+        )
+        .unwrap()
+    }
+
+    fn selected_wave_resource() -> (Arc<[u8]>, [Range<usize>; 3]) {
+        let mut bytes = b"RIFF\0\0\0\0WAVE".to_vec();
+        append_wave_chunk(&mut bytes, *b"fmt ", &selected_format_payload());
+        append_wave_chunk(
+            &mut bytes,
+            *b"data",
+            &vec![0_u8; usize::from(PHYSICAL_CHANNELS) * 3],
+        );
+        let axml = append_wave_chunk(&mut bytes, *b"axml", AXML);
+        let chna = append_wave_chunk(&mut bytes, *b"chna", CHNA);
+        let dbmd = append_wave_chunk(&mut bytes, *b"dbmd", DBMD);
+        let riff_size = u32::try_from(bytes.len() - 8).unwrap();
+        bytes[4..8].copy_from_slice(&riff_size.to_le_bytes());
+        (Arc::from(bytes.into_boxed_slice()), [axml, chna, dbmd])
+    }
+
+    fn selected_format_payload() -> Vec<u8> {
+        let block_align = PHYSICAL_CHANNELS * 3;
+        let mut format = Vec::with_capacity(16);
+        format.extend_from_slice(&1_u16.to_le_bytes());
+        format.extend_from_slice(&PHYSICAL_CHANNELS.to_le_bytes());
+        format.extend_from_slice(&48_000_u32.to_le_bytes());
+        format.extend_from_slice(&(48_000_u32 * u32::from(block_align)).to_le_bytes());
+        format.extend_from_slice(&block_align.to_le_bytes());
+        format.extend_from_slice(&24_u16.to_le_bytes());
+        format
+    }
+
+    fn append_wave_chunk(bytes: &mut Vec<u8>, chunk_id: [u8; 4], payload: &[u8]) -> Range<usize> {
+        bytes.extend_from_slice(&chunk_id);
+        bytes.extend_from_slice(&u32::try_from(payload.len()).unwrap().to_le_bytes());
+        let start = bytes.len();
+        bytes.extend_from_slice(payload);
+        let end = bytes.len();
+        if payload.len() % 2 != 0 {
+            bytes.push(0);
+        }
+        start..end
+    }
+
+    fn analysis_numeric_stage(prepared: &PreparedJobInput) -> AnalysisNumericPlanStage {
+        let root =
+            AnalysisOwnerRoot::cold_for_prepared_input(prepared.domain_identity_capability());
+        let installed_audio: Box<InstalledAudioSourceFrame> =
+            vec![[[0_u32; INPUT_HISTORY_BLOCK_SAMPLES]; F07_BLOCKS_PER_FRAME]; 6]
+                .into_boxed_slice()
+                .try_into()
+                .unwrap();
+        let transient = load_transient_parameters(Some(TRANSIENT_PARAMETERS)).unwrap();
+        let transform =
+            MathGeneratedTransformParameters::from_provider_bytes(F08_PARAMETERS).unwrap();
+        let policy =
+            load_policy_parameters(PolicyProfile::selected(), Some(POLICY_PARAMETERS)).unwrap();
+        root.prepare_f07_source(
+            AttemptId::new(2),
+            CallbackTransactionId::new("flat7x-pair-integration-source").unwrap(),
+            CodecSourceIndex::new(0),
+            &installed_audio,
+            [false; F07_FULLBAND_LANES],
+            &transient,
+        )
+        .unwrap()
+        .complete_f08(&transform)
+        .unwrap()
+        .complete_gain_db(&policy)
+        .unwrap()
+        .complete_f09_f10(&policy)
+        .unwrap()
+    }
+
+    fn synthetic_selected_numeric_plan(
+        bap_parameters: Arc<BapParameters>,
+    ) -> SelectedSourceNumericPlan {
+        let zero_group = pack_exponent_difference_group(&[0, 0, 0]).unwrap();
+        let exponent_plan_by_block = std::array::from_fn(|block| {
+            let strategy = u8::from(block == 0);
+            let fullband_groups = if strategy == 0 {
+                Vec::new()
+            } else {
+                vec![zero_group; 72]
+            };
+            let fullband = std::array::from_fn(|_| FullbandExponentLanePlan {
+                decoded_exponents: [15; FULLBAND_BINS],
+                strategy,
+                bandwidth_code: 48,
+                base_exponent: 15,
+                packed_groups: fullband_groups.clone(),
+                gain_range: 0,
+            });
+            BlockExponentPlan {
+                fullband,
+                lfe: LfeExponentPlan {
+                    decoded_exponents: [15; LFE_BINS],
+                    strategy,
+                    base_exponent: 15,
+                    packed_groups: [zero_group; 2],
+                },
+            }
+        });
+        let coefficients_by_block = std::array::from_fn(|_| CoefficientBlockInput {
+            fullband_words: std::array::from_fn(|_| [0.0_f32.to_bits(); FULLBAND_BINS]),
+            lfe_words: [0.0_f32.to_bits(); LFE_BINS],
+        });
+
+        SelectedSourceNumericPlan {
+            bap_provider_sha256: bap_parameters.provider_sha256(),
+            bap_parameters,
+            coefficients_by_block,
+            exponent_plan_by_block,
+            db_per_bit_codes: [2; F07_BLOCKS_PER_FRAME],
+            short_flags: [[false; FULLBAND_CHANNELS]; F07_BLOCKS_PER_FRAME],
+            previous_short: [false; FULLBAND_CHANNELS],
+            main_exponent_syntax: MainExponentSyntax::BlockStrategies,
+            converter: ConverterHeaderInput {
+                frame_codes: [0; FULLBAND_CHANNELS],
+                snr_offset: 0,
+            },
+        }
+    }
+
+    fn synthetic_i0_policy() -> I0AudioBlockSeriesPolicy {
+        I0AudioBlockSeriesPolicy {
+            blocks: std::array::from_fn(|block| I0AudioBlockControlPolicy {
+                candidate_q: I0BapCandidateQ::new(if block == 0 { 16 } else { 0 }).unwrap(),
+                slow_decay_code: 2,
+                fast_decay_code: 1,
+                slow_gain_code: 1,
+                floor_code: 7,
+                fast_gain_codes: [0; 6],
+                caller_all_active_fine_zero: block != 0,
+                dither_flags: [false; 5],
+                dynamic_range_code: Some(0x30 + u8::try_from(block).unwrap()),
+            }),
+            cplinu: CallerOwnedAc3Cplinu::Independent,
+            delta_bit_allocation: Ac3DeltaBitAllocationInput::Absent,
+            quantizer_policy: Ac3MantissaQuantizerPolicy::NearestTiesEven,
+        }
+    }
+
+    fn synthetic_d0_bsi() -> Flat7xD0BsiStructure<'static> {
+        Flat7xD0BsiStructure {
+            dialnorm: 31,
+            compr: Some(1),
+            mixing: None,
+            block_mix: [None; 6],
+            information: None,
+            addbsi: None,
+        }
+    }
+
+    #[test]
+    fn application_pair_candidate_composes_matching_i0_d0_frames_in_one_au() {
+        let prepared = selected_prepared_input();
+        let analysis = analysis_numeric_stage(&prepared);
+        let bap_parameters: Arc<BapParameters> =
+            Arc::new(load_bap_parameters(Some(BAP_PROVIDER)).unwrap());
+        // Test support binds synthetic codec values to the exact prepared-source analysis receipt.
+        let numeric_plan = NumericPlanReceipt::from_parent_for_test(
+            analysis.shared_analysis().unwrap(),
+            synthetic_selected_numeric_plan(Arc::clone(&bap_parameters)),
+        );
+
+        let target = Flat7xI0D0TargetPlan::approved_contract();
+        let source_identity = numeric_plan.identity();
+        let callback_index = FrontendCallbackIndex::new(2);
+        let callback_lineage = CallbackLineageIdentity::new(
+            prepared.programme_id().clone(),
+            source_identity.source_stage_key().attempt_id(),
+            callback_index,
+        );
+        let physical_pcm_rows =
+            vec![vec![0_u32; PHYSICAL_PCM_SAMPLES]; usize::from(PHYSICAL_CHANNELS)];
+        let projection = build_flat7x_source_pcm_projection(
+            &prepared,
+            target,
+            &callback_lineage,
+            source_identity.source_index(),
+            source_identity.source_stage_key().transaction_id(),
+            source_identity,
+            &physical_pcm_rows,
+        )
+        .unwrap();
+        let resolved_profile =
+            resolve_selected_profile(&EncodingProfile::selected_with_joc_reconstruction_layout(
+                JocReconstructionLayout::Flat7x,
+            ))
+            .unwrap();
+        let binding =
+            bind_flat7x_pair_source(resolved_profile, &projection, &numeric_plan).unwrap();
+
+        let d0_bsi = synthetic_d0_bsi();
+        let emdf_container = [0xa5_u8];
+        let d0_audio = SyntheticD0AudioSpans::new(target, &d0_bsi, 1);
+        let d0_skip_fields = [D0Block2SkipFieldInput {
+            insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(d0_audio.prefix_bits),
+            complete_emdf_container: &emdf_container,
+        }];
+        let d0_audio_blocks = d0_audio.frame_input(&d0_skip_fields);
+        let d0_receipt = Flat7xD0AudioSpanReceipt {
+            source_identity: binding.d0_source_identity().clone(),
+            audio_blocks: d0_audio_blocks,
+        };
+        let pair_audio = prepare_flat7x_pair_audio_blocks(
+            binding,
+            &numeric_plan,
+            synthetic_i0_policy(),
+            I0AudioBlockSeriesBudget::new(20_480),
+            Flat7xD0AudioSpanInput::Provided(d0_receipt),
+        )
+        .unwrap();
+        let i0_frame = match assemble_flat7x_pair_i0_frame_candidate(
+            &pair_audio,
+            I0AuxDataInput::Absent,
+            CallerOwnedI0CrcrsvSeed { value: false },
+        ) {
+            Ok(candidate) => candidate,
+            Err(Flat7xPairSourceError::I0FrameAssembly(
+                Flat7xI0FrameAssemblyError::FrameSpanMismatch {
+                    actual_bits,
+                    required_bits,
+                },
+            )) if actual_bits < required_bits => {
+                let auxdata_bits = required_bits - actual_bits;
+                let auxdata = vec![0_u8; usize::try_from(auxdata_bits.div_ceil(8)).unwrap()];
+                assemble_flat7x_pair_i0_frame_candidate(
+                    &pair_audio,
+                    I0AuxDataInput::Present(OpaqueI0Ac3BitSpan::new(&auxdata, 0, auxdata_bits)),
+                    CallerOwnedI0CrcrsvSeed { value: false },
+                )
+                .unwrap()
+            }
+            other => panic!("unexpected I0 frame candidate result: {other:?}"),
+        };
+
+        let candidate =
+            assemble_flat7x_pair_access_unit_candidate(&pair_audio, &i0_frame, d0_bsi).unwrap();
+
+        assert_eq!(candidate.source_identity(), numeric_plan.identity());
+        assert_eq!(
+            candidate.source_role_map_receipt(),
+            pair_audio.role_map_receipt()
+        );
+        assert_eq!(
+            candidate.d0_source_identity(),
+            pair_audio.source_binding().d0_source_identity()
+        );
+        assert_eq!(candidate.access_unit_bytes().len(), 6_656);
+        assert_eq!(candidate.access_unit().d0_frame_bytes().len(), 4_096);
+        let d0_receipt = candidate.access_unit().d0_frame_receipt();
+        assert_eq!(d0_receipt.target_frame_bytes(), 4_096);
+        assert_eq!(
+            d0_receipt.layout().audio_blocks()[2]
+                .block_index()
+                .zero_based_value(),
+            2
+        );
+        assert_eq!(
+            d0_receipt.layout().block_two_skip_field().payload_bytes(),
+            1
+        );
+        let au_receipt = candidate.access_unit().access_unit_receipt();
+        assert_eq!(au_receipt.i0_span().start_byte(), 0);
+        assert_eq!(au_receipt.i0_span().byte_length(), 2_560);
+        assert_eq!(au_receipt.d0_span().start_byte(), 2_560);
+        assert_eq!(au_receipt.d0_span().byte_length(), 4_096);
+        assert_eq!(au_receipt.total_byte_length(), 6_656);
+        assert_eq!(
+            &candidate.access_unit_bytes()[..2_560],
+            i0_frame.i0_frame().frame_bytes()
+        );
+        assert!(!candidate.production_allowed());
+    }
+}

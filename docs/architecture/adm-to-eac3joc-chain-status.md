@@ -1900,3 +1900,9 @@ Wash supplement `DEE67-PROENCODER-SLOT0-RANGE-WRITE-BOUNDARY-V1` (manifest `bb49
 Wash supplement `DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1` (manifest `bf2f7e43a4cecd315e21d993c7fddcd8534089224747db1d9d2fc805f914e95d`, seal `2d906abfdb78fe2ca17ed21e1a0aeb3075e95181dfedd6209a6957d3866033d9`) bounds the Config+0x58 read check to the 19-instruction slot-0 method; the profile-index-1 consumer remains `UNBOUND`.
 
 Wash supplement `DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1` (manifest `ba65817c81f8097dda3cc3897f337da81c9a46fee0a892051d553c49089e8f04`, seal `92ffa1712763fccffd6006f8d9b2b35b7cc4b7660bef304b28b1bb0f3bc68dfa`) separates the callback-buffer and FileWriter paths. Their I0/D0 role, source generation and durable pair commit are not joined; the source-bound in-memory candidate remains production-disabled.
+
+## 2026-11-13 application pair-candidate integration
+
+The application-level test `application_pair_candidate_composes_matching_i0_d0_frames_in_one_au` now exercises `assemble_flat7x_pair_access_unit_candidate` with a matching shared source/role receipt, six synthetic caller-owned D0 spans, and explicit D0 BSI. It checks I0-first/D0-second spans (2,560 + 4,096 = 6,656 bytes), D0 extent 4,096 bytes, one block-index-2 skip-field, and `production_allowed=false`. The synthetic numeric-plan receipt uses the existing opt-in `test-support` feature; that helper is excluded from default production builds.
+
+Verification: the application integration test passed (1 test), the existing application pair-source suite passed (3 tests), and the selected 5.1 all-rate route regression passed (1 test). The CLI route remains `Flat7xPairNotReady`; no file publication path was added.

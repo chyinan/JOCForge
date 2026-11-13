@@ -13244,8 +13244,14 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         and "D0_BLOCK_TWO_INDEX: usize = 2" in d0_assembler
         and "Flat7xI0D0AuCandidate" in composer
         and "pub const fn production_allowed(&self) -> bool {\n        false\n    }" in app
+        and "application_pair_candidate_composes_matching_i0_d0_frames_in_one_au" in app
+        and "candidate.access_unit_bytes().len()" in app
+        and "candidate.access_unit().d0_frame_bytes().len()" in app
+        and "block_two_skip_field().payload_bytes()" in app
+        and "candidate.production_allowed()" in app
+        and "NumericPlanReceipt::from_parent_for_test" in app
         and no_cli_pair_candidate,
-        "application binds D0 receipt and source profile to the in-memory frame/AU assemblers without CLI publication",
+        "application tests the source-bound in-memory pair candidate while CLI publication stays disabled",
     )
 
     ac3_tests = (root / "crates/jocforge-domain/src/codec/ac3_audio_block.rs").read_text(encoding="utf-8")

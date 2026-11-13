@@ -254,3 +254,15 @@ The target is 1,664 kbps aggregate, with the official-demo non-rate profile and 
 Wash package `DEE67-PROENCODER-SLOT0-RANGE-WRITE-BOUNDARY-V1` (manifest `bb49bd95f41c7eee237299ce383075d00943343c0c7899a08b21a40db41574bd`, seal `912b38d37f98625ee3a039c08c7902d35ec27ba742ca5e0b0634d79735496b62`) and `DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1` (manifest `bf2f7e43a4cecd315e21d993c7fddcd8534089224747db1d9d2fc805f914e95d`, seal `2d906abfdb78fe2ca17ed21e1a0aeb3075e95181dfedd6209a6957d3866033d9`) pass normal and optimized checks. Both are slot-0-only observations; external D0 span population and the profile-index-1 consumer remain `UNBOUND`.
 
 Wash package `DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1` (manifest `ba65817c81f8097dda3cc3897f337da81c9a46fee0a892051d553c49089e8f04`, seal `92ffa1712763fccffd6006f8d9b2b35b7cc4b7660bef304b28b1bb0f3bc68dfa`) passes normal and optimized checks. It records separate callback-buffer and FileWriter paths without a same-source I0/D0 generation join; the current candidate stays in memory and production-disabled.
+
+## 2026-11-13 application wrapper integration test
+
+`application_pair_candidate_composes_matching_i0_d0_frames_in_one_au` passes with the opt-in `test-support` feature. It runs the application wrapper over one matching `SharedAnalysisIdentity`/role-map receipt, a source-bound I0 frame candidate, six synthetic caller-owned D0 spans, and explicit D0 BSI. Assertions cover 6,656-byte AU size, I0 at bytes 0..2560, D0 at bytes 2560..6656, exact 4,096-byte D0 extent, one block-index-2 skip-field, and `production_allowed=false`. The synthetic receipt helper is feature-gated and absent from the default production build.
+
+Commands and results:
+
+- `cargo test -p jocforge-application --lib application_pair_candidate_composes_matching_i0_d0_frames_in_one_au --features test-support --locked -j1` — 1 passed.
+- `cargo test -p jocforge-application --lib flat7x_pair_source --locked -j1` — 3 passed.
+- `cargo test -p jocforge --lib selected_five_point_one_keeps_every_supported_rate_on_its_single_frame_route --locked -j1` — 1 passed; `origin/experimental/independent-encoder` was at `514442cade7246d5b7108ef999a1f42c448f8944` when run.
+
+The next implementation edge remains the real source-generation-bound D0 span producer and the durable I0/D0 pair commit. This application test validates the in-memory seam only.

@@ -34,6 +34,13 @@ impl<'a, T> NumericPlanReceipt<'a, T> {
         }
     }
 
+    /// Synthetic source-plan receipt constructor available only to dependent-crate test support.
+    #[cfg(feature = "test-support")]
+    #[doc(hidden)]
+    pub fn from_parent_for_test(shared_analysis: &'a SharedAnalysisReceipt, plan: T) -> Self {
+        Self::from_parent(shared_analysis, plan)
+    }
+
     pub const fn shared_analysis(&self) -> &'a SharedAnalysisReceipt {
         self.shared_analysis
     }

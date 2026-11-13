@@ -10778,8 +10778,8 @@
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 21970,
-              "sha256": "b342898a95240cfefcc4e6c230dc218a7562183a90c76a79af80d7bc542dce74"
+              "bytes": 41516,
+              "sha256": "b107b3a1471f925f9816bda41476656e3f9fbdcaec1ea5bacbbe224ecc7da0f0"
             }
           ],
           "test_inventory": [
@@ -10790,8 +10790,8 @@
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 21970,
-              "sha256": "b342898a95240cfefcc4e6c230dc218a7562183a90c76a79af80d7bc542dce74"
+              "bytes": 41516,
+              "sha256": "b107b3a1471f925f9816bda41476656e3f9fbdcaec1ea5bacbbe224ecc7da0f0"
             }
           ]
         }
@@ -18897,8 +18897,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2215204,
-              "sha256": "d762704047ee09bb0e31a24f540da6b870cfaa643e3dcd6055fead4bd7ab5938"
+              "bytes": 2215580,
+              "sha256": "d9c6a4bf7ce6e10ab412dcf00ef3abbee7d337204955cdd1b79c55852da1d792"
             }
           ],
           "test_modules": [
@@ -22423,8 +22423,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2215204,
-              "sha256": "d762704047ee09bb0e31a24f540da6b870cfaa643e3dcd6055fead4bd7ab5938"
+              "bytes": 2215580,
+              "sha256": "d9c6a4bf7ce6e10ab412dcf00ef3abbee7d337204955cdd1b79c55852da1d792"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -47707,8 +47707,8 @@
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 21970,
-              "sha256": "b342898a95240cfefcc4e6c230dc218a7562183a90c76a79af80d7bc542dce74"
+              "bytes": 41516,
+              "sha256": "b107b3a1471f925f9816bda41476656e3f9fbdcaec1ea5bacbbe224ecc7da0f0"
             }
           ],
           "test_modules": [
@@ -49510,7 +49510,8 @@
             "crates/jocforge-domain/src/codec/d0_frame_layout.rs",
             "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
             "crates/jocforge-domain/src/codec/frame_builder.rs",
-            "crates/jocforge-domain/src/codec/i0_frame_assembler.rs"
+            "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
+            "crates/jocforge-domain/src/transform/fullband_exponent_pipeline.rs"
           ],
           "test_modules": [
             "crates/jocforge-application/src/flat7x_pair_source.rs",
@@ -49680,6 +49681,12 @@
               "same_object_config_plus_0x58_read": "NOT_OBSERVED_IN_SLOT0",
               "profile_index_1_consumer": "UNBOUND",
               "production_allowed": false
+            },
+            "test_support_receipt": {
+              "feature": "jocforge-application/test-support",
+              "domain_constructor": "NumericPlanReceipt::from_parent_for_test",
+              "enabled_only_for_synthetic_application_test": true,
+              "production_allowed": false
             }
           },
           "vectors": {
@@ -49702,10 +49709,17 @@
               "The AU candidate spans I0 at bytes 0..2560 then D0 at bytes 2560..6656.",
               "The package numeric regression uses only C=314/301/301 and ID11/ID14 lengths from 640-kbps samples with synthetic writer bytes.",
               "Flat7x spatial index1, coefficient index1 and 15-object count are carried as separate target-plan values.",
-              "The candidate remains in memory with production disabled and no CLI/AU-owner/file publication."
+              "The candidate remains in memory with production disabled and no CLI/AU-owner/file publication.",
+              "The application wrapper is exercised with matching SharedAnalysisIdentity and role-map receipt, six caller-owned D0 spans, one block-index-2 field, I0-before-D0 extents, and production_allowed=false."
             ],
             "expected_outputs_included": false,
-            "execution_status": "LOCALLY_VERIFIED_SOURCE_BOUND_PAIR_AU_C511_512_EXTENT_ORDER_IDENTITY_AND_THREE_AU_SAMPLE_WRITER_REGRESSION"
+            "execution_status": "LOCALLY_VERIFIED_SOURCE_BOUND_PAIR_AU_C511_512_EXTENT_ORDER_IDENTITY_AND_THREE_AU_SAMPLE_WRITER_REGRESSION",
+            "application_integration_test": {
+              "name": "application_pair_candidate_composes_matching_i0_d0_frames_in_one_au",
+              "command": "cargo test -p jocforge-application --lib application_pair_candidate_composes_matching_i0_d0_frames_in_one_au --features test-support --locked -j1",
+              "result": "PASS: 1 passed, 51 filtered out",
+              "production_allowed": false
+            }
           },
           "error_outcomes": [
             {
@@ -49741,8 +49755,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 21970,
-              "sha256": "b342898a95240cfefcc4e6c230dc218a7562183a90c76a79af80d7bc542dce74"
+              "bytes": 41516,
+              "sha256": "b107b3a1471f925f9816bda41476656e3f9fbdcaec1ea5bacbbe224ecc7da0f0"
             },
             {
               "path": "crates/jocforge-domain/src/codec/access_unit_composer.rs",
@@ -49773,13 +49787,18 @@
               "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
               "bytes": 42876,
               "sha256": "21c24753e26f7898310164acabc362ed7698c3ca3017f2a6e398c11b5ebcd4f0"
+            },
+            {
+              "path": "crates/jocforge-domain/src/transform/fullband_exponent_pipeline.rs",
+              "bytes": 5770,
+              "sha256": "4beb7c4f073a4bb5d86b4682e2d9a9a81aa8196d6a98a9a92190bb3cd3c3b164"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 21970,
-              "sha256": "b342898a95240cfefcc4e6c230dc218a7562183a90c76a79af80d7bc542dce74"
+              "bytes": 41516,
+              "sha256": "b107b3a1471f925f9816bda41476656e3f9fbdcaec1ea5bacbbe224ecc7da0f0"
             },
             {
               "path": "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
@@ -59066,8 +59085,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2215204,
-              "sha256": "d762704047ee09bb0e31a24f540da6b870cfaa643e3dcd6055fead4bd7ab5938"
+              "bytes": 2215580,
+              "sha256": "d9c6a4bf7ce6e10ab412dcf00ef3abbee7d337204955cdd1b79c55852da1d792"
             }
           ],
           "test_inventory": [
