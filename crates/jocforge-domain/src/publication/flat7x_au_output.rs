@@ -5,13 +5,16 @@ use sha2::{Digest, Sha256};
 
 use crate::{
     integrity::crc16::eac3_crc16,
-    integrity::programme_owner::{IntegrityF12SourceReceipts, IntegrityPayloadEvidence},
+    integrity::programme_owner::{
+        IntegrityF12SourceReceipts, IntegrityIdentity, IntegrityPayloadEvidence,
+    },
     joc::emdf::metadata_owner::MetadataSourceProposal,
     profile::{
         Flat7xAuByteSequenceCandidate, Flat7xI0D0TargetPlan, Flat7xSourceGeneration,
         Flat7xSubstreamRole,
     },
     timeline::{CodecSourceIndex, JocDispatchIndex, PublishedAuIndex},
+    transaction::CallbackTransactionId,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -744,6 +747,20 @@ impl<'a> Flat7xAuAppendProposal<'a> {
     /// adapter performed the write, rollback, fsync, or readback represented by the candidate.
     pub fn source_receipts(&self) -> Flat7xAuSourceReceipts<'_> {
         self.source_receipts
+    }
+
+    /// Returns the F12 source identities already validated against F13 when this proposal was
+    /// created. The independent and dependent receipts remain distinct values.
+    pub fn source_identities(&self) -> (&IntegrityIdentity, &IntegrityIdentity) {
+        (
+            self.source_receipts.i0_integrity.source().identity(),
+            self.source_receipts.d0_integrity.source().identity(),
+        )
+    }
+
+    /// Returns F13's consumer transaction used to validate the paired F12 source identities.
+    pub fn metadata_consumer_transaction_id(&self) -> Option<&CallbackTransactionId> {
+        self.source_receipts.f13_metadata.consumer_transaction_id()
     }
 
     pub fn complete(

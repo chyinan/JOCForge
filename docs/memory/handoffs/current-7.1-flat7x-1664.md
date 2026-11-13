@@ -274,3 +274,9 @@ The next implementation edge remains the real source-generation-bound D0 span pr
 Verification: the application pair integration test passed (1), the application pair-source tests passed (3), and the selected 5.1 all-rate regression passed (1). `cargo check -p jocforge-domain -p jocforge-application --locked -j1`, fmt, scoped Clippy, map rendering and boundary check passed. No file, DEE run or encoder run was produced.
 
 The typed `Flat7xAuAppendProposal` I/O boundary now also has a test-only `Cursor<Vec<u8>>` sink. A fully source-receipted synthetic pair is copied and read back through the shared extent/CRC path; the sink supplies no fsync or durable claim, so F15 rejects completion with `AppendReceiptCandidateMismatch` and preserves the owner state. No staging file is opened.
+
+## 2026-11-13 ProgrammeOutputStaging pair seam
+
+`ProgrammeOutputStaging::append_flat7x_au` is a crate-local, uncalled bridge from a domain-issued F15 pair proposal to `AtomicOutputStaging::append_flat7x_au`. It checks the programme and attempt binding, paired I0/D0 source identity, F13 transaction, target frame/AU extents, AU offset, and CRC receipts before staging opens. The production CLI still returns `Flat7xPairNotReady`; the seam does not enable `production_allowed` or add a caller.
+
+Three focused unit tests cover attempt mismatch, programme mismatch, and matched pair delivery to an in-memory cursor followed by nondurable F15 rejection. The receipt handoff integration and I/O memory-sink tests pass; the selected 5.1 route regression also passes. Format, workspace check, generated-map check, and boundary check pass (92 scoped tasks, 104 IDs, 0 unmaterialized roots, 6 partial roots). Strict Clippy reports existing diagnostics in domain and CLI code, with none pointing to the new pair staging checks. No staging file, `.ec3`, encoder, or DEE run occurred.

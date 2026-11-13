@@ -270,8 +270,8 @@ fn complete_staged_proposal(
         })
 }
 
-#[cfg(test)]
-fn append_flat7x_au_to_memory_for_test<'a>(
+#[cfg(any(test, feature = "test-support"))]
+pub fn append_flat7x_au_to_memory_for_test<'a>(
     sink: &mut std::io::Cursor<Vec<u8>>,
     proposal: Flat7xAuAppendProposal<'a>,
 ) -> Result<Flat7xAuOutputAfterProposal<'a>, Flat7xAuAppendIoFailure> {

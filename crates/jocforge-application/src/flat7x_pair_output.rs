@@ -9,12 +9,19 @@ use jocforge_domain::{
         compose_flat7x_au_byte_sequence, validate_flat7x_au_candidate,
     },
     publication::{
-        Flat7xAuAttemptRetirement, Flat7xAuAttemptRetirementReason, Flat7xAuOutputOwner,
-        Flat7xAuOutputOwnerError, Flat7xAuSourceReceiptInput,
+        Flat7xAuAttemptRetirementReason, Flat7xAuOutputOwner, Flat7xAuOutputOwnerError,
+        Flat7xAuSourceReceiptInput,
     },
 };
 
+pub use jocforge_domain::publication::{
+    Flat7xAuAppendProposal, Flat7xAuAttemptRetirement, Flat7xAuOutputAfterProposal,
+};
+
 use crate::flat7x_pair_source::Flat7xPairAccessUnitCandidate;
+
+#[cfg(feature = "test-support")]
+use sha2::{Digest, Sha256};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Flat7xPairIoStageError {
@@ -228,4 +235,244 @@ pub fn preflight_flat7x_pair_io_stage(
         retirement,
         disposition: Flat7xPairIoStageDisposition::RejectedProductionDisabled,
     })
+}
+
+/// Expected F15 output identity and extents supplied by the output-stage caller.
+///
+/// Source generation and owner generation remain separate typed values; neither is derived from
+/// the other or from an AU index.
+#[cfg(feature = "test-support")]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Flat7xPairIoBinding {
+    attempt_id: String,
+    output_owner_generation: u64,
+    source_generation: jocforge_domain::profile::Flat7xSourceGeneration,
+    f13_owner_generations: (u64, u64),
+    i0_integrity_generations: (u64, u64),
+    d0_integrity_generations: (u64, u64),
+    source_index: jocforge_domain::timeline::CodecSourceIndex,
+    dispatch_index: jocforge_domain::timeline::JocDispatchIndex,
+    published_au_index: jocforge_domain::timeline::PublishedAuIndex,
+    byte_offset: u64,
+    i0_frame_bytes: u16,
+    d0_frame_bytes: u16,
+}
+
+#[cfg(feature = "test-support")]
+impl Flat7xPairIoBinding {
+    #[allow(clippy::too_many_arguments)]
+    pub fn new(
+        attempt_id: String,
+        output_owner_generation: u64,
+        source_generation: jocforge_domain::profile::Flat7xSourceGeneration,
+        f13_owner_generations: (u64, u64),
+        i0_integrity_generations: (u64, u64),
+        d0_integrity_generations: (u64, u64),
+        source_index: jocforge_domain::timeline::CodecSourceIndex,
+        dispatch_index: jocforge_domain::timeline::JocDispatchIndex,
+        published_au_index: jocforge_domain::timeline::PublishedAuIndex,
+        byte_offset: u64,
+        i0_frame_bytes: u16,
+        d0_frame_bytes: u16,
+    ) -> Self {
+        Self {
+            attempt_id,
+            output_owner_generation,
+            source_generation,
+            f13_owner_generations,
+            i0_integrity_generations,
+            d0_integrity_generations,
+            source_index,
+            dispatch_index,
+            published_au_index,
+            byte_offset,
+            i0_frame_bytes,
+            d0_frame_bytes,
+        }
+    }
+
+    pub fn attempt_id(&self) -> &str {
+        &self.attempt_id
+    }
+
+    pub const fn output_owner_generation(&self) -> u64 {
+        self.output_owner_generation
+    }
+
+    pub const fn source_generation(&self) -> jocforge_domain::profile::Flat7xSourceGeneration {
+        self.source_generation
+    }
+
+    pub const fn f13_owner_generations(&self) -> (u64, u64) {
+        self.f13_owner_generations
+    }
+
+    pub const fn i0_integrity_generations(&self) -> (u64, u64) {
+        self.i0_integrity_generations
+    }
+
+    pub const fn d0_integrity_generations(&self) -> (u64, u64) {
+        self.d0_integrity_generations
+    }
+
+    pub const fn source_index(&self) -> jocforge_domain::timeline::CodecSourceIndex {
+        self.source_index
+    }
+
+    pub const fn dispatch_index(&self) -> jocforge_domain::timeline::JocDispatchIndex {
+        self.dispatch_index
+    }
+
+    pub const fn published_au_index(&self) -> jocforge_domain::timeline::PublishedAuIndex {
+        self.published_au_index
+    }
+
+    pub const fn byte_offset(&self) -> u64 {
+        self.byte_offset
+    }
+
+    pub const fn frame_lengths(&self) -> (u16, u16) {
+        (self.i0_frame_bytes, self.d0_frame_bytes)
+    }
+}
+
+#[cfg(feature = "test-support")]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Flat7xPairIoHandoffError {
+    AttemptMismatch,
+    OutputOwnerGenerationMismatch,
+    SourceGenerationMismatch,
+    F13GenerationMismatch,
+    IntegrityGenerationMismatch,
+    SourceIdentityMismatch,
+    OutputOffsetMismatch,
+    FrameExtentMismatch,
+    AccessUnitExtentMismatch,
+    FrameIntegrityMismatch,
+    AccessUnitHashMismatch,
+    ProductionAuthorizationUnexpected,
+}
+
+/// One-shot application handoff to the existing I/O adapter for a fully F15-staged pair.
+///
+/// The handoff preserves the F15 receipt-bearing proposal. It carries no production or final-file
+/// authority; the current opt-in path is available only through the test-support feature.
+#[cfg(feature = "test-support")]
+#[must_use]
+pub struct Flat7xPairIoHandoff<'a> {
+    binding: Flat7xPairIoBinding,
+    proposal: jocforge_domain::publication::Flat7xAuAppendProposal<'a>,
+}
+
+#[cfg(feature = "test-support")]
+impl<'a> Flat7xPairIoHandoff<'a> {
+    pub const fn binding(&self) -> &Flat7xPairIoBinding {
+        &self.binding
+    }
+
+    pub fn bytes(&self) -> &[u8] {
+        self.proposal.bytes()
+    }
+
+    pub const fn production_allowed(&self) -> bool {
+        false
+    }
+
+    pub fn into_append_proposal(self) -> Flat7xAuAppendProposal<'a> {
+        self.proposal
+    }
+}
+
+/// Validates a fully source-receipted F15 pair proposal before passing it to the I/O adapter.
+///
+/// The expectation keeps output-owner generation and Flat7x source-generation labels distinct.
+/// I0/D0/AU extents, ordering, source identity and receipt-derived digests are checked before the
+/// one-shot proposal is returned. The resulting handoff remains production-disabled.
+#[cfg(feature = "test-support")]
+pub fn handoff_source_receipted_pair_for_io<'a>(
+    proposal: jocforge_domain::publication::Flat7xAuAppendProposal<'a>,
+    binding: Flat7xPairIoBinding,
+) -> Result<Flat7xPairIoHandoff<'a>, Flat7xPairIoHandoffError> {
+    if proposal.attempt_id() != binding.attempt_id() {
+        return Err(Flat7xPairIoHandoffError::AttemptMismatch);
+    }
+    if proposal.before_generation() != binding.output_owner_generation() {
+        return Err(Flat7xPairIoHandoffError::OutputOwnerGenerationMismatch);
+    }
+    if proposal.production_allowed() {
+        return Err(Flat7xPairIoHandoffError::ProductionAuthorizationUnexpected);
+    }
+
+    let ledger = proposal.ledger_entry();
+    if ledger.source_generation() != binding.source_generation() {
+        return Err(Flat7xPairIoHandoffError::SourceGenerationMismatch);
+    }
+    if ledger.f13_emdf_receipt().0 != binding.f13_owner_generations() {
+        return Err(Flat7xPairIoHandoffError::F13GenerationMismatch);
+    }
+    if ledger.integrity_owner_generations()
+        != (
+            binding.i0_integrity_generations(),
+            binding.d0_integrity_generations(),
+        )
+    {
+        return Err(Flat7xPairIoHandoffError::IntegrityGenerationMismatch);
+    }
+    let metadata_identity = ledger.metadata_identity();
+    if ledger.au_index() != binding.published_au_index()
+        || metadata_identity
+            != (
+                binding.source_index(),
+                binding.dispatch_index(),
+                binding.published_au_index(),
+            )
+    {
+        return Err(Flat7xPairIoHandoffError::SourceIdentityMismatch);
+    }
+    let expected_offset = u64::from(binding.published_au_index().value())
+        .checked_mul(u64::from(
+            Flat7xI0D0TargetPlan::approved_contract().aggregate_frame_bytes(),
+        ))
+        .ok_or(Flat7xPairIoHandoffError::OutputOffsetMismatch)?;
+    if ledger.offset() != binding.byte_offset() || binding.byte_offset() != expected_offset {
+        return Err(Flat7xPairIoHandoffError::OutputOffsetMismatch);
+    }
+
+    let target = Flat7xI0D0TargetPlan::approved_contract();
+    let expected_frames = (target.i0().frame_bytes(), target.d0().frame_bytes());
+    let frame_lengths = ledger.frame_lengths();
+    let expected_au_bytes = target.aggregate_frame_bytes();
+    let bytes = proposal.bytes();
+    if binding.frame_lengths() != expected_frames || frame_lengths != expected_frames {
+        return Err(Flat7xPairIoHandoffError::FrameExtentMismatch);
+    }
+    if ledger.length() != expected_au_bytes
+        || u32::try_from(bytes.len()).ok() != Some(expected_au_bytes)
+        || usize::from(frame_lengths.0) + usize::from(frame_lengths.1) != bytes.len()
+    {
+        return Err(Flat7xPairIoHandoffError::AccessUnitExtentMismatch);
+    }
+
+    let i0_end = usize::from(frame_lengths.0);
+    let i0_bytes = &bytes[..i0_end];
+    let d0_bytes = &bytes[i0_end..];
+    let (i0_crc_residual, d0_crc_residual) = ledger.frame_crc_residuals();
+    let (i0_digest, d0_digest) = ledger.frame_sha256();
+    let actual_i0_digest: [u8; 32] = Sha256::digest(i0_bytes).into();
+    let actual_d0_digest: [u8; 32] = Sha256::digest(d0_bytes).into();
+    if i0_crc_residual != 0
+        || d0_crc_residual != 0
+        || &actual_i0_digest != i0_digest
+        || &actual_d0_digest != d0_digest
+    {
+        return Err(Flat7xPairIoHandoffError::FrameIntegrityMismatch);
+    }
+    let actual_au_digest: [u8; 32] = Sha256::digest(bytes).into();
+    if &actual_au_digest != ledger.au_sha256() {
+        return Err(Flat7xPairIoHandoffError::AccessUnitHashMismatch);
+    }
+
+    // The proposal type can only be issued by the F15 owner after all three source receipts pass.
+    let _source_receipts = proposal.source_receipts();
+    Ok(Flat7xPairIoHandoff { binding, proposal })
 }

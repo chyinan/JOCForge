@@ -1,14 +1,22 @@
-use super::{ProgrammeOutputStaging, SourceFrameOutputStageError, validate_candidate_output_pair};
+use super::{
+    Flat7xOutputAppendFailure, Flat7xOutputAppendRejection, ProgrammeOutputStaging,
+    SourceFrameOutputStageError, validate_candidate_output_pair,
+};
 use jocforge_application::{
     PreparedJobInput, SelectedAdmResourcePayloads,
     output_publication::{AttemptId, OutputRootBindingError, OutputStagingOwnerId},
     prepare_selected_job_input,
 };
 use jocforge_application::{ProgrammeId, SelectedWaveDescriptor};
-use jocforge_domain::timeline::CodecSourceIndex;
+use jocforge_domain::{
+    joc::emdf::metadata_owner::test_support::Flat7xReceiptGateMetadataTestInputs,
+    publication::{Flat7xAuAttemptRetirementReason, test_support::Flat7xAuAppendTestFixture},
+    timeline::CodecSourceIndex,
+};
 use serde_json::Value;
 use std::{
     fs,
+    io::Cursor,
     ops::Range,
     path::{Path, PathBuf},
     sync::Arc,
@@ -26,6 +34,21 @@ const DBMD: &[u8] = include_bytes!(
 );
 const JOB_VECTORS: &[u8] = include_bytes!(
     "../../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+);
+const F15_PAIR_VECTORS: &[u8] = include_bytes!(
+    "../../../../outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/INPUT-ONLY-VECTORS.json"
+);
+const METADATA_OWNER_VECTORS: &[u8] = include_bytes!(
+    "../../../jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json"
+);
+const METADATA_PUBLIC_PROVIDER: &[u8] = include_bytes!(
+    "../../../jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json"
+);
+const METADATA_WRAPPER_CONFIG: &[u8] = include_bytes!(
+    "../../../jocforge-domain/tests/fixtures/metadata_owner/metadata-wrapper-config.json"
+);
+const KEYLESS_INTEGRITY_PROVIDER: &[u8] = include_bytes!(
+    "../../../jocforge-domain/tests/fixtures/integrity_owner/integrity-public-provider.json"
 );
 
 struct ScratchDirectory(PathBuf);
@@ -120,6 +143,134 @@ fn metadata_payloads<'a>(
         &resource[spans[1].clone()],
         &resource[spans[2].clone()],
     )
+}
+
+fn flat7x_receipt_pair_fixture() -> Flat7xAuAppendTestFixture {
+    Flat7xAuAppendTestFixture::positive_pair(Flat7xReceiptGateMetadataTestInputs {
+        f15_pair_vectors: F15_PAIR_VECTORS,
+        metadata_owner_vectors: METADATA_OWNER_VECTORS,
+        metadata_public_provider: METADATA_PUBLIC_PROVIDER,
+        metadata_wrapper_config: METADATA_WRAPPER_CONFIG,
+        keyless_integrity_provider: KEYLESS_INTEGRITY_PROVIDER,
+    })
+}
+
+fn flat7x_output_binding(
+    programme_label: &str,
+    attempt_id: AttemptId,
+) -> jocforge_application::output_publication::ProgrammeOutputBinding {
+    let prepared = prepared_job(programme_label);
+    jocforge_application::output_publication::test_support::bind_selected_output_for_test(
+        &prepared,
+        attempt_id,
+        OutputStagingOwnerId::new(&format!(
+            "flat7x-in-memory-{programme_label}-{}",
+            attempt_id.value()
+        ))
+        .unwrap(),
+    )
+    .unwrap()
+}
+
+fn unused_staging_directory() -> PathBuf {
+    let unique = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .expect("system clock is after the epoch")
+        .as_nanos();
+    std::env::temp_dir().join(format!("jocforge-flat7x-memory-{unique}"))
+}
+
+#[test]
+fn flat7x_staging_rejects_attempt_mismatch_before_memory_write_or_file_open() {
+    let fixture = flat7x_receipt_pair_fixture();
+    let binding = flat7x_output_binding("wash-synthetic-programme-01", AttemptId::new(8));
+    let directory = unused_staging_directory();
+    let staging = ProgrammeOutputStaging::new(&directory, &binding);
+    let staging_path = staging.staging_path();
+    let mut sink = Cursor::new(Vec::new());
+
+    let failure = match staging.append_flat7x_au_to_memory_for_test(
+        &binding,
+        &mut sink,
+        fixture.append_proposal(fixture.attempt_id()).unwrap(),
+    ) {
+        Err(failure) => failure,
+        Ok(_) => panic!("an attempt mismatch must be rejected before append"),
+    };
+
+    assert!(matches!(
+        failure,
+        Flat7xOutputAppendFailure::Rejected {
+            reason: Flat7xOutputAppendRejection::AttemptMismatch,
+            ..
+        }
+    ));
+    assert!(sink.get_ref().is_empty());
+    assert!(!staging_path.exists());
+}
+
+#[test]
+fn flat7x_staging_rejects_programme_mismatch_before_memory_write_or_file_open() {
+    let fixture = flat7x_receipt_pair_fixture();
+    let binding = flat7x_output_binding("another-synthetic-programme", AttemptId::new(7));
+    let directory = unused_staging_directory();
+    let staging = ProgrammeOutputStaging::new(&directory, &binding);
+    let staging_path = staging.staging_path();
+    let mut sink = Cursor::new(Vec::new());
+
+    let failure = match staging.append_flat7x_au_to_memory_for_test(
+        &binding,
+        &mut sink,
+        fixture.append_proposal(fixture.attempt_id()).unwrap(),
+    ) {
+        Err(failure) => failure,
+        Ok(_) => panic!("a programme mismatch must be rejected before append"),
+    };
+
+    assert!(matches!(
+        failure,
+        Flat7xOutputAppendFailure::Rejected {
+            reason: Flat7xOutputAppendRejection::ProgrammeMismatch,
+            ..
+        }
+    ));
+    assert!(sink.get_ref().is_empty());
+    assert!(!staging_path.exists());
+}
+
+#[test]
+fn flat7x_staging_routes_receipted_pair_to_memory_sink_and_rejects_nondurable_commit() {
+    let fixture = flat7x_receipt_pair_fixture();
+    let binding = flat7x_output_binding("wash-synthetic-programme-01", AttemptId::new(7));
+    let directory = unused_staging_directory();
+    let staging = ProgrammeOutputStaging::new(&directory, &binding);
+    let staging_path = staging.staging_path();
+    let expected_bytes = fixture.expected_bytes();
+    let mut sink = Cursor::new(Vec::new());
+
+    let failure = match staging.append_flat7x_au_to_memory_for_test(
+        &binding,
+        &mut sink,
+        fixture.append_proposal(fixture.attempt_id()).unwrap(),
+    ) {
+        Err(failure) => failure,
+        Ok(_) => panic!("an in-memory sink cannot attest a durable append"),
+    };
+
+    let Flat7xOutputAppendFailure::MemoryAppend(failure) = failure else {
+        panic!("the matched pair should reach the in-memory IO adapter")
+    };
+    assert!(matches!(
+        failure.error(),
+        jocforge_io::flat7x_au_append::Flat7xAuAppendIoError::ReceiptCandidateRejected
+    ));
+    assert_eq!(
+        failure.retirement().reason(),
+        Flat7xAuAttemptRetirementReason::AppendReceiptCandidateMismatch
+    );
+    assert!(failure.retirement().committed_owner_unchanged());
+    assert_eq!(sink.into_inner(), expected_bytes);
+    assert!(!staging_path.exists());
 }
 
 #[test]

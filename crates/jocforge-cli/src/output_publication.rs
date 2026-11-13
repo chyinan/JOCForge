@@ -3,6 +3,10 @@
 
 use jocforge_application::{
     PreparedJobInput,
+    flat7x_pair_output::{
+        Flat7xAuAppendProposal, Flat7xAuAttemptRetirement, Flat7xAuOutputAfterProposal,
+    },
+    meter_source_bridge::Flat7xI0D0TargetPlan,
     output_publication::{
         AdmittedProductionPlan, AttemptId, OutputConfiguration, OutputFinalizedProposal,
         OutputOwnerError, OutputRootBindingError, OutputSourceAfterProposal, OutputSourceProposal,
@@ -16,7 +20,7 @@ use jocforge_application::{
         stage_codec_owner_after_source_frame,
     },
 };
-use jocforge_io::atomic_output::{AtomicOutputStaging, OutputIoError};
+use jocforge_io::atomic_output::{AtomicOutputStaging, Flat7xAtomicAppendFailure, OutputIoError};
 
 #[cfg(test)]
 mod tests;
@@ -32,6 +36,45 @@ pub struct ProgrammeOutputStaging {
     attempt_id: AttemptId,
     staging_owner_id: OutputStagingOwnerId,
     configuration: OutputConfiguration,
+}
+
+#[derive(Debug)]
+pub enum Flat7xOutputAppendRejection {
+    OutputBinding(OutputRootBindingError),
+    AttemptMismatch,
+    ProgrammeMismatch,
+    SourceIdentityMismatch,
+    SourceTransactionMismatch,
+    FrameExtentMismatch,
+    AccessUnitExtentMismatch,
+    OutputOffsetMismatch,
+    FrameIntegrityMismatch,
+}
+
+#[derive(Debug)]
+pub enum Flat7xOutputAppendFailure {
+    Rejected {
+        reason: Flat7xOutputAppendRejection,
+        retirement: Flat7xAuAttemptRetirement,
+    },
+    StagingSetup {
+        error: OutputPublicationError,
+        retirement: Flat7xAuAttemptRetirement,
+    },
+    Append(Flat7xAtomicAppendFailure),
+    #[cfg(test)]
+    MemoryAppend(jocforge_io::flat7x_au_append::Flat7xAuAppendIoFailure),
+}
+
+impl Flat7xOutputAppendFailure {
+    pub fn retirement(&self) -> &Flat7xAuAttemptRetirement {
+        match self {
+            Self::Rejected { retirement, .. } | Self::StagingSetup { retirement, .. } => retirement,
+            Self::Append(failure) => failure.retirement(),
+            #[cfg(test)]
+            Self::MemoryAppend(failure) => failure.retirement(),
+        }
+    }
 }
 
 impl ProgrammeOutputStaging {
@@ -129,6 +172,121 @@ impl ProgrammeOutputStaging {
         if let Some(staging) = self.inner.as_mut() {
             staging.abandon();
         }
+    }
+
+    /// Appends one domain-approved Flat7x I0+D0 proposal through the existing atomic adapter.
+    ///
+    /// The proposal type carries F15's validated paired source receipts. This method remains an
+    /// uncalled staging seam; the production CLI route still rejects Flat7x before source work.
+    #[allow(dead_code)] // Wire the caller after real paired F13/I0/D0 receipts are available.
+    pub(crate) fn append_flat7x_au<'a>(
+        &mut self,
+        binding: &ProgrammeOutputBinding,
+        proposal: Flat7xAuAppendProposal<'a>,
+    ) -> Result<Flat7xAuOutputAfterProposal<'a>, Flat7xOutputAppendFailure> {
+        if let Err(reason) = self.validate_flat7x_append(binding, &proposal) {
+            return Err(Flat7xOutputAppendFailure::Rejected {
+                reason,
+                retirement: proposal.retire_staging_failure(),
+            });
+        }
+
+        let staging = match self.ensure_open(binding) {
+            Ok(staging) => staging,
+            Err(error) => {
+                return Err(Flat7xOutputAppendFailure::StagingSetup {
+                    error,
+                    retirement: proposal.retire_staging_failure(),
+                });
+            }
+        };
+
+        staging
+            .append_flat7x_au(proposal)
+            .map_err(Flat7xOutputAppendFailure::Append)
+    }
+
+    #[cfg(test)]
+    fn append_flat7x_au_to_memory_for_test<'a>(
+        &self,
+        binding: &ProgrammeOutputBinding,
+        sink: &mut std::io::Cursor<Vec<u8>>,
+        proposal: Flat7xAuAppendProposal<'a>,
+    ) -> Result<Flat7xAuOutputAfterProposal<'a>, Flat7xOutputAppendFailure> {
+        if let Err(reason) = self.validate_flat7x_append(binding, &proposal) {
+            return Err(Flat7xOutputAppendFailure::Rejected {
+                reason,
+                retirement: proposal.retire_staging_failure(),
+            });
+        }
+
+        jocforge_io::flat7x_au_append::append_flat7x_au_to_memory_for_test(sink, proposal)
+            .map_err(Flat7xOutputAppendFailure::MemoryAppend)
+    }
+
+    fn validate_flat7x_append(
+        &self,
+        binding: &ProgrammeOutputBinding,
+        proposal: &Flat7xAuAppendProposal<'_>,
+    ) -> Result<(), Flat7xOutputAppendRejection> {
+        self.validate_binding(binding)
+            .map_err(Flat7xOutputAppendRejection::OutputBinding)?;
+        if proposal.attempt_id() != self.configuration.attempt_id() {
+            return Err(Flat7xOutputAppendRejection::AttemptMismatch);
+        }
+
+        let (i0_identity, d0_identity) = proposal.source_identities();
+        if i0_identity != d0_identity {
+            return Err(Flat7xOutputAppendRejection::SourceIdentityMismatch);
+        }
+        if i0_identity.programme_id != self.programme_id.as_str() {
+            return Err(Flat7xOutputAppendRejection::ProgrammeMismatch);
+        }
+        if i0_identity.attempt != self.attempt_id.value() {
+            return Err(Flat7xOutputAppendRejection::AttemptMismatch);
+        }
+        if proposal
+            .metadata_consumer_transaction_id()
+            .is_none_or(|transaction| transaction.as_str() != i0_identity.transaction_id)
+        {
+            return Err(Flat7xOutputAppendRejection::SourceTransactionMismatch);
+        }
+
+        let ledger = proposal.ledger_entry();
+        if ledger.metadata_identity()
+            != (
+                i0_identity.source_index,
+                i0_identity.dispatch,
+                ledger.au_index(),
+            )
+            || i0_identity.au_index != Some(ledger.au_index())
+        {
+            return Err(Flat7xOutputAppendRejection::SourceIdentityMismatch);
+        }
+
+        let target = Flat7xI0D0TargetPlan::approved_contract();
+        if ledger.frame_lengths() != (target.i0().frame_bytes(), target.d0().frame_bytes()) {
+            return Err(Flat7xOutputAppendRejection::FrameExtentMismatch);
+        }
+        let expected_access_unit_bytes = target.aggregate_frame_bytes();
+        if ledger.length() != expected_access_unit_bytes
+            || u32::try_from(proposal.bytes().len()).ok() != Some(expected_access_unit_bytes)
+        {
+            return Err(Flat7xOutputAppendRejection::AccessUnitExtentMismatch);
+        }
+        let expected_offset = ledger
+            .au_index()
+            .value()
+            .checked_mul(u64::from(expected_access_unit_bytes))
+            .ok_or(Flat7xOutputAppendRejection::OutputOffsetMismatch)?;
+        if ledger.offset() != expected_offset {
+            return Err(Flat7xOutputAppendRejection::OutputOffsetMismatch);
+        }
+        if ledger.frame_crc_residuals() != (0, 0) {
+            return Err(Flat7xOutputAppendRejection::FrameIntegrityMismatch);
+        }
+
+        Ok(())
     }
 }
 
