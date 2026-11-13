@@ -3,7 +3,7 @@ status: current
 topic: 7.1-flat7x-1664-handoff
 spec: JOCForge
 confidence: package-backed-target
-last_updated: 2026-11-12
+last_updated: 2026-11-14
 tags:
   - handoff
   - AU
@@ -345,3 +345,11 @@ The isolated codec writes a typed 23-bit D0 `audfrm` prefix and six D0 `audblk` 
 The selected candidate then passes through the frame assembler, including the block-two skip-field, zero-filled aux-tail and CRC2. Three synthetic D0 frame tests, five frame assembler tests, four six-block layout tests, eleven D0 unit tests, four application pair-source tests and the selected 5.1 all-rate regression passed. This candidate has no callback PCM history, source-role receipt, F12/F13/F15 receipts, CLI callsite or parent commit; it remains `production_allowed=false`.
 
 The next critical slice is to produce these six spectra from callback PCM under a programme/attempt/source-generation history owner, then bind same-source DRC and F13 receipts, D0 F12 integrity, CLI routing and parent F15 atomic publication. Real-input acceptance and W04 follow after Wash Fresh GO.
+
+## 2026-11-14 D0 source PCM block-series candidate
+
+Added `codec::flat7x_d0_pcm_source::stage_flat7x_d0_pcm_block_series` and `produce_flat7x_d0_frame_from_pcm_source`. The source stage consumes four projected rows in `[Ls, Rs, Lrs, Rrs]` order and a caller-supplied 256-sample overlap value; builds six consecutive 512-sample windows, six 253-bin spectra and four D15 rows per block; then the new frame entry passes them into the existing D0 BAP/q-search/audblk/frame composer with caller-owned BSI, EMDF, BAP parameters and dynamic-range codes. The returned complete frame candidate keeps the last 256 PCM samples alongside it as proposed history.
+
+The three PCM-series unit tests, four D0 frame integration tests, and workspace `cargo check --locked` passed. Strict domain Clippy still reports 9 pre-existing diagnostics in analysis, DRC and JOC modules; none point to this slice. Full package test linking hit stale Windows PDB failures in unrelated integration-test binaries; the directly scoped D0 frame suite linked and passed.
+
+Still open: bind history to programme/attempt/source-generation; resolve history over suppressed source indices 0/1 under the F15-only commit rule; carry valid/padded counts; feed the six-block frame producer; issue same-source I0/D0/F13/F12 receipts; and connect CLI parent commit and durable output. No production caller or file output was added. Fresh Wash GO remains required for an encoder run.

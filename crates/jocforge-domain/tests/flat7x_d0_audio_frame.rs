@@ -6,6 +6,9 @@ use jocforge_domain::{
         },
         flat7x_d0_audio_frame::{Flat7xD0AudioFrameInput, produce_flat7x_d0_audio_frame},
         flat7x_d0_exponents::{Flat7xD0ExponentRow, prepare_flat7x_d0_d15_exponent_row},
+        flat7x_d0_pcm_source::{
+            Flat7xD0OverlapHistory, Flat7xD0PcmFrameInput, produce_flat7x_d0_frame_from_pcm_source,
+        },
         flat7x_d0_spectrum::{
             D0_PCM_SAMPLES_PER_BLOCK, Flat7xD0PcmBlockInput, Flat7xD0PcmWindow,
             Flat7xD0SpectrumBlock, transform_flat7x_d0_pcm_block,
@@ -149,6 +152,51 @@ fn d0_frame_search_produces_one_complete_crc_valid_six_block_candidate() {
         0
     );
     assert_eq!(eac3_crc16(&candidate.frame_bytes()[2..]), 0);
+    assert!(!candidate.production_allowed());
+}
+
+#[test]
+fn d0_pcm_source_feeds_the_complete_frame_candidate_and_keeps_history_with_it() {
+    let pcm_rows: [Vec<u32>; 4] = std::array::from_fn(|channel| {
+        let mut row = vec![0.0_f32.to_bits(); 1_536];
+        for block in 0..6 {
+            row[block * 256 + 19 + channel * 7] = [0.1_f32, -0.12, 0.08, -0.09][channel].to_bits();
+            row[block * 256 + 129 + channel * 9] =
+                [0.04_f32, -0.03, 0.05, -0.045][channel].to_bits();
+        }
+        row
+    });
+    let pcm_row_refs = std::array::from_fn(|channel| pcm_rows[channel].as_slice());
+    let transform_parameters =
+        MathGeneratedTransformParameters::selected_math_generated_v1().unwrap();
+    let bap_parameters = Flat7xD0BapParameters::etsi_ts_102_366_v1_4_1();
+    let emdf_container = [0x5a_u8];
+
+    let candidate = produce_flat7x_d0_frame_from_pcm_source(Flat7xD0PcmFrameInput {
+        pcm_rows: pcm_row_refs,
+        before: &Flat7xD0OverlapHistory::cold(),
+        transform_parameters: &transform_parameters,
+        target: Flat7xI0D0TargetPlan::approved_contract(),
+        bsi_structure: Flat7xD0BsiStructure {
+            dialnorm: 16,
+            compr: None,
+            mixing: None,
+            block_mix: [None; 6],
+            information: None,
+            addbsi: None,
+        },
+        complete_emdf_container: &emdf_container,
+        bap_parameters: &bap_parameters,
+        dynamic_range_codes: [None; 6],
+    })
+    .unwrap();
+
+    assert_eq!(candidate.frame().frame_bytes().len(), 4_096);
+    assert_eq!(candidate.block_series().spectra().len(), 6);
+    assert_eq!(
+        candidate.after_history().samples_by_channel()[0],
+        pcm_rows[0][1_280..]
+    );
     assert!(!candidate.production_allowed());
 }
 

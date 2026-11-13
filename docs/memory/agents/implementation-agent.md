@@ -3,7 +3,7 @@ status: partial-implementation-locally-verified
 topic: implementation-agent-status
 spec: JOCForge
 confidence: repository-status
-last_updated: 2026-11-12
+last_updated: 2026-11-14
 tags:
   - implementation
   - handoff
@@ -129,3 +129,9 @@ The approved U4/U7 writer boundary is now locally materialized as `codec::expone
 - `produce_flat7x_d0_audio_frame` evaluates raw q=1023..1, recomputes all six-block BAP and exact grouped mantissa bit costs, skips the q=0 zero-BAP bypass and selects maximum fitting content bits; ties keep the higher raw q. It makes no q-cost monotonicity assumption. The local policy is `JOCFORGE_FLAT7X_D0_MAX_ALLOCATED_BITS_Q_HIGH_TIE_V1`.
 - The selected candidate is assembled as a complete 4096-byte in-memory D0 frame with one block-two EMDF skip-field, zero aux-tail, and CRC2 receipt. Synthetic frame tests 3 passed; assembler 5, layout 4, D0 unit filter 11, application pair-source 4, and selected 5.1 all-rate regression 1 passed. `production_allowed=false` and no source-history or F12/F13/F15 receipt is issued.
 - Remaining: create six spectra from callback PCM with a programme/attempt/source-generation history owner, bind the provisional role map and same-source DRC/F13 receipts, issue D0 F12 integrity, connect the CLI and parent F15 commit, then validate real input/output. Encoder execution remains Fresh-GO gated.
+
+## 2026-11-14 D0 source PCM block-series candidate
+
+- Added `codec::flat7x_d0_pcm_source::stage_flat7x_d0_pcm_block_series` and `produce_flat7x_d0_frame_from_pcm_source`: four `[Ls, Rs, Lrs, Rrs]` source rows flow through six transform/spectrum/D15 blocks and the existing BAP/q-search/audblk/frame composer. The complete 4,096-byte frame and next overlap history are returned together as candidates.
+- PCM-series unit tests (3), the D0 frame integration suite (4), format check, and workspace `cargo check --locked` passed. Full package test linking hit stale PDB failures in unrelated integration binaries. Strict domain Clippy still reports 9 existing errors outside the new module.
+- Remaining: programme/attempt/source-generation history owner; policy for suppressed sources 0/1 and F15-only commit; valid/padded sample lineage; same-source I0/D0/F13/F12 receipts; CLI pair caller and durable final-output lifecycle. `production_allowed=false`; no file output was created.

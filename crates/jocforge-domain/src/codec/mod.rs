@@ -26,6 +26,7 @@ pub mod flat7x_d0_audio_frame;
 pub mod flat7x_d0_exponents;
 pub mod flat7x_d0_frame_controls;
 pub mod flat7x_d0_mantissa;
+pub mod flat7x_d0_pcm_source;
 pub mod flat7x_d0_spectrum;
 pub mod frame_builder;
 pub mod frame_size;

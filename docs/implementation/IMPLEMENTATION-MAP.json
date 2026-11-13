@@ -18897,8 +18897,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2248353,
-              "sha256": "fc4b6b1753938a4848f8c439abda9a5b5ca537d2e09d5251067104558786f02d"
+              "bytes": 2248338,
+              "sha256": "f4ed9e0d3d8ba27369c0287946ed146854824dc5250aeaa3dc6d7c02b900b80b"
             }
           ],
           "test_modules": [
@@ -22423,8 +22423,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2248353,
-              "sha256": "fc4b6b1753938a4848f8c439abda9a5b5ca537d2e09d5251067104558786f02d"
+              "bytes": 2248338,
+              "sha256": "f4ed9e0d3d8ba27369c0287946ed146854824dc5250aeaa3dc6d7c02b900b80b"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -42546,8 +42546,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1322,
-              "sha256": "5e24ee24b76fa03f6967d1d3d6b36f5041c1a76ed490beea84bf9d81f6886e17"
+              "bytes": 1352,
+              "sha256": "b6008b59c90b2c8dce8f3b743d9d68d38fd06a6aa98c93de34e1fccb0914a513"
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
@@ -42680,8 +42680,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1322,
-              "sha256": "5e24ee24b76fa03f6967d1d3d6b36f5041c1a76ed490beea84bf9d81f6886e17"
+              "bytes": 1352,
+              "sha256": "b6008b59c90b2c8dce8f3b743d9d68d38fd06a6aa98c93de34e1fccb0914a513"
             },
             {
               "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
@@ -42857,8 +42857,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1322,
-              "sha256": "5e24ee24b76fa03f6967d1d3d6b36f5041c1a76ed490beea84bf9d81f6886e17"
+              "bytes": 1352,
+              "sha256": "b6008b59c90b2c8dce8f3b743d9d68d38fd06a6aa98c93de34e1fccb0914a513"
             },
             {
               "path": "crates/jocforge-domain/src/codec/published_emdf_binding.rs",
@@ -45744,8 +45744,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1322,
-              "sha256": "5e24ee24b76fa03f6967d1d3d6b36f5041c1a76ed490beea84bf9d81f6886e17"
+              "bytes": 1352,
+              "sha256": "b6008b59c90b2c8dce8f3b743d9d68d38fd06a6aa98c93de34e1fccb0914a513"
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
@@ -46316,8 +46316,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1322,
-              "sha256": "5e24ee24b76fa03f6967d1d3d6b36f5041c1a76ed490beea84bf9d81f6886e17"
+              "bytes": 1352,
+              "sha256": "b6008b59c90b2c8dce8f3b743d9d68d38fd06a6aa98c93de34e1fccb0914a513"
             },
             {
               "path": "crates/jocforge-domain/src/codec/d0_frame_assembler.rs",
@@ -47122,8 +47122,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1322,
-              "sha256": "5e24ee24b76fa03f6967d1d3d6b36f5041c1a76ed490beea84bf9d81f6886e17"
+              "bytes": 1352,
+              "sha256": "b6008b59c90b2c8dce8f3b743d9d68d38fd06a6aa98c93de34e1fccb0914a513"
             },
             {
               "path": "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
@@ -47411,8 +47411,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1322,
-              "sha256": "5e24ee24b76fa03f6967d1d3d6b36f5041c1a76ed490beea84bf9d81f6886e17"
+              "bytes": 1352,
+              "sha256": "b6008b59c90b2c8dce8f3b743d9d68d38fd06a6aa98c93de34e1fccb0914a513"
             },
             {
               "path": "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
@@ -47692,8 +47692,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1322,
-              "sha256": "5e24ee24b76fa03f6967d1d3d6b36f5041c1a76ed490beea84bf9d81f6886e17"
+              "bytes": 1352,
+              "sha256": "b6008b59c90b2c8dce8f3b743d9d68d38fd06a6aa98c93de34e1fccb0914a513"
             },
             {
               "path": "crates/jocforge-domain/src/integrity/ac3_crc16.rs",
@@ -47904,8 +47904,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1322,
-              "sha256": "5e24ee24b76fa03f6967d1d3d6b36f5041c1a76ed490beea84bf9d81f6886e17"
+              "bytes": 1352,
+              "sha256": "b6008b59c90b2c8dce8f3b743d9d68d38fd06a6aa98c93de34e1fccb0914a513"
             },
             {
               "path": "crates/jocforge-validation/src/ac3_audio_block_parser.rs",
@@ -48694,8 +48694,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1322,
-              "sha256": "5e24ee24b76fa03f6967d1d3d6b36f5041c1a76ed490beea84bf9d81f6886e17"
+              "bytes": 1352,
+              "sha256": "b6008b59c90b2c8dce8f3b743d9d68d38fd06a6aa98c93de34e1fccb0914a513"
             }
           ],
           "test_modules": [
@@ -49022,8 +49022,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1322,
-              "sha256": "5e24ee24b76fa03f6967d1d3d6b36f5041c1a76ed490beea84bf9d81f6886e17"
+              "bytes": 1352,
+              "sha256": "b6008b59c90b2c8dce8f3b743d9d68d38fd06a6aa98c93de34e1fccb0914a513"
             },
             {
               "path": "crates/jocforge-domain/src/integrity/crc16.rs",
@@ -49196,13 +49196,13 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/access_unit_composer.rs",
-              "bytes": 10112,
-              "sha256": "3ad586e2299ab444f6eaedf2bc2943a6db80b49076f2e1d3525a9c2d13290f4d"
+              "bytes": 11894,
+              "sha256": "5117114aa46744649ec0bdc77137f85ec626b020eb4c6d6534d3af530533e17c"
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1322,
-              "sha256": "5e24ee24b76fa03f6967d1d3d6b36f5041c1a76ed490beea84bf9d81f6886e17"
+              "bytes": 1352,
+              "sha256": "b6008b59c90b2c8dce8f3b743d9d68d38fd06a6aa98c93de34e1fccb0914a513"
             }
           ],
           "test_modules": [
@@ -49345,8 +49345,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1322,
-              "sha256": "5e24ee24b76fa03f6967d1d3d6b36f5041c1a76ed490beea84bf9d81f6886e17"
+              "bytes": 1352,
+              "sha256": "b6008b59c90b2c8dce8f3b743d9d68d38fd06a6aa98c93de34e1fccb0914a513"
             }
           ],
           "test_modules": [
@@ -49518,11 +49518,11 @@
         },
         {
           "slice_id": "flat7x-source-bound-i0-d0-au-candidate",
-          "mapping_status": "MATERIALIZED_PAIR_TAIL_D0_SPECTRUM_BAP_D15_MANTISSA_AUDFRM_AUDBLK_MAX_BITS_Q_FIT__SOURCE_AND_PARENT_OPEN",
-          "implementation_status": "LOCALLY_VERIFIED_D0_SIX_BLOCK_AUDFRM_AUDBLK_MAX_ALLOCATED_BITS_FRAME_CANDIDATE__SOURCE_HISTORY_AND_PRODUCT_ROUTE_OPEN",
+          "mapping_status": "MATERIALIZED_D0_PCM_SIX_BLOCK_SPECTRUM_D15_AND_HISTORY_CANDIDATE__COMMITTED_HISTORY_AND_PRODUCT_ROUTE_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_D0_PCM_TO_SIX_BLOCK_SPECTRUM_D15_AND_NEXT_HISTORY_CANDIDATE__OWNER_RECEIPTS_AND_PRODUCT_ROUTE_OPEN",
           "implementation_requirement": true,
           "owner": "application",
-          "scope": "The selected Flat7x CLI request enters ADM/job admission and source execution, while the current D0 source provider remains disabled. The replaceable four-row source projection is [Ls, Rs, Lrs, Rrs], distinct from seven JOC reconstruction carriers. D0 stages cover spectrum, gainrng, D15, six-block BAP, grouped mantissas, the 23-bit audfrm prefix, six complete D0 audblk spans, block-two EMDF insertion, zero aux-tail and CRC2. The in-memory frame candidate consumes caller-provided six-block spectra/D15, BSI, EMDF and optional dynamic-range codes. Its provisional q search evaluates raw q 1023..1 without assuming monotonic cost, measures exact whole-frame content bits, and selects the maximum fitting cost; ties keep the highest q. q=0 remains a legal tested zero-BAP input vector and is excluded from playable candidates. No source-history owner, same-source F12/F13/F15 receipt, CLI callsite or parent commit is issued. production_allowed=false.",
+          "scope": "The selected Flat7x source projection feeds a D0 PCM block-series and full-frame candidate. The producer consumes four coded rows in [Ls, Rs, Lrs, Rrs] order, stages six consecutive 512-sample long-transform windows from committed overlap history, derives D15 rows, and passes them to the existing D0 BAP/q-search/audblk/frame composer with caller-owned BSI, EMDF, BAP parameters and dynamic-range codes. It returns a complete frame candidate and next-history proposal. Programme/source-generation binding, valid/padded counts, owner installation, same-source F12/F13/F15 join, AU publication and product output remain open; production_allowed=false.",
           "dependencies": [
             "F12/flat7x-i0-typed-bsi-frame-assembly-entry",
             "F12/flat7x-d0-frame-bit-assembler",
@@ -49572,6 +49572,7 @@
             "crates/jocforge-domain/src/codec/flat7x_d0_exponents.rs",
             "crates/jocforge-domain/src/codec/flat7x_d0_frame_controls.rs",
             "crates/jocforge-domain/src/codec/flat7x_d0_mantissa.rs",
+            "crates/jocforge-domain/src/codec/flat7x_d0_pcm_source.rs",
             "crates/jocforge-domain/src/codec/flat7x_d0_spectrum.rs",
             "crates/jocforge-domain/src/codec/frame_builder.rs",
             "crates/jocforge-domain/src/codec/grouped_quantizer.rs",
@@ -49600,6 +49601,7 @@
             "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
             "crates/jocforge-domain/src/codec/exponent_packing.rs",
             "crates/jocforge-domain/src/codec/flat7x_d0_frame_controls.rs",
+            "crates/jocforge-domain/src/codec/flat7x_d0_pcm_source.rs",
             "crates/jocforge-domain/src/codec/flat7x_d0_spectrum.rs",
             "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
             "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
@@ -50319,6 +50321,11 @@
               "sha256": "52b51edab2471b7e4ecc16f052a397f455d96da394999ed181bbfd1abc8a2968"
             },
             {
+              "path": "crates/jocforge-domain/src/codec/flat7x_d0_pcm_source.rs",
+              "bytes": 13260,
+              "sha256": "ca7ba0ef0cf11634ae0d62d571448b6e5a03c1cce6a962a5350d0d636091a892"
+            },
+            {
               "path": "crates/jocforge-domain/src/codec/flat7x_d0_spectrum.rs",
               "bytes": 4489,
               "sha256": "88fb6827d5f0a2dd719f5ecd879689e0ea1bdae40fb3f03b6398becca1cf9557"
@@ -50345,8 +50352,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
-              "bytes": 1322,
-              "sha256": "5e24ee24b76fa03f6967d1d3d6b36f5041c1a76ed490beea84bf9d81f6886e17"
+              "bytes": 1352,
+              "sha256": "b6008b59c90b2c8dce8f3b743d9d68d38fd06a6aa98c93de34e1fccb0914a513"
             },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
@@ -50400,8 +50407,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2248353,
-              "sha256": "fc4b6b1753938a4848f8c439abda9a5b5ca537d2e09d5251067104558786f02d"
+              "bytes": 2248338,
+              "sha256": "f4ed9e0d3d8ba27369c0287946ed146854824dc5250aeaa3dc6d7c02b900b80b"
             }
           ],
           "test_inventory": [
@@ -50451,6 +50458,11 @@
               "sha256": "3e46ddab3bff13dfb6c055c4f87ff19bb3e3d51cea5b7c49601da5fea0a03edc"
             },
             {
+              "path": "crates/jocforge-domain/src/codec/flat7x_d0_pcm_source.rs",
+              "bytes": 13260,
+              "sha256": "ca7ba0ef0cf11634ae0d62d571448b6e5a03c1cce6a962a5350d0d636091a892"
+            },
+            {
               "path": "crates/jocforge-domain/src/codec/flat7x_d0_spectrum.rs",
               "bytes": 4489,
               "sha256": "88fb6827d5f0a2dd719f5ecd879689e0ea1bdae40fb3f03b6398becca1cf9557"
@@ -50477,8 +50489,8 @@
             },
             {
               "path": "crates/jocforge-domain/tests/flat7x_d0_audio_frame.rs",
-              "bytes": 8434,
-              "sha256": "49ba65671ba09a9380e399a039040a60de37c1361c9d2bd1406d7ec27646ef30"
+              "bytes": 10310,
+              "sha256": "b4dd643d9f2dd91a8ac292115acee6280e70c70fd0def6cd3986ffe4a8204d6f"
             },
             {
               "path": "crates/jocforge-domain/tests/flat7x_d0_bap.rs",
@@ -59852,8 +59864,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2248353,
-              "sha256": "fc4b6b1753938a4848f8c439abda9a5b5ca537d2e09d5251067104558786f02d"
+              "bytes": 2248338,
+              "sha256": "f4ed9e0d3d8ba27369c0287946ed146854824dc5250aeaa3dc6d7c02b900b80b"
             }
           ],
           "test_inventory": [
@@ -63919,8 +63931,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/codec/mod.rs",
-          "bytes": 1322,
-          "sha256": "5e24ee24b76fa03f6967d1d3d6b36f5041c1a76ed490beea84bf9d81f6886e17"
+          "bytes": 1352,
+          "sha256": "b6008b59c90b2c8dce8f3b743d9d68d38fd06a6aa98c93de34e1fccb0914a513"
         },
         {
           "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
