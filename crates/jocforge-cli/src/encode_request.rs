@@ -70,7 +70,13 @@ pub enum EncodeRequestError {
     OutputAlreadyExists,
     UnsupportedDataRate,
     UnsupportedJocLayout,
-    Flat7xPairNotReady,
+    Flat7xD0AudioProducerUnavailable {
+        source_index: u64,
+        state: jocforge_application::flat7x_pair_source::Flat7xD0AudioSpanProducerState,
+    },
+    Flat7xPairAssemblyInputsUnavailable {
+        source_index: u64,
+    },
     InputFile(RiffPcm24FileReadError),
     Riff(jocforge_io::pcm::riff_pcm24::RiffPcm24Error),
     PreparedInput(PreparedJobInputError),
@@ -118,8 +124,16 @@ impl std::fmt::Display for EncodeRequestError {
             Self::UnsupportedJocLayout => {
                 formatter.write_str("joc-layout flat7x requires the selected 1024 kbps profile row")
             }
-            Self::Flat7xPairNotReady => formatter.write_str(
-                "Flat7x paired output is not ready: I0 audblk production, D0 source-generation binding, and pair receipts are incomplete; encode did not enter output staging",
+            Self::Flat7xD0AudioProducerUnavailable {
+                source_index,
+                state,
+            } => write!(
+                formatter,
+                "Flat7x D0 audio-span producer is unavailable for source {source_index} ({state:?}); no pair AU was staged"
+            ),
+            Self::Flat7xPairAssemblyInputsUnavailable { source_index } => write!(
+                formatter,
+                "Flat7x pair assembly receipts are unavailable for source {source_index}; no pair AU was staged"
             ),
             Self::InputFile(error) => write!(formatter, "{error}"),
             Self::Riff(error) => write!(formatter, "selected RIFF input rejected: {error:?}"),
@@ -170,6 +184,26 @@ impl std::fmt::Display for EncodeRequestError {
 
 impl std::error::Error for EncodeRequestError {}
 
+fn map_source_frame_stage_error(
+    error: crate::source_execution::SourceFrameStageError,
+) -> EncodeRequestError {
+    match error {
+        crate::source_execution::SourceFrameStageError::Pipeline(message) => {
+            EncodeRequestError::SourcePipeline(message)
+        }
+        crate::source_execution::SourceFrameStageError::Flat7xD0AudioProducerUnavailable {
+            source_index,
+            state,
+        } => EncodeRequestError::Flat7xD0AudioProducerUnavailable {
+            source_index,
+            state,
+        },
+        crate::source_execution::SourceFrameStageError::Flat7xPairAssemblyInputsUnavailable {
+            source_index,
+        } => EncodeRequestError::Flat7xPairAssemblyInputsUnavailable { source_index },
+    }
+}
+
 /// Prepares one full-file request from the actual selected-profile RIFF resource.
 ///
 /// The request uses file-position extent with empty start/end, so the parser's actual RIFF data
@@ -208,7 +242,13 @@ pub fn run_with_data_rate_and_joc_layout(
             None,
             profile.joc_reconstruction_layout(),
         ),
-        EncodeRequestRoute::Flat7xI0D0Pair(_target) => Err(EncodeRequestError::Flat7xPairNotReady),
+        EncodeRequestRoute::Flat7xI0D0Pair(target) => run_worker(
+            input_path,
+            output_path,
+            Some(target.d0().rate()),
+            None,
+            target.reconstruction_layout(),
+        ),
     }
 }
 
@@ -794,7 +834,7 @@ fn run_inner(
                     &mut staging,
                     pending.flat7x_physical_pcm_rows.as_ref(),
                 )
-                .map_err(EncodeRequestError::SourcePipeline)?;
+                .map_err(map_source_frame_stage_error)?;
                 let (next_roots, receipt) = roots
                     .commit_source_advance(callback_transaction_id, &prepared, advance)
                     .map_err(EncodeRequestError::SourcePipeline)?;
@@ -1474,7 +1514,18 @@ mod tests {
     }
 
     #[test]
-    fn flat7x_fails_closed_before_input_or_output_staging() {
+    fn flat7x_route_enters_input_admission_and_uses_the_d0_rate_row() {
+        let EncodeRequestRoute::Flat7xI0D0Pair(target) = resolve_encode_request_route(
+            CodecRateProfile::Kbps1024,
+            JocReconstructionLayout::Flat7x,
+        )
+        .unwrap() else {
+            panic!("the Flat7x selector resolves the approved I0/D0 target");
+        };
+        assert_eq!(target.i0().rate(), CodecRateProfile::Kbps640);
+        assert_eq!(target.d0().rate(), CodecRateProfile::Kbps1024);
+        assert_eq!(target.aggregate_rate_kbps(), Some(1_664));
+
         assert!(matches!(
             run_with_data_rate_and_joc_layout(
                 Path::new("missing-input.wav"),
@@ -1482,7 +1533,23 @@ mod tests {
                 CodecRateProfile::Kbps1024,
                 JocReconstructionLayout::Flat7x,
             ),
-            Err(EncodeRequestError::Flat7xPairNotReady)
+            Err(EncodeRequestError::InvalidPath)
+        ));
+    }
+
+    #[test]
+    fn flat7x_d0_producer_boundary_keeps_its_named_source_error() {
+        assert!(matches!(
+            super::map_source_frame_stage_error(
+                crate::source_execution::SourceFrameStageError::Flat7xD0AudioProducerUnavailable {
+                    source_index: 2,
+                    state: jocforge_application::flat7x_pair_source::Flat7xD0AudioSpanProducerState::NoApprovedAudioProductionRule,
+                }
+            ),
+            EncodeRequestError::Flat7xD0AudioProducerUnavailable {
+                source_index: 2,
+                state: jocforge_application::flat7x_pair_source::Flat7xD0AudioSpanProducerState::NoApprovedAudioProductionRule,
+            }
         ));
     }
 

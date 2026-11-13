@@ -179,6 +179,80 @@ impl<'a> Flat7xD0PcmRows<'a> {
     }
 }
 
+/// Provisional source order for the seven non-LFE Flat7x D0 carrier rows.
+///
+/// This is a replaceable JOCForge model assumption, not a claim about a native encoder's row
+/// projection. The current model takes the three front rows from the selected I0 projection and
+/// appends the four rows already mapped by the D0 chanmap projection.
+pub const PROVISIONAL_D0_CARRIER_SOURCES: [Flat7xD0CarrierSource; 7] = [
+    Flat7xD0CarrierSource::I0FrontLeft,
+    Flat7xD0CarrierSource::I0FrontCenter,
+    Flat7xD0CarrierSource::I0FrontRight,
+    Flat7xD0CarrierSource::ChanmapLeftSurround,
+    Flat7xD0CarrierSource::ChanmapRightSurround,
+    Flat7xD0CarrierSource::ChanmapLeftRearSurround,
+    Flat7xD0CarrierSource::ChanmapRightRearSurround,
+];
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Flat7xD0CarrierSource {
+    I0FrontLeft,
+    I0FrontCenter,
+    I0FrontRight,
+    ChanmapLeftSurround,
+    ChanmapRightSurround,
+    ChanmapLeftRearSurround,
+    ChanmapRightRearSurround,
+}
+
+/// Borrowed seven-row view selected by the provisional Flat7x source map.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Flat7xD0CarrierPcmRows<'a> {
+    rows: [&'a [u32]; 7],
+}
+
+impl<'a> Flat7xD0CarrierPcmRows<'a> {
+    pub const fn rows(self) -> [&'a [u32]; 7] {
+        self.rows
+    }
+
+    pub const fn sources(&self) -> &'static [Flat7xD0CarrierSource; 7] {
+        &PROVISIONAL_D0_CARRIER_SOURCES
+    }
+
+    pub const fn assumption_id(&self) -> &'static str {
+        "PROVISIONAL_D0_FRONT3_PLUS_CHANMAP4_V1"
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Flat7xD0CarrierProjectionError {
+    EmptyRows,
+    RowExtentMismatch,
+}
+
+/// Projects source PCM to the provisional seven-carrier D0 row order without transforming samples.
+pub fn project_flat7x_d0_carrier_pcm_rows<'a>(
+    i0: Flat7xI0PcmRows<'a>,
+    d0: Flat7xD0PcmRows<'a>,
+) -> Result<Flat7xD0CarrierPcmRows<'a>, Flat7xD0CarrierProjectionError> {
+    let i0_rows = i0.rows();
+    let d0_rows = d0.rows();
+    let rows = [
+        i0_rows[0], i0_rows[1], i0_rows[2], d0_rows[0], d0_rows[1], d0_rows[2], d0_rows[3],
+    ];
+    let Some(first) = rows.first() else {
+        return Err(Flat7xD0CarrierProjectionError::EmptyRows);
+    };
+    if first.is_empty() {
+        return Err(Flat7xD0CarrierProjectionError::EmptyRows);
+    }
+    if rows.iter().any(|row| row.len() != first.len()) {
+        return Err(Flat7xD0CarrierProjectionError::RowExtentMismatch);
+    }
+    Ok(Flat7xD0CarrierPcmRows { rows })
+}
+
 /// Borrowed source PCM projection after applying the provisional profile-specific role map.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Flat7xProvisionalSourcePcmView<'a> {
@@ -583,6 +657,57 @@ mod tests {
         assert_eq!(
             pcm_view.i0().rows()[3],
             physical_rows[usize::from(row.physical_host().value())]
+        );
+    }
+
+    #[test]
+    fn provisional_d0_carrier_view_uses_front_three_then_four_chanmap_rows() {
+        let i0_values = [
+            [10_u32; 3],
+            [11_u32; 3],
+            [12_u32; 3],
+            [13_u32; 3],
+            [14_u32; 3],
+            [15_u32; 3],
+        ];
+        let d0_values = [[20_u32; 3], [21_u32; 3], [22_u32; 3], [23_u32; 3]];
+        let i0 = Flat7xI0PcmRows {
+            rows: [
+                &i0_values[0],
+                &i0_values[1],
+                &i0_values[2],
+                &i0_values[3],
+                &i0_values[4],
+                &i0_values[5],
+            ],
+        };
+        let d0 = Flat7xD0PcmRows {
+            rows: [&d0_values[0], &d0_values[1], &d0_values[2], &d0_values[3]],
+        };
+
+        let projected = project_flat7x_d0_carrier_pcm_rows(i0, d0).unwrap();
+
+        assert_eq!(
+            projected.rows().map(|row| row[0]),
+            [10, 11, 12, 20, 21, 22, 23]
+        );
+        assert_eq!(projected.sources(), &PROVISIONAL_D0_CARRIER_SOURCES);
+        assert_eq!(
+            projected.assumption_id(),
+            "PROVISIONAL_D0_FRONT3_PLUS_CHANMAP4_V1"
+        );
+
+        let short_d0 = Flat7xD0PcmRows {
+            rows: [
+                &d0_values[0][..2],
+                &d0_values[1][..],
+                &d0_values[2][..],
+                &d0_values[3][..],
+            ],
+        };
+        assert_eq!(
+            project_flat7x_d0_carrier_pcm_rows(i0, short_d0),
+            Err(Flat7xD0CarrierProjectionError::RowExtentMismatch)
         );
     }
 }

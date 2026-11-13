@@ -5,20 +5,28 @@ use jocforge_domain::{
     analysis::source_frame::SharedAnalysisIdentity,
     profile::{
         D0EmdfSkipFieldExtent, D0FrameExtent, Flat7xAuByteSequenceError, Flat7xAuCandidate,
-        Flat7xAuPlanValidationError, Flat7xI0D0TargetPlan, Flat7xSourceGeneration, I0FrameExtent,
+        Flat7xAuPlanValidationError, Flat7xI0D0TargetPlan, I0FrameExtent,
         compose_flat7x_au_byte_sequence, validate_flat7x_au_candidate,
     },
-    publication::{
-        Flat7xAuAttemptRetirementReason, Flat7xAuOutputOwner, Flat7xAuOutputOwnerError,
-        Flat7xAuSourceReceiptInput,
-    },
+    publication::{Flat7xAuAttemptRetirementReason, Flat7xAuOutputOwnerError},
 };
 
+pub use jocforge_domain::profile::Flat7xSourceGeneration;
 pub use jocforge_domain::publication::{
     Flat7xAuAppendProposal, Flat7xAuAttemptRetirement, Flat7xAuOutputAfterProposal,
+    Flat7xAuOutputOwner, Flat7xAuSourceReceiptInput,
 };
 
 use crate::flat7x_pair_source::Flat7xPairAccessUnitCandidate;
+
+use crate::flat7x_pair_source::{
+    Flat7xD0SourceIdentity, Flat7xPairI0FrameCandidate, d0_identity_matches_role_map,
+};
+
+use jocforge_domain::{
+    timeline::{PublicationDisposition, publication_for_source},
+    transaction::CallbackLineageIdentity,
+};
 
 #[cfg(feature = "test-support")]
 use sha2::{Digest, Sha256};
@@ -112,6 +120,7 @@ impl Flat7xPairIoStageReceipt {
 pub fn preflight_flat7x_pair_io_stage(
     candidate: &Flat7xPairAccessUnitCandidate,
     expected_source_identity: &SharedAnalysisIdentity,
+    source_generation: Flat7xSourceGeneration,
     output_owner: Flat7xAuOutputOwner,
 ) -> Result<Flat7xPairIoStageReceipt, Flat7xPairIoStageError> {
     if candidate.source_identity() != expected_source_identity {
@@ -188,13 +197,11 @@ pub fn preflight_flat7x_pair_io_stage(
         return Err(Flat7xPairIoStageError::ProductionAuthorizationUnexpected);
     }
 
-    let generation =
-        Flat7xSourceGeneration::new(expected_source_identity.analysis_after_generation().value());
     let candidate_metadata = Flat7xAuCandidate::new(
-        Some(I0FrameExtent::new(generation, i0_frame_bytes)),
-        Some(D0FrameExtent::new(generation, d0_frame_bytes)),
+        Some(I0FrameExtent::new(source_generation, i0_frame_bytes)),
+        Some(D0FrameExtent::new(source_generation, d0_frame_bytes)),
         Some(D0EmdfSkipFieldExtent::new(
-            generation,
+            source_generation,
             skip_target.zero_based_audio_block(),
             skip_target.field_count(),
             Some(d0_skipfield_bytes),
@@ -235,6 +242,196 @@ pub fn preflight_flat7x_pair_io_stage(
         retirement,
         disposition: Flat7xPairIoStageDisposition::RejectedProductionDisabled,
     })
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum Flat7xPairAppendProposalError {
+    UnsupportedTarget,
+    PairSourceIdentityMismatch,
+    SourceClockMismatch,
+    SourceGenerationMismatch,
+    D0FrameExtentMismatch,
+    OutputAttemptMismatch,
+    OutputAuIndexMismatch,
+    F13MetadataReceiptMissing,
+    I0IntegrityReceiptMissing,
+    D0IntegrityReceiptMissing,
+    I0IntegrityRoleMismatch,
+    D0IntegrityRoleMismatch,
+    F13SourceIdentityMismatch,
+    IntegritySourceIdentityMismatch,
+    SourceTransactionMismatch,
+    AuPlan(Flat7xAuPlanValidationError),
+    ByteSequence(Flat7xAuByteSequenceError),
+    OutputOwnerRetirement(Flat7xAuAttemptRetirement),
+}
+
+/// A caller-owned complete D0 frame span with typed source and block-two extent receipts.
+///
+/// The frame bytes remain opaque. This test-support seam does not parse or generate D0 audio, BSI,
+/// or EMDF bytes.
+#[derive(Clone, Copy)]
+pub struct Flat7xOpaqueD0FrameInput<'a> {
+    source_identity: &'a Flat7xD0SourceIdentity,
+    source_generation: Flat7xSourceGeneration,
+    frame_bytes: &'a [u8],
+    skip_field_extent: D0EmdfSkipFieldExtent,
+}
+
+impl<'a> Flat7xOpaqueD0FrameInput<'a> {
+    pub const fn new(
+        source_identity: &'a Flat7xD0SourceIdentity,
+        source_generation: Flat7xSourceGeneration,
+        frame_bytes: &'a [u8],
+        skip_field_extent: D0EmdfSkipFieldExtent,
+    ) -> Self {
+        Self {
+            source_identity,
+            source_generation,
+            frame_bytes,
+            skip_field_extent,
+        }
+    }
+}
+
+/// Joins a source-bound I0 full-frame candidate with a caller-owned opaque D0 frame and stages
+/// one complete I0→D0 F15 proposal from typed source receipts and caller-owned D0 bytes. The
+/// JOCForge source-generation label is an explicit input and is shared by both frame extents; it
+/// is never inferred from analysis generation, source index, or callback order.
+pub fn stage_receipted_i0_with_opaque_d0<'a>(
+    i0_frame: &Flat7xPairI0FrameCandidate,
+    i0_source_generation: Flat7xSourceGeneration,
+    d0_frame: Flat7xOpaqueD0FrameInput<'_>,
+    output_owner: Flat7xAuOutputOwner,
+    receipt_input: Flat7xAuSourceReceiptInput<'a>,
+) -> Result<Flat7xAuAppendProposal<'a>, Flat7xPairAppendProposalError> {
+    let target = Flat7xI0D0TargetPlan::approved_contract();
+    let identity = i0_frame.source_identity();
+    let role_map = i0_frame.source_role_map_receipt();
+    if i0_frame.target() != target
+        || role_map.target() != target
+        || i0_frame.resolved_profile().joc_reconstruction_layout()
+            != jocforge_domain::profile::JocReconstructionLayout::Flat7x
+        || i0_frame.resolved_profile().codec_rate()
+            != jocforge_domain::profile::CodecRateProfile::Kbps1024
+    {
+        return Err(Flat7xPairAppendProposalError::UnsupportedTarget);
+    }
+    if role_map.shared_analysis_identity() != identity
+        || role_map.source_index() != identity.source_index()
+        || !d0_identity_matches_role_map(d0_frame.source_identity, role_map)
+    {
+        return Err(Flat7xPairAppendProposalError::PairSourceIdentityMismatch);
+    }
+
+    let source_stage = identity.source_stage_key();
+    if d0_frame.source_generation != i0_source_generation {
+        return Err(Flat7xPairAppendProposalError::SourceGenerationMismatch);
+    }
+    if i0_frame.i0_frame().frame_bytes().len() != usize::from(target.i0().frame_bytes()) {
+        return Err(Flat7xPairAppendProposalError::ByteSequence(
+            Flat7xAuByteSequenceError::I0FrameExtentMismatch,
+        ));
+    }
+    if d0_frame.frame_bytes.len() != usize::from(target.d0().frame_bytes()) {
+        return Err(Flat7xPairAppendProposalError::D0FrameExtentMismatch);
+    }
+
+    let dispatch = identity
+        .source_index()
+        .dispatch()
+        .map_err(|_| Flat7xPairAppendProposalError::SourceClockMismatch)?;
+    let published_au = match publication_for_source(identity.source_index())
+        .map_err(|_| Flat7xPairAppendProposalError::SourceClockMismatch)?
+    {
+        PublicationDisposition::Published(consumption) => consumption.au,
+        PublicationDisposition::Suppressed { .. } => {
+            return Err(Flat7xPairAppendProposalError::SourceClockMismatch);
+        }
+    };
+    let attempt_label = source_stage.attempt_id().value().to_string();
+    if output_owner.attempt_id() != attempt_label {
+        return Err(Flat7xPairAppendProposalError::OutputAttemptMismatch);
+    }
+    if output_owner.next_access_unit() != published_au {
+        return Err(Flat7xPairAppendProposalError::OutputAuIndexMismatch);
+    }
+
+    let metadata = receipt_input
+        .f13_metadata()
+        .ok_or(Flat7xPairAppendProposalError::F13MetadataReceiptMissing)?;
+    let i0 = receipt_input
+        .i0_integrity()
+        .ok_or(Flat7xPairAppendProposalError::I0IntegrityReceiptMissing)?;
+    let d0 = receipt_input
+        .d0_integrity()
+        .ok_or(Flat7xPairAppendProposalError::D0IntegrityReceiptMissing)?;
+    if i0.role() != jocforge_domain::profile::Flat7xSubstreamRole::IndependentI0 {
+        return Err(Flat7xPairAppendProposalError::I0IntegrityRoleMismatch);
+    }
+    if d0.role() != jocforge_domain::profile::Flat7xSubstreamRole::DependentD0 {
+        return Err(Flat7xPairAppendProposalError::D0IntegrityRoleMismatch);
+    }
+
+    let programme_id = role_map.programme_id();
+    let attempt = source_stage.attempt_id();
+    let transaction_id = source_stage.transaction_id();
+    let expected_lineage =
+        CallbackLineageIdentity::new(programme_id.clone(), attempt, role_map.callback_index());
+    let f13 = metadata.receipt();
+    if f13.programme_id() != programme_id
+        || f13.attempt() != attempt
+        || f13.transaction_id() != &expected_lineage
+        || f13.consumer_transaction_id() != Some(transaction_id)
+        || metadata.consumer_transaction_id() != Some(transaction_id)
+        || f13.source_index() != identity.source_index()
+        || f13.dispatch() != dispatch
+        || f13.au_index() != Some(published_au)
+    {
+        return Err(Flat7xPairAppendProposalError::F13SourceIdentityMismatch);
+    }
+
+    let expected_integrity_identity =
+        jocforge_domain::integrity::programme_owner::IntegrityIdentity {
+            programme_id: programme_id.as_str().to_owned(),
+            attempt: attempt.value(),
+            transaction_id: transaction_id.as_str().to_owned(),
+            source_index: identity.source_index(),
+            dispatch,
+            au_index: Some(published_au),
+        };
+    for integrity in [i0.receipts(), d0.receipts()] {
+        if integrity.source().identity() != &expected_integrity_identity
+            || integrity.dispatch().identity() != &expected_integrity_identity
+            || integrity.au().identity() != &expected_integrity_identity
+        {
+            return Err(Flat7xPairAppendProposalError::IntegritySourceIdentityMismatch);
+        }
+    }
+
+    let candidate = Flat7xAuCandidate::new(
+        Some(I0FrameExtent::new(
+            i0_source_generation,
+            target.i0().frame_bytes(),
+        )),
+        Some(D0FrameExtent::new(
+            d0_frame.source_generation,
+            target.d0().frame_bytes(),
+        )),
+        Some(d0_frame.skip_field_extent),
+    );
+    let validation = validate_flat7x_au_candidate(target, candidate)
+        .map_err(Flat7xPairAppendProposalError::AuPlan)?;
+    let sequence = compose_flat7x_au_byte_sequence(
+        &validation,
+        i0_frame.i0_frame().frame_bytes(),
+        d0_frame.frame_bytes,
+    )
+    .map_err(Flat7xPairAppendProposalError::ByteSequence)?;
+
+    output_owner
+        .stage_next_access_unit(sequence, receipt_input)
+        .map_err(Flat7xPairAppendProposalError::OutputOwnerRetirement)
 }
 
 /// Expected F15 output identity and extents supplied by the output-stage caller.

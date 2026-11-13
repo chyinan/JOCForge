@@ -114,6 +114,14 @@ impl<'a> Flat7xAuIntegrityFrameReceipt<'a> {
             receipt,
         }
     }
+
+    pub const fn role(self) -> Flat7xSubstreamRole {
+        self.role
+    }
+
+    pub const fn receipts(self) -> &'a IntegrityF12SourceReceipts {
+        self.receipt
+    }
 }
 
 /// Optional receipt inputs are represented explicitly so missing F13 or frame-integrity
@@ -136,6 +144,18 @@ impl<'a> Flat7xAuSourceReceiptInput<'a> {
             i0_integrity,
             d0_integrity,
         }
+    }
+
+    pub const fn f13_metadata(self) -> Option<&'a MetadataSourceProposal> {
+        self.f13_metadata
+    }
+
+    pub const fn i0_integrity(self) -> Option<Flat7xAuIntegrityFrameReceipt<'a>> {
+        self.i0_integrity
+    }
+
+    pub const fn d0_integrity(self) -> Option<Flat7xAuIntegrityFrameReceipt<'a>> {
+        self.d0_integrity
     }
 }
 

@@ -477,8 +477,8 @@ impl Flat7xI0D0TargetPlan {
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-/// Caller-supplied generation label for target-plan equality checks only.
-/// Equality here is not evidence of a runtime owner/source lineage join.
+/// Generation label for JOCForge-owned pair-source transitions. Callers explicitly create a cold
+/// value and advance it with `checked_next`; equality is not evidence of a native DEE owner join.
 pub struct Flat7xSourceGeneration(u64);
 
 impl Flat7xSourceGeneration {
@@ -488,6 +488,13 @@ impl Flat7xSourceGeneration {
 
     pub const fn value(self) -> u64 {
         self.0
+    }
+
+    pub const fn checked_next(self) -> Option<Self> {
+        match self.0.checked_add(1) {
+            Some(value) => Some(Self(value)),
+            None => None,
+        }
     }
 }
 

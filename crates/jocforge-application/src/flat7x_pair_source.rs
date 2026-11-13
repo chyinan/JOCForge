@@ -20,8 +20,9 @@ use jocforge_domain::{
         selected_frame_trial::SelectedSourceNumericPlan,
     },
     profile::{
-        CodecRateProfile, Flat7xD0PcmRows, Flat7xI0D0TargetPlan, Flat7xI0PcmRows,
-        JocReconstructionLayout, ResolvedEncodingProfile,
+        CodecRateProfile, Flat7xD0CarrierPcmRows, Flat7xD0CarrierProjectionError, Flat7xD0PcmRows,
+        Flat7xI0D0TargetPlan, Flat7xI0PcmRows, JocReconstructionLayout, ResolvedEncodingProfile,
+        project_flat7x_d0_carrier_pcm_rows,
     },
     timeline::{CodecSourceIndex, FrontendCallbackIndex},
     transaction::{AttemptId, CallbackTransactionId, ProgrammeId},
@@ -34,6 +35,7 @@ use jocforge_domain::analysis::source_frame::SharedAnalysisIdentity;
 /// Current D0 source status at the replaceable audio-span producer boundary.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Flat7xD0AudioSpanProducerState {
+    /// Current CLI provider slot; a producer supplies a `Flat7xD0AudioSpanReceipt` when available.
     NoApprovedAudioProductionRule,
 }
 
@@ -119,12 +121,25 @@ impl Flat7xD0SourceIdentity {
     }
 }
 
-/// Immutable source-bound D0 audio spans. Its constructor stays inside this module until a
-/// Wash-approved D0 producer can issue the receipt; tests use explicit fixture construction.
+/// Immutable source-bound D0 audio spans issued by a caller-owned D0 producer.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Flat7xD0AudioSpanReceipt<'a> {
     source_identity: Flat7xD0SourceIdentity,
     audio_blocks: Flat7xD0FrameBitInput<'a>,
+}
+
+impl<'a> Flat7xD0AudioSpanReceipt<'a> {
+    /// Binds caller-owned opaque block spans to the source identity established by pair admission.
+    /// This does not produce or inspect audio bits; the D0 frame assembler validates their layout.
+    pub fn from_source_bound_producer(
+        binding: &Flat7xPairSourceBinding<'_>,
+        audio_blocks: Flat7xD0FrameBitInput<'a>,
+    ) -> Self {
+        Self {
+            source_identity: binding.d0_source_identity.clone(),
+            audio_blocks,
+        }
+    }
 }
 
 impl Flat7xD0AudioSpanReceipt<'_> {
@@ -137,7 +152,7 @@ impl Flat7xD0AudioSpanReceipt<'_> {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Flat7xD0AudioSpanInput<'a> {
     Disabled(Flat7xD0AudioSpanProducerState),
-    Provided(Flat7xD0AudioSpanReceipt<'a>),
+    Provided(Box<Flat7xD0AudioSpanReceipt<'a>>),
 }
 
 /// Errors while binding the profile and current source projection to the I0/D0 frame inputs.
@@ -148,6 +163,7 @@ pub enum Flat7xPairSourceError {
     SourceIdentityMismatch,
     D0AudioSpanProducerDisabled(Flat7xD0AudioSpanProducerState),
     D0AudioSpanSourceIdentityMismatch,
+    D0CarrierProjection(Flat7xD0CarrierProjectionError),
     I0AudioBlockSeries(I0AudioBlockSeriesError),
     I0FrameAssembly(Flat7xI0FrameAssemblyError),
     AccessUnitAssembly(Flat7xI0D0AuCandidateError),
@@ -163,6 +179,7 @@ pub fn require_flat7x_d0_audio_blocks<'a>(
             Err(Flat7xPairSourceError::D0AudioSpanProducerDisabled(reason))
         }
         Flat7xD0AudioSpanInput::Provided(receipt) => {
+            let receipt = *receipt;
             if receipt.source_identity != *expected_source_identity {
                 return Err(Flat7xPairSourceError::D0AudioSpanSourceIdentityMismatch);
             }
@@ -185,6 +202,7 @@ pub struct Flat7xPairSourceBinding<'pcm> {
     d0_source_identity: Flat7xD0SourceIdentity,
     i0_rows: Flat7xI0PcmRows<'pcm>,
     d0_rows: Flat7xD0PcmRows<'pcm>,
+    d0_carrier_rows: Flat7xD0CarrierPcmRows<'pcm>,
 }
 
 impl Flat7xPairSourceBinding<'_> {
@@ -216,10 +234,17 @@ impl Flat7xPairSourceBinding<'_> {
         self.d0_rows
     }
 
+    /// Returns the replaceable seven-carrier D0 PCM row projection bound at source admission.
+    pub const fn provisional_d0_carrier_rows(&self) -> Flat7xD0CarrierPcmRows<'_> {
+        self.d0_carrier_rows
+    }
+
     pub fn is_bound_to_projection(&self, projection: &Flat7xSourcePcmProjection<'_>) -> bool {
         self.role_map_receipt == *projection.role_map_receipt()
             && self.i0_rows == projection.i0_rows()
             && self.d0_rows == projection.d0_rows()
+            && project_flat7x_d0_carrier_pcm_rows(projection.i0_rows(), projection.d0_rows())
+                .is_ok_and(|rows| self.d0_carrier_rows == rows)
     }
 }
 
@@ -316,17 +341,48 @@ pub fn assemble_flat7x_pair_i0_frame_candidate(
     auxdata: I0AuxDataInput<'_>,
     crcrsv_seed: CallerOwnedI0CrcrsvSeed,
 ) -> Result<Flat7xPairI0FrameCandidate, Flat7xPairSourceError> {
-    let binding = &pair_audio.binding;
+    assemble_flat7x_i0_frame_candidate_from_series(
+        &pair_audio.binding,
+        &pair_audio.i0_audio_blocks,
+        auxdata,
+        crcrsv_seed,
+    )
+}
+
+/// Builds the existing source-bound I0 frame candidate without consuming D0 block data.
+///
+/// It prepares I0 from the exact selected numeric-plan receipt and explicit caller-owned controls;
+/// later pair construction still requires a caller-owned opaque D0 frame span and F13/I0/D0
+/// receipts. The returned candidate grants no publication authority.
+pub fn assemble_flat7x_i0_frame_candidate_from_binding(
+    binding: &Flat7xPairSourceBinding<'_>,
+    numeric_plan: &NumericPlanReceipt<'_, SelectedSourceNumericPlan>,
+    i0_policy: I0AudioBlockSeriesPolicy,
+    i0_budget: I0AudioBlockSeriesBudget,
+    auxdata: I0AuxDataInput<'_>,
+    crcrsv_seed: CallerOwnedI0CrcrsvSeed,
+) -> Result<Flat7xPairI0FrameCandidate, Flat7xPairSourceError> {
+    if binding.role_map_receipt.shared_analysis_identity() != numeric_plan.identity()
+        || binding.source_index != numeric_plan.identity().source_index()
+    {
+        return Err(Flat7xPairSourceError::SourceIdentityMismatch);
+    }
+    let i0_audio_blocks = produce_i0_audio_block_series(numeric_plan, i0_policy, i0_budget)
+        .map_err(Flat7xPairSourceError::I0AudioBlockSeries)?;
+    assemble_flat7x_i0_frame_candidate_from_series(binding, &i0_audio_blocks, auxdata, crcrsv_seed)
+}
+
+fn assemble_flat7x_i0_frame_candidate_from_series(
+    binding: &Flat7xPairSourceBinding<'_>,
+    i0_audio_blocks: &I0AudioBlockSeriesCandidate,
+    auxdata: I0AuxDataInput<'_>,
+    crcrsv_seed: CallerOwnedI0CrcrsvSeed,
+) -> Result<Flat7xPairI0FrameCandidate, Flat7xPairSourceError> {
     if binding.target != binding.role_map_receipt.target()
         || binding.resolved_profile.joc_reconstruction_layout() != JocReconstructionLayout::Flat7x
         || binding.resolved_profile.codec_rate() != CodecRateProfile::Kbps1024
         || binding.source_index != binding.role_map_receipt.source_index()
-        || binding.source_index
-            != pair_audio
-                .i0_audio_blocks
-                .receipt()
-                .source_identity()
-                .source_index()
+        || binding.source_index != i0_audio_blocks.receipt().source_identity().source_index()
     {
         return Err(Flat7xPairSourceError::SourceIdentityMismatch);
     }
@@ -334,7 +390,7 @@ pub fn assemble_flat7x_pair_i0_frame_candidate(
     let i0_frame = assemble_flat7x_i0_ac3_frame_from_audio_series(
         binding.target,
         binding.role_map_receipt.shared_analysis_identity(),
-        &pair_audio.i0_audio_blocks,
+        i0_audio_blocks,
         auxdata,
         crcrsv_seed,
     )
@@ -435,7 +491,7 @@ pub fn assemble_flat7x_pair_access_unit_candidate(
     })
 }
 
-fn d0_identity_matches_role_map(
+pub(crate) fn d0_identity_matches_role_map(
     d0_identity: &Flat7xD0SourceIdentity,
     role_map: &Flat7xSourceRoleMapReceipt,
 ) -> bool {
@@ -473,6 +529,9 @@ pub fn bind_flat7x_pair_source<'pcm>(
     {
         return Err(Flat7xPairSourceError::SourceIdentityMismatch);
     }
+    let d0_carrier_rows =
+        project_flat7x_d0_carrier_pcm_rows(projection.i0_rows(), projection.d0_rows())
+            .map_err(Flat7xPairSourceError::D0CarrierProjection)?;
 
     Ok(Flat7xPairSourceBinding {
         resolved_profile: profile,
@@ -486,6 +545,7 @@ pub fn bind_flat7x_pair_source<'pcm>(
         ),
         i0_rows: projection.i0_rows(),
         d0_rows: projection.d0_rows(),
+        d0_carrier_rows,
     })
 }
 
@@ -593,8 +653,10 @@ mod tests {
 
         let byte = [0_u8];
         let expected = fixture_source_identity(9);
-        let provided =
-            Flat7xD0AudioSpanInput::Provided(fixture_span_receipt(expected.clone(), &byte));
+        let provided = Flat7xD0AudioSpanInput::Provided(Box::new(fixture_span_receipt(
+            expected.clone(),
+            &byte,
+        )));
         assert!(require_flat7x_d0_audio_blocks(provided, &expected).is_ok());
     }
 
@@ -605,7 +667,10 @@ mod tests {
         let receipt = fixture_span_receipt(fixture_source_identity(8), &byte);
 
         assert_eq!(
-            require_flat7x_d0_audio_blocks(Flat7xD0AudioSpanInput::Provided(receipt), &expected,),
+            require_flat7x_d0_audio_blocks(
+                Flat7xD0AudioSpanInput::Provided(Box::new(receipt)),
+                &expected,
+            ),
             Err(Flat7xPairSourceError::D0AudioSpanSourceIdentityMismatch)
         );
     }
@@ -617,13 +682,16 @@ mod pair_access_unit_integration_tests {
 
     use super::{
         Flat7xD0AudioSpanInput, Flat7xD0AudioSpanReceipt, Flat7xPairSourceError,
+        assemble_flat7x_i0_frame_candidate_from_binding,
         assemble_flat7x_pair_access_unit_candidate, assemble_flat7x_pair_i0_frame_candidate,
         bind_flat7x_pair_source, prepare_flat7x_pair_audio_blocks,
     };
     use crate::{
         PreparedJobInput, SelectedAdmResourcePayloads, SelectedWaveDescriptor,
         flat7x_pair_output::{
-            Flat7xPairIoStageDisposition, Flat7xPairIoStageError, preflight_flat7x_pair_io_stage,
+            Flat7xOpaqueD0FrameInput, Flat7xPairAppendProposalError, Flat7xPairIoStageDisposition,
+            Flat7xPairIoStageError, preflight_flat7x_pair_io_stage,
+            stage_receipted_i0_with_opaque_d0,
         },
         prepare_selected_job_input,
         source_frame_bridge::build_flat7x_source_pcm_projection,
@@ -661,14 +729,20 @@ mod pair_access_unit_integration_tests {
                 SelectedSourceNumericPlan,
             },
         },
+        integrity::programme_owner::IntegrityIdentity,
+        joc::emdf::metadata_owner::test_support::Flat7xReceiptGateMetadataTestInputs,
         profile::{
-            EncodingProfile, Flat7xI0D0TargetPlan, JocReconstructionLayout,
-            resolve_selected_profile,
+            D0EmdfSkipFieldExtent, EncodingProfile, Flat7xI0D0TargetPlan, Flat7xSourceGeneration,
+            JocReconstructionLayout, resolve_selected_profile,
         },
         publication::{
-            Flat7xAuAttemptRetirementReason, Flat7xAuOutputOwner, Flat7xAuOutputOwnerError,
+            Flat7xAuAttemptRetirementReason, Flat7xAuIntegrityFrameReceipt, Flat7xAuOutputOwner,
+            Flat7xAuOutputOwnerError, Flat7xAuSourceReceiptInput,
+            test_support::Flat7xAuAppendTestFixture,
         },
-        timeline::{CodecSourceIndex, FrontendCallbackIndex},
+        timeline::{
+            CodecSourceIndex, FrontendCallbackIndex, PublicationDisposition, publication_for_source,
+        },
         transaction::{AttemptId, CallbackLineageIdentity, CallbackTransactionId, ProgrammeId},
         transform::{
             fullband_exponent_pipeline::NumericPlanReceipt,
@@ -698,6 +772,21 @@ mod pair_access_unit_integration_tests {
         include_bytes!("../../jocforge-domain/tests/fixtures/policy_authorized/PARAMETERS.json");
     const BAP_PROVIDER: &[u8] = include_bytes!(
         "../../../outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-PUBLIC-BAP-PROVIDER-V1/public-bap-48k-v1.json"
+    );
+    const F15_PAIR_VECTORS: &[u8] = include_bytes!(
+        "../../../outputs/IMPLEMENTER_SUPPLEMENTS/FLAT7X-F15-RECEIPT-PAIR-INPUT-ONLY-V1/INPUT-ONLY-VECTORS.json"
+    );
+    const METADATA_OWNER_VECTORS: &[u8] = include_bytes!(
+        "../../jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json"
+    );
+    const METADATA_PUBLIC_PROVIDER: &[u8] = include_bytes!(
+        "../../jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json"
+    );
+    const METADATA_WRAPPER_CONFIG: &[u8] = include_bytes!(
+        "../../jocforge-domain/tests/fixtures/metadata_owner/metadata-wrapper-config.json"
+    );
+    const KEYLESS_INTEGRITY_PROVIDER: &[u8] = include_bytes!(
+        "../../jocforge-domain/tests/fixtures/integrity_owner/integrity-public-provider.json"
     );
     const PHYSICAL_CHANNELS: u16 = 38;
     const PHYSICAL_PCM_SAMPLES: usize = 1_536;
@@ -786,7 +875,19 @@ mod pair_access_unit_integration_tests {
         let case = &vectors["config_cases"][0];
         let input_xml = case["input_xml"].as_str().unwrap();
         let descriptor = &case["pcm_descriptor"];
-        let (resource, spans) = selected_wave_resource();
+        selected_prepared_input_with_samples(
+            input_xml,
+            descriptor["source_samples"].as_u64().unwrap(),
+        )
+    }
+
+    fn selected_prepared_input_with_samples(
+        input_xml: &str,
+        source_samples: u64,
+    ) -> PreparedJobInput {
+        let vectors: Value = serde_json::from_slice(INPUT_XML_VECTORS).unwrap();
+        let descriptor = &vectors["config_cases"][0]["pcm_descriptor"];
+        let (resource, spans) = selected_wave_resource(source_samples);
         let metadata = SelectedAdmResourcePayloads::new(
             &resource[spans[0].clone()],
             &resource[spans[1].clone()],
@@ -800,20 +901,23 @@ mod pair_access_unit_integration_tests {
                 PHYSICAL_CHANNELS,
                 u16::try_from(descriptor["pcm_bits"].as_u64().unwrap()).unwrap(),
             ),
-            1,
+            source_samples,
             Arc::clone(&resource),
             metadata,
         )
         .unwrap()
     }
 
-    fn selected_wave_resource() -> (Arc<[u8]>, [Range<usize>; 3]) {
+    fn selected_wave_resource(source_samples: u64) -> (Arc<[u8]>, [Range<usize>; 3]) {
         let mut bytes = b"RIFF\0\0\0\0WAVE".to_vec();
         append_wave_chunk(&mut bytes, *b"fmt ", &selected_format_payload());
         append_wave_chunk(
             &mut bytes,
             *b"data",
-            &vec![0_u8; usize::from(PHYSICAL_CHANNELS) * 3],
+            &vec![
+                0_u8;
+                usize::try_from(source_samples).unwrap() * usize::from(PHYSICAL_CHANNELS) * 3
+            ],
         );
         let axml = append_wave_chunk(&mut bytes, *b"axml", AXML);
         let chna = append_wave_chunk(&mut bytes, *b"chna", CHNA);
@@ -851,6 +955,14 @@ mod pair_access_unit_integration_tests {
         prepared: &PreparedJobInput,
         transaction_id: &str,
     ) -> AnalysisNumericPlanStage {
+        analysis_numeric_stage_for_source(prepared, transaction_id, CodecSourceIndex::new(0))
+    }
+
+    fn analysis_numeric_stage_for_source(
+        prepared: &PreparedJobInput,
+        transaction_id: &str,
+        source_index: CodecSourceIndex,
+    ) -> AnalysisNumericPlanStage {
         let root =
             AnalysisOwnerRoot::cold_for_prepared_input(prepared.domain_identity_capability());
         let installed_audio: Box<InstalledAudioSourceFrame> =
@@ -866,7 +978,7 @@ mod pair_access_unit_integration_tests {
         root.prepare_f07_source(
             AttemptId::new(2),
             CallbackTransactionId::new(transaction_id).unwrap(),
-            CodecSourceIndex::new(0),
+            source_index,
             &installed_audio,
             [false; F07_FULLBAND_LANES],
             &transient,
@@ -1008,16 +1120,14 @@ mod pair_access_unit_integration_tests {
             complete_emdf_container: &emdf_container,
         }];
         let d0_audio_blocks = d0_audio.frame_input(&d0_skip_fields);
-        let d0_receipt = Flat7xD0AudioSpanReceipt {
-            source_identity: binding.d0_source_identity().clone(),
-            audio_blocks: d0_audio_blocks,
-        };
+        let d0_receipt =
+            Flat7xD0AudioSpanReceipt::from_source_bound_producer(&binding, d0_audio_blocks);
         let pair_audio = prepare_flat7x_pair_audio_blocks(
             binding,
             &numeric_plan,
             synthetic_i0_policy(),
             I0AudioBlockSeriesBudget::new(20_480),
-            Flat7xD0AudioSpanInput::Provided(d0_receipt),
+            Flat7xD0AudioSpanInput::Provided(Box::new(d0_receipt)),
         )
         .unwrap();
         let i0_frame = match assemble_flat7x_pair_i0_frame_candidate(
@@ -1083,9 +1193,16 @@ mod pair_access_unit_integration_tests {
         assert!(!candidate.production_allowed());
 
         let output_owner = Flat7xAuOutputOwner::cold("flat7x-pair-integration", 1).unwrap();
-        let stage_receipt =
-            preflight_flat7x_pair_io_stage(&candidate, numeric_plan.identity(), output_owner)
-                .unwrap();
+        let source_generation = Flat7xSourceGeneration::new(0)
+            .checked_next()
+            .expect("the local source-generation counter advances");
+        let stage_receipt = preflight_flat7x_pair_io_stage(
+            &candidate,
+            numeric_plan.identity(),
+            source_generation,
+            output_owner,
+        )
+        .unwrap();
         assert_eq!(stage_receipt.source_identity(), numeric_plan.identity());
         assert_eq!(stage_receipt.i0_frame_bytes(), 2_560);
         assert_eq!(stage_receipt.d0_frame_bytes(), 4_096);
@@ -1115,9 +1232,203 @@ mod pair_access_unit_integration_tests {
             preflight_flat7x_pair_io_stage(
                 &candidate,
                 mismatched_analysis.shared_analysis().unwrap().identity(),
+                source_generation,
                 Flat7xAuOutputOwner::cold("mismatched-source", 1).unwrap(),
             ),
             Err(Flat7xPairIoStageError::SourceIdentityMismatch)
         );
+    }
+
+    #[test]
+    fn receipted_i0_and_opaque_d0_frame_stage_one_same_source_f15_pair_proposal() {
+        let config_vectors: Value = serde_json::from_slice(INPUT_XML_VECTORS).unwrap();
+        let input_xml = config_vectors["config_cases"][0]["input_xml"]
+            .as_str()
+            .unwrap();
+        let prepared = selected_prepared_input_with_samples(input_xml, 4_608);
+        let source_index = CodecSourceIndex::new(2);
+        let analysis = analysis_numeric_stage_for_source(
+            &prepared,
+            "flat7x-pair-integration-source",
+            source_index,
+        );
+        let bap_parameters: Arc<BapParameters> =
+            Arc::new(load_bap_parameters(Some(BAP_PROVIDER)).unwrap());
+        let numeric_plan = NumericPlanReceipt::from_parent_for_test(
+            analysis.shared_analysis().unwrap(),
+            synthetic_selected_numeric_plan(Arc::clone(&bap_parameters)),
+        );
+
+        let target = Flat7xI0D0TargetPlan::approved_contract();
+        let shared_identity = numeric_plan.identity();
+        let callback_index = FrontendCallbackIndex::new(4);
+        let callback_lineage = CallbackLineageIdentity::new(
+            prepared.programme_id().clone(),
+            shared_identity.source_stage_key().attempt_id(),
+            callback_index,
+        );
+        let physical_pcm_rows =
+            vec![vec![0_u32; PHYSICAL_PCM_SAMPLES]; usize::from(PHYSICAL_CHANNELS)];
+        let projection = build_flat7x_source_pcm_projection(
+            &prepared,
+            target,
+            &callback_lineage,
+            source_index,
+            shared_identity.source_stage_key().transaction_id(),
+            shared_identity,
+            &physical_pcm_rows,
+        )
+        .unwrap();
+        let resolved_profile =
+            resolve_selected_profile(&EncodingProfile::selected_with_joc_reconstruction_layout(
+                JocReconstructionLayout::Flat7x,
+            ))
+            .unwrap();
+        let binding =
+            bind_flat7x_pair_source(resolved_profile, &projection, &numeric_plan).unwrap();
+        let d0_source_identity = binding.d0_source_identity().clone();
+        assert_eq!(
+            binding.provisional_d0_carrier_rows().assumption_id(),
+            "PROVISIONAL_D0_FRONT3_PLUS_CHANMAP4_V1"
+        );
+        assert_eq!(binding.provisional_d0_carrier_rows().rows().len(), 7);
+        let i0_frame = match assemble_flat7x_i0_frame_candidate_from_binding(
+            &binding,
+            &numeric_plan,
+            synthetic_i0_policy(),
+            I0AudioBlockSeriesBudget::new(20_480),
+            I0AuxDataInput::Absent,
+            CallerOwnedI0CrcrsvSeed { value: false },
+        ) {
+            Ok(candidate) => candidate,
+            Err(Flat7xPairSourceError::I0FrameAssembly(
+                Flat7xI0FrameAssemblyError::FrameSpanMismatch {
+                    actual_bits,
+                    required_bits,
+                },
+            )) if actual_bits < required_bits => {
+                let auxdata_bits = required_bits - actual_bits;
+                let auxdata = vec![0_u8; usize::try_from(auxdata_bits.div_ceil(8)).unwrap()];
+                let binding =
+                    bind_flat7x_pair_source(resolved_profile, &projection, &numeric_plan).unwrap();
+                assemble_flat7x_i0_frame_candidate_from_binding(
+                    &binding,
+                    &numeric_plan,
+                    synthetic_i0_policy(),
+                    I0AudioBlockSeriesBudget::new(20_480),
+                    I0AuxDataInput::Present(OpaqueI0Ac3BitSpan::new(&auxdata, 0, auxdata_bits)),
+                    CallerOwnedI0CrcrsvSeed { value: false },
+                )
+                .unwrap()
+            }
+            other => panic!("unexpected source-bound I0 frame result: {other:?}"),
+        };
+
+        let receipt_inputs = Flat7xReceiptGateMetadataTestInputs {
+            f15_pair_vectors: F15_PAIR_VECTORS,
+            metadata_owner_vectors: METADATA_OWNER_VECTORS,
+            metadata_public_provider: METADATA_PUBLIC_PROVIDER,
+            metadata_wrapper_config: METADATA_WRAPPER_CONFIG,
+            keyless_integrity_provider: KEYLESS_INTEGRITY_PROVIDER,
+        };
+        let existing_pair = Flat7xAuAppendTestFixture::positive_pair(receipt_inputs);
+        let existing_pair_bytes = existing_pair.expected_bytes();
+        let opaque_d0_frame = &existing_pair_bytes[2_560..];
+        let expected_au = match publication_for_source(source_index).unwrap() {
+            PublicationDisposition::Published(consumption) => consumption.au,
+            PublicationDisposition::Suppressed { .. } => panic!("source 2 publishes AU 0"),
+        };
+        let source_stage = i0_frame.source_identity().source_stage_key();
+        // The pair-source owner supplies this generation independently of analysis identity,
+        // callback order, or any DEE observation.
+        let source_generation = Flat7xSourceGeneration::new(0)
+            .checked_next()
+            .expect("the local source-generation counter advances");
+        let integrity_identity = IntegrityIdentity {
+            programme_id: prepared.programme_id().as_str().to_owned(),
+            attempt: source_stage.attempt_id().value(),
+            transaction_id: source_stage.transaction_id().as_str().to_owned(),
+            source_index,
+            dispatch: source_index.dispatch().unwrap(),
+            au_index: Some(expected_au),
+        };
+        let receipts = Flat7xAuAppendTestFixture::with_opaque_frames(
+            receipt_inputs,
+            integrity_identity,
+            source_generation,
+            i0_frame.i0_frame().frame_bytes(),
+            opaque_d0_frame,
+        );
+        let skip_target = target.d0_emdf_skip_field();
+        let d0_input = Flat7xOpaqueD0FrameInput::new(
+            &d0_source_identity,
+            source_generation,
+            opaque_d0_frame,
+            D0EmdfSkipFieldExtent::new(
+                source_generation,
+                skip_target.zero_based_audio_block(),
+                skip_target.field_count(),
+                Some(receipts.d0_emdf_container_bytes()),
+                skip_target.fragmentation_allowed(),
+            ),
+        );
+        let receipt_input = Flat7xAuSourceReceiptInput::new(
+            Some(receipts.metadata_source_proposal()),
+            Some(Flat7xAuIntegrityFrameReceipt::independent_i0(
+                receipts.i0_integrity_receipts(),
+            )),
+            Some(Flat7xAuIntegrityFrameReceipt::dependent_d0(
+                receipts.d0_integrity_receipts(),
+            )),
+        );
+
+        let wrong_generation = Flat7xOpaqueD0FrameInput::new(
+            &d0_source_identity,
+            Flat7xSourceGeneration::new(source_generation.value() + 1),
+            opaque_d0_frame,
+            D0EmdfSkipFieldExtent::new(
+                Flat7xSourceGeneration::new(source_generation.value() + 1),
+                skip_target.zero_based_audio_block(),
+                skip_target.field_count(),
+                Some(receipts.d0_emdf_container_bytes()),
+                skip_target.fragmentation_allowed(),
+            ),
+        );
+        assert!(matches!(
+            stage_receipted_i0_with_opaque_d0(
+                &i0_frame,
+                source_generation,
+                wrong_generation,
+                Flat7xAuOutputOwner::cold(receipts.attempt_id(), 1).unwrap(),
+                receipt_input,
+            ),
+            Err(Flat7xPairAppendProposalError::SourceGenerationMismatch)
+        ));
+
+        let proposal = stage_receipted_i0_with_opaque_d0(
+            &i0_frame,
+            source_generation,
+            d0_input,
+            Flat7xAuOutputOwner::cold(receipts.attempt_id(), 1).unwrap(),
+            receipt_input,
+        )
+        .unwrap();
+
+        assert_eq!(proposal.bytes().len(), 6_656);
+        assert_eq!(
+            &proposal.bytes()[..2_560],
+            i0_frame.i0_frame().frame_bytes()
+        );
+        assert_eq!(&proposal.bytes()[2_560..], opaque_d0_frame);
+        assert_eq!(proposal.ledger_entry().frame_lengths(), (2_560, 4_096));
+        assert_eq!(
+            proposal.ledger_entry().source_generation(),
+            source_generation
+        );
+        assert_eq!(
+            proposal.ledger_entry().metadata_identity(),
+            (source_index, source_index.dispatch().unwrap(), expected_au)
+        );
+        assert!(!proposal.production_allowed());
     }
 }

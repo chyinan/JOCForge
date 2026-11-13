@@ -16,11 +16,12 @@ pub use flat7x_access_unit_target::{
     ReconstructionCarrierPosition, compose_flat7x_au_byte_sequence, validate_flat7x_au_candidate,
 };
 pub use flat7x_source_role_map::{
-    AdmPcmRow, Flat7xD0ChannelMapLocation, Flat7xD0ChannelSource, Flat7xD0PcmRows,
-    Flat7xD0RowBinding, Flat7xD0SourceRole, Flat7xI0CarrierRole, Flat7xI0PcmRows,
-    Flat7xI0RowBinding, Flat7xProvisionalSourcePcmView, Flat7xProvisionalSourceRoleMap,
-    Flat7xSourceRoleMapError, build_flat7x_provisional_source_role_map,
-    project_flat7x_source_pcm_rows,
+    AdmPcmRow, Flat7xD0CarrierPcmRows, Flat7xD0CarrierProjectionError, Flat7xD0CarrierSource,
+    Flat7xD0ChannelMapLocation, Flat7xD0ChannelSource, Flat7xD0PcmRows, Flat7xD0RowBinding,
+    Flat7xD0SourceRole, Flat7xI0CarrierRole, Flat7xI0PcmRows, Flat7xI0RowBinding,
+    Flat7xProvisionalSourcePcmView, Flat7xProvisionalSourceRoleMap, Flat7xSourceRoleMapError,
+    PROVISIONAL_D0_CARRIER_SOURCES, build_flat7x_provisional_source_role_map,
+    project_flat7x_d0_carrier_pcm_rows, project_flat7x_source_pcm_rows,
 };
 
 pub use production::{

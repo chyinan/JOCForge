@@ -1920,3 +1920,19 @@ The existing I/O append boundary is also exercised with a fully source-receipted
 Focused tests use only a `Cursor<Vec<u8>>`: programme and attempt mismatches reject before bytes are written, while a matched synthetic pair reaches the sink and fails closed because the memory sink cannot supply fsync/durability evidence. The committed F15 owner remains unchanged, and the output staging path is never opened.
 
 Verification: the three `flat7x_staging_` unit tests, F15 handoff integration test, non-durable I/O test, and selected 5.1 all-rate regression pass. Workspace `cargo check`, format check, generated-map check, and boundary check pass (92 scoped tasks, 104 IDs, 0 unmaterialized roots, 6 partial roots). Strict Clippy still reports existing diagnostics in domain/CLI modules; none points to the new pair staging checks. No encoder, DEE, staging file, or `.ec3` was used.
+
+## 2026-11-13 Flat7x CLI route and D0 producer boundary
+
+The explicit Flat7x CLI route now carries the approved target's D0 1,024-kbps scalar row into the existing ADM/job prepass and source-frame path. At the first source stage, JOCForge creates the provisional seven-carrier PCM view in the replaceable `PROVISIONAL_D0_FRONT3_PLUS_CHANMAP4_V1` order: three front rows from the I0 projection followed by the four D0 chanmap rows. It then reaches the typed `NoApprovedAudioProductionRule` input and returns `Flat7xD0AudioProducerUnavailable { source_index, state }` before any AU/output staging.
+
+The source-bound I0 frame candidate can now be staged with a caller-owned opaque D0 frame span, an explicit JOCForge `Flat7xSourceGeneration`, and matching F13/I0/D0 receipts. F15 checks source/transaction identity, target extents, generation equality, block-two skip-field bounds, frame CRCs, and I0→D0 order before issuing a pair proposal; `ProgrammeOutputStaging::append_flat7x_pair` connects that proposal to the existing atomic I/O adapter. The CLI source path has no D0 producer to provide the required frame/receipts yet.
+
+The first audio-core blocker is concrete: the existing local AC-3 audblk producer accepts five full-band lanes plus a separate LFE lane, while the D0 target needs an E-AC-3 dependent audio-block path for seven non-LFE carriers with `acmod=5`, `lfeon=0`, and `chanmap=0x1A00`. The row view is provisional and replaceable; no D0 bytes or audio algorithm are produced by it. `Flat7xD0AudioSpanReceipt::from_source_bound_producer` now marks the exact replaceable producer output interface. The 5.1 six-rate route remains unchanged.
+
+## 2026-11-13 D0 carrier row model and source generation
+
+`Flat7xD0CarrierPcmRows` exposes the explicit provisional model `PROVISIONAL_D0_FRONT3_PLUS_CHANMAP4_V1`: I0 front L/C/R followed by the four rows selected by the D0 chanmap projection. It only assembles borrowed PCM row views and fails closed when row extents differ. This provisional row order is easy to replace and does not encode audio or imply native DEE channel semantics.
+
+`Flat7xSourceGeneration` is now supplied explicitly to the F15 pair proposal adapter and has a checked increment operation for a JOCForge-owned generation counter. The pair adapter no longer derives a Flat7x generation from the analysis generation or source index. A source coordinator that commits this generation into its programme root remains open.
+
+The F12 local block producer is specialized to five full-band rows plus LFE (`acmod=7`, `lfeon=1`). It does not supply the D0 seven-carrier/no-LFE audio-block syntax. That is the first audio-code blocker; the exact next seam is the source-bound producer that turns the provisional carrier rows into six D0 opaque audio-block spans and an integrity receipt under an approved D0 block writer.

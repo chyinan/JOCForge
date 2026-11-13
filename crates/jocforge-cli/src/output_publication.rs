@@ -1,10 +1,13 @@
 // pattern: Imperative Shell
 //! F15P append composition for already prepared source proposals.
 
+use jocforge_application::flat7x_pair_source::Flat7xPairI0FrameCandidate;
 use jocforge_application::{
     PreparedJobInput,
     flat7x_pair_output::{
         Flat7xAuAppendProposal, Flat7xAuAttemptRetirement, Flat7xAuOutputAfterProposal,
+        Flat7xAuOutputOwner, Flat7xAuSourceReceiptInput, Flat7xOpaqueD0FrameInput,
+        Flat7xPairAppendProposalError, Flat7xSourceGeneration, stage_receipted_i0_with_opaque_d0,
     },
     meter_source_bridge::Flat7xI0D0TargetPlan,
     output_publication::{
@@ -64,6 +67,12 @@ pub enum Flat7xOutputAppendFailure {
     Append(Flat7xAtomicAppendFailure),
     #[cfg(test)]
     MemoryAppend(jocforge_io::flat7x_au_append::Flat7xAuAppendIoFailure),
+}
+
+#[derive(Debug)]
+pub enum Flat7xPairOutputAppendFailure {
+    PairProposal(Flat7xPairAppendProposalError),
+    Output(Flat7xOutputAppendFailure),
 }
 
 impl Flat7xOutputAppendFailure {
@@ -204,6 +213,31 @@ impl ProgrammeOutputStaging {
         staging
             .append_flat7x_au(proposal)
             .map_err(Flat7xOutputAppendFailure::Append)
+    }
+
+    /// Joins the source-bound I0 candidate and caller-owned opaque D0 frame to F15 and the existing
+    /// atomic staging adapter. It is available to a receipt-producing source coordinator; the
+    /// current CLI run reaches the typed D0 producer boundary before any pair is supplied.
+    #[allow(dead_code)] // No producer can currently supply the complete source-receipted pair.
+    pub(crate) fn append_flat7x_pair<'a>(
+        &mut self,
+        binding: &ProgrammeOutputBinding,
+        i0_frame: &Flat7xPairI0FrameCandidate,
+        i0_source_generation: Flat7xSourceGeneration,
+        d0_frame: Flat7xOpaqueD0FrameInput<'_>,
+        output_owner: Flat7xAuOutputOwner,
+        receipts: Flat7xAuSourceReceiptInput<'a>,
+    ) -> Result<Flat7xAuOutputAfterProposal<'a>, Flat7xPairOutputAppendFailure> {
+        let proposal = stage_receipted_i0_with_opaque_d0(
+            i0_frame,
+            i0_source_generation,
+            d0_frame,
+            output_owner,
+            receipts,
+        )
+        .map_err(Flat7xPairOutputAppendFailure::PairProposal)?;
+        self.append_flat7x_au(binding, proposal)
+            .map_err(Flat7xPairOutputAppendFailure::Output)
     }
 
     #[cfg(test)]

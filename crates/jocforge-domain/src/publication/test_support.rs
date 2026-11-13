@@ -116,8 +116,108 @@ impl Flat7xAuAppendTestFixture {
         }
     }
 
+    /// Builds receipt-only test values around caller-owned I0 and opaque D0 frame bytes.
+    ///
+    /// The frame slices are copied unchanged. This helper creates F13/F12 test receipts only; it
+    /// does not parse, assemble, or modify either frame.
+    pub fn with_opaque_frames(
+        input: Flat7xReceiptGateMetadataTestInputs<'_>,
+        identity: IntegrityIdentity,
+        source_generation: Flat7xSourceGeneration,
+        i0_frame_bytes: &[u8],
+        d0_frame_bytes: &[u8],
+    ) -> Self {
+        let target = Flat7xI0D0TargetPlan::approved_contract();
+        assert_eq!(i0_frame_bytes.len(), usize::from(target.i0().frame_bytes()));
+        assert_eq!(d0_frame_bytes.len(), usize::from(target.d0().frame_bytes()));
+        assert_eq!(eac3_crc16(&i0_frame_bytes[2..]), 0);
+        assert_eq!(eac3_crc16(&d0_frame_bytes[2..]), 0);
+        let au_index = identity
+            .au_index
+            .expect("test receipt identity has a published AU index");
+
+        let mut vectors: serde_json::Value = serde_json::from_slice(input.f15_pair_vectors)
+            .expect("Wash receipt-pair vector is valid JSON");
+        let pair = &mut vectors["positive_pair"];
+        pair["integrity_identity"]["programme_id"] =
+            serde_json::Value::String(identity.programme_id.clone());
+        pair["integrity_identity"]["attempt"] = serde_json::json!(identity.attempt);
+        pair["integrity_identity"]["transaction_id"] =
+            serde_json::Value::String(identity.transaction_id.clone());
+        pair["integrity_identity"]["source_index"] =
+            serde_json::json!(identity.source_index.value());
+        pair["integrity_identity"]["dispatch"] = serde_json::json!(identity.dispatch.value());
+        pair["integrity_identity"]["published_au_index"] = serde_json::json!(au_index.value());
+        pair["f15_candidate"]["i0_source_generation_label"] =
+            serde_json::json!(source_generation.value());
+        pair["f15_candidate"]["d0_source_generation_label"] =
+            serde_json::json!(source_generation.value());
+        let f15_pair_vectors =
+            serde_json::to_vec(&vectors).expect("adjusted synthetic receipt identity serializes");
+        let adjusted_input = Flat7xReceiptGateMetadataTestInputs {
+            f15_pair_vectors: &f15_pair_vectors,
+            ..input
+        };
+        let (metadata, zero_slot_container, protected_container) =
+            flat7x_receipt_gate_metadata_for_test(adjusted_input);
+
+        let i0_integrity = synthetic_f12_receipts_for_flat7x_test(
+            identity.clone(),
+            (10, 11),
+            i0_frame_bytes,
+            IntegrityPayloadEvidence::AbsentPublishedPayloadV1,
+            None,
+            None,
+        );
+        let d0_integrity = synthetic_f12_receipts_for_flat7x_test(
+            identity.clone(),
+            (20, 21),
+            d0_frame_bytes,
+            IntegrityPayloadEvidence::ProtectedEmdf {
+                zero_slot_sha256: sha256(&zero_slot_container),
+                protected_sha256: protected_container.output_sha256(),
+                message_sha256: sha256(&zero_slot_container[4..]),
+                primary_crc32: protected_container.primary_crc32(),
+                secondary_crc8: protected_container.secondary_crc8(),
+                primary_range: protected_container.primary_range(),
+                secondary_range: protected_container.secondary_range(),
+                container_bytes: protected_container.bytes().len(),
+            },
+            Some(crate::codec::bitio::FrameBitCursor::new(512)),
+            Some(protected_container.output_sha256()),
+        );
+
+        Self {
+            attempt_id: identity.attempt.to_string(),
+            metadata,
+            i0_integrity,
+            d0_integrity,
+            i0_frame: i0_frame_bytes.to_vec(),
+            d0_frame: d0_frame_bytes.to_vec(),
+            source_generation,
+            d0_emdf_container_bytes: u16::try_from(protected_container.bytes().len())
+                .expect("synthetic EMDF container size fits the target extent"),
+        }
+    }
+
     pub fn attempt_id(&self) -> &str {
         &self.attempt_id
+    }
+
+    pub fn metadata_source_proposal(&self) -> &MetadataSourceProposal {
+        &self.metadata
+    }
+
+    pub const fn i0_integrity_receipts(&self) -> &IntegrityF12SourceReceipts {
+        &self.i0_integrity
+    }
+
+    pub const fn d0_integrity_receipts(&self) -> &IntegrityF12SourceReceipts {
+        &self.d0_integrity
+    }
+
+    pub const fn d0_emdf_container_bytes(&self) -> u16 {
+        self.d0_emdf_container_bytes
     }
 
     /// Returns exact pair bytes for a staging readback assertion.

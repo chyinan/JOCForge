@@ -137,6 +137,24 @@ pub(crate) struct SourceFrameAdvance<'pcm> {
     pub owner_receipts: Vec<GtcOwnerReceipt>,
 }
 
+#[derive(Debug)]
+pub(crate) enum SourceFrameStageError {
+    Pipeline(String),
+    Flat7xD0AudioProducerUnavailable {
+        source_index: u64,
+        state: Flat7xD0AudioSpanProducerState,
+    },
+    Flat7xPairAssemblyInputsUnavailable {
+        source_index: u64,
+    },
+}
+
+impl From<String> for SourceFrameStageError {
+    fn from(message: String) -> Self {
+        Self::Pipeline(message)
+    }
+}
+
 /// Stages F07-F15 for one actual source index without installing any owner root.
 #[allow(clippy::too_many_arguments)]
 pub(crate) fn stage_source_frame<'pcm>(
@@ -167,12 +185,14 @@ pub(crate) fn stage_source_frame<'pcm>(
     admitted_plan: &AdmittedProductionPlan,
     staging: &mut ProgrammeOutputStaging,
     flat7x_physical_pcm_rows: Option<&'pcm Flat7xPcmSourceRows>,
-) -> Result<SourceFrameAdvance<'pcm>, String> {
+) -> Result<SourceFrameAdvance<'pcm>, SourceFrameStageError> {
     if source_for_callback_clock(callback_index) != Some(source_index)
         || spatial_callback.callback_index() != callback_index
         || main_callback_transaction.as_str().is_empty()
     {
-        return Err("callback/source lineage does not match the selected clock map".to_owned());
+        return Err(SourceFrameStageError::Pipeline(
+            "callback/source lineage does not match the selected clock map".to_owned(),
+        ));
     }
     let source_transaction_id =
         CallbackTransactionId::new(&format!("jocforge-source-{}", source_index.value()))
@@ -217,9 +237,9 @@ pub(crate) fn stage_source_frame<'pcm>(
                 || pcm_source.source_index() != source_index
                 || pcm_source.delivery() != expected_delivery
             {
-                return Err(
+                return Err(SourceFrameStageError::Pipeline(
                     "Flat7x PCM rows do not match the current callback/source lineage".to_owned(),
-                );
+                ));
             }
             let shared_analysis = analysis_stage.shared_analysis().ok_or_else(|| {
                 "Flat7x role map requires the current shared source analysis".to_owned()
@@ -273,7 +293,9 @@ pub(crate) fn stage_source_frame<'pcm>(
         || f14k_source.dispatch() != metadata_source.receipt().dispatch()
         || f14k_source.au_index() != metadata_source.receipt().au_index()
     {
-        return Err("F14K receipt does not match the current source/AU lineage".to_owned());
+        return Err(SourceFrameStageError::Pipeline(
+            "F14K receipt does not match the current source/AU lineage".to_owned(),
+        ));
     }
     let metadata_container_bytes = match f14k_source.outcome() {
         F14kPayloadOutcome::AbsentPublishedPayloadV1 => None,
@@ -304,19 +326,29 @@ pub(crate) fn stage_source_frame<'pcm>(
         None => None,
     };
     if let Some(binding) = flat7x_pair_source_binding {
-        require_flat7x_d0_audio_blocks(
+        match require_flat7x_d0_audio_blocks(
             Flat7xD0AudioSpanInput::Disabled(
                 Flat7xD0AudioSpanProducerState::NoApprovedAudioProductionRule,
             ),
             binding.d0_source_identity(),
-        )
-        .map_err(|error: Flat7xPairSourceError| {
-            format!(
-                "Flat7x paired source {} awaits D0 audio spans: {error:?}",
-                binding.source_index().value()
-            )
-        })?;
-        return Err("Flat7x pair candidate cannot enter single-frame output staging".to_owned());
+        ) {
+            Err(Flat7xPairSourceError::D0AudioSpanProducerDisabled(state)) => {
+                return Err(SourceFrameStageError::Flat7xD0AudioProducerUnavailable {
+                    source_index: binding.source_index().value(),
+                    state,
+                });
+            }
+            Err(error) => {
+                return Err(SourceFrameStageError::Pipeline(format!(
+                    "Flat7x D0 source receipt rejected: {error:?}"
+                )));
+            }
+            Ok(_) => {
+                return Err(SourceFrameStageError::Flat7xPairAssemblyInputsUnavailable {
+                    source_index: binding.source_index().value(),
+                });
+            }
+        }
     }
     let integrity_candidate = stage_integrity_after_f12(
         integrity_before,
@@ -412,7 +444,9 @@ pub(crate) fn stage_source_frame<'pcm>(
             != reader_eof_before.generation()
         || reader_eof_candidate.gtc_receipt().owner_id() != GtcOwnerId::ReaderEof
     {
-        return Err("ReaderEof receipt is not bound to the callback before-root".to_owned());
+        return Err(SourceFrameStageError::Pipeline(
+            "ReaderEof receipt is not bound to the callback before-root".to_owned(),
+        ));
     }
     let (reader_eof_root, _, reader_eof_receipt) = reader_eof_candidate.into_parts();
 

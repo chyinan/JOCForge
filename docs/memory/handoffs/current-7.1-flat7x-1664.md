@@ -280,3 +280,21 @@ The typed `Flat7xAuAppendProposal` I/O boundary now also has a test-only `Cursor
 `ProgrammeOutputStaging::append_flat7x_au` is a crate-local, uncalled bridge from a domain-issued F15 pair proposal to `AtomicOutputStaging::append_flat7x_au`. It checks the programme and attempt binding, paired I0/D0 source identity, F13 transaction, target frame/AU extents, AU offset, and CRC receipts before staging opens. The production CLI still returns `Flat7xPairNotReady`; the seam does not enable `production_allowed` or add a caller.
 
 Three focused unit tests cover attempt mismatch, programme mismatch, and matched pair delivery to an in-memory cursor followed by nondurable F15 rejection. The receipt handoff integration and I/O memory-sink tests pass; the selected 5.1 route regression also passes. Format, workspace check, generated-map check, and boundary check pass (92 scoped tasks, 104 IDs, 0 unmaterialized roots, 6 partial roots). Strict Clippy reports existing diagnostics in domain and CLI code, with none pointing to the new pair staging checks. No staging file, `.ec3`, encoder, or DEE run occurred.
+
+## 2026-11-13 CLI-to-D0 route progress
+
+The Flat7x selector now enters ADM/job admission and the real source-stage pipeline with the 1,024-kbps D0 rate row. It reaches the first source's explicit `NoApprovedAudioProductionRule` input and returns the typed `Flat7xD0AudioProducerUnavailable` error before pair/output staging. The selected 5.1 route and all six supported rate rows remain unchanged.
+
+The source boundary carries a provisional seven-carrier PCM view: I0 front L/C/R plus the four mapped D0 chanmap rows. The row selection is a model-owned assumption and does no audio encoding. A typed `Flat7xD0AudioSpanReceipt::from_source_bound_producer` is available to a future producer. The pair proposal API consumes a source-bound I0 frame, caller-owned opaque D0 frame bytes, an explicit incrementable JOCForge generation label, and same-source F13/I0/D0 receipts; it composes the 6,656-byte I0→D0 AU and stages it through the existing atomic sink.
+
+The remaining audio-core gap is a D0 seven-carrier E-AC-3 block writer. The local I0 block producer is fixed at five full-band rows plus LFE, while the selected D0 row uses `acmod=5`, `lfeon=0`, `chanmap=0x1A00`. No D0 audio, BSI, or EMDF bytes are generated or inferred in this increment. A typed seven-carrier audio-block producer and its F12 integrity receipt are the shortest next seam.
+
+## 2026-11-13 source route and provisional D0 row view
+
+The Flat7x/1024 CLI request now enters the existing ADM/job worker and source callback flow. On the first source, the current source stage returns the named `Flat7xD0AudioProducerUnavailable` error with `NoApprovedAudioProductionRule`; no pair AU or output file is staged.
+
+The source binding carries `Flat7xD0CarrierPcmRows` under the replaceable model `PROVISIONAL_D0_FRONT3_PLUS_CHANMAP4_V1` (I0 front L/C/R followed by four D0 chanmap rows). It is a borrowed row view with extent checks. Pair generation is a separate explicit `Flat7xSourceGeneration` input, incrementable through `checked_next` and independent of DEE or analysis-generation values.
+
+The pair proposal seam accepts the source-bound I0 full-frame candidate, opaque caller-owned D0 frame bytes, explicit generation label, and same-source F13/I0/D0 receipts; the existing F15 owner checks the pair CRCs, extents, skip-field bounds, and I0→D0 order. `ProgrammeOutputStaging::append_flat7x_pair` delegates the resulting proposal to the existing atomic sink. The CLI route has not yet been given a D0 producer.
+
+The shortest remaining audio implementation seam is a seven-carrier, no-LFE D0 audblk writer and its source-bound span receipt. Existing `produce_i0_audio_block_series` implements only five full-band rows plus LFE, so it cannot directly supply D0 `acmod=5/lfeon=0/chanmap=0x1A00`. No D0 audio/BSI/EMDF bytes were generated. The 5.1 six-rate route remains unchanged.
