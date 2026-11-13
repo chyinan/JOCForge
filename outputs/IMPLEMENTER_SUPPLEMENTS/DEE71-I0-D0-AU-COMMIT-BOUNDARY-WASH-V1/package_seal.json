@@ -1,0 +1,7 @@
+{
+  "schema": "jocforge-implementer-supplement-seal-v1",
+  "package_id": "DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1",
+  "manifest_sha256": "ba65817c81f8097dda3cc3897f337da81c9a46fee0a892051d553c49089e8f04",
+  "status": "SEALED_WASH_APPROVED",
+  "production_allowed": false
+}

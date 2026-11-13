@@ -1,0 +1,7 @@
+{
+  "schema": "jocforge-implementer-supplement-seal-v1",
+  "package_id": "DEE67-PROENCODER-SLOT0-RANGE-WRITE-BOUNDARY-V1",
+  "manifest_sha256": "bb49bd95f41c7eee237299ce383075d00943343c0c7899a08b21a40db41574bd",
+  "status": "SEALED_WASH_APPROVED",
+  "production_allowed": false
+}

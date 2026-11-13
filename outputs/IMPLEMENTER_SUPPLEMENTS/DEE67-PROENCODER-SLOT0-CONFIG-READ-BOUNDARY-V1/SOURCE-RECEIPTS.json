@@ -1,0 +1,24 @@
+{
+  "schema": "wash-proencoder-slot0-config-read-boundary-receipts-v1",
+  "candidate_image_sha256": "2b7da4835d60fc538caf49cd0ef27a4a10d2486bc03b754b41b5bea4bb51fead",
+  "wash_package": {
+    "package_id": "DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-WASH-V1",
+    "manifest_sha256": "2de002a47c62fe0ac0b5a504f240376942e62af07963d71a35ee17b65709421f",
+    "seal_sha256": "931600af73fbf2c0e884b4876c4aba91c3f071cc33518ae94ca2658339e1a626"
+  },
+  "vtable_slot0": {
+    "base": "0x140b36290",
+    "target": "FUN_1402ac530",
+    "target_va": "0x1402ac530",
+    "pdata": "[0x1402ac530,0x1402ac572)",
+    "instruction_count": 19
+  },
+  "result": {
+    "same_object_config_plus_0x58_loads": 0,
+    "unresolved_base_plus_0x58_load_candidates": 0,
+    "scope": "slot0 only",
+    "profile_index_1_join": "UNBOUND",
+    "global_absence_claim": false,
+    "production_allowed": false
+  }
+}

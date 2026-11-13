@@ -1,0 +1,24 @@
+{
+  "schema": "wash-proencoder-slot0-range-write-boundary-receipt-v1",
+  "candidate_image_sha256": "2b7da4835d60fc538caf49cd0ef27a4a10d2486bc03b754b41b5bea4bb51fead",
+  "wash_package": {
+    "package_id": "DEE670-FLAT7X-PROENCODER-SLOT0-RANGE-FIRST-CONTROL-BOUNDARY-WASH-V1",
+    "manifest_sha256": "69aced407a7a3d5e6c13e4e8d65996a86c595e353c1404cac4dc9ccf7c4309b3",
+    "sha256sums_sha256": "7674e676d8f8b7c5a8985f6269eaf69d5f709248b73ad7b16937f6e32d58b73a"
+  },
+  "methodset_parent": {
+    "manifest_sha256": "341f251d1473223a26894cb29f057c28f6e73c0012663cd610e50749a7e44041",
+    "sha256sums_sha256": "23f3edd1ec9c0414977389407474c24426068907823ccbc36b03498212907a2d"
+  },
+  "vtable_base": "0x140b36290",
+  "slot0_target": "0x1402ac530",
+  "first_control": "CALL 0x1402abcf0 at 0x1402ac54d",
+  "own_vtable_store": "MOV [RCX],RAX at 0x1402ac544; this+0x0",
+  "direct_range_stores": {
+    "this_plus_0x198": 0,
+    "this_plus_0x190": 0,
+    "subobject_0x140_plus_0x50": 0,
+    "subobject_0x140_plus_0x58": 0
+  },
+  "production_allowed": false
+}

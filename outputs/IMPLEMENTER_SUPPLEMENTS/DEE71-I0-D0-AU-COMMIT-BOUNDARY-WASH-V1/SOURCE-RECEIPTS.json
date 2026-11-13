@@ -1,0 +1,9 @@
+{
+  "schema": "wash-au-commit-boundary-source-receipts-v1",
+  "source_package_id": "dee_71_i0_d0_output_au_commit_edge_wash_v1",
+  "manifest_sha256": "da17b0f4868858a91cefd8b633f85f578ca00798fbfb8ca55d5e2ef01dff57d9",
+  "seal_sha256": "d6cc61e8556d4f467727327ddddde417132c2f5e1212aabd6d0064fc3c491d8e",
+  "source_package_path": "outputs/INCOMING_WASH/dee_71_i0_d0_output_au_commit_edge_wash_v1",
+  "normal_checker": "PASS",
+  "python_optimized_checker": "PASS"
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge-implementer-supplement-manifest-v1",
+  "package_id": "DEE71-I0-D0-AU-COMMIT-BOUNDARY-WASH-V1",
+  "status": "WASH_APPROVED_STATIC_BOUNDARY",
+  "production_allowed": false,
+  "files": [
+    {
+      "path": "CHECK.py",
+      "sha256": "d3bdda226f3bd956fab155ec08cbb5dbbb12c336078c7579ca7c765969ac8a4e"
+    },
+    {
+      "path": "CONTRACT.md",
+      "sha256": "d865baa048cbac96dec17e165382715c2c87c4b208263174829f6e3c539dab32"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "sha256": "afd7ba2f289a7d2222dbeeca896f044e99eaef1ec1841e32cce0009ac4cb96ff"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "sha256": "b8f16b8823e4b0652485315c115d1a55c4e098f0b0d8dcdcbf6e7f1f55bad34d"
+    }
+  ]
+}

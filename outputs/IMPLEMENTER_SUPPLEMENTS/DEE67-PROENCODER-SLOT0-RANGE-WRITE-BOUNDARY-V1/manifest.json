@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge-implementer-supplement-manifest-v1",
+  "package_id": "DEE67-PROENCODER-SLOT0-RANGE-WRITE-BOUNDARY-V1",
+  "status": "WASH_APPROVED_BOUNDED_STATIC_BOUNDARY",
+  "production_allowed": false,
+  "files": [
+    {
+      "path": "CHECK.py",
+      "sha256": "bdbf7de5a45985bf08fac990d53661bbf4862ef2d3afc5937a42dff1b926e740"
+    },
+    {
+      "path": "CONTRACT.md",
+      "sha256": "23d7331ee229b2fba024d4fd565b4648dbe9a3831b74db4808ea5c9523246763"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "sha256": "77d5032663d98777c8f16a1ccd930a9064b939baa8cc2811eafd83693d5c5cb1"
+    }
+  ]
+}

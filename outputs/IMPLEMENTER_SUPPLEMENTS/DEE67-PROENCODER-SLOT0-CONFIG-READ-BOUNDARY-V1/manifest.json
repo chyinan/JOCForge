@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge-implementer-supplement-manifest-v1",
+  "package_id": "DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1",
+  "status": "WASH_APPROVED_BOUNDED_STATIC_BOUNDARY",
+  "production_allowed": false,
+  "files": [
+    {
+      "path": "CHECK.py",
+      "sha256": "2a0d0cf0d477d4626485822ff687adf01db53ffc4a59c82432022efe84b2d501"
+    },
+    {
+      "path": "CONTRACT.md",
+      "sha256": "5a7892ae4c72f90dada838e800c8fb4d644385a664c91716d5ee78e1f2f38abf"
+    },
+    {
+      "path": "SOURCE-RECEIPTS.json",
+      "sha256": "c54ee14f529026799a1e34022f83270267ff2c546f1e41d6ad9005d2abf4e9b6"
+    }
+  ]
+}

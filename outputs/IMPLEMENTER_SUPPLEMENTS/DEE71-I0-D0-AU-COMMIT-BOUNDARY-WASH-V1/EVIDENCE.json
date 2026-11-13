@@ -1,0 +1,27 @@
+{
+  "schema": "wash-i0-d0-au-commit-boundary-v1",
+  "status": "TWO_PATHS_OBSERVED_JOIN_UNBOUND",
+  "per_unit_path": {
+    "submitter": "FUN_1800b7930",
+    "source_span_and_buffer": "FUN_180077ac0",
+    "buffer_writer": "FUN_1800e01e0",
+    "order": "increasing-unit-ordinal",
+    "typed_stream_role": "UNBOUND"
+  },
+  "file_writer_path": {
+    "span_provider": "FUN_180174190",
+    "caller": "FUN_180175c80",
+    "write_helper": "FUN_180189c80",
+    "sink": "fwrite",
+    "target_provider_selection": "UNBOUND"
+  },
+  "missing_joins": [
+    "per-unit buffer to FileWriter local_200/span length",
+    "I0/D0 stream-role identity",
+    "same AU identity",
+    "shared source generation/clock",
+    "atomic pair commit/rollback"
+  ],
+  "production_allowed": false,
+  "observation_scope": "static Ghidra 12.2 receipt only; no runtime"
+}

@@ -1,0 +1,7 @@
+{
+  "schema": "jocforge-implementer-supplement-seal-v1",
+  "package_id": "DEE67-PROENCODER-SLOT0-CONFIG-READ-BOUNDARY-V1",
+  "manifest_sha256": "bf2f7e43a4cecd315e21d993c7fddcd8534089224747db1d9d2fc805f914e95d",
+  "status": "SEALED_WASH_APPROVED",
+  "production_allowed": false
+}
