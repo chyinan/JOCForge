@@ -3,6 +3,7 @@
 
 use super::{
     emdf_skip_field::{D0EmdfSkipFieldWriteError, flat7x_d0_block2_skipfld_bit_length},
+    flat7x_d0_frame_controls::FLAT7X_D0_AUDIO_FRAME_CONTROL_BITS,
     frame_builder::{
         Flat7xD0BsiStructure, Flat7xD0BsiStructureError, measure_flat7x_d0_bsi_structure,
     },
@@ -171,6 +172,7 @@ impl From<D0EmdfSkipFieldWriteError> for D0SixBlockLayoutError {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Flat7xD0SixBlockLayout {
     bsi_span: D0FrameBitSpan,
+    audio_frame_control_span: D0FrameBitSpan,
     audio_blocks: [D0AudioBlockLayout; D0_AUDIO_BLOCK_COUNT],
     block_two_skip_field: D0Block2SkipFieldLayout,
     total_frame_span_bits: u32,
@@ -180,6 +182,10 @@ pub struct Flat7xD0SixBlockLayout {
 impl Flat7xD0SixBlockLayout {
     pub const fn bsi_span(self) -> D0FrameBitSpan {
         self.bsi_span
+    }
+
+    pub const fn audio_frame_control_span(self) -> D0FrameBitSpan {
+        self.audio_frame_control_span
     }
 
     pub const fn audio_blocks(self) -> [D0AudioBlockLayout; D0_AUDIO_BLOCK_COUNT] {
@@ -251,12 +257,15 @@ pub fn propose_flat7x_d0_six_block_layout(
     }
 
     let skip_field_bits = flat7x_d0_block2_skipfld_bit_length(skip_field.payload_bytes)?;
+    let audio_frame_control_span =
+        D0FrameBitSpan::new(bsi_end_bit, FLAT7X_D0_AUDIO_FRAME_CONTROL_BITS);
+    let audio_frame_control_end = audio_frame_control_span.end_bit();
     let audio_bits = input.blocks.iter().try_fold(0_u32, |total, block| {
         total
             .checked_add(block.audio_span.bit_length())
             .ok_or(D0SixBlockLayoutError::BitSpanOverflow)
     })?;
-    let total_frame_span_bits = bsi_end_bit
+    let total_frame_span_bits = audio_frame_control_end
         .checked_add(audio_bits)
         .and_then(|bits| bits.checked_add(skip_field_bits))
         .ok_or(D0SixBlockLayoutError::BitSpanOverflow)?;
@@ -271,7 +280,7 @@ pub fn propose_flat7x_d0_six_block_layout(
         });
     }
 
-    let mut current_bit = bsi_end_bit;
+    let mut current_bit = audio_frame_control_end;
     let mut audio_layouts = Vec::with_capacity(D0_AUDIO_BLOCK_COUNT);
     let mut skip_field_layout = None;
     for (index, block) in input.blocks.iter().enumerate() {
@@ -318,6 +327,7 @@ pub fn propose_flat7x_d0_six_block_layout(
 
     Ok(Flat7xD0SixBlockLayout {
         bsi_span: D0FrameBitSpan::new(0, bsi_end_bit),
+        audio_frame_control_span,
         audio_blocks,
         block_two_skip_field,
         total_frame_span_bits,

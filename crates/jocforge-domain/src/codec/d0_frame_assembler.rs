@@ -9,6 +9,10 @@ use super::{
         Flat7xD0SixBlockLayout, propose_flat7x_d0_six_block_layout,
     },
     emdf_skip_field::{D0EmdfSkipFieldWriteError, write_flat7x_d0_block2_skipfld},
+    flat7x_d0_frame_controls::{
+        Flat7xD0AudioFrameControlError, Flat7xD0AudioFrameControlPolicy,
+        Flat7xD0AudioFrameControlReceipt, write_flat7x_d0_audio_frame_controls,
+    },
     frame_builder::{
         Flat7xD0BsiStructure, Flat7xD0BsiStructureError, write_flat7x_d0_bsi_structure,
     },
@@ -72,6 +76,7 @@ pub enum D0FrameAudioBlockInput<'a> {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Flat7xD0FrameBitInput<'a> {
+    pub audio_frame_controls: Flat7xD0AudioFrameControlPolicy,
     pub audio_blocks: [D0FrameAudioBlockInput<'a>; D0_AUDIO_BLOCK_COUNT],
 }
 
@@ -154,6 +159,7 @@ impl D0Crc2IntegrityReceipt {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Flat7xD0FrameAssemblyReceipt {
     layout: Flat7xD0SixBlockLayout,
+    audio_frame_controls: Flat7xD0AudioFrameControlReceipt,
     frame_aux_data_span: D0FrameBitSpan,
     frame_tail_policy: Option<Flat7xD0FrameTailPolicy>,
     zero_filled_auxbits: u32,
@@ -164,6 +170,10 @@ pub struct Flat7xD0FrameAssemblyReceipt {
 impl Flat7xD0FrameAssemblyReceipt {
     pub const fn layout(self) -> Flat7xD0SixBlockLayout {
         self.layout
+    }
+
+    pub const fn audio_frame_controls(self) -> Flat7xD0AudioFrameControlReceipt {
+        self.audio_frame_controls
     }
 
     pub const fn frame_aux_data_span(self) -> D0FrameBitSpan {
@@ -248,6 +258,7 @@ pub enum Flat7xD0FrameAssemblyError {
     },
     Layout(D0SixBlockLayoutError),
     BsiStructure(Flat7xD0BsiStructureError),
+    AudioFrameControls(Flat7xD0AudioFrameControlError),
     SkipField(D0EmdfSkipFieldWriteError),
     BitWriter(FrameBitWriterError),
 }
@@ -261,6 +272,12 @@ impl From<D0SixBlockLayoutError> for Flat7xD0FrameAssemblyError {
 impl From<Flat7xD0BsiStructureError> for Flat7xD0FrameAssemblyError {
     fn from(error: Flat7xD0BsiStructureError) -> Self {
         Self::BsiStructure(error)
+    }
+}
+
+impl From<Flat7xD0AudioFrameControlError> for Flat7xD0FrameAssemblyError {
+    fn from(error: Flat7xD0AudioFrameControlError) -> Self {
+        Self::AudioFrameControls(error)
     }
 }
 
@@ -480,6 +497,22 @@ fn assemble_flat7x_d0_frame_bits_inner(
             required_bits: layout.bsi_span().end_bit(),
         });
     }
+    let audio_frame_control_span = layout.audio_frame_control_span();
+    let audio_frame_controls = {
+        let mut controls_writer = FrameBitWriter::new(
+            &mut staging,
+            FrameBitCursor::new(audio_frame_control_span.start_bit()),
+        )?;
+        write_flat7x_d0_audio_frame_controls(&mut controls_writer, input.audio_frame_controls)?
+    };
+    if audio_frame_controls.start_bit() != audio_frame_control_span.start_bit()
+        || audio_frame_controls.end_bit() != audio_frame_control_span.end_bit()
+    {
+        return Err(Flat7xD0FrameAssemblyError::FrameSpanMismatch {
+            actual_bits: audio_frame_controls.end_bit(),
+            required_bits: audio_frame_control_span.end_bit(),
+        });
+    }
 
     let block_layouts = layout.audio_blocks();
     for (index, block) in input.audio_blocks.iter().copied().enumerate() {
@@ -599,6 +632,7 @@ fn assemble_flat7x_d0_frame_bits_inner(
     writer.write_bytes(&staging)?;
     Ok(Flat7xD0FrameAssemblyReceipt {
         layout,
+        audio_frame_controls,
         frame_aux_data_span,
         frame_tail_policy,
         zero_filled_auxbits,

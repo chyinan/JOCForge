@@ -18,6 +18,7 @@ use jocforge_domain::{
         elementary_stream_composer::{
             Flat7xOpaqueAccessUnitBytes, compose_flat7x_elementary_stream,
         },
+        flat7x_d0_frame_controls::{Flat7xD0AllocationCandidateQ, Flat7xD0AudioFrameControlPolicy},
         frame_builder::Flat7xD0BsiStructure,
     },
     integrity::crc16::eac3_crc16,
@@ -158,7 +159,12 @@ fn frame_input<'a>(
             ))
         }
     });
-    Flat7xD0FrameBitInput { audio_blocks }
+    Flat7xD0FrameBitInput {
+        audio_frame_controls: Flat7xD0AudioFrameControlPolicy::new(
+            Flat7xD0AllocationCandidateQ::new(1).unwrap(),
+        ),
+        audio_blocks,
+    }
 }
 
 fn read_bit(bytes: &[u8], bit_offset: u32) -> bool {
@@ -217,6 +223,15 @@ fn synthetic_assembler_copies_opaque_spans_and_generates_crc2_for_exact_target_e
     assert_eq!(cursor, 32_768);
     assert_eq!(receipt.target_frame_bytes(), 4096);
     assert_eq!(receipt.layout().bsi_span().end_bit(), 72);
+    assert_eq!(receipt.layout().audio_frame_control_span().start_bit(), 72);
+    assert_eq!(receipt.layout().audio_frame_control_span().bit_length(), 23);
+    assert_eq!(receipt.audio_frame_controls().end_bit(), 95);
+    assert_eq!(
+        receipt.layout().audio_blocks()[0]
+            .leading_audio_span()
+            .start_bit(),
+        95
+    );
     assert_eq!(
         receipt.layout().total_frame_span_bits(),
         expected["pre_crc2_span_bits"].as_u64().unwrap() as u32
@@ -725,8 +740,8 @@ fn assembler_errors_leave_caller_bytes_and_cursor_unchanged() {
         0,
         Flat7xD0FrameAssemblyError::SourceSpanOutOfBounds {
             block_index: 5,
-            required_end_bit: 2_666,
-            available_source_bits: 2_664,
+            required_end_bit: 2_643,
+            available_source_bits: 2_640,
         },
     );
 

@@ -114,6 +114,18 @@ fn synthetic_layout_vectors_define_block_order_and_caller_owned_insertion() {
             expected["bsi_end_bit"].as_u64().unwrap() as u32
         );
         assert_eq!(
+            layout.audio_frame_control_span().start_bit(),
+            expected["audio_frame_control_start_bit"].as_u64().unwrap() as u32
+        );
+        assert_eq!(
+            layout.audio_frame_control_span().bit_length(),
+            expected["audio_frame_control_bit_length"].as_u64().unwrap() as u32
+        );
+        assert_eq!(
+            layout.audio_blocks()[0].leading_audio_span().start_bit(),
+            expected["first_audio_block_start_bit"].as_u64().unwrap() as u32
+        );
+        assert_eq!(
             layout.block_two_skip_field().bit_span().start_bit(),
             expected["skip_field_start_bit"].as_u64().unwrap() as u32
         );

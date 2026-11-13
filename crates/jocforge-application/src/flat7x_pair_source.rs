@@ -610,6 +610,9 @@ mod tests {
     use jocforge_domain::codec::d0_frame_assembler::{
         D0FrameAudioBlockInput, Flat7xD0FrameBitInput, OpaqueD0AudioBitSpan,
     };
+    use jocforge_domain::codec::flat7x_d0_frame_controls::{
+        Flat7xD0AllocationCandidateQ, Flat7xD0AudioFrameControlPolicy,
+    };
     use jocforge_domain::{
         timeline::{CodecSourceIndex, FrontendCallbackIndex},
         transaction::{AttemptId, CallbackTransactionId, ProgrammeId},
@@ -634,6 +637,9 @@ mod tests {
         Flat7xD0AudioSpanReceipt {
             source_identity,
             audio_blocks: Flat7xD0FrameBitInput {
+                audio_frame_controls: Flat7xD0AudioFrameControlPolicy::new(
+                    Flat7xD0AllocationCandidateQ::new(1).unwrap(),
+                ),
                 audio_blocks: [block; 6],
             },
             frame_tail_policy: Flat7xD0FrameTailPolicy::ZeroFillUnusedAuxBits,
@@ -913,7 +919,12 @@ mod pair_access_unit_integration_tests {
                     ))
                 }
             });
-            Flat7xD0FrameBitInput { audio_blocks }
+            Flat7xD0FrameBitInput {
+                audio_frame_controls: Flat7xD0AudioFrameControlPolicy::new(
+                    Flat7xD0AllocationCandidateQ::new(1).unwrap(),
+                ),
+                audio_blocks,
+            }
         }
     }
 

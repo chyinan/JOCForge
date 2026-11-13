@@ -1713,6 +1713,10 @@ mod i0_audio_block_series_tests {
             d0_frame_layout::{CallerOwnedUnboundD0Block2InsertionPoint, D0SixBlockLayoutError},
             emdf_skip_field::{D0EmdfSkipFieldWriteError, flat7x_d0_block2_skipfld_bit_length},
             exponent_packing::pack_exponent_difference_group,
+            flat7x_d0_frame_controls::{
+                FLAT7X_D0_AUDIO_FRAME_CONTROL_BITS, Flat7xD0AllocationCandidateQ,
+                Flat7xD0AudioFrameControlPolicy,
+            },
             frame_builder::{Flat7xD0BsiStructure, measure_flat7x_d0_bsi_structure},
             i0_frame_assembler::{
                 CallerOwnedI0CrcrsvSeed, Flat7xI0Ac3AudioSeriesFrameCandidate,
@@ -1909,7 +1913,11 @@ mod i0_audio_block_series_tests {
             .value();
         let skipfield_bits = flat7x_d0_block2_skipfld_bit_length(container_bytes).unwrap();
         let frame_bits = u32::from(target.d0().frame_bytes()) * 8;
-        let audio_bits = frame_bits - D0_CRC2_FIELD_BITS - bsi_bits - skipfield_bits;
+        let audio_bits = frame_bits
+            - D0_CRC2_FIELD_BITS
+            - bsi_bits
+            - FLAT7X_D0_AUDIO_FRAME_CONTROL_BITS
+            - skipfield_bits;
         let even_bits = audio_bits / 6;
         let remainder = audio_bits % 6;
         let block_lengths = std::array::from_fn(|index| {
@@ -1963,7 +1971,12 @@ mod i0_audio_block_series_tests {
                 ))
             }
         });
-        Flat7xD0FrameBitInput { audio_blocks }
+        Flat7xD0FrameBitInput {
+            audio_frame_controls: Flat7xD0AudioFrameControlPolicy::new(
+                Flat7xD0AllocationCandidateQ::new(1).unwrap(),
+            ),
+            audio_blocks,
+        }
     }
 
     fn read_bits(bytes: &[u8], start: usize, width: usize) -> u32 {

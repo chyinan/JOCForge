@@ -3,7 +3,8 @@
 
 use crate::numeric::{FiniteF32, r32_add, r32_mul, trunc_f32_to_i32};
 
-const MANTISSA_WIDTH_BY_BAP: [u8; 16] = [0, 5, 7, 3, 7, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16];
+pub(crate) const MANTISSA_WIDTH_BY_BAP: [u8; 16] =
+    [0, 5, 7, 3, 7, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16];
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum MantissaBoundaryError {

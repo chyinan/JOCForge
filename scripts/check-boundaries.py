@@ -12013,6 +12013,9 @@ def check_f12_d0_six_block_layout_slice(root, d):
     ck(
         "blocks: [D0AudioBlockLayoutInput<'a>; D0_AUDIO_BLOCK_COUNT]" in module
         and "D0_AUDIO_BLOCK_COUNT: usize = 6" in module
+        and "FLAT7X_D0_AUDIO_FRAME_CONTROL_BITS" in module
+        and "audio_frame_control_span" in module
+        and "audio_frame_control_end" in proposal
         and "CallerOwnedUnboundD0Block2InsertionPoint" in module
         and "target != Flat7xI0D0TargetPlan::approved_contract()" in proposal
         and "measure_flat7x_d0_bsi_structure(target, &bsi_structure)" in proposal
@@ -12030,7 +12033,7 @@ def check_f12_d0_six_block_layout_slice(root, d):
     )
     ck(
         row["implementation_status"]
-        == "LOCALLY_VERIFIED_SYNTHETIC_SIX_BLOCK_LAYOUT_AND_REJECTIONS__NO_FRAME_BYTES"
+        == "LOCALLY_VERIFIED_SIX_BLOCK_LAYOUT_AUDFRM_SPAN_AND_REJECTIONS__FRAME_BYTES_SEPARATE"
         and row["implementation_requirement"] is True
         and row["owner"] == "codec"
         and row["parameters"]["production_allowed"] is False
@@ -12047,6 +12050,7 @@ def check_f12_d0_six_block_layout_slice(root, d):
         == [
             "crates/jocforge-domain/src/codec/d0_frame_layout.rs",
             "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
+            "crates/jocforge-domain/src/codec/flat7x_d0_frame_controls.rs",
             "crates/jocforge-domain/src/codec/mod.rs",
         ]
         and row["test_modules"]
@@ -12055,6 +12059,8 @@ def check_f12_d0_six_block_layout_slice(root, d):
             "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
         ]
         and vectors["contains_audio_or_pcm_bytes"] is False
+        and vectors["cases"][0]["expected"]["audio_frame_control_bit_length"] == 23
+        and vectors["cases"][0]["expected"]["first_audio_block_start_bit"] == 95
         and vectors["native_insertion_cursor_claim"] == "UNBOUND_CALLER_OWNED_OFFSET_ONLY"
         and {item["id"] for item in vectors["cases"]}
         >= {
@@ -12197,6 +12203,7 @@ def check_f12_d0_frame_bit_assembler_slice(root, d):
         if path != module_path
     ]
     pair_candidate_path = root / "crates/jocforge-domain/src/codec/access_unit_composer.rs"
+    audio_candidate_path = root / "crates/jocforge-domain/src/codec/flat7x_d0_audio_frame.rs"
     pair_candidate_module = rust_code_without_comments(
         pair_candidate_path.read_text(encoding="utf-8")
     )
@@ -12215,9 +12222,12 @@ def check_f12_d0_frame_bit_assembler_slice(root, d):
         for path in production_sources
         if "assemble_flat7x_d0_frame_bits" in path.read_text(encoding="utf-8")
     }
-    production_disabled_pair_candidate_only = (
-        d0_frame_callers == {pair_candidate_path}
+    production_disabled_audio_candidates_only = (
+        d0_frame_callers == {pair_candidate_path, audio_candidate_path}
         and pair_candidate_function.count("assemble_flat7x_d0_frame_bits(") == 1
+        and "pub fn produce_flat7x_d0_audio_frame(" in audio_candidate_path.read_text(encoding="utf-8")
+        and "pub const fn production_allowed(&self) -> bool {\n        false\n    }"
+        in rust_code_without_comments(audio_candidate_path.read_text(encoding="utf-8"))
         and "pub const fn production_allowed(&self) -> bool {\n        false\n    }"
         in pair_candidate_module
     )
@@ -12226,12 +12236,18 @@ def check_f12_d0_frame_bit_assembler_slice(root, d):
         and "D0_TARGET_FRAME_BITS: u32 = 32_768" in module
         and "D0_CRC2_FIELD_BITS: u32 = 16" in module
         and "pub audio_blocks: [D0FrameAudioBlockInput<'a>; D0_AUDIO_BLOCK_COUNT]" in module
+        and "pub audio_frame_controls: Flat7xD0AudioFrameControlPolicy" in module
         and "D0_AUDIO_BLOCK_COUNT: usize = 6" in module
         and "writer.preflight_capacity(required_frame_bits)?" in function
         and function.index("writer.preflight_capacity(required_frame_bits)?")
         < function.index("let mut staging = [0_u8; D0_TARGET_FRAME_BYTES]")
         < function.index("writer.write_bytes(&staging)?")
         and "write_flat7x_d0_bsi_structure(&mut staging_writer, target, bsi_structure)?" in function
+        and "write_flat7x_d0_audio_frame_controls(" in function
+        and "layout.audio_frame_control_span()" in function
+        and function.index("write_flat7x_d0_bsi_structure(")
+        < function.index("write_flat7x_d0_audio_frame_controls(")
+        < function.index("let block_layouts = layout.audio_blocks()")
         and "write_flat7x_d0_block2_skipfld(" in function
         and "eac3_crc16(&staging[D0_CRC2_COVERAGE_START_BYTE..crc2_start_byte])" in function
         and "eac3_crc16(&staging[D0_CRC2_COVERAGE_START_BYTE..])" in function
@@ -12240,12 +12256,12 @@ def check_f12_d0_frame_bit_assembler_slice(root, d):
         and function.index("if verified_residual != 0") < function.index("writer.write_bytes(&staging)?")
         and "Flat7xD0FrameAssemblyReceipt" in module
         and "pub const fn production_allowed(self) -> bool" in module
-        and production_disabled_pair_candidate_only,
-        "D0 frame assembler preflights exact target, verifies CRC2 in scratch, and is called only by the disabled pair candidate",
+        and production_disabled_audio_candidates_only,
+        "D0 frame assembler preflights target/CRC2 and is called only by nonpublishing audio and pair candidates",
     )
     ck(
         row["implementation_status"]
-        == "LOCALLY_VERIFIED_SYNTHETIC_EXACT_FRAME_ASSEMBLY_CRC2_AND_FAILURE_ATOMICITY__PRODUCTION_OPEN"
+        == "LOCALLY_VERIFIED_SYNTHETIC_AUDFRM_AND_FRAME_ASSEMBLY_CRC2_ATOMICITY__PRODUCT_ROUTE_OPEN"
         and row["implementation_requirement"] is True
         and row["owner"] == "codec"
         and row["parameters"]["production_allowed"] is False
@@ -12263,6 +12279,7 @@ def check_f12_d0_frame_bit_assembler_slice(root, d):
         and row["implementation_files"]
         == [
             "crates/jocforge-domain/src/codec/d0_frame_assembler.rs",
+            "crates/jocforge-domain/src/codec/flat7x_d0_frame_controls.rs",
             "crates/jocforge-domain/src/codec/mod.rs",
             "crates/jocforge-domain/src/integrity/crc16.rs",
         ]
@@ -12271,12 +12288,14 @@ def check_f12_d0_frame_bit_assembler_slice(root, d):
         and vectors["status"] == "SYNTHETIC_NOT_REAL_OUTPUT"
         and vectors["contains_pcm_or_real_audio_bytes"] is False
         and vectors["crc2_contract"]["package_id"] == "CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1"
-        and vectors["cases"][0]["expected"]["crc2_value_hex"] == "e0b0"
+        and vectors["cases"][0]["expected"]["audio_frame_control_bit_length"] == 23
+        and vectors["cases"][0]["expected"]["crc2_value_hex"] == "b0a6"
         and all(
             marker in test_source
             for marker in (
                 "synthetic_assembler_copies_opaque_spans_and_generates_crc2_for_exact_target_extent",
                 "assembler_errors_leave_caller_bytes_and_cursor_unchanged",
+                "audio_frame_control_span",
                 "SYNTHETIC_NOT_REAL_OUTPUT",
             )
         ),
@@ -13100,6 +13119,10 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
     d0_exponents_path = root / "crates/jocforge-domain/src/codec/flat7x_d0_exponents.rs"
     d0_mantissa_path = root / "crates/jocforge-domain/src/codec/flat7x_d0_mantissa.rs"
     d0_mantissa_test_path = root / "crates/jocforge-domain/tests/flat7x_d0_mantissa.rs"
+    d0_frame_controls_path = root / "crates/jocforge-domain/src/codec/flat7x_d0_frame_controls.rs"
+    d0_audio_block_path = root / "crates/jocforge-domain/src/codec/flat7x_d0_audio_block.rs"
+    d0_audio_frame_path = root / "crates/jocforge-domain/src/codec/flat7x_d0_audio_frame.rs"
+    d0_audio_frame_test_path = root / "crates/jocforge-domain/tests/flat7x_d0_audio_frame.rs"
     ac3_audio_path = root / "crates/jocforge-domain/src/codec/ac3_audio_block.rs"
     long_mdct_path = root / "crates/jocforge-domain/src/transform/long_mdct.rs"
     skipfield_test_path = root / "crates/jocforge-domain/src/codec/emdf_skip_field.rs"
@@ -13118,6 +13141,11 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
     d0_exponents = rust_code_without_comments(d0_exponents_path.read_text(encoding="utf-8"))
     d0_mantissa = rust_code_without_comments(d0_mantissa_path.read_text(encoding="utf-8"))
     d0_mantissa_tests = d0_mantissa_test_path.read_text(encoding="utf-8")
+    d0_frame_controls_source = d0_frame_controls_path.read_text(encoding="utf-8")
+    d0_frame_controls = rust_code_without_comments(d0_frame_controls_source)
+    d0_audio_block = rust_code_without_comments(d0_audio_block_path.read_text(encoding="utf-8"))
+    d0_audio_frame = rust_code_without_comments(d0_audio_frame_path.read_text(encoding="utf-8"))
+    d0_audio_frame_tests = d0_audio_frame_test_path.read_text(encoding="utf-8")
     ac3_audio_source = rust_code_without_comments(ac3_audio_path.read_text(encoding="utf-8"))
     long_mdct = rust_code_without_comments(long_mdct_path.read_text(encoding="utf-8"))
     skipfield_tests = skipfield_test_path.read_text(encoding="utf-8")
@@ -13215,7 +13243,7 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
     commit_parameters = row.get("parameters", {}).get("i0_d0_au_commit_boundary", {})
     ck(
         row.get("owner") == "application"
-        and row.get("implementation_status") == "LOCALLY_VERIFIED_D0_SPECTRUM_BAP_D15_MANTISSA_AND_U4_U7__FULL_AUDBLK_PARENT_PRODUCTION_OPEN"
+        and row.get("implementation_status") == "LOCALLY_VERIFIED_D0_SIX_BLOCK_AUDFRM_AUDBLK_MAX_ALLOCATED_BITS_FRAME_CANDIDATE__SOURCE_HISTORY_AND_PRODUCT_ROUTE_OPEN"
         and row.get("parameters", {}).get("production_allowed") is False
         and pair_target == {
             "i0_rate_kbps": 640,
@@ -13272,9 +13300,9 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         and "eac3_exponent_row_writes_seed_then_u7_groups_msb_first" in exponent_packing_source
         and "eac3_exponent_row_preflights_seed_and_extent_before_mutation" in exponent_packing_source
         and row.get("parameters", {}).get("d0_audio_block_producer_gap", {}).get("local_four_channel_d0_audblk_writer")
-        == "D0_SPECTRUM_BAP_D15_MANTISSA_PACKING; NO_COMPLETE_AUDBLK"
+        == "D0_4X253_D15_BAP_MANTISSA_AUDBLK_AND_SIX_BLOCK_FRAME_CANDIDATE"
         and row.get("parameters", {}).get("d0_audio_block_producer_gap", {}).get("producer_status")
-        == "BLOCKED_ON_FRAME_WIDE_BIT_BUDGET_COMPLETE_AUDBLK_AND_F12_RECEIPT"
+        == "LOCALLY_VERIFIED_FRAME_CANDIDATE; SOURCE_HISTORY_F12_F13_F15_AND_CLI_OPEN"
         and "pub fn pack_flat7x_d0_mantissa_block(" in d0_mantissa
         and "decoded_exponents()" in d0_mantissa
         and "pack_block_mantissas(&items)" in d0_mantissa
@@ -13291,6 +13319,34 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         == "JOCFORGE_EXISTING_EAC3_QUANTIZER_V1"
         and row.get("parameters", {}).get("d0_mantissa_stage", {}).get("wash_expected_codes_included") is False
         and row.get("parameters", {}).get("d0_mantissa_stage", {}).get("production_allowed") is False
+        and "FLAT7X_D0_AUDIO_FRAME_CONTROL_BITS: u32 = 23" in d0_frame_controls
+        and "FLAT7X_D0_AUDIO_FRAME_CONTROL_POLICY_ID" in d0_frame_controls
+        and "JOCFORGE_FLAT7X_D0_AUDFRM_POLICY_V1" in d0_frame_controls_source
+        and "JOCFORGE_FLAT7X_D0_MAX_ALLOCATED_BITS_Q_HIGH_TIE_V1" in d0_frame_controls_source
+        and "pub fn write_flat7x_d0_audio_frame_controls(" in d0_frame_controls
+        and "pub fn write_flat7x_d0_audio_block(" in d0_audio_block
+        and "measure_flat7x_d0_audio_block_bit_cost(" in d0_audio_block
+        and "write_flat7x_d0_d15_exponent_row(" in d0_audio_block
+        and "write_packed_mantissa_bits(" in d0_audio_block
+        and "FLAT7X_D0_DEFAULT_FAST_GAIN_CODE: u8 = 4" in d0_audio_block
+        and "pub fn produce_flat7x_d0_audio_frame(" in d0_audio_frame
+        and "for raw_q in (1_u16..=1_023).rev()" in d0_audio_frame
+        and "let mut best_content_bits = 0_u32" in d0_audio_frame
+        and "let mut best_candidate = None" in d0_audio_frame
+        and "candidate_content_bits <= best_content_bits" in d0_audio_frame
+        and "best_content_bits = candidate_content_bits" in d0_audio_frame
+        and "Flat7xD0FrameTailPolicy::ZeroFillUnusedAuxBits" in d0_audio_frame
+        and "d0_frame_search_produces_one_complete_crc_valid_six_block_candidate" in d0_audio_frame_tests
+        and "raw_q_zero_remains_a_valid_zero_bap_input_vector" in d0_audio_frame_tests
+        and row.get("parameters", {}).get("d0_audio_frame_candidate", {}).get("q_search_policy_id")
+        == "JOCFORGE_FLAT7X_D0_MAX_ALLOCATED_BITS_Q_HIGH_TIE_V1"
+        and row.get("parameters", {}).get("d0_frame_controls", {}).get("policy_id")
+        == "JOCFORGE_FLAT7X_D0_AUDFRM_POLICY_V1"
+        and row.get("parameters", {}).get("d0_frame_controls", {}).get("allocation_search_policy_id")
+        == "JOCFORGE_FLAT7X_D0_MAX_ALLOCATED_BITS_Q_HIGH_TIE_V1"
+        and row.get("parameters", {}).get("d0_audio_frame_candidate", {}).get("monotonicity_assumed") is False
+        and row.get("parameters", {}).get("d0_audio_frame_candidate", {}).get("production_allowed") is False
+        and row.get("vectors", {}).get("d0_audio_frame_candidate_tests", {}).get("test_count") == 3
         and "pub struct Flat7xD0BapParameters" in d0_bap
         and "pub struct Flat7xD0BapFrameInput" in d0_bap
         and "pub fn allocate_flat7x_d0_bap_frame(" in d0_bap
@@ -13322,7 +13378,7 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         and row.get("parameters", {}).get("d0_bap_provider", {}).get("table_set_sha256")
         == "5a9ea2d179dc8017316006e8ffd23b2f5e30f1b363e56740f94787b4ef8e96fe"
         and row.get("parameters", {}).get("d0_bap_provider", {}).get("existing_fbw217_lfe7_provider_reused") is False,
-        "D0 transform/BAP/D15 and mantissa stages use typed four-channel rows while full audblk remains open",
+        "D0 transform/BAP/D15/mantissa stages feed six audblk spans and a maximum-allocated-bits frame candidate while source owners remain open",
     )
 
     no_cli_pair_candidate = (
@@ -16629,13 +16685,13 @@ def run(root=ROOT):
 
  d0_bsi_structure=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-d0-bsi-structure-composition');verified_scopes+=(d0_bsi_structure['implementation_status']=='LOCALLY_VERIFIED_TYPED_D0_BSI_COMPOSITION_AND_OFFICIAL_SAMPLE_FIELD_REPLAY__FULL_FRAME_OPEN');ck(verified_scopes==81,'locally verified scoped-task count including typed D0 BSI composition')
 
- d0_layout=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-d0-six-block-layout-proposal');verified_scopes+=(d0_layout['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_SIX_BLOCK_LAYOUT_AND_REJECTIONS__NO_FRAME_BYTES');ck(verified_scopes==82,'locally verified scoped-task count including the six-block D0 layout proposal')
+ d0_layout=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-d0-six-block-layout-proposal');verified_scopes+=(d0_layout['implementation_status']=='LOCALLY_VERIFIED_SIX_BLOCK_LAYOUT_AUDFRM_SPAN_AND_REJECTIONS__FRAME_BYTES_SEPARATE');ck(verified_scopes==82,'locally verified scoped-task count including the six-block D0 layout proposal')
 
  target_id14=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-target-id14-header');verified_scopes+=(target_id14['implementation_status']=='LOCALLY_VERIFIED_FLAT7X_TARGET_INDEX1_OBJECT_COUNT15_HEADER_ONLY__PRODUCTION_OPEN');ck(verified_scopes==83,'locally verified scoped-task count including the Flat7x target ID14 header')
 
- d0_frame_assembler=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-d0-frame-bit-assembler');verified_scopes+=(d0_frame_assembler['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_EXACT_FRAME_ASSEMBLY_CRC2_AND_FAILURE_ATOMICITY__PRODUCTION_OPEN');ck(verified_scopes==84,'locally verified scoped-task count including generated D0 frame CRC2')
+ d0_frame_assembler=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-d0-frame-bit-assembler');verified_scopes+=(d0_frame_assembler['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_AUDFRM_AND_FRAME_ASSEMBLY_CRC2_ATOMICITY__PRODUCT_ROUTE_OPEN');ck(verified_scopes==84,'locally verified scoped-task count including generated D0 frame CRC2')
 
- opaque_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-d0-opaque-au-byte-composer');verified_scopes+=(opaque_au['implementation_status']=='LOCALLY_VERIFIED_TARGET_EXTENTS_ORDER_AND_ATOMIC_COMMIT__NO_CRC_OR_GENERATION');sequence_composer=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-sequence-composer');verified_scopes+=(sequence_composer['implementation_status']=='LOCALLY_VERIFIED_SEQUENCE_AND_D0_TO_AU_TO_STREAM_CHAIN__NO_PRODUCTION');stream_stage=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F15')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-staged-file-adapter');verified_scopes+=(stream_stage['implementation_status']=='LOCALLY_VERIFIED_F15_FINALIZE_LEDGER_STAGE_RECEIPT_JOIN_AND_TEMP_IO__SOURCE_CALLBACK_OPEN');ck(verified_scopes==87,'locally verified scoped-task count including Flat7x F15 finalize-to-stage integration');i0_frame_assembler=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-frame-bit-assembler');verified_scopes+=(i0_frame_assembler['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_ASSEMBLY_GENERATED_CRC1_CRC2_RESIDUALS__PRODUCTION_OPEN');ck(verified_scopes==88,'locally verified scoped-task count including I0 AC-3 structure assembly');i0_bsi_tail=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-ac3-bsi-tail-writer');verified_scopes+=(i0_bsi_tail['implementation_status']=='LOCALLY_VERIFIED_OFFICIAL_SAMPLE_I0_BSI_TAIL_THROUGH_ADDBSIE_AND_FRAME_CANDIDATE__PRODUCTION_FALSE');ck(verified_scopes==89,'locally verified scoped-task count including I0 BSI-tail through addbsie');i0_typed_frame=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-typed-bsi-frame-assembly-entry');verified_scopes+=(i0_typed_frame['implementation_status']=='LOCALLY_VERIFIED_SOURCE_BOUND_SIX_BLOCK_I0_FRAME_CANDIDATE__ASSUMPTIONS_OPEN__PRODUCTION_FALSE');ck(verified_scopes==90,'locally verified scoped-task count including typed I0 BSI-to-frame composition');i0_ac3_audio=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-ac3-audio-block-producer');verified_scopes+=(i0_ac3_audio['implementation_status']=='LOCALLY_VERIFIED_SIX_BLOCK_I0_FRAME_CANDIDATE_WITH_PROVISIONAL_ASSUMPTIONS__PRODUCTION_FALSE');ck(verified_scopes==91,'locally verified scoped-task count including AC-3 block-zero prototype');pair_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-source-bound-i0-d0-au-candidate');verified_scopes+=(pair_au['implementation_status']=='LOCALLY_VERIFIED_D0_SPECTRUM_BAP_D15_MANTISSA_AND_U4_U7__FULL_AUDBLK_PARENT_PRODUCTION_OPEN');ck(verified_scopes==92,'locally verified scoped-task count including D0 mantissa quantization and grouped packing')
+ opaque_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-d0-opaque-au-byte-composer');verified_scopes+=(opaque_au['implementation_status']=='LOCALLY_VERIFIED_TARGET_EXTENTS_ORDER_AND_ATOMIC_COMMIT__NO_CRC_OR_GENERATION');sequence_composer=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-sequence-composer');verified_scopes+=(sequence_composer['implementation_status']=='LOCALLY_VERIFIED_SEQUENCE_AND_D0_TO_AU_TO_STREAM_CHAIN__NO_PRODUCTION');stream_stage=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F15')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-staged-file-adapter');verified_scopes+=(stream_stage['implementation_status']=='LOCALLY_VERIFIED_F15_FINALIZE_LEDGER_STAGE_RECEIPT_JOIN_AND_TEMP_IO__SOURCE_CALLBACK_OPEN');ck(verified_scopes==87,'locally verified scoped-task count including Flat7x F15 finalize-to-stage integration');i0_frame_assembler=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-frame-bit-assembler');verified_scopes+=(i0_frame_assembler['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_ASSEMBLY_GENERATED_CRC1_CRC2_RESIDUALS__PRODUCTION_OPEN');ck(verified_scopes==88,'locally verified scoped-task count including I0 AC-3 structure assembly');i0_bsi_tail=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-ac3-bsi-tail-writer');verified_scopes+=(i0_bsi_tail['implementation_status']=='LOCALLY_VERIFIED_OFFICIAL_SAMPLE_I0_BSI_TAIL_THROUGH_ADDBSIE_AND_FRAME_CANDIDATE__PRODUCTION_FALSE');ck(verified_scopes==89,'locally verified scoped-task count including I0 BSI-tail through addbsie');i0_typed_frame=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-typed-bsi-frame-assembly-entry');verified_scopes+=(i0_typed_frame['implementation_status']=='LOCALLY_VERIFIED_SOURCE_BOUND_SIX_BLOCK_I0_FRAME_CANDIDATE__ASSUMPTIONS_OPEN__PRODUCTION_FALSE');ck(verified_scopes==90,'locally verified scoped-task count including typed I0 BSI-to-frame composition');i0_ac3_audio=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-ac3-audio-block-producer');verified_scopes+=(i0_ac3_audio['implementation_status']=='LOCALLY_VERIFIED_SIX_BLOCK_I0_FRAME_CANDIDATE_WITH_PROVISIONAL_ASSUMPTIONS__PRODUCTION_FALSE');ck(verified_scopes==91,'locally verified scoped-task count including AC-3 block-zero prototype');pair_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-source-bound-i0-d0-au-candidate');verified_scopes+=(pair_au['implementation_status']=='LOCALLY_VERIFIED_D0_SIX_BLOCK_AUDFRM_AUDBLK_MAX_ALLOCATED_BITS_FRAME_CANDIDATE__SOURCE_HISTORY_AND_PRODUCT_ROUTE_OPEN');ck(verified_scopes==92,'locally verified scoped-task count including D0 six-block maximum-bit frame candidate')
 
  dep=d['approved_dependencies']['sha2']
 
