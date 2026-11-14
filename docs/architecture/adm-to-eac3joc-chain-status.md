@@ -2127,3 +2127,7 @@ Flat7xCoefficientRows now validates the parser-observed 15 present objects, one 
 ## 2026-11-15 Flat7x coefficient source route
 
 Flat7x now has a separate typed source entry carrying Flat7xCoefficientRowsProposal, FitSourceLineage, and the fit after-state. The rows pass through the shared JOC dispatch provenance boundary. The existing profile-aware application entry has no Flat7x rows proposal and returns Flat7xCoefficientSourceUnavailable before invoking the 15x5 QMF fitter. The selected 5.1 path and its CoefficientFitProposal remain unchanged. No authoritative 15x7 provider or encode candidate exists.
+
+## 2026-11-15 Flat7x coefficient matrix traversal
+
+Wash package openjoc_full_matrix_serialization_order_v1 (manifest 4ba2c0b6133267541a046e416b42adaf9b6c02aa79c98b987563f7ac3de70f7b, seal 20d2a61bc3aff599756526e19f7e1168310d31829a64c7ff36bdbb33323c3821) reports parser order object → point/time slot → channel row → band, selector 1 as seven rows, and band_index 0..7 counts 1,3,5,7,9,12,15,23. The selected writer follows the same structural loop order; this is not coefficient-value or production-algorithm evidence. The authoritative 15x7 row provider remains absent.

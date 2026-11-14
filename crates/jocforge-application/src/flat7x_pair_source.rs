@@ -917,8 +917,8 @@ mod pair_access_unit_integration_tests {
     use std::{ops::Range, sync::Arc};
 
     use super::{
-        Flat7xD0AudioSpanInput, Flat7xD0AudioSpanReceipt, Flat7xPairSourceError,
-        assemble_flat7x_i0_frame_candidate_from_binding,
+        Flat7xD0AudioSpanInput, Flat7xD0AudioSpanReceipt, Flat7xD0Ci16Addbsi,
+        Flat7xPairSourceError, assemble_flat7x_i0_frame_candidate_from_binding,
         assemble_flat7x_pair_access_unit_candidate, assemble_flat7x_pair_i0_frame_candidate,
         bind_flat7x_pair_source, prepare_flat7x_pair_audio_blocks,
         produce_flat7x_pair_d0_pcm_frame_candidate,

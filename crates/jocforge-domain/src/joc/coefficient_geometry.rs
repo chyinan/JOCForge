@@ -98,7 +98,7 @@ impl CoefficientGeometryState {
         bytes
     }
 
-    #[cfg(test)]
+    #[cfg(any(test, feature = "test-support"))]
     pub(crate) const fn with_generation_for_test(generation: u64) -> Self {
         let mut state = Self::cold();
         state.generation = generation;

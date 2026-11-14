@@ -21,7 +21,10 @@ use jocforge_domain::{
         CarrierCodecProfile, JocPayloadDownmixIndex, JocReconstructionLayout,
         ResolvedEncodingProfile, SubstreamTopology,
     },
-    spatial::{QmfReceiverFunctionalProvider, SpatialAudioCallbackOutcome},
+    spatial::{
+        QmfReceiverFunctionalProvider, SpatialAudioCallbackOutcome,
+        spatial_audio_state::SelectedJocQmfProjection,
+    },
     timeline::{
         AdmSampleCount, ClockError, PublicationDisposition, programme_counts,
         publication_for_source,
@@ -128,6 +131,34 @@ pub struct MainMetadataBodiesCandidate {
     joc_after: SelectedJocAfterProposal,
     joc_receipt: GtcOwnerReceipt,
     metadata_bodies: MetadataBodiesProposal,
+}
+
+/// Binds Flat7x provider output to one accepted QMF source before JOC dispatch and ID14 staging.
+pub fn stage_flat7x_joc_source_from_provider_output(
+    before: &SelectedJocState,
+    projection: &SelectedJocQmfProjection,
+    producer_transaction_id: CallbackTransactionId,
+    provider_output: Flat7xCoefficientRowsProviderOutput<'_>,
+    profile: ResolvedEncodingProfile,
+) -> Result<SelectedJocAfterProposal, SelectedJocStateError> {
+    if select_main_metadata_joc_source_route(profile, true)?
+        != MainMetadataJocSourceRoute::Flat7xRows
+    {
+        return Err(SelectedJocStateError::Source(
+            JocSourceStageErrorKind::Flat7xCoefficientProfileMismatch,
+        ));
+    }
+    let rows = Flat7xCoefficientRowsProposal::from_provider_output(projection, provider_output)
+        .map_err(|_| {
+            SelectedJocStateError::Source(JocSourceStageErrorKind::Flat7xCoefficientLineageMismatch)
+        })?;
+    stage_selected_joc_source_with_flat7x_rows(
+        before,
+        projection,
+        producer_transaction_id,
+        rows,
+        profile,
+    )
 }
 
 /// Failures while staging F13 source state from same-source ID11/ID2/ID14 bodies.
@@ -292,17 +323,11 @@ fn prepare_main_metadata_bodies_for_callback_inner(
     let joc_after = match joc_source_route {
         MainMetadataJocSourceRoute::Flat7xRows => {
             let output = flat7x_rows.ok_or_else(flat7x_source_unavailable)?;
-            let rows = Flat7xCoefficientRowsProposal::from_provider_output(projection, output)
-                .map_err(|_| {
-                    MetadataSourceBridgeError::Joc(SelectedJocStateError::Source(
-                        JocSourceStageErrorKind::Flat7xCoefficientLineageMismatch,
-                    ))
-                })?;
-            stage_selected_joc_source_with_flat7x_rows(
+            stage_flat7x_joc_source_from_provider_output(
                 joc_before,
                 projection,
                 source_transaction_id.clone(),
-                rows,
+                output,
                 joc_profile,
             )
         }
@@ -421,10 +446,23 @@ fn sha256_hex(bytes: &[u8; 32]) -> String {
 
 #[cfg(test)]
 mod flat7x_rows_route_tests {
-    use super::{MainMetadataJocSourceRoute, select_main_metadata_joc_source_route};
+    use super::{
+        MainMetadataJocSourceRoute, SelectedJocState, select_main_metadata_joc_source_route,
+        stage_flat7x_joc_source_from_provider_output,
+    };
     use jocforge_domain::{
         joc::programme_state::{JocSourceStageErrorKind, SelectedJocStateError},
+        joc::{
+            coefficient_fitting::{CoefficientFitState, Flat7xCoefficientRowsProviderOutput},
+            coefficient_payload::{
+                CoefficientPayloadInput, CoefficientPayloadObject, CoefficientPayloadPoint,
+                Flat7xCoefficientRows,
+            },
+        },
         profile::{EncodingProfile, JocReconstructionLayout, resolve_selected_profile},
+        spatial::{SpatialAudioMachine, spatial_audio_state::SelectedJocQmfProjection},
+        timeline::{CodecSourceIndex, FrontendCallbackIndex},
+        transaction::{AttemptId, CallbackLineageIdentity, CallbackTransactionId, ProgrammeId},
     };
 
     #[test]
@@ -456,5 +494,79 @@ mod flat7x_rows_route_tests {
                 JocSourceStageErrorKind::Flat7xCoefficientProfileMismatch
             ))
         ));
+    }
+
+    #[cfg(feature = "test-support")]
+    #[test]
+    fn flat7x_provider_output_crosses_application_bridge_with_same_source_generation() {
+        // SYNTHETIC/TEST_ONLY rows and identity-only projection exercise routing/provenance only;
+        // they contain no audio samples and do not enter a production coefficient provider.
+        let programme_id = ProgrammeId::new("flat7x-application-bridge-test").unwrap();
+        let attempt = AttemptId::new(1);
+        let callback_index = FrontendCallbackIndex::new(2);
+        let transaction_id =
+            CallbackLineageIdentity::new(programme_id.clone(), attempt, callback_index);
+        let projection = SelectedJocQmfProjection::identity_only_for_test(
+            programme_id,
+            attempt,
+            transaction_id,
+            0,
+            SpatialAudioMachine::new_cold(EncodingProfile::selected())
+                .unwrap()
+                .digest(),
+            callback_index,
+            CodecSourceIndex::new(0),
+        );
+        let point = CoefficientPayloadPoint {
+            channel_rows: (0..7).map(|_| vec![0.25]).collect(),
+            selected_channels: Vec::new(),
+        };
+        let input = CoefficientPayloadInput {
+            downmix_index: 1,
+            extension_config: 0,
+            clip_gain_index: 128,
+            sequence_count: 0,
+            time_slot_limit: 24,
+            capacity_bytes: 372,
+            objects: (0..15)
+                .map(|_| CoefficientPayloadObject {
+                    present: true,
+                    band_enum: 0,
+                    mode: 1,
+                    points: vec![point.clone()],
+                    offsets: None,
+                })
+                .collect(),
+        };
+        let rows = Flat7xCoefficientRows::new(&input).unwrap();
+        let provider_output = Flat7xCoefficientRowsProviderOutput::new(
+            rows,
+            CoefficientFitState::with_generation_for_test(1),
+        );
+        let before = SelectedJocState::cold();
+        let producer_transaction_id = CallbackTransactionId::new("flat7x-source-s0").unwrap();
+        let flat7x =
+            resolve_selected_profile(&EncodingProfile::selected_with_joc_reconstruction_layout(
+                JocReconstructionLayout::Flat7x,
+            ))
+            .unwrap();
+
+        let after = stage_flat7x_joc_source_from_provider_output(
+            &before,
+            &projection,
+            producer_transaction_id.clone(),
+            provider_output,
+            flat7x,
+        )
+        .unwrap();
+
+        assert_eq!(after.after().generation(), 1);
+        let provenance = after.id14_body().provenance();
+        assert_eq!(provenance.producer_generation().value(), 0);
+        assert_eq!(provenance.dispatch().value(), 1);
+        assert_eq!(
+            provenance.producer_transaction_id(),
+            Some(&producer_transaction_id)
+        );
     }
 }

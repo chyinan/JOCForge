@@ -189,6 +189,58 @@ pub struct SelectedJocQmfProjection {
 }
 
 impl SelectedJocQmfProjection {
+    /// Builds an identity-only projection for application route/provenance tests.
+    ///
+    /// Window and spatial payload buffers are empty; this fixture must not be used for fitting,
+    /// serialization, or audio behavior tests.
+    #[cfg(feature = "test-support")]
+    pub fn identity_only_for_test(
+        programme_id: SourceFlagsProgrammeId,
+        attempt: SourceFlagsAttempt,
+        transaction_id: CallbackLineageIdentity,
+        spatial_before_generation: u64,
+        spatial_before_digest: super::SpatialAudioDigest,
+        callback_index: FrontendCallbackIndex,
+        source_index: CodecSourceIndex,
+    ) -> Self {
+        let dispatch = source_index.dispatch().expect("bounded source test index");
+        let empty_finite_rows = std::array::from_fn(|_| Vec::<FiniteF32>::new().into_boxed_slice());
+        let geometry_row = JocGeometryRowState {
+            current_words: [0; 6],
+            target_words: [0; 6],
+            slope_words: [0; 6],
+            remaining_words: [0; 6],
+        };
+        Self {
+            programme_id,
+            attempt,
+            transaction_id,
+            spatial_before_generation,
+            spatial_before_digest,
+            callback_index,
+            source_index,
+            receiver_generation_after: ReceiverCallbackCount::new(dispatch.value()),
+            dispatch,
+            component_origin_generation: callback_index,
+            lfe_origin_generation: callback_index,
+            target_reader_invocation: ReaderInvocationIndex::new(source_index.value()),
+            target_history_producer_generations: [HistoryProducerGeneration::Cold; 16],
+            target_state_before_sha256: [0; 32],
+            target_state_after_sha256: [0; 32],
+            target_sha256: [0; 32],
+            target_semantic_sha256: [0; 32],
+            target_update_words: [0; 96],
+            descriptor_selected_index: 128,
+            descriptor_target_gain_word: 0x3f80_0000,
+            s09_return: empty_finite_rows.clone(),
+            final_six: empty_finite_rows,
+            target_object_windows48: Vec::new().into_boxed_slice(),
+            carrier_windows48: Vec::new().into_boxed_slice(),
+            geometry_rows_before: [geometry_row; 16],
+            geometry_rows_after: [geometry_row; 16],
+        }
+    }
+
     pub(crate) fn programme_id(&self) -> &SourceFlagsProgrammeId {
         &self.programme_id
     }

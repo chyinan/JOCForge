@@ -486,3 +486,11 @@ Flat7xCoefficientRowsProviderOutput carries validated Flat7xCoefficientRows and 
 Verification: source row routing 1/1, row proposal same-source generation 1/1, Flat7x coefficient payload shape 2/2, application Flat7x tests 6/6, selected 5.1 all-rate route 1/1, CLI cargo check, fmt check, and diff check pass. The 15x7 producer remains unavailable; no encoder/OpenJOC run or candidate was created.
 
 Verification for this incremental source seam: source-route tests 1/1; Flat7x rows proposal same-source after-generation test 1/1; shared dispatch provenance test 1/1; application route test 1/1; application Flat7x tests 6/6; selected 5.1 all-rate route 1/1; cargo check, fmt check, and diff check pass. Flat7x production remains unavailable without the authoritative rows provider; no encoding or OpenJOC run was made.
+
+## 2026-11-15 Flat7x application bridge test
+
+The public application seam accepts Flat7xCoefficientRowsProviderOutput, derives the proposal lineage from the accepted QMF projection, and crosses the common JOC dispatch provenance path. The application integration test uses a test-support identity-only projection plus SYNTHETIC/TEST_ONLY coefficient-row values; it verifies source generation, dispatch, producer transaction, and object count without a media/audio fixture. The authoritative coefficient provider remains absent, so the default Flat7x route still fails closed.
+
+## 2026-11-15 Full-matrix parser order
+
+Wash reports package openjoc_full_matrix_serialization_order_v1 (manifest 4ba2c0b6133267541a046e416b42adaf9b6c02aa79c98b987563f7ac3de70f7b; seal 20d2a61bc3aff599756526e19f7e1168310d31829a64c7ff36bdbb33323c3821): parser traversal is object → point/time slot → channel row → band; selector1 uses seven rows; band_index 0..7 maps to 1,3,5,7,9,12,15,23. The local Full serializer loop follows this order, which is a structural inference. No coefficient values or production rule are provided.

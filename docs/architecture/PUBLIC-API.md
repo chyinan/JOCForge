@@ -101,3 +101,7 @@ The current coefficient fitter remains five-channel and is not connected to this
 ## Flat7x application source seam
 
 The selected 5.1 path continues through prepare_main_metadata_bodies_for_callback and the existing CoefficientFitProposal / 15x5 fitter. Flat7x uses prepare_main_metadata_bodies_for_callback_with_flat7x_rows, which accepts Flat7xCoefficientRowsProviderOutput. The application binds that output to the accepted SelectedJocQmfProjection through Flat7xCoefficientRowsProposal::from_provider_output, deriving same-source lineage and retaining the provider fit after-state. The dispatch boundary validates that lineage before writing the rows. The default entry without provider output returns Flat7xCoefficientSourceUnavailable; no 15x7 production provider exists yet.
+
+## Flat7x full-matrix traversal
+
+The serializer consumes each object's point, then its channel rows, then each row's bands. Wash reports the OpenJOC parser uses the same object → point/time slot → channel row → band traversal, with selector 1 selecting seven rows and band_index 0..7 mapping to 1,3,5,7,9,12,15,23. The writer/parser order match is a structural inference; coefficient values and their production rule remain unavailable.

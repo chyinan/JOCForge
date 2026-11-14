@@ -80,8 +80,8 @@ impl CoefficientFitState {
         self.fit_generation
     }
 
-    #[cfg(test)]
-    pub(crate) const fn with_generation_for_test(generation: u64) -> Self {
+    #[cfg(any(test, feature = "test-support"))]
+    pub const fn with_generation_for_test(generation: u64) -> Self {
         Self {
             temporal: TemporalWeightState::cold(),
             geometry: CoefficientGeometryState::with_generation_for_test(generation),
