@@ -800,6 +800,11 @@ fn sync_parent_directory(directory: &Path) -> io::Result<()> {
     File::open(directory)?.sync_all()
 }
 
+/// Syncs the directory entry for an experimental artifact created with create-new semantics.
+pub fn sync_experimental_candidate_directory(directory: &Path) -> io::Result<()> {
+    sync_parent_directory(directory)
+}
+
 fn hash_file_exact(file: &mut File, expected_length: u64) -> Result<[u8; 32], OutputIoError> {
     file.seek(SeekFrom::Start(0))
         .map_err(|error| OutputIoError::from_io(OutputIoPhase::FinalizePreflight, &error))?;

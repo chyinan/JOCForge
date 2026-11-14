@@ -11,11 +11,29 @@ tags:
   - D0
 ---
 
+## 2026-11-14 candidate 状态
+
+Love Song 方大同.wav 已确认是 36 声道、48 kHz、PCM24 ADM BWF，带 `axml` 与 `chna`。同源 F06ND BSI 输入和 attempt-local `.candidate.ec3` 捕获路径已接入；写入采用 create-new、完整 F15 pair ledger、精确读回/hash、文件与目录同步。失败时保留部分候选并写 `.failure.txt`；候选保持 `production_allowed=false`，Programme DONE root 不安装。
+
+按用户直接指令完成的 Release run：PID `16072` / attempt `1794647185411283100`，输出为 `D:\JOCForge-attempts\love-song-flat7x-1664-release-20261114-170625\love-song-flat7x-1664.candidate.ec3`；8,417 AU / 56,023,552 bytes，F15 stage readback/sync receipt SHA-256 `6101459cc6b04cda1b192cf7add7a8dc2e0775c8f4965b08e85040bea19e3b0c`。OpenJOC parse/decode/render 与 W04 尚未运行。run timeline/Fresh GO 未预先由 Wash 登记，实际情况已回报 Wash；candidate 内容未手工读取。
+
+Wash 元数据包 `love-song-flat7x-object-to-joc-row-metadata-only-wash-v1`（manifest `ec88b6cd216857d5fb758a892e0d8540a51d7fcea78f8d2566d68d6ac284dd30`；seal `188051a489ffcc03a8894c781208361a0664b64bbd639a00be27cf136b669812`）确认输入有 26 个通过 CHNA/AXML UID+pack 显式连接的 ADM Object tracks。它们到 target 15 JOC objects/rows 与七个 reconstruction carriers 的 crosswalk 仍为 `UNBOUND`；候选试跑不作为 object/spatial compliance 或 listening parity 证据。
+
+目标候选不与 DEE 等价；OpenJOC parse/decode/render 与 W04 保持 `NOT_RUN`，5.1 路径保持不变。
+
 # 当前 7.1 flat7x / 1664 handoff
 
 ## Target
 
 批准的 target 使用分开的 I0、D0 frames：先 I0 640 kbps，再 D0 1024 kbps。1664 kbps 是一个 AU 中两帧的 aggregate rate，不是单个 1664 kbps frame。AU target 要求同一 source-generation 校验和完整发布；拒绝 I0-only partial result。
+
+## 2026-11-14 当前接线进度
+
+Commit `35503d6d404dbafbdbdddc05cbe1b8abaefa4043` 已将 Flat7x I0+D0 durable append 与 programme callback parent replacement 接入 CLI，并推送到 `experimental/independent-encoder`。
+
+当前工作树新增同源 D0 BSI producer input：`bind_flat7x_d0_bsi_source_inputs` 从 `NoneDrcOwnerAfterProposal` 和 prepared authored downmix 取得 dialnorm、RF `compr`、六个 line DRC codes 与 mixing values，并保留 shared-analysis identity；CLI 在 D0 frame 组装前与 pair source role receipt 比对。它复用现有 F06ND/F12 field projection 和 `FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1`，没有新增 audio math。selected 5.1 path不变。
+
+`information` 和 `addbsi` 仍按 replaceable local absence policy 留空；官方 reference CI16/addbsi 的 source binding 是具体剩余项。全输入 CLI、最终 `.ec3`、OpenJOC render 与 W04 尚未运行，`production_allowed=false` 继续保留。
 
 ## 隔离仓库中已验证的内容
 

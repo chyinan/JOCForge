@@ -3,6 +3,7 @@
 
 use jocforge_application::{
     PreparedJobInput,
+    codec_source_bridge::bind_flat7x_d0_bsi_source_inputs,
     drc_source_bridge::{
         CallbackLineageIdentity, NoneDrcOwnerRoot, prepare_drc_source_from_analysis,
     },
@@ -24,8 +25,8 @@ use jocforge_application::{
     meter_source_bridge::{Flat7xI0D0TargetPlan, JocReconstructionLayout, ResolvedEncodingProfile},
     output_publication::{
         AdmittedProductionPlan, OutputDurableAppendReceipt, OutputSourceAfterProposal,
-        ProgrammeOutputBinding, prepare_output_source_from_candidate,
-        prepare_output_source_from_flat7x_pair,
+        ProgrammeOutputBinding, prepare_output_source_for_flat7x_suppressed,
+        prepare_output_source_from_candidate, prepare_output_source_from_flat7x_pair,
     },
     reader_eof_callback::{GtcOwnerId, ReaderEofMachine, ReaderEofReplacementCandidate},
     source_analysis_bridge::{
@@ -58,7 +59,8 @@ use crate::{
 };
 use jocforge_io::pcm::frontend_pcm_source::{CodecSourceIndex, FrontendCallbackIndex};
 
-const FLAT7X_D0_FRAME_SETTINGS_MODEL_ID: &str = "JOCFORGE_FLAT7X_D0_FRAME_DEFAULTS_V1";
+const FLAT7X_D0_OPTIONAL_FRAME_FIELDS_POLICY_ID: &str =
+    "JOCFORGE_FLAT7X_D0_OPTIONAL_FRAME_FIELDS_V1";
 const FLAT7X_SOURCE_GENERATION_MODEL_ID: &str = "JOCFORGE_FLAT7X_SOURCE_GENERATION_SOURCE_INDEX_V1";
 
 /// Receipt summary for one admitted durable append.
@@ -300,6 +302,23 @@ pub(crate) fn stage_source_frame<'pcm>(
     let drc_source =
         prepare_drc_source_from_analysis(prepared, drc_before, &analysis_stage, &callback_identity)
             .map_err(|error| format!("F06ND/F06NR source stage: {error}"))?;
+    let flat7x_d0_bsi_inputs = if flat7x_source_pcm_projection.is_some() {
+        let shared_analysis = analysis_stage.shared_analysis().ok_or_else(|| {
+            SourceFrameStageError::Pipeline(
+                "Flat7x D0 BSI binding requires same-source shared analysis".to_owned(),
+            )
+        })?;
+        Some(
+            bind_flat7x_d0_bsi_source_inputs(prepared, shared_analysis, drc_source.after_root())
+                .map_err(|error| {
+                    SourceFrameStageError::Pipeline(format!(
+                        "Flat7x same-source D0 BSI controls: {error:?}"
+                    ))
+                })?,
+        )
+    } else {
+        None
+    };
     let metadata_bodies = prepare_main_metadata_bodies_for_callback(
         MainMetadataBodiesInput {
             prepared,
@@ -389,6 +408,18 @@ pub(crate) fn stage_source_frame<'pcm>(
                 )
             })?;
             let d0_bap_parameters = Flat7xD0BapParameters::etsi_ts_102_366_v1_4_1();
+            let d0_bsi_inputs = flat7x_d0_bsi_inputs.as_ref().ok_or_else(|| {
+                SourceFrameStageError::Pipeline(
+                    "Flat7x D0 BSI source inputs are missing".to_owned(),
+                )
+            })?;
+            if d0_bsi_inputs.source_identity()
+                != binding.role_map_receipt().shared_analysis_identity()
+            {
+                return Err(SourceFrameStageError::Pipeline(
+                    "Flat7x D0 BSI controls do not match the pair source role receipt".to_owned(),
+                ));
+            }
             let d0_frame_candidate = produce_flat7x_pair_d0_pcm_frame_candidate(
                 &binding,
                 Flat7xD0PcmFrameSettings {
@@ -396,24 +427,23 @@ pub(crate) fn stage_source_frame<'pcm>(
                     before: history_before,
                     transform_parameters: analysis_providers.providers().transform,
                     target: binding.target(),
-                    // The first product-call wiring uses the established structural test values
-                    // for optional D0 BSI and block controls; each value remains replaceable.
                     bsi_structure: Flat7xD0BsiStructure {
-                        dialnorm: drc_before.state().programme_dialnorm().unwrap_or(31),
-                        compr: Some(1),
-                        mixing: None,
+                        dialnorm: d0_bsi_inputs.dialnorm(),
+                        compr: d0_bsi_inputs.compr(),
+                        mixing: Some(d0_bsi_inputs.mixing()),
                         block_mix: [None; 6],
                         information: None,
                         addbsi: None,
                     },
                     complete_emdf_container: protected_container.bytes(),
                     bap_parameters: &d0_bap_parameters,
-                    dynamic_range_codes: [None; 6],
+                    dynamic_range_codes: d0_bsi_inputs.dynamic_range_codes(),
                 },
             )
             .map_err(|error| {
                 SourceFrameStageError::Pipeline(format!(
-                    "Flat7x D0 PCM frame candidate ({FLAT7X_D0_FRAME_SETTINGS_MODEL_ID}): {error:?}"
+                    "Flat7x D0 PCM frame candidate ({}, {FLAT7X_D0_OPTIONAL_FRAME_FIELDS_POLICY_ID}): {error:?}",
+                    jocforge_application::codec_source_bridge::FLAT7X_D0_BSI_SOURCE_POLICY_ID,
                 ))
             })?;
             let i0_policy = flat7x_i0_audio_block_policy_v1().ok_or_else(|| {
@@ -588,13 +618,24 @@ pub(crate) fn stage_source_frame<'pcm>(
         .map_err(|error| format!("F14/F12 Integrity owner stage: {error:?}"))?;
         let (integrity_root, integrity_receipts, integrity_owner_receipt) =
             integrity_candidate.into_parts();
-        let output_proposal = prepare_output_source_from_candidate(
-            prepared,
-            &output_binding_before,
-            &metadata_source,
-            &frame_candidate,
-        )
-        .map_err(|error| format!("F15 output proposal: {error}"))?;
+        let output_proposal =
+            if joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
+                if source_index.value() >= 2 || flat7x_d0_history_after.is_none() {
+                    return Err(SourceFrameStageError::Pipeline(
+                        "Flat7x published source did not produce a paired F15 proposal".to_owned(),
+                    ));
+                }
+                prepare_output_source_for_flat7x_suppressed(&output_binding_before, source_index)
+                    .map_err(|error| format!("Flat7x suppressed F15 output proposal: {error}"))?
+            } else {
+                prepare_output_source_from_candidate(
+                    prepared,
+                    &output_binding_before,
+                    &metadata_source,
+                    &frame_candidate,
+                )
+                .map_err(|error| format!("F15 output proposal: {error}"))?
+            };
         let staged_output = match flat7x_d0_history_after.as_ref() {
             Some(history_after) => stage_source_frame_output_with_d0_history(
                 staging,

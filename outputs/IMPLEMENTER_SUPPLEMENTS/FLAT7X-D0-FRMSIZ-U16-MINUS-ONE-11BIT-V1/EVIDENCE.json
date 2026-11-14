@@ -1,0 +1,41 @@
+{
+  "schema": "washed.flat7x.d0.frmsiz-supplement.v1",
+  "supplement_id": "FLAT7X-D0-FRMSIZ-U16-MINUS-ONE-11BIT-V1",
+  "scope": "D0 E-AC-3 frmsiz field and generic U16-minus-one-to-11-bit writer only",
+  "target_contract": {
+    "profile_contract_manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+    "profile_contract_seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+    "sample_rate_hz": 48000,
+    "blocks_per_frame": 6,
+    "d0_rate_kbps": 1024,
+    "d0_frame_bytes": 4096,
+    "frmsiz_formula": "d0_frame_bytes / 2 - 1",
+    "expected_frmsiz_code": 2047,
+    "expected_frmsiz_hex": "0x7ff",
+    "expected_code_source": "approved target contract premise, not a native captured value"
+  },
+  "native_static_evidence": {
+    "source_package_id": "flat7x_d0_frmsiz_owner_serializer_wash_v2",
+    "source_manifest_sha256": "8407d7fb7d6cf9762f7f8ab47d8092d4135e7f2285e818ba7c804a2c2141bbc9",
+    "source_package_seal_sha256": "2a55f0911a522bdcb3b7fc56fe865cdb275c80369658073c51d27eb12e25ab12",
+    "candidate_image_sha256": "2b7da4835d60fc538caf49cd0ef27a4a10d2486bc03b754b41b5bea4bb51fead",
+    "candidate_image_scope": "user-designated DEE 6.7 dee_ddpjoc_encoder.exe exact hash",
+    "ghidra": "12.2 PUBLIC READ_ONLY_NO_ANALYSIS",
+    "source_field": "U16(state + 0x205e6)",
+    "formula": "U16 source word minus one",
+    "serializer": "FUN_140733fa0",
+    "bit_writer": "FUN_1406b9370",
+    "writer_width_bits": 11,
+    "writer_effective_range": [0, 2047],
+    "writer_behavior": "mask source word to 11 bits and pack; no source-value range rejection observed",
+    "target_d0_state_join": "UNBOUND",
+    "target_contract_code_to_native_state_value_join": "UNBOUND",
+    "runtime_observation": "NOT_RUN",
+    "candidate_execution": "NOT_RUN"
+  },
+  "implementation_disposition": {
+    "supports": "explicit caller-supplied D0 frmsiz code serialized as 11 bits; target contract expects 2047 for a 4096-byte frame",
+    "production_allowed": false,
+    "implementation_ready": false
+  }
+}

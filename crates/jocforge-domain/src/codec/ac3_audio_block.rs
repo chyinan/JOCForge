@@ -263,18 +263,18 @@ pub struct I0AudioBlockSeriesPolicy {
 /// Auditable assumptions used by this candidate-only projection from the selected F12 plan.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum I0AudioBlockAssumptionId {
-    SelectedF12SpectrumAsI0Ac3SourceV1,
-    SelectedF09F10ExponentStrategyAsAc3ExpstrV1,
+    SelectedF12SpectrumAsI0Ac3LongBlockSyntaxV1,
+    SelectedF09F10ExponentStrategyWithD15RecodeOnExponentChangeV1,
 }
 
 impl I0AudioBlockAssumptionId {
     pub const fn id(self) -> &'static str {
         match self {
-            Self::SelectedF12SpectrumAsI0Ac3SourceV1 => {
-                "PROVISIONAL_I0_SELECTED_F12_51_SPECTRUM_V1"
+            Self::SelectedF12SpectrumAsI0Ac3LongBlockSyntaxV1 => {
+                "PROVISIONAL_I0_SELECTED_F12_51_SPECTRUM_LONG_BLOCKS_V1"
             }
-            Self::SelectedF09F10ExponentStrategyAsAc3ExpstrV1 => {
-                "PROVISIONAL_I0_F09_F10_EXPSTR_TO_AC3_V1"
+            Self::SelectedF09F10ExponentStrategyWithD15RecodeOnExponentChangeV1 => {
+                "PROVISIONAL_I0_F09_F10_EXPSTR_D15_RECODE_ON_EXPONENT_CHANGE_V1"
             }
         }
     }
@@ -705,12 +705,13 @@ pub fn produce_ac3_audio_block(
 
 /// Produces six candidate I0 `audblk` spans from one source-bound selected numeric plan.
 ///
-/// The selected F12 5.1 coefficient/exponent rows are reused as the I0 spectrum under the
-/// explicit `SelectedF12SpectrumAsI0Ac3SourceV1` assumption. F09/F10 block strategy values are
+/// The selected F12 5.1 coefficient/exponent rows are reused as the I0 spectrum with long-block
+/// syntax under the explicit `SelectedF12SpectrumAsI0Ac3LongBlockSyntaxV1` assumption. F09/F10 block strategy values are
 /// interpreted as AC-3 `chexpstr`/`lfeexpstr` values under the separate
-/// `SelectedF09F10ExponentStrategyAsAc3ExpstrV1` assumption. The caller supplies every block's
-/// allocation candidate and control policy. This function does not read or slice an E-AC-3 frame,
-/// assemble the I0 syncframe, or install state.
+/// `SelectedF09F10ExponentStrategyWithD15RecodeOnExponentChangeV1` assumption. Strategy zero does
+/// not serialize the caller's packed groups; it reuses prior bandwidth and gain-range fields. If
+/// decoded exponents differ, the current values are emitted as an explicit D15 row. Explicit
+/// strategies serialize the caller's 2-bit gain-range code. Coefficients are unchanged.
 pub fn produce_i0_audio_block_series(
     numeric_plan: &NumericPlanReceipt<'_, SelectedSourceNumericPlan>,
     policy: I0AudioBlockSeriesPolicy,
@@ -752,20 +753,9 @@ pub fn produce_i0_audio_block_series(
         let source_coefficients = &plan.coefficients_by_block[block_index];
         let block_policy = policy.blocks[block_index];
 
-        if let Some((channel, _)) = plan.short_flags[block_index]
-            .iter()
-            .enumerate()
-            .find(|(_, short)| **short)
-        {
-            return Err(I0AudioBlockSeriesError::ShortTransformUnsupported {
-                block: block_number,
-                channel: u8::try_from(channel)
-                    .map_err(|_| I0AudioBlockSeriesError::BitCountOverflow)?,
-            });
-        }
-
         let mut encoded_fullband: [Option<EncodedExponentRow>; FULLBAND_CHANNEL_COUNT] =
             [None; FULLBAND_CHANNEL_COUNT];
+        let mut fullband_wire_strategy_codes = [0_u8; FULLBAND_CHANNEL_COUNT];
         let mut quantizer_exponent_plans = [Ac3FullbandExponentPlan {
             strategy: Ac3ExponentStrategy::D15,
             decoded_exponents: [0; FULLBAND_ENDMANT],
@@ -777,8 +767,6 @@ pub fn produce_i0_audio_block_series(
         for channel in 0..FULLBAND_CHANNEL_COUNT {
             let lane = &exponent_plan.fullband[channel];
             current_fullband_exponents[channel] = lane.decoded_exponents;
-            current_bandwidth_codes[channel] = lane.bandwidth_code;
-            current_gain_ranges[channel] = lane.gain_range;
             let quantizer_strategy = match lane.strategy {
                 0 => {
                     if block_index == 0 {
@@ -805,20 +793,25 @@ pub fn produce_i0_audio_block_series(
                                 .map_err(|_| I0AudioBlockSeriesError::BitCountOverflow)?,
                         },
                     )?;
-                    if lane.decoded_exponents != previous[channel]
-                        || lane.bandwidth_code != previous_bandwidth[channel]
-                        || lane.gain_range != previous_gain[channel]
-                        || !lane.packed_groups.is_empty()
-                    {
-                        return Err(I0AudioBlockSeriesError::FullbandExponentReuseMismatch {
-                            block: block_number,
-                            channel: u8::try_from(channel)
-                                .map_err(|_| I0AudioBlockSeriesError::BitCountOverflow)?,
-                        });
+                    current_bandwidth_codes[channel] = previous_bandwidth[channel];
+                    current_gain_ranges[channel] = previous_gain[channel];
+                    if lane.decoded_exponents == previous[channel] {
+                        (Ac3ExponentStrategy::D15, 0)
+                    } else {
+                        let strategy = Ac3ExponentStrategy::D15;
+                        let encoded = encode_exponent_row(&lane.decoded_exponents, strategy)?;
+                        if lane.base_exponent != encoded.absolute {
+                            return Err(I0AudioBlockSeriesError::Block(
+                                Ac3AudioBlockError::InvalidExponentPlan,
+                            ));
+                        }
+                        encoded_fullband[channel] = Some(encoded);
+                        (strategy, strategy.wire_code())
                     }
-                    Ac3ExponentStrategy::D15
                 }
                 value @ 1..=3 => {
+                    current_bandwidth_codes[channel] = lane.bandwidth_code;
+                    current_gain_ranges[channel] = lane.gain_range;
                     if lane.bandwidth_code != AC3_FULLBAND_CHBW_CODE {
                         return Err(I0AudioBlockSeriesError::ChannelBandwidthUnsupported {
                             block: block_number,
@@ -827,7 +820,7 @@ pub fn produce_i0_audio_block_series(
                             value: lane.bandwidth_code,
                         });
                     }
-                    if lane.gain_range != 0 {
+                    if lane.gain_range > 3 {
                         return Err(I0AudioBlockSeriesError::GainRangeUnsupported {
                             block: block_number,
                             channel: u8::try_from(channel)
@@ -857,7 +850,7 @@ pub fn produce_i0_audio_block_series(
                         ));
                     }
                     encoded_fullband[channel] = Some(encoded);
-                    strategy
+                    (strategy, value)
                 }
                 value => {
                     return Err(
@@ -870,6 +863,8 @@ pub fn produce_i0_audio_block_series(
                     );
                 }
             };
+            let (quantizer_strategy, wire_strategy_code) = quantizer_strategy;
+            fullband_wire_strategy_codes[channel] = wire_strategy_code;
             quantizer_exponent_plans[channel] = Ac3FullbandExponentPlan {
                 strategy: quantizer_strategy,
                 decoded_exponents: lane.decoded_exponents,
@@ -1007,7 +1002,7 @@ pub fn produce_i0_audio_block_series(
             let prefix = write_i0_ac3_audio_block_prefix(
                 &mut writer,
                 I0Ac3AudioBlockPrefixInput {
-                    block_switch_flags: plan.short_flags[block_index],
+                    block_switch_flags: [false; FULLBAND_CHANNEL_COUNT],
                     dither_flags: block_policy.dither_flags,
                     dynamic_range_code: block_policy.dynamic_range_code,
                 },
@@ -1020,6 +1015,9 @@ pub fn produce_i0_audio_block_series(
             write_selected_plan_exponent_syntax(
                 &mut writer,
                 exponent_plan,
+                &fullband_wire_strategy_codes,
+                &current_bandwidth_codes,
+                &current_gain_ranges,
                 &encoded_fullband,
                 encoded_lfe,
             )?;
@@ -1078,8 +1076,8 @@ pub fn produce_i0_audio_block_series(
         delta_bit_allocation: policy.delta_bit_allocation,
         quantizer_policy: policy.quantizer_policy,
         assumptions: [
-            I0AudioBlockAssumptionId::SelectedF12SpectrumAsI0Ac3SourceV1,
-            I0AudioBlockAssumptionId::SelectedF09F10ExponentStrategyAsAc3ExpstrV1,
+            I0AudioBlockAssumptionId::SelectedF12SpectrumAsI0Ac3LongBlockSyntaxV1,
+            I0AudioBlockAssumptionId::SelectedF09F10ExponentStrategyWithD15RecodeOnExponentChangeV1,
         ],
     };
 
@@ -1089,26 +1087,29 @@ pub fn produce_i0_audio_block_series(
 fn write_selected_plan_exponent_syntax(
     writer: &mut FrameBitWriter<'_>,
     plan: &BlockExponentPlan,
+    fullband_strategy_codes: &[u8; FULLBAND_CHANNEL_COUNT],
+    bandwidth_codes: &[u8; FULLBAND_CHANNEL_COUNT],
+    gain_range_codes: &[u8; FULLBAND_CHANNEL_COUNT],
     fullband_rows: &[Option<EncodedExponentRow>; FULLBAND_CHANNEL_COUNT],
     lfe_row: Option<EncodedLfeExponentRow>,
 ) -> Result<(), I0AudioBlockSeriesError> {
-    for lane in &plan.fullband {
-        writer.write_unsigned(u32::from(lane.strategy), 2)?;
+    for strategy_code in fullband_strategy_codes {
+        writer.write_unsigned(u32::from(*strategy_code), 2)?;
     }
     writer.write_bit(plan.lfe.strategy == 1)?;
 
-    for lane in &plan.fullband {
-        if lane.strategy != 0 {
-            writer.write_unsigned(u32::from(lane.bandwidth_code), 6)?;
+    for (channel, strategy_code) in fullband_strategy_codes.iter().enumerate() {
+        if *strategy_code != 0 {
+            writer.write_unsigned(u32::from(bandwidth_codes[channel]), 6)?;
         }
     }
-    for (lane, row) in plan.fullband.iter().zip(fullband_rows) {
+    for (channel, row) in fullband_rows.iter().enumerate() {
         if let Some(row) = row {
             writer.write_unsigned(u32::from(row.absolute), 4)?;
             for group in row.groups.iter().take(row.group_count) {
                 writer.write_unsigned(u32::from(*group), 7)?;
             }
-            writer.write_unsigned(u32::from(lane.gain_range), 2)?;
+            writer.write_unsigned(u32::from(gain_range_codes[channel]), 2)?;
         }
     }
     if let Some(row) = lfe_row {
@@ -1151,9 +1152,6 @@ fn validate_input(input: &Ac3AudioBlockInput<'_>) -> Result<(), Ac3AudioBlockErr
     }
     if input.gain_range_codes.iter().any(|code| *code > 3) {
         return Err(Ac3AudioBlockError::InvalidGainRange);
-    }
-    if input.gain_range_codes.iter().any(|code| *code != 0) {
-        return Err(Ac3AudioBlockError::UnsupportedGainRange);
     }
     for window in input
         .pcm
@@ -2036,11 +2034,11 @@ mod i0_audio_block_series_tests {
         assert!(!candidate.production_allowed());
         assert_eq!(
             candidate.receipt().assumptions()[0].id(),
-            "PROVISIONAL_I0_SELECTED_F12_51_SPECTRUM_V1"
+            "PROVISIONAL_I0_SELECTED_F12_51_SPECTRUM_LONG_BLOCKS_V1"
         );
         assert_eq!(
             candidate.receipt().assumptions()[1].id(),
-            "PROVISIONAL_I0_F09_F10_EXPSTR_TO_AC3_V1"
+            "PROVISIONAL_I0_F09_F10_EXPSTR_D15_RECODE_ON_EXPONENT_CHANGE_V1"
         );
 
         for block in 0..I0_BLOCKS {
@@ -2089,6 +2087,102 @@ mod i0_audio_block_series_tests {
         assert_eq!(
             error,
             I0AudioBlockSeriesError::BlockZeroFullbandExponentReuse { channel: 0 }
+        );
+    }
+
+    #[test]
+    fn i0_audio_block_series_preserves_gain_range_and_implicit_reuse() {
+        let mut baseline_transaction = source_transaction();
+        let baseline_receipt = baseline_transaction
+            .prepare_numeric_plan(numeric_plan())
+            .unwrap();
+        let baseline = produce_i0_audio_block_series(
+            &baseline_receipt,
+            synthetic_policy(),
+            I0AudioBlockSeriesBudget::new(20_480),
+        )
+        .unwrap();
+
+        let mut plan = numeric_plan();
+        plan.exponent_plan_by_block[0].fullband[0].gain_range = 3;
+        let mut transaction = source_transaction();
+        let numeric_receipt = transaction.prepare_numeric_plan(plan).unwrap();
+        let candidate = produce_i0_audio_block_series(
+            &numeric_receipt,
+            synthetic_policy(),
+            I0AudioBlockSeriesBudget::new(20_480),
+        )
+        .unwrap();
+
+        let block_zero = I0AudioBlockIndex::new(0).unwrap();
+        let block_one = I0AudioBlockIndex::new(1).unwrap();
+        assert_ne!(
+            candidate.block(block_zero).bytes(),
+            baseline.block(block_zero).bytes()
+        );
+        assert_eq!(
+            candidate.block(block_one).bytes(),
+            baseline.block(block_one).bytes()
+        );
+        assert!(!candidate.production_allowed());
+    }
+
+    #[test]
+    fn i0_audio_block_series_uses_long_block_syntax_for_short_marked_source() {
+        let mut plan = numeric_plan();
+        plan.short_flags[0][0] = true;
+        let mut transaction = source_transaction();
+        let numeric_receipt = transaction.prepare_numeric_plan(plan).unwrap();
+
+        let candidate = produce_i0_audio_block_series(
+            &numeric_receipt,
+            synthetic_policy(),
+            I0AudioBlockSeriesBudget::new(20_480),
+        )
+        .unwrap();
+
+        assert_eq!(candidate.blocks().len(), I0_BLOCKS);
+        assert_eq!(
+            candidate.receipt().assumptions()[0].id(),
+            "PROVISIONAL_I0_SELECTED_F12_51_SPECTRUM_LONG_BLOCKS_V1"
+        );
+    }
+
+    #[test]
+    fn i0_audio_block_series_explicitly_codes_exponents_changed_under_reuse_marker() {
+        let mut baseline_transaction = source_transaction();
+        let baseline_receipt = baseline_transaction
+            .prepare_numeric_plan(numeric_plan())
+            .unwrap();
+        let baseline = produce_i0_audio_block_series(
+            &baseline_receipt,
+            synthetic_policy(),
+            I0AudioBlockSeriesBudget::new(20_480),
+        )
+        .unwrap();
+
+        let mut plan = numeric_plan();
+        plan.exponent_plan_by_block[1].fullband[1].decoded_exponents = [14; FULLBAND_BINS];
+        plan.exponent_plan_by_block[1].fullband[1].base_exponent = 14;
+        plan.exponent_plan_by_block[1].fullband[1].packed_groups =
+            vec![pack_exponent_difference_group(&[0, 0, 0]).unwrap(); 72];
+        let mut transaction = source_transaction();
+        let numeric_receipt = transaction.prepare_numeric_plan(plan).unwrap();
+        let candidate = produce_i0_audio_block_series(
+            &numeric_receipt,
+            synthetic_policy(),
+            I0AudioBlockSeriesBudget::new(20_480),
+        )
+        .unwrap();
+
+        let changed_block = I0AudioBlockIndex::new(1).unwrap();
+        assert!(
+            candidate.block(changed_block).bit_length()
+                > baseline.block(changed_block).bit_length()
+        );
+        assert_eq!(
+            candidate.receipt().assumptions()[1].id(),
+            "PROVISIONAL_I0_F09_F10_EXPSTR_D15_RECODE_ON_EXPONENT_CHANGE_V1"
         );
     }
 
@@ -2168,8 +2262,8 @@ mod i0_audio_block_series_tests {
         assert_eq!(
             frame_candidate.audio_assumptions(),
             &[
-                I0AudioBlockAssumptionId::SelectedF12SpectrumAsI0Ac3SourceV1,
-                I0AudioBlockAssumptionId::SelectedF09F10ExponentStrategyAsAc3ExpstrV1,
+                I0AudioBlockAssumptionId::SelectedF12SpectrumAsI0Ac3LongBlockSyntaxV1,
+                I0AudioBlockAssumptionId::SelectedF09F10ExponentStrategyWithD15RecodeOnExponentChangeV1,
             ]
         );
         assert_eq!(frame_candidate.frame_receipt().audio_block_spans().len(), 6);

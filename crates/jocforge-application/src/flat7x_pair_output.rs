@@ -20,7 +20,7 @@ use jocforge_domain::{
 pub use jocforge_domain::profile::Flat7xSourceGeneration;
 pub use jocforge_domain::publication::{
     Flat7xAuAppendProposal, Flat7xAuAttemptRetirement, Flat7xAuOutputAfterProposal,
-    Flat7xAuOutputOwner, Flat7xAuSourceReceiptInput,
+    Flat7xAuOutputOwner, Flat7xAuSourceReceiptInput, Flat7xElementaryStreamStageProposal,
 };
 
 use crate::flat7x_pair_source::Flat7xPairAccessUnitCandidate;

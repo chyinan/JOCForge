@@ -12,6 +12,22 @@ CLI `--joc-layout flat7x` 的 source callback 已把现有 D0/I0 frame candidate
 
 本轮通过 workspace check 与 CLI all-targets check；全输入 CLI 运行、最终 `.ec3` exposure、OpenJOC parse/decode/render 和 W04 尚未运行。`jocforge-application::encode()` 仍返回 `SourcePipelineUnavailable`；当前接线位于 CLI run path。F12 map 的 `production_allowed=false` 仍保留；本地 I0/D0 frame controls 与 source-generation label 标为可替换 policy，native source-generation join、官方 I0 exact BSID/audio parity 仍待确认。
 
+## 2026-11-14：同源 F06ND BSI 输入接入 D0 frame producer
+
+CLI 的 D0 frame producer 现在调用 `codec_source_bridge::bind_flat7x_d0_bsi_source_inputs`，输入同一 `PreparedJobInput`、`SharedAnalysisReceipt` 与 `NoneDrcOwnerAfterProposal`。它复用 `bind_selected_bsi_drc_fields` 的 source-key 检查，将同源 dialnorm、RF `compr` 和六个 line DRC codes，以及经验证 authored downmix levels，传到 D0 BSI/frame settings；CLI 再核对 BSI identity 与 `Flat7xSourceRoleMapReceipt` 的 shared-analysis identity。旧的 dialnorm fallback 与独立 `compr=1` 已移除。
+
+策略 ID 为 `JOCFORGE_FLAT7X_D0_BSI_SAME_SOURCE_F06ND_AUTHORED_MIX_V1`，`production_allowed=false`。可选 information 与 addbsi fields 目前仍按本地 absence policy 留空；reference D0 的 CI16/addbsi source 尚未绑定。D0 audio math仍只使用 Wash-approved ETSI contract与现有 typed D0 producer；整个路径仍不与 DEE 等价，真实 `.ec3`、independent parse/render 与 W04 尚未运行。
+
+本次接线把 `NoneDrcOwnerAfterProposal` 的 same-source DRC field projection 和 validated authored downmix 送入 target D0 frame：`dialnorm` 来自当前 DRC after-root，`compr` 与六个 `dynamic_range_codes` 来自 `SelectedBsiDrcFields`，mixing values 通过既有 `selected_bsi_profile_inputs` 映射。`Flat7xD0BsiSourceInputs` 保留 `SharedAnalysisIdentity`，CLI 在 frame production 前再次与 role-map receipt 比对。该切片没有新增变换、量化或码率控制数学。
+
+## 2026-11-14：Flat7x attempt-local candidate capture
+
+Love Song 输入已确认是 36 声道、48 kHz、PCM24 的 ADM BWF；本地文件 preflight 记录 `axml`/`chna` 元数据。本切片新增 `.candidate.ec3` 目标路径：Flat7x 使用新的空 attempt directory；文件以 create-new 方式写入，经完整 F15 ledger 校验、精确读回、SHA-256、文件同步与目录同步后生成 experimental candidate receipt。失败时保留已有候选 extent，并以 `.candidate.ec3.failure.txt` 记录预期/观察长度和失败状态。
+
+按用户直接指令完成的 Release attempt：PID `16072`、attempt `1794647185411283100`，输出 `D:\JOCForge-attempts\love-song-flat7x-1664-release-20261114-170625\love-song-flat7x-1664.candidate.ec3`。8,417 个 AU、56,023,552 bytes 已通过 F15 写入、readback、文件同步与目录同步；应用 receipt SHA-256 为 `6101459cc6b04cda1b192cf7add7a8dc2e0775c8f4965b08e85040bea19e3b0c`。run 于 2026-11-14 17:21:11 local 完成；timeline/Fresh GO 未先登记，已如实回报 Wash。candidate 保持 `production_allowed=false`、`final_exposure_allowed=false`，Programme DONE root 未安装；OpenJOC parse/decode/render、playback 与 W04 均 `NOT_RUN`。D0 `frmsiz=2047` 为 caller-owned target contract value；D0 state/value join仍 `UNBOUND`。输入 object-to-target crosswalk 仍 `UNBOUND`，该候选不与 DEE 等价；现有 5.1 路径保持原样。
+
+Wash 元数据包 `love-song-flat7x-object-to-joc-row-metadata-only-wash-v1`（manifest SHA-256 `ec88b6cd216857d5fb758a892e0d8540a51d7fcea78f8d2566d68d6ac284dd30`；seal SHA-256 `188051a489ffcc03a8894c781208361a0664b64bbd639a00be27cf136b669812`）确认 Love Song 有 26 个经 CHNA/AXML UID+pack 显式连接的 ADM Object tracks；source Object rows 到 15 个 target JOC objects/rows 与七个 reconstruction carriers 的 crosswalk 仍为 `UNBOUND`。用户已授权以隔离、可替换的 source-selection policy 试跑候选；该输出不作为 object/spatial compliance 或 listening parity 证据。
+
 ## 2026-11-11：官方演示参考的 OAMD 位置字段域
 
 Wash 补包 `OFFICIAL-ATMOS-DEMO-OAMD-POSITION-WASHED-V1` 的 manifest SHA-256 为 `c550a0536ed4752b46872c674fcabc8ad8828b7eb69e17e6fb4a0d082ee52ef8`，package seal SHA-256 为 `906f48f17f47ef372d339bebe598931a933e6dc132452862ab630fce4582c5f5`；普通及 `python -O` checker 均通过。补包覆盖用户指定的 1,280-kbps 参考样本 23,033 个 AU：15 个 dynamic object 每 AU 各有一个 absolute room-position/Z 更新，9 个对象为 Z code 0，6 个对象为 positive ceiling code 15；`b_enable_elevation` zone constraint、`object_size_idx` 与 resolved object-size height 分别保留独立字段域。

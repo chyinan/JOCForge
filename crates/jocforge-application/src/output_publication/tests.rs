@@ -108,6 +108,35 @@ fn f15_publication_uses_the_approved_source_to_au_clock_projection() {
     );
 }
 
+#[test]
+fn flat7x_suppressed_source_advances_without_single_frame_length_validation() {
+    let mut provider = output_provider();
+    provider.frame_bytes = 6_656;
+    let output = ProgrammeOutputBinding::for_test_values(
+        ProgrammeId::new("programme-flat7x").unwrap(),
+        AttemptId::new(7),
+        OutputStagingOwnerId::new("staging-flat7x").unwrap(),
+        provider,
+        "candidate.candidate.ec3",
+        3 * 1_536,
+    )
+    .unwrap();
+
+    let proposal =
+        super::prepare_output_source_for_flat7x_suppressed(&output, CodecSourceIndex::new(0))
+            .unwrap();
+
+    assert!(matches!(
+        proposal.proposal(),
+        super::OutputSourceProposal::Suppressed(_)
+    ));
+    assert_eq!(
+        proposal.proposal().identity(),
+        OutputSourceIdentity::new(CodecSourceIndex::new(0), JocDispatchIndex::new(1), None)
+    );
+    assert_eq!(output.output_configuration().frame_bytes(), 6_656);
+}
+
 fn binding(
     programme: &str,
     attempt: u64,

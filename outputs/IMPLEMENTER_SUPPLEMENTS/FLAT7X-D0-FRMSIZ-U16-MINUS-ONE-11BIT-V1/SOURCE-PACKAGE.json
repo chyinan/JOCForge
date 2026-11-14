@@ -1,0 +1,14 @@
+{
+  "schema": "washed-implementer-source-package.v1",
+  "source_package_id": "flat7x_d0_frmsiz_owner_serializer_wash_v2",
+  "source_manifest_sha256": "8407d7fb7d6cf9762f7f8ab47d8092d4135e7f2285e818ba7c804a2c2141bbc9",
+  "source_package_seal_sha256": "2a55f0911a522bdcb3b7fc56fe865cdb275c80369658073c51d27eb12e25ab12",
+  "source_package_normal_and_optimized_checks": "PASS",
+  "source_candidate_sha256": "2b7da4835d60fc538caf49cd0ef27a4a10d2486bc03b754b41b5bea4bb51fead",
+  "source_candidate_path_class": "user-designated DEE 6.7 dee_ddpjoc_encoder.exe",
+  "included_source_code": false,
+  "included_decompilation": false,
+  "included_audio_payload": false,
+  "included_pcm": false,
+  "included_private_key_or_license": false
+}

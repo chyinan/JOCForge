@@ -9,7 +9,10 @@ use std::{
 };
 
 use crate::meter_prepass::{SelectedMeterPrepassError, run_selected_meter_prepass_with_progress};
-use crate::output_publication::{OutputPublicationError, ProgrammeOutputStaging, finalize_output};
+use crate::output_publication::{
+    OutputPublicationError, ProgrammeOutputStaging, capture_flat7x_experimental_candidate,
+    finalize_output,
+};
 use crate::programme_roots::{ProgrammeOwnerRoots, source_for_callback_clock};
 use crate::progress::ProgressBar;
 use crate::selected_spatial_callback_providers::{
@@ -70,6 +73,8 @@ pub enum EncodeRequestError {
     OutputAlreadyExists,
     UnsupportedDataRate,
     UnsupportedJocLayout,
+    ExperimentalCandidatePathRequired,
+    ExperimentalCandidateDirectoryNotEmpty,
     InputFile(RiffPcm24FileReadError),
     Riff(jocforge_io::pcm::riff_pcm24::RiffPcm24Error),
     PreparedInput(PreparedJobInputError),
@@ -117,6 +122,11 @@ impl std::fmt::Display for EncodeRequestError {
             Self::UnsupportedJocLayout => {
                 formatter.write_str("joc-layout flat7x requires the selected 1024 kbps profile row")
             }
+            Self::ExperimentalCandidatePathRequired => formatter.write_str(
+                "Flat7x output must use a .candidate.ec3 filename in a unique attempt directory",
+            ),
+            Self::ExperimentalCandidateDirectoryNotEmpty => formatter
+                .write_str("Flat7x candidate output requires a new empty attempt directory"),
             Self::InputFile(error) => write!(formatter, "{error}"),
             Self::Riff(error) => write!(formatter, "selected RIFF input rejected: {error:?}"),
             Self::PreparedInput(error) => write!(formatter, "selected ADM input rejected: {error}"),
@@ -543,6 +553,12 @@ fn run_inner(
     let output_path = normalize_new_output(output_path)?;
     if output_path.exists() {
         return Err(EncodeRequestError::OutputAlreadyExists);
+    }
+    if joc_layout == JocReconstructionLayout::Flat7x {
+        validate_flat7x_experimental_candidate_path(&output_path)?;
+    }
+    if joc_layout == JocReconstructionLayout::Flat7x {
+        validate_flat7x_experimental_candidate_path(&output_path)?;
     }
 
     let is_external_job_xml = authored_job_xml.is_some();
@@ -1019,6 +1035,31 @@ fn run_inner(
     );
     let _metadata_eof_receipt = metadata_eof_receipt;
 
+    if resolved_joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
+        let candidate = match capture_flat7x_experimental_candidate(
+            &mut staging,
+            roots.output(),
+            finalize_proposal,
+        ) {
+            Ok(candidate) => candidate,
+            Err(error) => {
+                staging.abandon_attempt();
+                return Err(EncodeRequestError::SourcePipeline(format!(
+                    "Flat7x experimental candidate capture failed: {error}"
+                )));
+            }
+        };
+        eprintln!(
+            "experimental candidate captured: status=EXPERIMENTAL_CANDIDATE output={} bytes={} sha256={} attempt={} production_allowed={} final_product_exposure=false programme_done=false render=NOT_RUN playback=NOT_RUN",
+            candidate.candidate_path().display(),
+            candidate.bytes_written(),
+            hex_lower(candidate.sha256()),
+            candidate.attempt_id(),
+            candidate.production_allowed(),
+        );
+        return Ok(());
+    }
+
     eprintln!("Finalizing and exposing output...");
     let finalized =
         finalize_output(&mut staging, roots.output(), finalize_proposal).map_err(|error| {
@@ -1340,6 +1381,30 @@ fn normalize_new_output(path: &Path) -> Result<PathBuf, EncodeRequestError> {
     let normalized_parent =
         std::fs::canonicalize(parent).map_err(|_| EncodeRequestError::InvalidPath)?;
     Ok(normalized_parent.join(file_name))
+}
+
+fn validate_flat7x_experimental_candidate_path(path: &Path) -> Result<(), EncodeRequestError> {
+    let candidate_name = path
+        .file_name()
+        .and_then(|name| name.to_str())
+        .ok_or(EncodeRequestError::InvalidPath)?;
+    if !candidate_name.ends_with(".candidate.ec3") {
+        return Err(EncodeRequestError::ExperimentalCandidatePathRequired);
+    }
+    let parent = path
+        .parent()
+        .filter(|parent| parent.is_absolute())
+        .ok_or(EncodeRequestError::InvalidPath)?;
+    let mut entries = std::fs::read_dir(parent).map_err(|_| EncodeRequestError::InvalidPath)?;
+    if entries
+        .next()
+        .transpose()
+        .map_err(|_| EncodeRequestError::InvalidPath)?
+        .is_some()
+    {
+        return Err(EncodeRequestError::ExperimentalCandidateDirectoryNotEmpty);
+    }
+    Ok(())
 }
 
 fn file_reference_parts(path: &Path) -> Result<FileReferenceParts, EncodeRequestError> {

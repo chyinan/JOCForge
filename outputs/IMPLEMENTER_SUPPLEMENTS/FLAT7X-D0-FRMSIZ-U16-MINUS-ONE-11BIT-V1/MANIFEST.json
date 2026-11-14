@@ -1,0 +1,34 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "supplement_id": "FLAT7X-D0-FRMSIZ-U16-MINUS-ONE-11BIT-V1",
+  "scope": "D0 E-AC-3 frmsiz field and generic U16-minus-one-to-11-bit writer only",
+  "status": "SEALED_PARTIAL",
+  "implementation_ready": false,
+  "production_allowed": false,
+  "source_manifest_sha256": "8407d7fb7d6cf9762f7f8ab47d8092d4135e7f2285e818ba7c804a2c2141bbc9",
+  "source_package_seal_sha256": "2a55f0911a522bdcb3b7fc56fe865cdb275c80369658073c51d27eb12e25ab12",
+  "profile_contract_manifest_sha256": "7876e3c53e7bda56f60c8d3a691f9082925c6ef14a7899cff21c09f8b1416714",
+  "profile_contract_seal_sha256": "2bd1c52189a97e5059f19228fef6851c6de1e7b21e743641d3709ddabd0b6c20",
+  "payloads": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2025,
+      "sha256": "445b356e9162fad33871cffa1be4b064252215f07993c904bc84758e1273a2c3"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2059,
+      "sha256": "4b2dd895bd441383c1d45b654f47addfdd73dd913ed1f760e7e1dcf629e92356"
+    },
+    {
+      "file": "FINDINGS.md",
+      "bytes": 909,
+      "sha256": "4f657559b2351b2eb7935c0aa8c9126d2a481dcc6a7a8d3ca66dcae89062ff70"
+    },
+    {
+      "file": "SOURCE-PACKAGE.json",
+      "bytes": 727,
+      "sha256": "ae34ee3e94d91f4896432e18c642d95182e6f382722a3accfb6b160e2d008cac"
+    }
+  ]
+}

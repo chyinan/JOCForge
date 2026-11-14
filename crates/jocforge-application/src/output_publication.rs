@@ -1010,6 +1010,24 @@ pub fn prepare_output_source_from_flat7x_pair(
         .map_err(OutputPublicationPreparationError::OutputRootBinding)
 }
 
+/// Prepares the F15 source-clock transition for a Flat7x source that publishes no AU.
+pub fn prepare_output_source_for_flat7x_suppressed(
+    output_root: &ProgrammeOutputBinding,
+    source_index: CodecSourceIndex,
+) -> Result<ProgrammeOutputSourceProposal, OutputPublicationPreparationError> {
+    let dispatch = source_index
+        .dispatch()
+        .map_err(|_| OutputPublicationPreparationError::MetadataDispatchMismatch)?;
+    let identity = OutputSourceIdentity::new(source_index, dispatch, None);
+    let proposal = output_root
+        .output_owner()
+        .prepare_flat7x_suppressed_source(identity)
+        .map_err(OutputPublicationPreparationError::OutputOwner)?;
+    output_root
+        .bind_source_proposal(proposal)
+        .map_err(OutputPublicationPreparationError::OutputRootBinding)
+}
+
 fn prepare_output_source_for_frame(
     output_root: &ProgrammeOutputBinding,
     metadata: &MetadataSourceProposal,

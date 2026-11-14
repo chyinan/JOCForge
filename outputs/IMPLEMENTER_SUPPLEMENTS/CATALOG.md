@@ -2,7 +2,7 @@
 
 > Generated locator only. A catalog row is not evidence. Read the selected package, verify its manifest and payload hashes, then use only its stated scope.
 
-Package directories: 1138. Top-level manifests: 1136.
+Package directories: 1139. Top-level manifests: 1137.
 
 Search by function, parameter, status, or package name:
 
@@ -806,6 +806,7 @@ Rebuild with `rtk proxy python -B scripts/build_supplement_catalog.py`.
 | FLAT7X-CHANMAP-U16-METADATA-ROW-BOUNDARY-V1 | a987e3b6c6883a70b77656a6cbf9cebf1c2cd26187b9c79c473d697fb110bc80 | manifest: WASHED_PARTIAL_IMPLEMENTATION_VISIBLE | FINDINGS.md, FIELD-BOUNDARY.json, SOURCE-RECEIPTS.json, verify_package.py | No hash-verified summary payload declared. |
 | FLAT7X-D0-BLOCK-INDEX-CONVENTION-WASH-V1 | da59cf0d1b8684750f90c936f07d90d495662215e367e6365a8cc22253ceadaf | NOT_DECLARED | EVIDENCE.json, FINDINGS.md, verify_package.py | No hash-verified summary payload declared. |
 | FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1 | 689d5e4f3b27fd79110f6fb99189d4407384424929b3a74d20ba3447698f545b | manifest: PROVISIONAL_IMPLEMENTATION_CONTRACT | CONTRACT.md, POLICY.json, INPUT-ONLY-VECTORS.json, SOURCE-REFERENCES.json, CHECK.py, build_seal.py | 实现一个 Flat7x 专用 D0 音频帧生产器。I0 和现有 5.1 六档路径保持原样。D0 的 source-role map 继续使用可替换的临时方案，并随同一来源 receipt 传递。 目标帧为 48 kHz、strmtyp=1、substreamid=0、acmod=5、lfeon=0、bsid=16、chanmap=0x1A00、6 个音频块、4,096 字节。frmsiz=2047。D0 编码声道顺序是 Ls、Rs、Lrs、Rrs。JOC 重建仍是 7 个 carrier，ADM 行数、D0 coded channel 数和 JOC carrier 数分别保留。 ETSI 将一个 audio block 定义为 512 个样本：前 256 个来自上一个 block，后 256 个是新样本。512 |
+| FLAT7X-D0-FRMSIZ-U16-MINUS-ONE-11BIT-V1 | 41be017d7a239193755c4ee0f26dc8d4c4c9bca44e11da4e38e21711bae0bf7e | manifest: SEALED_PARTIAL | CHECK.py, EVIDENCE.json, FINDINGS.md, SOURCE-PACKAGE.json | D0 E-AC-3 frmsiz field and generic U16-minus-one-to-11-bit writer only |
 | FLAT7X-D0-RATE-FRMSIZ-TARGET-V1 | 1eb4311e3f63ec84c57c7fe636a8a21773bd633ae3f4fe9b0739b88e09e66139 | manifest: WASHED_PARTIAL_IMPLEMENTATION_VISIBLE | FINDINGS.md, FRAME-SIZE-VECTOR.json, SOURCE-RECEIPTS.json, verify_package.py | No hash-verified summary payload declared. |
 | FLAT7X-D0-SKIPFLD-C511-PARSER-ADDENDUM-V1 | cdc12af971b2da49f0a1d21fef783b0d6c195003ce25683c21ad51e4e39a8678 | manifest: SYNTHETIC_EXACT_C511_PARSE_BOUND; REAL_JOC_AND_OUTPUT_NOT_ESTABLISHED | FINDINGS.md, INPUT-ONLY-VECTOR.json, SOURCE-PACKAGE.json, EVIDENCE.json, CHECK.py | OpenJOC exact-container parser acceptance for one synthetic 511-byte EMDF in one D0 block-2 skipfld |
 | FLAT7X-D0-SKIPFLD-STRUCTURE-V1 | 1b14343db4128bda45c254a024de2662ac59516e2e83aa7d3191e3c4d80ca1c3 | manifest: SCOPED_HELPER_MATERIAL_READY; FULL_PRODUCT_OUTPUT_NOT_READY | FINDINGS.md, INPUT-ONLY-VECTOR.json, SOURCE-PACKAGE.json, EVIDENCE.json, CHECK.py | D0 block-2 single-field skipfld U9 length and exact-byte writer only; no audio generation or source-owner integration |

@@ -29,6 +29,7 @@ const MAX_OAMD_PAYLOAD_BYTES: u32 = 160;
 const MAX_ID14_PAYLOAD_BYTES: u32 = 372;
 const MAX_ID2_PAYLOAD_BYTES: u32 = 8;
 const MAX_ID1_PAYLOAD_BYTES: u32 = 10;
+const SELECTED_JOC_DOWNMIX_INDEXES: [u8; 2] = [1, 3];
 const EXPECTED_PAYLOAD_IDS: [CurrentPayloadId; 4] = [
     CurrentPayloadId::Oamd,
     CurrentPayloadId::Joc,
@@ -790,13 +791,12 @@ fn parse_joc_payload(
         .map_err(|_| CurrentEmdfParserError::TruncatedBitstream)?;
     let sequence_count = u16::try_from(reader.read_bits(10)?)
         .map_err(|_| CurrentEmdfParserError::TruncatedBitstream)?;
-    if downmix_index != 3
-        || object_count != 15
-        || extension_config != 0
-        || !(128..=255).contains(&clip_gain_index)
-    {
-        return Err(CurrentEmdfParserError::JocSelectedHeader);
-    }
+    validate_selected_joc_header(
+        downmix_index,
+        object_count,
+        extension_config,
+        clip_gain_index,
+    )?;
     if sequence_count != provenance.sequence_count() {
         return Err(CurrentEmdfParserError::JocSequenceMismatch {
             expected: provenance.sequence_count(),
@@ -922,6 +922,22 @@ fn parse_joc_payload(
         padding_bits: u8::try_from(padding_bits)
             .map_err(|_| CurrentEmdfParserError::JocExcessPadding)?,
     })
+}
+
+fn validate_selected_joc_header(
+    downmix_index: u8,
+    object_count: u8,
+    extension_config: u8,
+    clip_gain_index: u8,
+) -> Result<(), CurrentEmdfParserError> {
+    if !SELECTED_JOC_DOWNMIX_INDEXES.contains(&downmix_index)
+        || object_count != 15
+        || extension_config != 0
+        || !(128..=255).contains(&clip_gain_index)
+    {
+        return Err(CurrentEmdfParserError::JocSelectedHeader);
+    }
+    Ok(())
 }
 
 fn check_joc_payload_capacity(bytes: &[u8]) -> Result<(), CurrentEmdfParserError> {
@@ -1380,9 +1396,10 @@ impl<'a> BitReader<'a> {
 mod tests {
     use super::{
         BitReader, CarrierBlock, CurrentEmdfCarriageMode, CurrentEmdfParserError, CurrentPayloadId,
-        PayloadConfiguration, check_joc_payload_capacity, clear_bit_range, read_varuint,
-        selected_payload_capacity, selected_xy_table, selected_z_table, validate_outer_header,
-        validate_selected_configuration,
+        PayloadConfiguration, SELECTED_JOC_DOWNMIX_INDEXES, check_joc_payload_capacity,
+        clear_bit_range, read_varuint, selected_payload_capacity, selected_xy_table,
+        selected_z_table, validate_outer_header, validate_selected_configuration,
+        validate_selected_joc_header,
     };
     use crate::integrity::keyless_checksum::{crc8_smbus, crc32_iso_hdlc};
 
@@ -1466,6 +1483,24 @@ mod tests {
         assert_eq!(
             check_joc_payload_capacity(&[0; 373]),
             Err(CurrentEmdfParserError::JocBodyCapacity)
+        );
+    }
+
+    #[test]
+    fn selected_joc_header_accepts_five_point_one_and_flat7x_downmix_indexes() {
+        for downmix_index in SELECTED_JOC_DOWNMIX_INDEXES {
+            assert_eq!(
+                validate_selected_joc_header(downmix_index, 15, 0, 128),
+                Ok(())
+            );
+        }
+        assert_eq!(
+            validate_selected_joc_header(0, 15, 0, 128),
+            Err(CurrentEmdfParserError::JocSelectedHeader)
+        );
+        assert_eq!(
+            validate_selected_joc_header(1, 14, 0, 128),
+            Err(CurrentEmdfParserError::JocSelectedHeader)
         );
     }
 

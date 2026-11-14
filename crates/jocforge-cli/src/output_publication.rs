@@ -6,8 +6,9 @@ use jocforge_application::{
     PreparedJobInput,
     flat7x_pair_output::{
         Flat7xAuAppendProposal, Flat7xAuAttemptRetirement, Flat7xAuOutputAfterProposal,
-        Flat7xAuOutputOwner, Flat7xAuSourceReceiptInput, Flat7xOpaqueD0FrameInput,
-        Flat7xPairAppendProposalError, Flat7xSourceGeneration, stage_receipted_i0_with_opaque_d0,
+        Flat7xAuOutputOwner, Flat7xAuSourceReceiptInput, Flat7xElementaryStreamStageProposal,
+        Flat7xOpaqueD0FrameInput, Flat7xPairAppendProposalError, Flat7xSourceGeneration,
+        stage_receipted_i0_with_opaque_d0,
     },
     meter_source_bridge::Flat7xI0D0TargetPlan,
     output_publication::{
@@ -187,6 +188,10 @@ impl ProgrammeOutputStaging {
 
     pub fn staging_path(&self) -> std::path::PathBuf {
         self.directory.join(self.configuration.staging_name())
+    }
+
+    pub fn candidate_path(&self) -> std::path::PathBuf {
+        self.directory.join(self.configuration.product_name())
     }
 
     pub fn is_abandoned(&self) -> bool {
@@ -373,12 +378,60 @@ impl ProgrammeOutputStaging {
     }
 }
 
+/// Durable attempt-local Flat7x candidate artifact; this carries no production or DONE authority.
+#[must_use]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Flat7xExperimentalCandidateReceipt {
+    attempt_id: String,
+    candidate_path: std::path::PathBuf,
+    bytes_written: u32,
+    sha256: [u8; 32],
+    file_sync_completed: bool,
+    parent_sync_completed: bool,
+}
+
+impl Flat7xExperimentalCandidateReceipt {
+    pub fn attempt_id(&self) -> &str {
+        &self.attempt_id
+    }
+
+    pub fn candidate_path(&self) -> &std::path::Path {
+        &self.candidate_path
+    }
+
+    pub const fn bytes_written(&self) -> u32 {
+        self.bytes_written
+    }
+
+    pub const fn sha256(&self) -> &[u8; 32] {
+        &self.sha256
+    }
+
+    pub const fn file_sync_completed(&self) -> bool {
+        self.file_sync_completed
+    }
+
+    pub const fn parent_sync_completed(&self) -> bool {
+        self.parent_sync_completed
+    }
+
+    pub const fn production_allowed(&self) -> bool {
+        false
+    }
+
+    pub const fn final_exposure_allowed(&self) -> bool {
+        false
+    }
+}
+
 #[derive(Debug)]
 pub enum OutputPublicationError {
     Io(OutputIoError),
     Owner(OutputOwnerError),
     Flat7xPairOwner(String),
     Flat7xPairFinalize(String),
+    ExperimentalCandidate(String),
+    ExperimentalCandidateRequired,
     Binding(OutputRootBindingError),
 }
 
@@ -389,6 +442,10 @@ impl std::fmt::Display for OutputPublicationError {
             Self::Owner(error) => write!(formatter, "{error}"),
             Self::Flat7xPairOwner(error) => write!(formatter, "{error}"),
             Self::Flat7xPairFinalize(error) => write!(formatter, "{error}"),
+            Self::ExperimentalCandidate(error) => write!(formatter, "{error}"),
+            Self::ExperimentalCandidateRequired => formatter.write_str(
+                "Flat7x must use the experimental candidate capture path; generic final exposure is disabled",
+            ),
             Self::Binding(error) => write!(formatter, "{error}"),
         }
     }
@@ -643,12 +700,7 @@ pub fn finalize_output(
     if binding.output_configuration().frame_bytes()
         == Flat7xI0D0TargetPlan::approved_contract().aggregate_frame_bytes()
     {
-        let _pair_finalize = staging
-            .take_flat7x_pair_output_owner(binding)?
-            .prepare_finalize()
-            .map_err(|retirement| {
-                OutputPublicationError::Flat7xPairFinalize(format!("{retirement:?}"))
-            })?;
+        return Err(OutputPublicationError::ExperimentalCandidateRequired);
     }
     let proposal = proposal.into_proposal();
     let receipt = staging
@@ -658,4 +710,244 @@ pub fn finalize_output(
     proposal
         .complete(receipt)
         .map_err(OutputPublicationError::Owner)
+}
+
+/// Writes one complete Flat7x stream to its attempt-local `.candidate.ec3` path.
+///
+/// The generic output finalize proposal and the complete F15 pair ledger are validated first.
+/// The specialized stream stage performs exact extent/ledger/hash checks, file sync and readback;
+/// the result is explicitly an experimental candidate and does not install a DONE output root.
+pub fn capture_flat7x_experimental_candidate(
+    staging: &mut ProgrammeOutputStaging,
+    binding: &ProgrammeOutputBinding,
+    output_proposal: ProgrammeOutputFinalizeProposal,
+) -> Result<Flat7xExperimentalCandidateReceipt, OutputPublicationError> {
+    staging
+        .validate_binding(binding)
+        .map_err(OutputPublicationError::Binding)?;
+    binding
+        .validate_finalize_proposal(&output_proposal)
+        .map_err(OutputPublicationError::Binding)?;
+    let candidate_path = staging.candidate_path();
+    let expected_bytes = binding.output_configuration().expected_product_bytes();
+    let attempt_id = binding.output_configuration().attempt_id().to_owned();
+    let result = capture_flat7x_candidate_inner(staging, binding, output_proposal);
+    match result {
+        Ok(receipt) => {
+            staging.abandon_attempt();
+            Ok(receipt)
+        }
+        Err(error) => {
+            staging.abandon_attempt();
+            let observed_bytes = std::fs::metadata(&candidate_path)
+                .ok()
+                .map(|metadata| metadata.len());
+            let failure_receipt = persist_flat7x_candidate_failure(
+                &candidate_path,
+                &attempt_id,
+                expected_bytes,
+                observed_bytes,
+                &error.to_string(),
+            );
+            let failure_location = failure_receipt.map_or_else(
+                |failure| format!("failure receipt could not be saved: {failure}"),
+                |path| format!("failure receipt={}", path.display()),
+            );
+            Err(OutputPublicationError::ExperimentalCandidate(format!(
+                "candidate capture failed: {error}; candidate_bytes={observed_bytes:?}/{expected_bytes}; {failure_location}"
+            )))
+        }
+    }
+}
+
+fn capture_flat7x_candidate_inner(
+    staging: &mut ProgrammeOutputStaging,
+    binding: &ProgrammeOutputBinding,
+    output_proposal: ProgrammeOutputFinalizeProposal,
+) -> Result<Flat7xExperimentalCandidateReceipt, OutputPublicationError> {
+    let target = Flat7xI0D0TargetPlan::approved_contract();
+    if binding.output_configuration().frame_bytes() != target.aggregate_frame_bytes() {
+        return Err(OutputPublicationError::ExperimentalCandidate(
+            "candidate output binding is not the approved Flat7x aggregate".to_owned(),
+        ));
+    }
+
+    let pair_finalize = staging
+        .take_flat7x_pair_output_owner(binding)?
+        .prepare_finalize()
+        .map_err(|retirement| {
+            OutputPublicationError::Flat7xPairFinalize(format!("{retirement:?}"))
+        })?;
+    let expected_length = output_proposal.proposal().expected_length();
+    if pair_finalize.durable_length() != expected_length {
+        return Err(OutputPublicationError::ExperimentalCandidate(
+            "F15 pair ledger and OutputOwner lengths differ".to_owned(),
+        ));
+    }
+    let stream_bytes = std::fs::read(staging.staging_path()).map_err(|error| {
+        OutputPublicationError::ExperimentalCandidate(format!(
+            "could not read complete F15 staging stream: {error}"
+        ))
+    })?;
+    if u64::try_from(stream_bytes.len()).ok() != Some(expected_length) {
+        return Err(OutputPublicationError::ExperimentalCandidate(
+            "F15 staging stream length differs from the admitted OutputOwner extent".to_owned(),
+        ));
+    }
+    let candidate_path = staging.candidate_path();
+    let candidate_name = candidate_path
+        .file_name()
+        .and_then(|name| name.to_str())
+        .ok_or_else(|| {
+            OutputPublicationError::ExperimentalCandidate(
+                "candidate file name is not valid Unicode".to_owned(),
+            )
+        })?;
+    if !candidate_name.ends_with(".candidate.ec3") || candidate_path.exists() {
+        return Err(OutputPublicationError::ExperimentalCandidate(
+            "Flat7x candidate path must be a new `.candidate.ec3` file".to_owned(),
+        ));
+    }
+    let proposal = Flat7xElementaryStreamStageProposal::new(target, &stream_bytes, &pair_finalize)
+        .map_err(|error| {
+            OutputPublicationError::ExperimentalCandidate(format!(
+                "Flat7x stream stage proposal: {error:?}"
+            ))
+        })?;
+    let receipt = write_flat7x_candidate_stage_file(candidate_path, proposal)?;
+    Ok(receipt)
+}
+
+fn write_flat7x_candidate_stage_file(
+    candidate_path: std::path::PathBuf,
+    proposal: Flat7xElementaryStreamStageProposal<'_, '_>,
+) -> Result<Flat7xExperimentalCandidateReceipt, OutputPublicationError> {
+    let candidate_name_is_valid = candidate_path
+        .file_name()
+        .and_then(|name| name.to_str())
+        .is_some_and(|name| name.ends_with(".candidate.ec3"));
+    if !candidate_name_is_valid || candidate_path.exists() {
+        return Err(OutputPublicationError::ExperimentalCandidate(
+            "candidate file name must end with `.candidate.ec3` and be new".to_owned(),
+        ));
+    }
+    let candidate_parent = candidate_path.parent().ok_or_else(|| {
+        OutputPublicationError::ExperimentalCandidate("candidate path has no parent".to_owned())
+    })?;
+    let attempt_id = proposal.finalize_proposal().attempt_id().to_owned();
+    let mut candidate_file = std::fs::OpenOptions::new()
+        .create_new(true)
+        .read(true)
+        .write(true)
+        .open(&candidate_path)
+        .map_err(|error| {
+            OutputPublicationError::ExperimentalCandidate(format!("create candidate file: {error}"))
+        })?;
+    let stage_after =
+        match jocforge_io::flat7x_elementary_stream_stage::stage_flat7x_elementary_stream_to_file(
+            &mut candidate_file,
+            proposal,
+        ) {
+            Ok(after) => after,
+            Err(error) => {
+                let _ = candidate_file.sync_all();
+                return Err(OutputPublicationError::ExperimentalCandidate(format!(
+                    "write/readback candidate: {error}"
+                )));
+            }
+        };
+    if stage_after.production_allowed() || stage_after.final_exposure_allowed() {
+        return Err(OutputPublicationError::ExperimentalCandidate(
+            "Flat7x stream stage unexpectedly enabled production/final exposure".to_owned(),
+        ));
+    }
+    let stage_receipt = stage_after.receipt();
+    if !stage_receipt.file_sync_completed() {
+        return Err(OutputPublicationError::ExperimentalCandidate(
+            "candidate file sync receipt is absent".to_owned(),
+        ));
+    }
+    let bytes_written = stage_receipt.bytes_written();
+    let sha256 = *stage_receipt.readback_sha256();
+    drop(candidate_file);
+    jocforge_io::atomic_output::sync_experimental_candidate_directory(candidate_parent).map_err(
+        |error| {
+            OutputPublicationError::ExperimentalCandidate(format!(
+                "candidate directory sync: {error}"
+            ))
+        },
+    )?;
+    Ok(Flat7xExperimentalCandidateReceipt {
+        attempt_id,
+        candidate_path,
+        bytes_written,
+        sha256,
+        file_sync_completed: true,
+        parent_sync_completed: true,
+    })
+}
+
+fn persist_flat7x_candidate_failure(
+    candidate_path: &std::path::Path,
+    attempt_id: &str,
+    expected_bytes: u64,
+    observed_bytes: Option<u64>,
+    error: &str,
+) -> Result<std::path::PathBuf, String> {
+    use std::io::Write as _;
+
+    let candidate_name = candidate_path
+        .file_name()
+        .and_then(|name| name.to_str())
+        .filter(|name| name.ends_with(".candidate.ec3"))
+        .ok_or_else(|| "candidate path has no `.candidate.ec3` name".to_owned())?;
+    let parent = candidate_path
+        .parent()
+        .ok_or_else(|| "candidate path has no parent".to_owned())?;
+    if !candidate_path.exists() {
+        let mut empty_candidate = std::fs::OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(candidate_path)
+            .map_err(|error| format!("create failed-candidate extent file: {error}"))?;
+        empty_candidate
+            .flush()
+            .map_err(|error| format!("flush failed-candidate extent file: {error}"))?;
+        empty_candidate
+            .sync_all()
+            .map_err(|error| format!("sync failed-candidate extent file: {error}"))?;
+    }
+    let observed_bytes = std::fs::metadata(candidate_path)
+        .ok()
+        .map(|metadata| metadata.len())
+        .or(observed_bytes);
+    let status = match observed_bytes {
+        Some(size) if size == expected_bytes => "FAILED_CANDIDATE_FULL_EXTENT_UNVERIFIED",
+        Some(size) if size > 0 => "FAILED_CANDIDATE_PARTIAL_EXTENT",
+        _ => "FAILED_CANDIDATE_EMPTY_EXTENT",
+    };
+    let sidecar_path = candidate_path.with_file_name(format!("{candidate_name}.failure.txt"));
+    let candidate_path_text = candidate_path.to_string_lossy().replace(['\r', '\n'], " ");
+    let error_text = error.replace(['\r', '\n'], " ");
+    let receipt_text = format!(
+        "schema=jocforge.flat7x.experimental-candidate-failure.v1\nstatus={status}\nattempt_id={attempt_id}\ncandidate_path={candidate_path_text}\nexpected_bytes={expected_bytes}\nobserved_bytes={observed_bytes:?}\nproduction_allowed=false\nprogramme_done=false\nerror={error_text}\n"
+    );
+    let mut receipt_file = std::fs::OpenOptions::new()
+        .write(true)
+        .create_new(true)
+        .open(&sidecar_path)
+        .map_err(|error| format!("create candidate failure receipt: {error}"))?;
+    receipt_file
+        .write_all(receipt_text.as_bytes())
+        .map_err(|error| format!("write candidate failure receipt: {error}"))?;
+    receipt_file
+        .flush()
+        .map_err(|error| format!("flush candidate failure receipt: {error}"))?;
+    receipt_file
+        .sync_all()
+        .map_err(|error| format!("sync candidate failure receipt: {error}"))?;
+    drop(receipt_file);
+    jocforge_io::atomic_output::sync_experimental_candidate_directory(parent)
+        .map_err(|error| format!("sync candidate failure directory: {error}"))?;
+    Ok(sidecar_path)
 }

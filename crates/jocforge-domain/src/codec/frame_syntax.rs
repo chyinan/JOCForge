@@ -73,6 +73,10 @@ impl SelectedBsiDrcFields {
         self.rf_code
     }
 
+    pub const fn line_codes(&self) -> &[Option<u8>; 6] {
+        &self.line_codes
+    }
+
     pub fn line_code(&self, block: CodecBlockIndex) -> Option<u8> {
         self.line_codes[usize::from(block.value())]
     }
@@ -292,6 +296,13 @@ mod tests {
             fields.dialnorm(),
             drc_proposal.after_root().programme_dialnorm()
         );
+        for block_value in 0..6 {
+            let block = CodecBlockIndex::new(block_value).unwrap();
+            assert_eq!(
+                fields.line_codes()[usize::from(block_value)],
+                fields.line_code(block),
+            );
+        }
 
         let different_identity = zeroed_shared_analysis_receipt_for_identity_tests(
             attempt,

@@ -4,8 +4,9 @@
 use std::sync::Arc;
 
 use jocforge_domain::{
-    analysis::source_frame::SharedAnalysisReceipt,
+    analysis::source_frame::{SharedAnalysisIdentity, SharedAnalysisReceipt},
     codec::{
+        frame_builder::Flat7xD0MixingMetadataValues,
         frame_syntax::{SelectedBsiDrcSyntaxError, bind_selected_bsi_drc_fields},
         selected_frame_trial::{
             SelectedBsiInformationInput, SelectedBsiInput, SelectedBsiMixingInput,
@@ -46,6 +47,49 @@ pub enum CodecSourceBridgeError {
     SelectedBsi(SelectedFramePlanError),
 }
 
+pub const FLAT7X_D0_BSI_SOURCE_POLICY_ID: &str =
+    "JOCFORGE_FLAT7X_D0_BSI_SAME_SOURCE_F06ND_AUTHORED_MIX_V1";
+
+/// Same-source F06ND DRC values and admitted authored mixing values for one Flat7x D0 frame.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Flat7xD0BsiSourceInputs {
+    source_identity: SharedAnalysisIdentity,
+    dialnorm: u8,
+    compr: Option<u8>,
+    dynamic_range_codes: [Option<u8>; 6],
+    mixing: Flat7xD0MixingMetadataValues,
+}
+
+impl Flat7xD0BsiSourceInputs {
+    pub fn source_identity(&self) -> &SharedAnalysisIdentity {
+        &self.source_identity
+    }
+
+    pub const fn dialnorm(&self) -> u8 {
+        self.dialnorm
+    }
+
+    pub const fn compr(&self) -> Option<u8> {
+        self.compr
+    }
+
+    pub const fn dynamic_range_codes(&self) -> [Option<u8>; 6] {
+        self.dynamic_range_codes
+    }
+
+    pub const fn mixing(&self) -> Flat7xD0MixingMetadataValues {
+        self.mixing
+    }
+
+    pub const fn policy_id(&self) -> &'static str {
+        FLAT7X_D0_BSI_SOURCE_POLICY_ID
+    }
+
+    pub const fn production_allowed(&self) -> bool {
+        false
+    }
+}
+
 /// Binds profile metadata and the exact same-source DRC proposal into the selected F12 BSI.
 ///
 /// The application input, Analysis source transaction and DRC measurement binding must carry
@@ -62,6 +106,39 @@ pub fn bind_selected_codec_bsi_source(
         .map_err(CodecSourceBridgeError::DrcFields)?;
     SelectedBsiInput::from_drc_fields(shared_analysis, &drc_fields, mixing, information)
         .map_err(CodecSourceBridgeError::SelectedBsi)
+}
+
+/// Binds target D0 BSI controls to the exact same-source F06ND proposal and admitted downmix.
+///
+/// The mapping reuses the existing selected F06ND-to-F12 field projection. It carries numeric RF
+/// and per-block line codes into the target D0 structure and keeps the authored downmix values
+/// separate from PCM row roles. Other optional D0 information/addbsi fields remain caller policy.
+pub fn bind_flat7x_d0_bsi_source_inputs(
+    prepared: &PreparedJobInput,
+    shared_analysis: &SharedAnalysisReceipt,
+    drc_after: &NoneDrcOwnerAfterProposal,
+) -> Result<Flat7xD0BsiSourceInputs, CodecSourceBridgeError> {
+    validate_source_identity(prepared, shared_analysis, drc_after)?;
+    let drc_fields = bind_selected_bsi_drc_fields(shared_analysis, drc_after)
+        .map_err(CodecSourceBridgeError::DrcFields)?;
+    let (mixing, _) = selected_bsi_profile_inputs(prepared)?;
+    Ok(Flat7xD0BsiSourceInputs {
+        source_identity: shared_analysis.identity().clone(),
+        dialnorm: drc_fields.dialnorm(),
+        compr: drc_fields.rf_code(),
+        dynamic_range_codes: *drc_fields.line_codes(),
+        mixing: map_flat7x_d0_mixing_values(mixing),
+    })
+}
+
+fn map_flat7x_d0_mixing_values(values: SelectedBsiMixingInput) -> Flat7xD0MixingMetadataValues {
+    Flat7xD0MixingMetadataValues {
+        mixmdo: values.preferred_downmix_mode,
+        ltrtcmixlev: values.ltrt_center_mix_level,
+        lorocmixlev: values.loro_center_mix_level,
+        ltrtsurmixlev: values.ltrt_surround_mix_level,
+        lorosurmixlev: values.loro_surround_mix_level,
+    }
 }
 
 fn validate_source_identity(
@@ -413,6 +490,27 @@ mod tests {
         assert_eq!(information.surround_ex_mode, expected_surround_ex);
         assert_eq!(dbmd.surround_ex_mode(), expected_surround_ex);
         assert_eq!(information.source_sample_rate_code, 0);
+    }
+
+    #[test]
+    fn flat7x_d0_mixing_fields_project_the_admitted_authored_levels() {
+        let selected = SelectedBsiMixingInput {
+            preferred_downmix_mode: 2,
+            ltrt_center_mix_level: 4,
+            loro_center_mix_level: 4,
+            ltrt_surround_mix_level: 4,
+            loro_surround_mix_level: 4,
+        };
+        assert_eq!(
+            super::map_flat7x_d0_mixing_values(selected),
+            jocforge_domain::codec::frame_builder::Flat7xD0MixingMetadataValues {
+                mixmdo: 2,
+                ltrtcmixlev: 4,
+                lorocmixlev: 4,
+                ltrtsurmixlev: 4,
+                lorosurmixlev: 4,
+            }
+        );
     }
 
     #[test]

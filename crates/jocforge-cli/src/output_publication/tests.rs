@@ -1,16 +1,21 @@
 use super::{
     Flat7xOutputAppendFailure, Flat7xOutputAppendRejection, ProgrammeOutputStaging,
-    SourceFrameOutputStageError, validate_candidate_output_pair,
+    SourceFrameOutputStageError, persist_flat7x_candidate_failure, validate_candidate_output_pair,
 };
 use jocforge_application::{
     PreparedJobInput, SelectedAdmResourcePayloads,
+    flat7x_pair_output::Flat7xElementaryStreamStageProposal,
     output_publication::{AttemptId, OutputRootBindingError, OutputStagingOwnerId},
     prepare_selected_job_input,
 };
 use jocforge_application::{ProgrammeId, SelectedWaveDescriptor};
 use jocforge_domain::{
     joc::emdf::metadata_owner::test_support::Flat7xReceiptGateMetadataTestInputs,
-    publication::{Flat7xAuAttemptRetirementReason, test_support::Flat7xAuAppendTestFixture},
+    profile::Flat7xI0D0TargetPlan,
+    publication::{
+        Flat7xAuAppendReceiptCandidate, Flat7xAuAttemptRetirementReason,
+        test_support::Flat7xAuAppendTestFixture,
+    },
     timeline::CodecSourceIndex,
 };
 use serde_json::Value;
@@ -153,6 +158,32 @@ fn flat7x_receipt_pair_fixture() -> Flat7xAuAppendTestFixture {
         metadata_wrapper_config: METADATA_WRAPPER_CONFIG,
         keyless_integrity_provider: KEYLESS_INTEGRITY_PROVIDER,
     })
+}
+
+fn synthetic_pair_finalize_proposal(
+    fixture: &Flat7xAuAppendTestFixture,
+) -> jocforge_domain::publication::Flat7xAuFinalizeProposal {
+    let proposal = fixture.append_proposal(fixture.attempt_id()).unwrap();
+    let ledger = proposal.ledger_entry().clone();
+    let receipt = Flat7xAuAppendReceiptCandidate::new(
+        fixture.attempt_id().to_owned(),
+        ledger.au_index(),
+        ledger.offset(),
+        ledger.length(),
+        vec![u64::from(ledger.length())],
+        *ledger.au_sha256(),
+        ledger.frame_crc_residuals().0,
+        ledger.frame_crc_residuals().1,
+        true,
+        true,
+    );
+    proposal
+        .complete(receipt)
+        .unwrap()
+        .after_owner()
+        .clone()
+        .prepare_finalize()
+        .unwrap()
 }
 
 fn flat7x_output_binding(
@@ -362,4 +393,59 @@ fn candidate_output_pair_requires_the_same_source_and_exact_append_bytes() {
         ),
         Err(SourceFrameOutputStageError::CandidateFrameMismatch)
     ));
+}
+
+#[test]
+fn failed_candidate_capture_retains_partial_extent_and_records_failure_status() {
+    let directory = ScratchDirectory::new();
+    let candidate_path = directory.path().join("flat7x.candidate.ec3");
+    let partial_bytes = b"partial candidate stream";
+    fs::write(&candidate_path, partial_bytes).unwrap();
+
+    let failure_path = persist_flat7x_candidate_failure(
+        &candidate_path,
+        "attempt-test",
+        6_656,
+        Some(u64::try_from(partial_bytes.len()).unwrap()),
+        "synthetic extent failure",
+    )
+    .unwrap();
+    let receipt = fs::read_to_string(failure_path).unwrap();
+
+    assert_eq!(fs::read(&candidate_path).unwrap(), partial_bytes);
+    assert!(receipt.contains("status=FAILED_CANDIDATE_PARTIAL_EXTENT\n"));
+    assert!(receipt.contains("attempt_id=attempt-test\n"));
+    assert!(receipt.contains("expected_bytes=6656\n"));
+    assert!(receipt.contains(&format!("observed_bytes=Some({})\n", partial_bytes.len())));
+    assert!(receipt.contains("production_allowed=false\n"));
+    assert!(receipt.contains("programme_done=false\n"));
+}
+
+#[test]
+fn synthetic_candidate_stage_writes_receipt_checked_bytes_without_production_authority() {
+    let fixture = flat7x_receipt_pair_fixture();
+    let finalize = synthetic_pair_finalize_proposal(&fixture);
+    let stream_bytes = fixture.expected_bytes();
+    let directory = ScratchDirectory::new();
+    let candidate_path = directory.path().join("synthetic.candidate.ec3");
+    let stage = Flat7xElementaryStreamStageProposal::new(
+        Flat7xI0D0TargetPlan::approved_contract(),
+        &stream_bytes,
+        &finalize,
+    )
+    .unwrap();
+
+    let receipt = super::write_flat7x_candidate_stage_file(candidate_path.clone(), stage).unwrap();
+
+    assert_eq!(receipt.attempt_id(), fixture.attempt_id());
+    assert_eq!(receipt.candidate_path(), candidate_path.as_path());
+    assert_eq!(
+        receipt.bytes_written(),
+        u32::try_from(stream_bytes.len()).unwrap()
+    );
+    assert!(receipt.file_sync_completed());
+    assert!(receipt.parent_sync_completed());
+    assert!(!receipt.production_allowed());
+    assert!(!receipt.final_exposure_allowed());
+    assert_eq!(fs::read(candidate_path).unwrap(), stream_bytes);
 }

@@ -1,0 +1,29 @@
+{
+  "schema": "washed-implementer-supplement-seal.v1",
+  "supplement_id": "FLAT7X-D0-FRMSIZ-U16-MINUS-ONE-11BIT-V1",
+  "manifest_sha256": "41be017d7a239193755c4ee0f26dc8d4c4c9bca44e11da4e38e21711bae0bf7e",
+  "payload_hashes": [
+    {
+      "file": "CHECK.py",
+      "bytes": 2025,
+      "sha256": "445b356e9162fad33871cffa1be4b064252215f07993c904bc84758e1273a2c3"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2059,
+      "sha256": "4b2dd895bd441383c1d45b654f47addfdd73dd913ed1f760e7e1dcf629e92356"
+    },
+    {
+      "file": "FINDINGS.md",
+      "bytes": 909,
+      "sha256": "4f657559b2351b2eb7935c0aa8c9126d2a481dcc6a7a8d3ca66dcae89062ff70"
+    },
+    {
+      "file": "SOURCE-PACKAGE.json",
+      "bytes": 727,
+      "sha256": "ae34ee3e94d91f4896432e18c642d95182e6f382722a3accfb6b160e2d008cac"
+    }
+  ],
+  "implementation_ready": false,
+  "production_allowed": false
+}
