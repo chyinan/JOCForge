@@ -1329,7 +1329,7 @@ mod pair_access_unit_integration_tests {
             mixing: None,
             block_mix: [None; 6],
             information: None,
-            addbsi: Flat7xD0Ci16Addbsi::new(0x0110),
+            addbsi: Flat7xD0Ci16Addbsi::new([0x01, 0x10]),
         }
     }
 
@@ -1411,7 +1411,7 @@ mod pair_access_unit_integration_tests {
                     mixing: None,
                     block_mix: [None; 6],
                     information: None,
-                    addbsi: Flat7xD0Ci16Addbsi::new(0x0110),
+                    addbsi: Flat7xD0Ci16Addbsi::new([0x01, 0x10]),
                 },
                 complete_emdf_container: &emdf_container,
                 bap_parameters: &d0_bap_parameters,

@@ -1890,7 +1890,7 @@ mod i0_audio_block_series_tests {
             mixing: None,
             block_mix: [None; 6],
             information: None,
-            addbsi: Flat7xD0Ci16Addbsi::new(0x0110),
+            addbsi: Flat7xD0Ci16Addbsi::new([0x01, 0x10]),
         }
     }
 

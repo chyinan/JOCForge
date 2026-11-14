@@ -13,10 +13,36 @@ pub enum CoreCarrierProfile {
     SelectedFivePointOneSixCarrier,
     Unsupported,
 }
+
+/// Elementary carrier syntax, separate from the shared 5.1 core speaker layout.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum CarrierCodecProfile {
+    IndependentEac3,
+    Flat7xAc3I0DependentEac3D0,
+    Unsupported,
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum JocDownmixProfile {
+    /// Selected mode/phase algorithm control profile retained by the current implementation.
     SelectedMode0Phase1Index3,
     Unsupported,
+}
+
+/// The ID14 payload's three-bit `downmix_index`, independent from its reconstruction-layout index.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum JocPayloadDownmixIndex {
+    FiveChannel,
+    SevenChannel,
+}
+
+impl JocPayloadDownmixIndex {
+    pub const fn value(self) -> u8 {
+        match self {
+            Self::FiveChannel => 3,
+            Self::SevenChannel => 1,
+        }
+    }
 }
 
 /// JOC decoder reconstruction layout, independent from internal downmix controls.
@@ -50,6 +76,7 @@ impl JocReconstructionLayout {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum SubstreamTopology {
     SelectedSingleIndependentZeroDependent,
+    Flat7xIndependentI0DependentD0,
     Unsupported,
 }
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -165,7 +192,9 @@ pub enum EmdfCarriageProfile {
 pub struct EncodingProfile {
     authored_input: AuthoredInputProfile,
     core_carrier: CoreCarrierProfile,
+    carrier_codec: CarrierCodecProfile,
     joc_downmix: JocDownmixProfile,
+    joc_payload_downmix_index: JocPayloadDownmixIndex,
     joc_reconstruction_layout: JocReconstructionLayout,
     substream_topology: SubstreamTopology,
     codec_rate: CodecRateProfile,
@@ -191,7 +220,9 @@ impl EncodingProfile {
         Self {
             authored_input: AuthoredInputProfile::SelectedAdmBwfPcm24At48Khz,
             core_carrier: CoreCarrierProfile::SelectedFivePointOneSixCarrier,
+            carrier_codec: CarrierCodecProfile::IndependentEac3,
             joc_downmix: JocDownmixProfile::SelectedMode0Phase1Index3,
+            joc_payload_downmix_index: JocPayloadDownmixIndex::FiveChannel,
             joc_reconstruction_layout: JocReconstructionLayout::ExistingSelectedFivePointOne,
             substream_topology: SubstreamTopology::SelectedSingleIndependentZeroDependent,
             codec_rate,
@@ -199,15 +230,54 @@ impl EncodingProfile {
         }
     }
 
-    /// Selects one reconstruction-layout row while preserving the current 1024 kbps profile
-    /// defaults for all other dimensions.
+    /// Selects the registered carrier-codec, substream, reconstruction, and payload-selector row.
     pub const fn selected_with_joc_reconstruction_layout(
         joc_reconstruction_layout: JocReconstructionLayout,
     ) -> Self {
-        Self::selected().with_joc_reconstruction_layout(joc_reconstruction_layout)
+        Self::selected_with_rate_and_carriage_and_joc_reconstruction_layout(
+            CodecRateProfile::Kbps1024,
+            EmdfCarriageProfile::DeployedCompat,
+            joc_reconstruction_layout,
+        )
     }
 
-    /// Returns this immutable profile with a different reconstruction-layout selection.
+    pub const fn selected_with_codec_rate_and_joc_reconstruction_layout(
+        codec_rate: CodecRateProfile,
+        joc_reconstruction_layout: JocReconstructionLayout,
+    ) -> Self {
+        Self::selected_with_rate_and_carriage_and_joc_reconstruction_layout(
+            codec_rate,
+            EmdfCarriageProfile::DeployedCompat,
+            joc_reconstruction_layout,
+        )
+    }
+
+    pub const fn selected_with_rate_and_carriage_and_joc_reconstruction_layout(
+        codec_rate: CodecRateProfile,
+        emdf_carriage: EmdfCarriageProfile,
+        joc_reconstruction_layout: JocReconstructionLayout,
+    ) -> Self {
+        let selected = Self::selected_with_rate_and_carriage(codec_rate, emdf_carriage);
+        match joc_reconstruction_layout {
+            JocReconstructionLayout::ExistingSelectedFivePointOne => Self {
+                joc_reconstruction_layout,
+                ..selected
+            },
+            JocReconstructionLayout::Flat7x => Self {
+                carrier_codec: CarrierCodecProfile::Flat7xAc3I0DependentEac3D0,
+                joc_payload_downmix_index: JocPayloadDownmixIndex::SevenChannel,
+                joc_reconstruction_layout,
+                substream_topology: SubstreamTopology::Flat7xIndependentI0DependentD0,
+                ..selected
+            },
+            JocReconstructionLayout::Unsupported => Self {
+                joc_reconstruction_layout,
+                ..selected
+            },
+        }
+    }
+
+    /// Returns this immutable profile with a different reconstruction-layout selector only.
     #[must_use]
     pub const fn with_joc_reconstruction_layout(
         self,
@@ -215,6 +285,47 @@ impl EncodingProfile {
     ) -> Self {
         Self {
             joc_reconstruction_layout,
+            ..self
+        }
+    }
+
+    /// Returns this immutable profile with a separately selected payload `downmix_index`.
+    #[must_use]
+    pub const fn with_joc_payload_downmix_index(
+        self,
+        joc_payload_downmix_index: JocPayloadDownmixIndex,
+    ) -> Self {
+        Self {
+            joc_payload_downmix_index,
+            ..self
+        }
+    }
+
+    /// Returns the ID14 payload's coefficient-channel selector independently from reconstruction layout.
+    pub const fn joc_payload_downmix_index(self) -> JocPayloadDownmixIndex {
+        self.joc_payload_downmix_index
+    }
+
+    pub const fn carrier_codec(self) -> CarrierCodecProfile {
+        self.carrier_codec
+    }
+
+    pub const fn substream_topology(self) -> SubstreamTopology {
+        self.substream_topology
+    }
+
+    #[must_use]
+    pub const fn with_carrier_codec(self, carrier_codec: CarrierCodecProfile) -> Self {
+        Self {
+            carrier_codec,
+            ..self
+        }
+    }
+
+    #[must_use]
+    pub const fn with_substream_topology(self, substream_topology: SubstreamTopology) -> Self {
+        Self {
+            substream_topology,
             ..self
         }
     }
@@ -230,7 +341,9 @@ impl EncodingProfile {
         Self {
             authored_input,
             core_carrier,
+            carrier_codec: CarrierCodecProfile::IndependentEac3,
             joc_downmix,
+            joc_payload_downmix_index: JocPayloadDownmixIndex::FiveChannel,
             joc_reconstruction_layout: JocReconstructionLayout::ExistingSelectedFivePointOne,
             substream_topology,
             codec_rate,
@@ -243,7 +356,9 @@ impl EncodingProfile {
     pub fn same_dimensions_except_codec_rate(self, other: Self) -> bool {
         self.authored_input == other.authored_input
             && self.core_carrier == other.core_carrier
+            && self.carrier_codec == other.carrier_codec
             && self.joc_downmix == other.joc_downmix
+            && self.joc_payload_downmix_index == other.joc_payload_downmix_index
             && self.joc_reconstruction_layout == other.joc_reconstruction_layout
             && self.substream_topology == other.substream_topology
             && self.emdf_carriage == other.emdf_carriage
@@ -258,7 +373,10 @@ pub enum ProfileError {
 pub struct ResolvedEncodingProfile {
     carriage: EmdfCarriageProfile,
     codec_rate: CodecRateProfile,
+    carrier_codec: CarrierCodecProfile,
+    substream_topology: SubstreamTopology,
     joc_downmix: JocDownmixProfile,
+    joc_payload_downmix_index: JocPayloadDownmixIndex,
     joc_reconstruction_layout: JocReconstructionLayout,
 }
 
@@ -271,8 +389,20 @@ impl ResolvedEncodingProfile {
         self.codec_rate
     }
 
+    pub const fn carrier_codec(self) -> CarrierCodecProfile {
+        self.carrier_codec
+    }
+
+    pub const fn substream_topology(self) -> SubstreamTopology {
+        self.substream_topology
+    }
+
     pub const fn joc_downmix(self) -> JocDownmixProfile {
         self.joc_downmix
+    }
+
+    pub const fn joc_payload_downmix_index(self) -> JocPayloadDownmixIndex {
+        self.joc_payload_downmix_index
     }
 
     pub const fn joc_reconstruction_layout(self) -> JocReconstructionLayout {
@@ -284,16 +414,29 @@ impl ResolvedEncodingProfile {
     }
 }
 
-/// Accepts the existing selected rows and the additive 1024 kbps Flat7x layout row.
+/// Accepts the existing selected row and the additive 1024 kbps Flat7x profile row.
 pub const fn resolve_selected_profile(
     profile: &EncodingProfile,
 ) -> Result<ResolvedEncodingProfile, ProfileError> {
-    let reconstruction_layout_supported = match profile.joc_reconstruction_layout {
-        JocReconstructionLayout::ExistingSelectedFivePointOne => true,
-        JocReconstructionLayout::Flat7x => {
-            matches!(profile.codec_rate, CodecRateProfile::Kbps1024)
-        }
-        JocReconstructionLayout::Unsupported => false,
+    let selected_codec_route = match (
+        profile.joc_reconstruction_layout,
+        profile.carrier_codec,
+        profile.substream_topology,
+        profile.joc_payload_downmix_index,
+    ) {
+        (
+            JocReconstructionLayout::ExistingSelectedFivePointOne,
+            CarrierCodecProfile::IndependentEac3,
+            SubstreamTopology::SelectedSingleIndependentZeroDependent,
+            JocPayloadDownmixIndex::FiveChannel,
+        ) => true,
+        (
+            JocReconstructionLayout::Flat7x,
+            CarrierCodecProfile::Flat7xAc3I0DependentEac3D0,
+            SubstreamTopology::Flat7xIndependentI0DependentD0,
+            JocPayloadDownmixIndex::SevenChannel,
+        ) => matches!(profile.codec_rate, CodecRateProfile::Kbps1024),
+        _ => false,
     };
     if !matches!(
         profile.authored_input,
@@ -305,11 +448,7 @@ pub const fn resolve_selected_profile(
     ) || !matches!(
         profile.joc_downmix,
         JocDownmixProfile::SelectedMode0Phase1Index3
-    ) || !reconstruction_layout_supported
-        || !matches!(
-            profile.substream_topology,
-            SubstreamTopology::SelectedSingleIndependentZeroDependent
-        )
+    ) || !selected_codec_route
         || profile.codec_rate.kbps().is_none()
         || profile.codec_rate.selector_code().is_none()
         || profile.codec_rate.frame_size_code().is_none()
@@ -322,7 +461,10 @@ pub const fn resolve_selected_profile(
             Ok(ResolvedEncodingProfile {
                 carriage: profile.emdf_carriage,
                 codec_rate: profile.codec_rate,
+                carrier_codec: profile.carrier_codec,
+                substream_topology: profile.substream_topology,
                 joc_downmix: profile.joc_downmix,
+                joc_payload_downmix_index: profile.joc_payload_downmix_index,
                 joc_reconstruction_layout: profile.joc_reconstruction_layout,
             })
         }

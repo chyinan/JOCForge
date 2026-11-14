@@ -30,9 +30,10 @@ use jocforge_application::{
         MetadataOwnerPreparationError, SelectedJocState, prepare_metadata_owner_from_measurement,
     },
     meter_source_bridge::{
-        CodecRateProfile, EncodingProfile, Flat7xI0D0TargetPlan,
-        FrontendControlReplacementCandidate, JocReconstructionLayout, ResolvedEncodingProfile,
-        resolve_selected_profile,
+        CarrierCodecProfile, CodecRateProfile, EncodingProfile, Flat7xFrameCodec,
+        Flat7xI0D0TargetPlan, Flat7xSubstreamRole, FrontendControlReplacementCandidate,
+        JocPayloadDownmixIndex, JocReconstructionLayout, ResolvedEncodingProfile,
+        SubstreamTopology, resolve_selected_profile,
     },
     output_publication::{AttemptId, OutputStagingOwnerId},
     parse_selected_job_file_references, prepare_selected_job_input,
@@ -247,25 +248,37 @@ fn resolve_encode_request_route(
     if codec_rate.kbps().is_none() {
         return Err(EncodeRequestError::UnsupportedDataRate);
     }
-    let selected_profile = EncodingProfile::selected_with_codec_rate(codec_rate)
-        .with_joc_reconstruction_layout(joc_layout);
+    let selected_profile = EncodingProfile::selected_with_codec_rate_and_joc_reconstruction_layout(
+        codec_rate, joc_layout,
+    );
     let resolved = resolve_selected_profile(&selected_profile)
         .map_err(|_| EncodeRequestError::UnsupportedJocLayout)?;
 
-    match resolved.joc_reconstruction_layout() {
-        JocReconstructionLayout::ExistingSelectedFivePointOne => {
+    match resolved.carrier_codec() {
+        CarrierCodecProfile::IndependentEac3 => {
             Ok(EncodeRequestRoute::SelectedFivePointOne(resolved))
         }
-        JocReconstructionLayout::Flat7x => {
+        CarrierCodecProfile::Flat7xAc3I0DependentEac3D0 => {
             let target = Flat7xI0D0TargetPlan::approved_contract();
-            if target.reconstruction_layout() != JocReconstructionLayout::Flat7x
+            if resolved.joc_reconstruction_layout() != JocReconstructionLayout::Flat7x
+                || resolved.substream_topology()
+                    != SubstreamTopology::Flat7xIndependentI0DependentD0
+                || resolved.joc_dmx_config_idx() != Some(1)
+                || resolved.joc_payload_downmix_index() != JocPayloadDownmixIndex::SevenChannel
+                || target.reconstruction_layout() != JocReconstructionLayout::Flat7x
+                || target.i0().role() != Flat7xSubstreamRole::IndependentI0
+                || target.i0().codec() != Flat7xFrameCodec::Ac3
+                || target.i0().bsid() != 6
+                || target.d0().role() != Flat7xSubstreamRole::DependentD0
+                || target.d0().codec() != Flat7xFrameCodec::Eac3
+                || target.d0().bsid() != 16
                 || target.d0().rate() != resolved.codec_rate()
             {
                 return Err(EncodeRequestError::UnsupportedJocLayout);
             }
             Ok(EncodeRequestRoute::Flat7xI0D0Pair(target))
         }
-        JocReconstructionLayout::Unsupported => Err(EncodeRequestError::UnsupportedJocLayout),
+        CarrierCodecProfile::Unsupported => Err(EncodeRequestError::UnsupportedJocLayout),
     }
 }
 
@@ -609,11 +622,11 @@ fn run_inner(
         .map_err(EncodeRequestError::PreparedInput)?;
     let selected_profile = prepared.configuration().selected_profile();
     let resolved_joc_profile = resolve_selected_profile(
-        &EncodingProfile::selected_with_rate_and_carriage(
+        &EncodingProfile::selected_with_rate_and_carriage_and_joc_reconstruction_layout(
             selected_profile.codec_rate(),
             selected_profile.carriage(),
-        )
-        .with_joc_reconstruction_layout(joc_layout),
+            joc_layout,
+        ),
     )
     .map_err(|_| EncodeRequestError::UnsupportedJocLayout)?;
     let (frame_bytes, aggregate_rate_kbps) =

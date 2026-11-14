@@ -454,24 +454,21 @@ pub struct Flat7xD0InformationMetadata {
     pub sourcefscod: u8,
 }
 
-/// The required opaque two-byte CI16 record carried in the selected D0 `addbsi` field.
+/// The required two-byte CI16 record carried in the selected D0 `addbsi` field.
 ///
-/// The value is supplied by the admitted profile input. This type fixes only its observed
-/// extent; it does not interpret the bytes.
+/// The target supplies `[0x01, 0x10]`. Wash's parser note maps byte 0 bit 0 to extension-present,
+/// byte 0 bits 1..7 to reserved zeros, and byte 1 to its U8 complexity index. This type preserves
+/// the byte syntax and does not join that field to Type-A `complexity16`.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct Flat7xD0Ci16Addbsi(u16);
+pub struct Flat7xD0Ci16Addbsi([u8; D0_CI16_ADDBSI_BYTES]);
 
 impl Flat7xD0Ci16Addbsi {
-    pub const fn new(value: u16) -> Self {
-        Self(value)
-    }
-
-    pub const fn value(self) -> u16 {
-        self.0
+    pub const fn new(bytes: [u8; D0_CI16_ADDBSI_BYTES]) -> Self {
+        Self(bytes)
     }
 
     pub const fn bytes(self) -> [u8; D0_CI16_ADDBSI_BYTES] {
-        [(self.0 >> 8) as u8, self.0 as u8]
+        self.0
     }
 }
 

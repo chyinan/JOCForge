@@ -17,7 +17,11 @@ use super::{
     id14_body::{Id14BodyProposal, Id14ObjectCount},
 };
 use crate::{
-    profile::ResolvedEncodingProfile, timeline::JocDispatchIndex,
+    profile::{
+        CarrierCodecProfile, JocPayloadDownmixIndex, JocReconstructionLayout,
+        ResolvedEncodingProfile, SubstreamTopology,
+    },
+    timeline::JocDispatchIndex,
     transaction::CallbackTransactionId,
 };
 
@@ -274,7 +278,8 @@ fn write_selected_id14_coefficient_payload_inner(
     profile: Option<ResolvedEncodingProfile>,
 ) -> Result<CoefficientPayloadOutcome, CoefficientPayloadWriterFailure> {
     let channel_count = selected_channel_count(input.downmix_index)?;
-    validate_input(input, channel_count)?;
+    let flat7x_full_shape = flat7x_full_data_point_shape_allowed(profile, input);
+    validate_input(input, channel_count, flat7x_full_shape)?;
     let header_bit_count = count_header_bits(input);
     let codebooks =
         HuffmanCodebooks::selected().map_err(CoefficientPayloadWriterFailure::Huffman)?;
@@ -371,6 +376,7 @@ fn selected_channel_count(downmix_index: u8) -> Result<u8, CoefficientPayloadWri
 fn validate_input(
     input: &CoefficientPayloadInput,
     channel_count: u8,
+    flat7x_full_shape: bool,
 ) -> Result<(), CoefficientPayloadWriterFailure> {
     if input.extension_config != 0
         || input.time_slot_limit != 24
@@ -388,7 +394,9 @@ fn validate_input(
         if object.mode > 3 || !(1..=2).contains(&object.points.len()) {
             return Err(CoefficientPayloadWriterFailure::InputShape);
         }
-        if input.downmix_index == 1 && object.mode < 2 {
+        // Wash's official Flat7x parser shape includes Full data points at selector 1 / 7 rows.
+        // Other callers retain the existing fail-closed selector/mode gate.
+        if input.downmix_index == 1 && object.mode < 2 && !flat7x_full_shape {
             return Err(CoefficientPayloadWriterFailure::UnsupportedSelectedProfile);
         }
         if let Some(offsets) = &object.offsets {
@@ -421,6 +429,24 @@ fn validate_input(
         }
     }
     Ok(())
+}
+
+fn flat7x_full_data_point_shape_allowed(
+    profile: Option<ResolvedEncodingProfile>,
+    input: &CoefficientPayloadInput,
+) -> bool {
+    input.downmix_index == JocPayloadDownmixIndex::SevenChannel.value()
+        && input.objects.len() == 15
+        && input
+            .objects
+            .iter()
+            .all(|object| object.present && object.mode < 2 && object.points.len() == 1)
+        && profile.is_some_and(|profile| {
+            profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x
+                && profile.joc_payload_downmix_index() == JocPayloadDownmixIndex::SevenChannel
+                && profile.carrier_codec() == CarrierCodecProfile::Flat7xAc3I0DependentEac3D0
+                && profile.substream_topology() == SubstreamTopology::Flat7xIndependentI0DependentD0
+        })
 }
 
 fn count_header_bits(input: &CoefficientPayloadInput) -> u64 {
@@ -563,6 +589,77 @@ fn map_coefficient_quantization_error(
         | CoefficientQuantizationError::NumericNonFinite
         | CoefficientQuantizationError::QuantizedCodeRange => {
             CoefficientPayloadWriterFailure::InputShape
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{
+        CoefficientPayloadInput, CoefficientPayloadObject, CoefficientPayloadPoint,
+        flat7x_full_data_point_shape_allowed,
+    };
+    use crate::profile::{EncodingProfile, JocReconstructionLayout, resolve_selected_profile};
+
+    #[test]
+    fn full_selector_one_mode_is_scoped_to_the_observed_flat7x_shape() {
+        let flat7x =
+            resolve_selected_profile(&EncodingProfile::selected_with_joc_reconstruction_layout(
+                JocReconstructionLayout::Flat7x,
+            ))
+            .unwrap();
+        let selected_five_point_one =
+            resolve_selected_profile(&EncodingProfile::selected()).unwrap();
+        let input = observed_flat7x_full_data_point_input();
+
+        assert!(flat7x_full_data_point_shape_allowed(Some(flat7x), &input));
+        assert!(!flat7x_full_data_point_shape_allowed(
+            Some(selected_five_point_one),
+            &input,
+        ));
+        assert!(!flat7x_full_data_point_shape_allowed(None, &input));
+
+        let mut sparse = input.clone();
+        sparse.objects[0].mode = 2;
+        assert!(!flat7x_full_data_point_shape_allowed(Some(flat7x), &sparse));
+
+        let mut absent_object = input.clone();
+        absent_object.objects[0].present = false;
+        assert!(!flat7x_full_data_point_shape_allowed(
+            Some(flat7x),
+            &absent_object,
+        ));
+
+        let mut multiple_points = input.clone();
+        let second_point = multiple_points.objects[0].points[0].clone();
+        multiple_points.objects[0].points.push(second_point);
+        assert!(!flat7x_full_data_point_shape_allowed(
+            Some(flat7x),
+            &multiple_points,
+        ));
+    }
+
+    fn observed_flat7x_full_data_point_input() -> CoefficientPayloadInput {
+        let point = CoefficientPayloadPoint {
+            channel_rows: Vec::new(),
+            selected_channels: Vec::new(),
+        };
+        CoefficientPayloadInput {
+            downmix_index: 1,
+            extension_config: 0,
+            clip_gain_index: 0,
+            sequence_count: 0,
+            time_slot_limit: 24,
+            capacity_bytes: 543,
+            objects: (0..15)
+                .map(|_| CoefficientPayloadObject {
+                    present: true,
+                    band_enum: 0,
+                    mode: 1,
+                    points: vec![point.clone()],
+                    offsets: None,
+                })
+                .collect(),
         }
     }
 }

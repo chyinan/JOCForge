@@ -24,9 +24,10 @@ pub use flat7x_source_role_map::{
 };
 
 pub use production::{
-    AuthoredInputProfile, CodecRateProfile, CoreCarrierProfile, EmdfCarriageProfile,
-    EncodingProfile, JocDownmixProfile, JocReconstructionLayout, ProfileError,
-    ResolvedEncodingProfile, SelectedDataRate, SubstreamTopology, resolve_selected_profile,
+    AuthoredInputProfile, CarrierCodecProfile, CodecRateProfile, CoreCarrierProfile,
+    EmdfCarriageProfile, EncodingProfile, JocDownmixProfile, JocPayloadDownmixIndex,
+    JocReconstructionLayout, ProfileError, ResolvedEncodingProfile, SelectedDataRate,
+    SubstreamTopology, resolve_selected_profile,
 };
 pub use validation::{RenderTarget, ValidationProfile};
 

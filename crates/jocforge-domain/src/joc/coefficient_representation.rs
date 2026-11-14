@@ -11,7 +11,7 @@ use crate::{
         coefficient_fitting::FitSourceLineage, emdf::metadata_owner::MetadataPayloadBody,
         id14_body::Id14BodyProposal,
     },
-    profile::ResolvedEncodingProfile,
+    profile::{JocPayloadDownmixIndex, ResolvedEncodingProfile},
     timeline::{CodecSourceIndex, JocDispatchIndex},
     transaction::CallbackTransactionId,
 };
@@ -20,10 +20,35 @@ use sha2::{Digest, Sha256};
 
 const FUNCTIONAL_SHA256: &str = "af08ef531f8708ab81cd6af0bf8ae71504ffb19ba76d5fb8571b1ae8db53c747";
 const OBJECT_COUNT: usize = 15;
-const CHANNEL_COUNT: usize = 5;
 const BAND_COUNT: usize = 12;
 const BAND_COUNTS: [usize; 8] = [1, 3, 5, 7, 9, 12, 15, 23];
 const MAX_ATTEMPTS: u8 = 16;
+
+/// Required channel-row shape for one ID14 coefficient body.
+///
+/// Existing fit inputs provide five rows. A seven-row input is a separate producer seam and
+/// requires its own source values before it can be selected.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum JocCoefficientRowLayout {
+    FiveChannel,
+    SevenChannel,
+}
+
+impl JocCoefficientRowLayout {
+    pub const fn for_payload_downmix_index(index: JocPayloadDownmixIndex) -> Self {
+        match index {
+            JocPayloadDownmixIndex::FiveChannel => Self::FiveChannel,
+            JocPayloadDownmixIndex::SevenChannel => Self::SevenChannel,
+        }
+    }
+
+    const fn channel_count(self) -> usize {
+        match self {
+            Self::FiveChannel => 5,
+            Self::SevenChannel => 7,
+        }
+    }
+}
 
 #[derive(Debug)]
 pub struct RepresentationRetryProvider {
@@ -90,6 +115,7 @@ pub struct FitRepresentationInput<'a> {
     pub sparse_words: &'a [u32],
     pub selected_channels: &'a [u16],
     pub representation_offset: Option<u8>,
+    pub row_layout: JocCoefficientRowLayout,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -173,6 +199,10 @@ pub enum RepresentationRetryError {
     ProviderShape,
     FitShape,
     CapacityDomain,
+    CoefficientRowLayoutMismatch {
+        expected: JocCoefficientRowLayout,
+        actual: JocCoefficientRowLayout,
+    },
     Writer(CoefficientPayloadWriterFailure),
     MinimumRepresentationExceedsCapacity,
 }
@@ -231,11 +261,16 @@ fn write_fit_representation_with_profile(
     if !(1..=543).contains(&capacity_bytes) {
         return Err(RepresentationRetryError::CapacityDomain);
     }
+    let payload_downmix_index = profile
+        .map(ResolvedEncodingProfile::joc_payload_downmix_index)
+        .unwrap_or(JocPayloadDownmixIndex::FiveChannel);
+    validate_row_layout(payload_downmix_index, fit.row_layout)?;
     let mut objects = initial_objects(fit)?;
+    let downmix_index = payload_downmix_index.value();
     let mut attempts = Vec::with_capacity(4);
     for attempt in 0..MAX_ATTEMPTS {
         let input = CoefficientPayloadInput {
-            downmix_index: 3,
+            downmix_index,
             extension_config: 0,
             clip_gain_index,
             sequence_count,
@@ -309,6 +344,18 @@ fn write_fit_representation_with_profile(
     Err(RepresentationRetryError::MinimumRepresentationExceedsCapacity)
 }
 
+fn validate_row_layout(
+    payload_downmix_index: JocPayloadDownmixIndex,
+    actual: JocCoefficientRowLayout,
+) -> Result<(), RepresentationRetryError> {
+    let expected = JocCoefficientRowLayout::for_payload_downmix_index(payload_downmix_index);
+    if actual == expected {
+        Ok(())
+    } else {
+        Err(RepresentationRetryError::CoefficientRowLayoutMismatch { expected, actual })
+    }
+}
+
 #[derive(Clone, Debug)]
 struct ObjectRepresentation {
     band_enum: u8,
@@ -341,7 +388,8 @@ impl ObjectRepresentation {
 fn initial_objects(
     fit: FitRepresentationInput<'_>,
 ) -> Result<Vec<ObjectRepresentation>, RepresentationRetryError> {
-    if fit.full_words.len() != OBJECT_COUNT * CHANNEL_COUNT * BAND_COUNT
+    let channel_count = fit.row_layout.channel_count();
+    if fit.full_words.len() != OBJECT_COUNT * channel_count * BAND_COUNT
         || fit.sparse_words.len() != OBJECT_COUNT * BAND_COUNT
         || fit.selected_channels.len() != OBJECT_COUNT * BAND_COUNT
         || fit.representation_offset.is_some_and(|offset| offset >= 24)
@@ -350,12 +398,12 @@ fn initial_objects(
     }
     let mut objects = Vec::with_capacity(OBJECT_COUNT);
     for object in 0..OBJECT_COUNT {
-        let channel_rows = (0..CHANNEL_COUNT)
+        let channel_rows = (0..channel_count)
             .map(|channel| {
                 (0..BAND_COUNT)
                     .map(|band| {
                         let word =
-                            fit.full_words[(object * CHANNEL_COUNT + channel) * BAND_COUNT + band];
+                            fit.full_words[(object * channel_count + channel) * BAND_COUNT + band];
                         let value = f32::from_bits(word);
                         if value.is_finite() {
                             Ok(value)
@@ -380,7 +428,7 @@ fn initial_objects(
             .map(|band| {
                 let value = u8::try_from(fit.selected_channels[object * BAND_COUNT + band])
                     .map_err(|_| RepresentationRetryError::FitShape)?;
-                if usize::from(value) < CHANNEL_COUNT {
+                if usize::from(value) < channel_count {
                     Ok(value)
                 } else {
                     Err(RepresentationRetryError::FitShape)
@@ -397,4 +445,32 @@ fn initial_objects(
         });
     }
     Ok(objects)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{JocCoefficientRowLayout, RepresentationRetryError, validate_row_layout};
+    use crate::profile::JocPayloadDownmixIndex;
+
+    #[test]
+    fn row_layout_gate_preserves_five_channel_and_exposes_flat7x_input_seam() {
+        assert!(
+            validate_row_layout(
+                JocPayloadDownmixIndex::FiveChannel,
+                JocCoefficientRowLayout::FiveChannel,
+            )
+            .is_ok()
+        );
+
+        assert!(matches!(
+            validate_row_layout(
+                JocPayloadDownmixIndex::SevenChannel,
+                JocCoefficientRowLayout::FiveChannel,
+            ),
+            Err(RepresentationRetryError::CoefficientRowLayoutMismatch {
+                expected: JocCoefficientRowLayout::SevenChannel,
+                actual: JocCoefficientRowLayout::FiveChannel,
+            })
+        ));
+    }
 }

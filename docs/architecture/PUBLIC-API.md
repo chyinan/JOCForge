@@ -4,7 +4,9 @@
 
 ## Profile API
 
-调用者提交含 input、core carrier、JOC downmix control、JOC reconstruction layout、topology、rate 和 EMDF carriage 的 immutable `EncodingProfile`。现有构造器保持 `ExistingSelectedFivePointOne` layout；`selected_with_joc_reconstruction_layout(Flat7x)` 创建 1024 kbps additive profile。CLI 的可选 `--joc-layout flat7x` 通过同一 profile resolver 选择该值；省略参数沿用现有 5.1 layout。resolver 返回 `ResolvedEncodingProfile`，其中分别保留 `JocDownmixProfile` 与 `JocReconstructionLayout`；profile-aware JOC-header writer 从后者取得 `joc_dmx_config_idx`。其他未登记组合返回类型化 `UNSUPPORTED_PROFILE`。
+调用者提交含 input、core carrier、carrier codec、JOC algorithm control、payload `downmix_index`、reconstruction layout、topology、rate 和 EMDF carriage 的 immutable `EncodingProfile`。selected 5.1 profile 使用 independent E-AC-3、single-independent topology 和 payload selector 3；Flat7x profile 使用 independent AC-3 I0/BSID6 + dependent E-AC-3 D0/BSID16、pair topology 和 payload selector 1。`joc_payload_downmix_index` 与 `JocReconstructionLayout` 分别保存，即使当前 target 的 wire values 都是 1。CLI 的 `--joc-layout flat7x` 选择 Flat7x route，省略参数保持 5.1 route。`ResolvedEncodingProfile` 同时暴露 carrier codec、topology、payload selector 和 reconstruction layout；CLI 按 carrier codec 路由，profile-aware header writer 从 reconstruction layout 写 `joc_dmx_config_idx`，ID14 coefficient producer 从 payload selector 选择 body channel width。
+
+`FitRepresentationInput.row_layout` 显式标记 FiveChannel 或 SevenChannel coefficient rows。当前 fit producer 提供 FiveChannel；Flat7x payload selector 1 需要 SevenChannel，因此 high-level writer 在输入边界返回 `CoefficientRowLayoutMismatch` 并留出七行 producer seam。七行 coefficient values 继续等待单独的 washed producer contract。
 
 `RenderTarget` 只存在于独立 `ValidationProfile`。Production encode 不接收 `RenderTarget`，render target 的变化不得影响 production profile resolution。
 

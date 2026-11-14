@@ -252,7 +252,7 @@ pub struct Flat7xI0D0TargetPlan {
     reconstruction_carriers: [ReconstructionCarrierPosition; 7],
     joc_object_count: u8,
     complexity_index_type_a: u8,
-    d0_ci16_addbsi_value: u16,
+    d0_ci16_addbsi_bytes: [u8; 2],
     joc_downmix_controls: JocDownmixAlgorithmControls,
     emdf_payload_ids: [u8; 2],
     emdf_group_id: u8,
@@ -326,7 +326,7 @@ impl Flat7xI0D0TargetPlan {
             ],
             joc_object_count: 15,
             complexity_index_type_a: 16,
-            d0_ci16_addbsi_value: 0x0110,
+            d0_ci16_addbsi_bytes: [0x01, 0x10],
             joc_downmix_controls: JocDownmixAlgorithmControls::Unbound,
             emdf_payload_ids: [11, 14],
             emdf_group_id: 0,
@@ -437,10 +437,9 @@ impl Flat7xI0D0TargetPlan {
         self.complexity_index_type_a
     }
 
-    /// Returns the Wash-confirmed CI16 scalar for the selected D0 `addbsi` field.
-    /// This is independent of the profile's Type-A complexity index.
-    pub const fn d0_ci16_addbsi_value(self) -> u16 {
-        self.d0_ci16_addbsi_value
+    /// Returns the Wash-confirmed two-byte CI16 field for D0 `addbsi`.
+    pub const fn d0_ci16_addbsi_bytes(self) -> [u8; 2] {
+        self.d0_ci16_addbsi_bytes
     }
 
     pub const fn downmix_controls(self) -> Flat7xDownmixControls {
@@ -914,7 +913,7 @@ mod tests {
         assert_eq!(plan.joc_object_count(), 15);
         assert_eq!(plan.coded_object_count(), 15);
         assert_eq!(plan.complexity_index_type_a(), 16);
-        assert_eq!(plan.d0_ci16_addbsi_value(), 0x0110);
+        assert_eq!(plan.d0_ci16_addbsi_bytes(), [0x01, 0x10]);
         assert_eq!(plan.emdf_payload_ids(), [11, 14]);
         assert_eq!(plan.emdf_group_id(), 0);
         assert_eq!(
