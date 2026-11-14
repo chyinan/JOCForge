@@ -291,6 +291,7 @@ pub struct Flat7xD0MixingMetadataValues {
 pub enum Flat7xD0MixingMetadataError {
     ParentSegmentCursorMismatch { actual: u32 },
     UnsupportedTargetContext,
+    DiagnosticTrialRequiresNoBlockMix,
     MixmdoOutOfRange { value: u8 },
     MixLevelOutOfRange { value: u8 },
     BlockMixValueOutOfRange { block: usize, value: u8 },
@@ -314,6 +315,19 @@ pub fn append_flat7x_d0_mixing_metadata_and_infomdate(
     mixing: Option<Flat7xD0MixingMetadataValues>,
     block_mix: [Option<u8>; 6],
     infomdate: bool,
+) -> Result<FrameBitCursor, Flat7xD0MixingMetadataError> {
+    append_flat7x_d0_mixing_metadata_and_infomdate_inner(
+        writer, target, mixing, block_mix, infomdate, false,
+    )
+}
+
+fn append_flat7x_d0_mixing_metadata_and_infomdate_inner(
+    writer: &mut FrameBitWriter<'_>,
+    target: Flat7xI0D0TargetPlan,
+    mixing: Option<Flat7xD0MixingMetadataValues>,
+    block_mix: [Option<u8>; 6],
+    infomdate: bool,
+    omit_absent_frame_block_mix_flag: bool,
 ) -> Result<FrameBitCursor, Flat7xD0MixingMetadataError> {
     let actual = writer.cursor().bit_offset();
     if actual != D0_BSI_THROUGH_CHANMAP_BITS_WITHOUT_COMPR
@@ -368,14 +382,20 @@ pub fn append_flat7x_d0_mixing_metadata_and_infomdate(
         0
     };
     let block_info_present = present_block_values != 0;
+    if omit_absent_frame_block_mix_flag && block_info_present {
+        return Err(Flat7xD0MixingMetadataError::DiagnosticTrialRequiresNoBlockMix);
+    }
     let block_value_bits = if block_info_present {
         u32::from(D0_BLOCK_MIX_COUNT)
             + present_block_values * u32::from(D0_BLOCK_MIX_VALUE_WIDTH_BITS)
     } else {
         0
     };
-    let total_bits = 3_u32
+    let frame_block_mix_flag_bits =
+        u32::from(!(omit_absent_frame_block_mix_flag && !block_info_present));
+    let total_bits = 2_u32
         .checked_add(mixing_value_bits)
+        .and_then(|bits| bits.checked_add(frame_block_mix_flag_bits))
         .and_then(|bits| bits.checked_add(block_value_bits))
         .ok_or(FrameBitWriterError::CursorOverflow)?;
     writer.preflight_capacity(total_bits)?;
@@ -389,7 +409,9 @@ pub fn append_flat7x_d0_mixing_metadata_and_infomdate(
         writer.write_unsigned(u32::from(mixing.lorosurmixlev), D0_MIX_LEVEL_WIDTH_BITS)?;
     }
 
-    writer.write_bit(block_info_present)?;
+    if frame_block_mix_flag_bits == 1 {
+        writer.write_bit(block_info_present)?;
+    }
     if block_info_present {
         for value in block_mix {
             writer.write_bit(value.is_some())?;
@@ -510,7 +532,28 @@ pub fn measure_flat7x_d0_bsi_structure(
         ));
     }
 
-    let mut mixing_bits = 3_u32;
+    let mut present_block_values = 0_u32;
+    for (block, value) in structure.block_mix.iter().enumerate() {
+        if let Some(value) = value {
+            if *value > 31 {
+                return Err(Flat7xD0BsiStructureError::MixingMetadata(
+                    Flat7xD0MixingMetadataError::BlockMixValueOutOfRange {
+                        block,
+                        value: *value,
+                    },
+                ));
+            }
+            present_block_values += 1;
+        }
+    }
+    if present_block_values != 0 {
+        return Err(Flat7xD0BsiStructureError::MixingMetadata(
+            Flat7xD0MixingMetadataError::DiagnosticTrialRequiresNoBlockMix,
+        ));
+    }
+
+    // Wash diagnostic trial: dependent D0 omits frmmixcfginfoe when all six block-mix values are absent.
+    let mut mixing_bits = 2_u32;
     if let Some(mixing) = structure.mixing {
         if mixing.mixmdo > 3 {
             return Err(Flat7xD0BsiStructureError::MixingMetadata(
@@ -535,29 +578,6 @@ pub fn measure_flat7x_d0_bsi_structure(
             .checked_add(
                 u32::from(D0_MIXMDO_WIDTH_BITS)
                     + u32::from(D0_MIX_LEVEL_VALUE_COUNT) * u32::from(D0_MIX_LEVEL_WIDTH_BITS),
-            )
-            .ok_or(FrameBitWriterError::CursorOverflow)?;
-    }
-
-    let mut present_block_values = 0_u32;
-    for (block, value) in structure.block_mix.iter().enumerate() {
-        if let Some(value) = value {
-            if *value > 31 {
-                return Err(Flat7xD0BsiStructureError::MixingMetadata(
-                    Flat7xD0MixingMetadataError::BlockMixValueOutOfRange {
-                        block,
-                        value: *value,
-                    },
-                ));
-            }
-            present_block_values += 1;
-        }
-    }
-    if present_block_values > 0 {
-        mixing_bits = mixing_bits
-            .checked_add(
-                u32::from(D0_BLOCK_MIX_COUNT)
-                    + present_block_values * u32::from(D0_BLOCK_MIX_VALUE_WIDTH_BITS),
             )
             .ok_or(FrameBitWriterError::CursorOverflow)?;
     }
@@ -784,8 +804,9 @@ pub fn append_flat7x_d0_info_and_addbsi(
 /// All component writers first validate and serialize into bounded private scratch. The caller's
 /// writer is preflighted for the resulting complete bit extent before those staged bits are
 /// copied, so any invalid component or insufficient capacity leaves caller bytes and cursor intact.
-/// The only accepted plan is the approved Flat7x D0 row; this is a structural BSI entry, not a
-/// frame/AU, audio, CRC, JOC interpretation, or production encoder.
+/// The only accepted plan is the approved Flat7x D0 row. This diagnostic trial omits the one-bit
+/// `frmmixcfginfoe` field when all block-mix values are absent; any present block-mix value rejects.
+/// This is a structural BSI entry, not a frame/AU, audio, CRC, JOC interpretation, or production encoder.
 pub fn write_flat7x_d0_bsi_structure(
     writer: &mut FrameBitWriter<'_>,
     target: Flat7xI0D0TargetPlan,
@@ -808,12 +829,13 @@ pub fn write_flat7x_d0_bsi_structure(
             structure.dialnorm,
             structure.compr,
         )?;
-        append_flat7x_d0_mixing_metadata_and_infomdate(
+        append_flat7x_d0_mixing_metadata_and_infomdate_inner(
             &mut staging_writer,
             target,
             structure.mixing,
             structure.block_mix,
             structure.information.is_some(),
+            true,
         )?;
         append_flat7x_d0_info_and_addbsi(
             &mut staging_writer,
