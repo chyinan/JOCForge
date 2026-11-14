@@ -3,7 +3,7 @@ status: current
 topic: washed-evidence-index
 spec: JOCForge
 confidence: package-hash-verified
-last_updated: 2026-11-14
+last_updated: 2026-11-15
 tags:
   - evidence
   - Wash
@@ -74,3 +74,4 @@ tags:
 | `openjoc_0201_parser_diagnostic_contract_v1` | `74d14c065df0da40772051b7f87e5c91dd0e0190cc2b60f98a73a6923c322b45` | `163432856af5ba942ce1d37efb0db39f5350cf76c5b02ef82ebb1bf0f4a25663` | Parser-only diagnostic for D0 addbsi length and Huffman truncation boundary; OpenJOC exe/source join UNBOUND; `production_allowed=false` | `outputs/IMPLEMENTER_PACKAGE/openjoc_0201_parser_diagnostic_contract_v1` |
 | `OPENJOC-E944-HUFFMAN-CODEWORD-LIMIT-SOURCE-WASH-V1` | `57a4191bf8142d3274e8fa969fcebe22ca2f1316099e4e5b6b86ca30470df3bd` | `d9faa26c5bb992680415289772413af5c99698cf54baf0d7d697a32f497c2eb5` | Wash reports all three parser Huffman calls use `codeword_bits=None`; observed truncation is physical reader EOF; executable/source join UNBOUND | Wash relay; supplement payload not materialized in isolated checkout |
 | `official_demo_first_i0_au_header_slice_wash_v1` | `05a38319dc63633ff0261d82d2c754c4f1ec46a2d20506d52dddd165f89016f9` | `3f1c90abd90e4dd03a685a6bab2ed67cf953a30e13fc2485a686647904010e41` | Wash-reported AU0 frame headers: independent AC-3 I0/BSID6 and dependent E-AC-3 D0/BSID16; sample D0 640 kbps / 2,560 bytes is distinct from the 1,024-kbps target; six header bytes were observed, raw bytes not saved | Wash relay; package payload not opened in this worktree |
+| official_demo_au0_d0_chanmap_raw_ec3_inspect_receipt_wash_v2 | a9ba3f4cf7798d730f0cd3baa85f329bdb4fa4fe9a9170a1ef4f8648d9d27a32 | 0a0b9846792515ff065523b0f0e09f05364742d43d195100e856e70a81bbf61e | OpenJOC 0.20.1 parser explicitly binds component[1] to D0/dependent/substream0 and exposes chanmap [6656], numerically matching 0x1A00; raw scalar, map index, block ordinal and AU ordinal remain NOT_EXPOSED. Normal and optimized package checks pass; no raw payload included | Wash handoff outputs/INCOMING_WASH/official_demo_au0_d0_chanmap_raw_ec3_inspect_receipt_wash_v2; payload not materialized in isolated checkout |

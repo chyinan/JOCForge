@@ -672,6 +672,7 @@ mod flat7x_rows_route_tests {
         assert_eq!(target.i0().frame_bytes(), 2_560);
         assert_eq!(target.d0().frame_bytes(), 4_096);
         assert_eq!(target.aggregate_frame_bytes(), 6_656);
+        // Wash receipt v2 identifies component[1] as D0 and reports chanmap [6656].
         assert_eq!(target.d0().channel_map().unwrap().value(), 0x1a00);
         assert_eq!(synthetic_d0_bsi().addbsi.bytes(), [0x01, 0x10]);
 
