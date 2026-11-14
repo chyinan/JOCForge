@@ -360,12 +360,12 @@ fn frame_level_aux_data_follows_block_five_and_precedes_crc2() {
         cursor = writer.cursor().bit_offset();
     }
 
-    let frame_tail = receipt.frame_aux_data_span();
+    let frame_tail = receipt.frame_auxbits_span();
     assert_eq!(
         frame_tail.start_bit(),
         receipt.layout().total_frame_span_bits()
     );
-    assert_eq!(frame_tail.bit_length(), 8);
+    assert_eq!(frame_tail.bit_length(), 6);
     assert_eq!(receipt.crc2_span().start_bit(), frame_tail.end_bit());
     assert_eq!(cursor, 32_768);
     assert_span_copied(
@@ -430,7 +430,7 @@ fn invalid_frame_aux_data_source_span_rejects_before_mutation() {
 }
 
 #[test]
-fn typed_frame_tail_policy_sets_auxdatae_zero_and_zero_fills_remaining_bits() {
+fn typed_frame_tail_policy_reports_zero_auxdatae_crcrsv_and_zero_filled_nauxbits() {
     let case = frame_case();
     let data = synthetic_frame_data(&case);
     let mut lengths = bit_lengths(&case);
@@ -464,29 +464,32 @@ fn typed_frame_tail_policy_sets_auxdatae_zero_and_zero_fills_remaining_bits() {
         cursor = writer.cursor().bit_offset();
     }
 
-    let frame_tail = receipt.frame_aux_data_span();
+    let frame_tail = receipt.frame_auxbits_span();
     assert_eq!(
         frame_tail.start_bit(),
         receipt.layout().total_frame_span_bits()
     );
-    assert_eq!(frame_tail.bit_length(), 8);
+    assert_eq!(frame_tail.bit_length(), 6);
     assert_eq!(
         receipt.frame_tail_policy(),
         Some(Flat7xD0FrameTailPolicy::ZeroFillUnusedAuxBits)
     );
     assert_eq!(receipt.auxdatae_value(), Some(false));
-    assert_eq!(receipt.zero_filled_auxbits(), 7);
-    assert_eq!(receipt.crc2_span().start_bit(), frame_tail.end_bit());
+    assert_eq!(receipt.crcrsv_value(), Some(false));
+    assert_eq!(receipt.zero_filled_auxbits(), 6);
+    assert_eq!(receipt.crc2_span().start_bit(), frame_tail.end_bit() + 2);
     assert_eq!(cursor, 32_768);
     for bit_offset in frame_tail.start_bit()..frame_tail.end_bit() {
         assert!(!read_bit(&output, bit_offset));
     }
+    assert!(!read_bit(&output, frame_tail.end_bit())); // auxdatae=0
+    assert!(!read_bit(&output, frame_tail.end_bit() + 1)); // crcrsv=0
     assert_eq!(eac3_crc16(&output[2..]), 0);
     assert!(!receipt.production_allowed());
 }
 
 #[test]
-fn typed_frame_tail_policy_rejects_when_audio_spans_leave_no_flag_bit() {
+fn typed_frame_tail_policy_rejects_without_auxdatae_and_crcrsv_space() {
     let case = frame_case();
     let data = synthetic_frame_data(&case);
     let lengths = bit_lengths(&case);

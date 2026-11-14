@@ -100,7 +100,7 @@ The approved U4/U7 writer boundary is now locally materialized as `codec::expone
 
 ## 2026-11-14 D0 frame-tail policy seam
 
-- Added `Flat7xD0FrameTailPolicy::ZeroFillUnusedAuxBits` to the source-bound D0 receipt and pair candidate. The production AU composer passes this typed policy to the D0 frame assembler, which writes `auxdatae=0`, explicitly zero-fills the remaining frame-level auxbits, and records the tail policy, span, and padding count before generating final CRC2.
+- Added `Flat7xD0FrameTailPolicy::ZeroFillUnusedAuxBits` to the source-bound D0 receipt and pair candidate. The production AU composer passes this typed policy to the D0 frame assembler, which zero-fills `nauxbits`, writes `auxdatae=0` followed by `crcrsv=0`, and reports those receipt fields before generating final CRC2. `encinfo` remains in the BSI extension.
 - The existing frame assembler continues to enforce the only complete EMDF skip-field at zero-based block 2. Arbitrary opaque tail copying is gated behind domain `test-support`; its synthetic `0x96` vector remains a span/copy test only.
 - Verification: default D0 frame tests 5 passed; `test-support` frame tests 7 passed; source-bound pair/AU integration 1 passed; selected 5.1 all-rate regression 1 passed; domain/application `cargo check --locked` passed; generated-map and boundary checks passed (92 scopes / 104 IDs / 0 unmaterialized roots / 6 partial roots). Strict Clippy reports 11 existing issues outside the changed D0 seam.
 - Remaining: implement the four-channel 253-bin D0 BAP/exponent/mantissa audio-block producer with six-block state, bind F13/F12 receipts and source generation into the CLI and parent commit, then validate full AU/output. Do not run an encoder or create `.ec3` before Wash Fresh GO.
@@ -192,6 +192,12 @@ The approved U4/U7 writer boundary is now locally materialized as `codec::expone
 - This prepares the F15 output root for the in-memory pair candidate. The source callback still stops before durable output-owner state, the pair append sink, and the parent swap.
 - Workspace check, CLI test-target compile, generated-map check, and boundary check passed. Strict Clippy reports 18 existing errors and 1 warning outside the changed files. No test binary or encoder was run.
 - Next: persist the pair ledger across AU callbacks, connect the paired readback/fsync receipt to the output GTC root, and install Integrity/Codec/Output after-values together.
+
+## 2026-11-14 D0 frame-tail correction and full-input capture
+
+The selected D0 tail now reports the actual `nauxbits` span, then `auxdatae=0` and `crcrsv=0`; `encinfo` remains in BSI. Focused D0 assembly tests pass 5/5, selected 5.1 all-rate regression passes 1/1, and a corrected-source Release build completes.
+
+User-directed Release attempt `1794654566716793500` captured 8,417 AUs (56,023,552 bytes) from the Love Song ADM BWF. Wash's OpenJOC syntax-only review found valid I0/D0 frame structure and `malformed_aus=0`, while JOC remains absent: EMDF containers=0, addbsi-signaled AUs=0, and 50,497 skip fields unresolved. Decoder/render/playback remain `NOT_RUN`; candidate state is experimental and `production_allowed=false`. The immediate next increment is the complete JOC EMDF container producer and its D0 block-2 skipfld insertion with the approved 511-byte bound.
 
 ## 2026-11-14 Flat7x aggregate F15 output configuration
 

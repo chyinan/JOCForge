@@ -1773,15 +1773,19 @@ mod pair_access_unit_integration_tests {
         assert_eq!(candidate.access_unit().d0_frame_bytes().len(), 4_096);
         let d0_receipt = candidate.access_unit().d0_frame_receipt();
         assert_eq!(d0_receipt.target_frame_bytes(), 4_096);
-        assert_eq!(d0_receipt.frame_aux_data_span().bit_length(), 8);
+        assert_eq!(d0_receipt.frame_auxbits_span().bit_length(), 6);
         assert_eq!(
             d0_receipt.frame_tail_policy(),
             Some(Flat7xD0FrameTailPolicy::ZeroFillUnusedAuxBits)
         );
         assert_eq!(d0_receipt.auxdatae_value(), Some(false));
-        assert_eq!(d0_receipt.zero_filled_auxbits(), 7);
-        assert_eq!(d0_receipt.frame_aux_data_span().start_bit() % 8, 0);
-        let tail_start = usize::try_from(d0_receipt.frame_aux_data_span().start_bit() / 8).unwrap();
+        assert_eq!(d0_receipt.zero_filled_auxbits(), 6);
+        assert_eq!(
+            d0_receipt.crc2_span().start_bit(),
+            d0_receipt.frame_auxbits_span().end_bit() + 2
+        );
+        assert_eq!(d0_receipt.frame_auxbits_span().start_bit() % 8, 0);
+        let tail_start = usize::try_from(d0_receipt.frame_auxbits_span().start_bit() / 8).unwrap();
         assert_eq!(
             &candidate.access_unit_bytes()[2_560 + tail_start..2_560 + tail_start + 1],
             &[0]
