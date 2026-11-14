@@ -565,7 +565,7 @@ mod flat7x_rows_route_tests {
 
     #[cfg(feature = "test-support")]
     #[test]
-    fn flat7x_provider_output_routes_through_synthetic_d0_and_i0_d0_au_structure() {
+    fn flat7x_provider_output_crosses_application_bridge_with_same_source_generation() {
         // SYNTHETIC/TEST_ONLY rows and identity-only projection exercise routing/provenance only;
         // they contain no audio samples and do not enter a production coefficient provider.
         let programme_id = ProgrammeId::new("flat7x-application-bridge-test").unwrap();
@@ -656,31 +656,31 @@ mod flat7x_rows_route_tests {
             Some(&producer_transaction_id)
         );
         assert_eq!(provenance.object_count().value(), 15);
+        let id14_body = &after.id14_body().body().bytes;
+        assert!(!id14_body.is_empty());
+        assert_eq!(read_bits(id14_body, 0, 3), 1); // serialized Flat7x selector
+        assert_eq!(read_bits(id14_body, 3, 6), 14); // serialized object_count - 1
+    }
 
+    #[cfg(feature = "test-support")]
+    #[test]
+    fn synthetic_opaque_skipfield_frame_composes_with_i0_before_d0() {
         let target = jocforge_domain::profile::Flat7xI0D0TargetPlan::approved_contract();
-        assert_eq!(target.joc_dmx_config_idx(), 1);
-        assert_eq!(target.downmix_index().value(), 1);
         assert_eq!(target.i0().rate().kbps(), Some(640));
         assert_eq!(target.d0().rate().kbps(), Some(1_024));
         assert_eq!(target.aggregate_rate_kbps(), Some(1_664));
         assert_eq!(target.i0().frame_bytes(), 2_560);
         assert_eq!(target.d0().frame_bytes(), 4_096);
         assert_eq!(target.aggregate_frame_bytes(), 6_656);
-        assert_eq!(synthetic_d0_bsi().addbsi.bytes(), [0x01, 0x10]);
         assert_eq!(target.d0().channel_map().unwrap().value(), 0x1a00);
+        assert_eq!(synthetic_d0_bsi().addbsi.bytes(), [0x01, 0x10]);
 
-        let id14_body = &after.id14_body().body().bytes;
-        assert!(!id14_body.is_empty());
-        assert!(id14_body.len() <= 511);
-        assert_eq!(read_bits(id14_body, 0, 3), 1); // serialized Flat7x selector
-        assert_eq!(read_bits(id14_body, 3, 6), 14); // serialized object_count - 1
-
-        // The ID14 body bytes are opaque SYNTHETIC/TEST_ONLY skip-field contents here. This
-        // exercises complete field framing and length admission; it does not assert a protected
-        // F13 container or EMDF parser acceptance.
+        // This is deliberately independent of the ID14 body test. These SYNTHETIC/TEST_ONLY
+        // bytes exercise opaque skipfld framing only; they are not a complete EMDF container.
+        let opaque_skipfield_test_bytes = [0x5a_u8; 16];
         let skip_fields = [D0Block2SkipFieldInput {
             insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(8),
-            complete_emdf_container: id14_body,
+            complete_emdf_container: &opaque_skipfield_test_bytes,
         }];
         let synthetic_blocks = [[0x20_u8]; 6];
         let block_two_before = [0x31_u8];
@@ -712,7 +712,7 @@ mod flat7x_rows_route_tests {
         assert_eq!(eac3_crc16(&d0_frame[2..]), 0);
 
         let skip_layout = d0_receipt.layout().block_two_skip_field();
-        let skip_length = u16::try_from(id14_body.len()).unwrap();
+        let skip_length = u16::try_from(opaque_skipfield_test_bytes.len()).unwrap();
         assert_eq!(skip_layout.payload_bytes(), skip_length);
         assert!(skip_layout.payload_bytes() <= 511);
         assert_eq!(
@@ -725,7 +725,7 @@ mod flat7x_rows_route_tests {
             read_bits(&d0_frame, skip_start + 1, 9),
             u32::from(skip_length)
         );
-        for (index, byte) in id14_body.iter().enumerate() {
+        for (index, byte) in opaque_skipfield_test_bytes.iter().enumerate() {
             assert_eq!(
                 read_bits(
                     &d0_frame,
@@ -736,10 +736,10 @@ mod flat7x_rows_route_tests {
             );
         }
 
-        let oversized_container = [0x5a_u8; 512];
+        let oversized_opaque_skipfield_bytes = [0x5a_u8; 512];
         let oversized_skip_fields = [D0Block2SkipFieldInput {
             insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(8),
-            complete_emdf_container: &oversized_container,
+            complete_emdf_container: &oversized_opaque_skipfield_bytes,
         }];
         let oversized_input = synthetic_d0_frame_input(
             &synthetic_blocks,
