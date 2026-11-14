@@ -91,3 +91,9 @@ validation 可以读取最终产物，并调用结构解析、channel-map、topo
 ## F05T selected trim-section API
 
 `domain::joc::oamd::trim_section` 暴露纯函数 `encode_trim_body`、`decode_trim_body`、`parse_dbmd_sections` 和 `selected_trim_from_dbmd_sections`，以及 value-only `Trim`、`EncodedTrimBody` 和 `TrimSectionError`。该 direct slice 只覆盖 Type11 trim body 编解码、DBMD section framing 与 sections 9/10 的 selected default-trim projection；它不解析完整 DBMD 语义、不做非默认 trim 量化、不写入 F05O 外层 section，也不拥有 callback、queue 或 programme state。准确输入/输出与错误边界见 `IMPLEMENTATION-MAP.json` 的 `F05T/trim-section-codec` direct-slice 记录。
+
+## Flat7x coefficient-row serializer seam
+
+Flat7xCoefficientRows validates exactly 15 present objects, one Full point per object, and seven rows per point with the band count selected by each object descriptor. Its write_payload method accepts only the resolved Flat7x carrier/topology/selector profile. The public profile-aware low-level writer also rejects a payload downmix_index that differs from the resolved profile. Full mode codes 0 and 1 are FullCoarse and FullFine in the local ID14 parser; codes 2 and 3 are Sparse.
+
+The current coefficient fitter remains five-channel and is not connected to this seam. A SYNTHETIC/TEST_ONLY fixture serializes one band for 15 objects and the local parser reads selector 1, 15 FullFine descriptors, and 105 coefficient symbols (15 x 7 x 1). The fixture is a serializer/parser shape check, not an audio coefficient producer or candidate.

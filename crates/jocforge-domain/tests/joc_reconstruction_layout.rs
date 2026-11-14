@@ -1,7 +1,8 @@
 // pattern: Functional Core
 use jocforge_domain::{
     joc::coefficient_payload::{
-        CoefficientPayloadInput, CoefficientPayloadObject, write_selected_id14_coefficient_payload,
+        CoefficientPayloadInput, CoefficientPayloadObject, CoefficientPayloadWriterFailure,
+        write_selected_id14_coefficient_payload,
         write_selected_id14_coefficient_payload_for_profile,
     },
     joc::coefficient_representation::JocCoefficientRowLayout,
@@ -384,15 +385,28 @@ fn profile_aware_payload_writer_keeps_payload_and_reconstruction_selectors_separ
 
     let selected_profile = resolve_selected_profile(&EncodingProfile::selected()).unwrap();
     let flat7x_profile = resolved_flat7x_profile();
+    let flat7x_input = CoefficientPayloadInput {
+        downmix_index: 1,
+        ..input.clone()
+    };
     let selected_five_point_one = write_selected_id14_coefficient_payload(&input).unwrap();
     let flat7x =
-        write_selected_id14_coefficient_payload_for_profile(&input, flat7x_profile).unwrap();
+        write_selected_id14_coefficient_payload_for_profile(&flat7x_input, flat7x_profile).unwrap();
 
     assert_eq!(input.downmix_index, 3);
+    assert_eq!(flat7x_input.downmix_index, 1);
     assert_eq!(selected_profile.joc_dmx_config_idx(), None);
     assert_eq!(selected_profile.joc_payload_downmix_index().value(), 3);
     assert_eq!(flat7x_profile.joc_dmx_config_idx(), Some(1));
     assert_eq!(flat7x_profile.joc_payload_downmix_index().value(), 1);
+    assert!(matches!(
+        write_selected_id14_coefficient_payload_for_profile(&input, flat7x_profile),
+        Err(CoefficientPayloadWriterFailure::UnsupportedSelectedProfile)
+    ));
+    assert!(matches!(
+        write_selected_id14_coefficient_payload_for_profile(&flat7x_input, selected_profile),
+        Err(CoefficientPayloadWriterFailure::UnsupportedSelectedProfile)
+    ));
     assert_eq!(
         selected_five_point_one.writer_return_code(),
         Some(Id14WriterReturnCode::Success)

@@ -42,6 +42,34 @@ pub struct CoefficientPayloadInput {
     pub objects: Vec<CoefficientPayloadObject>,
 }
 
+/// Explicit selector-1 input seam for the observed Full Flat7x object shape.
+///
+/// The caller owns the row values. This type validates only their serialization shape and does
+/// not connect them to the five-channel fit producer.
+#[derive(Clone, Copy, Debug)]
+pub struct Flat7xCoefficientRows<'a> {
+    input: &'a CoefficientPayloadInput,
+}
+
+impl<'a> Flat7xCoefficientRows<'a> {
+    pub fn new(
+        input: &'a CoefficientPayloadInput,
+    ) -> Result<Self, CoefficientPayloadWriterFailure> {
+        validate_flat7x_coefficient_rows(input)?;
+        Ok(Self { input })
+    }
+
+    pub fn write_payload(
+        self,
+        profile: ResolvedEncodingProfile,
+    ) -> Result<CoefficientPayloadOutcome, CoefficientPayloadWriterFailure> {
+        if !flat7x_full_data_point_shape_allowed(Some(profile), self.input) {
+            return Err(CoefficientPayloadWriterFailure::UnsupportedSelectedProfile);
+        }
+        write_selected_id14_coefficient_payload_for_profile(self.input, profile)
+    }
+}
+
 /// One descriptor's coefficient source and optional time-slot offsets.
 #[derive(Clone, Debug, PartialEq)]
 pub struct CoefficientPayloadObject {
@@ -277,6 +305,11 @@ fn write_selected_id14_coefficient_payload_inner(
     input: &CoefficientPayloadInput,
     profile: Option<ResolvedEncodingProfile>,
 ) -> Result<CoefficientPayloadOutcome, CoefficientPayloadWriterFailure> {
+    if profile
+        .is_some_and(|profile| input.downmix_index != profile.joc_payload_downmix_index().value())
+    {
+        return Err(CoefficientPayloadWriterFailure::UnsupportedSelectedProfile);
+    }
     let channel_count = selected_channel_count(input.downmix_index)?;
     let flat7x_full_shape = flat7x_full_data_point_shape_allowed(profile, input);
     validate_input(input, channel_count, flat7x_full_shape)?;
@@ -373,6 +406,38 @@ fn selected_channel_count(downmix_index: u8) -> Result<u8, CoefficientPayloadWri
     }
 }
 
+fn is_full_mode(mode: u8) -> bool {
+    // The selected parser maps mode codes 0/1 to Full and 2/3 to Sparse.
+    matches!(mode, 0 | 1)
+}
+
+fn validate_flat7x_coefficient_rows(
+    input: &CoefficientPayloadInput,
+) -> Result<(), CoefficientPayloadWriterFailure> {
+    if input.downmix_index != JocPayloadDownmixIndex::SevenChannel.value() {
+        return Err(CoefficientPayloadWriterFailure::UnsupportedSelectedProfile);
+    }
+    if input.objects.len() != 15 {
+        return Err(CoefficientPayloadWriterFailure::InputShape);
+    }
+
+    for object in &input.objects {
+        if !object.present || !is_full_mode(object.mode) || object.points.len() != 1 {
+            return Err(CoefficientPayloadWriterFailure::UnsupportedSelectedProfile);
+        }
+        let band_count = *BAND_COEFFICIENT_COUNTS
+            .get(usize::from(object.band_enum))
+            .ok_or(CoefficientPayloadWriterFailure::InputShape)?;
+        let point = &object.points[0];
+        if point.channel_rows.len() != 7
+            || point.channel_rows.iter().any(|row| row.len() != band_count)
+        {
+            return Err(CoefficientPayloadWriterFailure::InputShape);
+        }
+    }
+    Ok(())
+}
+
 fn validate_input(
     input: &CoefficientPayloadInput,
     channel_count: u8,
@@ -396,7 +461,7 @@ fn validate_input(
         }
         // Wash's official Flat7x parser shape includes Full data points at selector 1 / 7 rows.
         // Other callers retain the existing fail-closed selector/mode gate.
-        if input.downmix_index == 1 && object.mode < 2 && !flat7x_full_shape {
+        if input.downmix_index == 1 && is_full_mode(object.mode) && !flat7x_full_shape {
             return Err(CoefficientPayloadWriterFailure::UnsupportedSelectedProfile);
         }
         if let Some(offsets) = &object.offsets {
@@ -440,7 +505,7 @@ fn flat7x_full_data_point_shape_allowed(
         && input
             .objects
             .iter()
-            .all(|object| object.present && object.mode < 2 && object.points.len() == 1)
+            .all(|object| object.present && is_full_mode(object.mode) && object.points.len() == 1)
         && profile.is_some_and(|profile| {
             profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x
                 && profile.joc_payload_downmix_index() == JocPayloadDownmixIndex::SevenChannel
@@ -505,7 +570,7 @@ fn build_coefficient_body(
             .points
             .iter()
             .map(|point| {
-                if object.mode < 2 {
+                if is_full_mode(object.mode) {
                     let quantized_rows = point
                         .channel_rows
                         .iter()
@@ -597,6 +662,7 @@ fn map_coefficient_quantization_error(
 mod tests {
     use super::{
         CoefficientPayloadInput, CoefficientPayloadObject, CoefficientPayloadPoint,
+        CoefficientPayloadWriterFailure, Flat7xCoefficientRows,
         flat7x_full_data_point_shape_allowed,
     };
     use crate::profile::{EncodingProfile, JocReconstructionLayout, resolve_selected_profile};
@@ -610,7 +676,7 @@ mod tests {
             .unwrap();
         let selected_five_point_one =
             resolve_selected_profile(&EncodingProfile::selected()).unwrap();
-        let input = observed_flat7x_full_data_point_input();
+        let input = synthetic_test_only_flat7x_input();
 
         assert!(flat7x_full_data_point_shape_allowed(Some(flat7x), &input));
         assert!(!flat7x_full_data_point_shape_allowed(
@@ -639,18 +705,84 @@ mod tests {
         ));
     }
 
-    fn observed_flat7x_full_data_point_input() -> CoefficientPayloadInput {
+    #[test]
+    fn flat7x_coefficient_rows_require_exact_full_present_seven_row_shape() {
+        let input = synthetic_test_only_flat7x_input();
+        assert!(Flat7xCoefficientRows::new(&input).is_ok());
+
+        let mut missing_row = input.clone();
+        missing_row.objects[0].points[0].channel_rows.pop();
+        assert!(matches!(
+            Flat7xCoefficientRows::new(&missing_row),
+            Err(CoefficientPayloadWriterFailure::InputShape)
+        ));
+
+        let mut twelve_band_rows = input.clone();
+        for object in &mut twelve_band_rows.objects {
+            object.band_enum = 5;
+            for row in &mut object.points[0].channel_rows {
+                row.resize(12, 0.25);
+            }
+        }
+        assert!(Flat7xCoefficientRows::new(&twelve_band_rows).is_ok());
+
+        let mut wrong_band_count = twelve_band_rows;
+        wrong_band_count.objects[0].points[0].channel_rows[0].pop();
+        assert!(matches!(
+            Flat7xCoefficientRows::new(&wrong_band_count),
+            Err(CoefficientPayloadWriterFailure::InputShape)
+        ));
+
+        let mut sparse = input.clone();
+        sparse.objects[0].mode = 2;
+        assert!(matches!(
+            Flat7xCoefficientRows::new(&sparse),
+            Err(CoefficientPayloadWriterFailure::UnsupportedSelectedProfile)
+        ));
+
+        let mut absent = input.clone();
+        absent.objects[0].present = false;
+        assert!(matches!(
+            Flat7xCoefficientRows::new(&absent),
+            Err(CoefficientPayloadWriterFailure::UnsupportedSelectedProfile)
+        ));
+
+        let mut multiple_points = input.clone();
+        let second_point = multiple_points.objects[0].points[0].clone();
+        multiple_points.objects[0].points.push(second_point);
+        assert!(matches!(
+            Flat7xCoefficientRows::new(&multiple_points),
+            Err(CoefficientPayloadWriterFailure::UnsupportedSelectedProfile)
+        ));
+
+        let mut missing_object = input.clone();
+        missing_object.objects.pop();
+        assert!(matches!(
+            Flat7xCoefficientRows::new(&missing_object),
+            Err(CoefficientPayloadWriterFailure::InputShape)
+        ));
+
+        let mut five_channel_selector = input;
+        five_channel_selector.downmix_index = 3;
+        assert!(matches!(
+            Flat7xCoefficientRows::new(&five_channel_selector),
+            Err(CoefficientPayloadWriterFailure::UnsupportedSelectedProfile)
+        ));
+    }
+
+    // SYNTHETIC/TEST_ONLY values exercise the parser/serializer row contract, not audio fitting.
+    fn synthetic_test_only_flat7x_input() -> CoefficientPayloadInput {
         let point = CoefficientPayloadPoint {
-            channel_rows: Vec::new(),
+            channel_rows: (0..7).map(|_| vec![0.25]).collect(),
             selected_channels: Vec::new(),
         };
         CoefficientPayloadInput {
             downmix_index: 1,
             extension_config: 0,
-            clip_gain_index: 0,
+            clip_gain_index: 128,
             sequence_count: 0,
             time_slot_limit: 24,
-            capacity_bytes: 543,
+            capacity_bytes: 372,
             objects: (0..15)
                 .map(|_| CoefficientPayloadObject {
                     present: true,

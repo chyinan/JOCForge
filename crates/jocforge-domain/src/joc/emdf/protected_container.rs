@@ -797,6 +797,11 @@ fn parse_joc_payload(
         extension_config,
         clip_gain_index,
     )?;
+    let coefficient_channel_count = match downmix_index {
+        1 => 7,
+        3 => 5,
+        _ => return Err(CurrentEmdfParserError::JocSelectedHeader),
+    };
     if sequence_count != provenance.sequence_count() {
         return Err(CurrentEmdfParserError::JocSequenceMismatch {
             expected: provenance.sequence_count(),
@@ -864,7 +869,7 @@ fn parse_joc_payload(
             descriptor.mode,
             JocCodingMode::FullCoarse | JocCodingMode::FullFine
         ) {
-            for _channel in 0..5 {
+            for _channel in 0..coefficient_channel_count {
                 let mut previous = initial_previous;
                 for _band in 0..descriptor.band_count {
                     let symbol = read_huffman_symbol(&mut reader, coefficient_table)?;
@@ -1396,12 +1401,30 @@ impl<'a> BitReader<'a> {
 mod tests {
     use super::{
         BitReader, CarrierBlock, CurrentEmdfCarriageMode, CurrentEmdfParserError, CurrentPayloadId,
-        PayloadConfiguration, SELECTED_JOC_DOWNMIX_INDEXES, check_joc_payload_capacity,
-        clear_bit_range, read_varuint, selected_payload_capacity, selected_xy_table,
-        selected_z_table, validate_outer_header, validate_selected_configuration,
-        validate_selected_joc_header,
+        JocCodingMode, PayloadConfiguration, SELECTED_JOC_DOWNMIX_INDEXES,
+        check_joc_payload_capacity, clear_bit_range, parse_joc_payload, read_varuint,
+        selected_payload_capacity, selected_xy_table, selected_z_table, validate_outer_header,
+        validate_selected_configuration, validate_selected_joc_header,
     };
     use crate::integrity::keyless_checksum::{crc8_smbus, crc32_iso_hdlc};
+    use crate::{
+        joc::{
+            coefficient_fitting::FitSourceLineage,
+            coefficient_payload::{
+                CoefficientPayloadInput, CoefficientPayloadObject, CoefficientPayloadPoint,
+                Flat7xCoefficientRows,
+            },
+            id14_body::{
+                Id14ObjectCount, Id14ProducerIdentity, Id14ProducerProvenance, Id14SequenceCount,
+            },
+        },
+        profile::{EncodingProfile, JocReconstructionLayout, resolve_selected_profile},
+        spatial::SpatialAudioMachine,
+        timeline::{
+            CodecSourceIndex, FrontendCallbackIndex, JocDispatchIndex, JocGeneratedWriterIndex,
+        },
+        transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId},
+    };
 
     #[test]
     fn approved_f14k_crc_primitives_match_known_check_values() {
@@ -1502,6 +1525,83 @@ mod tests {
             validate_selected_joc_header(1, 14, 0, 128),
             Err(CurrentEmdfParserError::JocSelectedHeader)
         );
+    }
+
+    #[test]
+    fn flat7x_full_rows_roundtrip_selector_one_fifteen_objects_and_seven_rows() {
+        // SYNTHETIC/TEST_ONLY values exercise parser/serializer shape only, not audio fitting.
+        let point = CoefficientPayloadPoint {
+            channel_rows: (0..7).map(|_| vec![0.25]).collect(),
+            selected_channels: Vec::new(),
+        };
+        let input = CoefficientPayloadInput {
+            downmix_index: 1,
+            extension_config: 0,
+            clip_gain_index: 128,
+            sequence_count: 0,
+            time_slot_limit: 24,
+            capacity_bytes: 372,
+            objects: (0..15)
+                .map(|_| CoefficientPayloadObject {
+                    present: true,
+                    band_enum: 0,
+                    mode: 1,
+                    points: vec![point.clone()],
+                    offsets: None,
+                })
+                .collect(),
+        };
+        let profile =
+            resolve_selected_profile(&EncodingProfile::selected_with_joc_reconstruction_layout(
+                JocReconstructionLayout::Flat7x,
+            ))
+            .unwrap();
+        let rows = Flat7xCoefficientRows::new(&input).unwrap();
+        let payload = rows
+            .write_payload(profile)
+            .unwrap()
+            .payload()
+            .unwrap()
+            .to_vec();
+
+        let programme_id = ProgrammeId::new("flat7x-synthetic-parser-test").unwrap();
+        let attempt = AttemptId::new(1);
+        let source_index = CodecSourceIndex::new(0);
+        let dispatch = JocDispatchIndex::new(1);
+        let lineage = FitSourceLineage::for_test(
+            programme_id.clone(),
+            attempt,
+            CallbackLineageIdentity::new(programme_id, attempt, FrontendCallbackIndex::new(0)),
+            source_index,
+            dispatch,
+            0,
+            SpatialAudioMachine::new_cold(EncodingProfile::selected())
+                .unwrap()
+                .digest(),
+        );
+        let provenance = Id14ProducerProvenance::new(
+            Id14ProducerIdentity {
+                lineage,
+                producer_transaction_id: None,
+                producer_generation: source_index,
+                dispatch,
+                writer: JocGeneratedWriterIndex::new(0),
+                sequence_count: Id14SequenceCount::new(0).unwrap(),
+                object_count: Id14ObjectCount::from_selected_slots(15).unwrap(),
+            },
+            &payload,
+        )
+        .unwrap();
+
+        let parsed = parse_joc_payload(&payload, &provenance).unwrap();
+        assert_eq!(parsed.downmix_index(), 1);
+        assert_eq!(parsed.object_count(), 15);
+        assert_eq!(parsed.descriptors().len(), 15);
+        assert!(parsed.descriptors().iter().all(|descriptor| {
+            descriptor.band_count() == 1 && descriptor.mode() == JocCodingMode::FullFine
+        }));
+        assert_eq!(parsed.coefficient_symbol_count(), 105);
+        assert_eq!(parsed.position_symbol_count(), 0);
     }
 
     #[test]
