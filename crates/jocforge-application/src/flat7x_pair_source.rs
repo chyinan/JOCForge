@@ -39,7 +39,7 @@ pub use jocforge_domain::codec::flat7x_d0_pcm_source::{
     Flat7xD0OverlapHistory, Flat7xD0PcmBlockSeriesCandidate, Flat7xD0PcmFrameCandidate,
     Flat7xD0PcmFrameSettings, Flat7xD0PcmSourceExtent, Flat7xD0PcmSourceExtentOrigin,
 };
-pub use jocforge_domain::codec::frame_builder::Flat7xD0BsiStructure;
+pub use jocforge_domain::codec::frame_builder::{Flat7xD0BsiStructure, Flat7xD0Ci16Addbsi};
 pub use jocforge_domain::codec::i0_frame_assembler::{
     CallerOwnedAc3Cplinu, CallerOwnedI0CrcrsvSeed, Flat7xI0FrameAssemblyError, I0AuxDataInput,
     OpaqueI0Ac3BitSpan,
@@ -670,7 +670,7 @@ impl Flat7xPairAccessUnitCandidate {
 pub fn assemble_flat7x_pair_access_unit_candidate(
     pair_audio: &Flat7xPairAudioBlockCandidate<'_, '_>,
     i0_frame: &Flat7xPairI0FrameCandidate,
-    d0_bsi: Flat7xD0BsiStructure<'_>,
+    d0_bsi: Flat7xD0BsiStructure,
 ) -> Result<Flat7xPairAccessUnitCandidate, Flat7xPairSourceError> {
     let binding = &pair_audio.binding;
     let role_map = &binding.role_map_receipt;
@@ -1059,7 +1059,7 @@ mod pair_access_unit_integration_tests {
     impl SyntheticD0AudioSpans {
         fn new(
             target: Flat7xI0D0TargetPlan,
-            bsi: &Flat7xD0BsiStructure<'_>,
+            bsi: &Flat7xD0BsiStructure,
             container_bytes: u16,
             frame_tail_bits: u32,
         ) -> Self {
@@ -1322,14 +1322,14 @@ mod pair_access_unit_integration_tests {
         }
     }
 
-    fn synthetic_d0_bsi() -> Flat7xD0BsiStructure<'static> {
+    fn synthetic_d0_bsi() -> Flat7xD0BsiStructure {
         Flat7xD0BsiStructure {
             dialnorm: 31,
             compr: Some(1),
             mixing: None,
             block_mix: [None; 6],
             information: None,
-            addbsi: None,
+            addbsi: Flat7xD0Ci16Addbsi::new(0x0110),
         }
     }
 
@@ -1411,7 +1411,7 @@ mod pair_access_unit_integration_tests {
                     mixing: None,
                     block_mix: [None; 6],
                     information: None,
-                    addbsi: None,
+                    addbsi: Flat7xD0Ci16Addbsi::new(0x0110),
                 },
                 complete_emdf_container: &emdf_container,
                 bap_parameters: &d0_bap_parameters,

@@ -43,7 +43,7 @@ pub const FLAT7X_D0_DEFAULT_FLOOR_CODE: u8 = 7;
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Flat7xD0AudioFrameInput<'a> {
     pub target: Flat7xI0D0TargetPlan,
-    pub bsi_structure: Flat7xD0BsiStructure<'a>,
+    pub bsi_structure: Flat7xD0BsiStructure,
     pub complete_emdf_container: &'a [u8],
     pub bap_parameters: &'a Flat7xD0BapParameters,
     pub spectrum_by_block: &'a [Flat7xD0SpectrumBlock; FLAT7X_D0_BAP_BLOCK_COUNT],

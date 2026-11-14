@@ -1715,7 +1715,9 @@ mod i0_audio_block_series_tests {
                 FLAT7X_D0_AUDIO_FRAME_CONTROL_BITS, Flat7xD0AllocationCandidateQ,
                 Flat7xD0AudioFrameControlPolicy,
             },
-            frame_builder::{Flat7xD0BsiStructure, measure_flat7x_d0_bsi_structure},
+            frame_builder::{
+                Flat7xD0BsiStructure, Flat7xD0Ci16Addbsi, measure_flat7x_d0_bsi_structure,
+            },
             i0_frame_assembler::{
                 CallerOwnedI0CrcrsvSeed, Flat7xI0Ac3AudioSeriesFrameCandidate,
                 Flat7xI0FrameAssemblyError, I0_TARGET_FRAME_BYTES, I0AuxDataInput,
@@ -1880,7 +1882,7 @@ mod i0_audio_block_series_tests {
         (source_identity, frame_candidate)
     }
 
-    fn synthetic_d0_bsi() -> Flat7xD0BsiStructure<'static> {
+    fn synthetic_d0_bsi() -> Flat7xD0BsiStructure {
         // Caller-authored test structure; fields after the captured chanmap are synthetic.
         Flat7xD0BsiStructure {
             dialnorm: 31,
@@ -1888,7 +1890,7 @@ mod i0_audio_block_series_tests {
             mixing: None,
             block_mix: [None; 6],
             information: None,
-            addbsi: None,
+            addbsi: Flat7xD0Ci16Addbsi::new(0x0110),
         }
     }
 
@@ -1903,7 +1905,7 @@ mod i0_audio_block_series_tests {
 
     fn synthetic_d0_audio_spans(
         target: crate::profile::Flat7xI0D0TargetPlan,
-        bsi: &Flat7xD0BsiStructure<'_>,
+        bsi: &Flat7xD0BsiStructure,
         container_bytes: u16,
     ) -> SyntheticD0AudioSpans {
         let bsi_bits = measure_flat7x_d0_bsi_structure(target, bsi)

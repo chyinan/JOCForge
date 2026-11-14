@@ -180,7 +180,7 @@ pub fn assemble_flat7x_i0_d0_au_candidate(
     target: Flat7xI0D0TargetPlan,
     expected_source_identity: &SharedAnalysisIdentity,
     i0_frame: Flat7xI0Ac3AudioSeriesFrameCandidate,
-    d0_bsi: Flat7xD0BsiStructure<'_>,
+    d0_bsi: Flat7xD0BsiStructure,
     d0_audio_blocks: Flat7xD0FrameBitInput<'_>,
 ) -> Result<Flat7xI0D0AuCandidate, Flat7xI0D0AuCandidateError> {
     assemble_flat7x_i0_d0_au_candidate_inner(
@@ -201,7 +201,7 @@ pub fn assemble_flat7x_i0_d0_au_candidate_with_tail_policy(
     target: Flat7xI0D0TargetPlan,
     expected_source_identity: &SharedAnalysisIdentity,
     i0_frame: Flat7xI0Ac3AudioSeriesFrameCandidate,
-    d0_bsi: Flat7xD0BsiStructure<'_>,
+    d0_bsi: Flat7xD0BsiStructure,
     d0_audio_blocks: Flat7xD0FrameBitInput<'_>,
     d0_frame_tail_policy: Flat7xD0FrameTailPolicy,
 ) -> Result<Flat7xI0D0AuCandidate, Flat7xI0D0AuCandidateError> {
@@ -219,7 +219,7 @@ fn assemble_flat7x_i0_d0_au_candidate_inner(
     target: Flat7xI0D0TargetPlan,
     expected_source_identity: &SharedAnalysisIdentity,
     i0_frame: Flat7xI0Ac3AudioSeriesFrameCandidate,
-    d0_bsi: Flat7xD0BsiStructure<'_>,
+    d0_bsi: Flat7xD0BsiStructure,
     d0_audio_blocks: &Flat7xD0FrameBitInput<'_>,
     d0_frame_tail_policy: Option<Flat7xD0FrameTailPolicy>,
 ) -> Result<Flat7xI0D0AuCandidate, Flat7xI0D0AuCandidateError> {

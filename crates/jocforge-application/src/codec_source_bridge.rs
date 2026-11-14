@@ -6,7 +6,7 @@ use std::sync::Arc;
 use jocforge_domain::{
     analysis::source_frame::{SharedAnalysisIdentity, SharedAnalysisReceipt},
     codec::{
-        frame_builder::Flat7xD0MixingMetadataValues,
+        frame_builder::{Flat7xD0Ci16Addbsi, Flat7xD0MixingMetadataValues},
         frame_syntax::{SelectedBsiDrcSyntaxError, bind_selected_bsi_drc_fields},
         selected_frame_trial::{
             SelectedBsiInformationInput, SelectedBsiInput, SelectedBsiMixingInput,
@@ -16,7 +16,7 @@ use jocforge_domain::{
     drc::NoneDrcOwnerAfterProposal,
     frontend::job_configuration::{SelectedDrcProfile, SelectedHeightTrim, SelectedSurroundTrim},
     meter::prepared_job_identity::PreparedJobInputIdentity,
-    profile::{EncodingProfile, resolve_selected_profile},
+    profile::{EncodingProfile, Flat7xI0D0TargetPlan, resolve_selected_profile},
     timeline::{CodecSourceIndex, source_for_callback},
     transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId},
 };
@@ -37,6 +37,7 @@ pub enum CodecSourceBridgeError {
     },
     UnsupportedSelectedMixing,
     UnsupportedSelectedDbmd,
+    UnsupportedFlat7xTarget,
     PreparedJobInputIdentityUnbound,
     PreparedJobInputIdentityMismatch,
     ProgrammeIdentityMismatch,
@@ -58,6 +59,7 @@ pub struct Flat7xD0BsiSourceInputs {
     compr: Option<u8>,
     dynamic_range_codes: [Option<u8>; 6],
     mixing: Flat7xD0MixingMetadataValues,
+    ci16_addbsi: Flat7xD0Ci16Addbsi,
 }
 
 impl Flat7xD0BsiSourceInputs {
@@ -79,6 +81,10 @@ impl Flat7xD0BsiSourceInputs {
 
     pub const fn mixing(&self) -> Flat7xD0MixingMetadataValues {
         self.mixing
+    }
+
+    pub const fn ci16_addbsi(&self) -> Flat7xD0Ci16Addbsi {
+        self.ci16_addbsi
     }
 
     pub const fn policy_id(&self) -> &'static str {
@@ -112,12 +118,17 @@ pub fn bind_selected_codec_bsi_source(
 ///
 /// The mapping reuses the existing selected F06ND-to-F12 field projection. It carries numeric RF
 /// and per-block line codes into the target D0 structure and keeps the authored downmix values
-/// separate from PCM row roles. Other optional D0 information/addbsi fields remain caller policy.
+/// separate from PCM row roles. It takes the fixed CI16 scalar from the selected target profile;
+/// this field is independent of the profile's Type-A complexity index.
 pub fn bind_flat7x_d0_bsi_source_inputs(
     prepared: &PreparedJobInput,
     shared_analysis: &SharedAnalysisReceipt,
     drc_after: &NoneDrcOwnerAfterProposal,
+    target: Flat7xI0D0TargetPlan,
 ) -> Result<Flat7xD0BsiSourceInputs, CodecSourceBridgeError> {
+    if target != Flat7xI0D0TargetPlan::approved_contract() {
+        return Err(CodecSourceBridgeError::UnsupportedFlat7xTarget);
+    }
     validate_source_identity(prepared, shared_analysis, drc_after)?;
     let drc_fields = bind_selected_bsi_drc_fields(shared_analysis, drc_after)
         .map_err(CodecSourceBridgeError::DrcFields)?;
@@ -128,6 +139,7 @@ pub fn bind_flat7x_d0_bsi_source_inputs(
         compr: drc_fields.rf_code(),
         dynamic_range_codes: *drc_fields.line_codes(),
         mixing: map_flat7x_d0_mixing_values(mixing),
+        ci16_addbsi: Flat7xD0Ci16Addbsi::new(target.d0_ci16_addbsi_value()),
     })
 }
 

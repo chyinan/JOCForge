@@ -311,7 +311,7 @@ impl From<FrameBitWriterError> for Flat7xD0FrameAssemblyError {
 /// integrity, and writer capacity are checked before caller writer bytes or cursor change.
 pub fn assemble_flat7x_d0_frame_bits(
     target: Flat7xI0D0TargetPlan,
-    bsi_structure: Flat7xD0BsiStructure<'_>,
+    bsi_structure: Flat7xD0BsiStructure,
     input: Flat7xD0FrameBitInput<'_>,
     writer: &mut FrameBitWriter<'_>,
 ) -> Result<Flat7xD0FrameAssemblyReceipt, Flat7xD0FrameAssemblyError> {
@@ -324,7 +324,7 @@ pub fn assemble_flat7x_d0_frame_bits(
 /// skipfld, zero-fills nauxbits, then writes `auxdatae=0` and `crcrsv=0` before CRC2.
 pub fn assemble_flat7x_d0_frame_bits_with_tail_policy(
     target: Flat7xI0D0TargetPlan,
-    bsi_structure: Flat7xD0BsiStructure<'_>,
+    bsi_structure: Flat7xD0BsiStructure,
     input: Flat7xD0FrameBitInput<'_>,
     tail_policy: Flat7xD0FrameTailPolicy,
     writer: &mut FrameBitWriter<'_>,
@@ -346,7 +346,7 @@ pub fn assemble_flat7x_d0_frame_bits_with_tail_policy(
 #[cfg(feature = "test-support")]
 pub fn assemble_flat7x_d0_frame_bits_with_aux_data(
     target: Flat7xI0D0TargetPlan,
-    bsi_structure: Flat7xD0BsiStructure<'_>,
+    bsi_structure: Flat7xD0BsiStructure,
     input: Flat7xD0FrameBitInput<'_>,
     frame_aux_data: OpaqueD0FrameAuxDataSpan<'_>,
     writer: &mut FrameBitWriter<'_>,
@@ -363,7 +363,7 @@ pub fn assemble_flat7x_d0_frame_bits_with_aux_data(
 
 fn assemble_flat7x_d0_frame_bits_inner(
     target: Flat7xI0D0TargetPlan,
-    bsi_structure: Flat7xD0BsiStructure<'_>,
+    bsi_structure: Flat7xD0BsiStructure,
     input: &Flat7xD0FrameBitInput<'_>,
     frame_aux_data: Option<OpaqueD0FrameAuxDataSpan<'_>>,
     frame_tail_policy: Option<Flat7xD0FrameTailPolicy>,

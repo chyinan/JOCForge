@@ -11,13 +11,13 @@
       ],
       "expected": {
         "status": "VALID_LAYOUT_PROPOSAL",
-        "bsi_end_bit": 72,
-        "audio_frame_control_start_bit": 72,
-        "audio_frame_control_bit_length": 23,
-        "first_audio_block_start_bit": 95,
-        "skip_field_start_bit": 122,
+        "bsi_end_bit": 93,
+        "audio_frame_control_start_bit": 93,
+        "audio_frame_control_bit_length": 77,
+        "first_audio_block_start_bit": 170,
+        "skip_field_start_bit": 197,
         "skip_field_bit_length": 18,
-        "total_frame_span_bits": 225,
+        "total_frame_span_bits": 300,
         "target_frame_bytes": 4096
       }
     },
@@ -29,13 +29,13 @@
       ],
       "expected": {
         "status": "VALID_LAYOUT_PROPOSAL",
-        "bsi_end_bit": 72,
-        "audio_frame_control_start_bit": 72,
-        "audio_frame_control_bit_length": 23,
-        "first_audio_block_start_bit": 95,
-        "skip_field_start_bit": 95,
+        "bsi_end_bit": 93,
+        "audio_frame_control_start_bit": 93,
+        "audio_frame_control_bit_length": 77,
+        "first_audio_block_start_bit": 170,
+        "skip_field_start_bit": 170,
         "skip_field_bit_length": 4098,
-        "total_frame_span_bits": 4193,
+        "total_frame_span_bits": 4268,
         "target_frame_bytes": 4096
       }
     },

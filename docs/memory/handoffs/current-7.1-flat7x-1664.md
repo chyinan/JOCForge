@@ -3,7 +3,7 @@ status: current
 topic: 7.1-flat7x-1664-handoff
 spec: JOCForge
 confidence: package-backed-target
-last_updated: 2026-11-14
+last_updated: 2026-11-15
 tags:
   - handoff
   - AU
@@ -33,7 +33,7 @@ Commit `35503d6d404dbafbdbdddc05cbe1b8abaefa4043` 已将 Flat7x I0+D0 durable ap
 
 当前工作树新增同源 D0 BSI producer input：`bind_flat7x_d0_bsi_source_inputs` 从 `NoneDrcOwnerAfterProposal` 和 prepared authored downmix 取得 dialnorm、RF `compr`、六个 line DRC codes 与 mixing values，并保留 shared-analysis identity；CLI 在 D0 frame 组装前与 pair source role receipt 比对。它复用现有 F06ND/F12 field projection 和 `FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1`，没有新增 audio math。selected 5.1 path不变。
 
-`information` 和 `addbsi` 仍按 replaceable local absence policy 留空；官方 reference CI16/addbsi 的 source binding 是具体剩余项。全输入 CLI、最终 `.ec3`、OpenJOC render 与 W04 尚未运行，`production_allowed=false` 继续保留。
+Wash 已封存官方 AU0 D0 的 CI16 scalar `0x0110`，实现侧已将它作为 target profile 输入贯通 D0 BSI source bridge 与 required `Flat7xD0Ci16Addbsi` writer field。`addbsie=1`、`addbsil=1` 和两字节 payload 由同一 writer 输出；它与 Type-A `complexity16` 保持为独立 profile fields。全输入 CLI、当前代码的新编码 attempt、OpenJOC render 与 W04 尚未运行，`production_allowed=false` 继续保留。
 
 ## 隔离仓库中已验证的内容
 
@@ -438,3 +438,13 @@ Fix commit `6f3cb91e39d9a8fd308b2ed5f0188d7f67babd10` was pushed before correcte
 ## 2026-11-14 D0 audfrm strategy-field placement
 
 OpenJOC 0.20.1 reported `skip_observed=0` for the previous candidate. ETSI TS 102 366 V1.4.1 Annex E.1.2.3 places six coupling-state bits and 24 two-bit `chexpstr` values in `audfrm`, after `skipflde` and before any `audblk`. The writer now puts these 54 bits in that frame-level span and removes the duplicated per-block fields. Follow-up syntax review also corrected D0 `audblk` ordering per Annex E.1.2.4: four `dithflag` bits precede the `dynrnge` presence/value. Total frame extent stays 4,096 bytes; block-2 skip-field and frame-tail policies are unchanged. D0 audio-frame 4/4, frame assembly 5/5, frame-control 2/2, selected 5.1 all-rate 1/1, `cargo check -p jocforge --locked`, and fmt check pass. Short diagnostic attempt `1794661230282761900` captured 137 AUs / 911,872 bytes. AU0 receipt: audfrm `[94,171)`, skipflde 104, skiple 12,743, skipl 12,744 / C=230, EMDF `[12,753,14,593)`, nauxbits `[32,494,32,750)`, auxdatae 32,750, crcrsv 32,751, CRC2 `[32,752,32,768)`. OpenJOC 0.20.1 still reports `skip_observed=0`, 822 unresolved skip fields, zero EMDF/JOC, `malformed_aus=0`; first parser boundary divergence remains open. `D:\testADM.wav` is diagnostic only; Love Song remains the full-run target.
+
+## 2026-11-15 D0 CI16 addbsi and parser boundary
+
+Wash package `official_demo_d0_addbsi_ci16_v1` (manifest `2a15393cecf15a5f03e58e8f788ff0bd9ea9cf50456b7b23a0ca06f0744112dc`, seal `f1d4da8420911e723098d6f7b983226851928f069ada1cbec18eae87f7607b9b`) supplies the official sample's D0 suffix: `mixmdate=0`, `infomdate=0`, `addbsie=1`, `addbsil=1`, and CI16 `0x0110` at bits `[85,101)`. Raw bytes were not saved. CI16 remains separate from Type-A `complexity16`; their semantic join is `UNBOUND`.
+
+The approved Flat7x target now carries this scalar, `bind_flat7x_d0_bsi_source_inputs` passes it through `Flat7xD0BsiSourceInputs`, and the typed D0 BSI structure requires it. The writer emits the two-byte field and its presence/length markers. OpenJOC's parser-diagnostic supplement (manifest `74d14c065df0da40772051b7f87e5c91dd0e0190cc2b60f98a73a6923c322b45`, seal `163432856af5ba942ce1d37efb0db39f5350cf76c5b02ef82ebb1bf0f4a25663`) records parser-only clues for this BSI admission and Huffman truncation boundary; executable/source build join remains `UNBOUND`.
+
+Focused verification passed: D0 BSI structure 6/6, frame assembler 5/5, frame layout 4/4, audio frame 4/4, application Flat7x tests 6/6, selected 5.1 all-rate route 1/1, CLI check, and fmt check. No new encoding attempt was started. The previous short diagnostic candidate parsed skip field and EMDF on 137/137 AUs, while its ID14 payload remained malformed with truncated Huffman / missing addbsi reports; it predates this CI16 connection. The current target remains experimental with `production_allowed=false`.
+
+Wash additionally reports that OpenJOC 0.20.1's three direct JOC parser calls pass `codeword_bits=None`; the observed `TruncatedCodeword` therefore comes from physical bit-reader EOF. Supplement `OPENJOC-E944-HUFFMAN-CODEWORD-LIMIT-SOURCE-WASH-V1` (manifest `57a4191bf8142d3274e8fa969fcebe22ca2f1316099e4e5b6b86ca30470df3bd`, seal `d9faa26c5bb992680415289772413af5c99698cf54baf0d7d697a32f497c2eb5`) is reported normal/O checked. The OpenJOC executable/source build join remains `UNBOUND`. The next diagnostic boundary is the presence and extent of JOC payload bits after D0 addbsi admission.

@@ -19,7 +19,7 @@ use jocforge_domain::{
             Flat7xOpaqueAccessUnitBytes, compose_flat7x_elementary_stream,
         },
         flat7x_d0_frame_controls::{Flat7xD0AllocationCandidateQ, Flat7xD0AudioFrameControlPolicy},
-        frame_builder::Flat7xD0BsiStructure,
+        frame_builder::{Flat7xD0BsiStructure, Flat7xD0Ci16Addbsi},
     },
     integrity::crc16::eac3_crc16,
     profile::Flat7xI0D0TargetPlan,
@@ -107,14 +107,14 @@ fn synthetic_frame_data(case: &Value) -> SyntheticFrameData {
     }
 }
 
-fn baseline_bsi_structure() -> Flat7xD0BsiStructure<'static> {
+fn baseline_bsi_structure() -> Flat7xD0BsiStructure {
     Flat7xD0BsiStructure {
         dialnorm: 16,
         compr: None,
         mixing: None,
         block_mix: [None; 6],
         information: None,
-        addbsi: None,
+        addbsi: Flat7xD0Ci16Addbsi::new(0x0110),
     }
 }
 
@@ -222,15 +222,15 @@ fn synthetic_assembler_copies_opaque_spans_and_generates_crc2_for_exact_target_e
     assert_eq!(receipt.total_frame_span_bits(), 32_768);
     assert_eq!(cursor, 32_768);
     assert_eq!(receipt.target_frame_bytes(), 4096);
-    assert_eq!(receipt.layout().bsi_span().end_bit(), 72);
-    assert_eq!(receipt.layout().audio_frame_control_span().start_bit(), 72);
+    assert_eq!(receipt.layout().bsi_span().end_bit(), 93);
+    assert_eq!(receipt.layout().audio_frame_control_span().start_bit(), 93);
     assert_eq!(receipt.layout().audio_frame_control_span().bit_length(), 77);
-    assert_eq!(receipt.audio_frame_controls().end_bit(), 149);
+    assert_eq!(receipt.audio_frame_controls().end_bit(), 170);
     assert_eq!(
         receipt.layout().audio_blocks()[0]
             .leading_audio_span()
             .start_bit(),
-        149
+        170
     );
     assert_eq!(
         receipt.layout().total_frame_span_bits(),
@@ -743,8 +743,8 @@ fn assembler_errors_leave_caller_bytes_and_cursor_unchanged() {
         0,
         Flat7xD0FrameAssemblyError::SourceSpanOutOfBounds {
             block_index: 5,
-            required_end_bit: 2_633,
-            available_source_bits: 2_632,
+            required_end_bit: 2_612,
+            available_source_bits: 2_608,
         },
     );
 

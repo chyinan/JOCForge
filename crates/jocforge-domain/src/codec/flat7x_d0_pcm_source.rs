@@ -223,7 +223,7 @@ pub struct Flat7xD0PcmFrameSettings<'a> {
     pub before: &'a Flat7xD0OverlapHistory,
     pub transform_parameters: &'a MathGeneratedTransformParameters,
     pub target: Flat7xI0D0TargetPlan,
-    pub bsi_structure: Flat7xD0BsiStructure<'a>,
+    pub bsi_structure: Flat7xD0BsiStructure,
     pub complete_emdf_container: &'a [u8],
     pub bap_parameters: &'a Flat7xD0BapParameters,
     pub dynamic_range_codes: [Option<u8>; FLAT7X_D0_BAP_BLOCK_COUNT],

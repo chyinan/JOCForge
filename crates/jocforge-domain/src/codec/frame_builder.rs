@@ -435,6 +435,7 @@ const D0_SOURCEFSCOD_WIDTH_BITS: u8 = 1;
 const D0_ADDBSIE_WIDTH_BITS: u8 = 1;
 const D0_ADDBSIL_WIDTH_BITS: u8 = 6;
 const D0_MAX_ADDBSI_BYTES: usize = 64;
+const D0_CI16_ADDBSI_BYTES: usize = 2;
 const D0_BSI_STRUCTURE_STAGING_BYTES: usize = 83;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -453,14 +454,35 @@ pub struct Flat7xD0InformationMetadata {
     pub sourcefscod: u8,
 }
 
+/// The required opaque two-byte CI16 record carried in the selected D0 `addbsi` field.
+///
+/// The value is supplied by the admitted profile input. This type fixes only its observed
+/// extent; it does not interpret the bytes.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct Flat7xD0BsiStructure<'a> {
+pub struct Flat7xD0Ci16Addbsi(u16);
+
+impl Flat7xD0Ci16Addbsi {
+    pub const fn new(value: u16) -> Self {
+        Self(value)
+    }
+
+    pub const fn value(self) -> u16 {
+        self.0
+    }
+
+    pub const fn bytes(self) -> [u8; D0_CI16_ADDBSI_BYTES] {
+        [(self.0 >> 8) as u8, self.0 as u8]
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Flat7xD0BsiStructure {
     pub dialnorm: u8,
     pub compr: Option<u8>,
     pub mixing: Option<Flat7xD0MixingMetadataValues>,
     pub block_mix: [Option<u8>; 6],
     pub information: Option<Flat7xD0InformationMetadata>,
-    pub addbsi: Option<&'a [u8]>,
+    pub addbsi: Flat7xD0Ci16Addbsi,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -514,12 +536,11 @@ impl From<FrameBitWriterError> for Flat7xD0BsiStructureError {
 
 /// Validates a typed D0 BSI structure and measures its complete extent.
 ///
-/// Opaque addbsi content is consulted only for its byte length. The returned
-/// length includes fixed/variable BSI, mixing metadata, infomdate-selected
-/// information, addbsie, and any addbsi length/data field.
+/// The returned length includes fixed/variable BSI, mixing metadata, infomdate-selected
+/// information, and the required two-byte CI16 addbsi field.
 pub fn measure_flat7x_d0_bsi_structure(
     target: Flat7xI0D0TargetPlan,
-    structure: &Flat7xD0BsiStructure<'_>,
+    structure: &Flat7xD0BsiStructure,
 ) -> Result<D0BsiStructureBitLength, Flat7xD0BsiStructureError> {
     if target != Flat7xI0D0TargetPlan::approved_contract() {
         return Err(Flat7xD0BsiStructureError::UnsupportedTargetContext);
@@ -621,24 +642,10 @@ pub fn measure_flat7x_d0_bsi_structure(
         0
     };
 
-    let addbsi_bits = match structure.addbsi {
-        Some(bytes) if !(1..=D0_MAX_ADDBSI_BYTES).contains(&bytes.len()) => {
-            return Err(Flat7xD0BsiStructureError::InfoAddbsi(
-                Flat7xD0InfoAddbsiError::AddbsiLengthOutOfRange { bytes: bytes.len() },
-            ));
-        }
-        Some(bytes) => {
-            let payload_bits = u32::try_from(bytes.len())
-                .ok()
-                .and_then(|length| length.checked_mul(8))
-                .ok_or(FrameBitWriterError::CursorOverflow)?;
-            u32::from(D0_ADDBSIE_WIDTH_BITS)
-                .checked_add(u32::from(D0_ADDBSIL_WIDTH_BITS))
-                .and_then(|bits| bits.checked_add(payload_bits))
-                .ok_or(FrameBitWriterError::CursorOverflow)?
-        }
-        None => u32::from(D0_ADDBSIE_WIDTH_BITS),
-    };
+    let addbsi_bits = u32::from(D0_ADDBSIE_WIDTH_BITS)
+        .checked_add(u32::from(D0_ADDBSIL_WIDTH_BITS))
+        .and_then(|bits| bits.checked_add((D0_CI16_ADDBSI_BYTES * 8) as u32))
+        .ok_or(FrameBitWriterError::CursorOverflow)?;
 
     let bsi_bits = if structure.compr.is_some() {
         D0_BSI_THROUGH_CHANMAP_BITS_WITH_COMPR
@@ -799,18 +806,19 @@ pub fn append_flat7x_d0_info_and_addbsi(
     Ok(writer.cursor())
 }
 
-/// Writes the complete selected D0 BSI structure from the fixed prefix through opaque addbsi.
+/// Writes the complete selected D0 BSI structure through the required CI16 addbsi scalar.
 ///
 /// All component writers first validate and serialize into bounded private scratch. The caller's
 /// writer is preflighted for the resulting complete bit extent before those staged bits are
 /// copied, so any invalid component or insufficient capacity leaves caller bytes and cursor intact.
 /// The only accepted plan is the approved Flat7x D0 row. This diagnostic trial omits the one-bit
 /// `frmmixcfginfoe` field when all block-mix values are absent; any present block-mix value rejects.
+/// The caller must supply the profile's opaque two-byte CI16 record.
 /// This is a structural BSI entry, not a frame/AU, audio, CRC, JOC interpretation, or production encoder.
 pub fn write_flat7x_d0_bsi_structure(
     writer: &mut FrameBitWriter<'_>,
     target: Flat7xI0D0TargetPlan,
-    structure: Flat7xD0BsiStructure<'_>,
+    structure: Flat7xD0BsiStructure,
 ) -> Result<FrameBitCursor, Flat7xD0BsiStructureError> {
     let actual = writer.cursor().bit_offset();
     if actual != 0 {
@@ -819,7 +827,7 @@ pub fn write_flat7x_d0_bsi_structure(
     let expected_bits = measure_flat7x_d0_bsi_structure(target, &structure)?.value();
     writer.preflight_capacity(expected_bits)?;
 
-    // Maximum extent: 76 BSI bits + 54 mixing bits + 534 information/addbsi bits.
+    // Private staging capacity for the selected target BSI structure.
     let mut staging = [0_u8; D0_BSI_STRUCTURE_STAGING_BYTES];
     let end;
     {
@@ -837,12 +845,13 @@ pub fn write_flat7x_d0_bsi_structure(
             structure.information.is_some(),
             true,
         )?;
+        let addbsi_bytes = structure.addbsi.bytes();
         append_flat7x_d0_info_and_addbsi(
             &mut staging_writer,
             target,
             structure.information.is_some(),
             structure.information,
-            structure.addbsi,
+            Some(&addbsi_bytes),
         )?;
         end = staging_writer.cursor().bit_offset();
     }

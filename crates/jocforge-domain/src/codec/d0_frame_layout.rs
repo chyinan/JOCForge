@@ -219,7 +219,7 @@ impl Flat7xD0SixBlockLayout {
 /// caller state. The insertion point remains caller-owned and unbound.
 pub fn propose_flat7x_d0_six_block_layout(
     target: Flat7xI0D0TargetPlan,
-    bsi_structure: Flat7xD0BsiStructure<'_>,
+    bsi_structure: Flat7xD0BsiStructure,
     input: D0SixBlockLayoutInput<'_>,
 ) -> Result<Flat7xD0SixBlockLayout, D0SixBlockLayoutError> {
     if target != Flat7xI0D0TargetPlan::approved_contract() {

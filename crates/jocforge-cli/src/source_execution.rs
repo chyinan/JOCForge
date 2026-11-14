@@ -327,12 +327,17 @@ pub(crate) fn stage_source_frame<'pcm>(
             )
         })?;
         Some(
-            bind_flat7x_d0_bsi_source_inputs(prepared, shared_analysis, drc_source.after_root())
-                .map_err(|error| {
-                    SourceFrameStageError::Pipeline(format!(
-                        "Flat7x same-source D0 BSI controls: {error:?}"
-                    ))
-                })?,
+            bind_flat7x_d0_bsi_source_inputs(
+                prepared,
+                shared_analysis,
+                drc_source.after_root(),
+                Flat7xI0D0TargetPlan::approved_contract(),
+            )
+            .map_err(|error| {
+                SourceFrameStageError::Pipeline(format!(
+                    "Flat7x same-source D0 BSI controls: {error:?}"
+                ))
+            })?,
         )
     } else {
         None
@@ -452,7 +457,7 @@ pub(crate) fn stage_source_frame<'pcm>(
                         mixing: Some(d0_bsi_inputs.mixing()),
                         block_mix: [None; 6],
                         information: None,
-                        addbsi: None,
+                        addbsi: d0_bsi_inputs.ci16_addbsi(),
                     },
                     complete_emdf_container: protected_container.bytes(),
                     bap_parameters: &d0_bap_parameters,

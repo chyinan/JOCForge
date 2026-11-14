@@ -6,8 +6,8 @@ use jocforge_domain::{
         bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError},
         frame_builder::{
             Flat7xD0AudioProductionMetadata, Flat7xD0BsiSegmentError, Flat7xD0BsiStructure,
-            Flat7xD0BsiStructureError, Flat7xD0InfoAddbsiError, Flat7xD0InformationMetadata,
-            Flat7xD0MixingMetadataError, Flat7xD0MixingMetadataValues,
+            Flat7xD0BsiStructureError, Flat7xD0Ci16Addbsi, Flat7xD0InfoAddbsiError,
+            Flat7xD0InformationMetadata, Flat7xD0MixingMetadataError, Flat7xD0MixingMetadataValues,
             append_flat7x_d0_info_and_addbsi, append_flat7x_d0_mixing_metadata_and_infomdate,
             measure_flat7x_d0_bsi_structure, write_flat7x_d0_bsi_structure,
             write_flat7x_d0_bsi_through_chanmap,
@@ -16,7 +16,7 @@ use jocforge_domain::{
     profile::Flat7xI0D0TargetPlan,
 };
 
-fn example_structures() -> [Flat7xD0BsiStructure<'static>; 2] {
+fn example_structures() -> [Flat7xD0BsiStructure; 2] {
     [
         Flat7xD0BsiStructure {
             dialnorm: 16,
@@ -30,7 +30,7 @@ fn example_structures() -> [Flat7xD0BsiStructure<'static>; 2] {
                 audio_production: None,
                 sourcefscod: 1,
             }),
-            addbsi: Some(&[0x12, 0x34]),
+            addbsi: Flat7xD0Ci16Addbsi::new(0x0110),
         },
         Flat7xD0BsiStructure {
             dialnorm: 16,
@@ -54,7 +54,7 @@ fn example_structures() -> [Flat7xD0BsiStructure<'static>; 2] {
                 }),
                 sourcefscod: 0,
             }),
-            addbsi: None,
+            addbsi: Flat7xD0Ci16Addbsi::new(0x0110),
         },
     ]
 }
@@ -62,9 +62,10 @@ fn example_structures() -> [Flat7xD0BsiStructure<'static>; 2] {
 fn append_components(
     bytes: &mut [u8],
     target: Flat7xI0D0TargetPlan,
-    structure: Flat7xD0BsiStructure<'_>,
+    structure: Flat7xD0BsiStructure,
 ) -> u32 {
     let mut writer = FrameBitWriter::new(bytes, FrameBitCursor::new(0)).unwrap();
+    let addbsi_bytes = structure.addbsi.bytes();
     write_flat7x_d0_bsi_through_chanmap(&mut writer, structure.dialnorm, structure.compr).unwrap();
     let infomdate = structure.information.is_some();
     append_flat7x_d0_mixing_metadata_and_infomdate(
@@ -80,7 +81,7 @@ fn append_components(
         target,
         infomdate,
         structure.information,
-        structure.addbsi,
+        Some(&addbsi_bytes),
     )
     .unwrap()
     .bit_offset()
@@ -148,7 +149,7 @@ fn dependent_bsi_diagnostic_moves_audfrm_start_to_bit_93() {
         }),
         block_mix: [None; 6],
         information: None,
-        addbsi: None,
+        addbsi: Flat7xD0Ci16Addbsi::new(0x0110),
     };
     let target = Flat7xI0D0TargetPlan::approved_contract();
     let mut bytes = [0_u8; 16];
@@ -159,13 +160,42 @@ fn dependent_bsi_diagnostic_moves_audfrm_start_to_bit_93() {
             .unwrap()
             .bit_offset();
     }
-    assert_eq!(end, 93);
+    assert_eq!(end, 115);
     assert_eq!(
         measure_flat7x_d0_bsi_structure(target, &structure)
             .unwrap()
             .value(),
-        93
+        115
     );
+}
+
+#[test]
+fn target_ci16_scalar_is_written_as_the_required_two_byte_addbsi() {
+    let target = Flat7xI0D0TargetPlan::approved_contract();
+    assert_eq!(target.d0_ci16_addbsi_value(), 0x0110);
+    assert_eq!(target.complexity_index_type_a(), 16);
+
+    let structure = Flat7xD0BsiStructure {
+        dialnorm: 16,
+        compr: None,
+        mixing: None,
+        block_mix: [None; 6],
+        information: None,
+        addbsi: Flat7xD0Ci16Addbsi::new(target.d0_ci16_addbsi_value()),
+    };
+    let mut bytes = [0_u8; 16];
+    let end;
+    {
+        let mut writer = FrameBitWriter::new(&mut bytes, FrameBitCursor::new(0)).unwrap();
+        end = write_flat7x_d0_bsi_structure(&mut writer, target, structure)
+            .unwrap()
+            .bit_offset();
+    }
+
+    let addbsi_start = end - 23;
+    assert_eq!(read_bit(&bytes, addbsi_start), true);
+    assert_eq!(read_unsigned(&bytes, addbsi_start + 1, 6), 1);
+    assert_eq!(read_unsigned(&bytes, addbsi_start + 7, 16), 0x0110);
 }
 
 #[test]
@@ -201,16 +231,6 @@ fn invalid_components_and_total_capacity_reject_without_mutation() {
         }),
     );
 
-    let mut invalid_addbsi = example_structures()[0];
-    invalid_addbsi.addbsi = Some(&[]);
-    assert_rejected_without_mutation(
-        invalid_addbsi,
-        96,
-        Flat7xD0BsiStructureError::InfoAddbsi(Flat7xD0InfoAddbsiError::AddbsiLengthOutOfRange {
-            bytes: 0,
-        }),
-    );
-
     assert_rejected_without_mutation(
         example_structures()[0],
         12,
@@ -243,7 +263,7 @@ fn nonzero_start_cursor_rejects_without_mutation() {
 }
 
 fn assert_rejected_without_mutation(
-    structure: Flat7xD0BsiStructure<'_>,
+    structure: Flat7xD0BsiStructure,
     capacity_bytes: usize,
     expected_error: Flat7xD0BsiStructureError,
 ) {
@@ -269,4 +289,10 @@ fn assert_rejected_without_mutation(
 fn read_bit(bytes: &[u8], bit_offset: u32) -> bool {
     let byte = bytes[(bit_offset / 8) as usize];
     byte & (1_u8 << (7 - bit_offset % 8)) != 0
+}
+
+fn read_unsigned(bytes: &[u8], start_bit: u32, width: u8) -> u32 {
+    (0..u32::from(width)).fold(0_u32, |value, offset| {
+        (value << 1) | u32::from(read_bit(bytes, start_bit + offset))
+    })
 }

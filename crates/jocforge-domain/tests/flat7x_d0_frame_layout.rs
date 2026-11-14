@@ -13,7 +13,7 @@ use jocforge_domain::{
             D0EmdfSkipFieldWriteError, flat7x_d0_block2_skipfld_bit_length,
             write_flat7x_d0_block2_skipfld,
         },
-        frame_builder::Flat7xD0BsiStructure,
+        frame_builder::{Flat7xD0BsiStructure, Flat7xD0Ci16Addbsi},
     },
     profile::Flat7xI0D0TargetPlan,
 };
@@ -74,14 +74,14 @@ fn block_field_refs(
     std::array::from_fn(|index| fields[index].as_slice())
 }
 
-fn baseline_bsi_structure() -> Flat7xD0BsiStructure<'static> {
+fn baseline_bsi_structure() -> Flat7xD0BsiStructure {
     Flat7xD0BsiStructure {
         dialnorm: 16,
         compr: None,
         mixing: None,
         block_mix: [None; 6],
         information: None,
-        addbsi: None,
+        addbsi: Flat7xD0Ci16Addbsi::new(0x0110),
     }
 }
 
