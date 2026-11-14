@@ -454,7 +454,8 @@ pub(crate) fn stage_source_frame<'pcm>(
                     bsi_structure: Flat7xD0BsiStructure {
                         dialnorm: d0_bsi_inputs.dialnorm(),
                         compr: d0_bsi_inputs.compr(),
-                        mixing: Some(d0_bsi_inputs.mixing()),
+                        // The selected official-demo D0 profile observes mixmdate=0.
+                        mixing: None,
                         block_mix: [None; 6],
                         information: None,
                         addbsi: d0_bsi_inputs.ci16_addbsi(),

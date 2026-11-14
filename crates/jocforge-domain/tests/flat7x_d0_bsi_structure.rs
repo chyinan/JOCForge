@@ -192,6 +192,8 @@ fn target_ci16_scalar_is_written_as_the_required_two_byte_addbsi() {
             .bit_offset();
     }
 
+    assert!(!read_bit(&bytes, 68), "official target mixmdate is absent");
+    assert!(!read_bit(&bytes, 69), "official target infomdate is absent");
     let addbsi_start = end - 23;
     assert_eq!(read_bit(&bytes, addbsi_start), true);
     assert_eq!(read_unsigned(&bytes, addbsi_start + 1, 6), 1);

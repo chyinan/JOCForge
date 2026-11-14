@@ -117,9 +117,9 @@ pub fn bind_selected_codec_bsi_source(
 /// Binds target D0 BSI controls to the exact same-source F06ND proposal and admitted downmix.
 ///
 /// The mapping reuses the existing selected F06ND-to-F12 field projection. It carries numeric RF
-/// and per-block line codes into the target D0 structure and keeps the authored downmix values
-/// separate from PCM row roles. It takes the fixed CI16 scalar from the selected target profile;
-/// this field is independent of the profile's Type-A complexity index.
+/// and per-block line codes into the target D0 structure and keeps authored downmix values
+/// separate from PCM row roles. The CI16 scalar comes from the target profile and is independent
+/// from the Type-A complexity index; the caller selects the official profile's absent-mixing form.
 pub fn bind_flat7x_d0_bsi_source_inputs(
     prepared: &PreparedJobInput,
     shared_analysis: &SharedAnalysisReceipt,

@@ -2108,7 +2108,7 @@ Short diagnostic attempt `1794661230282761900` captured 137 AUs / 911,872 bytes.
 
 Wash package `official_demo_d0_addbsi_ci16_v1`（manifest SHA-256 `2a15393cecf15a5f03e58e8f788ff0bd9ea9cf50456b7b23a0ca06f0744112dc`，seal SHA-256 `f1d4da8420911e723098d6f7b983226851928f069ada1cbec18eae87f7607b9b`）绑定官方 AU0 D0 在 chanmap 后的字段：`mixmdate=0`、`infomdate=0`、`addbsie=1`、`addbsil=1`，CI16 scalar `0x0110` 位于 `[85,101)`。raw bytes 未保存。CI16 与 Type-A `complexity16` 保持独立字段，二者语义 join 仍为 `UNBOUND`。
 
-实现已将 `d0_ci16_addbsi_value` 纳入 approved target profile，经 `bind_flat7x_d0_bsi_source_inputs` 和 `Flat7xD0BsiSourceInputs` 传入必需的 `Flat7xD0Ci16Addbsi`，D0 BSI writer 按该标量输出两字节以及 `addbsie/addbsil`。typed structure 不提供 absent 形式。selected 5.1 路径保持原样，生产许可仍关闭。
+实现已将 `d0_ci16_addbsi_value` 纳入 approved target profile，经 `bind_flat7x_d0_bsi_source_inputs` 和 `Flat7xD0BsiSourceInputs` 传入必需的 `Flat7xD0Ci16Addbsi`，D0 BSI writer 按该标量输出两字节以及 `addbsie/addbsil`。official-profile caller 选择 `mixing=None`，生成 `mixmdate=0`、`infomdate=0`；较低层 mixing writer 与 admitted mixing inputs 保留给其他显式 profile。typed structure 不提供 absent CI16 形式。selected 5.1 路径保持原样，生产许可仍关闭。
 
 Wash package `openjoc_0201_parser_diagnostic_contract_v1`（manifest SHA-256 `74d14c065df0da40772051b7f87e5c91dd0e0190cc2b60f98a73a6923c322b45`，seal SHA-256 `163432856af5ba942ce1d37efb0db39f5350cf76c5b02ef82ebb1bf0f4a25663`）记录 OpenJOC 0.20.1 parser 对 D0 `addbsi` 与 Huffman codeword limit 的处理。它是 parser-only 诊断线索；OpenJOC executable/source build join 保持 `UNBOUND`。
 
