@@ -433,4 +433,8 @@ The D0 frame-tail correction reports zero-filled `nauxbits`, `auxdatae=0`, and `
 
 Release attempt `1794654566716793500` produced `D:\JOCForge-attempts\love-song-flat7x-1664-release-20261114-190926\love-song-flat7x-1664.candidate.ec3`: 8,417 AUs × 6,656 bytes, 56,023,552 bytes total. Wash's OpenJOC syntax-only inspection found I0 640 kbps / 2,560 bytes and D0 1,024 kbps / 4,096 bytes in each AU, correct 48-kHz / six-block / 7.1 structure, and `malformed_aus=0`. JOC remains absent: zero EMDF containers, zero addbsi-signaled AUs, and 50,497 unresolved skip fields; AU0 is partial with no profile/object/complexity information. Render and playback remain `NOT_RUN`; the candidate is not DEE-equivalent and `production_allowed=false`.
 
-Next: construct the complete approved JOC EMDF container, insert it into D0 block 2's sole skipfld, enforce `C <= 511` and reject overflow, then run a fresh Release candidate without altering the selected 5.1 route.
+Next: verify a new Release candidate after the D0 audfrm syntax correction; OpenJOC 0.20.1 must observe the existing F13 container in D0 block 2's sole skipfld. The selected 5.1 route stays unchanged.
+
+## 2026-11-14 D0 audfrm strategy-field placement
+
+OpenJOC 0.20.1 reported `skip_observed=0` for the previous candidate. ETSI TS 102 366 V1.4.1 Annex E.1.2.3 places six coupling-state bits and 24 two-bit `chexpstr` values in `audfrm`, after `skipflde` and before any `audblk`. The writer now puts these 54 bits in that frame-level span and removes the duplicated per-block fields. Total frame extent stays 4,096 bytes; block-2 skip-field and frame-tail policies are unchanged. D0 audio-frame 4/4, D0 frame-assembly 5/5, D0 frame-control 2/2, selected 5.1 all-rate 1/1, and fmt check pass. The previous output remains pre-fix; recompile Release and create one unique verification run.

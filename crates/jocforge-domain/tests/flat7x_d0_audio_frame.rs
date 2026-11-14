@@ -120,17 +120,39 @@ fn d0_frame_search_produces_one_complete_crc_valid_six_block_candidate() {
         candidate.receipt().allocation_candidate()
     );
     let frame_controls = candidate.receipt().frame_assembly().audio_frame_controls();
-    assert_eq!(frame_controls.bit_length(), 23);
+    assert_eq!(frame_controls.bit_length(), 77);
     assert_eq!(
-        read_bits(candidate.frame_bytes(), frame_controls.start_bit(), 1),
+        read_bits(candidate.frame_bytes(), frame_controls.start_bit() + 10, 1),
         1
     );
     assert_eq!(
-        read_bits(candidate.frame_bytes(), frame_controls.start_bit() + 12, 6),
+        frame_controls.skipflde_bit_offset(),
+        frame_controls.start_bit() + 10
+    );
+    assert_eq!(
+        frame_controls.channel_exponent_strategy_start_bit(),
+        frame_controls.start_bit() + 18
+    );
+    assert_eq!(
+        frame_controls.channel_exponent_strategy_end_bit(),
+        frame_controls.start_bit() + 66
+    );
+    for strategy_index in 0..(6 * 4) {
+        assert_eq!(
+            read_bits(
+                candidate.frame_bytes(),
+                frame_controls.channel_exponent_strategy_start_bit() + strategy_index * 2,
+                2,
+            ),
+            1
+        );
+    }
+    assert_eq!(
+        read_bits(candidate.frame_bytes(), frame_controls.start_bit() + 66, 6),
         u32::from(candidate.receipt().allocation_candidate().coarse_snr_code())
     );
     assert_eq!(
-        read_bits(candidate.frame_bytes(), frame_controls.start_bit() + 18, 4),
+        read_bits(candidate.frame_bytes(), frame_controls.start_bit() + 72, 4),
         u32::from(candidate.receipt().allocation_candidate().fine_snr_code())
     );
     let first_block = candidate.receipt().frame_assembly().layout().audio_blocks()[0]
@@ -138,13 +160,8 @@ fn d0_frame_search_produces_one_complete_crc_valid_six_block_candidate() {
         .start_bit();
     assert_eq!(read_bits(candidate.frame_bytes(), first_block, 1), 0); // dynrnge absent
     assert_eq!(read_bits(candidate.frame_bytes(), first_block + 1, 4), 0); // four dithflag=0
-    assert_eq!(read_bits(candidate.frame_bytes(), first_block + 5, 2), 0); // no SPX/coupling
-    for channel in 0..4_u32 {
-        assert_eq!(
-            read_bits(candidate.frame_bytes(), first_block + 7 + channel * 2, 2),
-            1
-        );
-    }
+    assert_eq!(read_bits(candidate.frame_bytes(), first_block + 5, 1), 0); // SPX off.
+    assert_eq!(read_bits(candidate.frame_bytes(), first_block + 6, 6), 60); // chbwcod.
     assert_eq!(
         candidate
             .receipt()

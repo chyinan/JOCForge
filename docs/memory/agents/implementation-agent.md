@@ -199,6 +199,10 @@ The selected D0 tail now reports the actual `nauxbits` span, then `auxdatae=0` a
 
 User-directed Release attempt `1794654566716793500` captured 8,417 AUs (56,023,552 bytes) from the Love Song ADM BWF. Wash's OpenJOC syntax-only review found valid I0/D0 frame structure and `malformed_aus=0`, while JOC remains absent: EMDF containers=0, addbsi-signaled AUs=0, and 50,497 skip fields unresolved. Decoder/render/playback remain `NOT_RUN`; candidate state is experimental and `production_allowed=false`. The immediate next increment is the complete JOC EMDF container producer and its D0 block-2 skipfld insertion with the approved 511-byte bound.
 
+## 2026-11-14 D0 frame syntax correction
+
+The existing F13/F14K path already validates the same-source complete EMDF container, enforces C=1..511, passes protected bytes into the D0 PCM-frame producer, and inserts that container once in block 2. OpenJOC 0.20.1's `skip_observed=0` led to the actual syntax fix: the D0 writer had placed the 6 coupling-state bits and 24 D15 `chexpstr` fields in each block rather than in `audfrm`. It now writes them once in `audfrm`; per-block prefixes no longer duplicate those fields. D0 audio-frame (4), frame assembler (5), frame-control (2), and selected 5.1 all-rate (1) tests pass; fmt check passes. Rebuild Release and run a unique attempt before assessing OpenJOC again. The prior candidate remains an experimental pre-fix artifact.
+
 ## 2026-11-14 Flat7x aggregate F15 output configuration
 
 - Added profile-aware F15 admission for the CLI-resolved Flat7x layout. The output projection uses the pair target's aggregate 1,664-kbps / 6,656-byte AU extent; the carrier profile remains the D0 1,024-kbps row. OutputConfiguration accepts this exact aggregate extent, and ProgrammeOwnerRoots READY validates it. The selected 5.1 provider path is unchanged.

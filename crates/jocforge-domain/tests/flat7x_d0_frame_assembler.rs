@@ -224,13 +224,13 @@ fn synthetic_assembler_copies_opaque_spans_and_generates_crc2_for_exact_target_e
     assert_eq!(receipt.target_frame_bytes(), 4096);
     assert_eq!(receipt.layout().bsi_span().end_bit(), 72);
     assert_eq!(receipt.layout().audio_frame_control_span().start_bit(), 72);
-    assert_eq!(receipt.layout().audio_frame_control_span().bit_length(), 23);
-    assert_eq!(receipt.audio_frame_controls().end_bit(), 95);
+    assert_eq!(receipt.layout().audio_frame_control_span().bit_length(), 77);
+    assert_eq!(receipt.audio_frame_controls().end_bit(), 149);
     assert_eq!(
         receipt.layout().audio_blocks()[0]
             .leading_audio_span()
             .start_bit(),
-        95
+        149
     );
     assert_eq!(
         receipt.layout().total_frame_span_bits(),
@@ -743,8 +743,8 @@ fn assembler_errors_leave_caller_bytes_and_cursor_unchanged() {
         0,
         Flat7xD0FrameAssemblyError::SourceSpanOutOfBounds {
             block_index: 5,
-            required_end_bit: 2_643,
-            available_source_bits: 2_640,
+            required_end_bit: 2_633,
+            available_source_bits: 2_632,
         },
     );
 

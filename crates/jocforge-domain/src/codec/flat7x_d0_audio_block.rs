@@ -1,6 +1,8 @@
 // pattern: Functional Core
 //! One Flat7x D0 `audblk` from typed spectrum, D15, BAP, and frame-control inputs.
 
+pub use super::flat7x_d0_exponents::FLAT7X_D0_D15_STRATEGY_CODE;
+
 use super::{
     bap::{FLAT7X_D0_BAP_CHANNEL_COUNT, Flat7xD0BapFrame},
     bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError},
@@ -24,7 +26,6 @@ use super::{
 pub const FLAT7X_D0_AUDIO_BLOCK_POLICY_ID: &str = "JOCFORGE_FLAT7X_D0_LONG_D15_NO_CHANNEL_TOOLS_V1";
 pub const FLAT7X_D0_DEFAULT_FAST_GAIN_CODE: u8 = 4;
 pub const FLAT7X_D0_CHANNEL_BANDWIDTH_CODE: u8 = 60;
-pub const FLAT7X_D0_D15_STRATEGY_CODE: u8 = 1;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Flat7xD0AudioBlockInput<'a> {
@@ -367,10 +368,9 @@ fn measure_prefix_before_skipfield(
             u32::try_from(FLAT7X_D0_BAP_CHANNEL_COUNT)
                 .map_err(|_| Flat7xD0AudioBlockError::BitCountOverflow)?,
         )
-        .and_then(|bits| bits.checked_add(8)) // four two-bit D15 strategy fields
         .and_then(|bits| bits.checked_add(24)) // four six-bit chbwcod=60 fields
         .ok_or(Flat7xD0AudioBlockError::BitCountOverflow)?;
-    let block_start_fields = 1_u32 + 1; // block-zero spxinu/cplinu; later spxstre/cplstre
+    let block_start_fields = 1_u32; // block-zero spxinu; later blocks carry spxstre.
     dynamic_range_bits
         .checked_add(4) // four dithflag=0 fields
         .and_then(|bits| bits.checked_add(block_start_fields))
@@ -393,15 +393,10 @@ fn write_prefix_before_skipfield(
 
     if input.block_index.value() == 0 {
         writer.write_bit(false)?; // spxinu=0; spxstre is implicitly set in block zero.
-        writer.write_bit(false)?; // cplinu=0; cplstre is implicitly set in block zero.
     } else {
         writer.write_bit(false)?; // spxstre=0; reuse the disabled block-zero SPX state.
-        writer.write_bit(false)?; // cplstre=0; reuse the disabled block-zero coupling state.
     }
 
-    for _ in 0..FLAT7X_D0_BAP_CHANNEL_COUNT {
-        writer.write_unsigned(u32::from(FLAT7X_D0_D15_STRATEGY_CODE), 2)?;
-    }
     for _ in 0..FLAT7X_D0_BAP_CHANNEL_COUNT {
         writer.write_unsigned(u32::from(FLAT7X_D0_CHANNEL_BANDWIDTH_CODE), 6)?;
     }
