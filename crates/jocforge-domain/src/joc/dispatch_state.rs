@@ -474,12 +474,24 @@ fn is_selected_five_point_one_profile(profile: ResolvedEncodingProfile) -> bool 
 
 #[cfg(test)]
 mod tests {
-    use super::{JocDispatchError, JocPayloadInput, validate_fit_lineage};
+    use super::{
+        JocDispatchError, JocDispatchState, JocPayloadInput, stage_joc_payload_with_flat7x_rows,
+        validate_fit_lineage,
+    };
     use crate::{
-        joc::coefficient_fitting::FitSourceLineage,
-        profile::EncodingProfile,
+        joc::{
+            coefficient_fitting::{
+                CoefficientFitState, FitSourceLineage, Flat7xCoefficientRowsProposal,
+                Flat7xCoefficientRowsProviderOutput,
+            },
+            coefficient_payload::{
+                CoefficientPayloadInput, CoefficientPayloadObject, CoefficientPayloadPoint,
+                Flat7xCoefficientRows,
+            },
+        },
+        profile::{EncodingProfile, JocReconstructionLayout, resolve_selected_profile},
         spatial::SpatialAudioMachine,
-        timeline::{CodecSourceIndex, FrontendCallbackIndex},
+        timeline::{CodecSourceIndex, FrontendCallbackIndex, JocDispatchIndex},
         transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId},
     };
 
@@ -527,5 +539,85 @@ mod tests {
             validate_fit_lineage(Some(&lineage), &mismatched_input),
             Err(JocDispatchError::Lineage)
         ));
+    }
+
+    #[test]
+    fn flat7x_rows_cross_the_shared_dispatch_boundary_with_same_source_provenance() {
+        // SYNTHETIC/TEST_ONLY coefficient rows exercise routing and provenance, not audio fitting.
+        let point = CoefficientPayloadPoint {
+            channel_rows: (0..7).map(|_| vec![0.25]).collect(),
+            selected_channels: Vec::new(),
+        };
+        let payload_input = CoefficientPayloadInput {
+            downmix_index: 1,
+            extension_config: 0,
+            clip_gain_index: 128,
+            sequence_count: 0,
+            time_slot_limit: 24,
+            capacity_bytes: 372,
+            objects: (0..15)
+                .map(|_| CoefficientPayloadObject {
+                    present: true,
+                    band_enum: 0,
+                    mode: 1,
+                    points: vec![point.clone()],
+                    offsets: None,
+                })
+                .collect(),
+        };
+        let rows = Flat7xCoefficientRows::new(&payload_input).unwrap();
+        let programme_id = ProgrammeId::new("flat7x-dispatch-provenance-test").unwrap();
+        let attempt = AttemptId::new(2);
+        let source_index = CodecSourceIndex::new(0);
+        let dispatch = JocDispatchIndex::new(1);
+        let transaction_id = CallbackLineageIdentity::new(
+            programme_id.clone(),
+            attempt,
+            FrontendCallbackIndex::new(2),
+        );
+        let lineage = FitSourceLineage::for_test(
+            programme_id.clone(),
+            attempt,
+            transaction_id.clone(),
+            source_index,
+            dispatch,
+            0,
+            SpatialAudioMachine::new_cold(EncodingProfile::selected())
+                .unwrap()
+                .digest(),
+        );
+        let after = CoefficientFitState::with_generation_for_test(dispatch.value());
+        let rows_proposal = Flat7xCoefficientRowsProposal::from_source_lineage(
+            Flat7xCoefficientRowsProviderOutput::new(rows, after),
+            lineage.clone(),
+        )
+        .unwrap();
+        let joc_input = JocPayloadInput::for_test(
+            programme_id,
+            attempt,
+            transaction_id,
+            source_index,
+            128,
+            0x3f80_0000,
+        );
+        let profile =
+            resolve_selected_profile(&EncodingProfile::selected_with_joc_reconstruction_layout(
+                JocReconstructionLayout::Flat7x,
+            ))
+            .unwrap();
+
+        let proposal = stage_joc_payload_with_flat7x_rows(
+            &JocDispatchState::cold(),
+            &rows_proposal,
+            &joc_input,
+            profile,
+        )
+        .unwrap();
+        let (after_dispatch, id14_body) = proposal.into_parts().unwrap();
+        assert_eq!(after_dispatch.successful_dispatches(), 1);
+        assert_eq!(id14_body.provenance().lineage(), &lineage);
+        assert_eq!(id14_body.provenance().producer_generation(), source_index);
+        assert_eq!(id14_body.provenance().dispatch(), dispatch);
+        assert_eq!(id14_body.provenance().object_count().value(), 15);
     }
 }

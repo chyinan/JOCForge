@@ -3,7 +3,7 @@
 
 use jocforge_domain::{
     joc::{
-        coefficient_fitting::Flat7xCoefficientRowsProposal,
+        coefficient_fitting::{Flat7xCoefficientRowsProposal, Flat7xCoefficientRowsProviderOutput},
         coefficient_representation::RepresentationRetryProvider,
         emdf::metadata_bodies::{
             MetadataBodiesError, MetadataBodiesProposal, assemble_metadata_bodies,
@@ -11,13 +11,16 @@ use jocforge_domain::{
         emdf::metadata_owner::{MetadataOwnerError, MetadataSourceProposal, MetadataStageInput},
         fit_score::FitScoreProvider,
         programme_state::{
-            SelectedJocAfterProposal, SelectedJocStateError,
+            JocSourceStageErrorKind, SelectedJocAfterProposal, SelectedJocStateError,
             stage_selected_joc_source_with_flat7x_rows,
             stage_selected_joc_source_with_transaction_for_profile,
         },
     },
     meter::measurement_dependents::MeasurementDependentOwnerInputs,
-    profile::ResolvedEncodingProfile,
+    profile::{
+        CarrierCodecProfile, JocPayloadDownmixIndex, JocReconstructionLayout,
+        ResolvedEncodingProfile, SubstreamTopology,
+    },
     spatial::{QmfReceiverFunctionalProvider, SpatialAudioCallbackOutcome},
     timeline::{
         AdmSampleCount, ClockError, PublicationDisposition, programme_counts,
@@ -246,7 +249,7 @@ pub fn prepare_main_metadata_bodies_for_callback(
 pub fn prepare_main_metadata_bodies_for_callback_with_flat7x_rows(
     input: MainMetadataBodiesInput<'_>,
     gtc_transaction_id: CallbackTransactionId,
-    flat7x_rows: Flat7xCoefficientRowsProposal<'_>,
+    flat7x_rows: Flat7xCoefficientRowsProviderOutput<'_>,
 ) -> Result<MainMetadataBodiesCandidate, MetadataSourceBridgeError> {
     prepare_main_metadata_bodies_for_callback_inner(input, gtc_transaction_id, Some(flat7x_rows))
 }
@@ -254,7 +257,7 @@ pub fn prepare_main_metadata_bodies_for_callback_with_flat7x_rows(
 fn prepare_main_metadata_bodies_for_callback_inner(
     input: MainMetadataBodiesInput<'_>,
     gtc_transaction_id: CallbackTransactionId,
-    flat7x_rows: Option<Flat7xCoefficientRowsProposal<'_>>,
+    flat7x_rows: Option<Flat7xCoefficientRowsProviderOutput<'_>>,
 ) -> Result<MainMetadataBodiesCandidate, MetadataSourceBridgeError> {
     let MainMetadataBodiesInput {
         prepared,
@@ -266,6 +269,9 @@ fn prepare_main_metadata_bodies_for_callback_inner(
         fit_score,
         retry,
     } = input;
+    let joc_source_route =
+        select_main_metadata_joc_source_route(joc_profile, flat7x_rows.is_some())
+            .map_err(MetadataSourceBridgeError::Joc)?;
     if !spatial_callback.is_bound_to(prepared) {
         return Err(MetadataSourceBridgeError::SpatialCallbackIdentityMismatch);
     }
@@ -283,23 +289,34 @@ fn prepare_main_metadata_bodies_for_callback_inner(
         .spatial_control_after_proposal()
         .reader_target_receipt()
         .ok_or(MetadataSourceBridgeError::ReaderTargetReceiptMissing)?;
-    let joc_after = match flat7x_rows {
-        Some(rows) => stage_selected_joc_source_with_flat7x_rows(
-            joc_before,
-            projection,
-            source_transaction_id.clone(),
-            rows,
-            joc_profile,
-        ),
-        None => stage_selected_joc_source_with_transaction_for_profile(
-            joc_before,
-            projection,
-            source_transaction_id.clone(),
-            qmf_functional,
-            fit_score,
-            retry,
-            joc_profile,
-        ),
+    let joc_after = match joc_source_route {
+        MainMetadataJocSourceRoute::Flat7xRows => {
+            let output = flat7x_rows.ok_or_else(flat7x_source_unavailable)?;
+            let rows = Flat7xCoefficientRowsProposal::from_provider_output(projection, output)
+                .map_err(|_| {
+                    MetadataSourceBridgeError::Joc(SelectedJocStateError::Source(
+                        JocSourceStageErrorKind::Flat7xCoefficientLineageMismatch,
+                    ))
+                })?;
+            stage_selected_joc_source_with_flat7x_rows(
+                joc_before,
+                projection,
+                source_transaction_id.clone(),
+                rows,
+                joc_profile,
+            )
+        }
+        MainMetadataJocSourceRoute::SelectedFivePointOneFit => {
+            stage_selected_joc_source_with_transaction_for_profile(
+                joc_before,
+                projection,
+                source_transaction_id.clone(),
+                qmf_functional,
+                fit_score,
+                retry,
+                joc_profile,
+            )
+        }
     }
     .map_err(MetadataSourceBridgeError::Joc)?;
     let producer_provenance = joc_after.id14_body().provenance();
@@ -349,6 +366,49 @@ fn prepare_main_metadata_bodies_for_callback_inner(
     })
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum MainMetadataJocSourceRoute {
+    SelectedFivePointOneFit,
+    Flat7xRows,
+}
+
+fn select_main_metadata_joc_source_route(
+    profile: ResolvedEncodingProfile,
+    flat7x_rows_present: bool,
+) -> Result<MainMetadataJocSourceRoute, SelectedJocStateError> {
+    let selected_five_point_one = profile.carrier_codec() == CarrierCodecProfile::IndependentEac3
+        && profile.substream_topology()
+            == SubstreamTopology::SelectedSingleIndependentZeroDependent
+        && profile.joc_reconstruction_layout()
+            == JocReconstructionLayout::ExistingSelectedFivePointOne
+        && profile.joc_payload_downmix_index() == JocPayloadDownmixIndex::FiveChannel;
+    let flat7x = profile.carrier_codec() == CarrierCodecProfile::Flat7xAc3I0DependentEac3D0
+        && profile.substream_topology() == SubstreamTopology::Flat7xIndependentI0DependentD0
+        && profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x
+        && profile.joc_payload_downmix_index() == JocPayloadDownmixIndex::SevenChannel;
+
+    if selected_five_point_one && !flat7x_rows_present {
+        return Ok(MainMetadataJocSourceRoute::SelectedFivePointOneFit);
+    }
+    if flat7x && flat7x_rows_present {
+        return Ok(MainMetadataJocSourceRoute::Flat7xRows);
+    }
+    if flat7x {
+        return Err(SelectedJocStateError::Source(
+            JocSourceStageErrorKind::Flat7xCoefficientSourceUnavailable,
+        ));
+    }
+    Err(SelectedJocStateError::Source(
+        JocSourceStageErrorKind::Flat7xCoefficientProfileMismatch,
+    ))
+}
+
+fn flat7x_source_unavailable() -> MetadataSourceBridgeError {
+    MetadataSourceBridgeError::Joc(SelectedJocStateError::Source(
+        JocSourceStageErrorKind::Flat7xCoefficientSourceUnavailable,
+    ))
+}
+
 fn sha256_hex(bytes: &[u8; 32]) -> String {
     const HEX: &[u8; 16] = b"0123456789abcdef";
     let mut output = String::with_capacity(64);
@@ -357,4 +417,44 @@ fn sha256_hex(bytes: &[u8; 32]) -> String {
         output.push(char::from(HEX[usize::from(byte & 0x0f)]));
     }
     output
+}
+
+#[cfg(test)]
+mod flat7x_rows_route_tests {
+    use super::{MainMetadataJocSourceRoute, select_main_metadata_joc_source_route};
+    use jocforge_domain::{
+        joc::programme_state::{JocSourceStageErrorKind, SelectedJocStateError},
+        profile::{EncodingProfile, JocReconstructionLayout, resolve_selected_profile},
+    };
+
+    #[test]
+    fn application_route_keeps_five_point_one_and_requires_flat7x_provider_output() {
+        let five_point_one = resolve_selected_profile(&EncodingProfile::selected()).unwrap();
+        let flat7x =
+            resolve_selected_profile(&EncodingProfile::selected_with_joc_reconstruction_layout(
+                JocReconstructionLayout::Flat7x,
+            ))
+            .unwrap();
+
+        assert_eq!(
+            select_main_metadata_joc_source_route(five_point_one, false),
+            Ok(MainMetadataJocSourceRoute::SelectedFivePointOneFit)
+        );
+        assert_eq!(
+            select_main_metadata_joc_source_route(flat7x, true),
+            Ok(MainMetadataJocSourceRoute::Flat7xRows)
+        );
+        assert!(matches!(
+            select_main_metadata_joc_source_route(flat7x, false),
+            Err(SelectedJocStateError::Source(
+                JocSourceStageErrorKind::Flat7xCoefficientSourceUnavailable
+            ))
+        ));
+        assert!(matches!(
+            select_main_metadata_joc_source_route(five_point_one, true),
+            Err(SelectedJocStateError::Source(
+                JocSourceStageErrorKind::Flat7xCoefficientProfileMismatch
+            ))
+        ));
+    }
 }
