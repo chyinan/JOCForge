@@ -1778,6 +1778,10 @@ Wash package `OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V2` (manifest SHA-256 `c4104e
 
 V2 also reports payload IDs 11 and 14 with `codecdatae=0` on all AUs while ETSI Table 56 expects 1. Preserve the vendor-compatible structure observation and the ETSI-strict failure as separate results. The 1,664-kbps target, target all-AU EMDF fit, object height history, audio decoding and W04 remain `NOT_EVALUATED/NOT_RUN`; `production_allowed=false`.
 
+## 2026-11-14 official-demo playback clarification
+
+The user confirms the official Atmos demo is playable in OpenJOC. That observation is consistent with the official structure report's `decoder_admissible=true` and 23,033 admitted AUs. The report's `render_verified=false` records that its bounded structural audit did not run render; it is not a claim that the official file cannot play. Keep this playback observation separate from the testADM candidate, whose current OpenJOC report still has JOC/EMDF absent and unresolved skip fields.
+
 ## 2026-11-11：Flat7x target ID14 header adapter
 
 `codec::huffman::write_id14_header_for_flat7x_target` 接受可选的 approved `Flat7xI0D0TargetPlan` 与 header-only typed input，检查 target index1/object count15 和 descriptor count后，再调用既有 profile-aware ID14 writer。ID14 的 U6 count bits 依 ETSI 规则写 `object_count-1=14`；downmix mode0/phase1/internal index3、complexity16、七个 carriers、15 reconstruction rows 与 ADM physical rows均保留为不同域，complexity不写入 object_count。写入先在 writer clone 上完成，仅成功时替换 caller writer；body/payload字段未接入。5.1 header byte equality 保持通过。该增量不创建 Flat7.1完整帧/AU或生产路径；1,664-kbps output和独立 parser/W04 acceptance仍未完成。
