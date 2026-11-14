@@ -156,6 +156,13 @@ pub struct RepresentationWriteResult {
 }
 
 impl RepresentationWriteResult {
+    pub(crate) fn from_single_outcome(outcome: CoefficientPayloadOutcome) -> Self {
+        Self {
+            outcome,
+            attempts: Vec::new(),
+        }
+    }
+
     pub const fn outcome(&self) -> &CoefficientPayloadOutcome {
         &self.outcome
     }

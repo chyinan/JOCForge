@@ -3,6 +3,7 @@
 
 use jocforge_domain::{
     joc::{
+        coefficient_fitting::Flat7xCoefficientRowsProposal,
         coefficient_representation::RepresentationRetryProvider,
         emdf::metadata_bodies::{
             MetadataBodiesError, MetadataBodiesProposal, assemble_metadata_bodies,
@@ -11,6 +12,7 @@ use jocforge_domain::{
         fit_score::FitScoreProvider,
         programme_state::{
             SelectedJocAfterProposal, SelectedJocStateError,
+            stage_selected_joc_source_with_flat7x_rows,
             stage_selected_joc_source_with_transaction_for_profile,
         },
     },
@@ -237,6 +239,23 @@ pub fn prepare_main_metadata_bodies_for_callback(
     input: MainMetadataBodiesInput<'_>,
     gtc_transaction_id: CallbackTransactionId,
 ) -> Result<MainMetadataBodiesCandidate, MetadataSourceBridgeError> {
+    prepare_main_metadata_bodies_for_callback_inner(input, gtc_transaction_id, None)
+}
+
+/// Prepares the Flat7x JOC/F13 body proposal from explicit same-source seven-row input.
+pub fn prepare_main_metadata_bodies_for_callback_with_flat7x_rows(
+    input: MainMetadataBodiesInput<'_>,
+    gtc_transaction_id: CallbackTransactionId,
+    flat7x_rows: Flat7xCoefficientRowsProposal<'_>,
+) -> Result<MainMetadataBodiesCandidate, MetadataSourceBridgeError> {
+    prepare_main_metadata_bodies_for_callback_inner(input, gtc_transaction_id, Some(flat7x_rows))
+}
+
+fn prepare_main_metadata_bodies_for_callback_inner(
+    input: MainMetadataBodiesInput<'_>,
+    gtc_transaction_id: CallbackTransactionId,
+    flat7x_rows: Option<Flat7xCoefficientRowsProposal<'_>>,
+) -> Result<MainMetadataBodiesCandidate, MetadataSourceBridgeError> {
     let MainMetadataBodiesInput {
         prepared,
         joc_profile,
@@ -264,15 +283,24 @@ pub fn prepare_main_metadata_bodies_for_callback(
         .spatial_control_after_proposal()
         .reader_target_receipt()
         .ok_or(MetadataSourceBridgeError::ReaderTargetReceiptMissing)?;
-    let joc_after = stage_selected_joc_source_with_transaction_for_profile(
-        joc_before,
-        projection,
-        source_transaction_id.clone(),
-        qmf_functional,
-        fit_score,
-        retry,
-        joc_profile,
-    )
+    let joc_after = match flat7x_rows {
+        Some(rows) => stage_selected_joc_source_with_flat7x_rows(
+            joc_before,
+            projection,
+            source_transaction_id.clone(),
+            rows,
+            joc_profile,
+        ),
+        None => stage_selected_joc_source_with_transaction_for_profile(
+            joc_before,
+            projection,
+            source_transaction_id.clone(),
+            qmf_functional,
+            fit_score,
+            retry,
+            joc_profile,
+        ),
+    }
     .map_err(MetadataSourceBridgeError::Joc)?;
     let producer_provenance = joc_after.id14_body().provenance();
     if producer_provenance.producer_transaction_id() != Some(&source_transaction_id) {

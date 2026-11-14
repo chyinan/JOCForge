@@ -474,3 +474,15 @@ The isolated parser maps mode 0/1 to FullCoarse/FullFine and 2/3 to SparseCoarse
 Verification: coefficient_payload unit tests 2/2; protected_container unit tests 12/12; JOC reconstruction/profile integration 8/8; selected 5.1 all-rate route 1/1; CLI cargo check and fmt check pass. No encoding, OpenJOC, or full workspace test was run.
 
 An additional selected 5.1 coefficient-fitting regression was attempted with cargo test -p jocforge-domain --lib coefficient_fitting::tests::three_generations_match_full_sparse_selected_and_all_score_call_counts --locked -j1. It stopped before coefficient serialization at RepresentationRetryProvider::from_approved_bytes with ProviderIdentity (coefficient_fitting.rs:558); the provider source and this path are outside this increment. The selected 5.1 all-rate route test passed separately.
+
+## 2026-11-15 Flat7x application source seam
+
+The selected 5.1 application path still uses CoefficientFitProposal and its 15x5 fitter. Flat7x now has a separate source entry accepting Flat7xCoefficientRowsProposal with validated 15x7 row shape, FitSourceLineage, and fit after-state. Source identity/generation is checked against the current projection; ID14 serialization then uses the existing dispatch provenance boundary. The profile-aware source entry without a rows proposal returns Flat7xCoefficientSourceUnavailable before running the five-row fitter. No 15x7 production provider is connected, and no encoding/OpenJOC run was started.
+
+## 2026-11-15 Flat7x row proposal application seam
+
+Flat7xCoefficientRowsProposal carries validated Flat7xCoefficientRows, fit after-state, and FitSourceLineage. Its source-stage entry checks that the before generation, projection identity, source index, dispatch, and after-state match; dispatch then passes the row proposal through the existing lineage/provenance gate before calling the serializer. The existing profile-aware entry with no row proposal returns Flat7xCoefficientSourceUnavailable before the five-row QMF fitter runs. The application bridge has a separate explicit entry for a supplied proposal. The 5.1 profile keeps the current CoefficientFitProposal / FiveChannel route.
+
+Verification: source row routing 1/1, row proposal same-source generation 1/1, Flat7x coefficient payload shape 2/2, application Flat7x tests 6/6, selected 5.1 all-rate route 1/1, CLI cargo check, fmt check, and diff check pass. The 15x7 producer remains unavailable; no encoder/OpenJOC run or candidate was created.
+
+Verification for this incremental source seam: source-route tests 1/1; Flat7x rows proposal same-source after-generation test 1/1; shared dispatch provenance test 1/1; selected 5.1 all-rate route 1/1; application Flat7x tests 6/6; cargo check, fmt check, and diff check pass. Flat7x production remains unavailable without the authoritative rows provider; no encoding or OpenJOC run was made.

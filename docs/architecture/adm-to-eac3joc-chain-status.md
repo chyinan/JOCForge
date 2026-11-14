@@ -2123,3 +2123,7 @@ ID14 coefficient-body/channel-profile join 仍 UNBOUND：selected 5.1 fit 使用
 ## 2026-11-15 Flat7x seven-row serializer seam
 
 Flat7xCoefficientRows now validates the parser-observed 15 present objects, one Full point per object, seven rows per point, and each descriptor's band count. The profile-aware serializer requires the payload selector to match the resolved profile; the selected 5.1 selector-3 route remains unchanged. The local parser round-trips an explicitly SYNTHETIC/TEST_ONLY one-band fixture as selector 1, 15 FullFine descriptors, and 105 coefficient symbols. The five-row fitter is still not connected, no seven-row values are provided, and no encode candidate was generated.
+
+## 2026-11-15 Flat7x coefficient source route
+
+Flat7x now has a separate typed source entry carrying Flat7xCoefficientRowsProposal, FitSourceLineage, and the fit after-state. The rows pass through the shared JOC dispatch provenance boundary. The existing profile-aware application entry has no Flat7x rows proposal and returns Flat7xCoefficientSourceUnavailable before invoking the 15x5 QMF fitter. The selected 5.1 path and its CoefficientFitProposal remain unchanged. No authoritative 15x7 provider or encode candidate exists.

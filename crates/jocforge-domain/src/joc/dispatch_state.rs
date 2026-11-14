@@ -3,13 +3,18 @@
 
 use crate::{
     joc::{
-        coefficient_fitting::{CoefficientFitProposal, FitSourceLineage},
+        coefficient_fitting::{
+            CoefficientFitProposal, FitSourceLineage, Flat7xCoefficientRowsProposal,
+        },
         coefficient_representation::{
             RepresentationRetryError, RepresentationRetryProvider, RepresentationWriteResult,
         },
         id14_body::Id14BodyProposal,
     },
-    profile::ResolvedEncodingProfile,
+    profile::{
+        CarrierCodecProfile, JocPayloadDownmixIndex, JocReconstructionLayout,
+        ResolvedEncodingProfile, SubstreamTopology,
+    },
     spatial::{
         source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
         spatial_audio_state::SelectedJocQmfProjection,
@@ -265,6 +270,9 @@ pub enum JocDispatchError {
     Clock,
     Lineage,
     Sequence,
+    Flat7xCoefficientSourceUnavailable,
+    Flat7xProfileMismatch,
+    CoefficientRowSourceMismatch,
     Retry(RepresentationRetryError),
     PayloadAbsent,
 }
@@ -285,7 +293,7 @@ pub fn stage_joc_payload(
     input: &JocPayloadInput,
     retry_provider: &RepresentationRetryProvider,
 ) -> Result<JocPayloadProposal, JocDispatchError> {
-    stage_joc_payload_inner(before, fit, input, retry_provider, None)
+    stage_joc_payload_inner(before, Some(fit), None, input, Some(retry_provider), None)
 }
 
 pub fn stage_joc_payload_for_profile(
@@ -295,14 +303,40 @@ pub fn stage_joc_payload_for_profile(
     retry_provider: &RepresentationRetryProvider,
     profile: ResolvedEncodingProfile,
 ) -> Result<JocPayloadProposal, JocDispatchError> {
-    stage_joc_payload_inner(before, fit, input, retry_provider, Some(profile))
+    if is_flat7x_profile(profile) {
+        return Err(JocDispatchError::Flat7xCoefficientSourceUnavailable);
+    }
+    if !is_selected_five_point_one_profile(profile) {
+        return Err(JocDispatchError::Flat7xProfileMismatch);
+    }
+    stage_joc_payload_inner(
+        before,
+        Some(fit),
+        None,
+        input,
+        Some(retry_provider),
+        Some(profile),
+    )
+}
+
+pub fn stage_joc_payload_with_flat7x_rows(
+    before: &JocDispatchState,
+    rows: &Flat7xCoefficientRowsProposal<'_>,
+    input: &JocPayloadInput,
+    profile: ResolvedEncodingProfile,
+) -> Result<JocPayloadProposal, JocDispatchError> {
+    if !is_flat7x_profile(profile) {
+        return Err(JocDispatchError::Flat7xProfileMismatch);
+    }
+    stage_joc_payload_inner(before, None, Some(rows), input, None, Some(profile))
 }
 
 fn stage_joc_payload_inner(
     before: &JocDispatchState,
-    fit: &CoefficientFitProposal,
+    fit: Option<&CoefficientFitProposal>,
+    flat7x_rows: Option<&Flat7xCoefficientRowsProposal<'_>>,
     input: &JocPayloadInput,
-    retry_provider: &RepresentationRetryProvider,
+    retry_provider: Option<&RepresentationRetryProvider>,
     profile: Option<ResolvedEncodingProfile>,
 ) -> Result<JocPayloadProposal, JocDispatchError> {
     if before.retired {
@@ -317,11 +351,16 @@ fn stage_joc_payload_inner(
     {
         return Err(JocDispatchError::Clock);
     }
-    validate_fit_lineage(fit.source_lineage(), input)?;
-    let lineage = fit
-        .source_lineage()
-        .cloned()
-        .ok_or(JocDispatchError::Lineage)?;
+    if fit.is_some() == flat7x_rows.is_some() {
+        return Err(JocDispatchError::CoefficientRowSourceMismatch);
+    }
+    let source_lineage = match (fit, flat7x_rows) {
+        (Some(fit), None) => fit.source_lineage().ok_or(JocDispatchError::Lineage)?,
+        (None, Some(rows)) => rows.source_lineage(),
+        _ => return Err(JocDispatchError::CoefficientRowSourceMismatch),
+    };
+    validate_fit_lineage(Some(source_lineage), input)?;
+    let lineage = source_lineage.clone();
     let sequence_count = match before.sequence_counter {
         -1 => 0,
         0..=1_023 => {
@@ -329,22 +368,42 @@ fn stage_joc_payload_inner(
         }
         _ => return Err(JocDispatchError::Sequence),
     };
-    let representation = match profile {
-        Some(profile) => fit.write_payload_with_resolved_profile(
-            profile,
-            retry_provider,
-            input.clip_gain_index,
-            sequence_count,
-            SELECTED_CAPACITY_BYTES,
-        ),
-        None => fit.write_payload_with_retry(
-            retry_provider,
-            input.clip_gain_index,
-            sequence_count,
-            SELECTED_CAPACITY_BYTES,
-        ),
-    }
-    .map_err(JocDispatchError::Retry)?;
+    let representation = if let Some(rows) = flat7x_rows {
+        let profile = profile.ok_or(JocDispatchError::Flat7xProfileMismatch)?;
+        if !is_flat7x_profile(profile) {
+            return Err(JocDispatchError::Flat7xProfileMismatch);
+        }
+        let outcome = rows
+            .rows()
+            .write_payload(profile)
+            .map_err(|error| JocDispatchError::Retry(RepresentationRetryError::Writer(error)))?;
+        RepresentationWriteResult::from_single_outcome(outcome)
+    } else {
+        let fit = fit.ok_or(JocDispatchError::CoefficientRowSourceMismatch)?;
+        let retry_provider =
+            retry_provider.ok_or(JocDispatchError::CoefficientRowSourceMismatch)?;
+        let result = match profile {
+            Some(profile) if is_selected_five_point_one_profile(profile) => fit
+                .write_payload_with_resolved_profile(
+                    profile,
+                    retry_provider,
+                    input.clip_gain_index,
+                    sequence_count,
+                    SELECTED_CAPACITY_BYTES,
+                ),
+            Some(profile) if is_flat7x_profile(profile) => {
+                return Err(JocDispatchError::Flat7xCoefficientSourceUnavailable);
+            }
+            Some(_) => return Err(JocDispatchError::Flat7xProfileMismatch),
+            None => fit.write_payload_with_retry(
+                retry_provider,
+                input.clip_gain_index,
+                sequence_count,
+                SELECTED_CAPACITY_BYTES,
+            ),
+        };
+        result.map_err(JocDispatchError::Retry)?
+    };
     let mut after = before.clone();
     after.next_dispatch = JocDispatchIndex::new(
         input
@@ -396,4 +455,77 @@ fn validate_fit_lineage(
         return Err(JocDispatchError::Lineage);
     }
     Ok(())
+}
+
+fn is_flat7x_profile(profile: ResolvedEncodingProfile) -> bool {
+    profile.carrier_codec() == CarrierCodecProfile::Flat7xAc3I0DependentEac3D0
+        && profile.substream_topology() == SubstreamTopology::Flat7xIndependentI0DependentD0
+        && profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x
+        && profile.joc_payload_downmix_index() == JocPayloadDownmixIndex::SevenChannel
+}
+
+fn is_selected_five_point_one_profile(profile: ResolvedEncodingProfile) -> bool {
+    profile.carrier_codec() == CarrierCodecProfile::IndependentEac3
+        && profile.substream_topology() == SubstreamTopology::SelectedSingleIndependentZeroDependent
+        && profile.joc_reconstruction_layout()
+            == JocReconstructionLayout::ExistingSelectedFivePointOne
+        && profile.joc_payload_downmix_index() == JocPayloadDownmixIndex::FiveChannel
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{JocDispatchError, JocPayloadInput, validate_fit_lineage};
+    use crate::{
+        joc::coefficient_fitting::FitSourceLineage,
+        profile::EncodingProfile,
+        spatial::SpatialAudioMachine,
+        timeline::{CodecSourceIndex, FrontendCallbackIndex},
+        transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId},
+    };
+
+    #[test]
+    fn shared_dispatch_provenance_accepts_same_source_and_rejects_a_different_generation() {
+        let programme_id = ProgrammeId::new("flat7x-dispatch-lineage-test").unwrap();
+        let attempt = AttemptId::new(1);
+        let source_index = CodecSourceIndex::new(0);
+        let transaction_id = CallbackLineageIdentity::new(
+            programme_id.clone(),
+            attempt,
+            FrontendCallbackIndex::new(2),
+        );
+        let lineage = FitSourceLineage::for_test(
+            programme_id.clone(),
+            attempt,
+            transaction_id.clone(),
+            source_index,
+            source_index.dispatch().unwrap(),
+            0,
+            SpatialAudioMachine::new_cold(EncodingProfile::selected())
+                .unwrap()
+                .digest(),
+        );
+        let input = JocPayloadInput::for_test(
+            programme_id.clone(),
+            attempt,
+            transaction_id.clone(),
+            source_index,
+            128,
+            0x3f80_0000,
+        );
+
+        assert!(validate_fit_lineage(Some(&lineage), &input).is_ok());
+        let next_source = CodecSourceIndex::new(1);
+        let mismatched_input = JocPayloadInput::for_test(
+            programme_id,
+            attempt,
+            transaction_id,
+            next_source,
+            128,
+            0x3f80_0000,
+        );
+        assert!(matches!(
+            validate_fit_lineage(Some(&lineage), &mismatched_input),
+            Err(JocDispatchError::Lineage)
+        ));
+    }
 }

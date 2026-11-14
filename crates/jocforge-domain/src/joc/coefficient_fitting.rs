@@ -10,6 +10,7 @@ use crate::{
         coefficient_normal_equations::{
             CoefficientNormalEquationError, build_selected_normal_equations,
         },
+        coefficient_payload::Flat7xCoefficientRows,
         coefficient_representation::{
             FitRepresentationInput, JocCoefficientRowLayout, RepresentationRetryError,
             RepresentationRetryProvider, RepresentationWriteResult,
@@ -167,6 +168,46 @@ impl FitSourceLineage {
             spatial_before_generation,
             spatial_before_digest,
         }
+    }
+}
+
+/// Caller-provided Flat7x rows paired with the fit owner's same-source after-state and lineage.
+#[derive(Clone, Debug)]
+pub struct Flat7xCoefficientRowsProposal<'a> {
+    rows: Flat7xCoefficientRows<'a>,
+    after: CoefficientFitState,
+    source_lineage: FitSourceLineage,
+}
+
+impl<'a> Flat7xCoefficientRowsProposal<'a> {
+    pub fn new(
+        rows: Flat7xCoefficientRows<'a>,
+        after: CoefficientFitState,
+        source_lineage: FitSourceLineage,
+    ) -> Result<Self, CoefficientFittingError> {
+        if after.fit_generation() != source_lineage.dispatch().value()
+            || source_lineage.source_index().value().checked_add(1)
+                != Some(source_lineage.dispatch().value())
+        {
+            return Err(CoefficientFittingError::Generation);
+        }
+        Ok(Self {
+            rows,
+            after,
+            source_lineage,
+        })
+    }
+
+    pub const fn rows(&self) -> Flat7xCoefficientRows<'a> {
+        self.rows
+    }
+
+    pub const fn after(&self) -> &CoefficientFitState {
+        &self.after
+    }
+
+    pub const fn source_lineage(&self) -> &FitSourceLineage {
+        &self.source_lineage
     }
 }
 
@@ -536,6 +577,62 @@ mod tests {
     );
     const JOC_MATH: &[u8] =
         include_bytes!("../../tests/fixtures/synthetic_qmf_fit_checkpoints/approved-joc-math.json");
+
+    #[test]
+    fn flat7x_rows_proposal_carries_same_source_after_generation() {
+        // SYNTHETIC/TEST_ONLY shape values verify typed provenance, not audio coefficient fitting.
+        let point = CoefficientPayloadPoint {
+            channel_rows: (0..7).map(|_| vec![0.25]).collect(),
+            selected_channels: Vec::new(),
+        };
+        let input = CoefficientPayloadInput {
+            downmix_index: 1,
+            extension_config: 0,
+            clip_gain_index: 128,
+            sequence_count: 0,
+            time_slot_limit: 24,
+            capacity_bytes: 372,
+            objects: (0..15)
+                .map(|_| CoefficientPayloadObject {
+                    present: true,
+                    band_enum: 0,
+                    mode: 1,
+                    points: vec![point.clone()],
+                    offsets: None,
+                })
+                .collect(),
+        };
+        let rows = Flat7xCoefficientRows::new(&input).unwrap();
+        let programme_id = SourceFlagsProgrammeId::new("flat7x-rows-proposal-test").unwrap();
+        let attempt = SourceFlagsAttempt::new(1);
+        let source_index = CodecSourceIndex::new(0);
+        let dispatch = crate::timeline::JocDispatchIndex::new(1);
+        let lineage = FitSourceLineage::for_test(
+            programme_id.clone(),
+            attempt,
+            CallbackLineageIdentity::new(programme_id, attempt, FrontendCallbackIndex::new(2)),
+            source_index,
+            dispatch,
+            0,
+            SpatialAudioMachine::new_cold(EncodingProfile::selected())
+                .unwrap()
+                .digest(),
+        );
+        let after = CoefficientFitState::with_generation_for_test(dispatch.value());
+
+        let proposal =
+            Flat7xCoefficientRowsProposal::new(rows, after.clone(), lineage.clone()).unwrap();
+        assert_eq!(proposal.after(), &after);
+        assert_eq!(proposal.source_lineage(), &lineage);
+        assert!(matches!(
+            Flat7xCoefficientRowsProposal::new(
+                rows,
+                CoefficientFitState::with_generation_for_test(2),
+                lineage,
+            ),
+            Err(CoefficientFittingError::Generation)
+        ));
+    }
 
     #[test]
     fn three_generations_match_full_sparse_selected_and_all_score_call_counts() {
