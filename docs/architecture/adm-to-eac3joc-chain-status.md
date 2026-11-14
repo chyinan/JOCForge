@@ -2131,3 +2131,9 @@ Flat7x now has a separate typed source entry: Flat7xCoefficientRowsProviderOutpu
 ## 2026-11-15 Flat7x coefficient matrix traversal
 
 Wash package openjoc_full_matrix_serialization_order_v1 (manifest 4ba2c0b6133267541a046e416b42adaf9b6c02aa79c98b987563f7ac3de70f7b, seal 20d2a61bc3aff599756526e19f7e1168310d31829a64c7ff36bdbb33323c3821) reports parser order object → point/time slot → channel row → band, selector 1 as seven rows, and band_index 0..7 counts 1,3,5,7,9,12,15,23. The selected writer follows the same structural loop order; this is not coefficient-value or production-algorithm evidence. The authoritative 15x7 row provider remains absent.
+
+## 2026-11-15 Flat7x synthetic ID14-to-AU structure test
+
+The application bridge test passes SYNTHETIC/TEST_ONLY 15-object, one-Full-point, seven-row values through the Flat7x row proposal and existing ID14 serializer. It checks selector 1 and object-count header 15, then carries the serialized ID14 body as opaque test bytes through the existing single block-2 skipfld and D0 frame assembler. The assembled D0 BSI contains target chanmap  x1A00 and CI16 addbsi bytes  1 10; C=512 rejects without changing the frame buffer or writer cursor. Existing AU byte composition places the synthetic I0 640-kbps/2560-byte frame before the D0 1024-kbps/4096-byte frame in one 6,656-byte, 1,664-kbps aggregate AU.
+
+This checks serialization/assembly structure with synthetic frame bytes; the opaque ID14 bytes are not a protected F13 container, and the test does not claim EMDF parser acceptance, real audio, candidate output, or production coefficient generation. The authoritative 15x7 production provider remains missing. The selected 5.1 all-rate route regression passed. The boundary script stops at the pre-existing F06 standalone_root.rs byte/hash inventory mismatch (current branch file 49,292 bytes; registered map row expects 48,077 bytes); this slice does not modify that file or inventory.

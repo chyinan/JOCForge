@@ -455,6 +455,25 @@ mod flat7x_rows_route_tests {
         stage_flat7x_joc_source_from_provider_output,
     };
     use jocforge_domain::{
+        codec::{
+            access_unit_composer::{
+                Flat7xI0D0OpaqueFrameSpans, OpaqueD0FrameBytes, OpaqueI0FrameBytes,
+                write_flat7x_i0_d0_access_unit_bytes,
+            },
+            bitio::{FrameBitCursor, FrameBitWriter},
+            d0_frame_assembler::{
+                D0Block2SkipFieldInput, D0BlockTwoAudioSpans, D0FrameAudioBlockInput,
+                Flat7xD0FrameAssemblyError, Flat7xD0FrameBitInput, Flat7xD0FrameTailPolicy,
+                OpaqueD0AudioBitSpan, assemble_flat7x_d0_frame_bits_with_tail_policy,
+            },
+            d0_frame_layout::{CallerOwnedUnboundD0Block2InsertionPoint, D0SixBlockLayoutError},
+            emdf_skip_field::{D0EmdfSkipFieldWriteError, flat7x_d0_block2_skipfld_bit_length},
+            flat7x_d0_frame_controls::{
+                Flat7xD0AllocationCandidateQ, Flat7xD0AudioFrameControlPolicy,
+            },
+            frame_builder::{Flat7xD0BsiStructure, Flat7xD0Ci16Addbsi},
+        },
+        integrity::crc16::eac3_crc16,
         joc::programme_state::{JocSourceStageErrorKind, SelectedJocStateError},
         joc::{
             coefficient_fitting::Flat7xCoefficientRowsProviderOutput,
@@ -468,6 +487,50 @@ mod flat7x_rows_route_tests {
         timeline::{CodecSourceIndex, FrontendCallbackIndex},
         transaction::{AttemptId, CallbackLineageIdentity, CallbackTransactionId, ProgrammeId},
     };
+
+    fn read_bits(bytes: &[u8], start_bit: u32, width: u8) -> u32 {
+        (0..u32::from(width)).fold(0, |value, offset| {
+            let bit = start_bit + offset;
+            (value << 1) | u32::from((bytes[(bit / 8) as usize] >> (7 - bit % 8)) & 1)
+        })
+    }
+
+    fn synthetic_d0_frame_input<'a>(
+        blocks: &'a [[u8; 1]; 6],
+        block_two_before: &'a [u8; 1],
+        block_two_after: &'a [u8; 1],
+        skip_fields: &'a [D0Block2SkipFieldInput<'a>],
+    ) -> Flat7xD0FrameBitInput<'a> {
+        let span = |bytes: &'a [u8]| OpaqueD0AudioBitSpan::new(bytes, 0, 8);
+        Flat7xD0FrameBitInput {
+            audio_frame_controls: Flat7xD0AudioFrameControlPolicy::new(
+                Flat7xD0AllocationCandidateQ::new(1).unwrap(),
+            ),
+            audio_blocks: [
+                D0FrameAudioBlockInput::Opaque(span(&blocks[0])),
+                D0FrameAudioBlockInput::Opaque(span(&blocks[1])),
+                D0FrameAudioBlockInput::BlockTwo(D0BlockTwoAudioSpans {
+                    before_skipfield: span(block_two_before),
+                    skip_fields,
+                    after_skipfield: span(block_two_after),
+                }),
+                D0FrameAudioBlockInput::Opaque(span(&blocks[3])),
+                D0FrameAudioBlockInput::Opaque(span(&blocks[4])),
+                D0FrameAudioBlockInput::Opaque(span(&blocks[5])),
+            ],
+        }
+    }
+
+    fn synthetic_d0_bsi() -> Flat7xD0BsiStructure {
+        Flat7xD0BsiStructure {
+            dialnorm: 16,
+            compr: None,
+            mixing: None,
+            block_mix: [None; 6],
+            information: None,
+            addbsi: Flat7xD0Ci16Addbsi::new([0x01, 0x10]),
+        }
+    }
 
     #[test]
     fn application_route_keeps_five_point_one_and_requires_flat7x_provider_output() {
@@ -502,7 +565,7 @@ mod flat7x_rows_route_tests {
 
     #[cfg(feature = "test-support")]
     #[test]
-    fn flat7x_provider_output_crosses_application_bridge_with_same_source_generation() {
+    fn flat7x_provider_output_routes_through_synthetic_d0_and_i0_d0_au_structure() {
         // SYNTHETIC/TEST_ONLY rows and identity-only projection exercise routing/provenance only;
         // they contain no audio samples and do not enter a production coefficient provider.
         let programme_id = ProgrammeId::new("flat7x-application-bridge-test").unwrap();
@@ -525,6 +588,15 @@ mod flat7x_rows_route_tests {
             channel_rows: (0..7).map(|_| vec![0.25]).collect(),
             selected_channels: Vec::new(),
         };
+        let objects = (0..15)
+            .map(|_| CoefficientPayloadObject {
+                present: true,
+                band_enum: 0,
+                mode: 1,
+                points: vec![point.clone()],
+                offsets: None,
+            })
+            .collect::<Vec<_>>();
         let input = CoefficientPayloadInput {
             downmix_index: 1,
             extension_config: 0,
@@ -532,16 +604,20 @@ mod flat7x_rows_route_tests {
             sequence_count: 0,
             time_slot_limit: 24,
             capacity_bytes: 372,
-            objects: (0..15)
-                .map(|_| CoefficientPayloadObject {
-                    present: true,
-                    band_enum: 0,
-                    mode: 1,
-                    points: vec![point.clone()],
-                    offsets: None,
-                })
-                .collect(),
+            objects,
         };
+        assert_eq!(input.downmix_index, 1);
+        assert_eq!(input.objects.len(), 15);
+        assert!(input.objects.iter().all(|object| {
+            object.present
+                && object.mode == 1
+                && object.points.len() == 1
+                && object.points[0].channel_rows.len() == 7
+                && object.points[0]
+                    .channel_rows
+                    .iter()
+                    .all(|row| row.len() == 1)
+        }));
         let rows = Flat7xCoefficientRows::new(&input).unwrap();
         let provider_output = Flat7xCoefficientRowsProviderOutput::new(rows);
         let before = SelectedJocState::cold();
@@ -579,5 +655,149 @@ mod flat7x_rows_route_tests {
             provenance.producer_transaction_id(),
             Some(&producer_transaction_id)
         );
+        assert_eq!(provenance.object_count().value(), 15);
+
+        let target = jocforge_domain::profile::Flat7xI0D0TargetPlan::approved_contract();
+        assert_eq!(target.joc_dmx_config_idx(), 1);
+        assert_eq!(target.downmix_index().value(), 1);
+        assert_eq!(target.i0().rate().kbps(), Some(640));
+        assert_eq!(target.d0().rate().kbps(), Some(1_024));
+        assert_eq!(target.aggregate_rate_kbps(), Some(1_664));
+        assert_eq!(target.i0().frame_bytes(), 2_560);
+        assert_eq!(target.d0().frame_bytes(), 4_096);
+        assert_eq!(target.aggregate_frame_bytes(), 6_656);
+        assert_eq!(synthetic_d0_bsi().addbsi.bytes(), [0x01, 0x10]);
+        assert_eq!(target.d0().channel_map().unwrap().value(), 0x1a00);
+
+        let id14_body = &after.id14_body().body().bytes;
+        assert!(!id14_body.is_empty());
+        assert!(id14_body.len() <= 511);
+        assert_eq!(read_bits(id14_body, 0, 3), 1); // serialized Flat7x selector
+        assert_eq!(read_bits(id14_body, 3, 6), 14); // serialized object_count - 1
+
+        // The ID14 body bytes are opaque SYNTHETIC/TEST_ONLY skip-field contents here. This
+        // exercises complete field framing and length admission; it does not assert a protected
+        // F13 container or EMDF parser acceptance.
+        let skip_fields = [D0Block2SkipFieldInput {
+            insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(8),
+            complete_emdf_container: id14_body,
+        }];
+        let synthetic_blocks = [[0x20_u8]; 6];
+        let block_two_before = [0x31_u8];
+        let block_two_after = [0x32_u8];
+        let d0_input = synthetic_d0_frame_input(
+            &synthetic_blocks,
+            &block_two_before,
+            &block_two_after,
+            &skip_fields,
+        );
+        let mut d0_frame = [0_u8; 4_096];
+        let d0_receipt;
+        {
+            let mut writer = FrameBitWriter::new(&mut d0_frame, FrameBitCursor::new(0)).unwrap();
+            d0_receipt = assemble_flat7x_d0_frame_bits_with_tail_policy(
+                target,
+                synthetic_d0_bsi(),
+                d0_input,
+                Flat7xD0FrameTailPolicy::ZeroFillUnusedAuxBits,
+                &mut writer,
+            )
+            .unwrap();
+        }
+        assert!(!d0_receipt.production_allowed());
+        assert_eq!(d0_receipt.layout().bsi_span().end_bit(), 93);
+        assert_eq!(read_bits(&d0_frame, 51, 1), 1); // chanmape
+        assert_eq!(read_bits(&d0_frame, 52, 16), 0x1a00);
+        assert_eq!(read_bits(&d0_frame, 77, 16), 0x0110); // CI16 addbsi bytes
+        assert_eq!(eac3_crc16(&d0_frame[2..]), 0);
+
+        let skip_layout = d0_receipt.layout().block_two_skip_field();
+        let skip_length = u16::try_from(id14_body.len()).unwrap();
+        assert_eq!(skip_layout.payload_bytes(), skip_length);
+        assert!(skip_layout.payload_bytes() <= 511);
+        assert_eq!(
+            skip_layout.bit_span().bit_length(),
+            flat7x_d0_block2_skipfld_bit_length(skip_length).unwrap()
+        );
+        let skip_start = skip_layout.bit_span().start_bit();
+        assert_eq!(read_bits(&d0_frame, skip_start, 1), 1); // skiple: complete field
+        assert_eq!(
+            read_bits(&d0_frame, skip_start + 1, 9),
+            u32::from(skip_length)
+        );
+        for (index, byte) in id14_body.iter().enumerate() {
+            assert_eq!(
+                read_bits(
+                    &d0_frame,
+                    skip_start + 10 + u32::try_from(index * 8).unwrap(),
+                    8,
+                ),
+                u32::from(*byte)
+            );
+        }
+
+        let oversized_container = [0x5a_u8; 512];
+        let oversized_skip_fields = [D0Block2SkipFieldInput {
+            insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(8),
+            complete_emdf_container: &oversized_container,
+        }];
+        let oversized_input = synthetic_d0_frame_input(
+            &synthetic_blocks,
+            &block_two_before,
+            &block_two_after,
+            &oversized_skip_fields,
+        );
+        let mut rejected_d0_frame = [0xa5_u8; 4_096];
+        let original_rejected_d0_frame = rejected_d0_frame;
+        let overflow_result;
+        let overflow_cursor;
+        {
+            let mut writer =
+                FrameBitWriter::new(&mut rejected_d0_frame, FrameBitCursor::new(0)).unwrap();
+            overflow_result = assemble_flat7x_d0_frame_bits_with_tail_policy(
+                target,
+                synthetic_d0_bsi(),
+                oversized_input,
+                Flat7xD0FrameTailPolicy::ZeroFillUnusedAuxBits,
+                &mut writer,
+            );
+            overflow_cursor = writer.cursor().bit_offset();
+        }
+        assert!(matches!(
+            overflow_result,
+            Err(Flat7xD0FrameAssemblyError::Layout(
+                D0SixBlockLayoutError::SkipField(D0EmdfSkipFieldWriteError::ContainerTooLarge)
+            ))
+        ));
+        assert_eq!(overflow_cursor, 0);
+        assert_eq!(rejected_d0_frame, original_rejected_d0_frame);
+
+        let i0_frame = [0x31_u8; 2_560];
+        let mut access_unit = [0_u8; 6_656];
+        let access_unit_receipt;
+        {
+            let mut writer = FrameBitWriter::new(&mut access_unit, FrameBitCursor::new(0)).unwrap();
+            access_unit_receipt = write_flat7x_i0_d0_access_unit_bytes(
+                target,
+                Flat7xI0D0OpaqueFrameSpans {
+                    i0: OpaqueI0FrameBytes::new(&i0_frame),
+                    d0: OpaqueD0FrameBytes::new(&d0_frame),
+                },
+                &mut writer,
+            )
+            .unwrap();
+        }
+        assert_eq!(access_unit_receipt.i0_span().start_byte(), 0);
+        assert_eq!(access_unit_receipt.i0_span().byte_length(), 2_560);
+        assert_eq!(access_unit_receipt.d0_span().start_byte(), 2_560);
+        assert_eq!(access_unit_receipt.d0_span().byte_length(), 4_096);
+        assert_eq!(access_unit_receipt.total_byte_length(), 6_656);
+        assert_eq!(
+            &access_unit[..2_560],
+            &i0_frame,
+            "I0 must be the first frame in the one-AU composition"
+        );
+        assert_eq!(&access_unit[2_560..], &d0_frame);
+        assert!(!access_unit_receipt.production_allowed());
     }
 }

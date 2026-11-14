@@ -588,8 +588,9 @@ mod tests {
         );
         let after = CoefficientFitState::with_generation_for_test(dispatch.value());
         let rows_proposal = Flat7xCoefficientRowsProposal::from_source_lineage(
-            Flat7xCoefficientRowsProviderOutput::new(rows, after),
+            Flat7xCoefficientRowsProviderOutput::new(rows),
             lineage.clone(),
+            after,
         )
         .unwrap();
         let joc_input = JocPayloadInput::for_test(
