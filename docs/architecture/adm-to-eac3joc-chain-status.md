@@ -2007,3 +2007,15 @@ Registered Wash package `JOCFORGE-MAIN-ISOLATED-7.1-SOURCE-MAP-WASH-V1` (manifes
 `stage_flat7x_pcm_pair_for_f15` now joins source-bound I0/D0 frame candidates with the role-aware F12 pair proposal, one F13 metadata proposal and an explicit source-generation label. It returns one 6,656-byte I0→D0 append proposal with the D0 `after_history` candidate and matching Integrity after-root/owner receipt accessible for a later parent swap. No state installation or I/O occurs in this candidate stage. One focused application integration test passed.
 
 The remaining connection is the production callback's source-indexed PCM/extent input and actual F13/F12 candidate feed, followed by durable F15 append and one parent swap of Integrity/history. Cached-drain mapping and EOF valid/padded extents remain UNBOUND; CLI route and real output remain closed.
+
+## 2026-11-14 source-bound F13/F14K pair-integrity bridge
+
+`application::flat7x_pair_integrity::stage_flat7x_pair_f12_integrity` now binds the F13 metadata consumer transaction and F14K protected payload to the exact source-bound I0/D0 frame pair. The F12 pair method uses the fixed 640/1024 role-rate plan; the application bridge derives D0's payload cursor from the frame receipt and preserves the single protected F13 container on D0. The focused integration test reaches one in-memory F15 AU proposal.
+
+The test uses an input-only F13 fixture. Production callback PCM extent, EOF padding, cached-drain source rows, CLI pair caller, durable F15 sink receipt and the single parent swap of Integrity/history remain open; `production_allowed=false`.
+
+## 2026-11-14 source-bound F13/F14K pair-integrity bridge
+
+`application::flat7x_pair_integrity::stage_flat7x_pair_f12_integrity` now binds the F13 metadata consumer transaction and F14K protected payload to the exact source-bound I0/D0 frame pair. The F12 pair method uses the fixed 640/1024 role-rate plan; the application bridge derives D0's payload cursor from the frame receipt and preserves the single protected F13 container on D0. The focused integration test reaches one in-memory F15 AU proposal.
+
+The test uses an input-only F13 fixture. Production callback PCM extent, EOF padding, cached-drain source rows, CLI pair caller, durable F15 sink receipt and the single parent swap of Integrity/history remain open; `production_allowed=false`.

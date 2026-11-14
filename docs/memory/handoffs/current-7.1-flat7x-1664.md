@@ -371,3 +371,9 @@ Registered `JOCFORGE-MAIN-ISOLATED-7.1-SOURCE-MAP-WASH-V1` (manifest `1c66063cd6
 Added `stage_flat7x_pcm_pair_for_f15`: it joins the source-bound I0 and D0 frame candidates, the role-specific F12 pair proposal, F13 metadata and an explicit `Flat7xSourceGeneration` into one ordered in-memory F15 AU append proposal. The candidate carries D0 `after_history` and access to the matching Integrity after-root/owner receipt. Neither state is installed until F15 reports durable append success.
 
 The focused application integration test passed (1), using the test-only receipt-gate metadata fixture and generated I0/D0 frame candidates. It verifies the 6,656-byte I0→D0 sequence, one F13 identity, shared F12 pair identity, and retained D0 history. No file I/O or owner installation occurs here; production and valid/padded source extents remain open.
+
+## 2026-11-14 source-bound F13/F14K pair-integrity bridge
+
+Added `application::flat7x_pair_integrity::stage_flat7x_pair_f12_integrity` to join the D0 source identity/role-map receipt, I0 frame identity, F13 MetadataSourceProposal, F14K protected container and the role-aware rate plan. It derives the D0 payload cursor from the frame assembly receipt, verifies metadata consumer transaction/source/dispatch/AU identity, and returns the noncommitting pair F12 proposal.
+
+The focused pair test exercises source binding → F13/F14K → I0/D0 F12 receipts → F15 in-memory 6,656-byte AU candidate and passed (1). Its F13 metadata is the sealed input-only test fixture. Production callback wiring, source valid/padded extent, durable sink append and one parent state/history install remain open.

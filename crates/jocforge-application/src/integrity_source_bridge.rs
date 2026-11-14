@@ -224,7 +224,7 @@ fn absent_payload_candidate(
     })
 }
 
-fn published_payload_candidate(
+pub(crate) fn published_payload_candidate(
     source_index: CodecSourceIndex,
     dispatch: JocDispatchIndex,
     au_index: Option<PublishedAuIndex>,

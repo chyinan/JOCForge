@@ -816,6 +816,7 @@ mod pair_access_unit_integration_tests {
     };
     use crate::{
         PreparedJobInput, SelectedAdmResourcePayloads, SelectedWaveDescriptor,
+        flat7x_pair_integrity::{Flat7xPairF12StageInput, stage_flat7x_pair_f12_integrity},
         flat7x_pair_output::{
             Flat7xOpaqueD0FrameInput, Flat7xPairAppendProposalError, Flat7xPairIoStageDisposition,
             Flat7xPairIoStageError, preflight_flat7x_pair_io_stage, stage_flat7x_pcm_pair_for_f15,
@@ -838,7 +839,6 @@ mod pair_access_unit_integration_tests {
                 I0AudioBlockSeriesBudget, I0AudioBlockSeriesPolicy, I0BapCandidateQ,
             },
             bap::{BapParameters, Flat7xD0BapParameters, load_bap_parameters},
-            bitio::FrameBitCursor,
             d0_frame_assembler::{
                 D0_CRC2_FIELD_BITS, D0Block2SkipFieldInput, D0BlockTwoAudioSpans,
                 D0FrameAudioBlockInput, Flat7xD0FrameBitInput, Flat7xD0FrameTailPolicy,
@@ -866,9 +866,8 @@ mod pair_access_unit_integration_tests {
         integrity::{
             keyless_checksum::validate_keyless_provider,
             programme_owner::{
-                F12CompletedFrameInput, F14kPayloadInput, Flat7xI0D0F12PairInput,
-                Flat7xIntegrityPairRatePlan, IntegrityF12SourceInput, IntegrityIdentity,
-                IntegrityProgrammeOwner,
+                F12CompletedFrameInput, F14kPayloadInput, IntegrityF12SourceInput,
+                IntegrityIdentity, IntegrityProgrammeOwner,
             },
         },
         joc::emdf::metadata_owner::test_support::{
@@ -1468,32 +1467,39 @@ mod pair_access_unit_integration_tests {
                 .0;
         }
 
-        let d0_emdf_container_start = d0_frame.emdf_container_start().unwrap();
-        let f12_pair = integrity_owner
-            .stage_flat7x_i0_d0_f12_pair_for_callback(
-                Flat7xI0D0F12PairInput {
-                    identity: IntegrityIdentity {
-                        programme_id: prepared.programme_id().as_str().to_owned(),
-                        attempt: attempt.value(),
-                        transaction_id: source_transaction.to_owned(),
-                        source_index,
-                        dispatch,
-                        au_index: Some(PublishedAuIndex::new(0)),
-                    },
-                    rate_plan: Flat7xIntegrityPairRatePlan::flat7x_i0_640_d0_1024(),
-                    i0_frame: i0_frame.i0_frame().frame_bytes(),
-                    d0_frame: d0_frame.frame_candidate().frame().frame_bytes(),
-                    d0_emdf_container_start,
-                    d0_zero_slot_container: &zero_slot_container,
-                    d0_protected_container: &protected_container,
-                },
-                &keyless_provider,
-                prepared.programme_id(),
-                attempt,
-                source_identity.source_stage_key().transaction_id(),
-                &callback_lineage,
-            )
-            .unwrap();
+        let f14k_source = crate::integrity_source_bridge::published_payload_candidate(
+            source_index,
+            dispatch,
+            Some(PublishedAuIndex::new(0)),
+            &keyless_provider,
+            &zero_slot_container,
+            &serde_json::json!({
+                "bit_order": "MSB-first",
+                "terminal_id": { "value": 0, "start_bit": 32, "width_bits": 5 },
+                "primary_length_code": { "value": 2, "start_bit": 37, "width_bits": 2, "byte_count": 4 },
+                "secondary_length_code": { "value": 1, "start_bit": 39, "width_bits": 2, "byte_count": 1 },
+                "primary_protection_range_bits": [41, 73],
+                "secondary_protection_range_bits": [73, 81],
+                "terminal_padding_range_bits": [81, 128],
+                "terminal_padding_bits": 47,
+                "wire_bytes": 16,
+                "body_bytes": 12
+            }),
+        )
+        .unwrap();
+        assert_eq!(
+            f14k_source.protected_container(),
+            Some(&protected_container)
+        );
+        let f12_pair = stage_flat7x_pair_f12_integrity(Flat7xPairF12StageInput {
+            integrity_before: &integrity_owner,
+            i0_frame: &i0_frame,
+            d0_frame: &d0_frame,
+            f13_metadata: &metadata,
+            f14k_source: &f14k_source,
+            keyless_integrity: &keyless_provider,
+        })
+        .unwrap();
 
         let output_candidate = stage_flat7x_pcm_pair_for_f15(
             &i0_frame,

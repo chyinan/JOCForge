@@ -153,3 +153,9 @@ The approved U4/U7 writer boundary is now locally materialized as `codec::expone
 - Added `stage_flat7x_pcm_pair_for_f15`, which takes source-bound I0/D0 frame candidates, one Integrity F12 pair proposal, F13 metadata, explicit source generation and the F15 output owner. It returns one whole-AU append proposal plus D0 after-history and retains access to the matching Integrity after-root/owner receipt; all state remains pending for the caller's durable append transaction.
 - Focused application integration passed (1): exact 2,560+4,096 extents, ordered 6,656-byte AU, F13 identity, F12 roles and carried D0 history. No filesystem write or parent root install was performed.
 - Remaining: replace test-fixture F13 inputs with the production metadata proposal; bind source PCM interval/generation/tail extent; connect the CLI callback and durable I/O receipt to one parent swap.
+
+## 2026-11-14 source-bound F13/F14K-to-F12 bridge
+
+- Added `application::flat7x_pair_integrity::stage_flat7x_pair_f12_integrity`: it checks the I0/D0 source-role-map binding, the F13 source/consumer identity and the F14K protected payload lineage, derives the D0 EMDF payload cursor from its frame receipt, and stages the fixed-role-rate F12 pair proposal.
+- The F15 integration test drives a source-bound PCM→D0 frame, a source-bound I0 frame, F13/F14K test data, the pair F12 proposal and one in-memory F15 AU append candidate. It passed (1).
+- Production caller, callback PCM extent/EOF tail receipts, parent durable append, and atomic Integrity/history installation remain open; production is disabled.

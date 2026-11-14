@@ -54,6 +54,7 @@ use std::sync::Arc;
 
 pub mod codec_source_bridge;
 pub mod drc_source_bridge;
+pub mod flat7x_pair_integrity;
 pub mod flat7x_pair_output;
 pub mod flat7x_pair_source;
 pub mod independent_meter_callback;
