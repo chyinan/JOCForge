@@ -167,3 +167,12 @@ The approved U4/U7 writer boundary is now locally materialized as `codec::expone
 - Cached drain rows carry no source-specific reader extent; Flat7x source staging stops before candidate production for that delivery. This leaves the cached-drain source recipe visibly gated.
 - `cargo fmt --all -- --check`, workspace `cargo check --locked`, domain/application/CLI test-target compile checks, generated-map check, and boundary check passed. No test binary or encoder was run. Strict workspace Clippy reports 18 errors and 1 warning, all outside the files changed in this slice.
 - Remaining: Wash-backed per-source cached-drain rows and terminal extent policy; D0 history owner and suppressed-source installation; production D0 settings/receipt caller; one parent F15 durable append and root swap. `production_allowed=false`.
+
+
+## 2026-11-14 CLI D0 history and frame candidate
+
+- Extended `CodecOwnerRoot` with an optional Flat7x D0 overlap history. The Flat7x cold value is zeroed 4×256 F32 bit words, canonical state includes lowercase hex for all words, and programme reset restores the same cold history. The ordinary 5.1 Codec root serialization stays byte-identical.
+- Suppressed sources 0/1 now stage six-block D0 PCM history from their source-bound rows and install it through the existing callback parent. Cached drains use the explicit provisional policy `CachedDrainRepeatPreviousCallbackV1`, which reuses previous cached PCM bits with a logical source extent.
+- Published sources >=2 now call `produce_flat7x_pair_d0_pcm_frame_candidate` using the committed history, F14K protected container and replaceable local settings `JOCFORGE_FLAT7X_D0_FRAME_DEFAULTS_V1` (DrcOwner dialnorm with fallback 31, `compr=1`, no mixing/addbsi, no per-block dynamic-range code). The candidate is a complete D0 frame; the CLI currently stops before paired I0/F12/F15 output.
+- Verification: workspace `cargo check --locked` and `cargo check -p jocforge --tests --locked` passed. No tests ran. Boundary/map checks passed after this slice. Strict Clippy reports 18 pre-existing errors and 1 warning, with no diagnostic in this slice.
+- Next: produce the I0 AC-3 frame from the same source binding, join real F13/F14K with the paired F12 integrity proposal, route the 6,656-byte pair through F15 and the parent commit, then finalize the Flat7x stream.

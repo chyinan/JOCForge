@@ -12886,10 +12886,13 @@ def check_f12_flat7x_i0_typed_bsi_frame_assembly(root, d):
         "six_block_candidate_composes_official_bsi_crc_and_source_identity_into_i0_frame" in series_test_source
         and "EncodeRequestRoute::Flat7xI0D0Pair(target) => run_worker(" in cli_source
         and "Some(target.d0().rate())" in cli_source
-        and "Flat7xD0AudioProducerUnavailable" in source_execution
-        and "NoApprovedAudioProductionRule" in source_execution
+        and "stage_flat7x_pair_d0_pcm_block_series" in source_execution
+        and "produce_flat7x_pair_d0_pcm_frame_candidate" in source_execution
+        and "CachedDrainRepeatPreviousCallbackV1" in source_execution
+        and "Flat7xPairOutputNotConnected" in source_execution
+        and "NoApprovedAudioProductionRule" not in source_execution
         and "assemble_flat7x_pair_i0_frame_candidate" not in cli_source,
-        "Flat7x request enters selected source work and stops at the typed D0 producer boundary",
+        "Flat7x request commits suppressed D0 history and builds a published-source frame candidate before the pair-output boundary",
     )
 
     expected_bsi_manifest = "cddad099b557617ab6f4aa73d3c40d87f75f12a55c141e14bff6573bdc891787"
@@ -13013,10 +13016,10 @@ def check_f12_flat7x_i0_ac3_audio_block_prototype(root, d):
         and "pub fn parse_ac3_3_2_lfe_audio_block(" in parser_code
         and "parser_accepts_the_caller_supplied_skip_field_branch" in parser.read_text(encoding="utf-8")
         and "producer_requires_explicit_supported_coupling_and_delta_choices" in parser.read_text(encoding="utf-8")
-        and "Flat7xD0AudioProducerUnavailable" in rust_code_without_comments(
+        and "Flat7xPairOutputNotConnected" in rust_code_without_comments(
             (root / "crates/jocforge-cli/src/source_execution.rs").read_text(encoding="utf-8")
         ),
-        "AC-3 block-zero prototype stays separate while the CLI advances to the D0 producer seam",
+        "AC-3 block-zero prototype stays separate while the CLI composes a D0 frame candidate",
     )
 
 
@@ -13302,7 +13305,7 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         and row.get("parameters", {}).get("d0_audio_block_producer_gap", {}).get("local_four_channel_d0_audblk_writer")
         == "D0_4X253_D15_BAP_MANTISSA_AUDBLK_AND_SIX_BLOCK_FRAME_CANDIDATE"
         and row.get("parameters", {}).get("d0_audio_block_producer_gap", {}).get("producer_status")
-        == "LOCALLY_VERIFIED_FRAME_CANDIDATE; SOURCE_HISTORY_F12_F13_F15_AND_CLI_OPEN"
+        == "LOCALLY_COMPILED_CLI_D0_PCM_TO_COMPLETE_FRAME_CANDIDATE_FOR_PUBLISHED_SOURCE__I0_F12_F15_OUTPUT_OPEN"
         and "pub fn pack_flat7x_d0_mantissa_block(" in d0_mantissa
         and "decoded_exponents()" in d0_mantissa
         and "pack_block_mantissas(&items)" in d0_mantissa
@@ -13385,7 +13388,7 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         "assemble_flat7x_pair_access_unit_candidate" not in cli
         and "append_flat7x_pair(" not in cli
         and "EncodeRequestRoute::Flat7xI0D0Pair(target) => run_worker(" in cli
-        and "Flat7xD0AudioProducerUnavailable" in rust_code_without_comments(
+        and "Flat7xPairOutputNotConnected" in rust_code_without_comments(
             (root / "crates/jocforge-cli/src/source_execution.rs").read_text(encoding="utf-8")
         )
         and "Flat7xPairNotReady" not in cli

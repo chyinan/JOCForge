@@ -14,11 +14,9 @@ use jocforge_domain::{
         bitio::FrameBitCursor,
         d0_frame_assembler::{Flat7xD0FrameBitInput, Flat7xD0FrameTailPolicy},
         flat7x_d0_pcm_source::{
-            Flat7xD0PcmFrameCandidate, Flat7xD0PcmFrameInput, Flat7xD0PcmFrameSettings,
-            Flat7xD0PcmSourceError, Flat7xD0PcmSourceExtent,
-            produce_flat7x_d0_frame_from_pcm_source,
+            Flat7xD0PcmFrameInput, Flat7xD0PcmSourceError, produce_flat7x_d0_frame_from_pcm_source,
+            stage_flat7x_d0_pcm_block_series,
         },
-        frame_builder::Flat7xD0BsiStructure,
         i0_frame_assembler::{
             CallerOwnedI0CrcrsvSeed, Flat7xI0Ac3AudioSeriesFrameCandidate,
             Flat7xI0FrameAssemblyError, I0AuxDataInput,
@@ -34,6 +32,13 @@ use jocforge_domain::{
     transaction::{AttemptId, CallbackTransactionId, ProgrammeId},
     transform::fullband_exponent_pipeline::NumericPlanReceipt,
 };
+
+pub use jocforge_domain::codec::bap::Flat7xD0BapParameters;
+pub use jocforge_domain::codec::flat7x_d0_pcm_source::{
+    Flat7xD0OverlapHistory, Flat7xD0PcmBlockSeriesCandidate, Flat7xD0PcmFrameCandidate,
+    Flat7xD0PcmFrameSettings, Flat7xD0PcmSourceExtent, Flat7xD0PcmSourceExtentOrigin,
+};
+pub use jocforge_domain::codec::frame_builder::Flat7xD0BsiStructure;
 
 use crate::source_frame_bridge::{Flat7xSourcePcmProjection, Flat7xSourceRoleMapReceipt};
 use jocforge_domain::analysis::source_frame::SharedAnalysisIdentity;
@@ -290,6 +295,66 @@ pub struct Flat7xPairD0PcmFrameCandidate {
     source_identity: Flat7xD0SourceIdentity,
     source_role_map_receipt: Flat7xSourceRoleMapReceipt,
     frame_candidate: Flat7xD0PcmFrameCandidate,
+}
+
+/// Six-block D0 transform and next overlap history for a bound pair source.
+#[must_use]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Flat7xPairD0PcmBlockSeriesCandidate {
+    source_identity: Flat7xD0SourceIdentity,
+    source_role_map_receipt: Flat7xSourceRoleMapReceipt,
+    source_extent: Flat7xD0PcmSourceExtent,
+    block_series: Flat7xD0PcmBlockSeriesCandidate,
+}
+
+impl Flat7xPairD0PcmBlockSeriesCandidate {
+    pub const fn source_identity(&self) -> &Flat7xD0SourceIdentity {
+        &self.source_identity
+    }
+
+    pub const fn source_role_map_receipt(&self) -> &Flat7xSourceRoleMapReceipt {
+        &self.source_role_map_receipt
+    }
+
+    pub const fn source_extent(&self) -> Flat7xD0PcmSourceExtent {
+        self.source_extent
+    }
+
+    pub const fn after_history(&self) -> &Flat7xD0OverlapHistory {
+        self.block_series.after_history()
+    }
+
+    pub const fn production_allowed(&self) -> bool {
+        false
+    }
+}
+
+/// Stages D0 PCM history for a source that advances codec overlap without publishing an AU.
+pub fn stage_flat7x_pair_d0_pcm_block_series(
+    binding: &Flat7xPairSourceBinding<'_>,
+    before: &Flat7xD0OverlapHistory,
+    transform_parameters: &jocforge_domain::transform::math_generated_parameters::MathGeneratedTransformParameters,
+) -> Result<Flat7xPairD0PcmBlockSeriesCandidate, Flat7xPairSourceError> {
+    let source_extent = binding.source_extent();
+    let valid_samples = usize::from(source_extent.valid_samples());
+    let d0_rows = binding.d0_rows.rows();
+    for (channel, row) in d0_rows.iter().enumerate() {
+        if row.len() == 1_536 && row[valid_samples..].iter().any(|word| *word != 0) {
+            return Err(Flat7xPairSourceError::D0PcmFrame(
+                Flat7xD0PcmSourceError::PcmPaddingMismatch {
+                    channel: channel as u8,
+                },
+            ));
+        }
+    }
+    let block_series = stage_flat7x_d0_pcm_block_series(d0_rows, before, transform_parameters)
+        .map_err(Flat7xPairSourceError::D0PcmFrame)?;
+    Ok(Flat7xPairD0PcmBlockSeriesCandidate {
+        source_identity: binding.d0_source_identity.clone(),
+        source_role_map_receipt: binding.role_map_receipt.clone(),
+        source_extent,
+        block_series,
+    })
 }
 
 impl Flat7xPairD0PcmFrameCandidate {

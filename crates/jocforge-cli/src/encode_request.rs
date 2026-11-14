@@ -70,13 +70,7 @@ pub enum EncodeRequestError {
     OutputAlreadyExists,
     UnsupportedDataRate,
     UnsupportedJocLayout,
-    Flat7xD0AudioProducerUnavailable {
-        source_index: u64,
-        state: jocforge_application::flat7x_pair_source::Flat7xD0AudioSpanProducerState,
-    },
-    Flat7xPairAssemblyInputsUnavailable {
-        source_index: u64,
-    },
+    Flat7xPairOutputNotConnected { source_index: u64 },
     InputFile(RiffPcm24FileReadError),
     Riff(jocforge_io::pcm::riff_pcm24::RiffPcm24Error),
     PreparedInput(PreparedJobInputError),
@@ -124,16 +118,9 @@ impl std::fmt::Display for EncodeRequestError {
             Self::UnsupportedJocLayout => {
                 formatter.write_str("joc-layout flat7x requires the selected 1024 kbps profile row")
             }
-            Self::Flat7xD0AudioProducerUnavailable {
-                source_index,
-                state,
-            } => write!(
+            Self::Flat7xPairOutputNotConnected { source_index } => write!(
                 formatter,
-                "Flat7x D0 audio-span producer is unavailable for source {source_index} ({state:?}); no pair AU was staged"
-            ),
-            Self::Flat7xPairAssemblyInputsUnavailable { source_index } => write!(
-                formatter,
-                "Flat7x pair assembly receipts are unavailable for source {source_index}; no pair AU was staged"
+                "Flat7x D0 frame candidate is ready, but I0/F12/F15 pair output is not connected for source {source_index}"
             ),
             Self::InputFile(error) => write!(formatter, "{error}"),
             Self::Riff(error) => write!(formatter, "selected RIFF input rejected: {error:?}"),
@@ -191,16 +178,9 @@ fn map_source_frame_stage_error(
         crate::source_execution::SourceFrameStageError::Pipeline(message) => {
             EncodeRequestError::SourcePipeline(message)
         }
-        crate::source_execution::SourceFrameStageError::Flat7xD0AudioProducerUnavailable {
+        crate::source_execution::SourceFrameStageError::Flat7xPairOutputNotConnected {
             source_index,
-            state,
-        } => EncodeRequestError::Flat7xD0AudioProducerUnavailable {
-            source_index,
-            state,
-        },
-        crate::source_execution::SourceFrameStageError::Flat7xPairAssemblyInputsUnavailable {
-            source_index,
-        } => EncodeRequestError::Flat7xPairAssemblyInputsUnavailable { source_index },
+        } => EncodeRequestError::Flat7xPairOutputNotConnected { source_index },
     }
 }
 
@@ -741,11 +721,15 @@ fn run_inner(
             EncodeRequestError::SourcePipeline(format!("Integrity cold root: {error:?}"))
         })?;
     let joc_state = SelectedJocState::cold();
-    let codec_root =
-        CodecOwnerRoot::cold_for_rate(prepared.configuration().selected_profile().codec_rate())
-            .map_err(|error| {
-                EncodeRequestError::SourcePipeline(format!("Codec cold root: {error:?}"))
-            })?;
+    let codec_rate = prepared.configuration().selected_profile().codec_rate();
+    let codec_root = if resolved_joc_profile.joc_reconstruction_layout()
+        == JocReconstructionLayout::Flat7x
+    {
+        CodecOwnerRoot::cold_for_flat7x(codec_rate)
+    } else {
+        CodecOwnerRoot::cold_for_rate(codec_rate)
+    }
+    .map_err(|error| EncodeRequestError::SourcePipeline(format!("Codec cold root: {error:?}")))?;
     let model_dialnorm = drc_root.state().programme_dialnorm();
     let measurement_receipt = measurement.receipt();
     let roots = ProgrammeOwnerRoots::ready(
@@ -1269,12 +1253,21 @@ fn stage_main_cached_callback_candidate(
         return Err(EncodeRequestError::ClockMismatch);
     }
     let flat7x_physical_pcm_rows = if preserve_flat7x_pcm_rows {
+        let source_extent = Flat7xD0PcmSourceExtent::repeat_previous_callback_for_cached_drain(
+            source_index,
+            callback_index,
+        )
+        .map_err(|error| {
+            EncodeRequestError::SourcePipeline(format!(
+                "Flat7x cached-drain PCM source extent: {error:?}"
+            ))
+        })?;
         Some(crate::source_execution::Flat7xPcmSourceRows::new(
             prepared.resource_identity().input_sha256(),
             callback_index,
             source_index,
             crate::source_execution::Flat7xPcmRowDelivery::CachedDrain,
-            None,
+            Some(source_extent),
             cached_flat7x_physical_pcm_rows(prepared, roots)?,
         ))
     } else {
@@ -1562,18 +1555,14 @@ mod tests {
     }
 
     #[test]
-    fn flat7x_d0_producer_boundary_keeps_its_named_source_error() {
+    fn flat7x_published_source_stops_after_d0_frame_at_pair_output_boundary() {
         assert!(matches!(
             super::map_source_frame_stage_error(
-                crate::source_execution::SourceFrameStageError::Flat7xD0AudioProducerUnavailable {
+                crate::source_execution::SourceFrameStageError::Flat7xPairOutputNotConnected {
                     source_index: 2,
-                    state: jocforge_application::flat7x_pair_source::Flat7xD0AudioSpanProducerState::NoApprovedAudioProductionRule,
                 }
             ),
-            EncodeRequestError::Flat7xD0AudioProducerUnavailable {
-                source_index: 2,
-                state: jocforge_application::flat7x_pair_source::Flat7xD0AudioSpanProducerState::NoApprovedAudioProductionRule,
-            }
+            EncodeRequestError::Flat7xPairOutputNotConnected { source_index: 2 }
         ));
     }
 

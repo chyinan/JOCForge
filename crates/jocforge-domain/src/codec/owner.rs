@@ -1,6 +1,7 @@
 // pattern: Functional Core
 //! Noncommitting codec-owner state for the selected source-frame transition.
 
+use crate::codec::flat7x_d0_pcm_source::Flat7xD0OverlapHistory;
 use crate::{
     analysis::structure_refresh::{F07_BLOCKS_PER_FRAME, F07_FULLBAND_LANES},
     codec::frame_size::Eac3FrameSize,
@@ -41,6 +42,7 @@ pub struct CodecOwnerRoot {
     generation: CodecOwnerGeneration,
     codec_rate: crate::profile::CodecRateProfile,
     previous_short: [bool; F07_FULLBAND_LANES],
+    d0_overlap_history: Option<Flat7xD0OverlapHistory>,
 }
 
 impl CodecOwnerRoot {
@@ -50,6 +52,7 @@ impl CodecOwnerRoot {
             generation: CodecOwnerGeneration(0),
             codec_rate: crate::profile::CodecRateProfile::Kbps1024,
             previous_short: [false; F07_FULLBAND_LANES],
+            d0_overlap_history: None,
         }
     }
 
@@ -63,7 +66,17 @@ impl CodecOwnerRoot {
             generation: CodecOwnerGeneration(0),
             codec_rate,
             previous_short: [false; F07_FULLBAND_LANES],
+            d0_overlap_history: None,
         })
+    }
+
+    /// Creates the Flat7x source root with the local zeroed D0 overlap-history model.
+    pub fn cold_for_flat7x(
+        codec_rate: crate::profile::CodecRateProfile,
+    ) -> Result<Self, CodecOwnerStageError> {
+        let mut root = Self::cold_for_rate(codec_rate)?;
+        root.d0_overlap_history = Some(Flat7xD0OverlapHistory::cold());
+        Ok(root)
     }
 
     /// Reconstructs this owner from its cold schema during a programme-origin reset.
@@ -72,6 +85,9 @@ impl CodecOwnerRoot {
             generation: CodecOwnerGeneration(0),
             codec_rate: self.codec_rate,
             previous_short: [false; F07_FULLBAND_LANES],
+            d0_overlap_history: self
+                .d0_overlap_history
+                .map(|_| Flat7xD0OverlapHistory::cold()),
         };
     }
 
@@ -87,6 +103,10 @@ impl CodecOwnerRoot {
         self.codec_rate
     }
 
+    pub const fn d0_overlap_history(&self) -> Option<&Flat7xD0OverlapHistory> {
+        self.d0_overlap_history.as_ref()
+    }
+
     /// Serializes this complete owner value as the selected canonical JSON preimage.
     ///
     /// Clock and attempt identities are owned by the enclosing GTC source transaction and are
@@ -94,11 +114,26 @@ impl CodecOwnerRoot {
     pub fn canonical_state_bytes(&self) -> Vec<u8> {
         let [left, center, right, left_surround, right_surround] =
             self.previous_short.map(u8::from);
-        format!(
-            "{{\"codec\":{{\"generation\":{}}},\"previous_short\":{{\"i1_words\":[{left},{center},{right},{left_surround},{right_surround}]}}}}",
-            self.generation.value()
-        )
-        .into_bytes()
+        match self.d0_overlap_history {
+            None => format!(
+                "{{\"codec\":{{\"generation\":{}}},\"previous_short\":{{\"i1_words\":[{left},{center},{right},{left_surround},{right_surround}]}}}}",
+                self.generation.value()
+            )
+            .into_bytes(),
+            Some(history) => {
+                use std::fmt::Write as _;
+
+                let mut history_hex = String::with_capacity(8 * 4 * 256);
+                for word in history.samples_by_channel().iter().flatten() {
+                    let _ = write!(history_hex, "{word:08x}");
+                }
+                format!(
+                    "{{\"codec\":{{\"generation\":{}}},\"d0_overlap_history_f32_bits_hex\":\"{history_hex}\",\"previous_short\":{{\"i1_words\":[{left},{center},{right},{left_surround},{right_surround}]}}}}",
+                    self.generation.value()
+                )
+                .into_bytes()
+            }
+        }
     }
 
     /// Returns immutable bytes and hashes for this root in the selected GTC owner slot.
@@ -107,7 +142,15 @@ impl CodecOwnerRoot {
         let state_sha256 = Sha256::digest(&canonical_bytes).into();
         // The selected rate is immutable admission configuration; only the mutable codec state
         // participates in this owner's canonical GTC value.
-        let cold_sha256 = Sha256::digest(Self::cold().canonical_state_bytes()).into();
+        let cold_state = Self {
+            generation: CodecOwnerGeneration(0),
+            codec_rate: self.codec_rate,
+            previous_short: [false; F07_FULLBAND_LANES],
+            d0_overlap_history: self
+                .d0_overlap_history
+                .map(|_| Flat7xD0OverlapHistory::cold()),
+        };
+        let cold_sha256 = Sha256::digest(cold_state.canonical_state_bytes()).into();
         CodecOwnerStateReference {
             generation: self.generation,
             state_sha256,
@@ -146,8 +189,27 @@ impl CodecOwnerRoot {
         current_short_flags: &CodecShortFlags,
         output_after: Option<&OutputSourceAfterProposal>,
     ) -> Result<CodecOwnerProposal, CodecOwnerStageError> {
+        self.stage_source_with_d0_overlap_history(
+            accepted_frame,
+            current_short_flags,
+            output_after,
+            None,
+        )
+    }
+
+    /// Stages the source transition while carrying the optional D0 overlap-history replacement.
+    pub fn stage_source_with_d0_overlap_history(
+        &self,
+        accepted_frame: &AcceptedCodecFrame,
+        current_short_flags: &CodecShortFlags,
+        output_after: Option<&OutputSourceAfterProposal>,
+        d0_history_after: Option<&Flat7xD0OverlapHistory>,
+    ) -> Result<CodecOwnerProposal, CodecOwnerStageError> {
         if accepted_frame.codec_rate != self.codec_rate {
             return Err(CodecOwnerStageError::FrameProfileMismatch);
+        }
+        if self.d0_overlap_history.is_none() && d0_history_after.is_some() {
+            return Err(CodecOwnerStageError::D0HistoryUnavailable);
         }
         validate_publication(accepted_frame, output_after)?;
         let next_generation = self
@@ -159,6 +221,7 @@ impl CodecOwnerRoot {
             generation: CodecOwnerGeneration(next_generation),
             codec_rate: self.codec_rate,
             previous_short: current_short_flags[F07_BLOCKS_PER_FRAME - 1],
+            d0_overlap_history: d0_history_after.copied().or(self.d0_overlap_history),
         };
         let before_state_sha256 = self.state_reference().state_sha256;
 
@@ -362,6 +425,7 @@ pub enum CodecOwnerStageError {
     MissingDurableAppend,
     UnexpectedDurableAppend,
     DurableAppendMismatch,
+    D0HistoryUnavailable,
     SourceStageRequired,
     BeforeStateMismatch,
     GenerationMismatch,

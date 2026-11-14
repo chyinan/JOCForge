@@ -3,7 +3,9 @@
 
 use std::sync::Arc;
 
-pub use jocforge_domain::codec::flat7x_d0_pcm_source::Flat7xD0PcmSourceExtent;
+pub use jocforge_domain::codec::flat7x_d0_pcm_source::{
+    Flat7xD0OverlapHistory, Flat7xD0PcmSourceExtent, Flat7xD0PcmSourceExtentOrigin,
+};
 pub use jocforge_domain::codec::{
     owner::{CodecOwnerProposal, CodecOwnerRoot, CodecOwnerStageError},
     source_frame_writer::SelectedSourceFrameCandidate,
@@ -344,6 +346,23 @@ pub fn stage_codec_owner_after_source_frame(
     let short_flags = candidate.codec_short_flags();
     let accepted_frame = candidate.accepted_codec_frame();
     codec_owner.stage_source(&accepted_frame, &short_flags, output_after)
+}
+
+/// Stages the Codec owner with the source's Flat7x overlap-history after-value.
+pub fn stage_codec_owner_after_source_frame_with_d0_history(
+    codec_owner: &CodecOwnerRoot,
+    candidate: &SelectedSourceFrameCandidate<'_>,
+    output_after: Option<&OutputSourceAfterProposal>,
+    d0_history_after: &Flat7xD0OverlapHistory,
+) -> Result<CodecOwnerProposal, CodecOwnerStageError> {
+    let short_flags = candidate.codec_short_flags();
+    let accepted_frame = candidate.accepted_codec_frame();
+    codec_owner.stage_source_with_d0_overlap_history(
+        &accepted_frame,
+        &short_flags,
+        output_after,
+        Some(d0_history_after),
+    )
 }
 
 fn validate_metadata_source_lineage(

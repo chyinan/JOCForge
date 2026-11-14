@@ -33,6 +33,13 @@ pub struct Flat7xD0PcmSourceExtent {
     first_sample: AdmSampleIndex,
     valid_samples: u16,
     padded_samples: u16,
+    origin: Flat7xD0PcmSourceExtentOrigin,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Flat7xD0PcmSourceExtentOrigin {
+    ReaderCallback,
+    CachedDrainRepeatPreviousCallbackV1,
 }
 
 impl Flat7xD0PcmSourceExtent {
@@ -62,7 +69,27 @@ impl Flat7xD0PcmSourceExtent {
             first_sample,
             valid_samples,
             padded_samples,
+            origin: Flat7xD0PcmSourceExtentOrigin::ReaderCallback,
         })
+    }
+
+    /// Issues the current local cached-drain model: reuse the last cached PCM window for this
+    /// logical source clock while retaining its guessed callback sample origin explicitly.
+    pub fn repeat_previous_callback_for_cached_drain(
+        source_index: CodecSourceIndex,
+        callback_index: FrontendCallbackIndex,
+    ) -> Result<Self, Flat7xD0PcmSourceExtentError> {
+        let first_sample =
+            AdmSampleIndex::new(u64::from(callback_index.value()) * SOURCE_SAMPLES_U64);
+        let mut extent = Self::new(
+            source_index,
+            callback_index,
+            first_sample,
+            SOURCE_SAMPLES as u16,
+            0,
+        )?;
+        extent.origin = Flat7xD0PcmSourceExtentOrigin::CachedDrainRepeatPreviousCallbackV1;
+        Ok(extent)
     }
 
     pub const fn source_index(self) -> CodecSourceIndex {
@@ -84,6 +111,10 @@ impl Flat7xD0PcmSourceExtent {
     pub const fn padded_samples(self) -> u16 {
         self.padded_samples
     }
+
+    pub const fn origin(self) -> Flat7xD0PcmSourceExtentOrigin {
+        self.origin
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -98,7 +129,7 @@ pub enum Flat7xD0PcmSourceExtentError {
 ///
 /// The parent owner retains the committed value and installs a staged replacement only after its
 /// source transaction is accepted. Samples are stored as their original f32 bit words.
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Flat7xD0OverlapHistory {
     samples_by_channel: [[u32; D0_PCM_SAMPLES_PER_BLOCK]; FLAT7X_D0_BAP_CHANNEL_COUNT],
 }

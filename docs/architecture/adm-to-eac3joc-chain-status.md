@@ -2030,3 +2030,14 @@ The normal F01 PCM reader now issues a typed `Flat7xD0PcmSourceExtent` for each 
 Cached-drain rows currently originate from cached spatial PCM state and have no per-source reader extent, so the Flat7x source stage stops before candidate production for that delivery. The active production gate remains `NoApprovedAudioProductionRule`; D0 history ownership, suppressed-source handling, production D0 settings/receipt, same-source F13/F12 pair construction and the F15 durable parent swap remain open. `production_allowed=false`.
 
 Formatting, production workspace compilation, domain/application/CLI test-target compilation, generated implementation maps and boundary checks passed. Test binaries and full-input output validation were not run. Strict workspace Clippy reports 18 existing errors and 1 warning; no diagnostic points to the files changed in this extent slice.
+
+
+## 2026-11-14 Flat7x D0 overlap history and frame candidate
+
+`CodecOwnerRoot::cold_for_flat7x` now stores optional `Flat7xD0OverlapHistory`; its canonical Codec state serializes the complete 4×256 F32 bit words in `d0_overlap_history_f32_bits_hex`, and programme reset returns that history to zero. The ordinary selected 5.1 Codec state keeps its existing canonical shape.
+
+The production source callback now runs `stage_flat7x_pair_d0_pcm_block_series` for suppressed source 0/1 and commits each after-history through the callback parent. For cached-drain callbacks it uses the explicit replaceable `CachedDrainRepeatPreviousCallbackV1` model to repeat the previous cached PCM rows with a logical sample extent. For published source >=2 it uses the actual reader/projected rows, the committed D0 history and protected F13/F14K container to produce a complete 4,096-byte D0 frame candidate under `JOCFORGE_FLAT7X_D0_FRAME_DEFAULTS_V1` (D0 programme dialnorm, `compr=1`, no mixing/addbsi, no per-block dynamic-range code).
+
+The current callback returns `Flat7xPairOutputNotConnected` after that candidate: I0 frame assembly, the production paired F12 join, the 6,656-byte F15 append through the 1664 output owner, and final exposure are the next seams. No 7.1 `.ec3` file was written. The selected 5.1 candidate and sink branches remain unchanged.
+
+Workspace production check and CLI test-target compile check passed. No test binary or encoder run was started.

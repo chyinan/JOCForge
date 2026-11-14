@@ -30,25 +30,30 @@ use jocforge_application::{
         prepare_source_analysis_from_spatial_callback,
     },
     source_frame_bridge::{
-        CodecOwnerRoot, Flat7xD0PcmSourceExtent, Flat7xSourcePcmProjection,
-        build_flat7x_source_pcm_projection, prepare_admitted_source_frame,
+        CodecOwnerRoot, Flat7xD0PcmSourceExtent, Flat7xD0PcmSourceExtentOrigin,
+        Flat7xSourcePcmProjection, build_flat7x_source_pcm_projection,
+        prepare_admitted_source_frame,
     },
     spatial_callback::{MainSpatialCallbackCandidate, MainSpatialColdRoots},
 };
 
 use jocforge_application::flat7x_pair_source::{
-    Flat7xD0AudioSpanInput, Flat7xD0AudioSpanProducerState, Flat7xPairSourceError,
-    bind_flat7x_pair_source, require_flat7x_d0_audio_blocks,
+    Flat7xD0BapParameters, Flat7xD0BsiStructure, Flat7xD0PcmFrameSettings, Flat7xPairSourceError,
+    bind_flat7x_pair_source, produce_flat7x_pair_d0_pcm_frame_candidate,
+    stage_flat7x_pair_d0_pcm_block_series,
 };
 
 use crate::{
     output_publication::{
         ProgrammeOutputStaging, SourceFrameOutputStageError, stage_source_frame_output,
+        stage_source_frame_output_with_d0_history,
     },
     programme_roots::source_for_callback_clock,
     selected_spatial_callback_providers::SelectedMainSpatialCallbackProviders,
 };
 use jocforge_io::pcm::frontend_pcm_source::{CodecSourceIndex, FrontendCallbackIndex};
+
+const FLAT7X_D0_FRAME_SETTINGS_MODEL_ID: &str = "JOCFORGE_FLAT7X_D0_FRAME_DEFAULTS_V1";
 
 /// Receipt summary for one admitted durable append.
 pub(crate) struct DurableAppendSummary {
@@ -147,13 +152,7 @@ pub(crate) struct SourceFrameAdvance<'pcm> {
 #[derive(Debug)]
 pub(crate) enum SourceFrameStageError {
     Pipeline(String),
-    Flat7xD0AudioProducerUnavailable {
-        source_index: u64,
-        state: Flat7xD0AudioSpanProducerState,
-    },
-    Flat7xPairAssemblyInputsUnavailable {
-        source_index: u64,
-    },
+    Flat7xPairOutputNotConnected { source_index: u64 },
 }
 
 impl From<String> for SourceFrameStageError {
@@ -251,14 +250,18 @@ pub(crate) fn stage_source_frame<'pcm>(
             let source_extent = match (expected_delivery, pcm_source.source_extent()) {
                 (Flat7xPcmRowDelivery::NormalCallback, Some(extent))
                     if extent.callback_index() == callback_index
-                        && extent.source_index() == source_index =>
+                        && extent.source_index() == source_index
+                        && extent.origin() == Flat7xD0PcmSourceExtentOrigin::ReaderCallback =>
                 {
                     extent
                 }
-                (Flat7xPcmRowDelivery::CachedDrain, _) => {
-                    return Err(SourceFrameStageError::Pipeline(
-                        "Flat7x cached drain has no source-indexed PCM extent".to_owned(),
-                    ));
+                (Flat7xPcmRowDelivery::CachedDrain, Some(extent))
+                    if extent.callback_index() == callback_index
+                        && extent.source_index() == source_index
+                        && extent.origin()
+                            == Flat7xD0PcmSourceExtentOrigin::CachedDrainRepeatPreviousCallbackV1 =>
+                {
+                    extent
                 }
                 _ => {
                     return Err(SourceFrameStageError::Pipeline(
@@ -352,29 +355,63 @@ pub(crate) fn stage_source_frame<'pcm>(
         ),
         None => None,
     };
+    let mut flat7x_d0_history_after = None;
     if let Some(binding) = flat7x_pair_source_binding {
-        match require_flat7x_d0_audio_blocks(
-            Flat7xD0AudioSpanInput::Disabled(
-                Flat7xD0AudioSpanProducerState::NoApprovedAudioProductionRule,
-            ),
-            binding.d0_source_identity(),
-        ) {
-            Err(Flat7xPairSourceError::D0AudioSpanProducerDisabled(state)) => {
-                return Err(SourceFrameStageError::Flat7xD0AudioProducerUnavailable {
-                    source_index: binding.source_index().value(),
-                    state,
-                });
-            }
-            Err(error) => {
-                return Err(SourceFrameStageError::Pipeline(format!(
-                    "Flat7x D0 source receipt rejected: {error:?}"
-                )));
-            }
-            Ok(_) => {
-                return Err(SourceFrameStageError::Flat7xPairAssemblyInputsUnavailable {
-                    source_index: binding.source_index().value(),
-                });
-            }
+        let history_before = codec_before.d0_overlap_history().ok_or_else(|| {
+            SourceFrameStageError::Pipeline(
+                "Flat7x Codec cold root has no D0 overlap history".to_owned(),
+            )
+        })?;
+        if source_index.value() < 2 {
+            let block_series = stage_flat7x_pair_d0_pcm_block_series(
+                &binding,
+                history_before,
+                analysis_providers.providers().transform,
+            )
+            .map_err(|error| {
+                SourceFrameStageError::Pipeline(format!(
+                    "Flat7x suppressed-source PCM history: {error:?}"
+                ))
+            })?;
+            flat7x_d0_history_after = Some(*block_series.after_history());
+        } else {
+            let protected_container = f14k_source.protected_container().ok_or_else(|| {
+                SourceFrameStageError::Pipeline(
+                    "Flat7x published D0 source requires the F14K protected container".to_owned(),
+                )
+            })?;
+            let d0_bap_parameters = Flat7xD0BapParameters::etsi_ts_102_366_v1_4_1();
+            let d0_frame_candidate = produce_flat7x_pair_d0_pcm_frame_candidate(
+                &binding,
+                Flat7xD0PcmFrameSettings {
+                    source_extent: binding.source_extent(),
+                    before: history_before,
+                    transform_parameters: analysis_providers.providers().transform,
+                    target: binding.target(),
+                    // The first product-call wiring uses the established structural test values
+                    // for optional D0 BSI and block controls; each value remains replaceable.
+                    bsi_structure: Flat7xD0BsiStructure {
+                        dialnorm: drc_before.state().programme_dialnorm().unwrap_or(31),
+                        compr: Some(1),
+                        mixing: None,
+                        block_mix: [None; 6],
+                        information: None,
+                        addbsi: None,
+                    },
+                    complete_emdf_container: protected_container.bytes(),
+                    bap_parameters: &d0_bap_parameters,
+                    dynamic_range_codes: [None; 6],
+                },
+            )
+            .map_err(|error| {
+                SourceFrameStageError::Pipeline(format!(
+                    "Flat7x D0 PCM frame candidate ({FLAT7X_D0_FRAME_SETTINGS_MODEL_ID}): {error:?}"
+                ))
+            })?;
+            let _candidate_after_history = d0_frame_candidate.after_history();
+            return Err(SourceFrameStageError::Flat7xPairOutputNotConnected {
+                source_index: binding.source_index().value(),
+            });
         }
     }
     let integrity_candidate = stage_integrity_after_f12(
@@ -397,13 +434,23 @@ pub(crate) fn stage_source_frame<'pcm>(
         &frame_candidate,
     )
     .map_err(|error| format!("F15 output proposal: {error}"))?;
-    let staged_output = stage_source_frame_output(
-        staging,
-        output_binding_before,
-        codec_before,
-        &frame_candidate,
-        output_proposal,
-    )
+    let staged_output = match flat7x_d0_history_after.as_ref() {
+        Some(history_after) => stage_source_frame_output_with_d0_history(
+            staging,
+            output_binding_before,
+            codec_before,
+            &frame_candidate,
+            output_proposal,
+            history_after,
+        ),
+        None => stage_source_frame_output(
+            staging,
+            output_binding_before,
+            codec_before,
+            &frame_candidate,
+            output_proposal,
+        ),
+    }
     .map_err(|error: SourceFrameOutputStageError| format!("F12/F15 source output: {error}"))?;
     let (output_after, codec_proposal) = staged_output.into_parts();
     let frame_sha256 = *codec_proposal.frame_sha256();

@@ -18,9 +18,9 @@ use jocforge_application::{
     },
     source_frame_bridge::{
         AnalysisNumericPlanStage, CodecOwnerProposal, CodecOwnerRoot, CodecOwnerStageError,
-        MetadataSourceProposal, NoneDrcOwnerAfterProposal, SelectedSourceFrameCandidate,
-        SourceFrameBridgeError, prepare_admitted_source_frame,
-        stage_codec_owner_after_source_frame,
+        Flat7xD0OverlapHistory, MetadataSourceProposal, NoneDrcOwnerAfterProposal,
+        SelectedSourceFrameCandidate, SourceFrameBridgeError, prepare_admitted_source_frame,
+        stage_codec_owner_after_source_frame, stage_codec_owner_after_source_frame_with_d0_history,
     },
 };
 use jocforge_io::atomic_output::{AtomicOutputStaging, Flat7xAtomicAppendFailure, OutputIoError};
@@ -415,6 +415,42 @@ pub fn stage_source_frame_output(
     candidate: &SelectedSourceFrameCandidate<'_>,
     output_proposal: ProgrammeOutputSourceProposal,
 ) -> Result<StagedSourceFrameOutput, SourceFrameOutputStageError> {
+    stage_source_frame_output_inner(
+        staging,
+        binding,
+        codec_owner,
+        candidate,
+        output_proposal,
+        None,
+    )
+}
+
+pub fn stage_source_frame_output_with_d0_history(
+    staging: &mut ProgrammeOutputStaging,
+    binding: &ProgrammeOutputBinding,
+    codec_owner: &CodecOwnerRoot,
+    candidate: &SelectedSourceFrameCandidate<'_>,
+    output_proposal: ProgrammeOutputSourceProposal,
+    d0_history_after: &Flat7xD0OverlapHistory,
+) -> Result<StagedSourceFrameOutput, SourceFrameOutputStageError> {
+    stage_source_frame_output_inner(
+        staging,
+        binding,
+        codec_owner,
+        candidate,
+        output_proposal,
+        Some(d0_history_after),
+    )
+}
+
+fn stage_source_frame_output_inner(
+    staging: &mut ProgrammeOutputStaging,
+    binding: &ProgrammeOutputBinding,
+    codec_owner: &CodecOwnerRoot,
+    candidate: &SelectedSourceFrameCandidate<'_>,
+    output_proposal: ProgrammeOutputSourceProposal,
+    d0_history_after: Option<&Flat7xD0OverlapHistory>,
+) -> Result<StagedSourceFrameOutput, SourceFrameOutputStageError> {
     let frame = candidate.frame();
     let proposal = output_proposal.proposal();
     if candidate.accepted_codec_frame().attempt_id() != binding.attempt_id()
@@ -446,9 +482,16 @@ pub fn stage_source_frame_output(
         (true, None) => return Err(SourceFrameOutputStageError::MissingDurableAppend),
         (false, Some(_)) => return Err(SourceFrameOutputStageError::UnexpectedDurableAppend),
     };
-    let codec_owner_proposal =
-        stage_codec_owner_after_source_frame(codec_owner, candidate, codec_output_after)
-            .map_err(SourceFrameOutputStageError::CodecOwner)?;
+    let codec_owner_proposal = match d0_history_after {
+        Some(history) => stage_codec_owner_after_source_frame_with_d0_history(
+            codec_owner,
+            candidate,
+            codec_output_after,
+            history,
+        ),
+        None => stage_codec_owner_after_source_frame(codec_owner, candidate, codec_output_after),
+    }
+    .map_err(SourceFrameOutputStageError::CodecOwner)?;
 
     Ok(StagedSourceFrameOutput {
         output_after,

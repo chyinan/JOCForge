@@ -385,3 +385,12 @@ Normal callback input now forms a `Flat7xD0PcmSourceExtent` from the reader's ex
 Cached-drain callbacks currently reuse cached PCM rows and carry no source-specific extent, so the Flat7x pair source stage stops at that boundary. This avoids assigning one cached sample interval to multiple codec sources while preserving the existing 5.1 path. The normal source path has a concrete typed extent; D0 history ownership, terminal padding policy, production pair settings/receipts and the F15 parent commit remain to be connected.
 
 Verification completed without running test binaries: formatting, workspace production check, domain/application/CLI test-target compilation, generated-map check, and boundary check passed (92 scoped tasks / 104 IDs / 0 unmaterialized roots / 6 partial roots). Workspace Clippy reports 18 existing errors and 1 warning; no diagnostic points to the files changed in this slice. No `.ec3` or DEE run occurred.
+
+
+## 2026-11-14 Flat7x D0 history and production candidate
+
+Flat7x `CodecOwnerRoot` now carries optional D0 overlap history as 4×256 F32 bit words in canonical state. The zeroed cold and programme reset values are explicit; the selected 5.1 root remains in the prior schema. Suppressed sources 0/1 commit their D0 PCM block-series history through the existing callback transaction. Cached drains use the replaceable `CachedDrainRepeatPreviousCallbackV1` policy to repeat the prior cached PCM rows.
+
+For source >=2 the production source stage now invokes the complete D0 PCM-to-frame candidate using same-source reader extents, Codec history, the protected F13/F14K container and local settings policy `JOCFORGE_FLAT7X_D0_FRAME_DEFAULTS_V1`. It currently stops at `Flat7xPairOutputNotConnected` after generating that 4,096-byte candidate. I0 frame assembly, production paired F12, F15 durable 6,656-byte append, programme after-root installation and final output remain to be connected.
+
+Validation completed: workspace `cargo check --locked`, CLI test-target compile check, fmt, generated-map check and boundary check passed. Strict Clippy reports 18 existing errors and 1 warning outside this slice. No test binary or encoder ran. The next slice should build the same-source I0 frame and paired F12 proposal, then connect F15 and the existing durable sink.
