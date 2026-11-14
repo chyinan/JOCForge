@@ -2126,7 +2126,7 @@ Flat7xCoefficientRows now validates the parser-observed 15 present objects, one 
 
 ## 2026-11-15 Flat7x coefficient source route
 
-Flat7x now has a separate typed source entry carrying Flat7xCoefficientRowsProposal, FitSourceLineage, and the fit after-state. The rows pass through the shared JOC dispatch provenance boundary. The existing profile-aware application entry has no Flat7x rows proposal and returns Flat7xCoefficientSourceUnavailable before invoking the 15x5 QMF fitter. The selected 5.1 path and its CoefficientFitProposal remain unchanged. No authoritative 15x7 provider or encode candidate exists.
+Flat7x now has a separate typed source entry: Flat7xCoefficientRowsProviderOutput is bound to the accepted QMF projection, which derives FitSourceLineage and a source-clock after-state preserving temporal/geometry values while advancing generation to dispatch. Rows enter the shared JOC dispatch provenance boundary. The existing profile-aware application entry without provider output returns Flat7xCoefficientSourceUnavailable before invoking the 15x5 QMF fitter. The selected 5.1 path and its CoefficientFitProposal remain unchanged. No authoritative 15x7 provider or encode candidate exists.
 
 ## 2026-11-15 Flat7x coefficient matrix traversal
 

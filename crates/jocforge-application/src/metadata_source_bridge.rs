@@ -148,10 +148,14 @@ pub fn stage_flat7x_joc_source_from_provider_output(
             JocSourceStageErrorKind::Flat7xCoefficientProfileMismatch,
         ));
     }
-    let rows = Flat7xCoefficientRowsProposal::from_provider_output(projection, provider_output)
-        .map_err(|_| {
-            SelectedJocStateError::Source(JocSourceStageErrorKind::Flat7xCoefficientLineageMismatch)
-        })?;
+    let rows = Flat7xCoefficientRowsProposal::from_provider_output(
+        before.fit(),
+        projection,
+        provider_output,
+    )
+    .map_err(|_| {
+        SelectedJocStateError::Source(JocSourceStageErrorKind::Flat7xCoefficientLineageMismatch)
+    })?;
     stage_selected_joc_source_with_flat7x_rows(
         before,
         projection,
@@ -453,7 +457,7 @@ mod flat7x_rows_route_tests {
     use jocforge_domain::{
         joc::programme_state::{JocSourceStageErrorKind, SelectedJocStateError},
         joc::{
-            coefficient_fitting::{CoefficientFitState, Flat7xCoefficientRowsProviderOutput},
+            coefficient_fitting::Flat7xCoefficientRowsProviderOutput,
             coefficient_payload::{
                 CoefficientPayloadInput, CoefficientPayloadObject, CoefficientPayloadPoint,
                 Flat7xCoefficientRows,
@@ -539,10 +543,7 @@ mod flat7x_rows_route_tests {
                 .collect(),
         };
         let rows = Flat7xCoefficientRows::new(&input).unwrap();
-        let provider_output = Flat7xCoefficientRowsProviderOutput::new(
-            rows,
-            CoefficientFitState::with_generation_for_test(1),
-        );
+        let provider_output = Flat7xCoefficientRowsProviderOutput::new(rows);
         let before = SelectedJocState::cold();
         let producer_transaction_id = CallbackTransactionId::new("flat7x-source-s0").unwrap();
         let flat7x =
@@ -561,6 +562,16 @@ mod flat7x_rows_route_tests {
         .unwrap();
 
         assert_eq!(after.after().generation(), 1);
+        assert_eq!(after.after().fit().temporal(), before.fit().temporal());
+        assert_eq!(
+            after.after().fit().geometry().carry18_words(),
+            before.fit().geometry().carry18_words()
+        );
+        assert_eq!(
+            after.after().fit().geometry().previous24_words(),
+            before.fit().geometry().previous24_words()
+        );
+        assert_eq!(after.after().fit().geometry().generation(), 1);
         let provenance = after.id14_body().provenance();
         assert_eq!(provenance.producer_generation().value(), 0);
         assert_eq!(provenance.dispatch().value(), 1);

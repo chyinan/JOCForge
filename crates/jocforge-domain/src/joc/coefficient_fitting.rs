@@ -26,7 +26,7 @@ use crate::{
         source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
         spatial_audio_state::SelectedJocQmfProjection,
     },
-    timeline::CodecSourceIndex,
+    timeline::{CodecSourceIndex, JocDispatchIndex},
     transaction::CallbackLineageIdentity,
 };
 
@@ -80,8 +80,28 @@ impl CoefficientFitState {
         self.fit_generation
     }
 
-    #[cfg(any(test, feature = "test-support"))]
-    pub const fn with_generation_for_test(generation: u64) -> Self {
+    /// Advances the source clock for external Flat7x rows while preserving the existing
+    /// temporal and geometry values. No coefficient fitting or numeric update is performed.
+    pub fn after_external_flat7x_rows(
+        &self,
+        dispatch: JocDispatchIndex,
+    ) -> Result<Self, CoefficientFittingError> {
+        if self.geometry.generation() != self.fit_generation
+            || self.fit_generation.checked_add(1) != Some(dispatch.value())
+        {
+            return Err(CoefficientFittingError::Generation);
+        }
+        Ok(Self {
+            temporal: self.temporal.clone(),
+            geometry: self
+                .geometry
+                .with_generation_preserving_values(dispatch.value()),
+            fit_generation: dispatch.value(),
+        })
+    }
+
+    #[cfg(test)]
+    pub(crate) const fn with_generation_for_test(generation: u64) -> Self {
         Self {
             temporal: TemporalWeightState::cold(),
             geometry: CoefficientGeometryState::with_generation_for_test(generation),
@@ -184,16 +204,15 @@ impl FitSourceLineage {
     }
 }
 
-/// Validated row values and fit after-state returned by an authoritative Flat7x row provider.
+/// Validated row values returned by an authoritative Flat7x row provider.
 #[derive(Clone, Debug)]
 pub struct Flat7xCoefficientRowsProviderOutput<'a> {
     rows: Flat7xCoefficientRows<'a>,
-    after: CoefficientFitState,
 }
 
 impl<'a> Flat7xCoefficientRowsProviderOutput<'a> {
-    pub const fn new(rows: Flat7xCoefficientRows<'a>, after: CoefficientFitState) -> Self {
-        Self { rows, after }
+    pub const fn new(rows: Flat7xCoefficientRows<'a>) -> Self {
+        Self { rows }
     }
 }
 
@@ -226,18 +245,21 @@ impl<'a> Flat7xCoefficientRowsProposal<'a> {
 
     /// Binds provider output to the accepted projection that produced this source generation.
     pub fn from_provider_output(
+        fit_before: &CoefficientFitState,
         projection: &SelectedJocQmfProjection,
         output: Flat7xCoefficientRowsProviderOutput<'a>,
     ) -> Result<Self, CoefficientFittingError> {
-        Self::from_source_lineage(output, FitSourceLineage::from_projection(projection))
+        let after = fit_before.after_external_flat7x_rows(projection.dispatch())?;
+        Self::from_source_lineage(output, FitSourceLineage::from_projection(projection), after)
     }
 
     /// Binds provider output to an already projection-derived source lineage.
     pub fn from_source_lineage(
         output: Flat7xCoefficientRowsProviderOutput<'a>,
         source_lineage: FitSourceLineage,
+        after: CoefficientFitState,
     ) -> Result<Self, CoefficientFittingError> {
-        Self::new(output.rows, output.after, source_lineage)
+        Self::new(output.rows, after, source_lineage)
     }
 
     pub const fn rows(&self) -> Flat7xCoefficientRows<'a> {
@@ -655,19 +677,18 @@ mod tests {
         let after = CoefficientFitState::with_generation_for_test(dispatch.value());
 
         let proposal = Flat7xCoefficientRowsProposal::from_source_lineage(
-            Flat7xCoefficientRowsProviderOutput::new(rows, after.clone()),
+            Flat7xCoefficientRowsProviderOutput::new(rows),
             lineage.clone(),
+            after.clone(),
         )
         .unwrap();
         assert_eq!(proposal.after(), &after);
         assert_eq!(proposal.source_lineage(), &lineage);
         assert!(matches!(
             Flat7xCoefficientRowsProposal::from_source_lineage(
-                Flat7xCoefficientRowsProviderOutput::new(
-                    rows,
-                    CoefficientFitState::with_generation_for_test(2),
-                ),
+                Flat7xCoefficientRowsProviderOutput::new(rows),
                 lineage,
+                CoefficientFitState::with_generation_for_test(2),
             ),
             Err(CoefficientFittingError::Generation)
         ));

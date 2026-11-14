@@ -481,7 +481,7 @@ The selected 5.1 application path still uses CoefficientFitProposal and its 15x5
 
 ## 2026-11-15 Flat7x row proposal application seam
 
-Flat7xCoefficientRowsProviderOutput carries validated Flat7xCoefficientRows and the provider fit after-state. The application entry derives FitSourceLineage from the accepted QMF projection with Flat7xCoefficientRowsProposal::from_provider_output, then checks source identity/generation and crosses the shared dispatch provenance boundary before serialization. The default profile-aware entry without provider output returns Flat7xCoefficientSourceUnavailable before the five-row QMF fitter runs. The 5.1 profile keeps the current CoefficientFitProposal / FiveChannel route.
+Flat7xCoefficientRowsProviderOutput carries validated row values. The application entry binds this output to the accepted QMF projection with Flat7xCoefficientRowsProposal::from_provider_output, deriving FitSourceLineage and a source-clock after-state that preserves temporal/geometry values while advancing generation to dispatch. The default profile-aware entry without provider output returns Flat7xCoefficientSourceUnavailable before running the five-row QMF fitter. The 5.1 profile keeps the current CoefficientFitProposal / FiveChannel route.
 
 Verification: source row routing 1/1, row proposal same-source generation 1/1, Flat7x coefficient payload shape 2/2, application Flat7x tests 6/6, selected 5.1 all-rate route 1/1, CLI cargo check, fmt check, and diff check pass. The 15x7 producer remains unavailable; no encoder/OpenJOC run or candidate was created.
 

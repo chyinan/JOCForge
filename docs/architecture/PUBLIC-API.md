@@ -100,7 +100,7 @@ The current coefficient fitter remains five-channel and is not connected to this
 
 ## Flat7x application source seam
 
-The selected 5.1 path continues through prepare_main_metadata_bodies_for_callback and the existing CoefficientFitProposal / 15x5 fitter. Flat7x uses prepare_main_metadata_bodies_for_callback_with_flat7x_rows, which accepts Flat7xCoefficientRowsProviderOutput. The application binds that output to the accepted SelectedJocQmfProjection through Flat7xCoefficientRowsProposal::from_provider_output, deriving same-source lineage and retaining the provider fit after-state. The dispatch boundary validates that lineage before writing the rows. The default entry without provider output returns Flat7xCoefficientSourceUnavailable; no 15x7 production provider exists yet.
+The selected 5.1 path continues through prepare_main_metadata_bodies_for_callback and the existing CoefficientFitProposal / 15x5 fitter. Flat7x uses prepare_main_metadata_bodies_for_callback_with_flat7x_rows, which accepts Flat7xCoefficientRowsProviderOutput containing validated rows. The application binds that output to the accepted SelectedJocQmfProjection through Flat7xCoefficientRowsProposal::from_provider_output. The source after-state advances the fit/geometry source generation to the accepted dispatch while preserving temporal and geometry values; no five-row coefficient fitter is invoked on this branch. The default entry without provider output returns Flat7xCoefficientSourceUnavailable; no production 15x7 provider exists yet.
 
 ## Flat7x full-matrix traversal
 

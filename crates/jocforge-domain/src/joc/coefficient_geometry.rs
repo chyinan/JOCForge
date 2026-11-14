@@ -86,6 +86,14 @@ impl CoefficientGeometryState {
         self.generation
     }
 
+    pub(crate) fn with_generation_preserving_values(&self, generation: u64) -> Self {
+        Self {
+            carry18_words: self.carry18_words.clone(),
+            previous24_words: self.previous24_words.clone(),
+            generation,
+        }
+    }
+
     pub fn canonical_payload_bytes(&self) -> Vec<u8> {
         let mut bytes = Vec::with_capacity(21_512);
         for word in self.carry18_words.iter().flatten() {
@@ -98,7 +106,7 @@ impl CoefficientGeometryState {
         bytes
     }
 
-    #[cfg(any(test, feature = "test-support"))]
+    #[cfg(test)]
     pub(crate) const fn with_generation_for_test(generation: u64) -> Self {
         let mut state = Self::cold();
         state.generation = generation;
