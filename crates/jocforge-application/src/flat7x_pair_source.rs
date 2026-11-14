@@ -4,8 +4,7 @@
 use jocforge_domain::{
     codec::{
         ac3_audio_block::{
-            I0AudioBlockSeriesBudget, I0AudioBlockSeriesCandidate, I0AudioBlockSeriesError,
-            I0AudioBlockSeriesPolicy, produce_i0_audio_block_series,
+            I0AudioBlockSeriesCandidate, I0AudioBlockSeriesError, produce_i0_audio_block_series,
         },
         access_unit_composer::{
             Flat7xI0D0AuCandidate, Flat7xI0D0AuCandidateError,
@@ -18,9 +17,7 @@ use jocforge_domain::{
             stage_flat7x_d0_pcm_block_series,
         },
         i0_frame_assembler::{
-            CallerOwnedI0CrcrsvSeed, Flat7xI0Ac3AudioSeriesFrameCandidate,
-            Flat7xI0FrameAssemblyError, I0AuxDataInput,
-            assemble_flat7x_i0_ac3_frame_from_audio_series,
+            Flat7xI0Ac3AudioSeriesFrameCandidate, assemble_flat7x_i0_ac3_frame_from_audio_series,
         },
         selected_frame_trial::SelectedSourceNumericPlan,
     },
@@ -33,12 +30,22 @@ use jocforge_domain::{
     transform::fullband_exponent_pipeline::NumericPlanReceipt,
 };
 
+pub use jocforge_domain::codec::ac3_audio_block::{
+    Ac3DeltaBitAllocationInput, Ac3MantissaQuantizerPolicy, I0AudioBlockControlPolicy,
+    I0AudioBlockSeriesBudget, I0AudioBlockSeriesPolicy, I0BapCandidateQ,
+};
 pub use jocforge_domain::codec::bap::Flat7xD0BapParameters;
 pub use jocforge_domain::codec::flat7x_d0_pcm_source::{
     Flat7xD0OverlapHistory, Flat7xD0PcmBlockSeriesCandidate, Flat7xD0PcmFrameCandidate,
     Flat7xD0PcmFrameSettings, Flat7xD0PcmSourceExtent, Flat7xD0PcmSourceExtentOrigin,
 };
 pub use jocforge_domain::codec::frame_builder::Flat7xD0BsiStructure;
+pub use jocforge_domain::codec::i0_frame_assembler::{
+    CallerOwnedAc3Cplinu, CallerOwnedI0CrcrsvSeed, Flat7xI0FrameAssemblyError, I0AuxDataInput,
+    OpaqueI0Ac3BitSpan,
+};
+
+pub const FLAT7X_I0_AUDIO_BLOCK_POLICY_ID: &str = "JOCFORGE_FLAT7X_I0_AUDIO_POLICY_V1";
 
 use crate::source_frame_bridge::{Flat7xSourcePcmProjection, Flat7xSourceRoleMapReceipt};
 use jocforge_domain::analysis::source_frame::SharedAnalysisIdentity;
@@ -526,6 +533,32 @@ pub fn assemble_flat7x_pair_i0_frame_candidate(
         auxdata,
         crcrsv_seed,
     )
+}
+
+/// Returns the first replaceable I0 audio policy wired into the Flat7x source callback.
+pub fn flat7x_i0_audio_block_policy_v1() -> Option<I0AudioBlockSeriesPolicy> {
+    let first_block_q = I0BapCandidateQ::new(16)?;
+    let remaining_blocks_q = I0BapCandidateQ::new(0)?;
+    Some(I0AudioBlockSeriesPolicy {
+        blocks: std::array::from_fn(|block| I0AudioBlockControlPolicy {
+            candidate_q: if block == 0 {
+                first_block_q
+            } else {
+                remaining_blocks_q
+            },
+            slow_decay_code: 2,
+            fast_decay_code: 1,
+            slow_gain_code: 1,
+            floor_code: 7,
+            fast_gain_codes: [0; 6],
+            caller_all_active_fine_zero: block != 0,
+            dither_flags: [false; 5],
+            dynamic_range_code: Some(0x30 + u8::try_from(block).unwrap_or(u8::MAX)),
+        }),
+        cplinu: CallerOwnedAc3Cplinu::Independent,
+        delta_bit_allocation: Ac3DeltaBitAllocationInput::Absent,
+        quantizer_policy: Ac3MantissaQuantizerPolicy::NearestTiesEven,
+    })
 }
 
 /// Builds the existing source-bound I0 frame candidate without consuming D0 block data.

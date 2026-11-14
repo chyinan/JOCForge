@@ -6,6 +6,10 @@ use jocforge_application::{
     drc_source_bridge::{
         CallbackLineageIdentity, NoneDrcOwnerRoot, prepare_drc_source_from_analysis,
     },
+    flat7x_pair_integrity::{Flat7xPairF12StageInput, stage_flat7x_pair_f12_integrity},
+    flat7x_pair_output::{
+        Flat7xAuOutputOwner, Flat7xSourceGeneration, stage_flat7x_pcm_pair_for_f15,
+    },
     independent_meter_callback::{AttemptId, CallbackTransactionId, GtcOwnerReceipt},
     integrity_source_bridge::{
         F14kPayloadOutcome, F14kSourceCandidate, IntegrityF12SourceReceipts,
@@ -38,8 +42,10 @@ use jocforge_application::{
 };
 
 use jocforge_application::flat7x_pair_source::{
-    Flat7xD0BapParameters, Flat7xD0BsiStructure, Flat7xD0PcmFrameSettings, Flat7xPairSourceError,
-    bind_flat7x_pair_source, produce_flat7x_pair_d0_pcm_frame_candidate,
+    CallerOwnedI0CrcrsvSeed, Flat7xD0BapParameters, Flat7xD0BsiStructure, Flat7xD0PcmFrameSettings,
+    Flat7xI0FrameAssemblyError, Flat7xPairSourceError, I0AudioBlockSeriesBudget, I0AuxDataInput,
+    OpaqueI0Ac3BitSpan, assemble_flat7x_i0_frame_candidate_from_binding, bind_flat7x_pair_source,
+    flat7x_i0_audio_block_policy_v1, produce_flat7x_pair_d0_pcm_frame_candidate,
     stage_flat7x_pair_d0_pcm_block_series,
 };
 
@@ -54,6 +60,7 @@ use crate::{
 use jocforge_io::pcm::frontend_pcm_source::{CodecSourceIndex, FrontendCallbackIndex};
 
 const FLAT7X_D0_FRAME_SETTINGS_MODEL_ID: &str = "JOCFORGE_FLAT7X_D0_FRAME_DEFAULTS_V1";
+const FLAT7X_SOURCE_GENERATION_MODEL_ID: &str = "JOCFORGE_FLAT7X_SOURCE_GENERATION_SOURCE_INDEX_V1";
 
 /// Receipt summary for one admitted durable append.
 pub(crate) struct DurableAppendSummary {
@@ -152,7 +159,7 @@ pub(crate) struct SourceFrameAdvance<'pcm> {
 #[derive(Debug)]
 pub(crate) enum SourceFrameStageError {
     Pipeline(String),
-    Flat7xPairOutputNotConnected { source_index: u64 },
+    Flat7xPairOutputNotConnected { source_index: u64, pair_bytes: u32 },
 }
 
 impl From<String> for SourceFrameStageError {
@@ -408,9 +415,102 @@ pub(crate) fn stage_source_frame<'pcm>(
                     "Flat7x D0 PCM frame candidate ({FLAT7X_D0_FRAME_SETTINGS_MODEL_ID}): {error:?}"
                 ))
             })?;
-            let _candidate_after_history = d0_frame_candidate.after_history();
+            let i0_policy = flat7x_i0_audio_block_policy_v1().ok_or_else(|| {
+                SourceFrameStageError::Pipeline(
+                    "Flat7x I0 local block policy could not be constructed".to_owned(),
+                )
+            })?;
+            let i0_budget = I0AudioBlockSeriesBudget::new(20_480);
+            let i0_frame = match assemble_flat7x_i0_frame_candidate_from_binding(
+                &binding,
+                frame_candidate.numeric_plan_receipt(),
+                i0_policy,
+                i0_budget,
+                I0AuxDataInput::Absent,
+                CallerOwnedI0CrcrsvSeed { value: false },
+            ) {
+                Ok(candidate) => candidate,
+                Err(Flat7xPairSourceError::I0FrameAssembly(
+                    Flat7xI0FrameAssemblyError::FrameSpanMismatch {
+                        actual_bits,
+                        required_bits,
+                    },
+                )) if actual_bits < required_bits => {
+                    let auxdata_bits = required_bits - actual_bits;
+                    let auxdata_length =
+                        usize::try_from(auxdata_bits.div_ceil(8)).map_err(|_| {
+                            SourceFrameStageError::Pipeline(
+                                "Flat7x I0 auxdata extent overflow".to_owned(),
+                            )
+                        })?;
+                    let auxdata = vec![0_u8; auxdata_length];
+                    assemble_flat7x_i0_frame_candidate_from_binding(
+                        &binding,
+                        frame_candidate.numeric_plan_receipt(),
+                        i0_policy,
+                        i0_budget,
+                        I0AuxDataInput::Present(OpaqueI0Ac3BitSpan::new(
+                            &auxdata,
+                            0,
+                            auxdata_bits,
+                        )),
+                        CallerOwnedI0CrcrsvSeed { value: false },
+                    )
+                    .map_err(|error| {
+                        SourceFrameStageError::Pipeline(format!(
+                            "Flat7x I0 frame candidate ({}): {error:?}",
+                            jocforge_application::flat7x_pair_source::FLAT7X_I0_AUDIO_BLOCK_POLICY_ID,
+                        ))
+                    })?
+                }
+                Err(error) => {
+                    return Err(SourceFrameStageError::Pipeline(format!(
+                        "Flat7x I0 frame candidate ({}): {error:?}",
+                        jocforge_application::flat7x_pair_source::FLAT7X_I0_AUDIO_BLOCK_POLICY_ID,
+                    )));
+                }
+            };
+            let f12_pair = stage_flat7x_pair_f12_integrity(Flat7xPairF12StageInput {
+                integrity_before,
+                i0_frame: &i0_frame,
+                d0_frame: &d0_frame_candidate,
+                f13_metadata: &metadata_source,
+                f14k_source: &f14k_source,
+                keyless_integrity: admitted_plan.source_providers().keyless_integrity(),
+            })
+            .map_err(|error| {
+                SourceFrameStageError::Pipeline(format!(
+                    "Flat7x paired F12 candidate failed: {error:?}"
+                ))
+            })?;
+            let attempt_label = attempt.value().to_string();
+            let flat7x_output_owner = Flat7xAuOutputOwner::cold(
+                &attempt_label,
+                output_binding_before
+                    .output_configuration()
+                    .expected_published_aus(),
+            )
+            .map_err(|error| {
+                SourceFrameStageError::Pipeline(format!("Flat7x pair output owner cold: {error:?}"))
+            })?;
+            let source_generation = Flat7xSourceGeneration::new(source_index.value());
+            let f15_pair = stage_flat7x_pcm_pair_for_f15(
+                &i0_frame,
+                &d0_frame_candidate,
+                source_generation,
+                &metadata_source,
+                &f12_pair,
+                flat7x_output_owner,
+            )
+            .map_err(|error| {
+                SourceFrameStageError::Pipeline(format!(
+                    "Flat7x paired F15 candidate ({FLAT7X_SOURCE_GENERATION_MODEL_ID}): {error:?}"
+                ))
+            })?;
             return Err(SourceFrameStageError::Flat7xPairOutputNotConnected {
                 source_index: binding.source_index().value(),
+                pair_bytes: u32::try_from(f15_pair.append_proposal().bytes().len())
+                    .unwrap_or(u32::MAX),
             });
         }
     }

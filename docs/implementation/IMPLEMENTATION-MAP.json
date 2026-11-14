@@ -4877,8 +4877,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 66797,
-              "sha256": "189ddcd2d786e45c486fbe06e8946cf792b7ebb66f3b070970a382f8596deb53"
+              "bytes": 67078,
+              "sha256": "06254f186d44e6f6f293b7b5d2d955e1280432af90ff464d5f02e41372df4728"
             },
             {
               "path": "crates/jocforge-cli/src/main.rs",
@@ -10633,10 +10633,10 @@
         {
           "slice_id": "flat7x-adm-pcm-source-role-projection",
           "mapping_status": "MATERIALIZED_PROVISIONAL_FLAT7X_PCM_ROW_PROJECTION__NATIVE_ROLE_JOIN_OPEN",
-          "implementation_status": "LOCALLY_COMPILED_FLAT7X_D0_HISTORY_AND_FRAME_CANDIDATE__PAIR_OUTPUT_OPEN",
+          "implementation_status": "LOCALLY_COMPILED_FLAT7X_I0_D0_F12_F15_IN_MEMORY_CANDIDATE__DURABLE_OUTPUT_OPEN",
           "implementation_requirement": true,
           "owner": "application",
-          "scope": "The admitted ADM graph supplies a replaceable DirectSpeakers bed-role projection from physical PCM rows into typed I0 carrier rows and D0 chanmap locations. Reader callbacks issue Flat7xD0PcmSourceExtent; cached drains use the explicit local policy CachedDrainRepeatPreviousCallbackV1 and repeat the previous cached PCM window with a guessed logical callback origin. Both origins retain callback/source/first_sample/valid/padded counts, and padded words must be zero. The same extent flows through source rows, projection, pair binding and D0 PCM production. Flat7x CodecOwnerRoot carries the optional canonical four-channel overlap history; suppressed sources 0/1 stage and commit history in the callback parent. Published source >=2 runs the complete D0 PCM-to-4096-byte frame candidate using JOCFORGE_FLAT7X_D0_FRAME_DEFAULTS_V1, then stops at the I0/F12/F15 output boundary. The existing 5.1 codec root shape stays unchanged.",
+          "scope": "The admitted ADM graph supplies a replaceable DirectSpeakers bed-role projection from physical PCM rows into typed I0 carrier rows and D0 chanmap locations. Reader callbacks issue Flat7xD0PcmSourceExtent; cached drains use explicit replaceable policy CachedDrainRepeatPreviousCallbackV1. Both origins retain callback/source/first_sample/valid/padded counts, and padded words must be zero. Flat7x CodecOwnerRoot stores canonical four-channel D0 overlap history; sources 0/1 commit block-series history in the callback parent. For source >=2 the CLI builds a complete D0 PCM frame with local D0 settings, builds an I0 AC-3 frame with JOCFORGE_FLAT7X_I0_AUDIO_POLICY_V1, joins actual F13/F14K through paired F12, and creates one 6,656-byte F15 in-memory proposal with source-generation policy JOCFORGE_FLAT7X_SOURCE_GENERATION_SOURCE_INDEX_V1. The current callback stops before the durable paired output owner and root swap. Existing 5.1 Codec and sink branches retain their prior representation.",
           "spec_files": [
             "docs/architecture/PROFILE-DIMENSIONS.md",
             "docs/architecture/adm-to-eac3joc-chain-status.md",
@@ -10742,7 +10742,48 @@
                 null
               ],
               "bap_provider": "Flat7xD0BapParameters::etsi_ts_102_366_v1_4_1",
-              "status": "Replaceable local caller policy; pair output is still gated"
+              "status": "Replaceable local caller policy; complete paired F15 proposal is built, durable output remains open"
+            },
+            "i0_frame_settings_model": {
+              "policy_id": "JOCFORGE_FLAT7X_I0_AUDIO_POLICY_V1",
+              "block_q": [
+                16,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "slow_decay_code": 2,
+              "fast_decay_code": 1,
+              "slow_gain_code": 1,
+              "floor_code": 7,
+              "fast_gain_codes": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "dynamic_range_codes": [
+                48,
+                49,
+                50,
+                51,
+                52,
+                53
+              ],
+              "cplinu": "Independent",
+              "delta_allocation": "Absent",
+              "quantizer": "NearestTiesEven",
+              "auxdata": "zero-fill to selected 2560-byte I0 frame extent",
+              "status": "Replaceable local first-pass policy"
+            },
+            "source_generation_model": {
+              "id": "JOCFORGE_FLAT7X_SOURCE_GENERATION_SOURCE_INDEX_V1",
+              "generation": "CodecSourceIndex.value()",
+              "status": "Explicit local label; replaceable with a dedicated owner clock"
             }
           },
           "vectors": {
@@ -10786,9 +10827,10 @@
           "not_run": [
             "I0/D0 complete frame assembly and same-generation F13/F12 receipts at the pair output owner.",
             "Product pair caller, final output, and W04 acceptance.",
-            "Production I0 frame, same-source F12 pair proposal and F15 AU append.",
             "Full-input callback replay, final .ec3 exposure, decode and W04 acceptance.",
-            "Production I0 frame, same-source F12 pair proposal and F15 AU append.",
+            "Full-input callback replay, final .ec3 exposure, decode and W04 acceptance.",
+            "Durable paired output sink, durable append receipt and parent output/Codec/Integrity root swap.",
+            "More than the first published AU through one persistent pair-output owner.",
             "Full-input callback replay, final .ec3 exposure, decode and W04 acceptance."
           ],
           "implementation_inventory": [
@@ -10809,13 +10851,13 @@
             },
             {
               "path": "crates/jocforge-cli/src/source_execution.rs",
-              "bytes": 27945,
-              "sha256": "d8999c98967620bee029f90bf7c185472cf450679303012041046261741c33e0"
+              "bytes": 32780,
+              "sha256": "b9ae8ebebec50367b8f705f63ff46bf1d530470e6b562f95c8f5de998fbed160"
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 66797,
-              "sha256": "189ddcd2d786e45c486fbe06e8946cf792b7ebb66f3b070970a382f8596deb53"
+              "bytes": 67078,
+              "sha256": "06254f186d44e6f6f293b7b5d2d955e1280432af90ff464d5f02e41372df4728"
             },
             {
               "path": "crates/jocforge-cli/src/programme_roots.rs",
@@ -10829,8 +10871,8 @@
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 81456,
-              "sha256": "03c7a206b649be9322ca66c0b56e7d25fcc8b4ba9a0201af87ded3dca3c7e992"
+              "bytes": 82847,
+              "sha256": "64786661ff73d9dc4dd29f4f54e28a9563ea9019931577f5b3dd9ad5d145a90a"
             }
           ],
           "test_inventory": [
@@ -10841,8 +10883,8 @@
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 81456,
-              "sha256": "03c7a206b649be9322ca66c0b56e7d25fcc8b4ba9a0201af87ded3dca3c7e992"
+              "bytes": 82847,
+              "sha256": "64786661ff73d9dc4dd29f4f54e28a9563ea9019931577f5b3dd9ad5d145a90a"
             }
           ]
         }
@@ -15886,8 +15928,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 66797,
-              "sha256": "189ddcd2d786e45c486fbe06e8946cf792b7ebb66f3b070970a382f8596deb53"
+              "bytes": 67078,
+              "sha256": "06254f186d44e6f6f293b7b5d2d955e1280432af90ff464d5f02e41372df4728"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
@@ -18948,8 +18990,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2250923,
-              "sha256": "7f344119bab97608f2f46a5ab8a58f07037081e35196f4bc167982326176d304"
+              "bytes": 2234059,
+              "sha256": "159b7310c795e8b10ec65f7a5706da6e2dfa45fdb422ead115949d46df41742d"
             }
           ],
           "test_modules": [
@@ -22474,8 +22516,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2250923,
-              "sha256": "7f344119bab97608f2f46a5ab8a58f07037081e35196f4bc167982326176d304"
+              "bytes": 2234059,
+              "sha256": "159b7310c795e8b10ec65f7a5706da6e2dfa45fdb422ead115949d46df41742d"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -42938,8 +42980,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 66797,
-              "sha256": "189ddcd2d786e45c486fbe06e8946cf792b7ebb66f3b070970a382f8596deb53"
+              "bytes": 67078,
+              "sha256": "06254f186d44e6f6f293b7b5d2d955e1280432af90ff464d5f02e41372df4728"
             },
             {
               "path": "crates/jocforge-cli/src/lib.rs",
@@ -44915,8 +44957,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 66797,
-              "sha256": "189ddcd2d786e45c486fbe06e8946cf792b7ebb66f3b070970a382f8596deb53"
+              "bytes": 67078,
+              "sha256": "06254f186d44e6f6f293b7b5d2d955e1280432af90ff464d5f02e41372df4728"
             },
             {
               "path": "crates/jocforge-cli/src/main.rs",
@@ -45022,8 +45064,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 66797,
-              "sha256": "189ddcd2d786e45c486fbe06e8946cf792b7ebb66f3b070970a382f8596deb53"
+              "bytes": 67078,
+              "sha256": "06254f186d44e6f6f293b7b5d2d955e1280432af90ff464d5f02e41372df4728"
             },
             {
               "path": "crates/jocforge-io/src/provider/spatial_audio.rs",
@@ -46135,13 +46177,13 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 66797,
-              "sha256": "189ddcd2d786e45c486fbe06e8946cf792b7ebb66f3b070970a382f8596deb53"
+              "bytes": 67078,
+              "sha256": "06254f186d44e6f6f293b7b5d2d955e1280432af90ff464d5f02e41372df4728"
             },
             {
               "path": "crates/jocforge-cli/src/source_execution.rs",
-              "bytes": 27945,
-              "sha256": "d8999c98967620bee029f90bf7c185472cf450679303012041046261741c33e0"
+              "bytes": 32780,
+              "sha256": "b9ae8ebebec50367b8f705f63ff46bf1d530470e6b562f95c8f5de998fbed160"
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
@@ -46218,8 +46260,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 66797,
-              "sha256": "189ddcd2d786e45c486fbe06e8946cf792b7ebb66f3b070970a382f8596deb53"
+              "bytes": 67078,
+              "sha256": "06254f186d44e6f6f293b7b5d2d955e1280432af90ff464d5f02e41372df4728"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -47758,8 +47800,8 @@
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 81456,
-              "sha256": "03c7a206b649be9322ca66c0b56e7d25fcc8b4ba9a0201af87ded3dca3c7e992"
+              "bytes": 82847,
+              "sha256": "64786661ff73d9dc4dd29f4f54e28a9563ea9019931577f5b3dd9ad5d145a90a"
             }
           ],
           "test_modules": [
@@ -49570,10 +49612,10 @@
         {
           "slice_id": "flat7x-source-bound-i0-d0-au-candidate",
           "mapping_status": "MATERIALIZED_PCM_TO_SOURCE_BOUND_D0_FRAME_F12_F13_F15_PAIR_APPEND_CANDIDATE__PRODUCTION_CLI_AND_EXTENT_OPEN",
-          "implementation_status": "LOCALLY_VERIFIED_SOURCE_BOUND_PCM_F12_F13_PAIR_F15_APPEND_CANDIDATE__TAIL_AND_CLI_OPEN",
+          "implementation_status": "LOCALLY_COMPILED_CLI_I0_D0_F12_F15_IN_MEMORY_PAIR__DURABLE_OUTPUT_OPEN",
           "implementation_requirement": true,
           "owner": "application",
-          "scope": "The source-bound Flat7x candidate remains available as a noncommitting application seam. The production CLI now binds reader extents, carries an optional Flat7x overlap history in the Codec owner, commits D0 history for suppressed sources 0/1, and invokes the complete D0 PCM-to-frame candidate for published sources >=2 with named replaceable settings. The real callback stops after the D0 frame candidate; the I0 frame, production F13/F14K/F12 pair join, F15 durable append and final output caller remain open. All 5.1 paths keep their original Codec state shape and output route.",
+          "scope": "The source-bound Flat7x candidate composes physical PCM projection, D0 four-channel PCM-to-frame production, provisional I0 six-block AC-3 production, actual F13/F14K metadata, role-aware F12 pair receipts and a 6,656-byte F15 append proposal in the CLI source stage. D0 history for suppressed sources 0/1 is stored in canonical Codec owner state. The current source stops before installing a durable paired output owner; the per-attempt F15 owner is cold for the first candidate and must be persisted before later AUs. Local I0/D0 settings and generation mapping are explicit replaceable policies. No 5.1 code path is routed through this target.",
           "dependencies": [
             "F12/flat7x-i0-typed-bsi-frame-assembly-entry",
             "F12/flat7x-d0-frame-bit-assembler",
@@ -49904,17 +49946,16 @@
             },
             "source_generation_model": {
               "value_type": "Flat7xSourceGeneration",
-              "creation": "explicit JOCForge cold value plus checked_next",
-              "derived_from_dee_identity": false,
-              "derived_from_analysis_generation": false,
-              "runtime_parent_owner_commit": "D0 history is committed through CodecOwnerRoot in the existing source callback parent; Flat7xSourceGeneration for pair F15 remains UNBOUND"
+              "creation_policy": "JOCFORGE_FLAT7X_SOURCE_GENERATION_SOURCE_INDEX_V1",
+              "generation": "CodecSourceIndex.value()",
+              "runtime_parent_owner_commit": "not yet connected to persistent F15 output owner"
             },
             "d0_audio_block_producer_gap": {
               "existing_i0_writer_shape": "five full-band lanes plus separate LFE; acmod=7/lfeon=1",
               "selected_d0_target_shape": "four coded channels Ls/Rs/Lrs/Rrs; acmod=5/lfeon=0/chanmap=0x1A00; seven JOC reconstruction carriers remain separate",
               "local_four_channel_d0_audblk_writer": "D0_4X253_D15_BAP_MANTISSA_AUDBLK_AND_SIX_BLOCK_FRAME_CANDIDATE",
               "producer_input": "Flat7xD0AudioSpanReceipt::from_source_bound_producer",
-              "producer_status": "LOCALLY_COMPILED_CLI_D0_PCM_TO_COMPLETE_FRAME_CANDIDATE_FOR_PUBLISHED_SOURCE__I0_F12_F15_OUTPUT_OPEN",
+              "producer_status": "LOCALLY_COMPILED_CLI_I0_D0_F12_F15_IN_MEMORY_PAIR__DURABLE_OUTPUT_ROOT_OPEN",
               "source_history_owner": "CodecOwnerRoot optional canonical Flat7x D0 overlap-history field; suppressed source 0/1 transitions commit through the callback parent"
             },
             "eac3_exponent_row_writer": {
@@ -50097,6 +50138,11 @@
               "source_history_owner": "NOT_IMPLEMENTED",
               "source_receipts": "NOT_PRODUCED",
               "production_allowed": false
+            },
+            "i0_frame_settings_model": {
+              "policy_id": "JOCFORGE_FLAT7X_I0_AUDIO_POLICY_V1",
+              "auxdata_policy": "zero-fill to exact target frame extent",
+              "production_allowed": false
             }
           },
           "vectors": {
@@ -50265,11 +50311,11 @@
           "not_run": [
             "Callback-to-source PCM interval, cached-drain row, and EOF valid/padded extent are UNBOUND.",
             "Programme/attempt/source-generation D0 history owner and parent installation after F15 durability are NOT_RUN.",
-            "The production CLI does not invoke the source-bound F13/F14K/F12 pair-integrity stage; application integration uses input-only F13 metadata fixtures.",
             "F15 pair append proposal is in-memory; filesystem durability, rollback, final exposure, .ec3 output and W04 are NOT_RUN.",
             "No encoder or DEE execution occurred; no real output was validated.",
             "No raw skipfld/container/payload/frame bytes or real media are included.",
-            "The production CLI has not yet built I0, joined paired F12/F13 receipts, or staged a durable 6,656-byte AU."
+            "The production CLI has not yet built I0, joined paired F12/F13 receipts, or staged a durable 6,656-byte AU.",
+            "The CLI builds a real same-source F13/F14K/F12 pair and an in-memory F15 candidate for the first published AU; multi-AU output-owner persistence and durable sink installation are NOT_RUN."
           ],
           "validation_boundary": "Synthetic opaque D0 spans and caller BSI values are assembled with the existing D0 frame and AU composers. The E-AC-3 exponent-row helper separately verifies caller-supplied U4/U7 field order, width, cursor extent, and whole-row capacity atomicity. The row seed, group-count and D0 lane join remain caller-owned; production_allowed=false.",
           "delivery_scope": "RECEIPTED_I0_D0_PAIR_CANDIDATE_WITH_D0_SPECTRUM_BAP_D15_ROWS__NO_FULL_AUDBLK_OR_PRODUCTION",
@@ -50286,8 +50332,8 @@
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 81456,
-              "sha256": "03c7a206b649be9322ca66c0b56e7d25fcc8b4ba9a0201af87ded3dca3c7e992"
+              "bytes": 82847,
+              "sha256": "64786661ff73d9dc4dd29f4f54e28a9563ea9019931577f5b3dd9ad5d145a90a"
             },
             {
               "path": "crates/jocforge-application/src/integrity_source_bridge.rs",
@@ -50306,8 +50352,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 66797,
-              "sha256": "189ddcd2d786e45c486fbe06e8946cf792b7ebb66f3b070970a382f8596deb53"
+              "bytes": 67078,
+              "sha256": "06254f186d44e6f6f293b7b5d2d955e1280432af90ff464d5f02e41372df4728"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -50316,8 +50362,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/source_execution.rs",
-              "bytes": 27945,
-              "sha256": "d8999c98967620bee029f90bf7c185472cf450679303012041046261741c33e0"
+              "bytes": 32780,
+              "sha256": "b9ae8ebebec50367b8f705f63ff46bf1d530470e6b562f95c8f5de998fbed160"
             },
             {
               "path": "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
@@ -50476,20 +50522,20 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2250923,
-              "sha256": "7f344119bab97608f2f46a5ab8a58f07037081e35196f4bc167982326176d304"
+              "bytes": 2234059,
+              "sha256": "159b7310c795e8b10ec65f7a5706da6e2dfa45fdb422ead115949d46df41742d"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 81456,
-              "sha256": "03c7a206b649be9322ca66c0b56e7d25fcc8b4ba9a0201af87ded3dca3c7e992"
+              "bytes": 82847,
+              "sha256": "64786661ff73d9dc4dd29f4f54e28a9563ea9019931577f5b3dd9ad5d145a90a"
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 66797,
-              "sha256": "189ddcd2d786e45c486fbe06e8946cf792b7ebb66f3b070970a382f8596deb53"
+              "bytes": 67078,
+              "sha256": "06254f186d44e6f6f293b7b5d2d955e1280432af90ff464d5f02e41372df4728"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication/tests.rs",
@@ -59938,8 +59984,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2250923,
-              "sha256": "7f344119bab97608f2f46a5ab8a58f07037081e35196f4bc167982326176d304"
+              "bytes": 2234059,
+              "sha256": "159b7310c795e8b10ec65f7a5706da6e2dfa45fdb422ead115949d46df41742d"
             }
           ],
           "test_inventory": [
@@ -60712,8 +60758,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 66797,
-              "sha256": "189ddcd2d786e45c486fbe06e8946cf792b7ebb66f3b070970a382f8596deb53"
+              "bytes": 67078,
+              "sha256": "06254f186d44e6f6f293b7b5d2d955e1280432af90ff464d5f02e41372df4728"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -64452,8 +64498,8 @@
         },
         {
           "path": "crates/jocforge-cli/src/encode_request.rs",
-          "bytes": 66797,
-          "sha256": "189ddcd2d786e45c486fbe06e8946cf792b7ebb66f3b070970a382f8596deb53"
+          "bytes": 67078,
+          "sha256": "06254f186d44e6f6f293b7b5d2d955e1280432af90ff464d5f02e41372df4728"
         },
         {
           "path": "crates/jocforge-cli/src/lib.rs",

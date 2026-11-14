@@ -70,7 +70,7 @@ pub enum EncodeRequestError {
     OutputAlreadyExists,
     UnsupportedDataRate,
     UnsupportedJocLayout,
-    Flat7xPairOutputNotConnected { source_index: u64 },
+    Flat7xPairOutputNotConnected { source_index: u64, pair_bytes: u32 },
     InputFile(RiffPcm24FileReadError),
     Riff(jocforge_io::pcm::riff_pcm24::RiffPcm24Error),
     PreparedInput(PreparedJobInputError),
@@ -118,9 +118,12 @@ impl std::fmt::Display for EncodeRequestError {
             Self::UnsupportedJocLayout => {
                 formatter.write_str("joc-layout flat7x requires the selected 1024 kbps profile row")
             }
-            Self::Flat7xPairOutputNotConnected { source_index } => write!(
+            Self::Flat7xPairOutputNotConnected {
+                source_index,
+                pair_bytes,
+            } => write!(
                 formatter,
-                "Flat7x D0 frame candidate is ready, but I0/F12/F15 pair output is not connected for source {source_index}"
+                "Flat7x I0/D0/F12/F15 candidate is ready for source {source_index} ({pair_bytes} bytes), but the durable paired output owner is not connected"
             ),
             Self::InputFile(error) => write!(formatter, "{error}"),
             Self::Riff(error) => write!(formatter, "selected RIFF input rejected: {error:?}"),
@@ -180,7 +183,11 @@ fn map_source_frame_stage_error(
         }
         crate::source_execution::SourceFrameStageError::Flat7xPairOutputNotConnected {
             source_index,
-        } => EncodeRequestError::Flat7xPairOutputNotConnected { source_index },
+            pair_bytes,
+        } => EncodeRequestError::Flat7xPairOutputNotConnected {
+            source_index,
+            pair_bytes,
+        },
     }
 }
 
@@ -1560,9 +1567,13 @@ mod tests {
             super::map_source_frame_stage_error(
                 crate::source_execution::SourceFrameStageError::Flat7xPairOutputNotConnected {
                     source_index: 2,
+                    pair_bytes: 6_656,
                 }
             ),
-            EncodeRequestError::Flat7xPairOutputNotConnected { source_index: 2 }
+            EncodeRequestError::Flat7xPairOutputNotConnected {
+                source_index: 2,
+                pair_bytes: 6_656,
+            }
         ));
     }
 

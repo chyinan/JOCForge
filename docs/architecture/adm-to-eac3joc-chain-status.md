@@ -2038,6 +2038,6 @@ Formatting, production workspace compilation, domain/application/CLI test-target
 
 The production source callback now runs `stage_flat7x_pair_d0_pcm_block_series` for suppressed source 0/1 and commits each after-history through the callback parent. For cached-drain callbacks it uses the explicit replaceable `CachedDrainRepeatPreviousCallbackV1` model to repeat the previous cached PCM rows with a logical sample extent. For published source >=2 it uses the actual reader/projected rows, the committed D0 history and protected F13/F14K container to produce a complete 4,096-byte D0 frame candidate under `JOCFORGE_FLAT7X_D0_FRAME_DEFAULTS_V1` (D0 programme dialnorm, `compr=1`, no mixing/addbsi, no per-block dynamic-range code).
 
-The current callback returns `Flat7xPairOutputNotConnected` after that candidate: I0 frame assembly, the production paired F12 join, the 6,656-byte F15 append through the 1664 output owner, and final exposure are the next seams. No 7.1 `.ec3` file was written. The selected 5.1 candidate and sink branches remain unchanged.
+The current callback builds an I0 frame, same-source F12 pair receipts and a 6,656-byte F15 in-memory append proposal, then returns `Flat7xPairOutputNotConnected`. Durable output-owner persistence, append through the 1664 output sink, parent after-root swap and final exposure remain next. No 7.1 `.ec3` file was written. The selected 5.1 candidate and sink branches remain unchanged.
 
 Workspace production check and CLI test-target compile check passed. No test binary or encoder run was started.
