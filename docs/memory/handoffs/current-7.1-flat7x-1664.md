@@ -394,3 +394,17 @@ Flat7x `CodecOwnerRoot` now carries optional D0 overlap history as 4×256 F32 bi
 For source >=2 the production source stage now invokes the complete D0 PCM-to-frame candidate with same-source reader extent, Codec history and F14K container. It also builds a provisional I0 frame, paired F12 receipts from actual F13/F14K, and a 6,656-byte F15 in-memory candidate under named replaceable policies. It stops at `Flat7xPairOutputNotConnected` because the pair-aware durable output owner, multi-AU state, parent root installation and final exposure remain to be connected.
 
 Validation completed: workspace `cargo check --locked`, CLI test-target compile check, fmt, generated-map check and boundary check passed. Strict Clippy reports 18 existing errors and 1 warning outside this slice. No test binary or encoder ran. The next slice should build the same-source I0 frame and paired F12 proposal, then connect F15 and the existing durable sink.
+
+## 2026-11-14 aggregate 1664-kbps F15 output profile
+
+F15 admission now receives the CLI-resolved Flat7x layout. It creates a 1,664-kbps / 6,656-byte aggregate output configuration, and the READY root checks the same extent. The codec carrier profile remains D0 1,024 kbps; the selected 5.1 output rows remain unchanged.
+
+The source callback builds a complete in-memory I0/D0/F12/F15 candidate using named local policies, then stops before durable output-owner persistence. The first-AU pair owner is still cold per candidate; multi-AU state, atomic output append, parent root swap, and EOF finalization are the next connections. No output file was written. Wash reports the 5.1 all-rate regression passed at exact commit ad6f2e77; the current output-profile changes need their own exact-commit regression before any compatibility claim.
+
+## 2026-11-14 pair candidate and aggregate output configuration
+
+The production callback now builds an actual source-bound I0 candidate from the CLI's provisional six-block policy, pairs it with the source-bound D0 PCM frame, stages actual F13/F14K through the role-aware F12 pair path, and creates an in-memory 6,656-byte F15 append proposal. The F15 generation value is the named local model JOCFORGE_FLAT7X_SOURCE_GENERATION_SOURCE_INDEX_V1; the I0 BAP controls and aux tail are likewise replaceable policies.
+
+The output plan now receives the resolved Flat7x layout. It projects a 1,664-kbps/6,656-byte aggregate output owner, and the selected 5.1 route keeps its original per-frame output size. The pair proposal currently stops before durable output-owner persistence and the single parent swap; no candidate file was written.
+
+Verification: fmt, workspace check, CLI test-target compilation, generated-map check and boundary check passed (91 locally verified scopes / 104 inventoried IDs / 0 unmaterialized roots / 6 partial roots). Clippy remains at 18 pre-existing errors and 1 warning outside the changed files. No test binary/encoder ran. Wash reports the 5.1 all-rate regression passed at prior commit ad6f2e77; current pending output-profile changes still need an exact-commit regression before claiming compatibility.

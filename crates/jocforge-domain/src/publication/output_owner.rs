@@ -4,6 +4,7 @@
 use crate::{
     codec::frame_size::Eac3FrameSize,
     integrity::crc16::eac3_crc16,
+    profile::Flat7xI0D0TargetPlan,
     timeline::{CodecSourceIndex, JocDispatchIndex, PublishedAuIndex},
     transaction::{GtcOwnerId, GtcOwnerReceiptError, GtcOwnerStateSnapshot},
 };
@@ -132,11 +133,9 @@ impl OutputConfiguration {
             .get("frame_bytes")
             .and_then(Value::as_u64)
             .ok_or(OutputOwnerError::ProviderFrameSize)?;
-        if Eac3FrameSize::from_frame_bytes(
-            usize::try_from(frame_bytes).map_err(|_| OutputOwnerError::ProviderFrameSize)?,
-        )
-        .is_none()
-        {
+        let frame_bytes =
+            u32::try_from(frame_bytes).map_err(|_| OutputOwnerError::ProviderFrameSize)?;
+        if !is_supported_output_extent(frame_bytes) {
             return Err(OutputOwnerError::ProviderFrameSize);
         }
         let suppressed_sources = provider
@@ -161,8 +160,7 @@ impl OutputConfiguration {
                 provider_sha256: sha256(
                     &serde_json::to_vec(&provider).map_err(|_| OutputOwnerError::ProviderJson)?,
                 ),
-                frame_bytes: u32::try_from(frame_bytes)
-                    .map_err(|_| OutputOwnerError::ProviderFrameSize)?,
+                frame_bytes,
                 suppressed_sources,
                 staging_name_template: staging_template.to_owned(),
                 intent_name_template: intent_template.to_owned(),
@@ -183,12 +181,7 @@ impl OutputConfiguration {
         if profile_id.is_empty() {
             return Err(OutputOwnerError::ProviderProfile);
         }
-        if Eac3FrameSize::from_frame_bytes(
-            usize::try_from(provider.frame_bytes)
-                .map_err(|_| OutputOwnerError::ProviderFrameSize)?,
-        )
-        .is_none()
-        {
+        if !is_supported_output_extent(provider.frame_bytes) {
             return Err(OutputOwnerError::ProviderFrameSize);
         }
         if provider.suppressed_sources != SUPPRESSED_SOURCES {
@@ -294,6 +287,16 @@ impl OutputConfiguration {
     pub const fn expected_product_bytes(&self) -> u64 {
         self.expected_product_bytes
     }
+}
+
+fn is_supported_output_extent(frame_bytes: u32) -> bool {
+    if frame_bytes == Flat7xI0D0TargetPlan::approved_contract().aggregate_frame_bytes() {
+        return true;
+    }
+    usize::try_from(frame_bytes)
+        .ok()
+        .and_then(Eac3FrameSize::from_frame_bytes)
+        .is_some()
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

@@ -2041,3 +2041,15 @@ The production source callback now runs `stage_flat7x_pair_d0_pcm_block_series` 
 The current callback builds an I0 frame, same-source F12 pair receipts and a 6,656-byte F15 in-memory append proposal, then returns `Flat7xPairOutputNotConnected`. Durable output-owner persistence, append through the 1664 output sink, parent after-root swap and final exposure remain next. No 7.1 `.ec3` file was written. The selected 5.1 candidate and sink branches remain unchanged.
 
 Workspace production check and CLI test-target compile check passed. No test binary or encoder run was started.
+
+## 2026-11-14 Flat7x aggregate output-owner profile
+
+F15 admission now accepts the CLI-resolved Flat7x reconstruction layout while preserving the authored codec rate and EMDF carriage from PreparedJobInput. Its output provider projects 1,664 kbps and 6,656 bytes per AU from the approved 640-kbps I0 plus 1,024-kbps D0 target; OutputConfiguration accepts that aggregate extent, and ProgrammeOwnerRoots READY checks it. The CLI logs the aggregate rate and output bytes while retaining D0's 1,024-kbps carrier row. The selected 5.1 route continues to use its per-frame extent.
+
+The callback now builds a source-bound I0 frame, paired F12 receipts from actual F13/F14K, and a 6,656-byte F15 in-memory candidate. It stops before the persistent paired output ledger, durable sink receipt, and parent output/Integrity/Codec swap. No output file was written. A real-input attempt still needs its own timeline registration, unique output paths, and attempt-specific Fresh GO.
+
+## 2026-11-14 Flat7x aggregate output profile
+
+F15 admission now accepts the CLI-resolved Flat7x reconstruction layout while preserving the authored codec rate and EMDF carriage from PreparedJobInput. Its output provider projects 1,664 kbps / 6,656 bytes per AU from the approved 640-kbps I0 + 1,024-kbps D0 target; OutputConfiguration and ProgrammeOwnerRoots READY accept the same aggregate extent. The CLI logs aggregate rate and output bytes while retaining D0's 1,024-kbps carrier row. Existing 5.1 per-frame output configuration remains unchanged.
+
+The source callback can now construct D0 PCM/frame, local I0 frame, same-source F13/F14K/F12 receipts and one 6,656-byte F15 in-memory append proposal. It stops before the persistent pair-output ledger, durable sink receipt and parent output/Integrity/Codec swap. No output file was written; Fresh GO is still required for a future real-input attempt.

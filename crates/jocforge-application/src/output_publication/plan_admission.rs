@@ -19,8 +19,8 @@ use jocforge_domain::{
     },
     meter::prepared_job_identity::PreparedJobInputIdentity,
     profile::{
-        EmdfCarriageProfile, EncodingProfile, ProfileError, ResolvedEncodingProfile,
-        resolve_selected_profile,
+        EmdfCarriageProfile, EncodingProfile, JocReconstructionLayout, ProfileError,
+        ResolvedEncodingProfile, resolve_selected_profile,
     },
     timeline::{AdmSampleCount, ClockError, ProgrammeCounts, programme_counts},
     transaction::{AttemptId, ProgrammeId},
@@ -551,12 +551,22 @@ struct F15PlanParentContext {
 }
 
 impl F15PlanParentContext {
-    fn from_prepared_input(input: &PreparedJobInput) -> Result<Self, F15PlanAdmissionError> {
-        let resolved_profile = input.configuration().selected_profile();
+    fn from_prepared_input_with_profile(
+        input: &PreparedJobInput,
+        resolved_profile: ResolvedEncodingProfile,
+    ) -> Result<Self, F15PlanAdmissionError> {
+        let authored_profile = input.configuration().selected_profile();
+        if resolved_profile.codec_rate() != authored_profile.codec_rate()
+            || resolved_profile.carriage() != authored_profile.carriage()
+            || resolved_profile.joc_downmix() != authored_profile.joc_downmix()
+        {
+            return Err(F15PlanAdmissionError::ResolvedProfileMismatch);
+        }
         let profile_dimensions = EncodingProfile::selected_with_rate_and_carriage(
             resolved_profile.codec_rate(),
             resolved_profile.carriage(),
-        );
+        )
+        .with_joc_reconstruction_layout(resolved_profile.joc_reconstruction_layout());
         let re_resolved = resolve_selected_profile(&profile_dimensions)
             .map_err(F15PlanAdmissionError::Profile)?;
         if re_resolved != resolved_profile {
@@ -619,11 +629,12 @@ impl F15RoleValidatedValue<CodecF12Role> for CodecF12ProviderValue {
             && self.profile.audio_blocks == 6
             && self.bap.provider_sha256() == sha256_bytes(PUBLIC_BAP_48K)
             && resolved_profile.codec_rate().frame_bytes().is_some()
-            && profile_dimensions
-                == EncodingProfile::selected_with_rate_and_carriage(
-                    resolved_profile.codec_rate(),
-                    resolved_profile.carriage(),
-                )
+            && profile_dimensions.with_joc_reconstruction_layout(
+                JocReconstructionLayout::ExistingSelectedFivePointOne,
+            ) == EncodingProfile::selected_with_rate_and_carriage(
+                resolved_profile.codec_rate(),
+                resolved_profile.carriage(),
+            )
     }
 }
 
@@ -644,9 +655,13 @@ impl F15RoleValidatedValue<JocF05JlRole> for JocF05JlProviderValue {
             && self.profile.capacity_bytes == 372
             && self.profile.dispatch_count == 4_249
             && self.profile.published_writer_count == 4_247
-            && profile_dimensions.same_dimensions_except_codec_rate(
-                EncodingProfile::selected_with_carriage(resolved_profile.carriage()),
-            )
+            && profile_dimensions
+                .with_joc_reconstruction_layout(
+                    JocReconstructionLayout::ExistingSelectedFivePointOne,
+                )
+                .same_dimensions_except_codec_rate(EncodingProfile::selected_with_carriage(
+                    resolved_profile.carriage(),
+                ))
     }
 }
 
@@ -665,11 +680,12 @@ impl F15RoleValidatedValue<F13MetadataRole> for F13MetadataProviderValue {
                 == "6d94c55c8c011fd4762e60ec92ed491f19b17540c72ba82094a36f6e666f2ef7"
             && sha256_hex(self.metadata_owner.wrapper_file())
                 == "722e93ad671e4faab6ae9f33125bd49f8f369f717db0c9a3600cd861cdbd5a56"
-            && profile_dimensions
-                == EncodingProfile::selected_with_rate_and_carriage(
-                    resolved_profile.codec_rate(),
-                    resolved_profile.carriage(),
-                )
+            && profile_dimensions.with_joc_reconstruction_layout(
+                JocReconstructionLayout::ExistingSelectedFivePointOne,
+            ) == EncodingProfile::selected_with_rate_and_carriage(
+                resolved_profile.codec_rate(),
+                resolved_profile.carriage(),
+            )
     }
 }
 
@@ -682,11 +698,12 @@ impl F15RoleValidatedValue<F14IntegrityRole> for F14IntegrityProviderValue {
         self.provider.profile_id() == "keyless-crc32-crc8-crc16.v1"
             && self.provider.provider_sha256().to_hex()
                 == "57b117ab76c597ad6f6d65af65eecc17d2df78cf0874d092fe1f67585e47bd75"
-            && profile_dimensions
-                == EncodingProfile::selected_with_rate_and_carriage(
-                    resolved_profile.codec_rate(),
-                    resolved_profile.carriage(),
-                )
+            && profile_dimensions.with_joc_reconstruction_layout(
+                JocReconstructionLayout::ExistingSelectedFivePointOne,
+            ) == EncodingProfile::selected_with_rate_and_carriage(
+                resolved_profile.codec_rate(),
+                resolved_profile.carriage(),
+            )
     }
 }
 
@@ -1134,10 +1151,26 @@ pub(super) fn admit_selected_f15_plan(
     staging_owner_id: &OutputStagingOwnerId,
     final_destination: &str,
 ) -> Result<SelectedF15Plan, F15PlanAdmissionError> {
+    admit_selected_f15_plan_for_profile(
+        input,
+        input.configuration().selected_profile(),
+        attempt_id,
+        staging_owner_id,
+        final_destination,
+    )
+}
+
+pub(super) fn admit_selected_f15_plan_for_profile(
+    input: &PreparedJobInput,
+    resolved_profile: ResolvedEncodingProfile,
+    attempt_id: AttemptId,
+    staging_owner_id: &OutputStagingOwnerId,
+    final_destination: &str,
+) -> Result<SelectedF15Plan, F15PlanAdmissionError> {
     if !crate::selected_silence_timeline_supported(input.configuration()) {
         return Err(F15PlanAdmissionError::UnsupportedSilenceTimelineEffect);
     }
-    let context = F15PlanParentContext::from_prepared_input(input)?;
+    let context = F15PlanParentContext::from_prepared_input_with_profile(input, resolved_profile)?;
     let admissions = load_selected_owner_admissions(&context)?;
     let final_path = std::path::Path::new(final_destination);
     if !final_path.is_absolute() {

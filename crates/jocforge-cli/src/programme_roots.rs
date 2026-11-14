@@ -10,6 +10,7 @@ use jocforge_application::{
     meter_finalization_bridge::{
         ProgrammeMeasurementReceipt, StandaloneMeterRoot, unchanged_meter_root_receipt,
     },
+    meter_source_bridge::{Flat7xI0D0TargetPlan, JocReconstructionLayout, ResolvedEncodingProfile},
     output_publication::{
         OutputFinalExposureReceipt, OutputFinalizedProposal, ProgrammeOutputBinding,
         ProgrammeOutputFinalizeProposal,
@@ -121,6 +122,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
     #[allow(clippy::too_many_arguments)]
     pub fn ready(
         prepared: &PreparedJobInput,
+        profile: ResolvedEncodingProfile,
         attempt: AttemptId,
         measurement: &'a ProgrammeMeasurementReceipt,
         meter: &'a StandaloneMeterRoot,
@@ -142,13 +144,18 @@ impl<'a> ProgrammeOwnerRoots<'a> {
         let expected_published = output.output_configuration().expected_published_aus();
         let expected_product_bytes = output.output_configuration().expected_product_bytes();
         let output_frame_bytes = u64::from(output.output_configuration().frame_bytes());
-        let selected_rate = prepared.configuration().selected_profile().codec_rate();
-        let selected_frame_bytes = u64::try_from(
-            selected_rate
-                .frame_bytes()
-                .ok_or_else(|| "prepared input has an unsupported carrier rate".to_owned())?,
-        )
-        .map_err(|_| "selected frame extent does not fit programme accounting".to_owned())?;
+        let selected_rate = profile.codec_rate();
+        let selected_frame_bytes =
+            if profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
+                u64::from(Flat7xI0D0TargetPlan::approved_contract().aggregate_frame_bytes())
+            } else {
+                u64::try_from(
+                    selected_rate.frame_bytes().ok_or_else(|| {
+                        "prepared input has an unsupported carrier rate".to_owned()
+                    })?,
+                )
+                .map_err(|_| "selected frame extent does not fit programme accounting".to_owned())?
+            };
         if measurement.programme_id() != prepared.programme_id()
             || measurement.attempt() != attempt
             || measurement.input_sha256() != &prepared.resource_identity().input_sha256()
@@ -181,6 +188,8 @@ impl<'a> ProgrammeOwnerRoots<'a> {
             || metadata.state_reference().generation() != 0
             || codec.generation().value() != 0
             || codec.codec_rate() != selected_rate
+            || (profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x)
+                != codec.d0_overlap_history().is_some()
             || integrity.codec_rate() != selected_rate
             || output_frame_bytes != selected_frame_bytes
             || output

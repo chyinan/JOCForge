@@ -176,3 +176,17 @@ The approved U4/U7 writer boundary is now locally materialized as `codec::expone
 - Published sources >=2 now call `produce_flat7x_pair_d0_pcm_frame_candidate` using committed history, the F14K protected container and local D0 settings `JOCFORGE_FLAT7X_D0_FRAME_DEFAULTS_V1`. The CLI builds an I0 frame with `JOCFORGE_FLAT7X_I0_AUDIO_POLICY_V1`, joins actual F13/F14K with paired F12 receipts, and creates the first 6,656-byte F15 in-memory proposal with source-generation model `JOCFORGE_FLAT7X_SOURCE_GENERATION_SOURCE_INDEX_V1`. The callback then stops before durable output-owner persistence and parent installation.
 - Verification: workspace `cargo check --locked` and `cargo check -p jocforge --tests --locked` passed. No tests ran. Boundary/map checks passed after this slice. Strict Clippy reports 18 pre-existing errors and 1 warning, with no diagnostic in this slice.
 - Next: persist the pair-aware output owner across AU callbacks, stage the in-memory proposal through the durable 6,656-byte sink, and install Integrity/Codec/Output roots in one parent replacement before finalization.
+
+## 2026-11-14 Flat7x aggregate F15 output configuration
+
+- Added profile-aware F15 admission for the CLI-resolved Flat7x layout. The output projection uses the pair target aggregate of 1,664 kbps and 6,656 bytes per AU; OutputConfiguration accepts the extent and ProgrammeOwnerRoots READY checks the same value. D0's selected carrier rate remains 1,024 kbps, and the 5.1 output profile remains unchanged.
+- This prepares the F15 output root for the in-memory pair candidate. The source callback still stops before durable output-owner state, the pair append sink, and the parent swap.
+- Workspace check, CLI test-target compile, generated-map check, and boundary check passed. Strict Clippy reports 18 existing errors and 1 warning outside the changed files. No test binary or encoder was run.
+- Next: persist the pair ledger across AU callbacks, connect the paired readback/fsync receipt to the output GTC root, and install Integrity/Codec/Output after-values together.
+
+## 2026-11-14 Flat7x aggregate F15 output configuration
+
+- Added profile-aware F15 admission for the CLI-resolved Flat7x layout. The output projection uses the pair target's aggregate 1,664-kbps / 6,656-byte AU extent; the carrier profile remains the D0 1,024-kbps row. OutputConfiguration accepts this exact aggregate extent, and ProgrammeOwnerRoots READY validates it. The selected 5.1 provider path is unchanged.
+- This prepares the correct output-owner configuration for the in-memory pair proposal. The CLI still stops before the persistent paired output ledger, durable append receipt and parent output-root swap. No file was created.
+- Workspace check, CLI test-target compile, generated-map check and boundary check passed. Clippy reports 18 existing errors and 1 warning outside the changed files; no test binary ran.
+- Next: persist the pair F15 ledger across AU callbacks, connect its pair-specific readback/fsync receipt to the output GTC root, and install paired Integrity/Codec/Output after-values after each durable append.

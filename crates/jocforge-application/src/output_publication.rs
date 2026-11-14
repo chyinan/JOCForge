@@ -2,7 +2,9 @@
 //! Joins the current metadata and complete-frame proposals into one output-owner proposal.
 
 pub use jocforge_domain::profile::EmdfCarriageProfile;
-use jocforge_domain::profile::ResolvedEncodingProfile;
+use jocforge_domain::profile::{
+    Flat7xI0D0TargetPlan, JocReconstructionLayout, ResolvedEncodingProfile,
+};
 use jocforge_domain::publication::OutputProvider;
 use jocforge_domain::{
     codec::{
@@ -52,17 +54,32 @@ impl SelectedOutputProviderProjection {
                 return Err(OutputRootBindingError::UnsupportedProfile);
             }
         };
-        let frame_bytes = profile
-            .codec_rate()
-            .frame_bytes()
-            .ok_or(OutputRootBindingError::UnsupportedProfile)?;
-        let frame_bytes =
-            u32::try_from(frame_bytes).map_err(|_| OutputRootBindingError::UnsupportedProfile)?;
-        let bit_rate_kbps = profile
-            .codec_rate()
-            .kbps()
-            .ok_or(OutputRootBindingError::UnsupportedProfile)?;
-        let encoding_profile_id = format!("eac3-joc-48k-{bit_rate_kbps}k-acmod7-uncoupled-nonspx");
+        let (frame_bytes, encoding_profile_id) =
+            if profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
+                let target = Flat7xI0D0TargetPlan::approved_contract();
+                let bit_rate_kbps = target
+                    .aggregate_rate_kbps()
+                    .ok_or(OutputRootBindingError::UnsupportedProfile)?;
+                (
+                    target.aggregate_frame_bytes(),
+                    format!("flat7x-i0-640-d0-1024-48k-{bit_rate_kbps}k"),
+                )
+            } else {
+                let frame_bytes = profile
+                    .codec_rate()
+                    .frame_bytes()
+                    .ok_or(OutputRootBindingError::UnsupportedProfile)?;
+                let frame_bytes = u32::try_from(frame_bytes)
+                    .map_err(|_| OutputRootBindingError::UnsupportedProfile)?;
+                let bit_rate_kbps = profile
+                    .codec_rate()
+                    .kbps()
+                    .ok_or(OutputRootBindingError::UnsupportedProfile)?;
+                (
+                    frame_bytes,
+                    format!("eac3-joc-48k-{bit_rate_kbps}k-acmod7-uncoupled-nonspx"),
+                )
+            };
         let projected_canonical_utf8 = canonical_template
             .replace("{encoding_profile_id}", &encoding_profile_id)
             .replace("{frame_bytes}", &frame_bytes.to_string());
@@ -183,6 +200,26 @@ pub fn admit_selected_f15_plan(
 ) -> Result<AdmittedProductionPlan, crate::EncodeError> {
     let inner = plan_admission::admit_selected_f15_plan(
         input,
+        attempt_id,
+        staging_owner_id,
+        final_destination,
+    )
+    .map_err(|_| crate::EncodeError::F15AdmissionRejected)?;
+    Ok(AdmittedProductionPlan { inner })
+}
+
+/// Admits the F15 output path for a CLI-selected reconstruction layout while retaining the
+/// authored rate/carriage from PreparedJobInput.
+pub fn admit_selected_f15_plan_for_profile(
+    input: &PreparedJobInput,
+    profile: ResolvedEncodingProfile,
+    attempt_id: AttemptId,
+    staging_owner_id: &OutputStagingOwnerId,
+    final_destination: &str,
+) -> Result<AdmittedProductionPlan, crate::EncodeError> {
+    let inner = plan_admission::admit_selected_f15_plan_for_profile(
+        input,
+        profile,
         attempt_id,
         staging_owner_id,
         final_destination,

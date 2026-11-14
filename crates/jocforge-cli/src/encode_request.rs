@@ -615,14 +615,29 @@ fn run_inner(
         .with_joc_reconstruction_layout(joc_layout),
     )
     .map_err(|_| EncodeRequestError::UnsupportedJocLayout)?;
-    let frame_bytes = selected_profile
-        .codec_rate()
-        .frame_bytes()
-        .ok_or(EncodeRequestError::UnsupportedDataRate)?;
+    let (frame_bytes, aggregate_rate_kbps) =
+        if resolved_joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
+            let target = Flat7xI0D0TargetPlan::approved_contract();
+            (
+                usize::try_from(target.aggregate_frame_bytes())
+                    .map_err(|_| EncodeRequestError::UnsupportedDataRate)?,
+                target
+                    .aggregate_rate_kbps()
+                    .ok_or(EncodeRequestError::UnsupportedDataRate)?,
+            )
+        } else {
+            (
+                selected_profile
+                    .codec_rate()
+                    .frame_bytes()
+                    .ok_or(EncodeRequestError::UnsupportedDataRate)?,
+                data_rate_kbps,
+            )
+        };
     let config_sha256 = prepared.config_sha256();
 
     eprintln!(
-        "prepared input: attempt={} programme={} sha256={} bytes={} sample_rate_hz={} channels={} pcm_bits=24 samples_per_channel={} data_rate_kbps={} frame_bytes={} joc_reconstruction_layout={:?} joc_dmx_config_idx={:?} config_sha256={} output={}",
+        "prepared input: attempt={} programme={} sha256={} bytes={} sample_rate_hz={} channels={} pcm_bits=24 samples_per_channel={} data_rate_kbps={} aggregate_rate_kbps={} frame_bytes={} joc_reconstruction_layout={:?} joc_dmx_config_idx={:?} config_sha256={} output={}",
         run_identity.attempt.value(),
         run_identity.programme.as_str(),
         hex_lower(&parsed.source_sha256()),
@@ -631,6 +646,7 @@ fn run_inner(
         parsed.channels(),
         parsed.total_samples(),
         data_rate_kbps,
+        aggregate_rate_kbps,
         frame_bytes,
         resolved_joc_profile.joc_reconstruction_layout(),
         resolved_joc_profile.joc_dmx_config_idx(),
@@ -641,8 +657,9 @@ fn run_inner(
     let final_destination = output_path
         .to_str()
         .ok_or(EncodeRequestError::InvalidPath)?;
-    let plan = jocforge_application::output_publication::admit_selected_f15_plan(
+    let plan = jocforge_application::output_publication::admit_selected_f15_plan_for_profile(
         &prepared,
+        resolved_joc_profile,
         run_identity.attempt,
         &run_identity.staging_owner,
         final_destination,
@@ -741,6 +758,7 @@ fn run_inner(
     let measurement_receipt = measurement.receipt();
     let roots = ProgrammeOwnerRoots::ready(
         &prepared,
+        resolved_joc_profile,
         run_identity.attempt,
         measurement_receipt,
         meter_prepass.terminal_meter_root(),
