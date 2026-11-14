@@ -15,7 +15,8 @@ use jocforge_domain::{
         d0_frame_assembler::{Flat7xD0FrameBitInput, Flat7xD0FrameTailPolicy},
         flat7x_d0_pcm_source::{
             Flat7xD0PcmFrameCandidate, Flat7xD0PcmFrameInput, Flat7xD0PcmFrameSettings,
-            Flat7xD0PcmSourceError, produce_flat7x_d0_frame_from_pcm_source,
+            Flat7xD0PcmSourceError, Flat7xD0PcmSourceExtent,
+            produce_flat7x_d0_frame_from_pcm_source,
         },
         frame_builder::Flat7xD0BsiStructure,
         i0_frame_assembler::{
@@ -235,6 +236,7 @@ pub struct Flat7xPairSourceBinding<'pcm> {
     target: Flat7xI0D0TargetPlan,
     source_index: CodecSourceIndex,
     role_map_receipt: Flat7xSourceRoleMapReceipt,
+    source_extent: Flat7xD0PcmSourceExtent,
     d0_source_identity: Flat7xD0SourceIdentity,
     i0_rows: Flat7xI0PcmRows<'pcm>,
     d0_rows: Flat7xD0PcmRows<'pcm>,
@@ -257,6 +259,10 @@ impl Flat7xPairSourceBinding<'_> {
         &self.role_map_receipt
     }
 
+    pub const fn source_extent(&self) -> Flat7xD0PcmSourceExtent {
+        self.source_extent
+    }
+
     pub const fn d0_source_identity(&self) -> &Flat7xD0SourceIdentity {
         &self.d0_source_identity
     }
@@ -271,6 +277,7 @@ impl Flat7xPairSourceBinding<'_> {
 
     pub fn is_bound_to_projection(&self, projection: &Flat7xSourcePcmProjection<'_>) -> bool {
         self.role_map_receipt == *projection.role_map_receipt()
+            && self.source_extent == projection.source_extent()
             && self.i0_rows == projection.i0_rows()
             && self.d0_rows == projection.d0_rows()
     }
@@ -333,6 +340,9 @@ pub fn produce_flat7x_pair_d0_pcm_frame_candidate(
 ) -> Result<Flat7xPairD0PcmFrameCandidate, Flat7xPairSourceError> {
     if settings.target != binding.target {
         return Err(Flat7xPairSourceError::ProfileTargetMismatch);
+    }
+    if settings.source_extent != binding.source_extent {
+        return Err(Flat7xPairSourceError::SourceIdentityMismatch);
     }
     let frame_candidate = produce_flat7x_d0_frame_from_pcm_source(Flat7xD0PcmFrameInput {
         pcm_rows: binding.d0_rows.rows(),
@@ -639,6 +649,7 @@ pub fn bind_flat7x_pair_source<'pcm>(
         target,
         source_index: numeric_plan.identity().source_index(),
         role_map_receipt: role_map_receipt.clone(),
+        source_extent: projection.source_extent(),
         d0_source_identity: Flat7xD0SourceIdentity::from_analysis(
             role_map_receipt.programme_id(),
             role_map_receipt.callback_index(),
@@ -850,7 +861,9 @@ mod pair_access_unit_integration_tests {
             flat7x_d0_frame_controls::{
                 Flat7xD0AllocationCandidateQ, Flat7xD0AudioFrameControlPolicy,
             },
-            flat7x_d0_pcm_source::{Flat7xD0OverlapHistory, Flat7xD0PcmFrameSettings},
+            flat7x_d0_pcm_source::{
+                Flat7xD0OverlapHistory, Flat7xD0PcmFrameSettings, Flat7xD0PcmSourceExtent,
+            },
             frame_builder::{Flat7xD0BsiStructure, measure_flat7x_d0_bsi_structure},
             i0_frame_assembler::{
                 CallerOwnedAc3Cplinu, CallerOwnedI0CrcrsvSeed, Flat7xI0FrameAssemblyError,
@@ -883,8 +896,8 @@ mod pair_access_unit_integration_tests {
             test_support::Flat7xAuAppendTestFixture,
         },
         timeline::{
-            CodecSourceIndex, FrontendCallbackIndex, PublicationDisposition, PublishedAuIndex,
-            publication_for_source,
+            AdmSampleIndex, CodecSourceIndex, FrontendCallbackIndex, PublicationDisposition,
+            PublishedAuIndex, publication_for_source,
         },
         transaction::{AttemptId, CallbackLineageIdentity, CallbackTransactionId, ProgrammeId},
         transform::{
@@ -1222,6 +1235,21 @@ mod pair_access_unit_integration_tests {
         }
     }
 
+    fn d0_extent_for_source(
+        source_index: CodecSourceIndex,
+        callback_index: FrontendCallbackIndex,
+    ) -> Flat7xD0PcmSourceExtent {
+        let first_sample = u64::from(callback_index.value()) * 1_536;
+        Flat7xD0PcmSourceExtent::new(
+            source_index,
+            callback_index,
+            AdmSampleIndex::new(first_sample),
+            1_536,
+            0,
+        )
+        .unwrap()
+    }
+
     #[test]
     fn pair_binding_produces_a_source_bound_d0_frame_from_its_projected_pcm_rows() {
         let prepared = selected_prepared_input();
@@ -1257,6 +1285,7 @@ mod pair_access_unit_integration_tests {
             source_identity.source_index(),
             source_identity.source_stage_key().transaction_id(),
             source_identity,
+            d0_extent_for_source(source_identity.source_index(), callback_index),
             &physical_pcm_rows,
         )
         .unwrap();
@@ -1274,6 +1303,7 @@ mod pair_access_unit_integration_tests {
         let frame = produce_flat7x_pair_d0_pcm_frame_candidate(
             &binding,
             Flat7xD0PcmFrameSettings {
+                source_extent: d0_extent_for_source(binding.source_index(), callback_index),
                 before: &Flat7xD0OverlapHistory::cold(),
                 transform_parameters: &transform_parameters,
                 target,
@@ -1342,6 +1372,7 @@ mod pair_access_unit_integration_tests {
             source_index,
             source_identity.source_stage_key().transaction_id(),
             source_identity,
+            d0_extent_for_source(source_index, callback_index),
             &physical_pcm_rows,
         )
         .unwrap();
@@ -1409,6 +1440,7 @@ mod pair_access_unit_integration_tests {
         let d0_frame = produce_flat7x_pair_d0_pcm_frame_candidate(
             &binding,
             Flat7xD0PcmFrameSettings {
+                source_extent: d0_extent_for_source(source_index, callback_index),
                 before: &Flat7xD0OverlapHistory::cold(),
                 transform_parameters: &transform_parameters,
                 target,
@@ -1570,6 +1602,7 @@ mod pair_access_unit_integration_tests {
             source_identity.source_index(),
             source_identity.source_stage_key().transaction_id(),
             source_identity,
+            d0_extent_for_source(source_identity.source_index(), callback_index),
             &physical_pcm_rows,
         )
         .unwrap();
@@ -1761,6 +1794,7 @@ mod pair_access_unit_integration_tests {
             source_index,
             shared_identity.source_stage_key().transaction_id(),
             shared_identity,
+            d0_extent_for_source(source_index, callback_index),
             &physical_pcm_rows,
         )
         .unwrap();

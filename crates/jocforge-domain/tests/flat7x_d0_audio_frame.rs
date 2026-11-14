@@ -8,7 +8,7 @@ use jocforge_domain::{
         flat7x_d0_exponents::{Flat7xD0ExponentRow, prepare_flat7x_d0_d15_exponent_row},
         flat7x_d0_pcm_source::{
             Flat7xD0OverlapHistory, Flat7xD0PcmFrameInput, Flat7xD0PcmFrameSettings,
-            produce_flat7x_d0_frame_from_pcm_source,
+            Flat7xD0PcmSourceExtent, produce_flat7x_d0_frame_from_pcm_source,
         },
         flat7x_d0_spectrum::{
             D0_PCM_SAMPLES_PER_BLOCK, Flat7xD0PcmBlockInput, Flat7xD0PcmWindow,
@@ -18,6 +18,7 @@ use jocforge_domain::{
     },
     integrity::crc16::eac3_crc16,
     profile::Flat7xI0D0TargetPlan,
+    timeline::{AdmSampleIndex, CodecSourceIndex, FrontendCallbackIndex},
     transform::math_generated_parameters::MathGeneratedTransformParameters,
 };
 
@@ -176,6 +177,14 @@ fn d0_pcm_source_feeds_the_complete_frame_candidate_and_keeps_history_with_it() 
     let candidate = produce_flat7x_d0_frame_from_pcm_source(Flat7xD0PcmFrameInput {
         pcm_rows: pcm_row_refs,
         settings: Flat7xD0PcmFrameSettings {
+            source_extent: Flat7xD0PcmSourceExtent::new(
+                CodecSourceIndex::new(0),
+                FrontendCallbackIndex::new(2),
+                AdmSampleIndex::new(3_072),
+                1_536,
+                0,
+            )
+            .unwrap(),
             before: &Flat7xD0OverlapHistory::cold(),
             transform_parameters: &transform_parameters,
             target: Flat7xI0D0TargetPlan::approved_contract(),

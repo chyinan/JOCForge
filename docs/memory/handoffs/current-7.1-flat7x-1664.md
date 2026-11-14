@@ -377,3 +377,11 @@ The focused application integration test passed (1), using the test-only receipt
 Added `application::flat7x_pair_integrity::stage_flat7x_pair_f12_integrity` to join the D0 source identity/role-map receipt, I0 frame identity, F13 MetadataSourceProposal, F14K protected container and the role-aware rate plan. It derives the D0 payload cursor from the frame assembly receipt, verifies metadata consumer transaction/source/dispatch/AU identity, and returns the noncommitting pair F12 proposal.
 
 The focused pair test exercises source binding → F13/F14K → I0/D0 F12 receipts → F15 in-memory 6,656-byte AU candidate and passed (1). Its F13 metadata is the sealed input-only test fixture. Production callback wiring, source valid/padded extent, durable sink append and one parent state/history install remain open.
+
+## 2026-11-14 reader-bound PCM extent propagation
+
+Normal callback input now forms a `Flat7xD0PcmSourceExtent` from the reader's exact first sample and valid/padded sample counts. The value propagates unchanged through source rows, the Flat7x projection and pair binding, then must match the D0 frame producer settings. The constructor checks callback→source mapping, `first_sample = callback × 1536`, and total extent; the D0 source core checks zero-valued padded tails.
+
+Cached-drain callbacks currently reuse cached PCM rows and carry no source-specific extent, so the Flat7x pair source stage stops at that boundary. This avoids assigning one cached sample interval to multiple codec sources while preserving the existing 5.1 path. The normal source path has a concrete typed extent; D0 history ownership, terminal padding policy, production pair settings/receipts and the F15 parent commit remain to be connected.
+
+Verification completed without running test binaries: formatting, workspace production check, domain/application/CLI test-target compilation, generated-map check, and boundary check passed (92 scoped tasks / 104 IDs / 0 unmaterialized roots / 6 partial roots). Workspace Clippy reports 18 existing errors and 1 warning; no diagnostic points to the files changed in this slice. No `.ec3` or DEE run occurred.

@@ -3,6 +3,7 @@
 
 use std::sync::Arc;
 
+pub use jocforge_domain::codec::flat7x_d0_pcm_source::Flat7xD0PcmSourceExtent;
 pub use jocforge_domain::codec::{
     owner::{CodecOwnerProposal, CodecOwnerRoot, CodecOwnerStageError},
     source_frame_writer::SelectedSourceFrameCandidate,
@@ -139,12 +140,17 @@ impl Flat7xSourceRoleMapReceipt {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Flat7xSourcePcmProjection<'a> {
     role_map_receipt: Flat7xSourceRoleMapReceipt,
+    source_extent: Flat7xD0PcmSourceExtent,
     pcm_view: Flat7xProvisionalSourcePcmView<'a>,
 }
 
 impl<'a> Flat7xSourcePcmProjection<'a> {
     pub const fn role_map_receipt(&self) -> &Flat7xSourceRoleMapReceipt {
         &self.role_map_receipt
+    }
+
+    pub const fn source_extent(&self) -> Flat7xD0PcmSourceExtent {
+        self.source_extent
     }
 
     pub const fn i0_rows(&self) -> Flat7xI0PcmRows<'a> {
@@ -213,8 +219,14 @@ pub fn build_flat7x_source_pcm_projection<'a>(
     source_index: CodecSourceIndex,
     source_transaction_id: &CallbackTransactionId,
     shared_analysis_identity: &SharedAnalysisIdentity,
+    source_extent: Flat7xD0PcmSourceExtent,
     physical_pcm_rows: &'a [Vec<u32>],
 ) -> Result<Flat7xSourcePcmProjection<'a>, SourceFrameBridgeError> {
+    if source_extent.callback_index() != callback_lineage.callback_index()
+        || source_extent.source_index() != source_index
+    {
+        return Err(SourceFrameBridgeError::Flat7xSourceRoleMapLineageMismatch);
+    }
     let role_map_receipt = bind_flat7x_source_role_map(
         prepared,
         target,
@@ -227,6 +239,7 @@ pub fn build_flat7x_source_pcm_projection<'a>(
         .map_err(SourceFrameBridgeError::Flat7xSourceRoleMap)?;
     Ok(Flat7xSourcePcmProjection {
         role_map_receipt,
+        source_extent,
         pcm_view,
     })
 }

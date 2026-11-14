@@ -30,8 +30,8 @@ use jocforge_application::{
         prepare_source_analysis_from_spatial_callback,
     },
     source_frame_bridge::{
-        CodecOwnerRoot, Flat7xSourcePcmProjection, build_flat7x_source_pcm_projection,
-        prepare_admitted_source_frame,
+        CodecOwnerRoot, Flat7xD0PcmSourceExtent, Flat7xSourcePcmProjection,
+        build_flat7x_source_pcm_projection, prepare_admitted_source_frame,
     },
     spatial_callback::{MainSpatialCallbackCandidate, MainSpatialColdRoots},
 };
@@ -71,6 +71,7 @@ pub(crate) struct Flat7xPcmSourceRows {
     callback_index: FrontendCallbackIndex,
     source_index: CodecSourceIndex,
     delivery: Flat7xPcmRowDelivery,
+    source_extent: Option<Flat7xD0PcmSourceExtent>,
     physical_pcm_rows: Vec<Vec<u32>>,
 }
 
@@ -80,6 +81,7 @@ impl Flat7xPcmSourceRows {
         callback_index: FrontendCallbackIndex,
         source_index: CodecSourceIndex,
         delivery: Flat7xPcmRowDelivery,
+        source_extent: Option<Flat7xD0PcmSourceExtent>,
         physical_pcm_rows: Vec<Vec<u32>>,
     ) -> Self {
         Self {
@@ -87,6 +89,7 @@ impl Flat7xPcmSourceRows {
             callback_index,
             source_index,
             delivery,
+            source_extent,
             physical_pcm_rows,
         }
     }
@@ -105,6 +108,10 @@ impl Flat7xPcmSourceRows {
 
     pub const fn delivery(&self) -> Flat7xPcmRowDelivery {
         self.delivery
+    }
+
+    pub const fn source_extent(&self) -> Option<Flat7xD0PcmSourceExtent> {
+        self.source_extent
     }
 
     pub fn physical_pcm_rows(&self) -> &[Vec<u32>] {
@@ -241,6 +248,25 @@ pub(crate) fn stage_source_frame<'pcm>(
                     "Flat7x PCM rows do not match the current callback/source lineage".to_owned(),
                 ));
             }
+            let source_extent = match (expected_delivery, pcm_source.source_extent()) {
+                (Flat7xPcmRowDelivery::NormalCallback, Some(extent))
+                    if extent.callback_index() == callback_index
+                        && extent.source_index() == source_index =>
+                {
+                    extent
+                }
+                (Flat7xPcmRowDelivery::CachedDrain, _) => {
+                    return Err(SourceFrameStageError::Pipeline(
+                        "Flat7x cached drain has no source-indexed PCM extent".to_owned(),
+                    ));
+                }
+                _ => {
+                    return Err(SourceFrameStageError::Pipeline(
+                        "Flat7x PCM extent does not match the current callback/source lineage"
+                            .to_owned(),
+                    ));
+                }
+            };
             let shared_analysis = analysis_stage.shared_analysis().ok_or_else(|| {
                 "Flat7x role map requires the current shared source analysis".to_owned()
             })?;
@@ -252,6 +278,7 @@ pub(crate) fn stage_source_frame<'pcm>(
                     source_index,
                     &source_transaction_id,
                     shared_analysis.identity(),
+                    source_extent,
                     pcm_source.physical_pcm_rows(),
                 )
                 .map_err(|error| format!("Flat7x source PCM projection: {error:?}"))?,

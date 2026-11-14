@@ -17,9 +17,82 @@ use super::{
     frame_builder::Flat7xD0BsiStructure,
 };
 use crate::profile::Flat7xI0D0TargetPlan;
+use crate::timeline::{
+    AdmSampleIndex, CodecSourceIndex, FrontendCallbackIndex, source_for_callback,
+};
 use crate::transform::math_generated_parameters::MathGeneratedTransformParameters;
 
 const SOURCE_SAMPLES: usize = FLAT7X_D0_BAP_BLOCK_COUNT * D0_PCM_SAMPLES_PER_BLOCK;
+const SOURCE_SAMPLES_U64: u64 = 1_536;
+
+/// Reader-owned sample extent bound to one callback and codec-source index.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Flat7xD0PcmSourceExtent {
+    source_index: CodecSourceIndex,
+    callback_index: FrontendCallbackIndex,
+    first_sample: AdmSampleIndex,
+    valid_samples: u16,
+    padded_samples: u16,
+}
+
+impl Flat7xD0PcmSourceExtent {
+    pub fn new(
+        source_index: CodecSourceIndex,
+        callback_index: FrontendCallbackIndex,
+        first_sample: AdmSampleIndex,
+        valid_samples: u16,
+        padded_samples: u16,
+    ) -> Result<Self, Flat7xD0PcmSourceExtentError> {
+        if source_for_callback(callback_index) != Some(source_index) {
+            return Err(Flat7xD0PcmSourceExtentError::CallbackSourceMismatch);
+        }
+        let expected_first_sample = u64::from(callback_index.value()) * SOURCE_SAMPLES_U64;
+        if first_sample.value() != expected_first_sample {
+            return Err(Flat7xD0PcmSourceExtentError::FirstSampleMismatch);
+        }
+        if valid_samples == 0 {
+            return Err(Flat7xD0PcmSourceExtentError::EmptySource);
+        }
+        if usize::from(valid_samples) + usize::from(padded_samples) != SOURCE_SAMPLES {
+            return Err(Flat7xD0PcmSourceExtentError::SampleCountMismatch);
+        }
+        Ok(Self {
+            source_index,
+            callback_index,
+            first_sample,
+            valid_samples,
+            padded_samples,
+        })
+    }
+
+    pub const fn source_index(self) -> CodecSourceIndex {
+        self.source_index
+    }
+
+    pub const fn callback_index(self) -> FrontendCallbackIndex {
+        self.callback_index
+    }
+
+    pub const fn first_sample(self) -> AdmSampleIndex {
+        self.first_sample
+    }
+
+    pub const fn valid_samples(self) -> u16 {
+        self.valid_samples
+    }
+
+    pub const fn padded_samples(self) -> u16 {
+        self.padded_samples
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Flat7xD0PcmSourceExtentError {
+    CallbackSourceMismatch,
+    FirstSampleMismatch,
+    EmptySource,
+    SampleCountMismatch,
+}
 
 /// D0 overlap samples in coded-channel order `[Ls, Rs, Lrs, Rrs]`.
 ///
@@ -87,6 +160,7 @@ impl Flat7xD0PcmBlockSeriesCandidate {
 pub struct Flat7xD0PcmFrameCandidate {
     block_series: Flat7xD0PcmBlockSeriesCandidate,
     frame: Flat7xD0AudioFrameCandidate,
+    source_extent: Flat7xD0PcmSourceExtent,
 }
 
 impl Flat7xD0PcmFrameCandidate {
@@ -102,6 +176,10 @@ impl Flat7xD0PcmFrameCandidate {
         self.block_series.after_history()
     }
 
+    pub const fn source_extent(&self) -> Flat7xD0PcmSourceExtent {
+        self.source_extent
+    }
+
     pub const fn production_allowed(&self) -> bool {
         false
     }
@@ -110,6 +188,7 @@ impl Flat7xD0PcmFrameCandidate {
 /// Caller-owned frame controls for a source-PCM-to-D0-frame candidate.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Flat7xD0PcmFrameSettings<'a> {
+    pub source_extent: Flat7xD0PcmSourceExtent,
     pub before: &'a Flat7xD0OverlapHistory,
     pub transform_parameters: &'a MathGeneratedTransformParameters,
     pub target: Flat7xI0D0TargetPlan,
@@ -141,6 +220,10 @@ pub enum Flat7xD0PcmSourceError {
         channel: u8,
         source: Flat7xD0ExponentError,
     },
+    SourceExtent(Flat7xD0PcmSourceExtentError),
+    PcmPaddingMismatch {
+        channel: u8,
+    },
     AudioFrame(Flat7xD0AudioFrameError),
     BlockCountMismatch,
 }
@@ -151,6 +234,8 @@ impl Flat7xD0PcmSourceError {
             Self::RowLengthMismatch { .. } => "D0_PCM_SOURCE_ROW_LENGTH_MISMATCH",
             Self::Spectrum { source, .. } => source.code(),
             Self::Exponent { source, .. } => source.code(),
+            Self::SourceExtent(_) => "D0_PCM_SOURCE_EXTENT_MISMATCH",
+            Self::PcmPaddingMismatch { .. } => "D0_PCM_SOURCE_PADDING_MISMATCH",
             Self::AudioFrame(_) => "D0_PCM_SOURCE_FRAME_PRODUCTION_FAILED",
             Self::BlockCountMismatch => "D0_PCM_SOURCE_BLOCK_COUNT_MISMATCH",
         }
@@ -165,6 +250,14 @@ pub fn produce_flat7x_d0_frame_from_pcm_source(
     input: Flat7xD0PcmFrameInput<'_>,
 ) -> Result<Flat7xD0PcmFrameCandidate, Flat7xD0PcmSourceError> {
     let settings = input.settings;
+    let valid_samples = usize::from(settings.source_extent.valid_samples());
+    for (channel, row) in input.pcm_rows.iter().enumerate() {
+        if row.len() == SOURCE_SAMPLES && row[valid_samples..].iter().any(|word| *word != 0) {
+            return Err(Flat7xD0PcmSourceError::PcmPaddingMismatch {
+                channel: channel as u8,
+            });
+        }
+    }
     let block_series = stage_flat7x_d0_pcm_block_series(
         input.pcm_rows,
         settings.before,
@@ -184,6 +277,7 @@ pub fn produce_flat7x_d0_frame_from_pcm_source(
     Ok(Flat7xD0PcmFrameCandidate {
         block_series,
         frame,
+        source_extent: settings.source_extent,
     })
 }
 
@@ -328,11 +422,13 @@ mod tests {
 
         assert_eq!(candidate.spectra().len(), 6);
         assert_eq!(candidate.exponent_rows().len(), 6);
-        for channel in 0..4 {
-            assert_eq!(
-                candidate.after_history().samples_by_channel()[channel],
-                rows[channel][SOURCE_SAMPLES - 256..]
-            );
+        for (history, row) in candidate
+            .after_history()
+            .samples_by_channel()
+            .iter()
+            .zip(&rows)
+        {
+            assert_eq!(history.as_slice(), &row[SOURCE_SAMPLES - 256..]);
         }
         assert!(!candidate.production_allowed());
     }

@@ -159,3 +159,11 @@ The approved U4/U7 writer boundary is now locally materialized as `codec::expone
 - Added `application::flat7x_pair_integrity::stage_flat7x_pair_f12_integrity`: it checks the I0/D0 source-role-map binding, the F13 source/consumer identity and the F14K protected payload lineage, derives the D0 EMDF payload cursor from its frame receipt, and stages the fixed-role-rate F12 pair proposal.
 - The F15 integration test drives a source-bound PCM→D0 frame, a source-bound I0 frame, F13/F14K test data, the pair F12 proposal and one in-memory F15 AU append candidate. It passed (1).
 - Production caller, callback PCM extent/EOF tail receipts, parent durable append, and atomic Integrity/history installation remain open; production is disabled.
+
+## 2026-11-14 reader-issued D0 PCM source extent
+
+- Added `Flat7xD0PcmSourceExtent` from the actual `FrontendPcmCallbackFrame`: it carries `CodecSourceIndex`, `FrontendCallbackIndex`, `AdmSampleIndex first_sample`, valid samples, and padding samples. The constructor checks `source_for_callback`, `first_sample = callback × 1536`, and the 1536-sample extent.
+- The exact receipt now flows through `Flat7xPcmSourceRows`, the source PCM projection, `Flat7xPairSourceBinding`, and the D0 PCM frame candidate. D0 frame staging verifies the bound extent and requires zero words in padded row tails.
+- Cached drain rows carry no source-specific reader extent; Flat7x source staging stops before candidate production for that delivery. This leaves the cached-drain source recipe visibly gated.
+- `cargo fmt --all -- --check`, workspace `cargo check --locked`, domain/application/CLI test-target compile checks, generated-map check, and boundary check passed. No test binary or encoder was run. Strict workspace Clippy reports 18 errors and 1 warning, all outside the files changed in this slice.
+- Remaining: Wash-backed per-source cached-drain rows and terminal extent policy; D0 history owner and suppressed-source installation; production D0 settings/receipt caller; one parent F15 durable append and root swap. `production_allowed=false`.

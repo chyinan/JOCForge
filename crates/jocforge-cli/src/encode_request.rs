@@ -41,7 +41,7 @@ use jocforge_application::{
     source_analysis_bridge::{
         SelectedSourceAnalysisProviders, cold_analysis_root_for_prepared_input,
     },
-    source_frame_bridge::CodecOwnerRoot,
+    source_frame_bridge::{CodecOwnerRoot, Flat7xD0PcmSourceExtent},
     spatial_callback::{
         MainFrontendSnapshotError, MainHeldControlOutput, MainNormalControlOutput,
         MainSpatialCachedCallbackInput, MainSpatialCallbackCandidate, MainSpatialCallbackError,
@@ -1159,6 +1159,28 @@ fn stage_main_callback_candidate(
         return Err(EncodeRequestError::ClockMismatch);
     }
     let source_index = frame.source_index();
+    let flat7x_source_extent = if preserve_flat7x_pcm_rows {
+        source_index
+            .map(|source_index| {
+                Flat7xD0PcmSourceExtent::new(
+                    source_index,
+                    callback_index,
+                    frame.first_sample(),
+                    u16::try_from(frame.actual_samples().value())
+                        .map_err(|_| EncodeRequestError::ClockMismatch)?,
+                    u16::try_from(frame.padding_samples())
+                        .map_err(|_| EncodeRequestError::ClockMismatch)?,
+                )
+                .map_err(|error| {
+                    EncodeRequestError::SourcePipeline(format!(
+                        "Flat7x PCM source extent: {error:?}"
+                    ))
+                })
+            })
+            .transpose()?
+    } else {
+        None
+    };
     let flat7x_physical_pcm_rows = if preserve_flat7x_pcm_rows {
         source_index.map(|source_index| {
             crate::source_execution::Flat7xPcmSourceRows::new(
@@ -1166,6 +1188,7 @@ fn stage_main_callback_candidate(
                 callback_index,
                 source_index,
                 crate::source_execution::Flat7xPcmRowDelivery::NormalCallback,
+                flat7x_source_extent,
                 frame.physical_pcm_rows().to_vec(),
             )
         })
@@ -1251,6 +1274,7 @@ fn stage_main_cached_callback_candidate(
             callback_index,
             source_index,
             crate::source_execution::Flat7xPcmRowDelivery::CachedDrain,
+            None,
             cached_flat7x_physical_pcm_rows(prepared, roots)?,
         ))
     } else {

@@ -2019,3 +2019,14 @@ The test uses an input-only F13 fixture. Production callback PCM extent, EOF pad
 `application::flat7x_pair_integrity::stage_flat7x_pair_f12_integrity` now binds the F13 metadata consumer transaction and F14K protected payload to the exact source-bound I0/D0 frame pair. The F12 pair method uses the fixed 640/1024 role-rate plan; the application bridge derives D0's payload cursor from the frame receipt and preserves the single protected F13 container on D0. The focused integration test reaches one in-memory F15 AU proposal.
 
 The test uses an input-only F13 fixture. Production callback PCM extent, EOF padding, cached-drain source rows, CLI pair caller, durable F15 sink receipt and the single parent swap of Integrity/history remain open; `production_allowed=false`.
+
+
+## 2026-11-14 reader-bound D0 PCM extent
+
+The normal F01 PCM reader now issues a typed `Flat7xD0PcmSourceExtent` for each callback that has a codec source. It retains `first_sample`, valid samples and zero-padded samples alongside callback and codec-source indices. The source clock maps the callback to that source, the sample origin equals callback index × 1,536, and valid plus padded samples equals 1,536.
+
+`encode_request` carries the receipt with physical rows through `Flat7xPcmSourceRows`; `stage_source_frame` forwards it through `Flat7xSourcePcmProjection` and `Flat7xPairSourceBinding`; `produce_flat7x_pair_d0_pcm_frame_candidate` requires an exact extent match. The D0 core checks padded row words for zero.
+
+Cached-drain rows currently originate from cached spatial PCM state and have no per-source reader extent, so the Flat7x source stage stops before candidate production for that delivery. The active production gate remains `NoApprovedAudioProductionRule`; D0 history ownership, suppressed-source handling, production D0 settings/receipt, same-source F13/F12 pair construction and the F15 durable parent swap remain open. `production_allowed=false`.
+
+Formatting, production workspace compilation, domain/application/CLI test-target compilation, generated implementation maps and boundary checks passed. Test binaries and full-input output validation were not run. Strict workspace Clippy reports 18 existing errors and 1 warning; no diagnostic points to the files changed in this extent slice.
