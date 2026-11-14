@@ -666,6 +666,28 @@ mod flat7x_rows_route_tests {
     #[test]
     fn synthetic_opaque_skipfield_frame_composes_with_i0_before_d0() {
         let target = jocforge_domain::profile::Flat7xI0D0TargetPlan::approved_contract();
+        // Wash source-probe receipt reports the sample's I0 AC-3 / D0 E-AC-3 distinction.
+        assert_eq!(
+            target.i0().role(),
+            jocforge_domain::profile::Flat7xSubstreamRole::IndependentI0
+        );
+        assert_eq!(
+            target.i0().codec(),
+            jocforge_domain::profile::Flat7xFrameCodec::Ac3
+        );
+        assert_eq!(target.i0().substream_id().value(), 0);
+        assert_eq!(target.i0().bsid(), 6);
+        assert_eq!(
+            target.d0().role(),
+            jocforge_domain::profile::Flat7xSubstreamRole::DependentD0
+        );
+        assert_eq!(
+            target.d0().codec(),
+            jocforge_domain::profile::Flat7xFrameCodec::Eac3
+        );
+        assert_eq!(target.d0().substream_id().value(), 0);
+        assert_eq!(target.d0().bsid(), 16);
+        // The source sample uses 640 kbps / 2560 bytes for D0; selected target stays 1024 / 4096.
         assert_eq!(target.i0().rate().kbps(), Some(640));
         assert_eq!(target.d0().rate().kbps(), Some(1_024));
         assert_eq!(target.aggregate_rate_kbps(), Some(1_664));

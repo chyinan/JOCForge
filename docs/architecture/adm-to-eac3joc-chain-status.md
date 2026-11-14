@@ -2145,3 +2145,7 @@ Wash package official_demo_au0_d0_chanmap_raw_ec3_inspect_receipt_wash_v2 (manif
 ## 2026-11-15 parser-shaped EMDF test-builder boundary
 
 Current test-support has no builder that wraps the generated ID14 body in a complete parser-shaped F13 container. The receipt-gate helper uses a fixed 16-byte shell and a typed shell constructor that explicitly bypasses the protected-container parser. The production serializer is private under MetadataOwner and consumes the complete queued payload set; keyless protection only accepts an already serialized zero-slot container with terminal layout. ID14 serialization and opaque skipfld/AU framing remain separate synthetic tests. Complete protected EMDF construction from this ID14 body and parser acceptance remain NOT_RUN; production coefficient generation remains blocked on the authoritative 15x7 provider.
+
+## 2026-11-15 OpenJOC AU0 frame-header source-probe receipt
+
+Wash receipt metadata-receipt.json (SHA-256 8ea96d4a916f683c5056607ede0d99436f53fb9015fd4856a99de772d7f29b3f) records a v0.20.1 tag-source probe with executable join UNBOUND. It parses AU0 frame0 as LegacyIndependent AC-3 / substream0 / BSID6 / 2560 bytes and frame1 as Dependent E-AC-3 / substream0 / BSID16 / 2560 bytes; both are 48 kHz, six blocks, 1536 samples. This fills the metadata-level I0-versus-D0 codec/role distinction only. The source sample is 640+640 kbps; target remains I0 640 kbps / 2560 bytes plus D0 1024 kbps / 4096 bytes. No sample frame size/rate is copied to target D0, and no payload, PCM, decode or encode evidence is added.
