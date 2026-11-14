@@ -1,6 +1,21 @@
 // pattern: Imperative Shell
 //! Composes one real MAIN source callback through F07-F15 as a noncommitting root proposal.
 
+use crate::{
+    output_publication::{
+        ProgrammeOutputStaging, SourceFrameOutputStageError, stage_source_frame_output,
+        stage_source_frame_output_with_d0_history,
+    },
+    programme_roots::source_for_callback_clock,
+    selected_spatial_callback_providers::SelectedMainSpatialCallbackProviders,
+};
+use jocforge_application::flat7x_pair_source::{
+    CallerOwnedI0CrcrsvSeed, Flat7xD0BapParameters, Flat7xD0BsiStructure, Flat7xD0PcmFrameSettings,
+    Flat7xI0FrameAssemblyError, Flat7xPairSourceError, I0AudioBlockSeriesBudget, I0AuxDataInput,
+    OpaqueI0Ac3BitSpan, assemble_flat7x_i0_frame_candidate_from_binding, bind_flat7x_pair_source,
+    flat7x_i0_audio_block_policy_v1, produce_flat7x_pair_d0_pcm_frame_candidate,
+    stage_flat7x_pair_d0_pcm_block_series,
+};
 use jocforge_application::{
     PreparedJobInput,
     codec_source_bridge::bind_flat7x_d0_bsi_source_inputs,
@@ -40,23 +55,6 @@ use jocforge_application::{
     },
     spatial_callback::{MainSpatialCallbackCandidate, MainSpatialColdRoots},
 };
-
-use jocforge_application::flat7x_pair_source::{
-    CallerOwnedI0CrcrsvSeed, Flat7xD0BapParameters, Flat7xD0BsiStructure, Flat7xD0PcmFrameSettings,
-    Flat7xI0FrameAssemblyError, Flat7xPairSourceError, I0AudioBlockSeriesBudget, I0AuxDataInput,
-    OpaqueI0Ac3BitSpan, assemble_flat7x_i0_frame_candidate_from_binding, bind_flat7x_pair_source,
-    flat7x_i0_audio_block_policy_v1, produce_flat7x_pair_d0_pcm_frame_candidate,
-    stage_flat7x_pair_d0_pcm_block_series,
-};
-
-use crate::{
-    output_publication::{
-        ProgrammeOutputStaging, SourceFrameOutputStageError, stage_source_frame_output,
-        stage_source_frame_output_with_d0_history,
-    },
-    programme_roots::source_for_callback_clock,
-    selected_spatial_callback_providers::SelectedMainSpatialCallbackProviders,
-};
 use jocforge_io::pcm::frontend_pcm_source::{CodecSourceIndex, FrontendCallbackIndex};
 
 const FLAT7X_D0_OPTIONAL_FRAME_FIELDS_POLICY_ID: &str =
@@ -70,6 +68,25 @@ pub(crate) struct DurableAppendSummary {
     pub crc_residual: u16,
     pub file_fsync: bool,
     pub durable: bool,
+}
+
+/// Structural bit spans retained from the first source-bound D0 frame receipt for diagnostics.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) struct Flat7xD0FrameSyntaxSummary {
+    pub audfrm_start_bit: u32,
+    pub audfrm_end_bit: u32,
+    pub skipflde_bit_offset: u32,
+    pub block_two_skiple_bit_offset: u32,
+    pub block_two_skipl_bit_offset: u32,
+    pub block_two_container_bytes: u16,
+    pub block_two_container_start_bit: u32,
+    pub block_two_container_end_bit: u32,
+    pub nauxbits_start_bit: u32,
+    pub nauxbits_end_bit: u32,
+    pub auxdatae_bit_offset: u32,
+    pub crcrsv_bit_offset: u32,
+    pub crc2_start_bit: u32,
+    pub crc2_end_bit: u32,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -150,6 +167,7 @@ pub(crate) struct SourceFrameAdvance<'pcm> {
     pub source_index: CodecSourceIndex,
     pub frame_sha256: [u8; 32],
     pub metadata_container_bytes: Option<usize>,
+    pub flat7x_d0_frame_syntax: Option<Flat7xD0FrameSyntaxSummary>,
     pub f14k_source: F14kSourceCandidate,
     pub integrity_receipts: IntegrityF12SourceReceipts,
     pub flat7x_integrity_pair_receipts:
@@ -383,6 +401,7 @@ pub(crate) fn stage_source_frame<'pcm>(
     };
     let mut flat7x_d0_history_after = None;
     let mut flat7x_pair_after = None;
+    let mut flat7x_d0_frame_syntax = None;
     if let Some(binding) = flat7x_pair_source_binding {
         let history_before = codec_before.d0_overlap_history().ok_or_else(|| {
             SourceFrameStageError::Pipeline(
@@ -446,6 +465,35 @@ pub(crate) fn stage_source_frame<'pcm>(
                     jocforge_application::codec_source_bridge::FLAT7X_D0_BSI_SOURCE_POLICY_ID,
                 ))
             })?;
+            let assembly = d0_frame_candidate
+                .frame_candidate()
+                .frame()
+                .receipt()
+                .frame_assembly();
+            let layout = assembly.layout();
+            let skip = layout.block_two_skip_field();
+            let skip_span = skip.bit_span();
+            let container_bytes = skip.payload_bytes();
+            let container_bits = u32::from(container_bytes) * 8;
+            let container_start_bit = skip_span.end_bit() - container_bits;
+            let nauxbits = assembly.frame_auxbits_span();
+            let crc2 = assembly.crc2_span();
+            flat7x_d0_frame_syntax = Some(Flat7xD0FrameSyntaxSummary {
+                audfrm_start_bit: layout.audio_frame_control_span().start_bit(),
+                audfrm_end_bit: layout.audio_frame_control_span().end_bit(),
+                skipflde_bit_offset: assembly.audio_frame_controls().skipflde_bit_offset(),
+                block_two_skiple_bit_offset: skip_span.start_bit(),
+                block_two_skipl_bit_offset: skip_span.start_bit() + 1,
+                block_two_container_bytes: container_bytes,
+                block_two_container_start_bit: container_start_bit,
+                block_two_container_end_bit: skip_span.end_bit(),
+                nauxbits_start_bit: nauxbits.start_bit(),
+                nauxbits_end_bit: nauxbits.end_bit(),
+                auxdatae_bit_offset: nauxbits.end_bit(),
+                crcrsv_bit_offset: nauxbits.end_bit() + 1,
+                crc2_start_bit: crc2.start_bit(),
+                crc2_end_bit: crc2.end_bit(),
+            });
             let i0_policy = flat7x_i0_audio_block_policy_v1().ok_or_else(|| {
                 SourceFrameStageError::Pipeline(
                     "Flat7x I0 local block policy could not be constructed".to_owned(),
@@ -860,6 +908,7 @@ pub(crate) fn stage_source_frame<'pcm>(
         source_index,
         frame_sha256,
         metadata_container_bytes,
+        flat7x_d0_frame_syntax,
         f14k_source,
         integrity_receipts,
         flat7x_integrity_pair_receipts,

@@ -158,8 +158,8 @@ fn d0_frame_search_produces_one_complete_crc_valid_six_block_candidate() {
     let first_block = candidate.receipt().frame_assembly().layout().audio_blocks()[0]
         .leading_audio_span()
         .start_bit();
-    assert_eq!(read_bits(candidate.frame_bytes(), first_block, 1), 0); // dynrnge absent
-    assert_eq!(read_bits(candidate.frame_bytes(), first_block + 1, 4), 0); // four dithflag=0
+    assert_eq!(read_bits(candidate.frame_bytes(), first_block, 4), 0); // four dithflag=0
+    assert_eq!(read_bits(candidate.frame_bytes(), first_block + 4, 1), 0); // dynrnge absent
     assert_eq!(read_bits(candidate.frame_bytes(), first_block + 5, 1), 0); // SPX off.
     assert_eq!(read_bits(candidate.frame_bytes(), first_block + 6, 6), 60); // chbwcod.
     assert_eq!(

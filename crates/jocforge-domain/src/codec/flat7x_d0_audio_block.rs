@@ -202,7 +202,8 @@ impl From<FrameBitWriterError> for Flat7xD0AudioBlockError {
 ///
 /// Frame-level fields and the D0 block-two skip-field are owned by their frame assemblers. Block
 /// two returns separate before/after spans so the caller can place its single skip-field before
-/// mantissas. Other blocks return one complete span containing `skiple=0`.
+/// mantissas. Other blocks return one complete span containing `skiple=0`. Per ETSI TS 102 366
+/// V1.4.1 Annex E.1.2.4, dither flags precede the dynamic-range presence/value fields.
 pub fn write_flat7x_d0_audio_block(
     input: &Flat7xD0AudioBlockInput<'_>,
 ) -> Result<Flat7xD0AudioBlockCandidate, Flat7xD0AudioBlockError> {
@@ -382,13 +383,12 @@ fn write_prefix_before_skipfield(
     writer: &mut FrameBitWriter<'_>,
     input: &Flat7xD0AudioBlockInput<'_>,
 ) -> Result<(), Flat7xD0AudioBlockError> {
+    for _ in 0..FLAT7X_D0_BAP_CHANNEL_COUNT {
+        writer.write_bit(false)?; // dithflag=0
+    }
     writer.write_bit(input.dynamic_range_code.is_some())?;
     if let Some(code) = input.dynamic_range_code {
         writer.write_unsigned(u32::from(code), 8)?;
-    }
-
-    for _ in 0..FLAT7X_D0_BAP_CHANNEL_COUNT {
-        writer.write_bit(false)?; // dithflag=0
     }
 
     if input.block_index.value() == 0 {

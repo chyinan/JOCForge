@@ -209,3 +209,11 @@ The existing F13/F14K path already validates the same-source complete EMDF conta
 - This prepares the correct output-owner configuration for the in-memory pair proposal. The CLI still stops before the persistent paired output ledger, durable append receipt and parent output-root swap. No file was created.
 - Workspace check, CLI test-target compile, generated-map check and boundary check passed. Clippy reports 18 existing errors and 1 warning outside the changed files; no test binary ran.
 - Next: persist the pair F15 ledger across AU callbacks, connect its pair-specific readback/fsync receipt to the output GTC root, and install paired Integrity/Codec/Output after-values after each durable append.
+
+## 2026-11-14 D0 audfrm syntax correction and Release attempt
+
+OpenJOC 0.20.1's `skip_observed=0` led to the ETSI Annex E.1.2.3 placement fix: six coupling-state bits and 24 D15 `chexpstr` U2 values now reside in `audfrm` after `skipflde` and before `audblk`; per-block prefixes no longer duplicate these 54 bits. The selected 5.1 all-rate route remains unchanged. Focused checks passed: D0 audio-frame 4/4, frame assembler 5/5, D0 frame controls 2/2, selected 5.1 all-rate 1/1, and fmt check. Commit `6f3cb91e39d9a8fd308b2ed5f0188d7f67babd10` is pushed.
+
+Corrected Release attempt `1794658627622854200` captured 8,417 AUs / 56,023,552 bytes, 6,656 bytes per AU, and CRC residual 0. The first published source carried a 288-byte protected F13 container. OpenJOC 0.20.1 review is pending; candidate remains experimental with `production_allowed=false`, and render/playback remain `NOT_RUN`.
+
+OpenJOC still reported `skip_observed=0` for that candidate. ETSI TS 102 366 V1.4.1 Annex E.1.2.4 orders `dithflag` before `dynrnge`; the D0 audblk writer now follows this order. The targeted D0 audio-frame (4), frame-assembly (5), frame-control (2), selected 5.1 all-rate (1), `cargo check -p jocforge --locked`, and fmt checks pass. The CLI carries the typed AU0 D0 frame receipt to the progress log. OpenJOC validates the short `D:\testADM.wav` as 36-channel / 48-kHz RIFF ADM BWF; use it for the next unique Release attempt and inspect the receipt/OpenJOC output.

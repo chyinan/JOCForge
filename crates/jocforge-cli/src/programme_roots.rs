@@ -1,6 +1,9 @@
 // pattern: Imperative Shell
 //! Owns the selected CLI programme roots and installs complete callback proposals once.
 
+use crate::source_execution::{
+    DurableAppendSummary, Flat7xD0FrameSyntaxSummary, SourceFrameAdvance,
+};
 use jocforge_application::{
     PreparedJobInput,
     drc_source_bridge::NoneDrcOwnerRoot,
@@ -20,8 +23,6 @@ use jocforge_application::{
     source_frame_bridge::{CallbackLineageIdentity, CodecOwnerRoot, Flat7xSourceRoleMapReceipt},
     spatial_callback::MainSpatialColdRoots,
 };
-
-use crate::source_execution::{DurableAppendSummary, SourceFrameAdvance};
 use jocforge_io::pcm::frontend_pcm_source::{
     CodecSourceIndex, FrontendCallbackIndex, NormalCallbackCount,
 };
@@ -80,6 +81,7 @@ pub(crate) struct ProgrammeCallbackCommit {
     pub au_index: Option<u64>,
     pub frame_sha256: Option<[u8; 32]>,
     pub metadata_container_bytes: Option<usize>,
+    pub flat7x_d0_frame_syntax: Option<Flat7xD0FrameSyntaxSummary>,
     pub append: Option<DurableAppendSummary>,
     pub flat7x_source_role_map: Option<Flat7xSourceRoleMapReceipt>,
     pub phase_generation_before: u64,
@@ -462,6 +464,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
             au_index: None,
             frame_sha256: None,
             metadata_container_bytes: None,
+            flat7x_d0_frame_syntax: None,
             append: None,
             flat7x_source_role_map: None,
             phase_generation_before: phase_generation_after - 1,
@@ -703,6 +706,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
 
         let frame_sha256 = advance.frame_sha256;
         let metadata_container_bytes = advance.metadata_container_bytes;
+        let flat7x_d0_frame_syntax = advance.flat7x_d0_frame_syntax;
         let append = advance.append;
         let flat7x_source_role_map = advance
             .flat7x_source_pcm_projection
@@ -746,6 +750,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
             au_index,
             frame_sha256: Some(frame_sha256),
             metadata_container_bytes,
+            flat7x_d0_frame_syntax,
             append,
             flat7x_source_role_map,
             phase_generation_before: next_phase_generation - 1,

@@ -879,6 +879,25 @@ fn run_inner(
                     );
                 } else if let Some(append) = receipt.append.as_ref() {
                     if append.au_index == 0 {
+                        if let Some(d0) = receipt.flat7x_d0_frame_syntax {
+                            eprintln!(
+                                "Flat7x D0 AU0 syntax receipt: audfrm={}..{} skipflde_bit={} skiple_bit={} skiple=1 skipl_bit={} skipl={} emdf={}..{} nauxbits={}..{} auxdatae_bit={} crcrsv_bit={} crc2={}..{}",
+                                d0.audfrm_start_bit,
+                                d0.audfrm_end_bit,
+                                d0.skipflde_bit_offset,
+                                d0.block_two_skiple_bit_offset,
+                                d0.block_two_skipl_bit_offset,
+                                d0.block_two_container_bytes,
+                                d0.block_two_container_start_bit,
+                                d0.block_two_container_end_bit,
+                                d0.nauxbits_start_bit,
+                                d0.nauxbits_end_bit,
+                                d0.auxdatae_bit_offset,
+                                d0.crcrsv_bit_offset,
+                                d0.crc2_start_bit,
+                                d0.crc2_end_bit,
+                            );
+                        }
                         eprintln!(
                             "first AU durably staged: source={} au={} frame_bytes={} frame_sha256={} emdf_container_bytes={} staging_bytes={}",
                             source_index.value(),
