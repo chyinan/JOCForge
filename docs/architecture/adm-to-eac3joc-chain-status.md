@@ -6,6 +6,12 @@
 
 本文记录目标链路、现有实现边界和证据状态。图中的“合同”“局部验证”和“原生 DEE 证据”含义不同，不能互相替代。
 
+## 2026-11-14：Flat7x I0/D0 从 source callback 接入 pair staging
+
+CLI `--joc-layout flat7x` 的 source callback 已把现有 D0/I0 frame candidate、同源 F13/F14K 与 paired F12 receipts 接到 F15 pair append。`ProgrammeOutputStaging` 在一次 attempt 内保留 pair-output owner；每个 AU 分别验证 I0/D0 frame extent 与 CRC，写入 6,656-byte aggregate，完成 readback/hash 和 file sync。`SourceFrameAdvance` 将 paired Integrity receipts 与 Codec/Output after-values 交给 `ProgrammeOwnerRoots::commit_source_advance`；parent 检查 I0/D0 的 programme、attempt、source transaction、source、dispatch、AU 和 CRC identities。Finalization 前检查完整 pair ledger。selected 5.1 分支保持原有表示与 sink。
+
+本轮通过 workspace check 与 CLI all-targets check；全输入 CLI 运行、最终 `.ec3` exposure、OpenJOC parse/decode/render 和 W04 尚未运行。`jocforge-application::encode()` 仍返回 `SourcePipelineUnavailable`；当前接线位于 CLI run path。F12 map 的 `production_allowed=false` 仍保留；本地 I0/D0 frame controls 与 source-generation label 标为可替换 policy，native source-generation join、官方 I0 exact BSID/audio parity 仍待确认。
+
 ## 2026-11-11：官方演示参考的 OAMD 位置字段域
 
 Wash 补包 `OFFICIAL-ATMOS-DEMO-OAMD-POSITION-WASHED-V1` 的 manifest SHA-256 为 `c550a0536ed4752b46872c674fcabc8ad8828b7eb69e17e6fb4a0d082ee52ef8`，package seal SHA-256 为 `906f48f17f47ef372d339bebe598931a933e6dc132452862ab630fce4582c5f5`；普通及 `python -O` checker 均通过。补包覆盖用户指定的 1,280-kbps 参考样本 23,033 个 AU：15 个 dynamic object 每 AU 各有一个 absolute room-position/Z 更新，9 个对象为 Z code 0，6 个对象为 positive ceiling code 15；`b_enable_elevation` zone constraint、`object_size_idx` 与 resolved object-size height 分别保留独立字段域。

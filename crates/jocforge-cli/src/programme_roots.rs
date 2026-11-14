@@ -604,6 +604,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
             ))
             .ok_or_else(|| "durable output length overflow".to_owned())?;
 
+        let flat7x_selected = advance.flat7x_source_pcm_projection.is_some();
         let expected_au = source_index.value().checked_sub(SUPPRESSED_SOURCES);
         match (expected_au, advance.append.as_ref()) {
             (None, None) => {
@@ -613,6 +614,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
                         jocforge_application::integrity_source_bridge::F14kPayloadOutcome::AbsentPublishedPayloadV1
                     )
                     || advance.integrity_receipts.au().published()
+                    || advance.flat7x_integrity_pair_receipts.is_some()
                 {
                     return Err("suppressed source unexpectedly carries a published payload".to_owned());
                 }
@@ -635,6 +637,19 @@ impl<'a> ProgrammeOwnerRoots<'a> {
                     || advance.integrity_receipts.au().identity().au_index
                         .map(|value| value.value())
                         != Some(expected_au_index)
+                    || (flat7x_selected
+                        && !advance.flat7x_integrity_pair_receipts.as_ref().is_some_and(|pair| {
+                            flat7x_pair_receipts_match(
+                                pair,
+                                &self.programme_id,
+                                self.attempt,
+                                &advance.source_transaction_id,
+                                source_index,
+                                expected_au_index,
+                            )
+                        }))
+                    || (!flat7x_selected
+                        && advance.flat7x_integrity_pair_receipts.is_some())
                 {
                     return Err("published source failed F12/F14/F15 durable receipt checks".to_owned());
                 }
@@ -827,6 +842,39 @@ impl<'a> ProgrammeOwnerRoots<'a> {
             && self.published_aus == self.expected_published
             && self.durable_bytes == self.expected_product_bytes
     }
+}
+
+fn flat7x_pair_receipts_match(
+    pair: &jocforge_application::flat7x_pair_integrity::Flat7xI0D0F12PairReceipts,
+    programme_id: &ProgrammeId,
+    attempt: AttemptId,
+    source_transaction_id: &CallbackTransactionId,
+    source_index: CodecSourceIndex,
+    expected_au_index: u64,
+) -> bool {
+    let Ok(expected_dispatch) = source_index.dispatch() else {
+        return false;
+    };
+    let target = Flat7xI0D0TargetPlan::approved_contract();
+    [
+        (pair.i0(), target.i0().frame_bytes()),
+        (pair.d0(), target.d0().frame_bytes()),
+    ]
+    .into_iter()
+    .all(|(receipts, frame_bytes)| {
+        let identity = receipts.au().identity();
+        identity.programme_id == programme_id.as_str()
+            && identity.attempt == attempt.value()
+            && identity.transaction_id == source_transaction_id.as_str()
+            && identity.source_index == source_index
+            && identity.dispatch == expected_dispatch
+            && identity.au_index.map(|index| index.value()) == Some(expected_au_index)
+            && receipts.source().identity() == identity
+            && receipts.dispatch().identity() == identity
+            && receipts.dispatch().frame_bytes() == usize::from(frame_bytes)
+            && receipts.au().published()
+            && receipts.au().crc_residual() == 0
+    })
 }
 
 fn callback_transaction_id(

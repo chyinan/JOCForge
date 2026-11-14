@@ -152,6 +152,8 @@ def check_unsafe_boundary(root):
 
   'crates/jocforge-domain/src/publication/output_owner.rs',
 
+  'crates/jocforge-cli/src/output_publication.rs',
+
   'crates/jocforge-io/src/atomic_output/mod.rs',
 
   'crates/jocforge-io/src/atomic_output/windows_rename.rs',
@@ -172,7 +174,9 @@ def check_unsafe_boundary(root):
 
  ck(unsafe_paths==exception_paths,'unsafe Rust may appear only in the append receipt issuer, trusted append callsite, and Windows rename module')
 
- expected_allow_sites={
+ expected_allow_sites=[
+
+  ('crates/jocforge-domain/src/publication/output_owner.rs',False),
 
   ('crates/jocforge-domain/src/publication/output_owner.rs',False),
 
@@ -180,15 +184,23 @@ def check_unsafe_boundary(root):
 
   ('crates/jocforge-io/src/atomic_output/windows_rename.rs',True),
 
- }
+  ('crates/jocforge-cli/src/output_publication.rs',False),
 
- ck(len(allow_sites)==3 and set(allow_sites)==expected_allow_sites,'unsafe_code allow sites must be exact and unique: '+repr(allow_sites))
+ ]
+
+ ck(sorted(allow_sites)==sorted(expected_allow_sites),'unsafe_code allow sites must be exact and unique: '+repr(allow_sites))
 
  domain_code=code_by_path['crates/jocforge-domain/src/publication/output_owner.rs'];io_code=code_by_path['crates/jocforge-io/src/atomic_output/mod.rs'];io_source=(root/'crates/jocforge-io/src/atomic_output/mod.rs').read_text(encoding='utf-8');windows_code=code_by_path['crates/jocforge-io/src/atomic_output/windows_rename.rs']
 
  ck(len(re.findall(r'#\s*\[\s*allow\s*\(\s*unsafe_code\s*\)\s*\]\s*pub\s+unsafe\s+fn\s+record_durable_io_success\b',domain_code))==1,'only OutputAppendProposal::record_durable_io_success may mint append durability receipts unsafely')
 
+ ck(len(re.findall(r'#\s*\[\s*allow\s*\(\s*unsafe_code\s*\)\s*\]\s*pub\s+unsafe\s+fn\s+record_flat7x_pair_io_success\b',domain_code))==1,'only the pair-aware OutputAppendProposal receipt issuer may mint aggregate append receipts unsafely')
+
  ck(len(re.findall(r'#\s*\[\s*allow\s*\(\s*unsafe_code\s*\)\s*\]\s*fn\s+append_inner\s*\(',io_code))==1 and len(re.findall(r'\bunsafe\s*\{\s*proposal\s*\.\s*record_durable_io_success\s*\(',io_code))==1,'only the trusted atomic append callsite may invoke the durability issuer')
+
+ cli_output_code=code_by_path['crates/jocforge-cli/src/output_publication.rs']
+
+ ck(len(re.findall(r'#\s*\[\s*allow\s*\(\s*unsafe_code\s*\)\s*\]\s*pub\s*\(crate\)\s+fn\s+append_flat7x_pair_with_output_proposal\b',cli_output_code))==1 and len(re.findall(r'\bunsafe\s*\{\s*append\s*\.\s*record_flat7x_pair_io_success\s*\(',cli_output_code))==1,'only the trusted pair append callsite may invoke the pair durability issuer')
 
  ck(re.search(r'(?m)^\s*#!\s*\[\s*allow\s*\(\s*unsafe_code\s*\)\s*\]',windows_code) is not None and len(re.findall(r'\bunsafe\s*\{',windows_code))==2,'Windows rename unsafe code stays inside one explicitly allowed module and its two audited Win32 calls')
 
@@ -12889,7 +12901,7 @@ def check_f12_flat7x_i0_typed_bsi_frame_assembly(root, d):
         and "stage_flat7x_pair_d0_pcm_block_series" in source_execution
         and "produce_flat7x_pair_d0_pcm_frame_candidate" in source_execution
         and "CachedDrainRepeatPreviousCallbackV1" in source_execution
-        and "Flat7xPairOutputNotConnected" in source_execution
+        and "append_flat7x_pair_with_output_proposal(" in source_execution
         and "NoApprovedAudioProductionRule" not in source_execution
         and "assemble_flat7x_pair_i0_frame_candidate" not in cli_source,
         "Flat7x request commits suppressed D0 history and builds a published-source frame candidate before the pair-output boundary",
@@ -13016,7 +13028,7 @@ def check_f12_flat7x_i0_ac3_audio_block_prototype(root, d):
         and "pub fn parse_ac3_3_2_lfe_audio_block(" in parser_code
         and "parser_accepts_the_caller_supplied_skip_field_branch" in parser.read_text(encoding="utf-8")
         and "producer_requires_explicit_supported_coupling_and_delta_choices" in parser.read_text(encoding="utf-8")
-        and "Flat7xPairOutputNotConnected" in rust_code_without_comments(
+        and "append_flat7x_pair_with_output_proposal(" in rust_code_without_comments(
             (root / "crates/jocforge-cli/src/source_execution.rs").read_text(encoding="utf-8")
         ),
         "AC-3 block-zero prototype stays separate while the CLI composes a D0 frame candidate",
@@ -13132,6 +13144,12 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
     cli_path = root / "crates/jocforge-cli/src/encode_request.rs"
     app = rust_code_without_comments(app_path.read_text(encoding="utf-8"))
     pair_output = rust_code_without_comments(pair_output_path.read_text(encoding="utf-8"))
+    output_owner = rust_code_without_comments(
+        (root / "crates/jocforge-domain/src/publication/output_owner.rs").read_text(encoding="utf-8")
+    )
+    output_bridge = rust_code_without_comments(
+        (root / "crates/jocforge-application/src/output_publication.rs").read_text(encoding="utf-8")
+    )
     pair_io_source = pair_io_path.read_text(encoding="utf-8")
     pair_io = pair_io_source
     composer = rust_code_without_comments(composer_path.read_text(encoding="utf-8"))
@@ -13246,7 +13264,7 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
     commit_parameters = row.get("parameters", {}).get("i0_d0_au_commit_boundary", {})
     ck(
         row.get("owner") == "application"
-        and row.get("implementation_status") == "LOCALLY_COMPILED_CLI_I0_D0_F12_F15_IN_MEMORY_PAIR__DURABLE_OUTPUT_OPEN"
+        and row.get("implementation_status") == "LOCALLY_COMPILED_CLI_PAIR_APPEND_PARENT_RECEIPTS__REAL_OUTPUT_AND_W04_OPEN"
         and row.get("parameters", {}).get("production_allowed") is False
         and pair_target == {
             "i0_rate_kbps": 640,
@@ -13305,7 +13323,7 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         and row.get("parameters", {}).get("d0_audio_block_producer_gap", {}).get("local_four_channel_d0_audblk_writer")
         == "D0_4X253_D15_BAP_MANTISSA_AUDBLK_AND_SIX_BLOCK_FRAME_CANDIDATE"
         and row.get("parameters", {}).get("d0_audio_block_producer_gap", {}).get("producer_status")
-        == "LOCALLY_COMPILED_CLI_I0_D0_F12_F15_IN_MEMORY_PAIR__DURABLE_OUTPUT_ROOT_OPEN"
+        == "LOCALLY_COMPILED_CLI_PAIR_APPEND_PARENT_RECEIPTS__REAL_OUTPUT_AND_W04_OPEN"
         and "pub fn pack_flat7x_d0_mantissa_block(" in d0_mantissa
         and "decoded_exponents()" in d0_mantissa
         and "pack_block_mantissas(&items)" in d0_mantissa
@@ -13386,11 +13404,29 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
 
     source_execution_path = root / "crates/jocforge-cli/src/source_execution.rs"
     source_execution = rust_code_without_comments(source_execution_path.read_text(encoding="utf-8"))
-    cli_pair_candidate_stops_before_sink = (
+    cli_output_path = root / "crates/jocforge-cli/src/output_publication.rs"
+    cli_output = rust_code_without_comments(cli_output_path.read_text(encoding="utf-8"))
+    programme_roots_path = root / "crates/jocforge-cli/src/programme_roots.rs"
+    programme_roots = rust_code_without_comments(programme_roots_path.read_text(encoding="utf-8"))
+    cli_pair_output_connected = (
         "assemble_flat7x_pair_access_unit_candidate" not in cli
         and "append_flat7x_pair(" not in cli
         and "stage_flat7x_pcm_pair_for_f15(" in source_execution
-        and "Flat7xPairOutputNotConnected" in source_execution
+        and "prepare_output_source_from_flat7x_pair(" in source_execution
+        and "take_flat7x_pair_output_owner(" in source_execution
+        and "append_flat7x_pair_with_output_proposal(" in source_execution
+        and "stage_codec_owner_after_flat7x_pair(" in source_execution
+        and "flat7x_integrity_pair_receipts" in source_execution
+        and "prepare_flat7x_pair_source(" in output_owner
+        and "let target = Flat7xI0D0TargetPlan::approved_contract();" in output_owner
+        and "self.configuration.frame_bytes() != target.aggregate_frame_bytes()" in output_owner
+        and "prepare_output_source_from_flat7x_pair(" in output_bridge
+        and "append_flat7x_pair_with_output_proposal" in cli_output
+        and "record_flat7x_pair_io_success(" in cli_output
+        and "flat7x_pair_receipts_match(" in programme_roots
+        and "advance.flat7x_integrity_pair_receipts" in programme_roots
+        and "prepare_finalize()" in cli_output
+        and "Flat7xPairOutputNotConnected" not in source_execution
         and "append_flat7x_au(" not in source_execution
         and "EncodeRequestRoute::Flat7xI0D0Pair(target) => run_worker(" in cli
         and "Flat7xPairNotReady" not in cli
@@ -13438,8 +13474,8 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         and "checked_next" in rust_code_without_comments(
             (root / "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs").read_text(encoding="utf-8")
         )
-        and cli_pair_candidate_stops_before_sink,
-        "the production CLI composes same-source I0/D0/F12/F15 in memory and stops before durable paired output",
+        and cli_pair_output_connected,
+        "the CLI stages same-source I0/D0/F12/F15 durable output and validates pair receipts at parent commit",
     )
     ck(
         "pub fn preflight_flat7x_pair_io_stage(" in pair_output
@@ -16719,7 +16755,7 @@ def run(root=ROOT):
 
  d0_frame_assembler=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-d0-frame-bit-assembler');verified_scopes+=(d0_frame_assembler['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_AUDFRM_AND_FRAME_ASSEMBLY_CRC2_ATOMICITY__PRODUCT_ROUTE_OPEN');ck(verified_scopes==84,'locally verified scoped-task count including generated D0 frame CRC2')
 
- opaque_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-d0-opaque-au-byte-composer');verified_scopes+=(opaque_au['implementation_status']=='LOCALLY_VERIFIED_TARGET_EXTENTS_ORDER_AND_ATOMIC_COMMIT__NO_CRC_OR_GENERATION');sequence_composer=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-sequence-composer');verified_scopes+=(sequence_composer['implementation_status']=='LOCALLY_VERIFIED_SEQUENCE_AND_D0_TO_AU_TO_STREAM_CHAIN__NO_PRODUCTION');stream_stage=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F15')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-staged-file-adapter');verified_scopes+=(stream_stage['implementation_status']=='LOCALLY_VERIFIED_F15_FINALIZE_LEDGER_STAGE_RECEIPT_JOIN_AND_TEMP_IO__SOURCE_CALLBACK_OPEN');ck(verified_scopes==87,'locally verified scoped-task count including Flat7x F15 finalize-to-stage integration');i0_frame_assembler=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-frame-bit-assembler');verified_scopes+=(i0_frame_assembler['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_ASSEMBLY_GENERATED_CRC1_CRC2_RESIDUALS__PRODUCTION_OPEN');ck(verified_scopes==88,'locally verified scoped-task count including I0 AC-3 structure assembly');i0_bsi_tail=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-ac3-bsi-tail-writer');verified_scopes+=(i0_bsi_tail['implementation_status']=='LOCALLY_VERIFIED_OFFICIAL_SAMPLE_I0_BSI_TAIL_THROUGH_ADDBSIE_AND_FRAME_CANDIDATE__PRODUCTION_FALSE');ck(verified_scopes==89,'locally verified scoped-task count including I0 BSI-tail through addbsie');i0_typed_frame=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-typed-bsi-frame-assembly-entry');verified_scopes+=(i0_typed_frame['implementation_status']=='LOCALLY_VERIFIED_SOURCE_BOUND_SIX_BLOCK_I0_FRAME_CANDIDATE__ASSUMPTIONS_OPEN__PRODUCTION_FALSE');ck(verified_scopes==90,'locally verified scoped-task count including typed I0 BSI-to-frame composition');i0_ac3_audio=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-ac3-audio-block-producer');verified_scopes+=(i0_ac3_audio['implementation_status']=='LOCALLY_VERIFIED_SIX_BLOCK_I0_FRAME_CANDIDATE_WITH_PROVISIONAL_ASSUMPTIONS__PRODUCTION_FALSE');ck(verified_scopes==91,'locally verified scoped-task count including AC-3 block-zero prototype');pair_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-source-bound-i0-d0-au-candidate');verified_scopes+=(pair_au['implementation_status']=='LOCALLY_VERIFIED_SOURCE_BOUND_PCM_F12_F13_PAIR_F15_APPEND_CANDIDATE__TAIL_AND_CLI_OPEN');ck(verified_scopes==91,'verified-scope count leaves the new CLI pair candidate compile-only');ck(pair_au.get('implementation_status')=='LOCALLY_COMPILED_CLI_I0_D0_F12_F15_IN_MEMORY_PAIR__DURABLE_OUTPUT_OPEN'and pair_au.get('parameters',{}).get('production_allowed')is False,'CLI pair reaches an in-memory F15 proposal while durable output remains open')
+ opaque_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-d0-opaque-au-byte-composer');verified_scopes+=(opaque_au['implementation_status']=='LOCALLY_VERIFIED_TARGET_EXTENTS_ORDER_AND_ATOMIC_COMMIT__NO_CRC_OR_GENERATION');sequence_composer=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-sequence-composer');verified_scopes+=(sequence_composer['implementation_status']=='LOCALLY_VERIFIED_SEQUENCE_AND_D0_TO_AU_TO_STREAM_CHAIN__NO_PRODUCTION');stream_stage=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F15')['direct_slices']if s['slice_id']=='flat7x-elementary-stream-staged-file-adapter');verified_scopes+=(stream_stage['implementation_status']=='LOCALLY_VERIFIED_F15_FINALIZE_LEDGER_STAGE_RECEIPT_JOIN_AND_TEMP_IO__SOURCE_CALLBACK_OPEN');ck(verified_scopes==87,'locally verified scoped-task count including Flat7x F15 finalize-to-stage integration');i0_frame_assembler=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-frame-bit-assembler');verified_scopes+=(i0_frame_assembler['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_I0_FRAME_ASSEMBLY_GENERATED_CRC1_CRC2_RESIDUALS__PRODUCTION_OPEN');ck(verified_scopes==88,'locally verified scoped-task count including I0 AC-3 structure assembly');i0_bsi_tail=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-ac3-bsi-tail-writer');verified_scopes+=(i0_bsi_tail['implementation_status']=='LOCALLY_VERIFIED_OFFICIAL_SAMPLE_I0_BSI_TAIL_THROUGH_ADDBSIE_AND_FRAME_CANDIDATE__PRODUCTION_FALSE');ck(verified_scopes==89,'locally verified scoped-task count including I0 BSI-tail through addbsie');i0_typed_frame=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-typed-bsi-frame-assembly-entry');verified_scopes+=(i0_typed_frame['implementation_status']=='LOCALLY_VERIFIED_SOURCE_BOUND_SIX_BLOCK_I0_FRAME_CANDIDATE__ASSUMPTIONS_OPEN__PRODUCTION_FALSE');ck(verified_scopes==90,'locally verified scoped-task count including typed I0 BSI-to-frame composition');i0_ac3_audio=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-i0-ac3-audio-block-producer');verified_scopes+=(i0_ac3_audio['implementation_status']=='LOCALLY_VERIFIED_SIX_BLOCK_I0_FRAME_CANDIDATE_WITH_PROVISIONAL_ASSUMPTIONS__PRODUCTION_FALSE');ck(verified_scopes==91,'locally verified scoped-task count including AC-3 block-zero prototype');pair_au=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-source-bound-i0-d0-au-candidate');verified_scopes+=(pair_au['implementation_status']=='LOCALLY_VERIFIED_SOURCE_BOUND_PCM_F12_F13_PAIR_F15_APPEND_CANDIDATE__TAIL_AND_CLI_OPEN');ck(verified_scopes==91,'verified-scope count excludes unrun Flat7x media output');ck(pair_au.get('implementation_status')=='LOCALLY_COMPILED_CLI_PAIR_APPEND_PARENT_RECEIPTS__REAL_OUTPUT_AND_W04_OPEN'and pair_au.get('parameters',{}).get('production_allowed')is False,'CLI pair stages durable I0/D0 output while production validation remains open')
 
  dep=d['approved_dependencies']['sha2']
 

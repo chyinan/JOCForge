@@ -114,6 +114,7 @@ const ETSI_EMDF_PROVIDER_CANONICAL_UTF8: &str = "{\"emdf_carriage_mode\":\"etsi_
 mod plan_admission;
 
 use super::PreparedJobInput;
+use crate::flat7x_pair_output::Flat7xPcmPairF15Candidate;
 
 /// Retains the four typed owner values and pre-I/O destination capability for one encode request.
 #[must_use]
@@ -984,6 +985,29 @@ pub fn prepare_output_source_from_candidate(
         frame.source_index(),
         frame.frame_bytes(),
     )
+}
+
+/// Prepares the generic OutputOwner transition from the validated Flat7x F15 pair candidate.
+pub fn prepare_output_source_from_flat7x_pair(
+    output_root: &ProgrammeOutputBinding,
+    pair_candidate: &Flat7xPcmPairF15Candidate<'_>,
+) -> Result<ProgrammeOutputSourceProposal, OutputPublicationPreparationError> {
+    let pair = pair_candidate.append_proposal();
+    let (i0_identity, d0_identity) = pair.source_identities();
+    if i0_identity != d0_identity
+        || i0_identity.programme_id != output_root.programme_id().as_str()
+        || i0_identity.attempt != output_root.attempt_id().value()
+        || pair.attempt_id() != output_root.output_configuration().attempt_id()
+    {
+        return Err(OutputPublicationPreparationError::PreparedInputMismatch);
+    }
+    let proposal = output_root
+        .output_owner()
+        .prepare_flat7x_pair_source(pair)
+        .map_err(OutputPublicationPreparationError::OutputOwner)?;
+    output_root
+        .bind_source_proposal(proposal)
+        .map_err(OutputPublicationPreparationError::OutputRootBinding)
 }
 
 fn prepare_output_source_for_frame(

@@ -365,6 +365,40 @@ pub fn stage_codec_owner_after_source_frame_with_d0_history(
     )
 }
 
+/// Stages Codec state for the exact Flat7x I0+D0 pair after its durable aggregate append.
+pub fn stage_codec_owner_after_flat7x_pair(
+    codec_owner: &CodecOwnerRoot,
+    source_candidate: &SelectedSourceFrameCandidate<'_>,
+    i0_frame: &crate::flat7x_pair_source::Flat7xPairI0FrameCandidate,
+    d0_frame: &crate::flat7x_pair_source::Flat7xPairD0PcmFrameCandidate,
+    output_after: &OutputSourceAfterProposal,
+    d0_history_after: &Flat7xD0OverlapHistory,
+) -> Result<CodecOwnerProposal, CodecOwnerStageError> {
+    let source_identity = source_candidate.numeric_plan_receipt().identity();
+    if source_identity != i0_frame.source_identity()
+        || source_identity
+            != d0_frame
+                .source_role_map_receipt()
+                .shared_analysis_identity()
+    {
+        return Err(CodecOwnerStageError::DurableAppendMismatch);
+    }
+    let source_key = source_identity.source_stage_key();
+    let accepted_frame = jocforge_domain::codec::owner::AcceptedCodecFrame::from_flat7x_pair(
+        source_identity.source_index(),
+        source_key.attempt_id(),
+        i0_frame.i0_frame().frame_bytes(),
+        d0_frame.frame_candidate().frame().frame_bytes(),
+        Flat7xI0D0TargetPlan::approved_contract(),
+    )?;
+    codec_owner.stage_source_with_d0_overlap_history(
+        &accepted_frame,
+        &source_candidate.codec_short_flags(),
+        Some(output_after),
+        Some(d0_history_after),
+    )
+}
+
 fn validate_metadata_source_lineage(
     prepared: &PreparedJobInput,
     shared_analysis: &SharedAnalysisReceipt,

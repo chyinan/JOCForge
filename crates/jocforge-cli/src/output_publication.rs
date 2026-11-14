@@ -39,6 +39,7 @@ pub struct ProgrammeOutputStaging {
     attempt_id: AttemptId,
     staging_owner_id: OutputStagingOwnerId,
     configuration: OutputConfiguration,
+    flat7x_pair_owner: Option<Flat7xAuOutputOwner>,
 }
 
 #[derive(Debug)]
@@ -73,6 +74,7 @@ pub enum Flat7xOutputAppendFailure {
 pub enum Flat7xPairOutputAppendFailure {
     PairProposal(Flat7xPairAppendProposalError),
     Output(Flat7xOutputAppendFailure),
+    OutputOwner(OutputOwnerError),
 }
 
 impl Flat7xOutputAppendFailure {
@@ -97,7 +99,24 @@ impl ProgrammeOutputStaging {
             attempt_id: binding.attempt_id(),
             staging_owner_id: binding.staging_owner_id().clone(),
             configuration,
+            flat7x_pair_owner: None,
         }
+    }
+
+    pub(crate) fn take_flat7x_pair_output_owner(
+        &mut self,
+        binding: &ProgrammeOutputBinding,
+    ) -> Result<Flat7xAuOutputOwner, OutputPublicationError> {
+        self.validate_binding(binding)
+            .map_err(OutputPublicationError::Binding)?;
+        if let Some(owner) = self.flat7x_pair_owner.take() {
+            return Ok(owner);
+        }
+        Flat7xAuOutputOwner::cold(
+            binding.output_configuration().attempt_id(),
+            binding.output_configuration().expected_published_aus(),
+        )
+        .map_err(|error| OutputPublicationError::Flat7xPairOwner(format!("{error:?}")))
     }
 
     /// Creates the lazy IO staging adapter from the destination admitted by F15.
@@ -185,9 +204,8 @@ impl ProgrammeOutputStaging {
 
     /// Appends one domain-approved Flat7x I0+D0 proposal through the existing atomic adapter.
     ///
-    /// The proposal type carries F15's validated paired source receipts. This method remains an
-    /// uncalled staging seam; the production CLI route still rejects Flat7x before source work.
-    #[allow(dead_code)] // Wire the caller after real paired F13/I0/D0 receipts are available.
+    /// The proposal type carries F15's validated paired source receipts. The Flat7x CLI source
+    /// stage calls this after the same-source I0/D0 and Integrity proposals have been prepared.
     pub(crate) fn append_flat7x_au<'a>(
         &mut self,
         binding: &ProgrammeOutputBinding,
@@ -216,8 +234,7 @@ impl ProgrammeOutputStaging {
     }
 
     /// Joins the source-bound I0 candidate and caller-owned opaque D0 frame to F15 and the existing
-    /// atomic staging adapter. It is available to a receipt-producing source coordinator; the
-    /// current CLI run reaches the typed D0 producer boundary before any pair is supplied.
+    /// atomic staging adapter for callers that supply a D0 frame through the opaque-frame seam.
     #[allow(dead_code)] // No producer can currently supply the complete source-receipted pair.
     pub(crate) fn append_flat7x_pair<'a>(
         &mut self,
@@ -238,6 +255,38 @@ impl ProgrammeOutputStaging {
         .map_err(Flat7xPairOutputAppendFailure::PairProposal)?;
         self.append_flat7x_au(binding, proposal)
             .map_err(Flat7xPairOutputAppendFailure::Output)
+    }
+
+    #[allow(unsafe_code)]
+    pub(crate) fn append_flat7x_pair_with_output_proposal<'a>(
+        &mut self,
+        binding: &ProgrammeOutputBinding,
+        pair_proposal: Flat7xAuAppendProposal<'a>,
+        output_proposal: ProgrammeOutputSourceProposal,
+    ) -> Result<
+        (Flat7xAuOutputAfterProposal<'a>, OutputSourceAfterProposal),
+        Flat7xPairOutputAppendFailure,
+    > {
+        let pair_after = self
+            .append_flat7x_au(binding, pair_proposal)
+            .map_err(Flat7xPairOutputAppendFailure::Output)?;
+        self.flat7x_pair_owner = Some(pair_after.after_owner().clone());
+
+        match output_proposal.into_proposal() {
+            OutputSourceProposal::Append(append) => {
+                // SAFETY: pair_after came directly from append_flat7x_au, which runs the pair IO
+                // writer, syncs the staging file, and verifies exact readback plus each frame CRC.
+                let receipt = unsafe { append.record_flat7x_pair_io_success(pair_after.receipt()) }
+                    .map_err(Flat7xPairOutputAppendFailure::OutputOwner)?;
+                let output_after = append
+                    .complete(receipt)
+                    .map_err(Flat7xPairOutputAppendFailure::OutputOwner)?;
+                Ok((pair_after, output_after))
+            }
+            OutputSourceProposal::Suppressed(_) => Err(Flat7xPairOutputAppendFailure::OutputOwner(
+                OutputOwnerError::AuOrder,
+            )),
+        }
     }
 
     #[cfg(test)]
@@ -328,6 +377,8 @@ impl ProgrammeOutputStaging {
 pub enum OutputPublicationError {
     Io(OutputIoError),
     Owner(OutputOwnerError),
+    Flat7xPairOwner(String),
+    Flat7xPairFinalize(String),
     Binding(OutputRootBindingError),
 }
 
@@ -336,6 +387,8 @@ impl std::fmt::Display for OutputPublicationError {
         match self {
             Self::Io(error) => write!(formatter, "{error}"),
             Self::Owner(error) => write!(formatter, "{error}"),
+            Self::Flat7xPairOwner(error) => write!(formatter, "{error}"),
+            Self::Flat7xPairFinalize(error) => write!(formatter, "{error}"),
             Self::Binding(error) => write!(formatter, "{error}"),
         }
     }
@@ -587,6 +640,16 @@ pub fn finalize_output(
     binding
         .validate_finalize_proposal(&proposal)
         .map_err(OutputPublicationError::Binding)?;
+    if binding.output_configuration().frame_bytes()
+        == Flat7xI0D0TargetPlan::approved_contract().aggregate_frame_bytes()
+    {
+        let _pair_finalize = staging
+            .take_flat7x_pair_output_owner(binding)?
+            .prepare_finalize()
+            .map_err(|retirement| {
+                OutputPublicationError::Flat7xPairFinalize(format!("{retirement:?}"))
+            })?;
+    }
     let proposal = proposal.into_proposal();
     let receipt = staging
         .ensure_open(binding)?

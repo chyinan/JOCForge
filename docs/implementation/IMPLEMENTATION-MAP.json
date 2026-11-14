@@ -4877,8 +4877,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 67834,
-              "sha256": "ac5a27c8fae66d37545f99a2fa9165d83da5f6517cd84615c6fa89eb962f9dc5"
+              "bytes": 66631,
+              "sha256": "8da379da690bc3104f9414d270cc36e1ee9167bf5297ab1d58c8c41545edc33a"
             },
             {
               "path": "crates/jocforge-cli/src/main.rs",
@@ -10633,28 +10633,31 @@
         {
           "slice_id": "flat7x-adm-pcm-source-role-projection",
           "mapping_status": "MATERIALIZED_PROVISIONAL_FLAT7X_PCM_ROW_PROJECTION__NATIVE_ROLE_JOIN_OPEN",
-          "implementation_status": "LOCALLY_COMPILED_FLAT7X_I0_D0_F12_F15_IN_MEMORY_CANDIDATE__DURABLE_OUTPUT_OPEN",
+          "implementation_status": "LOCALLY_COMPILED_FLAT7X_ROLE_PROJECTION_TO_PAIR_APPEND_PARENT__REAL_OUTPUT_OPEN",
           "implementation_requirement": true,
           "owner": "application",
-          "scope": "The admitted ADM graph supplies a replaceable DirectSpeakers bed-role projection from physical PCM rows into typed I0 carrier rows and D0 chanmap locations. Reader callbacks issue Flat7xD0PcmSourceExtent; cached drains use explicit replaceable policy CachedDrainRepeatPreviousCallbackV1. Both origins retain callback/source/first_sample/valid/padded counts, and padded words must be zero. Flat7x CodecOwnerRoot stores canonical four-channel D0 overlap history; sources 0/1 commit block-series history in the callback parent. For source >=2 the CLI builds a complete D0 PCM frame with local D0 settings, builds an I0 AC-3 frame with JOCFORGE_FLAT7X_I0_AUDIO_POLICY_V1, joins actual F13/F14K through paired F12, and creates one 6,656-byte F15 in-memory proposal with source-generation policy JOCFORGE_FLAT7X_SOURCE_GENERATION_SOURCE_INDEX_V1. The current callback stops before the durable paired output owner and root swap. Existing 5.1 Codec and sink branches retain their prior representation.",
+          "scope": "The admitted ADM graph supplies the replaceable DirectSpeakers bed-role projection from physical PCM rows into typed I0 carrier rows and D0 chanmap locations. Reader callbacks issue Flat7xD0PcmSourceExtent; cached drains use CachedDrainRepeatPreviousCallbackV1; both retain callback/source/first_sample/valid/padded counts and require zero padding. CodecOwnerRoot keeps four-channel D0 overlap history; sources 0/1 commit block-series history in the callback parent. For sources >=2 the CLI stages a complete D0 and I0 pair, writes one aggregate AU, and proposes same-source Codec/Integrity/Output parent after-values. Existing 5.1 Codec and sink branches retain their prior representation. Full-input output and W04 remain open.",
           "spec_files": [
             "docs/architecture/PROFILE-DIMENSIONS.md",
             "docs/architecture/adm-to-eac3joc-chain-status.md",
             "outputs/IMPLEMENTER_SUPPLEMENTS/JOCFORGE-ATMOS71-FLAT7X-1664-PROFILE-CONTRACT-V1/PROFILE-ROW.json"
           ],
           "implementation_files": [
-            "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
-            "crates/jocforge-domain/src/profile/mod.rs",
-            "crates/jocforge-application/src/source_frame_bridge.rs",
-            "crates/jocforge-cli/src/source_execution.rs",
-            "crates/jocforge-cli/src/encode_request.rs",
-            "crates/jocforge-cli/src/programme_roots.rs",
+            "crates/jocforge-application/src/flat7x_pair_source.rs",
             "crates/jocforge-application/src/lib.rs",
-            "crates/jocforge-application/src/flat7x_pair_source.rs"
+            "crates/jocforge-application/src/output_publication.rs",
+            "crates/jocforge-application/src/source_frame_bridge.rs",
+            "crates/jocforge-cli/src/encode_request.rs",
+            "crates/jocforge-cli/src/output_publication.rs",
+            "crates/jocforge-cli/src/programme_roots.rs",
+            "crates/jocforge-cli/src/source_execution.rs",
+            "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
+            "crates/jocforge-domain/src/profile/mod.rs"
           ],
           "test_modules": [
-            "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
-            "crates/jocforge-application/src/flat7x_pair_source.rs"
+            "crates/jocforge-application/src/flat7x_pair_source.rs",
+            "crates/jocforge-cli/src/programme_roots.rs",
+            "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs"
           ],
           "clock": {
             "domains": [
@@ -10817,23 +10820,59 @@
               "caller_action": "Reject the callback candidate before pair output staging."
             },
             {
-              "error_code": "Flat7xPairOutputNotConnected",
-              "category": "paired I0/F12/F15 output seam",
-              "trigger": "A source >=2 has a complete D0 PCM frame candidate but no same-source I0/F12/F15 pair output caller.",
-              "programme_state_after": "No published AU or final output is staged for that source.",
-              "caller_action": "Continue the paired source path before durable output."
+              "error_code": "EncodeRequestError::SourcePipeline / OutputPublicationError::Flat7xPairFinalize",
+              "category": "paired durable output and root acceptance",
+              "trigger": "Pair frame/receipt admission, durable readback/sync, same-source parent validation, or complete pair-ledger finalization fails.",
+              "programme_state_after": "No final output is exposed; a failed attempt is not continued from a partial pair.",
+              "caller_action": "Retire the failed attempt and start from a fresh programme root."
             }
           ],
           "not_run": [
-            "I0/D0 complete frame assembly and same-generation F13/F12 receipts at the pair output owner.",
-            "Product pair caller, final output, and W04 acceptance.",
-            "Full-input callback replay, final .ec3 exposure, decode and W04 acceptance.",
-            "Full-input callback replay, final .ec3 exposure, decode and W04 acceptance.",
-            "Durable paired output sink, durable append receipt and parent output/Codec/Integrity root swap.",
-            "More than the first published AU through one persistent pair-output owner.",
-            "Full-input callback replay, final .ec3 exposure, decode and W04 acceptance."
+            "A real 7.1 full-input CLI run and final .ec3 exposure.",
+            "Independent OpenJOC parse/decode/render and W04 acceptance.",
+            "Native source-generation join, exact official I0 BSID, and parity for the local replaceable I0/D0 audio policies."
           ],
           "implementation_inventory": [
+            {
+              "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
+              "bytes": 82847,
+              "sha256": "64786661ff73d9dc4dd29f4f54e28a9563ea9019931577f5b3dd9ad5d145a90a"
+            },
+            {
+              "path": "crates/jocforge-application/src/lib.rs",
+              "bytes": 39323,
+              "sha256": "446a1cc2ff6a387d6c252dd82b271f98d6cb774f34ff0829893a95d6e6d7a7ff"
+            },
+            {
+              "path": "crates/jocforge-application/src/output_publication.rs",
+              "bytes": 44909,
+              "sha256": "d31d481ac541a11c7d5643196a572510836cba6748ebd8eec492276c9a423685"
+            },
+            {
+              "path": "crates/jocforge-application/src/source_frame_bridge.rs",
+              "bytes": 20455,
+              "sha256": "0d92ecafda94a6cd1bea0fd75b8ed0bd0dfb9c9198ea25d480fd08b9374ea4a0"
+            },
+            {
+              "path": "crates/jocforge-cli/src/encode_request.rs",
+              "bytes": 66631,
+              "sha256": "8da379da690bc3104f9414d270cc36e1ee9167bf5297ab1d58c8c41545edc33a"
+            },
+            {
+              "path": "crates/jocforge-cli/src/output_publication.rs",
+              "bytes": 25964,
+              "sha256": "cf7b3da1b075deae7adfddd120a46dce8a78bbabccf282affbc1d8a49dfce524"
+            },
+            {
+              "path": "crates/jocforge-cli/src/programme_roots.rs",
+              "bytes": 43728,
+              "sha256": "fede644167b9b8153efe95c45e651aa9ac9c9e500b81f1663e48a922964924f3"
+            },
+            {
+              "path": "crates/jocforge-cli/src/source_execution.rs",
+              "bytes": 35387,
+              "sha256": "1c66b24145ef037e2a3dbefb1cb9c3f5338381ea6cf6cfb02e64a8251e098acb"
+            },
             {
               "path": "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
               "bytes": 20171,
@@ -10843,48 +10882,23 @@
               "path": "crates/jocforge-domain/src/profile/mod.rs",
               "bytes": 1941,
               "sha256": "75d90d4c20e96fbc5c69650007bd3e7a1ba012110ad7499befd366993cf5683d"
-            },
-            {
-              "path": "crates/jocforge-application/src/source_frame_bridge.rs",
-              "bytes": 19012,
-              "sha256": "10ba070d344bc58b69340793d741c0adfab607448b46624cf7214880b5371324"
-            },
-            {
-              "path": "crates/jocforge-cli/src/source_execution.rs",
-              "bytes": 32780,
-              "sha256": "b9ae8ebebec50367b8f705f63ff46bf1d530470e6b562f95c8f5de998fbed160"
-            },
-            {
-              "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 67834,
-              "sha256": "ac5a27c8fae66d37545f99a2fa9165d83da5f6517cd84615c6fa89eb962f9dc5"
-            },
-            {
-              "path": "crates/jocforge-cli/src/programme_roots.rs",
-              "bytes": 41588,
-              "sha256": "f814f914eccea0767084e7ca712792940a1a3540c96194b901ab937897844595"
-            },
-            {
-              "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 39323,
-              "sha256": "446a1cc2ff6a387d6c252dd82b271f98d6cb774f34ff0829893a95d6e6d7a7ff"
-            },
-            {
-              "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
-              "bytes": 82847,
-              "sha256": "64786661ff73d9dc4dd29f4f54e28a9563ea9019931577f5b3dd9ad5d145a90a"
             }
           ],
           "test_inventory": [
             {
-              "path": "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
-              "bytes": 20171,
-              "sha256": "555f07c12e1d2f9deec679a1ed909ce0913c76ee871a9656d22730a9cc5d4c37"
-            },
-            {
               "path": "crates/jocforge-application/src/flat7x_pair_source.rs",
               "bytes": 82847,
               "sha256": "64786661ff73d9dc4dd29f4f54e28a9563ea9019931577f5b3dd9ad5d145a90a"
+            },
+            {
+              "path": "crates/jocforge-cli/src/programme_roots.rs",
+              "bytes": 43728,
+              "sha256": "fede644167b9b8153efe95c45e651aa9ac9c9e500b81f1663e48a922964924f3"
+            },
+            {
+              "path": "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
+              "bytes": 20171,
+              "sha256": "555f07c12e1d2f9deec679a1ed909ce0913c76ee871a9656d22730a9cc5d4c37"
             }
           ]
         }
@@ -15928,8 +15942,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 67834,
-              "sha256": "ac5a27c8fae66d37545f99a2fa9165d83da5f6517cd84615c6fa89eb962f9dc5"
+              "bytes": 66631,
+              "sha256": "8da379da690bc3104f9414d270cc36e1ee9167bf5297ab1d58c8c41545edc33a"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
@@ -18990,8 +19004,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2234143,
-              "sha256": "353adcf2890ea82691767ddb890e7814499841feeb2dfda666bf0b38500990f5"
+              "bytes": 2236597,
+              "sha256": "43a56152d8fac7afbb6e436f4c2799dd1416f9ae09de2c25502a15a159e02b98"
             }
           ],
           "test_modules": [
@@ -22516,8 +22530,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2234143,
-              "sha256": "353adcf2890ea82691767ddb890e7814499841feeb2dfda666bf0b38500990f5"
+              "bytes": 2236597,
+              "sha256": "43a56152d8fac7afbb6e436f4c2799dd1416f9ae09de2c25502a15a159e02b98"
             },
             {
               "path": "crates/jocforge-cli/src/independent_meter_callback.rs",
@@ -42634,8 +42648,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/owner.rs",
-              "bytes": 32964,
-              "sha256": "779e41205ed75cc053887b73a6400f2eb4da08683780eff9cbd5f93cf8d0f190"
+              "bytes": 34235,
+              "sha256": "0a14f6717a597d6d9e54d088d9e52ed9f2b211e4f6fe893e5ed21932738f9f67"
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
@@ -42649,8 +42663,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/publication/output_owner.rs",
-              "bytes": 43660,
-              "sha256": "1444a6c0c6b34fff17797086cc60f8333e9d4b2f4fc7c87d6d274ac547d9136c"
+              "bytes": 50078,
+              "sha256": "67a5047efd80084f9d9775a697d8c1b1ae00da3f78c7ed8b80b40ff9c761b577"
             },
             {
               "path": "crates/jocforge-domain/src/integrity/crc16.rs",
@@ -42661,8 +42675,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/codec/owner.rs",
-              "bytes": 32964,
-              "sha256": "779e41205ed75cc053887b73a6400f2eb4da08683780eff9cbd5f93cf8d0f190"
+              "bytes": 34235,
+              "sha256": "0a14f6717a597d6d9e54d088d9e52ed9f2b211e4f6fe893e5ed21932738f9f67"
             }
           ],
           "verification": {
@@ -42940,13 +42954,13 @@
             },
             {
               "path": "crates/jocforge-application/src/source_frame_bridge.rs",
-              "bytes": 19012,
-              "sha256": "10ba070d344bc58b69340793d741c0adfab607448b46624cf7214880b5371324"
+              "bytes": 20455,
+              "sha256": "0d92ecafda94a6cd1bea0fd75b8ed0bd0dfb9c9198ea25d480fd08b9374ea4a0"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
-              "bytes": 23299,
-              "sha256": "a81b7e23548270d2e18683c479a809ed50f5cff2dc3c1fa1f1062344497c77ee"
+              "bytes": 25964,
+              "sha256": "cf7b3da1b075deae7adfddd120a46dce8a78bbabccf282affbc1d8a49dfce524"
             },
             {
               "path": "crates/jocforge-domain/src/codec/mod.rs",
@@ -42980,8 +42994,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 67834,
-              "sha256": "ac5a27c8fae66d37545f99a2fa9165d83da5f6517cd84615c6fa89eb962f9dc5"
+              "bytes": 66631,
+              "sha256": "8da379da690bc3104f9414d270cc36e1ee9167bf5297ab1d58c8c41545edc33a"
             },
             {
               "path": "crates/jocforge-cli/src/lib.rs",
@@ -44872,13 +44886,13 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/owner.rs",
-              "bytes": 32964,
-              "sha256": "779e41205ed75cc053887b73a6400f2eb4da08683780eff9cbd5f93cf8d0f190"
+              "bytes": 34235,
+              "sha256": "0a14f6717a597d6d9e54d088d9e52ed9f2b211e4f6fe893e5ed21932738f9f67"
             },
             {
               "path": "crates/jocforge-domain/src/publication/output_owner.rs",
-              "bytes": 43660,
-              "sha256": "1444a6c0c6b34fff17797086cc60f8333e9d4b2f4fc7c87d6d274ac547d9136c"
+              "bytes": 50078,
+              "sha256": "67a5047efd80084f9d9775a697d8c1b1ae00da3f78c7ed8b80b40ff9c761b577"
             },
             {
               "path": "crates/jocforge-domain/src/integrity/programme_owner.rs",
@@ -44907,8 +44921,8 @@
             },
             {
               "path": "crates/jocforge-application/src/output_publication.rs",
-              "bytes": 43784,
-              "sha256": "e2ac2de574a9e588158203b3a4b95eccabb1c7476206e89b812b14eb0bc05811"
+              "bytes": 44909,
+              "sha256": "d31d481ac541a11c7d5643196a572510836cba6748ebd8eec492276c9a423685"
             },
             {
               "path": "crates/jocforge-application/src/output_publication/plan_admission.rs",
@@ -44922,8 +44936,8 @@
             },
             {
               "path": "crates/jocforge-application/src/source_frame_bridge.rs",
-              "bytes": 19012,
-              "sha256": "10ba070d344bc58b69340793d741c0adfab607448b46624cf7214880b5371324"
+              "bytes": 20455,
+              "sha256": "0d92ecafda94a6cd1bea0fd75b8ed0bd0dfb9c9198ea25d480fd08b9374ea4a0"
             },
             {
               "path": "crates/jocforge-application/src/spatial_callback.rs",
@@ -44957,8 +44971,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 67834,
-              "sha256": "ac5a27c8fae66d37545f99a2fa9165d83da5f6517cd84615c6fa89eb962f9dc5"
+              "bytes": 66631,
+              "sha256": "8da379da690bc3104f9414d270cc36e1ee9167bf5297ab1d58c8c41545edc33a"
             },
             {
               "path": "crates/jocforge-cli/src/main.rs",
@@ -44972,13 +44986,13 @@
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
-              "bytes": 23299,
-              "sha256": "a81b7e23548270d2e18683c479a809ed50f5cff2dc3c1fa1f1062344497c77ee"
+              "bytes": 25964,
+              "sha256": "cf7b3da1b075deae7adfddd120a46dce8a78bbabccf282affbc1d8a49dfce524"
             },
             {
               "path": "crates/jocforge-cli/src/programme_roots.rs",
-              "bytes": 41588,
-              "sha256": "f814f914eccea0767084e7ca712792940a1a3540c96194b901ab937897844595"
+              "bytes": 43728,
+              "sha256": "fede644167b9b8153efe95c45e651aa9ac9c9e500b81f1663e48a922964924f3"
             },
             {
               "path": "crates/jocforge-cli/src/selected_meter_provider_identity.rs",
@@ -45064,8 +45078,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 67834,
-              "sha256": "ac5a27c8fae66d37545f99a2fa9165d83da5f6517cd84615c6fa89eb962f9dc5"
+              "bytes": 66631,
+              "sha256": "8da379da690bc3104f9414d270cc36e1ee9167bf5297ab1d58c8c41545edc33a"
             },
             {
               "path": "crates/jocforge-io/src/provider/spatial_audio.rs",
@@ -46177,13 +46191,13 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 67834,
-              "sha256": "ac5a27c8fae66d37545f99a2fa9165d83da5f6517cd84615c6fa89eb962f9dc5"
+              "bytes": 66631,
+              "sha256": "8da379da690bc3104f9414d270cc36e1ee9167bf5297ab1d58c8c41545edc33a"
             },
             {
               "path": "crates/jocforge-cli/src/source_execution.rs",
-              "bytes": 32780,
-              "sha256": "b9ae8ebebec50367b8f705f63ff46bf1d530470e6b562f95c8f5de998fbed160"
+              "bytes": 35387,
+              "sha256": "1c66b24145ef037e2a3dbefb1cb9c3f5338381ea6cf6cfb02e64a8251e098acb"
             },
             {
               "path": "crates/jocforge-application/src/meter_source_bridge.rs",
@@ -46260,8 +46274,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 67834,
-              "sha256": "ac5a27c8fae66d37545f99a2fa9165d83da5f6517cd84615c6fa89eb962f9dc5"
+              "bytes": 66631,
+              "sha256": "8da379da690bc3104f9414d270cc36e1ee9167bf5297ab1d58c8c41545edc33a"
             },
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
@@ -49611,11 +49625,11 @@
         },
         {
           "slice_id": "flat7x-source-bound-i0-d0-au-candidate",
-          "mapping_status": "MATERIALIZED_PCM_TO_SOURCE_BOUND_D0_FRAME_F12_F13_F15_PAIR_APPEND_CANDIDATE__PRODUCTION_CLI_AND_EXTENT_OPEN",
-          "implementation_status": "LOCALLY_COMPILED_CLI_I0_D0_F12_F15_IN_MEMORY_PAIR__DURABLE_OUTPUT_OPEN",
+          "mapping_status": "MATERIALIZED_CLI_DURABLE_I0_D0_PAIR_APPEND_AND_PARENT_RECEIPTS__REAL_OUTPUT_AND_W04_OPEN",
+          "implementation_status": "LOCALLY_COMPILED_CLI_PAIR_APPEND_PARENT_RECEIPTS__REAL_OUTPUT_AND_W04_OPEN",
           "implementation_requirement": true,
           "owner": "application",
-          "scope": "The source-bound Flat7x candidate composes physical PCM projection, D0 four-channel PCM-to-frame production, provisional I0 six-block AC-3 production, actual F13/F14K metadata, role-aware F12 pair receipts and a 6,656-byte F15 append proposal in the CLI source stage. D0 history for suppressed sources 0/1 is stored in canonical Codec owner state. The current source stops before installing a durable paired output owner; the per-attempt F15 owner is cold for the first candidate and must be persisted before later AUs. Local I0/D0 settings and generation mapping are explicit replaceable policies. No 5.1 code path is routed through this target.",
+          "scope": "The source-bound Flat7x candidate composes physical PCM projection, D0 four-channel PCM-to-frame production, provisional I0 six-block AC-3 production, actual F13/F14K metadata, role-aware F12 pair receipts and a 6,656-byte F15 pair append. The CLI persists the pair output owner across published AUs, writes and verifies each I0+D0 aggregate in the staging file, and carries pair Integrity, Codec, and Output after-values into the same programme callback commit. Pair-ledger completion is checked before finalization. D0 history for suppressed sources 0/1 remains in canonical Codec owner state. Local I0/D0 settings and source-generation mapping are explicit replaceable policies. No 5.1 code path uses this target. Full-input output, independent decode, W04, and native-generation/audio-policy parity remain open.",
           "dependencies": [
             "F12/flat7x-i0-typed-bsi-frame-assembly-entry",
             "F12/flat7x-d0-frame-bit-assembler",
@@ -49653,9 +49667,12 @@
             "crates/jocforge-application/src/flat7x_pair_source.rs",
             "crates/jocforge-application/src/integrity_source_bridge.rs",
             "crates/jocforge-application/src/lib.rs",
+            "crates/jocforge-application/src/output_publication.rs",
+            "crates/jocforge-application/src/source_frame_bridge.rs",
             "crates/jocforge-cli/Cargo.toml",
             "crates/jocforge-cli/src/encode_request.rs",
             "crates/jocforge-cli/src/output_publication.rs",
+            "crates/jocforge-cli/src/programme_roots.rs",
             "crates/jocforge-cli/src/source_execution.rs",
             "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
             "crates/jocforge-domain/src/codec/access_unit_composer.rs",
@@ -49677,11 +49694,13 @@
             "crates/jocforge-domain/src/codec/i0_frame_assembler.rs",
             "crates/jocforge-domain/src/codec/mantissa.rs",
             "crates/jocforge-domain/src/codec/mod.rs",
+            "crates/jocforge-domain/src/codec/owner.rs",
             "crates/jocforge-domain/src/integrity/programme_owner.rs",
             "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
             "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
             "crates/jocforge-domain/src/profile/mod.rs",
             "crates/jocforge-domain/src/publication/flat7x_au_output.rs",
+            "crates/jocforge-domain/src/publication/output_owner.rs",
             "crates/jocforge-domain/src/publication/test_support.rs",
             "crates/jocforge-domain/src/transform/fullband_exponent_pipeline.rs",
             "crates/jocforge-domain/src/transform/long_mdct.rs",
@@ -49692,8 +49711,11 @@
           ],
           "test_modules": [
             "crates/jocforge-application/src/flat7x_pair_source.rs",
+            "crates/jocforge-application/src/output_publication/tests.rs",
+            "crates/jocforge-application/src/source_frame_bridge.rs",
             "crates/jocforge-cli/src/encode_request.rs",
             "crates/jocforge-cli/src/output_publication/tests.rs",
+            "crates/jocforge-cli/src/programme_roots.rs",
             "crates/jocforge-cli/tests/flat7x_pair_io_handoff.rs",
             "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
             "crates/jocforge-domain/src/codec/bap/flat7x_d0_provider.rs",
@@ -49702,9 +49724,12 @@
             "crates/jocforge-domain/src/codec/flat7x_d0_frame_controls.rs",
             "crates/jocforge-domain/src/codec/flat7x_d0_pcm_source.rs",
             "crates/jocforge-domain/src/codec/flat7x_d0_spectrum.rs",
+            "crates/jocforge-domain/src/codec/owner.rs",
             "crates/jocforge-domain/src/integrity/programme_owner/tests.rs",
             "crates/jocforge-domain/src/profile/flat7x_access_unit_target.rs",
             "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
+            "crates/jocforge-domain/src/publication/flat7x_au_output.rs",
+            "crates/jocforge-domain/src/publication/output_owner.rs",
             "crates/jocforge-domain/tests/bap_converter_search.rs",
             "crates/jocforge-domain/tests/flat7x_access_unit_composer.rs",
             "crates/jocforge-domain/tests/flat7x_d0_audio_frame.rs",
@@ -49726,13 +49751,14 @@
               "SharedAnalysisIdentity"
             ],
             "covered_clauses": [
-              "The I0 candidate, selected pair source-role receipt and D0SourceIdentity must match one SharedAnalysisIdentity, including source transaction, source index and analysis-after generation.",
-              "The pair byte candidate preserves I0-to-D0 order; it creates no PublishedAuIndex or output-owner generation."
+              "The I0 candidate, selected pair source-role receipt and D0SourceIdentity match one SharedAnalysisIdentity, including source transaction, source index and analysis-after generation.",
+              "The pair byte candidate preserves I0-to-D0 order and uses one PublishedAuIndex and durable output offset for each aggregate.",
+              "One pair output owner advances across published AUs; its append receipts, paired Integrity receipts, Codec after-state and generic OutputOwner after-state enter one programme callback replacement."
             ]
           },
           "parameters": {
-            "kind": "SOURCE_BOUND_FLAT7X_I0_D0_IN_MEMORY_AU_CANDIDATE",
-            "validation_boundary": "D0 frame controls write raw q into the 23-bit audfrm prefix. Six audblk writers serialize four D15 rows, gainrng, no-coupling/no-SPX controls, and actual grouped mantissas. The frame search evaluates every usable raw q=1023..1, computes six-block BAP and exact grouped width, and selects the valid complete frame with maximum encoded content bits under the 32768-bit budget; ties use higher q. It assumes no q-cost monotonicity. q=0 is retained as a valid zero-BAP input vector and excluded from playable candidates. The chosen frame then passes through real quantization and the complete assembler. Source history, DRC/F13 same-source binding, D0 F12 receipt, CLI and parent F15 remain open. production_allowed=false.",
+            "kind": "SOURCE_BOUND_FLAT7X_DURABLE_I0_D0_AU_AND_PARENT_RECEIPT",
+            "validation_boundary": "The existing source-bound I0 and D0 candidates plus F13/F14K and paired F12 receipts create one 6,656-byte AU. The CLI pair staging adapter verifies exact frame extents, I0/D0 CRC residuals, sequential AU offset, write/readback hash and file sync; ProgrammeOwnerRoots checks matching I0/D0 receipt identities and installs the paired Integrity, Codec and Output after-values. The source generation label and optional frame settings remain local replaceable assumptions. production_allowed=false.",
             "target": {
               "i0_rate_kbps": 640,
               "i0_frame_bytes": 2560,
@@ -49955,7 +49981,7 @@
               "selected_d0_target_shape": "four coded channels Ls/Rs/Lrs/Rrs; acmod=5/lfeon=0/chanmap=0x1A00; seven JOC reconstruction carriers remain separate",
               "local_four_channel_d0_audblk_writer": "D0_4X253_D15_BAP_MANTISSA_AUDBLK_AND_SIX_BLOCK_FRAME_CANDIDATE",
               "producer_input": "Flat7xD0AudioSpanReceipt::from_source_bound_producer",
-              "producer_status": "LOCALLY_COMPILED_CLI_I0_D0_F12_F15_IN_MEMORY_PAIR__DURABLE_OUTPUT_ROOT_OPEN",
+              "producer_status": "LOCALLY_COMPILED_CLI_PAIR_APPEND_PARENT_RECEIPTS__REAL_OUTPUT_AND_W04_OPEN",
               "source_history_owner": "CodecOwnerRoot optional canonical Flat7x D0 overlap-history field; suppressed source 0/1 transitions commit through the callback parent"
             },
             "eac3_exponent_row_writer": {
@@ -50306,24 +50332,28 @@
               "trigger": "Either complete frame or the 6656-byte aggregate differs from the target contract.",
               "result": "No pair AU candidate is returned.",
               "caller_action": "Reject the whole AU candidate before any owner/publication stage."
+            },
+            {
+              "error_code": "EncodeRequestError::SourcePipeline / OutputPublicationError::Flat7xPairFinalize",
+              "category": "paired durable output and root acceptance",
+              "trigger": "Pair frame/receipt admission, durable readback/sync, same-source parent validation, or complete pair-ledger finalization fails.",
+              "programme_state_after": "No final output is exposed; a failed attempt is not continued from a partial pair.",
+              "caller_action": "Retire the failed attempt and start from a fresh programme root."
             }
           ],
           "not_run": [
-            "Callback-to-source PCM interval, cached-drain row, and EOF valid/padded extent are UNBOUND.",
-            "Programme/attempt/source-generation D0 history owner and parent installation after F15 durability are NOT_RUN.",
-            "F15 pair append proposal is in-memory; filesystem durability, rollback, final exposure, .ec3 output and W04 are NOT_RUN.",
-            "No encoder or DEE execution occurred; no real output was validated.",
-            "No raw skipfld/container/payload/frame bytes or real media are included.",
-            "The production CLI has not yet built I0, joined paired F12/F13 receipts, or staged a durable 6,656-byte AU.",
-            "The CLI builds a real same-source F13/F14K/F12 pair and an in-memory F15 candidate for the first published AU; multi-AU output-owner persistence and durable sink installation are NOT_RUN."
+            "A real 7.1 full-input CLI run and final .ec3 exposure.",
+            "Independent OpenJOC parse/decode/render and W04 acceptance.",
+            "Native source-generation join, exact official I0 BSID, and parity for the local replaceable I0/D0 audio policies.",
+            "raw skipfld/container/payload/frame bytes are not included in the input-only map vectors."
           ],
           "validation_boundary": "Synthetic opaque D0 spans and caller BSI values are assembled with the existing D0 frame and AU composers. The E-AC-3 exponent-row helper separately verifies caller-supplied U4/U7 field order, width, cursor extent, and whole-row capacity atomicity. The row seed, group-count and D0 lane join remain caller-owned; production_allowed=false.",
           "delivery_scope": "RECEIPTED_I0_D0_PAIR_CANDIDATE_WITH_D0_SPECTRUM_BAP_D15_ROWS__NO_FULL_AUDBLK_OR_PRODUCTION",
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/flat7x_pair_integrity.rs",
-              "bytes": 6315,
-              "sha256": "461e14d7b7703462b8d11bec3f67a196ea1b7506193f6cf6da8effd1de7315aa"
+              "bytes": 6396,
+              "sha256": "802f371fcfccd4c703f777e3ad10a3c20c7d4cce7d85f9fc9280a7873f852fb6"
             },
             {
               "path": "crates/jocforge-application/src/flat7x_pair_output.rs",
@@ -50346,24 +50376,39 @@
               "sha256": "446a1cc2ff6a387d6c252dd82b271f98d6cb774f34ff0829893a95d6e6d7a7ff"
             },
             {
+              "path": "crates/jocforge-application/src/output_publication.rs",
+              "bytes": 44909,
+              "sha256": "d31d481ac541a11c7d5643196a572510836cba6748ebd8eec492276c9a423685"
+            },
+            {
+              "path": "crates/jocforge-application/src/source_frame_bridge.rs",
+              "bytes": 20455,
+              "sha256": "0d92ecafda94a6cd1bea0fd75b8ed0bd0dfb9c9198ea25d480fd08b9374ea4a0"
+            },
+            {
               "path": "crates/jocforge-cli/Cargo.toml",
               "bytes": 721,
               "sha256": "a0fa6a1d647e48a3f84df3353c2df34aca3c1534b6383ee0956cb1d045878c87"
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 67834,
-              "sha256": "ac5a27c8fae66d37545f99a2fa9165d83da5f6517cd84615c6fa89eb962f9dc5"
+              "bytes": 66631,
+              "sha256": "8da379da690bc3104f9414d270cc36e1ee9167bf5297ab1d58c8c41545edc33a"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
-              "bytes": 23299,
-              "sha256": "a81b7e23548270d2e18683c479a809ed50f5cff2dc3c1fa1f1062344497c77ee"
+              "bytes": 25964,
+              "sha256": "cf7b3da1b075deae7adfddd120a46dce8a78bbabccf282affbc1d8a49dfce524"
+            },
+            {
+              "path": "crates/jocforge-cli/src/programme_roots.rs",
+              "bytes": 43728,
+              "sha256": "fede644167b9b8153efe95c45e651aa9ac9c9e500b81f1663e48a922964924f3"
             },
             {
               "path": "crates/jocforge-cli/src/source_execution.rs",
-              "bytes": 32780,
-              "sha256": "b9ae8ebebec50367b8f705f63ff46bf1d530470e6b562f95c8f5de998fbed160"
+              "bytes": 35387,
+              "sha256": "1c66b24145ef037e2a3dbefb1cb9c3f5338381ea6cf6cfb02e64a8251e098acb"
             },
             {
               "path": "crates/jocforge-domain/src/codec/ac3_audio_block.rs",
@@ -50466,6 +50511,11 @@
               "sha256": "b6008b59c90b2c8dce8f3b743d9d68d38fd06a6aa98c93de34e1fccb0914a513"
             },
             {
+              "path": "crates/jocforge-domain/src/codec/owner.rs",
+              "bytes": 34235,
+              "sha256": "0a14f6717a597d6d9e54d088d9e52ed9f2b211e4f6fe893e5ed21932738f9f67"
+            },
+            {
               "path": "crates/jocforge-domain/src/integrity/programme_owner.rs",
               "bytes": 68443,
               "sha256": "8e767d8b116ffa774caad975dfe3a1cb105d189d75052b17a60c7759744d1871"
@@ -50487,8 +50537,13 @@
             },
             {
               "path": "crates/jocforge-domain/src/publication/flat7x_au_output.rs",
-              "bytes": 44312,
-              "sha256": "ec60b40944699a08b6c7f4882ef62660a6e6a4b4e0833a09c7d5b7fba9256b98"
+              "bytes": 44319,
+              "sha256": "e29acc99528ee23d5422401bd456b95780aab48cc2eb7a4ba98c657acf57423a"
+            },
+            {
+              "path": "crates/jocforge-domain/src/publication/output_owner.rs",
+              "bytes": 50078,
+              "sha256": "67a5047efd80084f9d9775a697d8c1b1ae00da3f78c7ed8b80b40ff9c761b577"
             },
             {
               "path": "crates/jocforge-domain/src/publication/test_support.rs",
@@ -50522,8 +50577,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2234143,
-              "sha256": "353adcf2890ea82691767ddb890e7814499841feeb2dfda666bf0b38500990f5"
+              "bytes": 2236597,
+              "sha256": "43a56152d8fac7afbb6e436f4c2799dd1416f9ae09de2c25502a15a159e02b98"
             }
           ],
           "test_inventory": [
@@ -50533,14 +50588,29 @@
               "sha256": "64786661ff73d9dc4dd29f4f54e28a9563ea9019931577f5b3dd9ad5d145a90a"
             },
             {
+              "path": "crates/jocforge-application/src/output_publication/tests.rs",
+              "bytes": 15154,
+              "sha256": "e54458b1d76a9534cb3d846adc0a98c1096240a73cdc6bc6f093e3fae3a840f0"
+            },
+            {
+              "path": "crates/jocforge-application/src/source_frame_bridge.rs",
+              "bytes": 20455,
+              "sha256": "0d92ecafda94a6cd1bea0fd75b8ed0bd0dfb9c9198ea25d480fd08b9374ea4a0"
+            },
+            {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 67834,
-              "sha256": "ac5a27c8fae66d37545f99a2fa9165d83da5f6517cd84615c6fa89eb962f9dc5"
+              "bytes": 66631,
+              "sha256": "8da379da690bc3104f9414d270cc36e1ee9167bf5297ab1d58c8c41545edc33a"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication/tests.rs",
               "bytes": 12836,
               "sha256": "90acf9b9060f4fbed1d42fbb506f4ea3cff23224aad46e0a605f578cd27188f3"
+            },
+            {
+              "path": "crates/jocforge-cli/src/programme_roots.rs",
+              "bytes": 43728,
+              "sha256": "fede644167b9b8153efe95c45e651aa9ac9c9e500b81f1663e48a922964924f3"
             },
             {
               "path": "crates/jocforge-cli/tests/flat7x_pair_io_handoff.rs",
@@ -50583,6 +50653,11 @@
               "sha256": "88fb6827d5f0a2dd719f5ecd879689e0ea1bdae40fb3f03b6398becca1cf9557"
             },
             {
+              "path": "crates/jocforge-domain/src/codec/owner.rs",
+              "bytes": 34235,
+              "sha256": "0a14f6717a597d6d9e54d088d9e52ed9f2b211e4f6fe893e5ed21932738f9f67"
+            },
+            {
               "path": "crates/jocforge-domain/src/integrity/programme_owner/tests.rs",
               "bytes": 45152,
               "sha256": "9898a0febefef70dc2c627c28894ded596295b33175ea42a8c7e1a08f92604d0"
@@ -50596,6 +50671,16 @@
               "path": "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs",
               "bytes": 20171,
               "sha256": "555f07c12e1d2f9deec679a1ed909ce0913c76ee871a9656d22730a9cc5d4c37"
+            },
+            {
+              "path": "crates/jocforge-domain/src/publication/flat7x_au_output.rs",
+              "bytes": 44319,
+              "sha256": "e29acc99528ee23d5422401bd456b95780aab48cc2eb7a4ba98c657acf57423a"
+            },
+            {
+              "path": "crates/jocforge-domain/src/publication/output_owner.rs",
+              "bytes": 50078,
+              "sha256": "67a5047efd80084f9d9775a697d8c1b1ae00da3f78c7ed8b80b40ff9c761b577"
             },
             {
               "path": "crates/jocforge-domain/tests/bap_converter_search.rs",
@@ -50752,20 +50837,21 @@
           ],
           "staging_adapter": {
             "module": "crates/jocforge-cli/src/output_publication.rs",
-            "method": "ProgrammeOutputStaging::append_flat7x_au",
-            "visibility": "crate-local; no production encode caller",
+            "method": "ProgrammeOutputStaging::append_flat7x_pair_with_output_proposal",
+            "visibility": "crate-local; called from the Flat7x source callback",
             "preflight_checks": [
-              "programme and attempt binding",
-              "shared I0/D0 source identity and F13 consumer transaction",
-              "I0, D0 and aggregate AU extents",
-              "sequential AU byte offset",
-              "both frame CRC residuals"
+              "programme, attempt and same-source callback transaction",
+              "I0 and D0 frame extents and their aggregate AU extent",
+              "sequential published-AU offset",
+              "separate I0 and D0 CRC residuals",
+              "durable write, exact readback hash and filesystem sync",
+              "paired Integrity receipt identities and one parent root replacement"
             ],
             "memory_test_helper": "append_flat7x_au_to_memory_for_test",
             "production_allowed": false,
-            "filesystem_touched": false,
-            "source_route": "CLI Flat7x request enters run_worker; source_execution stops at the typed D0 audio-span producer input when no receipt exists.",
-            "generation_authority": "Explicit JOCForge Flat7xSourceGeneration input with checked_next; no derivation from analysis generation; parent owner commit remains open."
+            "filesystem_touched": true,
+            "source_route": "The selected CLI Flat7x source stage now appends a complete I0+D0 pair and supplies pair receipts to the programme root. A full-input encode and final exposure have not been run.",
+            "generation_authority": "ProgrammeOutputStaging retains the F15 pair owner after each successful append; GTC OutputOwner, Codec and Integrity after-values are checked and installed by the callback parent. Flat7xSourceGeneration remains the explicit source-index model policy."
           }
         }
       ]
@@ -54690,8 +54776,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/output_publication.rs",
-              "bytes": 43784,
-              "sha256": "e2ac2de574a9e588158203b3a4b95eccabb1c7476206e89b812b14eb0bc05811"
+              "bytes": 44909,
+              "sha256": "d31d481ac541a11c7d5643196a572510836cba6748ebd8eec492276c9a423685"
             },
             {
               "path": "crates/jocforge-application/src/output_publication/tests.rs",
@@ -54710,8 +54796,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
-              "bytes": 23299,
-              "sha256": "a81b7e23548270d2e18683c479a809ed50f5cff2dc3c1fa1f1062344497c77ee"
+              "bytes": 25964,
+              "sha256": "cf7b3da1b075deae7adfddd120a46dce8a78bbabccf282affbc1d8a49dfce524"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication/tests.rs",
@@ -54720,8 +54806,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/publication/output_owner.rs",
-              "bytes": 43660,
-              "sha256": "1444a6c0c6b34fff17797086cc60f8333e9d4b2f4fc7c87d6d274ac547d9136c"
+              "bytes": 50078,
+              "sha256": "67a5047efd80084f9d9775a697d8c1b1ae00da3f78c7ed8b80b40ff9c761b577"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
@@ -59835,8 +59921,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-application/src/output_publication.rs",
-              "bytes": 43784,
-              "sha256": "e2ac2de574a9e588158203b3a4b95eccabb1c7476206e89b812b14eb0bc05811"
+              "bytes": 44909,
+              "sha256": "d31d481ac541a11c7d5643196a572510836cba6748ebd8eec492276c9a423685"
             }
           ],
           "test_inventory": [
@@ -59949,13 +60035,13 @@
             },
             {
               "path": "crates/jocforge-domain/src/publication/output_owner.rs",
-              "bytes": 43660,
-              "sha256": "1444a6c0c6b34fff17797086cc60f8333e9d4b2f4fc7c87d6d274ac547d9136c"
+              "bytes": 50078,
+              "sha256": "67a5047efd80084f9d9775a697d8c1b1ae00da3f78c7ed8b80b40ff9c761b577"
             },
             {
               "path": "crates/jocforge-domain/src/codec/owner.rs",
-              "bytes": 32964,
-              "sha256": "779e41205ed75cc053887b73a6400f2eb4da08683780eff9cbd5f93cf8d0f190"
+              "bytes": 34235,
+              "sha256": "0a14f6717a597d6d9e54d088d9e52ed9f2b211e4f6fe893e5ed21932738f9f67"
             },
             {
               "path": "crates/jocforge-domain/src/publication/tests.rs",
@@ -59984,8 +60070,8 @@
             },
             {
               "path": "scripts/check-boundaries.py",
-              "bytes": 2234143,
-              "sha256": "353adcf2890ea82691767ddb890e7814499841feeb2dfda666bf0b38500990f5"
+              "bytes": 2236597,
+              "sha256": "43a56152d8fac7afbb6e436f4c2799dd1416f9ae09de2c25502a15a159e02b98"
             }
           ],
           "test_inventory": [
@@ -60001,8 +60087,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/codec/owner.rs",
-              "bytes": 32964,
-              "sha256": "779e41205ed75cc053887b73a6400f2eb4da08683780eff9cbd5f93cf8d0f190"
+              "bytes": 34235,
+              "sha256": "0a14f6717a597d6d9e54d088d9e52ed9f2b211e4f6fe893e5ed21932738f9f67"
             }
           ]
         },
@@ -60723,8 +60809,8 @@
             },
             {
               "path": "crates/jocforge-application/src/output_publication.rs",
-              "bytes": 43784,
-              "sha256": "e2ac2de574a9e588158203b3a4b95eccabb1c7476206e89b812b14eb0bc05811"
+              "bytes": 44909,
+              "sha256": "d31d481ac541a11c7d5643196a572510836cba6748ebd8eec492276c9a423685"
             },
             {
               "path": "crates/jocforge-application/src/output_publication/plan_admission.rs",
@@ -60758,13 +60844,13 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 67834,
-              "sha256": "ac5a27c8fae66d37545f99a2fa9165d83da5f6517cd84615c6fa89eb962f9dc5"
+              "bytes": 66631,
+              "sha256": "8da379da690bc3104f9414d270cc36e1ee9167bf5297ab1d58c8c41545edc33a"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
-              "bytes": 23299,
-              "sha256": "a81b7e23548270d2e18683c479a809ed50f5cff2dc3c1fa1f1062344497c77ee"
+              "bytes": 25964,
+              "sha256": "cf7b3da1b075deae7adfddd120a46dce8a78bbabccf282affbc1d8a49dfce524"
             },
             {
               "path": "crates/jocforge-cli/src/lib.rs",
@@ -61395,8 +61481,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/publication/flat7x_au_output.rs",
-              "bytes": 44312,
-              "sha256": "ec60b40944699a08b6c7f4882ef62660a6e6a4b4e0833a09c7d5b7fba9256b98"
+              "bytes": 44319,
+              "sha256": "e29acc99528ee23d5422401bd456b95780aab48cc2eb7a4ba98c657acf57423a"
             },
             {
               "path": "crates/jocforge-domain/src/publication/mod.rs",
@@ -61407,8 +61493,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/publication/flat7x_au_output.rs",
-              "bytes": 44312,
-              "sha256": "ec60b40944699a08b6c7f4882ef62660a6e6a4b4e0833a09c7d5b7fba9256b98"
+              "bytes": 44319,
+              "sha256": "e29acc99528ee23d5422401bd456b95780aab48cc2eb7a4ba98c657acf57423a"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
@@ -61858,8 +61944,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/publication/flat7x_au_output.rs",
-              "bytes": 44312,
-              "sha256": "ec60b40944699a08b6c7f4882ef62660a6e6a4b4e0833a09c7d5b7fba9256b98"
+              "bytes": 44319,
+              "sha256": "e29acc99528ee23d5422401bd456b95780aab48cc2eb7a4ba98c657acf57423a"
             }
           ],
           "vector_inventory": [
@@ -61962,16 +62048,17 @@
         {
           "slice_id": "flat7x-aggregate-output-owner-profile",
           "mapping_status": "MATERIALIZED_FLAT7X_AGGREGATE_OUTPUT_CONFIGURATION",
-          "implementation_status": "LOCALLY_COMPILED_FLAT7X_1664KBPS_OUTPUT_PROFILE__DURABLE_PAIR_SINK_OPEN",
+          "implementation_status": "LOCALLY_COMPILED_FLAT7X_PAIR_OUTPUT_OWNER_PROPOSAL__DURABLE_PAIR_IO_OPEN",
           "implementation_requirement": true,
           "owner": "output",
-          "scope": "The CLI-selected Flat7x layout now drives the private F15 plan through an explicit resolved-profile entry. F15 output projection emits the approved aggregate I0 640 kbps + D0 1024 kbps profile at 1664 kbps and 6656 bytes per AU; OutputConfiguration accepts that target aggregate extent, and the programme READY root validates the same extent. The plan keeps the authored codec rate and EMDF carriage from PreparedJobInput while applying the CLI reconstruction-layout selection. Selected 5.1 output continues using its existing per-frame 384-1024 kbps rows. The production source callback still stops after the in-memory Flat7x pair proposal; durable pair sink/root installation remains open.",
+          "scope": "F15 admission accepts the CLI-resolved Flat7x reconstruction layout, preserves authored rate/carriage, and configures the target aggregate 1664-kbps / 6656-byte AU extent. OutputOwner now accepts a typed Flat7x F15 pair proposal after validating I0/D0 frame lengths and their separate CRC residuals, and the application binds the resulting generic output proposal to ProgrammeOutputBinding. The production CLI builds this aggregate OutputOwner proposal from its same-source F13/F14K/F12/F15 pair candidate. The pair-specific durable IO receipt bridge, multi-AU ledger persistence, root installation, finalization and exposure remain open; 5.1 per-frame output is unchanged.",
           "implementation_files": [
             "crates/jocforge-domain/src/publication/output_owner.rs",
             "crates/jocforge-application/src/output_publication.rs",
             "crates/jocforge-application/src/output_publication/plan_admission.rs",
             "crates/jocforge-cli/src/encode_request.rs",
-            "crates/jocforge-cli/src/programme_roots.rs"
+            "crates/jocforge-cli/src/programme_roots.rs",
+            "crates/jocforge-cli/src/source_execution.rs"
           ],
           "test_modules": [],
           "clock": {
@@ -62008,7 +62095,22 @@
             },
             "output_configuration_accepts_aggregate_frame_extent": true,
             "production_allowed": false,
-            "validation_boundary": "Workspace compilation and boundary/map checks only; no pair bytes were written or finalized."
+            "validation_boundary": "Workspace compilation and boundary/map checks only; no pair bytes were written or finalized.",
+            "flat7x_pair_output_owner_input": {
+              "type": "Flat7xAuAppendProposal",
+              "target_frame_lengths": [
+                2560,
+                4096
+              ],
+              "aggregate_bytes": 6656,
+              "frame_crc_residuals": [
+                0,
+                0
+              ],
+              "generic_output_owner_method": "OutputOwner::prepare_flat7x_pair_source",
+              "application_bridge": "prepare_output_source_from_flat7x_pair",
+              "status": "in-memory proposal; pair IO has not produced an OutputDurableAppendReceipt"
+            }
           },
           "vectors": {
             "kind": "WASHED_FLAT7X_TARGET_EXTENTS_PROJECTED_TO_F15_OUTPUT_CONFIGURATION",
@@ -62024,8 +62126,10 @@
           },
           "not_run": [
             "Durable 6656-byte paired append through the output owner and atomic sink.",
-            "Persistent multi-AU output ledger, same-parent root swap, EOF finalization and final exposure.",
-            "Candidate file parse/decode, W04 and real input run."
+            "Candidate file parse/decode, W04 and real input run.",
+            "Pair-specific file append, separate I0/D0 readback CRC receipt and generic OutputOwner receipt bridge.",
+            "Persisted multi-AU pair ledger, one parent swap of Codec/Integrity/Output roots, EOF finalization and final exposure.",
+            "Real input encoding, decode and W04."
           ],
           "error_outcomes": [
             {
@@ -62039,13 +62143,13 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/publication/output_owner.rs",
-              "bytes": 43660,
-              "sha256": "1444a6c0c6b34fff17797086cc60f8333e9d4b2f4fc7c87d6d274ac547d9136c"
+              "bytes": 50078,
+              "sha256": "67a5047efd80084f9d9775a697d8c1b1ae00da3f78c7ed8b80b40ff9c761b577"
             },
             {
               "path": "crates/jocforge-application/src/output_publication.rs",
-              "bytes": 43784,
-              "sha256": "e2ac2de574a9e588158203b3a4b95eccabb1c7476206e89b812b14eb0bc05811"
+              "bytes": 44909,
+              "sha256": "d31d481ac541a11c7d5643196a572510836cba6748ebd8eec492276c9a423685"
             },
             {
               "path": "crates/jocforge-application/src/output_publication/plan_admission.rs",
@@ -62054,13 +62158,18 @@
             },
             {
               "path": "crates/jocforge-cli/src/encode_request.rs",
-              "bytes": 67834,
-              "sha256": "ac5a27c8fae66d37545f99a2fa9165d83da5f6517cd84615c6fa89eb962f9dc5"
+              "bytes": 66631,
+              "sha256": "8da379da690bc3104f9414d270cc36e1ee9167bf5297ab1d58c8c41545edc33a"
             },
             {
               "path": "crates/jocforge-cli/src/programme_roots.rs",
-              "bytes": 41588,
-              "sha256": "f814f914eccea0767084e7ca712792940a1a3540c96194b901ab937897844595"
+              "bytes": 43728,
+              "sha256": "fede644167b9b8153efe95c45e651aa9ac9c9e500b81f1663e48a922964924f3"
+            },
+            {
+              "path": "crates/jocforge-cli/src/source_execution.rs",
+              "bytes": 35387,
+              "sha256": "1c66b24145ef037e2a3dbefb1cb9c3f5338381ea6cf6cfb02e64a8251e098acb"
             }
           ],
           "test_inventory": []
@@ -64152,8 +64261,8 @@
       "implementation_inventory": [
         {
           "path": "crates/jocforge-domain/src/codec/owner.rs",
-          "bytes": 32964,
-          "sha256": "779e41205ed75cc053887b73a6400f2eb4da08683780eff9cbd5f93cf8d0f190"
+          "bytes": 34235,
+          "sha256": "0a14f6717a597d6d9e54d088d9e52ed9f2b211e4f6fe893e5ed21932738f9f67"
         },
         {
           "path": "crates/jocforge-domain/src/codec/mod.rs",
@@ -64167,8 +64276,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/publication/output_owner.rs",
-          "bytes": 43660,
-          "sha256": "1444a6c0c6b34fff17797086cc60f8333e9d4b2f4fc7c87d6d274ac547d9136c"
+          "bytes": 50078,
+          "sha256": "67a5047efd80084f9d9775a697d8c1b1ae00da3f78c7ed8b80b40ff9c761b577"
         },
         {
           "path": "crates/jocforge-domain/src/integrity/crc16.rs",
@@ -64179,8 +64288,8 @@
       "test_inventory": [
         {
           "path": "crates/jocforge-domain/src/codec/owner.rs",
-          "bytes": 32964,
-          "sha256": "779e41205ed75cc053887b73a6400f2eb4da08683780eff9cbd5f93cf8d0f190"
+          "bytes": 34235,
+          "sha256": "0a14f6717a597d6d9e54d088d9e52ed9f2b211e4f6fe893e5ed21932738f9f67"
         }
       ],
       "local_scope": "Selected codec generation/five previous_short flags and the complete canonical owners.codec state_ref snapshot are locally materialized and tested.",
@@ -64549,8 +64658,8 @@
       "implementation_inventory": [
         {
           "path": "crates/jocforge-application/src/output_publication.rs",
-          "bytes": 43784,
-          "sha256": "e2ac2de574a9e588158203b3a4b95eccabb1c7476206e89b812b14eb0bc05811"
+          "bytes": 44909,
+          "sha256": "d31d481ac541a11c7d5643196a572510836cba6748ebd8eec492276c9a423685"
         },
         {
           "path": "crates/jocforge-application/src/output_publication/tests.rs",
@@ -64569,8 +64678,8 @@
         },
         {
           "path": "crates/jocforge-cli/src/output_publication.rs",
-          "bytes": 23299,
-          "sha256": "a81b7e23548270d2e18683c479a809ed50f5cff2dc3c1fa1f1062344497c77ee"
+          "bytes": 25964,
+          "sha256": "cf7b3da1b075deae7adfddd120a46dce8a78bbabccf282affbc1d8a49dfce524"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication/tests.rs",
@@ -64579,8 +64688,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/publication/output_owner.rs",
-          "bytes": 43660,
-          "sha256": "1444a6c0c6b34fff17797086cc60f8333e9d4b2f4fc7c87d6d274ac547d9136c"
+          "bytes": 50078,
+          "sha256": "67a5047efd80084f9d9775a697d8c1b1ae00da3f78c7ed8b80b40ff9c761b577"
         },
         {
           "path": "crates/jocforge-domain/src/publication/mod.rs",
@@ -64604,8 +64713,8 @@
         },
         {
           "path": "crates/jocforge-cli/src/encode_request.rs",
-          "bytes": 67834,
-          "sha256": "ac5a27c8fae66d37545f99a2fa9165d83da5f6517cd84615c6fa89eb962f9dc5"
+          "bytes": 66631,
+          "sha256": "8da379da690bc3104f9414d270cc36e1ee9167bf5297ab1d58c8c41545edc33a"
         },
         {
           "path": "crates/jocforge-cli/src/lib.rs",

@@ -188,7 +188,7 @@ pub struct Flat7xAuSourceReceipts<'a> {
 /// caller-supplied candidates; this module cannot prove a real write, rollback, or readback
 /// provenance. It has no canonical GTC registration, filesystem adapter, product-plan admission,
 /// source-callback identity, or connection to the selected 5.1 sink.
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Flat7xAuOutputOwner {
     attempt_id: String,
     expected_access_units: u64,

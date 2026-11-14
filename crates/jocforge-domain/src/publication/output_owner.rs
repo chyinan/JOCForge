@@ -1,6 +1,7 @@
 // pattern: Functional Core
 //! Noncommitting keyless output-owner proposals for the selected codec source clock.
 
+use super::flat7x_au_output::{Flat7xAuAppendProposal, Flat7xAuAppendReceiptCandidate};
 use crate::{
     codec::frame_size::Eac3FrameSize,
     integrity::crc16::eac3_crc16,
@@ -519,6 +520,112 @@ impl OutputOwner {
         frame: &[u8],
         declared_frame_sha256: &[u8; 32],
     ) -> Result<OutputSourceProposal, OutputOwnerError> {
+        self.prepare_source_with_pair_integrity(identity, frame, declared_frame_sha256, None)
+    }
+
+    /// Prepares one aggregate source from a receipt-validated Flat7x I0+D0 F15 proposal.
+    ///
+    /// The pair proposal carries separate I0 and D0 frame CRC residuals; the aggregate AU extent
+    /// is validated against those typed frame lengths rather than as one E-AC-3 syncframe.
+    pub fn prepare_flat7x_pair_source(
+        &self,
+        pair: &Flat7xAuAppendProposal<'_>,
+    ) -> Result<OutputSourceProposal, OutputOwnerError> {
+        let target = Flat7xI0D0TargetPlan::approved_contract();
+        let (i0_identity, d0_identity) = pair.source_identities();
+        let ledger = pair.ledger_entry();
+        if pair.attempt_id() != self.configuration.attempt_id()
+            || i0_identity != d0_identity
+            || ledger.frame_lengths() != (target.i0().frame_bytes(), target.d0().frame_bytes())
+            || ledger.frame_crc_residuals() != (0, 0)
+            || ledger.length() != target.aggregate_frame_bytes()
+            || u32::try_from(pair.bytes().len()).ok() != Some(target.aggregate_frame_bytes())
+            || self.configuration.frame_bytes() != target.aggregate_frame_bytes()
+        {
+            return Err(OutputOwnerError::FrameLength);
+        }
+        if ledger.metadata_identity()
+            != (
+                i0_identity.source_index,
+                i0_identity.dispatch,
+                ledger.au_index(),
+            )
+            || i0_identity.au_index != Some(ledger.au_index())
+        {
+            return Err(OutputOwnerError::AuOrder);
+        }
+        let identity = OutputSourceIdentity::new(
+            i0_identity.source_index,
+            i0_identity.dispatch,
+            i0_identity.au_index,
+        );
+        let frame_sha256 = sha256(pair.bytes());
+        self.prepare_source_with_pair_integrity(
+            identity,
+            pair.bytes(),
+            &frame_sha256,
+            Some(ledger.frame_crc_residuals()),
+        )
+    }
+
+    /// Advances the Flat7x output source clock for a suppressed source without a frame payload.
+    pub fn prepare_flat7x_suppressed_source(
+        &self,
+        identity: OutputSourceIdentity,
+    ) -> Result<OutputSourceProposal, OutputOwnerError> {
+        let source = identity.source_index.value();
+        if self.configuration.frame_bytes
+            != Flat7xI0D0TargetPlan::approved_contract().aggregate_frame_bytes()
+            || self.state.finalized
+            || source >= SUPPRESSED_SOURCES
+            || source != self.state.next_source_index.value()
+        {
+            return Err(OutputOwnerError::SourceOrder);
+        }
+        let expected_dispatch = source
+            .checked_add(1)
+            .ok_or(OutputOwnerError::DispatchOrder)?;
+        if identity.dispatch.value() != expected_dispatch {
+            return Err(OutputOwnerError::DispatchOrder);
+        }
+        if identity.au_index.is_some() {
+            return Err(OutputOwnerError::AuOrder);
+        }
+        let before_state_sha256 = self.state.sha256()?;
+        let mut after_state = self.state.clone();
+        after_state.generation = after_state
+            .generation
+            .checked_add(1)
+            .ok_or(OutputOwnerError::CountOverflow)?;
+        after_state.next_source_index = CodecSourceIndex::new(
+            source
+                .checked_add(1)
+                .ok_or(OutputOwnerError::CountOverflow)?,
+        );
+        let after_state_sha256 = after_state.sha256()?;
+        Ok(OutputSourceProposal::Suppressed(
+            OutputSuppressedSourceProposal {
+                receipt: OutputSuppressedSourceReceipt {
+                    source_index: identity.source_index,
+                    dispatch: identity.dispatch,
+                    before_sha256: before_state_sha256,
+                    after_sha256: after_state_sha256,
+                },
+                after_owner: Self {
+                    configuration: self.configuration.clone(),
+                    state: after_state,
+                },
+            },
+        ))
+    }
+
+    fn prepare_source_with_pair_integrity(
+        &self,
+        identity: OutputSourceIdentity,
+        frame: &[u8],
+        declared_frame_sha256: &[u8; 32],
+        pair_frame_crc_residuals: Option<(u16, u16)>,
+    ) -> Result<OutputSourceProposal, OutputOwnerError> {
         let source = identity.source_index.value();
         if self.state.finalized
             || source != self.state.next_source_index.value()
@@ -545,10 +652,21 @@ impl OutputOwner {
         if &frame_sha256 != declared_frame_sha256 {
             return Err(OutputOwnerError::FrameHash);
         }
-        let crc_residual = eac3_crc16(&frame[2..]);
-        if crc_residual != 0 {
-            return Err(OutputOwnerError::FrameCrc);
-        }
+        let crc_residual = match pair_frame_crc_residuals {
+            Some((i0_crc_residual, d0_crc_residual))
+                if i0_crc_residual == 0 && d0_crc_residual == 0 =>
+            {
+                0
+            }
+            Some(_) => return Err(OutputOwnerError::FrameCrc),
+            None => {
+                let residual = eac3_crc16(&frame[2..]);
+                if residual != 0 {
+                    return Err(OutputOwnerError::FrameCrc);
+                }
+                residual
+            }
+        };
 
         let before_state_sha256 = self.state.sha256()?;
         let mut after_state = self.state.clone();
@@ -927,6 +1045,41 @@ impl OutputAppendProposal {
         crc_residual: u16,
     ) -> Result<OutputDurableAppendReceipt, OutputOwnerError> {
         self.build_durable_append_receipt(write_calls, readback_sha256, crc_residual)
+    }
+
+    /// Records a trusted pair-aware IO receipt against this aggregate OutputOwner proposal.
+    ///
+    /// The pair adapter verifies I0 and D0 frame CRCs independently; this method maps their
+    /// successful pair result onto the OutputOwner's aggregate append receipt.
+    ///
+    /// # Safety
+    ///
+    /// The caller must pass the receipt returned by the trusted Flat7x AU IO adapter after it
+    /// has written these exact proposal bytes, synced the file, verified exact readback, and
+    /// checked both frame CRC residuals. Receipt fields are public candidates and cannot prove
+    /// those IO effects on their own.
+    #[allow(unsafe_code)]
+    pub unsafe fn record_flat7x_pair_io_success(
+        &self,
+        receipt: &Flat7xAuAppendReceiptCandidate,
+    ) -> Result<OutputDurableAppendReceipt, OutputOwnerError> {
+        let expected_au = self.identity.au_index.ok_or(OutputOwnerError::AuOrder)?;
+        if receipt.attempt_id() != self.attempt_id
+            || receipt.au_index() != expected_au
+            || receipt.offset() != self.expected_offset
+            || usize::try_from(receipt.bytes_written()).ok() != Some(self.frame_bytes.len())
+            || receipt.readback_sha256() != &self.frame_sha256
+            || receipt.frame_crc_residuals() != (0, 0)
+            || !receipt.file_fsync()
+            || !receipt.durable()
+        {
+            return Err(OutputOwnerError::DurableReceipt);
+        }
+        self.build_durable_append_receipt(
+            receipt.write_calls().to_vec(),
+            *receipt.readback_sha256(),
+            0,
+        )
     }
 
     #[cfg(test)]

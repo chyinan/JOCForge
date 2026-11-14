@@ -15,6 +15,8 @@ use jocforge_domain::{
     transaction::CallbackLineageIdentity,
 };
 
+pub use jocforge_domain::integrity::programme_owner::Flat7xI0D0F12PairReceipts;
+
 use crate::{
     flat7x_pair_source::{
         Flat7xPairD0PcmFrameCandidate, Flat7xPairI0FrameCandidate, d0_identity_matches_role_map,

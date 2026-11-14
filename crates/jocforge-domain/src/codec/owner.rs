@@ -2,6 +2,7 @@
 //! Noncommitting codec-owner state for the selected source-frame transition.
 
 use crate::codec::flat7x_d0_pcm_source::Flat7xD0OverlapHistory;
+use crate::profile::Flat7xI0D0TargetPlan;
 use crate::{
     analysis::structure_refresh::{F07_BLOCKS_PER_FRAME, F07_FULLBAND_LANES},
     codec::frame_size::Eac3FrameSize,
@@ -304,6 +305,40 @@ impl AcceptedCodecFrame {
             candidate.frame_bytes(),
             candidate.frame_size().bytes(),
         )
+    }
+
+    /// Binds an I0+D0 pair to the aggregate Flat7x AU extent and separate frame CRC checks.
+    pub fn from_flat7x_pair(
+        source_index: CodecSourceIndex,
+        attempt_id: AttemptId,
+        i0_frame: &[u8],
+        d0_frame: &[u8],
+        target: Flat7xI0D0TargetPlan,
+    ) -> Result<Self, CodecOwnerStageError> {
+        let expected = Flat7xI0D0TargetPlan::approved_contract();
+        if target != expected
+            || i0_frame.len() != usize::from(target.i0().frame_bytes())
+            || d0_frame.len() != usize::from(target.d0().frame_bytes())
+        {
+            return Err(CodecOwnerStageError::IncompleteFrame);
+        }
+        if i0_frame.len() < 2
+            || d0_frame.len() < 2
+            || eac3_crc16(&i0_frame[2..]) != 0
+            || eac3_crc16(&d0_frame[2..]) != 0
+        {
+            return Err(CodecOwnerStageError::FrameCrc);
+        }
+        let mut hasher = Sha256::new();
+        hasher.update(i0_frame);
+        hasher.update(d0_frame);
+        Ok(Self {
+            source_index,
+            attempt_id,
+            codec_rate: target.d0().rate(),
+            frame_bytes: target.aggregate_frame_bytes(),
+            frame_sha256: hasher.finalize().into(),
+        })
     }
 
     fn from_complete_frame(

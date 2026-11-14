@@ -7,9 +7,7 @@ use jocforge_application::{
         CallbackLineageIdentity, NoneDrcOwnerRoot, prepare_drc_source_from_analysis,
     },
     flat7x_pair_integrity::{Flat7xPairF12StageInput, stage_flat7x_pair_f12_integrity},
-    flat7x_pair_output::{
-        Flat7xAuOutputOwner, Flat7xSourceGeneration, stage_flat7x_pcm_pair_for_f15,
-    },
+    flat7x_pair_output::{Flat7xSourceGeneration, stage_flat7x_pcm_pair_for_f15},
     independent_meter_callback::{AttemptId, CallbackTransactionId, GtcOwnerReceipt},
     integrity_source_bridge::{
         F14kPayloadOutcome, F14kSourceCandidate, IntegrityF12SourceReceipts,
@@ -27,6 +25,7 @@ use jocforge_application::{
     output_publication::{
         AdmittedProductionPlan, OutputDurableAppendReceipt, OutputSourceAfterProposal,
         ProgrammeOutputBinding, prepare_output_source_from_candidate,
+        prepare_output_source_from_flat7x_pair,
     },
     reader_eof_callback::{GtcOwnerId, ReaderEofMachine, ReaderEofReplacementCandidate},
     source_analysis_bridge::{
@@ -36,7 +35,7 @@ use jocforge_application::{
     source_frame_bridge::{
         CodecOwnerRoot, Flat7xD0PcmSourceExtent, Flat7xD0PcmSourceExtentOrigin,
         Flat7xSourcePcmProjection, build_flat7x_source_pcm_projection,
-        prepare_admitted_source_frame,
+        prepare_admitted_source_frame, stage_codec_owner_after_flat7x_pair,
     },
     spatial_callback::{MainSpatialCallbackCandidate, MainSpatialColdRoots},
 };
@@ -151,6 +150,8 @@ pub(crate) struct SourceFrameAdvance<'pcm> {
     pub metadata_container_bytes: Option<usize>,
     pub f14k_source: F14kSourceCandidate,
     pub integrity_receipts: IntegrityF12SourceReceipts,
+    pub flat7x_integrity_pair_receipts:
+        Option<jocforge_application::flat7x_pair_integrity::Flat7xI0D0F12PairReceipts>,
     pub integrity_owner_receipt: IntegrityOwnerReceiptProposal,
     pub append: Option<DurableAppendSummary>,
     pub owner_receipts: Vec<GtcOwnerReceipt>,
@@ -159,7 +160,6 @@ pub(crate) struct SourceFrameAdvance<'pcm> {
 #[derive(Debug)]
 pub(crate) enum SourceFrameStageError {
     Pipeline(String),
-    Flat7xPairOutputNotConnected { source_index: u64, pair_bytes: u32 },
 }
 
 impl From<String> for SourceFrameStageError {
@@ -363,6 +363,7 @@ pub(crate) fn stage_source_frame<'pcm>(
         None => None,
     };
     let mut flat7x_d0_history_after = None;
+    let mut flat7x_pair_after = None;
     if let Some(binding) = flat7x_pair_source_binding {
         let history_before = codec_before.d0_overlap_history().ok_or_else(|| {
             SourceFrameStageError::Pipeline(
@@ -483,16 +484,11 @@ pub(crate) fn stage_source_frame<'pcm>(
                     "Flat7x paired F12 candidate failed: {error:?}"
                 ))
             })?;
-            let attempt_label = attempt.value().to_string();
-            let flat7x_output_owner = Flat7xAuOutputOwner::cold(
-                &attempt_label,
-                output_binding_before
-                    .output_configuration()
-                    .expected_published_aus(),
-            )
-            .map_err(|error| {
-                SourceFrameStageError::Pipeline(format!("Flat7x pair output owner cold: {error:?}"))
-            })?;
+            let flat7x_output_owner = staging
+                .take_flat7x_pair_output_owner(output_binding_before)
+                .map_err(|error| {
+                    SourceFrameStageError::Pipeline(format!("Flat7x pair output owner: {error}"))
+                })?;
             let source_generation = Flat7xSourceGeneration::new(source_index.value());
             let f15_pair = stage_flat7x_pcm_pair_for_f15(
                 &i0_frame,
@@ -507,52 +503,126 @@ pub(crate) fn stage_source_frame<'pcm>(
                     "Flat7x paired F15 candidate ({FLAT7X_SOURCE_GENERATION_MODEL_ID}): {error:?}"
                 ))
             })?;
-            return Err(SourceFrameStageError::Flat7xPairOutputNotConnected {
-                source_index: binding.source_index().value(),
-                pair_bytes: u32::try_from(f15_pair.append_proposal().bytes().len())
-                    .unwrap_or(u32::MAX),
-            });
+            let output_owner_proposal =
+                prepare_output_source_from_flat7x_pair(output_binding_before, &f15_pair).map_err(
+                    |error| {
+                        SourceFrameStageError::Pipeline(format!(
+                            "Flat7x aggregate OutputOwner proposal failed: {error}"
+                        ))
+                    },
+                )?;
+            let (pair_proposal, after_history) = {
+                let (pair_proposal, after_history, _) = f15_pair.into_parts();
+                (pair_proposal, after_history)
+            };
+            let (_, output_after) = staging
+                .append_flat7x_pair_with_output_proposal(
+                    output_binding_before,
+                    pair_proposal,
+                    output_owner_proposal,
+                )
+                .map_err(|error| {
+                    SourceFrameStageError::Pipeline(format!(
+                        "Flat7x I0+D0 durable append: {error:?}"
+                    ))
+                })?;
+            let codec_proposal = stage_codec_owner_after_flat7x_pair(
+                codec_before,
+                &frame_candidate,
+                &i0_frame,
+                &d0_frame_candidate,
+                &output_after,
+                &after_history,
+            )
+            .map_err(|error| {
+                SourceFrameStageError::Pipeline(format!("Flat7x pair Codec after-root: {error:?}"))
+            })?;
+            let (integrity_root, pair_receipts, integrity_owner_receipt) = f12_pair.into_parts();
+            let integrity_receipts = pair_receipts.d0().clone();
+            flat7x_d0_history_after = Some(after_history);
+            flat7x_pair_after = Some((
+                output_after,
+                codec_proposal,
+                integrity_root,
+                integrity_receipts,
+                pair_receipts,
+                integrity_owner_receipt,
+            ));
         }
     }
-    let integrity_candidate = stage_integrity_after_f12(
-        integrity_before,
-        &metadata_source,
-        &f14k_source,
-        &frame_candidate,
-        admitted_plan.source_providers().keyless_integrity(),
-        prepared.programme_id(),
-        attempt,
-        &source_transaction_id,
-    )
-    .map_err(|error| format!("F14/F12 Integrity owner stage: {error:?}"))?;
-    let (integrity_root, integrity_receipts, integrity_owner_receipt) =
-        integrity_candidate.into_parts();
-    let output_proposal = prepare_output_source_from_candidate(
-        prepared,
-        &output_binding_before,
-        &metadata_source,
-        &frame_candidate,
-    )
-    .map_err(|error| format!("F15 output proposal: {error}"))?;
-    let staged_output = match flat7x_d0_history_after.as_ref() {
-        Some(history_after) => stage_source_frame_output_with_d0_history(
-            staging,
-            output_binding_before,
-            codec_before,
+    let (
+        integrity_root,
+        integrity_receipts,
+        integrity_owner_receipt,
+        flat7x_integrity_pair_receipts,
+        output_after,
+        codec_proposal,
+    ) = if let Some((
+        output_after,
+        codec_proposal,
+        integrity_root,
+        integrity_receipts,
+        pair_receipts,
+        integrity_owner_receipt,
+    )) = flat7x_pair_after
+    {
+        (
+            integrity_root,
+            integrity_receipts,
+            integrity_owner_receipt,
+            Some(pair_receipts),
+            output_after,
+            codec_proposal,
+        )
+    } else {
+        let integrity_candidate = stage_integrity_after_f12(
+            integrity_before,
+            &metadata_source,
+            &f14k_source,
             &frame_candidate,
-            output_proposal,
-            history_after,
-        ),
-        None => stage_source_frame_output(
-            staging,
-            output_binding_before,
-            codec_before,
+            admitted_plan.source_providers().keyless_integrity(),
+            prepared.programme_id(),
+            attempt,
+            &source_transaction_id,
+        )
+        .map_err(|error| format!("F14/F12 Integrity owner stage: {error:?}"))?;
+        let (integrity_root, integrity_receipts, integrity_owner_receipt) =
+            integrity_candidate.into_parts();
+        let output_proposal = prepare_output_source_from_candidate(
+            prepared,
+            &output_binding_before,
+            &metadata_source,
             &frame_candidate,
-            output_proposal,
-        ),
-    }
-    .map_err(|error: SourceFrameOutputStageError| format!("F12/F15 source output: {error}"))?;
-    let (output_after, codec_proposal) = staged_output.into_parts();
+        )
+        .map_err(|error| format!("F15 output proposal: {error}"))?;
+        let staged_output = match flat7x_d0_history_after.as_ref() {
+            Some(history_after) => stage_source_frame_output_with_d0_history(
+                staging,
+                output_binding_before,
+                codec_before,
+                &frame_candidate,
+                output_proposal,
+                history_after,
+            ),
+            None => stage_source_frame_output(
+                staging,
+                output_binding_before,
+                codec_before,
+                &frame_candidate,
+                output_proposal,
+            ),
+        }
+        .map_err(|error: SourceFrameOutputStageError| format!("F12/F15 source output: {error}"))?;
+        let (output_after, codec_proposal) = staged_output.into_parts();
+        (
+            integrity_root,
+            integrity_receipts,
+            integrity_owner_receipt,
+            None,
+            output_after,
+            codec_proposal,
+        )
+    };
     let frame_sha256 = *codec_proposal.frame_sha256();
     let codec_receipt = codec_proposal
         .gtc_receipt(codec_before, main_callback_transaction.clone())
@@ -751,6 +821,7 @@ pub(crate) fn stage_source_frame<'pcm>(
         metadata_container_bytes,
         f14k_source,
         integrity_receipts,
+        flat7x_integrity_pair_receipts,
         integrity_owner_receipt,
         append,
         owner_receipts,
