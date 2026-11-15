@@ -327,8 +327,29 @@ pub fn score_trial_coefficients(
     weight_words: &[u32; SLOT_COUNT],
     trial_coefficient_words: &[u32; CHANNEL_COUNT],
 ) -> Result<FitScoreEvaluation, FitScoreError> {
+    score_trial_coefficients_for_carriers::<CHANNEL_COUNT>(
+        provider,
+        equation,
+        target_words,
+        carrier_words,
+        weight_words,
+        trial_coefficient_words,
+    )
+}
+
+/// Scores one trial coefficient vector for a fixed carrier count.
+/// The `C=5` wrapper preserves the existing slot/bin/carrier accumulation order.
+#[allow(clippy::needless_range_loop)] // Score accumulation order is index-defined.
+pub fn score_trial_coefficients_for_carriers<const CARRIER_COUNT: usize>(
+    provider: &FitScoreProvider,
+    equation: &CoefficientNormalEquation<CARRIER_COUNT>,
+    target_words: &[u32],
+    carrier_words: &[u32],
+    weight_words: &[u32; SLOT_COUNT],
+    trial_coefficient_words: &[u32; CARRIER_COUNT],
+) -> Result<FitScoreEvaluation, FitScoreError> {
     if target_words.len() != 15 * SLOT_COUNT * BIN_COUNT * COMPONENT_COUNT
-        || carrier_words.len() != CHANNEL_COUNT * SLOT_COUNT * BIN_COUNT * COMPONENT_COUNT
+        || carrier_words.len() != CARRIER_COUNT * SLOT_COUNT * BIN_COUNT * COMPONENT_COUNT
     {
         return Err(FitScoreError::InputShape);
     }
@@ -344,12 +365,12 @@ pub fn score_trial_coefficients(
             let mut residual_imaginary = -f64::from(weighted(target[1], weight)?);
             let old_real = residual_real;
             let old_imaginary = residual_imaginary;
-            for channel in 0..CHANNEL_COUNT {
+            for channel in 0..CARRIER_COUNT {
                 let coefficient = finite_f32(trial_coefficient_words[channel])?;
                 if coefficient == 0.0 {
                     continue;
                 }
-                let carrier = complex(carrier_words, channel, CHANNEL_COUNT, slot, bin)?;
+                let carrier = complex(carrier_words, channel, CARRIER_COUNT, slot, bin)?;
                 residual_real += f64::from(weighted(carrier[0], weight)?) * f64::from(coefficient);
                 residual_imaginary +=
                     f64::from(weighted(carrier[1], weight)?) * f64::from(coefficient);

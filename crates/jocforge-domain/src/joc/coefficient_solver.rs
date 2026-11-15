@@ -17,38 +17,38 @@ const BIN_COUNT: usize = 64;
 const COMPONENT_COUNT: usize = 2;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct CoefficientSolution {
-    support: [bool; CHANNEL_COUNT],
-    coefficient_words: [u32; CHANNEL_COUNT],
+pub struct CoefficientSolution<const CARRIER_COUNT: usize = CHANNEL_COUNT> {
+    support: [bool; CARRIER_COUNT],
+    coefficient_words: [u32; CARRIER_COUNT],
 }
 
-impl CoefficientSolution {
-    pub const fn support(&self) -> &[bool; CHANNEL_COUNT] {
+impl<const CARRIER_COUNT: usize> CoefficientSolution<CARRIER_COUNT> {
+    pub const fn support(&self) -> &[bool; CARRIER_COUNT] {
         &self.support
     }
 
-    pub const fn coefficient_words(&self) -> &[u32; CHANNEL_COUNT] {
+    pub const fn coefficient_words(&self) -> &[u32; CARRIER_COUNT] {
         &self.coefficient_words
     }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct NormalizedCoefficientSolution {
-    support: [bool; CHANNEL_COUNT],
-    normalized_words: [u32; CHANNEL_COUNT],
-    stored_words: [u32; CHANNEL_COUNT],
+pub struct NormalizedCoefficientSolution<const CARRIER_COUNT: usize = CHANNEL_COUNT> {
+    support: [bool; CARRIER_COUNT],
+    normalized_words: [u32; CARRIER_COUNT],
+    stored_words: [u32; CARRIER_COUNT],
 }
 
-impl NormalizedCoefficientSolution {
-    pub const fn support(&self) -> &[bool; CHANNEL_COUNT] {
+impl<const CARRIER_COUNT: usize> NormalizedCoefficientSolution<CARRIER_COUNT> {
+    pub const fn support(&self) -> &[bool; CARRIER_COUNT] {
         &self.support
     }
 
-    pub const fn normalized_words(&self) -> &[u32; CHANNEL_COUNT] {
+    pub const fn normalized_words(&self) -> &[u32; CARRIER_COUNT] {
         &self.normalized_words
     }
 
-    pub const fn stored_words(&self) -> &[u32; CHANNEL_COUNT] {
+    pub const fn stored_words(&self) -> &[u32; CARRIER_COUNT] {
         &self.stored_words
     }
 }
@@ -87,6 +87,16 @@ pub fn solve_selected_support(
     equation: &CoefficientNormalEquation,
     support: [bool; CHANNEL_COUNT],
 ) -> Result<CoefficientSolution, CoefficientSolverError> {
+    solve_support_for_carriers::<CHANNEL_COUNT>(equation, support)
+}
+
+/// Solves one support mask in ascending carrier order for a fixed carrier count.
+/// The `C=5` wrapper retains the selected path's active-carrier and LDL loop order.
+#[allow(clippy::needless_range_loop)] // The selected LDL operation order is index-defined.
+pub fn solve_support_for_carriers<const CARRIER_COUNT: usize>(
+    equation: &CoefficientNormalEquation<CARRIER_COUNT>,
+    support: [bool; CARRIER_COUNT],
+) -> Result<CoefficientSolution<CARRIER_COUNT>, CoefficientSolverError> {
     let active = support
         .iter()
         .enumerate()
@@ -98,8 +108,8 @@ pub fn solve_selected_support(
     let zero = finite_word(ZERO_BITS)?;
     let one = finite_word(ONE_BITS)?;
     let tiny = finite_word(SOLVER_TINY_BITS)?;
-    let mut matrix = [[zero; CHANNEL_COUNT]; CHANNEL_COUNT];
-    let mut cross = [zero; CHANNEL_COUNT];
+    let mut matrix = [[zero; CARRIER_COUNT]; CARRIER_COUNT];
+    let mut cross = [zero; CARRIER_COUNT];
     let mut trace = zero;
     for (row, channel_row) in active.iter().copied().enumerate() {
         cross[row] = finite_word(equation.cross_words()[channel_row])?;
@@ -116,8 +126,8 @@ pub fn solve_selected_support(
         matrix[index][index] = add(add(matrix[index][index], regularizer)?, tiny)?;
     }
 
-    let mut lower = [[zero; CHANNEL_COUNT]; CHANNEL_COUNT];
-    let mut diagonal = [zero; CHANNEL_COUNT];
+    let mut lower = [[zero; CARRIER_COUNT]; CARRIER_COUNT];
+    let mut diagonal = [zero; CARRIER_COUNT];
     for index in 0..active.len() {
         lower[index][index] = one;
     }
@@ -142,7 +152,7 @@ pub fn solve_selected_support(
         }
     }
 
-    let mut forward = [zero; CHANNEL_COUNT];
+    let mut forward = [zero; CARRIER_COUNT];
     for row in 0..active.len() {
         let mut value = cross[row];
         for prior in 0..row {
@@ -150,11 +160,11 @@ pub fn solve_selected_support(
         }
         forward[row] = value;
     }
-    let mut divided = [zero; CHANNEL_COUNT];
+    let mut divided = [zero; CARRIER_COUNT];
     for index in 0..active.len() {
         divided[index] = divide(forward[index], diagonal[index])?;
     }
-    let mut solved = [zero; CHANNEL_COUNT];
+    let mut solved = [zero; CARRIER_COUNT];
     for row in (0..active.len()).rev() {
         let mut value = divided[row];
         for later in row + 1..active.len() {
@@ -163,7 +173,7 @@ pub fn solve_selected_support(
         solved[row] = value;
     }
 
-    let mut coefficient_words = [ZERO_BITS; CHANNEL_COUNT];
+    let mut coefficient_words = [ZERO_BITS; CARRIER_COUNT];
     for (active_index, channel) in active.into_iter().enumerate() {
         coefficient_words[channel] = solved[active_index].to_bits();
     }
@@ -183,8 +193,26 @@ pub fn normalize_selected_solution(
     carrier_words: &[u32],
     weight_words: &[u32; SLOT_COUNT],
 ) -> Result<NormalizedCoefficientSolution, CoefficientSolverError> {
+    normalize_solution_for_carriers::<CHANNEL_COUNT>(
+        equation,
+        solution,
+        target_words,
+        carrier_words,
+        weight_words,
+    )
+}
+
+/// Normalizes one solved cell for a fixed carrier count using the selected slot/bin order.
+#[allow(clippy::needless_range_loop)] // The selected slot/channel order is index-defined.
+pub fn normalize_solution_for_carriers<const CARRIER_COUNT: usize>(
+    equation: &CoefficientNormalEquation<CARRIER_COUNT>,
+    solution: &CoefficientSolution<CARRIER_COUNT>,
+    target_words: &[u32],
+    carrier_words: &[u32],
+    weight_words: &[u32; SLOT_COUNT],
+) -> Result<NormalizedCoefficientSolution<CARRIER_COUNT>, CoefficientSolverError> {
     if target_words.len() != 15 * SLOT_COUNT * BIN_COUNT * COMPONENT_COUNT
-        || carrier_words.len() != CHANNEL_COUNT * SLOT_COUNT * BIN_COUNT * COMPONENT_COUNT
+        || carrier_words.len() != CARRIER_COUNT * SLOT_COUNT * BIN_COUNT * COMPONENT_COUNT
     {
         return Err(CoefficientSolverError::InputShape);
     }
@@ -207,12 +235,12 @@ pub fn normalize_selected_solution(
 
             let mut model_real = finite_word(ZERO_BITS)?;
             let mut model_imaginary = finite_word(ZERO_BITS)?;
-            for channel in 0..CHANNEL_COUNT {
+            for channel in 0..CARRIER_COUNT {
                 let coefficient = finite_word(solution.coefficient_words[channel])?;
                 if !solution.support[channel] || coefficient.value() == 0.0 {
                     continue;
                 }
-                let carrier = complex(carrier_words, channel, CHANNEL_COUNT, slot, bin)?;
+                let carrier = complex(carrier_words, channel, CARRIER_COUNT, slot, bin)?;
                 let carrier_real = multiply(carrier[0], weight)?;
                 let carrier_imaginary = multiply(carrier[1], weight)?;
                 model_real = add(model_real, multiply(coefficient, carrier_real)?)?;
@@ -229,9 +257,9 @@ pub fn normalize_selected_solution(
     let ratio = divide(target_energy, denominator)?;
     let scale = square_root(ratio)?;
     let storage_scale = finite_word(STORAGE_SCALE_BITS)?;
-    let mut normalized_words = [ZERO_BITS; CHANNEL_COUNT];
-    let mut stored_words = [ZERO_BITS; CHANNEL_COUNT];
-    for channel in 0..CHANNEL_COUNT {
+    let mut normalized_words = [ZERO_BITS; CARRIER_COUNT];
+    let mut stored_words = [ZERO_BITS; CARRIER_COUNT];
+    for channel in 0..CARRIER_COUNT {
         if !solution.support[channel] {
             continue;
         }
@@ -292,7 +320,9 @@ fn complex(
 mod tests {
     use super::*;
     use crate::joc::{
-        coefficient_normal_equations::build_selected_normal_equations,
+        coefficient_normal_equations::{
+            build_normal_equations_for_carriers, build_selected_normal_equations,
+        },
         coefficient_quantization::{
             CoefficientPrecision, quantize_selected_coefficient, restore_trial_coefficient,
         },
@@ -326,6 +356,35 @@ mod tests {
         ("EXPECTED.json", EXPECTED),
         ("INPUT-ONLY.json", INPUT),
     ];
+
+    #[test]
+    fn seven_carrier_solver_and_normalizer_keep_seven_words() {
+        let target_words = vec![ZERO_BITS; 15 * SLOT_COUNT * BIN_COUNT * COMPONENT_COUNT];
+        let carrier_words = vec![ZERO_BITS; 7 * SLOT_COUNT * BIN_COUNT * COMPONENT_COUNT];
+        let weights = [ONE_BITS; SLOT_COUNT];
+        let equations =
+            build_normal_equations_for_carriers::<7>(&target_words, &carrier_words, &weights)
+                .unwrap();
+        let solution = solve_support_for_carriers::<7>(&equations[0], [true; 7]).unwrap();
+        let normalized = normalize_solution_for_carriers::<7>(
+            &equations[0],
+            &solution,
+            &target_words,
+            &carrier_words,
+            &weights,
+        )
+        .unwrap();
+
+        assert_eq!(solution.support().len(), 7);
+        assert_eq!(solution.coefficient_words().len(), 7);
+        assert_eq!(normalized.stored_words().len(), 7);
+        assert!(
+            normalized
+                .stored_words()
+                .iter()
+                .all(|word| *word == ZERO_BITS)
+        );
+    }
 
     #[test]
     fn washed_fit_boundary_payloads_match_their_manifest() {
