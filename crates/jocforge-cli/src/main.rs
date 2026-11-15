@@ -54,7 +54,7 @@ fn main() -> ExitCode {
     match arguments.as_slice() {
         [command] if command == "--help" || command == "-h" => {
             println!(
-                "jocforge\nusage: jocforge --help | --version | encode <input.adm.wav> <output.ec3> [--data-rate <384|448|576|640|768|1024>] [--joc-layout <flat7x>] | encode --job-xml <job.xml> [--preflight-only]\nencode prepares one selected full-file ADM request; omitted --data-rate defaults to 1024 and omitted --joc-layout preserves the selected 5.1 profile\nFlat7x candidate capture code exists, but the CLI still fails closed at Flat7xCoefficientSourceUnavailable until a same-source 15x7 coefficient provider is available; production_allowed remains false\n--job-xml reads ADM BWF through either XML branch (adm or atmos_mezz) and EC-3 output; unsupported fields and containers reject\n--preflight-only admits XML and input metadata but does not start Meter or create output"
+                "jocforge\nusage: jocforge --help | --version | encode <input.adm.wav> <output.ec3> [--data-rate <384|448|576|640|768|1024>] [--joc-layout <flat7x>] | encode --job-xml <job.xml> [--preflight-only]\nencode prepares one selected full-file ADM request; omitted --data-rate defaults to 1024 and omitted --joc-layout preserves the selected 5.1 profile\nFlat7x now stages seven-carrier QMF windows, a C=7 fit and selector-1 ID14 through the source callback; this experimental output path has not yet been checked with OpenJOC or playback\n--job-xml reads ADM BWF through either XML branch (adm or atmos_mezz) and EC-3 output; unsupported fields and containers reject\n--preflight-only admits XML and input metadata but does not start Meter or create output"
             );
             ExitCode::SUCCESS
         }
