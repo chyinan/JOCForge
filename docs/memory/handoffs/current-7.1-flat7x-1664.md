@@ -599,6 +599,10 @@ F15 input now carries the complete Codec `Flat7xD0SourceGenerationReceipt` from 
 
 The discriminator test directly calls `write_id14_header_for_profile` with `Id14HeaderInput.downmix_index=3`. Flat7x's resolved `joc_dmx_config_idx=Some(1)` serializes U3=1; selected 5.1's `None` preserves U3=3. The focused test and selected 5.1 all-rate route test pass. No production writer or audio path changed.
 
+## 2026-11-15 F13 serializer to sequence-aware F14K parser
+
+`flat7x_f13_serialized_bytes_roundtrip_through_sequence_aware_f14k_parser` stages source 2 through `MetadataOwner`, so the selected Flat7x F13 serializer produces the actual zero-slot bytes. Synthetic input-only OAMD and ID14 payloads are passed through F14K protection and `MetadataSourceProposal::bind_protected_container`, which invokes the sequence-aware parser. The test verifies F13 `[11,14]` serialization order, parsed payload order and bytes, declared/consumed container length, F14K protection ranges/codes, and zero terminal padding. The focused roundtrip and selected 5.1 all-rate regression pass; no audio is generated and production behavior is unchanged.
+
 ## 2026-11-15 Flat7x selected-dispatch coverage
 
 `flat7x_fit_crosses_selected_dispatch_and_writes_seven_row_id14` now runs the existing seven-carrier QMF window and fit stages, then directly calls `stage_selected_joc_source_with_seven_carrier_fit`; that production function calls `stage_joc_payload_with_seven_carrier_fit`. The test checks the fit's projected 15 objects each have one coefficient point with seven 12-band rows, the selected row layout/downmix index are C=7/index 1, and the actual written ID14 header has reconstruction index 1 and object count 15. Inputs use synthetic zero PCM and test identities; the test verifies dispatch wiring and serialized shape, not audio quality or authoritative coefficient values.

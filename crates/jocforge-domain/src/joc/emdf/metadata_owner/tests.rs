@@ -143,7 +143,14 @@ fn stage_source_with_bound_id14_provenance(
     case: &Value,
     spatial_digest: crate::spatial::SpatialAudioDigest,
 ) -> MetadataSourceProposal {
-    let mut call = source_call(case);
+    stage_source_call_with_bound_id14_provenance(owner, source_call(case), spatial_digest)
+}
+
+fn stage_source_call_with_bound_id14_provenance(
+    owner: &MetadataOwner,
+    mut call: MetadataSourceCall,
+    spatial_digest: crate::spatial::SpatialAudioDigest,
+) -> MetadataSourceProposal {
     bind_test_id14_provenance(&mut call, spatial_digest);
     let producer = call.bodies.id14_provenance.clone().unwrap();
     let bodies = MetadataBodiesProposal::for_test_with_id14_provenance(
@@ -204,6 +211,70 @@ fn bind_test_id14_provenance(
         )
         .expect("same-source ID14 provenance"),
     );
+}
+
+fn synthetic_valid_flat7x_oamd_body() -> Vec<u8> {
+    let rows = (0..16)
+        .map(|index| crate::joc::oamd::rowdata::OamdRow {
+            kind: if index == 0 {
+                crate::joc::oamd::rowdata::OamdRowKind::Lfe
+            } else {
+                crate::joc::oamd::rowdata::OamdRowKind::Object
+            },
+            mute: false,
+            gain: 0,
+            spread: 32_767,
+            xyz_q15: [0; 3],
+            component: 0,
+            z_valid: true,
+            diffuse: false,
+        })
+        .collect::<Vec<_>>();
+    crate::joc::oamd::rowdata::encode_oamd_body(
+        &crate::joc::oamd::rowdata::OamdTiming {
+            base: 0,
+            position: 0,
+            duration: 1_536,
+            precision: 0,
+        },
+        &rows,
+    )
+    .unwrap()
+}
+
+fn synthetic_valid_flat7x_id14_payload(
+    profile: crate::profile::ResolvedEncodingProfile,
+) -> Vec<u8> {
+    let point = crate::joc::coefficient_payload::CoefficientPayloadPoint {
+        channel_rows: (0..7).map(|_| vec![0.25]).collect(),
+        selected_channels: Vec::new(),
+    };
+    let input = crate::joc::coefficient_payload::CoefficientPayloadInput {
+        downmix_index: 1,
+        extension_config: 0,
+        clip_gain_index: 128,
+        sequence_count: 0,
+        time_slot_limit: 24,
+        capacity_bytes: 372,
+        objects: (0..15)
+            .map(
+                |_| crate::joc::coefficient_payload::CoefficientPayloadObject {
+                    present: true,
+                    band_enum: 0,
+                    mode: 1,
+                    points: vec![point.clone()],
+                    offsets: None,
+                },
+            )
+            .collect(),
+    };
+    crate::joc::coefficient_payload::Flat7xCoefficientRows::new(&input)
+        .unwrap()
+        .write_payload(profile)
+        .unwrap()
+        .payload()
+        .unwrap()
+        .to_vec()
 }
 
 fn bytes_hex(bytes: &[u8]) -> String {
@@ -1549,6 +1620,174 @@ fn flat7x_emdf_pair_is_profile_scoped_and_keeps_four_queue_operations() {
                 && operation["consumer_transaction_id"].as_str() == Some(consumer_transaction_id))
     );
     assert!(flat7x_proposal.emdf().is_some());
+}
+
+#[test]
+fn flat7x_f13_serialized_bytes_roundtrip_through_sequence_aware_f14k_parser() {
+    let vectors = vectors();
+    let calls = vectors["continuous_calls"].as_array().unwrap();
+    let root = fixture_root();
+    let provider = canonical_lf_fixture_bytes(
+        &std::fs::read(root.join("metadata-public-provider.json")).unwrap(),
+    );
+    let wrapper = canonical_lf_fixture_bytes(
+        &std::fs::read(root.join("metadata-wrapper-config.json")).unwrap(),
+    );
+    let profile = resolve_selected_profile(
+        &EncodingProfile::selected_with_joc_reconstruction_layout(JocReconstructionLayout::Flat7x),
+    )
+    .unwrap();
+    let mut owner =
+        MetadataOwner::new_for_profile(id1_configuration(0), 5, &provider, &wrapper, profile)
+            .unwrap();
+    let spatial_digest = crate::spatial::SpatialAudioMachine::new_cold(EncodingProfile::selected())
+        .unwrap()
+        .digest();
+    let oamd_body = synthetic_valid_flat7x_oamd_body();
+    let id14_payload = synthetic_valid_flat7x_id14_payload(profile);
+    for call in &calls[..2] {
+        let mut call = source_call(call);
+        call.bodies.id11 = Some(MetadataPayloadBody {
+            writer_generation: call.source_index,
+            bytes: oamd_body.clone(),
+        });
+        call.bodies.id14 = Some(MetadataPayloadBody {
+            writer_generation: call.source_index,
+            bytes: id14_payload.clone(),
+        });
+        owner = stage_source_call_with_bound_id14_provenance(&owner, call, spatial_digest)
+            .into_after_owner();
+    }
+
+    let proposal = stage_source_with_bound_id14_provenance(&owner, &calls[2], spatial_digest);
+    assert_eq!(
+        proposal.receipt().payload_sequence(),
+        CurrentEmdfPayloadSequence::Flat7xExperimentalJocPair
+    );
+    let zero_slot = proposal
+        .emdf()
+        .expect("published source has serialized F13 bytes");
+    let zero_slot = zero_slot.to_vec();
+    let terminal_layout = proposal
+        .terminal_layout()
+        .expect("F13 serializer retains its terminal layout")
+        .clone();
+    assert_eq!(
+        proposal.receipt().as_json()["emdf_hex"],
+        Value::String(hex_encode(&zero_slot))
+    );
+    let published_payloads = proposal.receipt().as_json()["published_payloads"]
+        .as_array()
+        .unwrap()
+        .clone();
+    let published_ids = published_payloads
+        .iter()
+        .map(|payload| u8::try_from(payload["id"].as_u64().unwrap()).unwrap())
+        .collect::<Vec<_>>();
+    assert_eq!(published_ids, [11, 14]);
+
+    let provider_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("tests/fixtures/integrity_owner/integrity-public-provider.json");
+    let provider_bytes = std::fs::read(provider_path).unwrap();
+    let keyless_provider =
+        crate::integrity::keyless_checksum::validate_keyless_provider(&provider_bytes).unwrap();
+    let protected = crate::integrity::keyless_checksum::protect_emdf_container(
+        &keyless_provider,
+        &zero_slot,
+        &terminal_layout,
+    )
+    .unwrap();
+    let protected_bytes = protected.bytes();
+    assert_eq!(protected_bytes.len(), zero_slot.len());
+    assert_eq!(
+        usize::from(u16::from_be_bytes([protected_bytes[2], protected_bytes[3]])) + 4,
+        protected_bytes.len()
+    );
+    let terminal_id = terminal_layout["terminal_id"]["value"].as_u64().unwrap();
+    let primary_length_code = terminal_layout["primary_length_code"]["value"]
+        .as_u64()
+        .unwrap();
+    let secondary_length_code = terminal_layout["secondary_length_code"]["value"]
+        .as_u64()
+        .unwrap();
+    assert_eq!(
+        (terminal_id, primary_length_code, secondary_length_code),
+        (0, 2, 1)
+    );
+    let primary_range = terminal_layout["primary_protection_range_bits"]
+        .as_array()
+        .unwrap();
+    let secondary_range = terminal_layout["secondary_protection_range_bits"]
+        .as_array()
+        .unwrap();
+    assert_eq!(
+        (
+            protected.primary_range().start_bit(),
+            protected.primary_range().end_bit()
+        ),
+        (
+            primary_range[0].as_u64().unwrap(),
+            primary_range[1].as_u64().unwrap()
+        )
+    );
+    assert_eq!(
+        (
+            protected.secondary_range().start_bit(),
+            protected.secondary_range().end_bit()
+        ),
+        (
+            secondary_range[0].as_u64().unwrap(),
+            secondary_range[1].as_u64().unwrap()
+        )
+    );
+    let padding_range = terminal_layout["terminal_padding_range_bits"]
+        .as_array()
+        .unwrap();
+    let padding_start = usize::try_from(padding_range[0].as_u64().unwrap()).unwrap();
+    let padding_end = usize::try_from(padding_range[1].as_u64().unwrap()).unwrap();
+    assert!(padding_end - padding_start <= 7);
+    assert_eq!(
+        terminal_layout["terminal_padding_bits"].as_u64(),
+        Some(u64::try_from(padding_end - padding_start).unwrap())
+    );
+    assert!(
+        (padding_start..padding_end)
+            .all(|bit| { protected_bytes[bit / 8] & (1 << (7 - bit % 8)) == 0 })
+    );
+
+    let mut proposal = proposal;
+    proposal
+        .bind_protected_container(
+            protected_bytes,
+            crate::joc::emdf::protected_container::CurrentEmdfCarriageMode::DeployedCompat,
+            crate::joc::emdf::protected_container::CarrierBlock::new(2).unwrap(),
+        )
+        .unwrap();
+    let parsed = proposal.parsed_container().unwrap().parsed_container();
+    assert_eq!(
+        parsed.payload_sequence(),
+        CurrentEmdfPayloadSequence::Flat7xExperimentalJocPair
+    );
+    assert_eq!(parsed.as_bytes(), protected_bytes);
+    assert_eq!(parsed.as_bytes().len(), zero_slot.len());
+    let parsed_payloads = parsed.payloads();
+    assert_eq!(
+        parsed_payloads
+            .iter()
+            .map(|payload| payload.id().wire_value())
+            .collect::<Vec<_>>(),
+        [11, 14]
+    );
+    for (parsed, serialized) in parsed_payloads.iter().zip(&published_payloads) {
+        assert_eq!(
+            parsed.id().wire_value(),
+            u8::try_from(serialized["id"].as_u64().unwrap()).unwrap()
+        );
+        assert_eq!(
+            parsed.bytes(),
+            hex_bytes(serialized["payload_hex"].as_str().unwrap())
+        );
+    }
 }
 
 #[test]
