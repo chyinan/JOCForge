@@ -50,12 +50,14 @@ use jocforge_application::{
     source_analysis_bridge::{
         AnalysisOwnerRoot, SelectedSourceAnalysisProviders, SpatialSourceAnalysisBridgeInput,
         prepare_source_analysis_from_spatial_callback,
+        prepare_source_analysis_from_spatial_callback_with_installed_audio,
     },
     source_frame_bridge::{
         CodecOwnerRoot, Flat7xD0PcmSourceExtent, Flat7xD0PcmSourceExtentOrigin,
-        Flat7xSourcePcmProjection, SevenCarrierQmfState, build_flat7x_source_pcm_projection,
-        prepare_admitted_source_frame, stage_codec_owner_after_flat7x_pair,
-        stage_flat7x_seven_carrier_coefficient_fit, stage_flat7x_seven_carrier_windows,
+        Flat7xSourcePcmProjection, SevenCarrierQmfState, build_flat7x_i0_analysis_input,
+        build_flat7x_source_pcm_projection, prepare_admitted_source_frame,
+        stage_codec_owner_after_flat7x_pair, stage_flat7x_seven_carrier_coefficient_fit,
+        stage_flat7x_seven_carrier_windows,
     },
     spatial_callback::{MainSpatialCallbackCandidate, MainSpatialColdRoots},
 };
@@ -245,19 +247,7 @@ pub(crate) fn stage_source_frame<'pcm>(
     )
     .map_err(|error| format!("Meter unchanged callback receipt: {error:?}"))?;
 
-    let analysis_box =
-        prepare_source_analysis_from_spatial_callback(SpatialSourceAnalysisBridgeInput {
-            prepared,
-            analysis_before,
-            spatial_callback: &spatial_callback,
-            attempt_id: attempt,
-            source_transaction_id: source_transaction_id.clone(),
-            previous_short: *codec_before.previous_short(),
-            providers: analysis_providers.providers(),
-        })
-        .map_err(|error| format!("F07-F10 source stage: {error:?}"))?;
-    let mut analysis_stage = *analysis_box;
-    let flat7x_source_pcm_projection =
+    let flat7x_callback_pcm =
         if joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
             let pcm_source = flat7x_physical_pcm_rows.ok_or_else(|| {
                 "Flat7x source stage requires the callback's physical PCM rows".to_owned()
@@ -302,25 +292,68 @@ pub(crate) fn stage_source_frame<'pcm>(
                     ));
                 }
             };
-            let shared_analysis = analysis_stage.shared_analysis().ok_or_else(|| {
-                "Flat7x role map requires the current shared source analysis".to_owned()
-            })?;
-            Some(
-                build_flat7x_source_pcm_projection(
-                    prepared,
-                    Flat7xI0D0TargetPlan::approved_contract(),
-                    &callback_identity,
-                    source_index,
-                    &source_transaction_id,
-                    shared_analysis.identity(),
-                    source_extent,
-                    pcm_source.physical_pcm_rows(),
-                )
-                .map_err(|error| format!("Flat7x source PCM projection: {error:?}"))?,
+            let i0_analysis_input = build_flat7x_i0_analysis_input(
+                prepared,
+                Flat7xI0D0TargetPlan::approved_contract(),
+                source_index,
+                pcm_source.physical_pcm_rows(),
             )
+            .map_err(|error| {
+                SourceFrameStageError::Pipeline(format!(
+                    "Flat7x I0 source rows could not be prepared: {error:?}"
+                ))
+            })?;
+            Some((pcm_source, source_extent, i0_analysis_input))
         } else {
             None
         };
+
+    let analysis_input = SpatialSourceAnalysisBridgeInput {
+        prepared,
+        analysis_before,
+        spatial_callback: &spatial_callback,
+        attempt_id: attempt,
+        source_transaction_id: source_transaction_id.clone(),
+        previous_short: *codec_before.previous_short(),
+        providers: analysis_providers.providers(),
+    };
+    let analysis_box = if let Some((_, _, i0_analysis_input)) = flat7x_callback_pcm.as_ref() {
+        prepare_source_analysis_from_spatial_callback_with_installed_audio(
+            analysis_input,
+            Some(i0_analysis_input.installed_audio()),
+        )
+    } else {
+        prepare_source_analysis_from_spatial_callback(analysis_input)
+    }
+    .map_err(|error| format!("F07-F10 source stage: {error:?}"))?;
+    let mut analysis_stage = *analysis_box;
+    let flat7x_source_pcm_projection = if let Some((pcm_source, source_extent, i0_analysis_input)) =
+        flat7x_callback_pcm.as_ref()
+    {
+        let shared_analysis = analysis_stage.shared_analysis().ok_or_else(|| {
+            "Flat7x role map requires the current shared source analysis".to_owned()
+        })?;
+        let projection = build_flat7x_source_pcm_projection(
+            prepared,
+            Flat7xI0D0TargetPlan::approved_contract(),
+            &callback_identity,
+            source_index,
+            &source_transaction_id,
+            shared_analysis.identity(),
+            *source_extent,
+            pcm_source.physical_pcm_rows(),
+        )
+        .map_err(|error| format!("Flat7x source PCM projection: {error:?}"))?;
+        if projection.role_map_receipt().role_map() != i0_analysis_input.role_map() {
+            return Err(SourceFrameStageError::Pipeline(
+                "Flat7x I0 and D0/JOC projections selected different provisional role maps"
+                    .to_owned(),
+            ));
+        }
+        Some(projection)
+    } else {
+        None
+    };
 
     let drc_source =
         prepare_drc_source_from_analysis(prepared, drc_before, &analysis_stage, &callback_identity)

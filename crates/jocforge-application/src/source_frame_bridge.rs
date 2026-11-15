@@ -27,7 +27,10 @@ pub use jocforge_domain::{
 };
 
 use jocforge_domain::{
-    analysis::source_frame::{SharedAnalysisIdentity, SharedAnalysisReceipt},
+    analysis::source_frame::{
+        InstalledAudioProjectionError, SharedAnalysisIdentity, SharedAnalysisReceipt,
+        SourcedInstalledAudioFrame, installed_audio_from_external_pcm_rows,
+    },
     codec::{
         bap::BapParameters,
         published_emdf_binding::{PublishedEmdfBindingError, emdf_frame_input_for_source},
@@ -67,6 +70,7 @@ pub enum SourceFrameBridgeError {
     MetadataSourceLineageMismatch,
     Flat7xSourceRoleMap(Flat7xSourceRoleMapError),
     Flat7xSourceRoleMapLineageMismatch,
+    Flat7xI0Audio(InstalledAudioProjectionError),
     SevenCarrierSourceIdentityMismatch,
     SevenCarrierWindow(SevenCarrierWindowError),
     SevenCarrierCoefficientFitLineageMismatch,
@@ -167,6 +171,64 @@ pub struct Flat7xSourcePcmProjection<'a> {
     role_map_receipt: Flat7xSourceRoleMapReceipt,
     source_extent: Flat7xD0PcmSourceExtent,
     pcm_view: Flat7xProvisionalSourcePcmView<'a>,
+}
+
+/// Flat7x's provisional six-row I0 source, routed into the existing F07 external lane order.
+#[derive(Debug, Eq, PartialEq)]
+pub struct Flat7xI0AnalysisInput {
+    role_map: Flat7xProvisionalSourceRoleMap,
+    installed_audio: SourcedInstalledAudioFrame,
+}
+
+impl Flat7xI0AnalysisInput {
+    pub const fn role_map(&self) -> &Flat7xProvisionalSourceRoleMap {
+        &self.role_map
+    }
+
+    pub const fn installed_audio(&self) -> &SourcedInstalledAudioFrame {
+        &self.installed_audio
+    }
+}
+
+/// Builds the provisional Flat7x I0 row selection before F07-F10 analysis starts.
+///
+/// The source rows are mapped under `Flat7xProvisionalSourceRoleMap::assumption_id`; their I0
+/// carrier order `[L, C, R, Ls, Rs, LFE]` is reordered into F07's existing external order
+/// `[L, R, C, LFE, Ls, Rs]`. The selected five-point-one profile does not use this route.
+pub fn build_flat7x_i0_analysis_input(
+    prepared: &PreparedJobInput,
+    target: Flat7xI0D0TargetPlan,
+    source_index: CodecSourceIndex,
+    physical_pcm_rows: &[Vec<u32>],
+) -> Result<Flat7xI0AnalysisInput, SourceFrameBridgeError> {
+    let role_map = build_flat7x_provisional_source_role_map(prepared.graph().graph(), target)
+        .map_err(SourceFrameBridgeError::Flat7xSourceRoleMap)?;
+    if usize::from(role_map.physical_row_count())
+        != usize::from(prepared.configuration().wave().channels())
+    {
+        return Err(SourceFrameBridgeError::Flat7xSourceRoleMapLineageMismatch);
+    }
+    let pcm_view = project_profile_source_pcm_rows(&role_map, physical_pcm_rows)
+        .map_err(SourceFrameBridgeError::Flat7xSourceRoleMap)?;
+    let installed_audio = installed_audio_from_flat7x_i0_rows(source_index, pcm_view.i0().rows())
+        .map_err(SourceFrameBridgeError::Flat7xI0Audio)?;
+    Ok(Flat7xI0AnalysisInput {
+        role_map,
+        installed_audio,
+    })
+}
+
+/// Packs already selected Flat7x I0 roles into F07's established external lane order.
+pub fn installed_audio_from_flat7x_i0_rows(
+    source_index: CodecSourceIndex,
+    i0_rows: [&[u32]; 6],
+) -> Result<SourcedInstalledAudioFrame, InstalledAudioProjectionError> {
+    installed_audio_from_external_pcm_rows(
+        source_index,
+        [
+            i0_rows[0], i0_rows[2], i0_rows[1], i0_rows[5], i0_rows[3], i0_rows[4],
+        ],
+    )
 }
 
 impl<'a> Flat7xSourcePcmProjection<'a> {
@@ -678,6 +740,7 @@ fn validate_metadata_source_lineage(
 mod integrity_cursor_tests {
     use super::*;
     use jocforge_domain::codec::bitio::FrameBitCursor;
+    use jocforge_domain::timeline::CodecSourceIndex;
 
     #[test]
     fn published_f12_cursor_must_be_present_but_may_be_bit_aligned() {
@@ -702,5 +765,31 @@ mod integrity_cursor_tests {
             validate_f12_cursor_shape(false, Some(FrameBitCursor::new(24))),
             Err(SourceFrameBridgeError::F12EmdfCursorUnexpected)
         );
+    }
+
+    #[test]
+    fn flat7x_i0_role_rows_enter_f07_in_external_lane_order() {
+        let role_rows: [Vec<u32>; 6] = std::array::from_fn(|role| {
+            (0..1_536)
+                .map(|sample| ((role * 1_536 + sample) as f32).to_bits())
+                .collect::<Vec<_>>()
+        });
+        let installed = installed_audio_from_flat7x_i0_rows(
+            CodecSourceIndex::new(11),
+            std::array::from_fn(|role| role_rows[role].as_slice()),
+        )
+        .unwrap();
+        let expected_role_by_external_lane = [0, 2, 1, 5, 3, 4];
+
+        for (lane, role) in expected_role_by_external_lane.into_iter().enumerate() {
+            assert_eq!(
+                installed.audio()[lane][0][0],
+                ((role * 1_536) as f32).to_bits()
+            );
+            assert_eq!(
+                installed.audio()[lane][5][255],
+                ((role * 1_536 + 1_535) as f32).to_bits()
+            );
+        }
     }
 }

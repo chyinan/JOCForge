@@ -52,6 +52,7 @@ pub enum InstalledAudioProjectionError {
     CallbackHasNoCodecSource,
     SourceIndexMismatch,
     UnexpectedFinalSixSampleCount { lane: u8, actual_samples: usize },
+    UnexpectedPcmRowSampleCount { lane: u8, actual_samples: usize },
 }
 
 /// Copies the admitted F04R final six into the six externally ordered F07 source rows.
@@ -69,6 +70,45 @@ pub fn installed_audio_from_final_six(
     }
 
     let audio = pack_final_six(projection.final_six())?;
+    Ok(SourcedInstalledAudioFrame {
+        source_index,
+        audio,
+    })
+}
+
+/// Copies six already selected PCM rows into the existing external F07 lane order.
+///
+/// Callers provide `[L, R, C, LFE, Ls, Rs]`; each row is copied bit-for-bit and partitioned
+/// into six consecutive 256-sample blocks. Profile-specific row selection remains outside this
+/// module.
+///
+/// # Panics
+///
+/// Panics only if the compile-time lane dimensions change without updating the fixed frame
+/// allocation below.
+pub fn installed_audio_from_external_pcm_rows(
+    source_index: CodecSourceIndex,
+    external_rows: [&[u32]; EXTERNAL_AUDIO_LANES],
+) -> Result<SourcedInstalledAudioFrame, InstalledAudioProjectionError> {
+    let mut audio: Box<InstalledAudioSourceFrame> =
+        vec![[[0_u32; INPUT_HISTORY_BLOCK_SAMPLES]; F07_BLOCKS_PER_FRAME]; EXTERNAL_AUDIO_LANES]
+            .into_boxed_slice()
+            .try_into()
+            .expect("the fixed lane vector converts to the selected audio frame");
+    for (lane, source_row) in external_rows.into_iter().enumerate() {
+        if source_row.len() != SOURCE_FRAME_SAMPLE_COUNT {
+            return Err(InstalledAudioProjectionError::UnexpectedPcmRowSampleCount {
+                lane: u8::try_from(lane).unwrap_or(u8::MAX),
+                actual_samples: source_row.len(),
+            });
+        }
+        for block in 0..F07_BLOCKS_PER_FRAME {
+            let source_offset = block * INPUT_HISTORY_BLOCK_SAMPLES;
+            audio[lane][block].copy_from_slice(
+                &source_row[source_offset..source_offset + INPUT_HISTORY_BLOCK_SAMPLES],
+            );
+        }
+    }
     Ok(SourcedInstalledAudioFrame {
         source_index,
         audio,
@@ -162,6 +202,56 @@ mod installed_audio_projection_tests {
                     actual_samples: SOURCE_FRAME_SAMPLE_COUNT - 1,
                 }
             )
+        );
+    }
+
+    #[test]
+    fn external_pcm_rows_keep_lane_order_and_sample_bits() {
+        let rows: [Vec<u32>; EXTERNAL_AUDIO_LANES] = std::array::from_fn(|lane| {
+            (0..SOURCE_FRAME_SAMPLE_COUNT)
+                .map(|sample| ((lane * SOURCE_FRAME_SAMPLE_COUNT + sample) as f32).to_bits())
+                .collect::<Vec<_>>()
+        });
+        let installed = super::installed_audio_from_external_pcm_rows(
+            crate::timeline::CodecSourceIndex::new(7),
+            std::array::from_fn(|lane| rows[lane].as_slice()),
+        )
+        .unwrap();
+
+        assert_eq!(installed.source_index().value(), 7);
+        for lane in 0..EXTERNAL_AUDIO_LANES {
+            for block in 0..F07_BLOCKS_PER_FRAME {
+                for sample in [0, INPUT_HISTORY_BLOCK_SAMPLES - 1] {
+                    let source_sample = block * INPUT_HISTORY_BLOCK_SAMPLES + sample;
+                    assert_eq!(
+                        installed.audio()[lane][block][sample],
+                        ((lane * SOURCE_FRAME_SAMPLE_COUNT + source_sample) as f32).to_bits()
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn external_pcm_rows_reject_a_malformed_row() {
+        let rows: [Vec<u32>; EXTERNAL_AUDIO_LANES] = std::array::from_fn(|lane| {
+            let length = if lane == 5 {
+                SOURCE_FRAME_SAMPLE_COUNT - 1
+            } else {
+                SOURCE_FRAME_SAMPLE_COUNT
+            };
+            vec![0_u32; length]
+        });
+
+        assert_eq!(
+            super::installed_audio_from_external_pcm_rows(
+                crate::timeline::CodecSourceIndex::new(0),
+                std::array::from_fn(|lane| rows[lane].as_slice()),
+            ),
+            Err(InstalledAudioProjectionError::UnexpectedPcmRowSampleCount {
+                lane: 5,
+                actual_samples: SOURCE_FRAME_SAMPLE_COUNT - 1,
+            })
         );
     }
 }

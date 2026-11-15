@@ -2243,3 +2243,11 @@ The local selected F13 route requires all four payloads: `MetadataOwner::PUBLICA
 Decision: E-1104 remains the preserved `[11,14,2,1]` baseline. The Flat7x diagnostic variant now projects `[11,14]` before F13 serialization while retaining all four ID1/ID2/ID11/ID14 queue operations and typed pop receipts; the selected four-payload/5.1 path stays unchanged. Its candidate remains `production_allowed=false`. This structural A/B does not establish DRC, playback or acoustic equivalence.
 
 The emitted sequence is a typed F13 receipt value passed through F14K source lineage, D0 block-two source/placement receipts, F12/F15 admission, and the durable candidate sequence summary. The Flat7x owner test verifies all four queue-pop lineages remain present while the emitted subset is `[11,14]`; the application F14K/D0/F15 cross-layer test uses a labeled test-only receipt shell. The new E-1105 full candidate/OpenJOC inspection is the real protected-container parse check and is pending.
+
+## 2026-11-16 Flat7x I0 source routing correction
+
+The E-1105 internal OpenJOC base decode has zero RMS on `L`, `R`, `C`, and `LFE`; `Ls/Rs` carry signal and `Lrs/Rrs` carry lower-level signal. E-1106's selected 5.1 base decode has nonzero RMS on all six core lanes. The E-1105 source candidate is structurally admitted, but its core audio source is not reaching the I0 analysis plan.
+
+Flat7x now projects the six provisional I0 ADM role rows and packs `[L,C,R,Ls,Rs,LFE]` into the established F07 external order `[L,R,C,LFE,Ls,Rs]`. This source frame enters the existing F07-F10 analysis and numeric-plan stages before the existing I0 AC-3 writer. The selected 5.1 route still uses its F04 final-six projection. I0 and D0/JOC projections must resolve to the same provisional role map for each source; missing rows or mismatched maps fail the source stage.
+
+The row-role mapping remains explicitly provisional under `flat7x-direct-speaker-bed-rows-to-i0-d0-joc-roles-v1`. The focused six-lane packing and nonzero F08 fullband/LFE plan tests pass, as does the selected 5.1 all-rate regression. A new full Love Song Release encode and OpenJOC internal-base RMS check are pending; the fix is not yet acoustically verified.
