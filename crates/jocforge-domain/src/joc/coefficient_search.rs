@@ -182,8 +182,9 @@ pub fn search_coefficient_cell_for_carriers<const CARRIER_COUNT: usize>(
             break;
         }
         let mut winner: Option<(usize, Candidate<CARRIER_COUNT>)> = None;
+        let mut last_scaled_range_error = None;
         for (candidate_index, support) in candidate_supports.iter().copied().enumerate() {
-            let candidate = evaluate_candidate::<CARRIER_COUNT>(
+            let candidate = match evaluate_candidate::<CARRIER_COUNT>(
                 provider,
                 equation,
                 target_words,
@@ -191,7 +192,18 @@ pub fn search_coefficient_cell_for_carriers<const CARRIER_COUNT: usize>(
                 weight_words,
                 support,
                 precision,
-            )?;
+            ) {
+                Ok(candidate) => candidate,
+                Err(
+                    error @ CoefficientSearchError::Quantization(
+                        CoefficientQuantizationError::ScaledI32Range,
+                    ),
+                ) if CARRIER_COUNT == 7 => {
+                    last_scaled_range_error = Some(error);
+                    continue;
+                }
+                Err(error) => return Err(error),
+            };
             if winner
                 .as_ref()
                 .is_none_or(|(_, current)| candidate.score.score() < current.score.score())
@@ -199,7 +211,12 @@ pub fn search_coefficient_cell_for_carriers<const CARRIER_COUNT: usize>(
                 winner = Some((candidate_index, candidate));
             }
         }
-        let (winner_index, winner) = winner.ok_or(CoefficientSearchError::InputShape)?;
+        let (winner_index, winner) = match winner {
+            Some(winner) => winner,
+            None => {
+                return Err(last_scaled_range_error.unwrap_or(CoefficientSearchError::InputShape));
+            }
+        };
         if iteration == 0 {
             let selected = winner
                 .support
