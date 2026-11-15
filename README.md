@@ -8,13 +8,17 @@ Example: encode the selected 5.1 profile at 1024 kbps.
 jocforge encode "D:\input.adm.wav" "D:\output.ec3" --data-rate 1024
 ```
 
-**详细结构 Flat7.1：实验性候选路径已接通，输出验证尚未完成。** The target follows the official demo structure:
+**详细结构 Flat7.1：已有全曲实验候选并完成 OpenJOC 渲染。** The target follows the official demo structure:
 
 - I0: 640 kbps legacy AC-3; D0: 1024 kbps E-AC-3 with `chanmap=0x1A00` (1,664 kbps aggregate target).
 - Flat7x/JOC reconstruction index 1, 15 JOC objects, seven coefficient rows, and complexity 16. Coefficient rows are separate from ADM physical input rows.
 - One complete EMDF skip field in D0 block 2; payloads are limited to 1..511 bytes and oversized fields reject.
 
-The selected Flat7x CLI now stages seven-carrier raw-QMF windows, a diagnostic C=7 fit, and selector-1 ID14 writing on the same source callback. A borrowed PCM view maps ADM bed roles into JOC order `[L,R,C,Ls,Rs,Lrs,Rrs]`; the selected graph fixture resolves to physical rows `[0,1,2,4,5,6,7]`, while I0 and D0 keep their own coded-row maps. This path is experimental; no real 7.1 candidate has been generated or checked with OpenJOC yet. The role selection remains provisional, and the selected 5.1 example above remains usable; its outputs are not equivalent to DEE.
+The selected Flat7x CLI stages seven-carrier raw-QMF windows, a diagnostic C=7 fit, selector-1 ID14 writing, and an I0+D0 AU. A full Love Song run produced 8,417 AUs at 1,664 kbps aggregate; OpenJOC 0.20.1 parsed and admitted all AUs under observed-vendor compatibility and rendered an 8-channel, 48 kHz float WAV. The renderer remains experimental and semantic binding is unresolved. ADM-role mapping remains provisional, and the ID14-row/OAMD-slot identity is not yet bound. The selected 5.1 route remains available and its outputs are not equivalent to DEE.
+
+The E-1100 run uses the official scalar ID11 wrapper flags while keeping the observed `codecdatae=0`; the selected 5.1 wrapper profile remains unchanged. Its D0 candidate carries a block-two placement receipt with the frame bit span, Codec source-generation receipt, and AU identity. The receipt log labels the separate F15 source-generation value explicitly.
+
+E-1100 completed 8,417 AUs and rendered an 8-channel, 48 kHz float WAV through OpenJOC observed-vendor compatibility. ETSI strict reports only the shared ID11/ID14 `codecdatae=0` deviation. The renderer and ADM-role mapping remain experimental; this output is not equivalent to DEE.
 
 Target command for an isolated experimental candidate:
 
