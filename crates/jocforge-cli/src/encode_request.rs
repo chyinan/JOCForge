@@ -1066,11 +1066,6 @@ fn run_inner(
                 roots.published_aus(),
             )));
         }
-        eprintln!(
-            "D0 block-two placement receipts: {}/{}",
-            flat7x_d0_block2_placement_receipts,
-            roots.published_aus(),
-        );
     }
     if !roots.is_complete_for_eof() {
         staging.abandon_attempt();
@@ -1127,11 +1122,13 @@ fn run_inner(
             }
         };
         eprintln!(
-            "experimental candidate captured: status=EXPERIMENTAL_CANDIDATE output={} bytes={} sha256={} attempt={} production_allowed={} final_product_exposure=false programme_done=false render=NOT_RUN playback=NOT_RUN",
+            "experimental candidate captured: status=EXPERIMENTAL_CANDIDATE output={} bytes={} sha256={} attempt={} d0_block_two_placement_receipts={}/{} production_allowed={} final_product_exposure=false programme_done=false render=NOT_RUN playback=NOT_RUN",
             candidate.candidate_path().display(),
             candidate.bytes_written(),
             hex_lower(candidate.sha256()),
             candidate.attempt_id(),
+            flat7x_d0_block2_placement_receipts,
+            roots.published_aus(),
             candidate.production_allowed(),
         );
         return Ok(());
