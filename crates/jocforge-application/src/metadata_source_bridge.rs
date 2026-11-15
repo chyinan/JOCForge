@@ -456,6 +456,7 @@ mod flat7x_rows_route_tests {
     };
     use jocforge_domain::{
         codec::{
+            ac3_bsi_tail::Flat7xI0Ac3BsiTailInput,
             access_unit_composer::{
                 Flat7xI0D0OpaqueFrameSpans, OpaqueD0FrameBytes, OpaqueI0FrameBytes,
                 write_flat7x_i0_d0_access_unit_bytes,
@@ -472,6 +473,11 @@ mod flat7x_rows_route_tests {
                 Flat7xD0AllocationCandidateQ, Flat7xD0AudioFrameControlPolicy,
             },
             frame_builder::{Flat7xD0BsiStructure, Flat7xD0Ci16Addbsi},
+            i0_frame_assembler::{
+                CallerOwnedI0CrcrsvSeed, Flat7xI0Ac3FrameAssemblyReceipt,
+                Flat7xI0Ac3FrameHeaderFields, Flat7xI0Ac3FrameInput, I0AuxDataInput,
+                OpaqueI0Ac3BitSpan, assemble_flat7x_i0_ac3_frame_from_fields,
+            },
         },
         integrity::crc16::eac3_crc16,
         joc::programme_state::{JocSourceStageErrorKind, SelectedJocStateError},
@@ -530,6 +536,48 @@ mod flat7x_rows_route_tests {
             information: None,
             addbsi: Flat7xD0Ci16Addbsi::new([0x01, 0x10]),
         }
+    }
+
+    fn synthetic_i0_frame(
+        target: jocforge_domain::profile::Flat7xI0D0TargetPlan,
+    ) -> ([u8; 2_560], Flat7xI0Ac3FrameAssemblyReceipt) {
+        let audio_block_bits = [3_399_u32, 3_399, 3_399, 3_399, 3_399, 3_398];
+        let audio_bytes: [Vec<u8>; 6] = std::array::from_fn(|index| {
+            let bytes = usize::try_from(audio_block_bits[index].div_ceil(8)).unwrap();
+            vec![0x30 + u8::try_from(index).unwrap(); bytes]
+        });
+        let audio_blocks = std::array::from_fn(|index| {
+            OpaqueI0Ac3BitSpan::new(&audio_bytes[index], 0, audio_block_bits[index])
+        });
+        let input = Flat7xI0Ac3FrameInput {
+            header_fields: Flat7xI0Ac3FrameHeaderFields {
+                frmsizecod: 36,
+                bsmod: 0,
+                cmixlev: 0,
+                surmixlev: 0,
+                dialnorm: 16,
+                compr: None,
+            },
+            bsi_tail: Flat7xI0Ac3BsiTailInput {
+                langcode: None,
+                audio_production: None,
+                copyright: false,
+                original_bitstream: false,
+                time_code_1: None,
+                time_code_2: None,
+                additional_bsi: None,
+            },
+            audio_blocks,
+            auxdata: I0AuxDataInput::Absent,
+            crcrsv_seed: CallerOwnedI0CrcrsvSeed { value: false },
+        };
+        let mut frame_bytes = [0_u8; 2_560];
+        let receipt;
+        {
+            let mut writer = FrameBitWriter::new(&mut frame_bytes, FrameBitCursor::new(0)).unwrap();
+            receipt = assemble_flat7x_i0_ac3_frame_from_fields(target, input, &mut writer).unwrap();
+        }
+        (frame_bytes, receipt)
     }
 
     #[test]
@@ -664,7 +712,7 @@ mod flat7x_rows_route_tests {
 
     #[cfg(feature = "test-support")]
     #[test]
-    fn synthetic_opaque_skipfield_frame_composes_with_i0_before_d0() {
+    fn synthetic_i0_d0_headers_and_pair_extent_match_flat7x_target() {
         let target = jocforge_domain::profile::Flat7xI0D0TargetPlan::approved_contract();
         // Wash source-probe receipt reports the sample's I0 AC-3 / D0 E-AC-3 distinction.
         assert_eq!(
@@ -694,6 +742,9 @@ mod flat7x_rows_route_tests {
         assert_eq!(target.i0().frame_bytes(), 2_560);
         assert_eq!(target.d0().frame_bytes(), 4_096);
         assert_eq!(target.aggregate_frame_bytes(), 6_656);
+        assert_eq!(target.sample_rate_hz(), 48_000);
+        assert_eq!(target.audio_blocks_per_frame(), 6);
+        assert_eq!(target.samples_per_frame(), 1_536);
         // Wash receipt v2 identifies component[1] as D0 and reports chanmap [6656].
         assert_eq!(target.d0().channel_map().unwrap().value(), 0x1a00);
         assert_eq!(synthetic_d0_bsi().addbsi.bytes(), [0x01, 0x10]);
@@ -729,6 +780,15 @@ mod flat7x_rows_route_tests {
         }
         assert!(!d0_receipt.production_allowed());
         assert_eq!(d0_receipt.layout().bsi_span().end_bit(), 93);
+        assert_eq!(d0_receipt.target_frame_bytes(), 4_096);
+        assert_eq!(d0_receipt.layout().audio_blocks().len(), 6);
+        assert_eq!(read_bits(&d0_frame, 0, 16), 0x0b77);
+        assert_eq!(read_bits(&d0_frame, 16, 2), 1); // Dependent E-AC-3 strmtyp
+        assert_eq!(read_bits(&d0_frame, 18, 3), 0); // substreamid
+        assert_eq!(read_bits(&d0_frame, 21, 11), 2_047); // 4096-byte target frmsiz
+        assert_eq!(read_bits(&d0_frame, 32, 2), 0); // fscod: 48 kHz
+        assert_eq!(read_bits(&d0_frame, 34, 2), 3); // numblkscod: six blocks
+        assert_eq!(read_bits(&d0_frame, 40, 5), 16); // BSID
         assert_eq!(read_bits(&d0_frame, 51, 1), 1); // chanmape
         assert_eq!(read_bits(&d0_frame, 52, 16), 0x1a00);
         assert_eq!(read_bits(&d0_frame, 77, 16), 0x0110); // CI16 addbsi bytes
@@ -795,7 +855,15 @@ mod flat7x_rows_route_tests {
         assert_eq!(overflow_cursor, 0);
         assert_eq!(rejected_d0_frame, original_rejected_d0_frame);
 
-        let i0_frame = [0x31_u8; 2_560];
+        let (i0_frame, i0_receipt) = synthetic_i0_frame(target);
+        assert!(!i0_receipt.production_allowed());
+        assert_eq!(i0_receipt.frame().target_frame_bytes(), 2_560);
+        assert_eq!(i0_receipt.frame().audio_block_spans().len(), 6);
+        assert_eq!(read_bits(&i0_frame, 0, 16), 0x0b77);
+        assert_eq!(read_bits(&i0_frame, 32, 2), 0); // fscod: 48 kHz
+        assert_eq!(read_bits(&i0_frame, 34, 6), 36); // 640-kbps AC-3 frame-size code
+        assert_eq!(read_bits(&i0_frame, 40, 5), 6); // BSID
+        assert_eq!(eac3_crc16(&i0_frame[2..]), 0);
         let mut access_unit = [0_u8; 6_656];
         let access_unit_receipt;
         {
