@@ -789,6 +789,9 @@ fn run_inner(
     )
     .map_err(EncodeRequestError::SourcePipeline)?;
 
+    let flat7x_selected =
+        resolved_joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x;
+    let mut flat7x_d0_block2_placement_receipts = 0_u64;
     let callback_result = (|| {
         let mut roots = roots;
         let normal_callbacks = roots.normal_callbacks().value();
@@ -863,6 +866,33 @@ fn run_inner(
                     .commit_source_advance(callback_transaction_id, &prepared, advance)
                     .map_err(EncodeRequestError::SourcePipeline)?;
                 roots = next_roots;
+                match (
+                    receipt.append.as_ref(),
+                    receipt.flat7x_d0_block2_placement_receipt.as_ref(),
+                ) {
+                    (Some(append), Some(placement))
+                        if append.durable && append.au_index == placement.au_index().value() =>
+                    {
+                        flat7x_d0_block2_placement_receipts = flat7x_d0_block2_placement_receipts
+                            .checked_add(1)
+                            .ok_or_else(|| {
+                                EncodeRequestError::SourcePipeline(
+                                    "D0 block-two placement receipt count overflow".to_owned(),
+                                )
+                            })?;
+                    }
+                    (Some(_), None) if flat7x_selected => {
+                        return Err(EncodeRequestError::SourcePipeline(
+                            "durable Flat7x AU has no D0 block-two placement receipt".to_owned(),
+                        ));
+                    }
+                    (Some(_), None) | (None, None) => {}
+                    _ => {
+                        return Err(EncodeRequestError::SourcePipeline(
+                            "D0 block-two placement receipt differs from its append".to_owned(),
+                        ));
+                    }
+                }
                 let flat7x_role_map_assumption = receipt
                     .flat7x_source_role_map
                     .as_ref()
@@ -1028,6 +1058,20 @@ fn run_inner(
             return Err(error);
         }
     };
+    if flat7x_selected {
+        if flat7x_d0_block2_placement_receipts != roots.published_aus() {
+            staging.abandon_attempt();
+            return Err(EncodeRequestError::SourcePipeline(format!(
+                "D0 block-two placement receipts {flat7x_d0_block2_placement_receipts}/{} do not match published AUs",
+                roots.published_aus(),
+            )));
+        }
+        eprintln!(
+            "D0 block-two placement receipts: {}/{}",
+            flat7x_d0_block2_placement_receipts,
+            roots.published_aus(),
+        );
+    }
     if !roots.is_complete_for_eof() {
         staging.abandon_attempt();
         return Err(EncodeRequestError::SourcePipeline(

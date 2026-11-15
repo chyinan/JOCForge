@@ -10,10 +10,11 @@ use crate::{
     selected_spatial_callback_providers::SelectedMainSpatialCallbackProviders,
 };
 use jocforge_application::flat7x_pair_source::{
-    CallerOwnedI0CrcrsvSeed, Flat7xD0BapParameters, Flat7xD0BsiStructure, Flat7xD0PcmFrameSettings,
-    Flat7xI0FrameAssemblyError, Flat7xPairSourceError, I0AudioBlockSeriesBudget, I0AuxDataInput,
-    OpaqueI0Ac3BitSpan, assemble_flat7x_i0_frame_candidate_from_binding,
-    bind_flat7x_d0_block2_source_receipt, bind_flat7x_pair_source, flat7x_i0_audio_block_policy_v1,
+    CallerOwnedI0CrcrsvSeed, D0Block2PlacementReceipt, Flat7xD0BapParameters, Flat7xD0BsiStructure,
+    Flat7xD0PcmFrameSettings, Flat7xI0FrameAssemblyError, Flat7xPairSourceError,
+    I0AudioBlockSeriesBudget, I0AuxDataInput, OpaqueI0Ac3BitSpan,
+    assemble_flat7x_i0_frame_candidate_from_binding, bind_flat7x_d0_block2_source_receipt,
+    bind_flat7x_pair_source, flat7x_i0_audio_block_policy_v1,
     produce_flat7x_pair_d0_pcm_frame_candidate, stage_flat7x_pair_d0_pcm_block_series,
 };
 use jocforge_application::{
@@ -171,6 +172,7 @@ pub(crate) struct SourceFrameAdvance<'pcm> {
     pub frame_sha256: [u8; 32],
     pub metadata_container_bytes: Option<usize>,
     pub flat7x_d0_frame_syntax: Option<Flat7xD0FrameSyntaxSummary>,
+    pub flat7x_d0_block2_placement_receipt: Option<D0Block2PlacementReceipt>,
     pub f14k_source: F14kSourceCandidate,
     pub integrity_receipts: IntegrityF12SourceReceipts,
     pub flat7x_integrity_pair_receipts:
@@ -480,6 +482,7 @@ pub(crate) fn stage_source_frame<'pcm>(
     let mut flat7x_d0_history_after = None;
     let mut flat7x_pair_after = None;
     let mut flat7x_d0_frame_syntax = None;
+    let mut flat7x_d0_block2_placement_receipt = None;
     if let Some(binding) = flat7x_pair_source_binding {
         let history_before = codec_before.d0_overlap_history().ok_or_else(|| {
             SourceFrameStageError::Pipeline(
@@ -710,6 +713,7 @@ pub(crate) fn stage_source_frame<'pcm>(
                 ))
             })?;
             let block2_placement = f15_pair.d0_block2_placement_receipt();
+            flat7x_d0_block2_placement_receipt = Some(block2_placement.clone());
             if block2_placement.au_index().value() == 0 {
                 let bit_span = block2_placement.bit_span();
                 eprintln!(
@@ -1050,6 +1054,7 @@ pub(crate) fn stage_source_frame<'pcm>(
         frame_sha256,
         metadata_container_bytes,
         flat7x_d0_frame_syntax,
+        flat7x_d0_block2_placement_receipt,
         f14k_source,
         integrity_receipts,
         flat7x_integrity_pair_receipts,
