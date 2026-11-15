@@ -603,6 +603,14 @@ The discriminator test directly calls `write_id14_header_for_profile` with `Id14
 
 `flat7x_f13_serialized_bytes_roundtrip_through_sequence_aware_f14k_parser` stages source 2 through `MetadataOwner`, so the selected Flat7x F13 serializer produces the actual zero-slot bytes. Synthetic input-only OAMD and ID14 payloads are passed through F14K protection and `MetadataSourceProposal::bind_protected_container`, which invokes the sequence-aware parser. The test verifies F13 `[11,14]` serialization order, parsed payload order and bytes, declared/consumed container length, F14K protection ranges/codes, and zero terminal padding. The focused roundtrip and selected 5.1 all-rate regression pass; no audio is generated and production behavior is unchanged.
 
+## 2026-11-16 E-1106 selected 5.1 PCM baseline
+
+E-1106 used the same `D:\Love Song 方大同.wav` input and the default selected 5.1 route at 1,024 kbps; no Flat7x selector was passed. The Release run completed naturally with 8,419 sources / 8,417 published AUs, one 4,096-byte E-AC-3 frame per AU, six blocks / 1,536 coded samples per AU, and 12,928,512 coded samples total. Candidate SHA-256 is `bc01dcfc3b21cfefc4f20e522762e466d98d03375a14988d0b440d437f1db0a5`.
+
+OpenJOC 0.20.1 observed-vendor compatibility admitted 8,417/8,417 AUs with zero malformed AUs and continuous frame/metadata timing. The inspect reports an I0-only 5.1 AC-3-mode frame, `acmod=7`, LFE on, six coded channels, and JOC profile index3 / five reconstruction inputs / 15 objects / CI16. ETSI strict reports ID11 `codecdatae=0`, `payload_frame_aligned=0`, and absent duplicate/priority/proc fields versus expected zero; ID14 `codecdatae=0` also differs from strict expectations.
+
+The OpenJOC 5.1 PCM baseline is `D:\JOCForge-attempts\E1106-love-song-5.1-1024-baseline-20261116\render\love-song-5.1-openjoc.wav`: 6 channels, 48 kHz, IEEE float32, 12,928,544 frames / 77,571,264 samples, order `FL, FR, FC, LFE, Ls, Rs`. This is the comparison render for the E-1105 7.1 file; listening/PCM comparison remains pending.
+
 ## 2026-11-15 Flat7x selected-dispatch coverage
 
 `flat7x_fit_crosses_selected_dispatch_and_writes_seven_row_id14` now runs the existing seven-carrier QMF window and fit stages, then directly calls `stage_selected_joc_source_with_seven_carrier_fit`; that production function calls `stage_joc_payload_with_seven_carrier_fit`. The test checks the fit's projected 15 objects each have one coefficient point with seven 12-band rows, the selected row layout/downmix index are C=7/index 1, and the actual written ID14 header has reconstruction index 1 and object count 15. Inputs use synthetic zero PCM and test identities; the test verifies dispatch wiring and serialized shape, not audio quality or authoritative coefficient values.
