@@ -853,6 +853,56 @@ mod tests {
     use super::*;
 
     #[test]
+    fn profile_aware_id14_header_uses_flat7x_layout_and_keeps_5_1_input_value() {
+        use crate::profile::{EncodingProfile, JocReconstructionLayout, resolve_selected_profile};
+
+        let flat7x =
+            resolve_selected_profile(&EncodingProfile::selected_with_joc_reconstruction_layout(
+                JocReconstructionLayout::Flat7x,
+            ))
+            .unwrap();
+        let five_point_one = resolve_selected_profile(&EncodingProfile::selected()).unwrap();
+        assert_eq!(flat7x.joc_dmx_config_idx(), Some(1));
+        assert_eq!(five_point_one.joc_dmx_config_idx(), None);
+
+        let input = |downmix_index| Id14HeaderInput {
+            downmix_index,
+            object_count: 1,
+            extension_config: 0,
+            clip_gain_index: 0,
+            sequence_count: 0,
+            channel_limit: 7,
+            descriptors: Some(vec![Id14ObjectDescriptor {
+                present: Id14Presence::Present,
+                kind_code: 0,
+                mode_code: 0,
+                nested_mode: 0,
+                nested_count: 1,
+                selected_index0: 0,
+                selected_index1: 0,
+            }]),
+            body: Vec::new(),
+            body_valid_bits: HuffmanBitCount::new(0),
+        };
+
+        let mut flat7x_writer = Id14WriterState::new(vec![0; 128]);
+        let flat7x_outcome =
+            write_id14_header_for_profile(&input(3), flat7x, &mut flat7x_writer).unwrap();
+        assert_eq!(flat7x_outcome.return_code(), Id14WriterReturnCode::Success);
+        assert_eq!(flat7x_writer.buffer()[0] >> 5, 1);
+
+        let mut five_point_one_writer = Id14WriterState::new(vec![0; 128]);
+        let five_point_one_outcome =
+            write_id14_header_for_profile(&input(3), five_point_one, &mut five_point_one_writer)
+                .unwrap();
+        assert_eq!(
+            five_point_one_outcome.return_code(),
+            Id14WriterReturnCode::Success
+        );
+        assert_eq!(five_point_one_writer.buffer()[0] >> 5, 3);
+    }
+
+    #[test]
     fn codebook_provider_rejects_prefix_conflicts_before_use() {
         let mut parameters: serde_json::Value = serde_json::from_str(SELECTED_CODEBOOKS).unwrap();
         parameters["tables"]["position_5"]["entries"][1]["code"] = 0.into();
