@@ -152,6 +152,7 @@ impl Flat7xD0SourceIdentity {
 pub struct D0Block2PlacementReceipt {
     block_index: D0AudioBlockIndex,
     bit_span: D0FrameBitSpan,
+    container_bytes: u16,
     source_generation_receipt: Flat7xD0SourceGenerationReceipt,
     au_index: PublishedAuIndex,
 }
@@ -163,6 +164,10 @@ impl D0Block2PlacementReceipt {
 
     pub const fn bit_span(&self) -> D0FrameBitSpan {
         self.bit_span
+    }
+
+    pub const fn container_bytes(&self) -> u16 {
+        self.container_bytes
     }
 
     pub const fn codec_source_generation(&self) -> Flat7xD0SourceGeneration {
@@ -528,8 +533,15 @@ pub fn produce_flat7x_pair_d0_pcm_frame_candidate(
 
     let layout = frame_candidate.frame().receipt().frame_assembly().layout();
     let block_index = layout.audio_blocks()[2].block_index();
-    let bit_span = layout.block_two_skip_field().bit_span();
-    if block_index.zero_based_value() != 2 || bit_span.bit_length() == 0 {
+    let skip_field = layout.block_two_skip_field();
+    let bit_span = skip_field.bit_span();
+    let container_bytes = skip_field.payload_bytes();
+    let expected_bit_length = 10 + u32::from(container_bytes) * 8;
+    if block_index.zero_based_value() != 2
+        || container_bytes == 0
+        || container_bytes > 511
+        || bit_span.bit_length() != expected_bit_length
+    {
         return Err(Flat7xPairSourceError::D0Block2PlacementMismatch);
     }
 
@@ -540,6 +552,7 @@ pub fn produce_flat7x_pair_d0_pcm_frame_candidate(
         block2_placement: D0Block2PlacementReceipt {
             block_index,
             bit_span,
+            container_bytes,
             source_generation_receipt: settings.source_generation_receipt.clone(),
             au_index,
         },
@@ -2029,10 +2042,76 @@ mod pair_access_unit_integration_tests {
         })
         .unwrap();
 
+        let mut wrong_container_extent_d0_frame = d0_frame.clone();
+        wrong_container_extent_d0_frame
+            .block2_placement
+            .container_bytes += 1;
+        assert_eq!(
+            stage_flat7x_pair_f12_integrity(Flat7xPairF12StageInput {
+                integrity_before: &integrity_owner,
+                i0_frame: &i0_frame,
+                d0_frame: &wrong_container_extent_d0_frame,
+                f13_metadata: &metadata,
+                f14k_source: &f14k_source,
+                keyless_integrity: &keyless_provider,
+            })
+            .unwrap_err(),
+            crate::flat7x_pair_integrity::Flat7xPairF12StageError::D0Block2PlacementMismatch
+        );
+
+        let mut wrong_span_d0_frame = d0_frame.clone();
+        wrong_span_d0_frame.block2_placement.bit_span = d0_frame
+            .frame_candidate()
+            .frame()
+            .receipt()
+            .frame_assembly()
+            .layout()
+            .audio_blocks()[3]
+            .leading_audio_span();
+        assert!(wrong_span_d0_frame.block2_placement.bit_span.bit_length() > 0);
+        assert_eq!(
+            stage_flat7x_pair_f12_integrity(Flat7xPairF12StageInput {
+                integrity_before: &integrity_owner,
+                i0_frame: &i0_frame,
+                d0_frame: &wrong_span_d0_frame,
+                f13_metadata: &metadata,
+                f14k_source: &f14k_source,
+                keyless_integrity: &keyless_provider,
+            })
+            .unwrap_err(),
+            crate::flat7x_pair_integrity::Flat7xPairF12StageError::D0Block2PlacementMismatch
+        );
+
         assert!(matches!(
             stage_flat7x_pcm_pair_for_f15(
                 &mismatched_i0_frame,
                 &d0_frame,
+                Flat7xSourceGeneration::new(source_index.value()),
+                &metadata,
+                &f12_pair,
+                Flat7xAuOutputOwner::cold(&attempt.value().to_string(), 1).unwrap(),
+            ),
+            Err(
+                crate::flat7x_pair_output::Flat7xPairAppendProposalError::D0Block2PlacementMismatch
+            )
+        ));
+        assert!(matches!(
+            stage_flat7x_pcm_pair_for_f15(
+                &i0_frame,
+                &wrong_container_extent_d0_frame,
+                Flat7xSourceGeneration::new(source_index.value()),
+                &metadata,
+                &f12_pair,
+                Flat7xAuOutputOwner::cold(&attempt.value().to_string(), 1).unwrap(),
+            ),
+            Err(
+                crate::flat7x_pair_output::Flat7xPairAppendProposalError::D0Block2PlacementMismatch
+            )
+        ));
+        assert!(matches!(
+            stage_flat7x_pcm_pair_for_f15(
+                &i0_frame,
+                &wrong_span_d0_frame,
                 Flat7xSourceGeneration::new(source_index.value()),
                 &metadata,
                 &f12_pair,

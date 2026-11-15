@@ -719,11 +719,12 @@ pub(crate) fn stage_source_frame<'pcm>(
             if block2_placement.au_index().value() == 0 {
                 let bit_span = block2_placement.bit_span();
                 eprintln!(
-                    "Flat7x D0 block-two placement: au={} block={} bits={}..{} codec_source_generation={} f15_source_generation={}",
+                    "Flat7x D0 block-two placement: au={} block={} bits={}..{} C={} codec_source_generation={} f15_source_generation={}",
                     block2_placement.au_index().value(),
                     block2_placement.block_index().zero_based_value(),
                     bit_span.start_bit(),
                     bit_span.end_bit(),
+                    block2_placement.container_bytes(),
                     block2_placement.codec_source_generation().value(),
                     f15_pair.source_generation().value(),
                 );

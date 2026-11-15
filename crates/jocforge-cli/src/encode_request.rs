@@ -792,6 +792,8 @@ fn run_inner(
     let flat7x_selected =
         resolved_joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x;
     let mut flat7x_d0_block2_placement_receipts = 0_u64;
+    let mut flat7x_d0_block2_max_container_bytes = 0_u16;
+    let mut flat7x_d0_block2_overflow_receipts = 0_u64;
     let callback_result = (|| {
         let mut roots = roots;
         let normal_callbacks = roots.normal_callbacks().value();
@@ -880,6 +882,17 @@ fn run_inner(
                                     "D0 block-two placement receipt count overflow".to_owned(),
                                 )
                             })?;
+                        flat7x_d0_block2_max_container_bytes =
+                            flat7x_d0_block2_max_container_bytes.max(placement.container_bytes());
+                        if placement.container_bytes() > 511 {
+                            flat7x_d0_block2_overflow_receipts = flat7x_d0_block2_overflow_receipts
+                                .checked_add(1)
+                                .ok_or_else(|| {
+                                    EncodeRequestError::SourcePipeline(
+                                        "D0 block-two placement overflow count overflow".to_owned(),
+                                    )
+                                })?;
+                        }
                     }
                     (Some(_), None) if flat7x_selected => {
                         return Err(EncodeRequestError::SourcePipeline(
@@ -1122,13 +1135,15 @@ fn run_inner(
             }
         };
         eprintln!(
-            "experimental candidate captured: status=EXPERIMENTAL_CANDIDATE output={} bytes={} sha256={} attempt={} d0_block_two_placement_receipts={}/{} production_allowed={} final_product_exposure=false programme_done=false render=NOT_RUN playback=NOT_RUN",
+            "experimental candidate captured: status=EXPERIMENTAL_CANDIDATE output={} bytes={} sha256={} attempt={} d0_block_two_placement_receipts={}/{} d0_block_two_container_max_C={} overflow_receipts={} production_allowed={} final_product_exposure=false programme_done=false render=NOT_RUN playback=NOT_RUN",
             candidate.candidate_path().display(),
             candidate.bytes_written(),
             hex_lower(candidate.sha256()),
             candidate.attempt_id(),
             flat7x_d0_block2_placement_receipts,
             roots.published_aus(),
+            flat7x_d0_block2_max_container_bytes,
+            flat7x_d0_block2_overflow_receipts,
             candidate.production_allowed(),
         );
         return Ok(());

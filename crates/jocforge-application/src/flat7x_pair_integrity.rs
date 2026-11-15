@@ -33,6 +33,7 @@ pub enum Flat7xPairF12StageError {
     F14kReceiptMismatch,
     F14kContainerMissing,
     D0ContainerCursorMissing,
+    D0Block2PlacementMismatch,
     SourceGenerationReceiptMismatch,
     Integrity(IntegrityError),
 }
@@ -78,11 +79,27 @@ pub fn stage_flat7x_pair_f12_integrity(
         }
     };
     let d0_placement = input.d0_frame.block2_placement_receipt();
+    let d0_layout = input
+        .d0_frame
+        .frame_candidate()
+        .frame()
+        .receipt()
+        .frame_assembly()
+        .layout();
+    let authoritative_skip = d0_layout.block_two_skip_field();
     let i0_source_generation = input.i0_frame.source_generation_receipt();
     if d0_placement.au_index() != au_index
         || d0_placement.block_index().zero_based_value() != 2
-        || d0_placement.bit_span().bit_length() == 0
-        || i0_source_generation != d0_placement.source_generation_receipt()
+        || d0_placement.container_bytes() == 0
+        || d0_placement.container_bytes() > 511
+        || d0_placement.bit_span() != authoritative_skip.bit_span()
+        || d0_placement.container_bytes() != authoritative_skip.payload_bytes()
+        || d0_placement.bit_span().bit_length()
+            != 10 + u32::from(d0_placement.container_bytes()) * 8
+    {
+        return Err(Flat7xPairF12StageError::D0Block2PlacementMismatch);
+    }
+    if i0_source_generation != d0_placement.source_generation_receipt()
         || input.f14k_source.source_generation_receipt() != Some(i0_source_generation)
     {
         return Err(Flat7xPairF12StageError::SourceGenerationReceiptMismatch);
@@ -127,6 +144,7 @@ pub fn stage_flat7x_pair_f12_integrity(
         || input.f14k_source.dispatch() != dispatch
         || input.f14k_source.au_index() != Some(au_index)
         || protected_length != protected.bytes().len()
+        || usize::from(d0_placement.container_bytes()) != protected_length
         || parsed_container.bytes() != protected.bytes()
         || !(1..=511).contains(&protected_length)
     {

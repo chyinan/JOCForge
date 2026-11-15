@@ -463,20 +463,27 @@ pub fn stage_flat7x_pcm_pair_for_f15<'a>(
         return Err(Flat7xPairAppendProposalError::PairSourceIdentityMismatch);
     }
     let block2_placement = d0_frame.block2_placement_receipt();
-    if f13_metadata.receipt().au_index() != Some(block2_placement.au_index())
-        || block2_placement.block_index().zero_based_value() != 2
-        || i0_frame.source_generation_receipt() != block2_placement.source_generation_receipt()
-    {
-        return Err(Flat7xPairAppendProposalError::D0Block2PlacementMismatch);
-    }
-    let target = Flat7xI0D0TargetPlan::approved_contract();
     let layout = d0_frame
         .frame_candidate()
         .frame()
         .receipt()
         .frame_assembly()
         .layout();
-    let skip = layout.block_two_skip_field();
+    let authoritative_skip = layout.block_two_skip_field();
+    if f13_metadata.receipt().au_index() != Some(block2_placement.au_index())
+        || block2_placement.block_index().zero_based_value() != 2
+        || block2_placement.container_bytes() == 0
+        || block2_placement.container_bytes() > 511
+        || block2_placement.bit_span() != authoritative_skip.bit_span()
+        || block2_placement.container_bytes() != authoritative_skip.payload_bytes()
+        || block2_placement.bit_span().bit_length()
+            != 10 + u32::from(block2_placement.container_bytes()) * 8
+        || i0_frame.source_generation_receipt() != block2_placement.source_generation_receipt()
+    {
+        return Err(Flat7xPairAppendProposalError::D0Block2PlacementMismatch);
+    }
+    let target = Flat7xI0D0TargetPlan::approved_contract();
+    let skip = authoritative_skip;
     let skip_target = target.d0_emdf_skip_field();
     let skip_extent = D0EmdfSkipFieldExtent::new(
         source_generation,

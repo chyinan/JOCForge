@@ -643,7 +643,10 @@ impl<'a> ProgrammeOwnerRoots<'a> {
             (true, Some(expected_au_index), Some(placement)) => {
                 placement.au_index().value() == expected_au_index
                     && placement.block_index().zero_based_value() == 2
-                    && placement.bit_span().bit_length() > 0
+                    && placement.container_bytes() > 0
+                    && placement.container_bytes() <= 511
+                    && placement.bit_span().bit_length()
+                        == 10 + u32::from(placement.container_bytes()) * 8
                     && placement.source_generation_receipt().source_index() == source_index
                     && placement
                         .source_generation_receipt()

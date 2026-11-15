@@ -187,6 +187,26 @@ fn synthetic_layout_vectors_reject_missing_duplicate_misplaced_and_oversized_fie
 }
 
 #[test]
+fn block_three_cannot_carry_a_skip_field() {
+    let vectors: Value = serde_json::from_str(INPUT_ONLY_VECTORS).unwrap();
+    let case = vector(&vectors, "valid-single-block-two-field");
+    let mut fields = fields_by_block(case);
+    let skip_field = fields[2].pop().unwrap();
+    fields[3].push(skip_field);
+    let input = six_block_input(audio_block_lengths(case), block_field_refs(&fields));
+
+    assert!(matches!(
+        propose_flat7x_d0_six_block_layout(
+            Flat7xI0D0TargetPlan::approved_contract(),
+            baseline_bsi_structure(),
+            input,
+        ),
+        Err(D0SixBlockLayoutError::SkipFieldOnNonBlockTwo { block_index })
+            if block_index.zero_based_value() == 3
+    ));
+}
+
+#[test]
 fn synthetic_layout_vectors_reject_frame_limit_and_arithmetic_overflow() {
     let vectors: Value = serde_json::from_str(INPUT_ONLY_VECTORS).unwrap();
     let oversized = vector(&vectors, "reject-frame-span-over-target");
