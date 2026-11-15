@@ -319,7 +319,9 @@ fn write_fit_representation_with_profile(
             }
             continue;
         }
-        if objects.iter().any(|object| object.mode == 0) {
+        if payload_downmix_index == JocPayloadDownmixIndex::FiveChannel
+            && objects.iter().any(|object| object.mode == 0)
+        {
             for object in objects.iter_mut().filter(|object| object.mode == 0) {
                 object.mode = 2;
                 for band in 0..object.band_count() {
