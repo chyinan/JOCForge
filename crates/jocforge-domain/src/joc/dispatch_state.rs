@@ -24,8 +24,7 @@ use crate::{
     transaction::{CallbackLineageIdentity, CallbackTransactionId},
 };
 
-const SELECTED_CAPACITY_BYTES: u16 = 372;
-const FLAT7X_CAPACITY_BYTES: u16 = 511;
+const ID14_PAYLOAD_CAPACITY_BYTES: u16 = 372;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct JocDispatchState {
@@ -394,7 +393,7 @@ pub fn stage_joc_payload_with_seven_carrier_fit(
             retry_provider,
             input.clip_gain_index,
             sequence_count,
-            FLAT7X_CAPACITY_BYTES,
+            ID14_PAYLOAD_CAPACITY_BYTES,
         )
         .map_err(JocDispatchError::Retry)?;
     let mut after = before.clone();
@@ -486,7 +485,7 @@ fn stage_joc_payload_inner(
                     retry_provider,
                     input.clip_gain_index,
                     sequence_count,
-                    SELECTED_CAPACITY_BYTES,
+                    ID14_PAYLOAD_CAPACITY_BYTES,
                 ),
             Some(profile) if is_flat7x_profile(profile) => {
                 return Err(JocDispatchError::Flat7xCoefficientSourceUnavailable);
@@ -496,7 +495,7 @@ fn stage_joc_payload_inner(
                 retry_provider,
                 input.clip_gain_index,
                 sequence_count,
-                SELECTED_CAPACITY_BYTES,
+                ID14_PAYLOAD_CAPACITY_BYTES,
             ),
         };
         result.map_err(JocDispatchError::Retry)?
