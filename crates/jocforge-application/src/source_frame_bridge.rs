@@ -588,12 +588,22 @@ pub fn stage_codec_owner_after_flat7x_pair(
         d0_frame.frame_candidate().frame().frame_bytes(),
         Flat7xI0D0TargetPlan::approved_contract(),
     )?;
-    codec_owner.stage_source_with_d0_overlap_history(
+    let proposal = codec_owner.stage_source_with_d0_overlap_history(
         &accepted_frame,
         &source_candidate.codec_short_flags(),
         Some(output_after),
         Some(d0_history_after),
-    )
+    )?;
+    let generation_receipt = d0_frame
+        .block2_placement_receipt()
+        .source_generation_receipt();
+    if proposal.source_index() != generation_receipt.source_index() {
+        return Err(CodecOwnerStageError::SourceIdentityMismatch);
+    }
+    if proposal.after_state().generation() != generation_receipt.codec_owner_after_generation() {
+        return Err(CodecOwnerStageError::GenerationMismatch);
+    }
+    Ok(proposal)
 }
 
 fn validate_metadata_source_lineage(
