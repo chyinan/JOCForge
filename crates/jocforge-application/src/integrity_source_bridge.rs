@@ -7,6 +7,7 @@
 
 use jocforge_domain::{
     codec::{
+        d0_frame_assembler::D0Block2F13SourceLineage, owner::Flat7xD0SourceGenerationReceipt,
         selected_frame_trial::EmdfFrameInput, source_frame_writer::SelectedSourceFrameCandidate,
     },
     integrity::keyless_checksum::{
@@ -92,6 +93,8 @@ pub struct F14kSourceCandidate {
     au_index: Option<PublishedAuIndex>,
     outcome: F14kPayloadOutcome,
     protected_container: Option<ProtectedEmdfContainer>,
+    source_generation_receipt: Option<Flat7xD0SourceGenerationReceipt>,
+    f13_source_lineage: Option<D0Block2F13SourceLineage>,
 }
 
 impl F14kSourceCandidate {
@@ -114,6 +117,14 @@ impl F14kSourceCandidate {
     pub const fn protected_container(&self) -> Option<&ProtectedEmdfContainer> {
         self.protected_container.as_ref()
     }
+
+    pub const fn source_generation_receipt(&self) -> Option<&Flat7xD0SourceGenerationReceipt> {
+        self.source_generation_receipt.as_ref()
+    }
+
+    pub const fn f13_source_lineage(&self) -> Option<&D0Block2F13SourceLineage> {
+        self.f13_source_lineage.as_ref()
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -126,6 +137,8 @@ pub enum F14kSourceBridgeError {
     Protection(EmdfProtectionError),
     MetadataOwner(MetadataOwnerError),
     IntegrityOwner(IntegrityError),
+    SourceGenerationLineageMismatch,
+    D0Block2SourceReceipt(jocforge_domain::codec::d0_frame_assembler::D0Block2SourceReceiptError),
 }
 
 /// Applies F14K to one exact F13 proposal and binds the protected parse for the F12 adapter.
@@ -137,6 +150,15 @@ pub enum F14kSourceBridgeError {
 pub fn protect_metadata_source_for_frame(
     metadata: &mut MetadataSourceProposal,
     provider: &KeylessIntegrityProvider,
+) -> Result<F14kSourceCandidate, F14kSourceBridgeError> {
+    protect_metadata_source_for_frame_with_source_generation(metadata, provider, None)
+}
+
+/// Applies F14K while retaining the codec-owner-issued Flat7x source-generation receipt.
+pub fn protect_metadata_source_for_frame_with_source_generation(
+    metadata: &mut MetadataSourceProposal,
+    provider: &KeylessIntegrityProvider,
+    source_generation_receipt: Option<Flat7xD0SourceGenerationReceipt>,
 ) -> Result<F14kSourceCandidate, F14kSourceBridgeError> {
     let receipt = metadata.receipt();
     let source_index = receipt.source_index();
@@ -156,17 +178,30 @@ pub fn protect_metadata_source_for_frame(
     {
         return Err(F14kSourceBridgeError::SourceLineage);
     }
+    if let Some(source_generation) = source_generation_receipt.as_ref() {
+        if metadata.consumer_transaction_id() != Some(source_generation.source_transaction_id())
+            || receipt.transaction_id() != source_generation.callback_lineage()
+            || source_generation.source_index() != source_index
+        {
+            return Err(F14kSourceBridgeError::SourceGenerationLineageMismatch);
+        }
+    }
 
     if source_index.value() < 2 {
-        return absent_payload_candidate(
+        return absent_payload_candidate_with_source_generation(
             source_index,
             expected_dispatch,
             expected_au_index,
             metadata.emdf().is_some(),
             metadata.terminal_layout().is_some(),
             metadata.parsed_container().is_some(),
+            source_generation_receipt,
+            None,
         );
     }
+
+    let f13_source_lineage = D0Block2F13SourceLineage::from_metadata_source(metadata)
+        .map_err(F14kSourceBridgeError::D0Block2SourceReceipt)?;
 
     if expected_au_index.is_none() || metadata.parsed_container().is_some() {
         return Err(F14kSourceBridgeError::F13PayloadShape);
@@ -177,13 +212,15 @@ pub fn protect_metadata_source_for_frame(
     let terminal_layout = metadata
         .terminal_layout()
         .ok_or(F14kSourceBridgeError::TerminalLayoutMissing)?;
-    let candidate = published_payload_candidate(
+    let candidate = published_payload_candidate_with_source_generation(
         source_index,
         expected_dispatch,
         expected_au_index,
         provider,
         zero_slot_container,
         terminal_layout,
+        source_generation_receipt,
+        Some(f13_source_lineage),
     )?;
     let carrier_block = CarrierBlock::new(2).map_err(|_| F14kSourceBridgeError::CarrierBlock)?;
     metadata
@@ -199,6 +236,7 @@ pub fn protect_metadata_source_for_frame(
     Ok(candidate)
 }
 
+#[cfg(test)]
 fn absent_payload_candidate(
     source_index: CodecSourceIndex,
     dispatch: JocDispatchIndex,
@@ -206,6 +244,28 @@ fn absent_payload_candidate(
     has_emdf: bool,
     has_terminal_layout: bool,
     has_parsed_container: bool,
+) -> Result<F14kSourceCandidate, F14kSourceBridgeError> {
+    absent_payload_candidate_with_source_generation(
+        source_index,
+        dispatch,
+        au_index,
+        has_emdf,
+        has_terminal_layout,
+        has_parsed_container,
+        None,
+        None,
+    )
+}
+
+fn absent_payload_candidate_with_source_generation(
+    source_index: CodecSourceIndex,
+    dispatch: JocDispatchIndex,
+    au_index: Option<PublishedAuIndex>,
+    has_emdf: bool,
+    has_terminal_layout: bool,
+    has_parsed_container: bool,
+    source_generation_receipt: Option<Flat7xD0SourceGenerationReceipt>,
+    f13_source_lineage: Option<D0Block2F13SourceLineage>,
 ) -> Result<F14kSourceCandidate, F14kSourceBridgeError> {
     if source_index.value() >= 2
         || au_index.is_some()
@@ -221,9 +281,12 @@ fn absent_payload_candidate(
         au_index: None,
         outcome: F14kPayloadOutcome::AbsentPublishedPayloadV1,
         protected_container: None,
+        source_generation_receipt,
+        f13_source_lineage,
     })
 }
 
+#[cfg(test)]
 pub(crate) fn published_payload_candidate(
     source_index: CodecSourceIndex,
     dispatch: JocDispatchIndex,
@@ -231,6 +294,28 @@ pub(crate) fn published_payload_candidate(
     provider: &KeylessIntegrityProvider,
     zero_slot_container: &[u8],
     terminal_layout: &serde_json::Value,
+) -> Result<F14kSourceCandidate, F14kSourceBridgeError> {
+    published_payload_candidate_with_source_generation(
+        source_index,
+        dispatch,
+        au_index,
+        provider,
+        zero_slot_container,
+        terminal_layout,
+        None,
+        None,
+    )
+}
+
+fn published_payload_candidate_with_source_generation(
+    source_index: CodecSourceIndex,
+    dispatch: JocDispatchIndex,
+    au_index: Option<PublishedAuIndex>,
+    provider: &KeylessIntegrityProvider,
+    zero_slot_container: &[u8],
+    terminal_layout: &serde_json::Value,
+    source_generation_receipt: Option<Flat7xD0SourceGenerationReceipt>,
+    f13_source_lineage: Option<D0Block2F13SourceLineage>,
 ) -> Result<F14kSourceCandidate, F14kSourceBridgeError> {
     if source_index.value() < 2 || au_index.is_none() {
         return Err(F14kSourceBridgeError::F13PayloadShape);
@@ -249,6 +334,8 @@ pub(crate) fn published_payload_candidate(
             secondary_range: protected.secondary_range(),
         },
         protected_container: Some(protected),
+        source_generation_receipt,
+        f13_source_lineage,
     })
 }
 

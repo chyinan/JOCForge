@@ -2,6 +2,7 @@
 //! Synthetic, non-playable tests for caller-supplied D0 frame bit assembly.
 
 use jocforge_domain::{
+    codec::owner::Flat7xD0SourceGenerationReceipt,
     codec::{
         access_unit_composer::{
             Flat7xI0D0OpaqueFrameSpans, OpaqueD0FrameBytes, OpaqueI0FrameBytes,
@@ -9,10 +10,10 @@ use jocforge_domain::{
         },
         bitio::{FrameBitCursor, FrameBitWriter},
         d0_frame_assembler::{
-            D0Block2SkipFieldInput, D0BlockTwoAudioSpans, D0FrameAudioBlockInput,
-            Flat7xD0FrameAssemblyError, Flat7xD0FrameBitInput, Flat7xD0FrameTailPolicy,
-            OpaqueD0AudioBitSpan, assemble_flat7x_d0_frame_bits,
-            assemble_flat7x_d0_frame_bits_with_tail_policy,
+            D0Block2SkipFieldInput, D0Block2SourceReceipt, D0Block2SourceReceiptError,
+            D0BlockTwoAudioSpans, D0FrameAudioBlockInput, Flat7xD0FrameAssemblyError,
+            Flat7xD0FrameBitInput, Flat7xD0FrameTailPolicy, OpaqueD0AudioBitSpan,
+            assemble_flat7x_d0_frame_bits, assemble_flat7x_d0_frame_bits_with_tail_policy,
         },
         d0_frame_layout::{CallerOwnedUnboundD0Block2InsertionPoint, D0SixBlockLayoutError},
         elementary_stream_composer::{
@@ -23,6 +24,12 @@ use jocforge_domain::{
     },
     integrity::crc16::eac3_crc16,
     profile::Flat7xI0D0TargetPlan,
+    profile::Flat7xSourceGeneration,
+    timeline::{
+        CodecSourceIndex, FrontendCallbackIndex, JocDispatchIndex, JocGeneratedWriterIndex,
+        PublishedAuIndex,
+    },
+    transaction::{AttemptId, CallbackLineageIdentity, CallbackTransactionId, ProgrammeId},
 };
 use serde_json::Value;
 
@@ -33,6 +40,60 @@ use jocforge_domain::codec::d0_frame_assembler::{
 
 const FRAME_VECTORS: &str =
     include_str!("fixtures/flat7x_d0_frame_layout/FRAME-ASSEMBLY-INPUT-ONLY-VECTORS.json");
+const SOURCE_RECEIPT_VECTORS: &str =
+    include_str!("fixtures/flat7x_d0_block2_source_receipt/INPUT-ONLY-VECTORS.json");
+
+#[cfg(feature = "test-support")]
+#[test]
+fn source_generation_mismatch_rejects_before_block_two_frame_staging() {
+    let vectors: Value = serde_json::from_str(SOURCE_RECEIPT_VECTORS).unwrap();
+    let case = &vectors["preassembly_generation_mismatch"];
+    let transaction_id =
+        CallbackTransactionId::new(case["source_transaction_id"].as_str().unwrap()).unwrap();
+    let programme_id = ProgrammeId::new(case["programme_id"].as_str().unwrap()).unwrap();
+    let attempt = AttemptId::new(case["attempt"].as_u64().unwrap());
+    let callback_index = FrontendCallbackIndex::new(
+        u32::try_from(case["callback_index"].as_u64().unwrap()).unwrap(),
+    );
+    let source_index = CodecSourceIndex::new(case["source_index"].as_u64().unwrap());
+    let callback_lineage = CallbackLineageIdentity::new(programme_id, attempt, callback_index);
+    let expected_receipt = Flat7xD0SourceGenerationReceipt::synthetic_for_test(
+        transaction_id.clone(),
+        case["expected_source_generation"].as_u64().unwrap(),
+        callback_lineage.clone(),
+        source_index,
+        case["analysis_generation"].as_u64().unwrap(),
+    );
+    let supplied_receipt = Flat7xD0SourceGenerationReceipt::synthetic_for_test(
+        transaction_id.clone(),
+        case["supplied_block2_source_generation"].as_u64().unwrap(),
+        callback_lineage.clone(),
+        source_index,
+        case["analysis_generation"].as_u64().unwrap(),
+    );
+    let container = [0x5a_u8];
+    let frame = [0xa5_u8; 4_096];
+    let before = frame;
+
+    assert_eq!(
+        D0Block2SourceReceipt::synthetic_with_source_receipts_for_test(
+            &expected_receipt,
+            &supplied_receipt,
+            (
+                case["metadata_owner_before_generation"].as_u64().unwrap(),
+                case["metadata_owner_after_generation"].as_u64().unwrap(),
+            ),
+            (
+                CodecSourceIndex::new(case["id14_producer_generation"].as_u64().unwrap()),
+                JocGeneratedWriterIndex::new(case["id14_writer_generation"].as_u64().unwrap(),),
+            ),
+            &container,
+        )
+        .unwrap_err(),
+        D0Block2SourceReceiptError::SourceGenerationMismatch
+    );
+    assert_eq!(frame, before);
+}
 
 #[derive(Clone, Debug)]
 struct SyntheticFrameData {
@@ -192,10 +253,11 @@ fn synthetic_assembler_copies_opaque_spans_and_generates_crc2_for_exact_target_e
     let data = synthetic_frame_data(&case);
     let lengths = bit_lengths(&case);
     let insertion_offset = case["block_two_insertion_offset_bits"].as_u64().unwrap() as u32;
-    let skipfield_fields = [D0Block2SkipFieldInput {
-        insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(insertion_offset),
-        complete_emdf_container: &data.skipfield_container,
-    }];
+    let skipfield_fields = [D0Block2SkipFieldInput::synthetic_for_test(
+        CallerOwnedUnboundD0Block2InsertionPoint::new(insertion_offset),
+        &data.skipfield_container,
+    )
+    .unwrap()];
     let input = frame_input(
         &data,
         lengths,
@@ -331,10 +393,11 @@ fn frame_level_aux_data_follows_block_five_and_precedes_crc2() {
     let mut block_lengths = original_lengths;
     block_lengths[5] -= 8;
     let insertion_offset = case["block_two_insertion_offset_bits"].as_u64().unwrap() as u32;
-    let skipfield_fields = [D0Block2SkipFieldInput {
-        insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(insertion_offset),
-        complete_emdf_container: &data.skipfield_container,
-    }];
+    let skipfield_fields = [D0Block2SkipFieldInput::synthetic_for_test(
+        CallerOwnedUnboundD0Block2InsertionPoint::new(insertion_offset),
+        &data.skipfield_container,
+    )
+    .unwrap()];
     let input = frame_input(
         &data,
         block_lengths,
@@ -365,7 +428,7 @@ fn frame_level_aux_data_follows_block_five_and_precedes_crc2() {
         frame_tail.start_bit(),
         receipt.layout().total_frame_span_bits()
     );
-    assert_eq!(frame_tail.bit_length(), 6);
+    assert_eq!(frame_tail.bit_length(), 8);
     assert_eq!(receipt.crc2_span().start_bit(), frame_tail.end_bit());
     assert_eq!(cursor, 32_768);
     assert_span_copied(
@@ -386,10 +449,11 @@ fn invalid_frame_aux_data_source_span_rejects_before_mutation() {
     let data = synthetic_frame_data(&case);
     let lengths = bit_lengths(&case);
     let insertion_offset = case["block_two_insertion_offset_bits"].as_u64().unwrap() as u32;
-    let skipfield_fields = [D0Block2SkipFieldInput {
-        insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(insertion_offset),
-        complete_emdf_container: &data.skipfield_container,
-    }];
+    let skipfield_fields = [D0Block2SkipFieldInput::synthetic_for_test(
+        CallerOwnedUnboundD0Block2InsertionPoint::new(insertion_offset),
+        &data.skipfield_container,
+    )
+    .unwrap()];
     let input = frame_input(
         &data,
         lengths,
@@ -436,10 +500,11 @@ fn typed_frame_tail_policy_reports_zero_auxdatae_crcrsv_and_zero_filled_nauxbits
     let mut lengths = bit_lengths(&case);
     lengths[5] -= 8;
     let insertion_offset = case["block_two_insertion_offset_bits"].as_u64().unwrap() as u32;
-    let skipfield_fields = [D0Block2SkipFieldInput {
-        insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(insertion_offset),
-        complete_emdf_container: &data.skipfield_container,
-    }];
+    let skipfield_fields = [D0Block2SkipFieldInput::synthetic_for_test(
+        CallerOwnedUnboundD0Block2InsertionPoint::new(insertion_offset),
+        &data.skipfield_container,
+    )
+    .unwrap()];
     let input = frame_input(
         &data,
         lengths,
@@ -494,10 +559,11 @@ fn typed_frame_tail_policy_rejects_without_auxdatae_and_crcrsv_space() {
     let data = synthetic_frame_data(&case);
     let lengths = bit_lengths(&case);
     let insertion_offset = case["block_two_insertion_offset_bits"].as_u64().unwrap() as u32;
-    let skipfield_fields = [D0Block2SkipFieldInput {
-        insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(insertion_offset),
-        complete_emdf_container: &data.skipfield_container,
-    }];
+    let skipfield_fields = [D0Block2SkipFieldInput::synthetic_for_test(
+        CallerOwnedUnboundD0Block2InsertionPoint::new(insertion_offset),
+        &data.skipfield_container,
+    )
+    .unwrap()];
     let input = frame_input(
         &data,
         lengths,
@@ -536,10 +602,11 @@ fn synthetic_d0_frame_composes_into_au_and_two_au_stream_with_generated_crc2_pre
     let data = synthetic_frame_data(&case);
     let lengths = bit_lengths(&case);
     let insertion_offset = case["block_two_insertion_offset_bits"].as_u64().unwrap() as u32;
-    let skipfield_fields = [D0Block2SkipFieldInput {
-        insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(insertion_offset),
-        complete_emdf_container: &data.skipfield_container,
-    }];
+    let skipfield_fields = [D0Block2SkipFieldInput::synthetic_for_test(
+        CallerOwnedUnboundD0Block2InsertionPoint::new(insertion_offset),
+        &data.skipfield_container,
+    )
+    .unwrap()];
     let d0_input = frame_input(
         &data,
         lengths,
@@ -652,11 +719,12 @@ fn assembler_errors_leave_caller_bytes_and_cursor_unchanged() {
     let case = frame_case();
     let data = synthetic_frame_data(&case);
     let lengths = bit_lengths(&case);
-    let field = D0Block2SkipFieldInput {
-        insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(4096),
-        complete_emdf_container: &data.skipfield_container,
-    };
-    let one_field = [field];
+    let field = D0Block2SkipFieldInput::synthetic_for_test(
+        CallerOwnedUnboundD0Block2InsertionPoint::new(4096),
+        &data.skipfield_container,
+    )
+    .unwrap();
+    let one_field = [field.clone()];
 
     let mut short_lengths = lengths;
     short_lengths[5] -= 1;
@@ -687,7 +755,7 @@ fn assembler_errors_leave_caller_bytes_and_cursor_unchanged() {
         Flat7xD0FrameAssemblyError::BlockTwoMissing,
     );
 
-    let duplicate_fields = [field, field];
+    let duplicate_fields = [field.clone(), field];
     assert_rejected_unchanged(
         &data,
         lengths,
@@ -714,10 +782,11 @@ fn assembler_errors_leave_caller_bytes_and_cursor_unchanged() {
 
     let mut too_large_container_data = data.clone();
     too_large_container_data.skipfield_container = vec![0xa5; 512];
-    let oversized_field = [D0Block2SkipFieldInput {
-        insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(4096),
-        complete_emdf_container: &too_large_container_data.skipfield_container,
-    }];
+    let oversized_field = [D0Block2SkipFieldInput::synthetic_for_test(
+        CallerOwnedUnboundD0Block2InsertionPoint::new(4096),
+        &too_large_container_data.skipfield_container,
+    )
+    .unwrap()];
     assert_rejected_unchanged(
         &too_large_container_data,
         lengths,
@@ -748,10 +817,11 @@ fn assembler_errors_leave_caller_bytes_and_cursor_unchanged() {
         },
     );
 
-    let wrong_insertion = [D0Block2SkipFieldInput {
-        insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(4095),
-        complete_emdf_container: &data.skipfield_container,
-    }];
+    let wrong_insertion = [D0Block2SkipFieldInput::synthetic_for_test(
+        CallerOwnedUnboundD0Block2InsertionPoint::new(4095),
+        &data.skipfield_container,
+    )
+    .unwrap()];
     assert_rejected_unchanged(
         &data,
         lengths,

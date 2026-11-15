@@ -2,6 +2,7 @@
 //! Builds same-source JOC and metadata-body proposals from one ready MAIN callback.
 
 use jocforge_domain::{
+    codec::owner::Flat7xD0SourceGenerationReceipt,
     joc::{
         coefficient_fitting::{Flat7xCoefficientRowsProposal, Flat7xCoefficientRowsProviderOutput},
         coefficient_representation::RepresentationRetryProvider,
@@ -110,6 +111,7 @@ pub enum MetadataSourceBridgeError {
         writer_generation: u64,
     },
     Joc(SelectedJocStateError),
+    Flat7xSourceGenerationReceiptMissing,
     MetadataBodies(MetadataBodiesError),
 }
 
@@ -138,6 +140,7 @@ pub fn stage_flat7x_joc_source_from_provider_output(
     before: &SelectedJocState,
     projection: &SelectedJocQmfProjection,
     producer_transaction_id: CallbackTransactionId,
+    expected_source_generation_receipt: &Flat7xD0SourceGenerationReceipt,
     provider_output: Flat7xCoefficientRowsProviderOutput<'_>,
     profile: ResolvedEncodingProfile,
 ) -> Result<SelectedJocAfterProposal, SelectedJocStateError> {
@@ -150,8 +153,8 @@ pub fn stage_flat7x_joc_source_from_provider_output(
     }
     let rows = Flat7xCoefficientRowsProposal::from_provider_output(
         before.fit(),
-        projection,
-        provider_output,
+        expected_source_generation_receipt,
+        &provider_output,
     )
     .map_err(|_| {
         SelectedJocStateError::Source(JocSourceStageErrorKind::Flat7xCoefficientLineageMismatch)
@@ -277,7 +280,7 @@ pub fn prepare_main_metadata_bodies_for_callback(
     input: MainMetadataBodiesInput<'_>,
     gtc_transaction_id: CallbackTransactionId,
 ) -> Result<MainMetadataBodiesCandidate, MetadataSourceBridgeError> {
-    prepare_main_metadata_bodies_for_callback_inner(input, gtc_transaction_id, None)
+    prepare_main_metadata_bodies_for_callback_inner(input, gtc_transaction_id, None, None)
 }
 
 /// Prepares the Flat7x JOC/F13 body proposal from explicit same-source seven-row input.
@@ -285,14 +288,21 @@ pub fn prepare_main_metadata_bodies_for_callback_with_flat7x_rows(
     input: MainMetadataBodiesInput<'_>,
     gtc_transaction_id: CallbackTransactionId,
     flat7x_rows: Flat7xCoefficientRowsProviderOutput<'_>,
+    source_generation_receipt: &Flat7xD0SourceGenerationReceipt,
 ) -> Result<MainMetadataBodiesCandidate, MetadataSourceBridgeError> {
-    prepare_main_metadata_bodies_for_callback_inner(input, gtc_transaction_id, Some(flat7x_rows))
+    prepare_main_metadata_bodies_for_callback_inner(
+        input,
+        gtc_transaction_id,
+        Some(flat7x_rows),
+        Some(source_generation_receipt),
+    )
 }
 
 fn prepare_main_metadata_bodies_for_callback_inner(
     input: MainMetadataBodiesInput<'_>,
     gtc_transaction_id: CallbackTransactionId,
     flat7x_rows: Option<Flat7xCoefficientRowsProviderOutput<'_>>,
+    source_generation_receipt: Option<&Flat7xD0SourceGenerationReceipt>,
 ) -> Result<MainMetadataBodiesCandidate, MetadataSourceBridgeError> {
     let MainMetadataBodiesInput {
         prepared,
@@ -327,10 +337,13 @@ fn prepare_main_metadata_bodies_for_callback_inner(
     let joc_after = match joc_source_route {
         MainMetadataJocSourceRoute::Flat7xRows => {
             let output = flat7x_rows.ok_or_else(flat7x_source_unavailable)?;
+            let expected_source_generation_receipt = source_generation_receipt
+                .ok_or(MetadataSourceBridgeError::Flat7xSourceGenerationReceiptMissing)?;
             stage_flat7x_joc_source_from_provider_output(
                 joc_before,
                 projection,
                 source_transaction_id.clone(),
+                expected_source_generation_receipt,
                 output,
                 joc_profile,
             )
@@ -455,6 +468,7 @@ mod flat7x_rows_route_tests {
         stage_flat7x_joc_source_from_provider_output,
     };
     use jocforge_domain::{
+        codec::owner::Flat7xD0SourceGenerationReceipt,
         codec::{
             ac3_bsi_tail::Flat7xI0Ac3BsiTailInput,
             access_unit_composer::{
@@ -482,7 +496,10 @@ mod flat7x_rows_route_tests {
         integrity::crc16::eac3_crc16,
         joc::programme_state::{JocSourceStageErrorKind, SelectedJocStateError},
         joc::{
-            coefficient_fitting::Flat7xCoefficientRowsProviderOutput,
+            coefficient_fitting::{
+                FitSourceLineage, Flat7xCoefficientRowsProviderOutput,
+                Flat7xCoefficientRowsSourceReceipt,
+            },
             coefficient_payload::{
                 CoefficientPayloadInput, CoefficientPayloadObject, CoefficientPayloadPoint,
                 Flat7xCoefficientRows,
@@ -624,7 +641,7 @@ mod flat7x_rows_route_tests {
         let projection = SelectedJocQmfProjection::identity_only_for_test(
             programme_id,
             attempt,
-            transaction_id,
+            transaction_id.clone(),
             0,
             SpatialAudioMachine::new_cold(EncodingProfile::selected())
                 .unwrap()
@@ -667,9 +684,23 @@ mod flat7x_rows_route_tests {
                     .all(|row| row.len() == 1)
         }));
         let rows = Flat7xCoefficientRows::new(&input).unwrap();
-        let provider_output = Flat7xCoefficientRowsProviderOutput::new(rows);
         let before = SelectedJocState::cold();
         let producer_transaction_id = CallbackTransactionId::new("flat7x-source-s0").unwrap();
+        let source_lineage = FitSourceLineage::from_projection(&projection);
+        let source_generation_receipt = Flat7xD0SourceGenerationReceipt::synthetic_for_test(
+            producer_transaction_id.clone(),
+            1,
+            transaction_id,
+            CodecSourceIndex::new(0),
+            0,
+        );
+        let source_receipt = Flat7xCoefficientRowsSourceReceipt::new(
+            producer_transaction_id.clone(),
+            source_lineage,
+            source_generation_receipt.clone(),
+        )
+        .unwrap();
+        let provider_output = Flat7xCoefficientRowsProviderOutput::new(rows, source_receipt);
         let flat7x =
             resolve_selected_profile(&EncodingProfile::selected_with_joc_reconstruction_layout(
                 JocReconstructionLayout::Flat7x,
@@ -680,6 +711,7 @@ mod flat7x_rows_route_tests {
             &before,
             &projection,
             producer_transaction_id.clone(),
+            &source_generation_receipt,
             provider_output,
             flat7x,
         )
@@ -752,10 +784,11 @@ mod flat7x_rows_route_tests {
         // This is deliberately independent of the ID14 body test. These SYNTHETIC/TEST_ONLY
         // bytes exercise opaque skipfld framing only; they are not a complete EMDF container.
         let opaque_skipfield_test_bytes = [0x5a_u8; 16];
-        let skip_fields = [D0Block2SkipFieldInput {
-            insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(8),
-            complete_emdf_container: &opaque_skipfield_test_bytes,
-        }];
+        let skip_fields = [D0Block2SkipFieldInput::synthetic_for_test(
+            CallerOwnedUnboundD0Block2InsertionPoint::new(8),
+            &opaque_skipfield_test_bytes,
+        )
+        .unwrap()];
         let synthetic_blocks = [[0x20_u8]; 6];
         let block_two_before = [0x31_u8];
         let block_two_after = [0x32_u8];
@@ -820,10 +853,11 @@ mod flat7x_rows_route_tests {
         }
 
         let oversized_opaque_skipfield_bytes = [0x5a_u8; 512];
-        let oversized_skip_fields = [D0Block2SkipFieldInput {
-            insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(8),
-            complete_emdf_container: &oversized_opaque_skipfield_bytes,
-        }];
+        let oversized_skip_fields = [D0Block2SkipFieldInput::synthetic_for_test(
+            CallerOwnedUnboundD0Block2InsertionPoint::new(8),
+            &oversized_opaque_skipfield_bytes,
+        )
+        .unwrap()];
         let oversized_input = synthetic_d0_frame_input(
             &synthetic_blocks,
             &block_two_before,

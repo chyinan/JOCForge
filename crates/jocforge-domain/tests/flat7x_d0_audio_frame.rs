@@ -4,6 +4,7 @@ use jocforge_domain::{
             FLAT7X_D0_BAP_BIN_COUNT, FLAT7X_D0_BAP_BLOCK_COUNT, FLAT7X_D0_BAP_CHANNEL_COUNT,
             Flat7xD0BapFrameInput, Flat7xD0BapParameters, allocate_flat7x_d0_bap_frame,
         },
+        d0_frame_assembler::D0Block2SourceReceipt,
         flat7x_d0_audio_frame::{Flat7xD0AudioFrameInput, produce_flat7x_d0_audio_frame},
         flat7x_d0_exponents::{Flat7xD0ExponentRow, prepare_flat7x_d0_d15_exponent_row},
         flat7x_d0_pcm_source::{
@@ -69,6 +70,8 @@ fn d0_frame_search_produces_one_complete_crc_valid_six_block_candidate() {
     let (spectrum_by_block, exponent_rows_by_block) = synthetic_six_block_inputs();
     let bap_parameters = Flat7xD0BapParameters::etsi_ts_102_366_v1_4_1();
     let emdf_container = [0x5a_u8];
+    let block2_source_receipt =
+        D0Block2SourceReceipt::synthetic_for_test(&emdf_container, 2, 2).unwrap();
 
     let candidate = produce_flat7x_d0_audio_frame(&Flat7xD0AudioFrameInput {
         target: Flat7xI0D0TargetPlan::approved_contract(),
@@ -80,7 +83,7 @@ fn d0_frame_search_produces_one_complete_crc_valid_six_block_candidate() {
             information: None,
             addbsi: Flat7xD0Ci16Addbsi::new([0x01, 0x10]),
         },
-        complete_emdf_container: &emdf_container,
+        block2_source_receipt: &block2_source_receipt,
         bap_parameters: &bap_parameters,
         spectrum_by_block: &spectrum_by_block,
         exponent_rows_by_block: &exponent_rows_by_block,
@@ -190,6 +193,8 @@ fn d0_pcm_source_feeds_the_complete_frame_candidate_and_keeps_history_with_it() 
         MathGeneratedTransformParameters::selected_math_generated_v1().unwrap();
     let bap_parameters = Flat7xD0BapParameters::etsi_ts_102_366_v1_4_1();
     let emdf_container = [0x5a_u8];
+    let block2_source_receipt =
+        D0Block2SourceReceipt::synthetic_for_test(&emdf_container, 2, 2).unwrap();
 
     let candidate = produce_flat7x_d0_frame_from_pcm_source(Flat7xD0PcmFrameInput {
         pcm_rows: pcm_row_refs,
@@ -213,7 +218,8 @@ fn d0_pcm_source_feeds_the_complete_frame_candidate_and_keeps_history_with_it() 
                 information: None,
                 addbsi: Flat7xD0Ci16Addbsi::new([0x01, 0x10]),
             },
-            complete_emdf_container: &emdf_container,
+            source_generation_receipt: block2_source_receipt.source_generation_receipt(),
+            block2_source_receipt: &block2_source_receipt,
             bap_parameters: &bap_parameters,
             dynamic_range_codes: [None; 6],
         },
@@ -279,26 +285,7 @@ fn d0_frame_search_rejects_an_empty_emdf_container_before_candidate_search() {
     let empty_container = [];
 
     assert!(matches!(
-        produce_flat7x_d0_audio_frame(&Flat7xD0AudioFrameInput {
-            target: Flat7xI0D0TargetPlan::approved_contract(),
-            bsi_structure: Flat7xD0BsiStructure {
-                dialnorm: 16,
-                compr: None,
-                mixing: None,
-                block_mix: [None; 6],
-                information: None,
-                addbsi: Flat7xD0Ci16Addbsi::new([0x01, 0x10]),
-            },
-            complete_emdf_container: &empty_container,
-            bap_parameters: &bap_parameters,
-            spectrum_by_block: &spectrum_by_block,
-            exponent_rows_by_block: &exponent_rows_by_block,
-            dynamic_range_codes: [None; 6],
-        }),
-        Err(
-            jocforge_domain::codec::flat7x_d0_audio_frame::Flat7xD0AudioFrameError::EmdfSkipField(
-                _
-            )
-        )
+        D0Block2SourceReceipt::synthetic_for_test(&empty_container, 2, 2),
+        Err(jocforge_domain::codec::d0_frame_assembler::D0Block2SourceReceiptError::ProtectedContainerMissing)
     ));
 }

@@ -2325,12 +2325,11 @@ mod i0_audio_block_series_tests {
         let d0_bsi = synthetic_d0_bsi();
         let d0_audio = synthetic_d0_audio_spans(target, &d0_bsi, 511);
         let emdf_container = vec![0xa5_u8; 511];
-        let skip_fields = [D0Block2SkipFieldInput {
-            insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(
-                d0_audio.skipfield_offset_bits,
-            ),
-            complete_emdf_container: &emdf_container,
-        }];
+        let skip_fields = [D0Block2SkipFieldInput::synthetic_for_test(
+            CallerOwnedUnboundD0Block2InsertionPoint::new(d0_audio.skipfield_offset_bits),
+            &emdf_container,
+        )
+        .unwrap()];
         let d0_input =
             d0_frame_bit_input(&d0_audio, &skip_fields, d0_audio.audio_block_bit_lengths);
 
@@ -2405,12 +2404,11 @@ mod i0_audio_block_series_tests {
         let d0_bsi = synthetic_d0_bsi();
         let d0_audio = synthetic_d0_audio_spans(target, &d0_bsi, 511);
         let emdf_container = vec![0x5a_u8; 511];
-        let skip_fields = [D0Block2SkipFieldInput {
-            insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(
-                d0_audio.skipfield_offset_bits,
-            ),
-            complete_emdf_container: &emdf_container,
-        }];
+        let skip_fields = [D0Block2SkipFieldInput::synthetic_for_test(
+            CallerOwnedUnboundD0Block2InsertionPoint::new(d0_audio.skipfield_offset_bits),
+            &emdf_container,
+        )
+        .unwrap()];
         let d0_input =
             d0_frame_bit_input(&d0_audio, &skip_fields, d0_audio.audio_block_bit_lengths);
 
@@ -2441,12 +2439,11 @@ mod i0_audio_block_series_tests {
         );
 
         let emdf_container_512 = vec![0x5a_u8; 512];
-        let skip_fields_512 = [D0Block2SkipFieldInput {
-            insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(
-                d0_audio.skipfield_offset_bits,
-            ),
-            complete_emdf_container: &emdf_container_512,
-        }];
+        let skip_fields_512 = [D0Block2SkipFieldInput::synthetic_for_test(
+            CallerOwnedUnboundD0Block2InsertionPoint::new(d0_audio.skipfield_offset_bits),
+            &emdf_container_512,
+        )
+        .unwrap()];
         let d0_input_512 = d0_frame_bit_input(
             &d0_audio,
             &skip_fields_512,

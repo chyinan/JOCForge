@@ -30,6 +30,13 @@ use jocforge_domain::{
     transform::fullband_exponent_pipeline::NumericPlanReceipt,
 };
 
+pub use jocforge_domain::codec::{
+    d0_frame_assembler::{
+        D0Block2F14kSourceReceiptInput, D0Block2SourceReceipt, D0Block2SourceReceiptError,
+    },
+    owner::Flat7xD0SourceGenerationReceipt,
+};
+
 pub use jocforge_domain::codec::ac3_audio_block::{
     Ac3DeltaBitAllocationInput, Ac3MantissaQuantizerPolicy, I0AudioBlockControlPolicy,
     I0AudioBlockSeriesBudget, I0AudioBlockSeriesPolicy, I0BapCandidateQ,
@@ -200,10 +207,53 @@ pub enum Flat7xPairSourceError {
     SourceIdentityMismatch,
     D0AudioSpanProducerDisabled(Flat7xD0AudioSpanProducerState),
     D0AudioSpanSourceIdentityMismatch,
+    D0Block2SourceIdentityMismatch,
+    D0Block2SourceReceipt(D0Block2SourceReceiptError),
+    D0Block2MetadataReceiptMissing,
+    D0Block2Id14ProvenanceMissing,
+    D0Block2ProducerTransactionMissing,
+    D0Block2AccessUnitMissing,
+    D0Block2F14kGenerationReceiptMissing,
+    D0Block2ProtectedContainerMissing,
     D0PcmFrame(Flat7xD0PcmSourceError),
     I0AudioBlockSeries(I0AudioBlockSeriesError),
     I0FrameAssembly(Flat7xI0FrameAssemblyError),
     AccessUnitAssembly(Flat7xI0D0AuCandidateError),
+}
+
+/// Binds the exact protected F14K container to its F13 transaction, producer generations, and
+/// codec-owner-issued source-generation receipt before D0 frame assembly.
+pub fn bind_flat7x_d0_block2_source_receipt<'a>(
+    metadata_source: &jocforge_domain::joc::emdf::metadata_owner::MetadataSourceProposal,
+    f14k_source: &'a crate::integrity_source_bridge::F14kSourceCandidate,
+    expected_source_generation_receipt: &'a Flat7xD0SourceGenerationReceipt,
+) -> Result<D0Block2SourceReceipt<'a>, Flat7xPairSourceError> {
+    let f14k_f13_source_lineage = f14k_source
+        .f13_source_lineage()
+        .ok_or(Flat7xPairSourceError::D0Block2MetadataReceiptMissing)?;
+    let f14k_au_index = f14k_source
+        .au_index()
+        .ok_or(Flat7xPairSourceError::D0Block2AccessUnitMissing)?;
+    let f14k_source_generation_receipt = f14k_source
+        .source_generation_receipt()
+        .ok_or(Flat7xPairSourceError::D0Block2F14kGenerationReceiptMissing)?;
+    let protected_container = f14k_source
+        .protected_container()
+        .ok_or(Flat7xPairSourceError::D0Block2ProtectedContainerMissing)?;
+
+    D0Block2SourceReceipt::from_f13_f14k_source_receipts(
+        metadata_source,
+        D0Block2F14kSourceReceiptInput {
+            f13_lineage: f14k_f13_source_lineage,
+            source_index: f14k_source.source_index(),
+            dispatch: f14k_source.dispatch(),
+            au_index: f14k_au_index,
+            expected_source_generation_receipt,
+            f14k_source_generation_receipt,
+            protected_container,
+        },
+    )
+    .map_err(Flat7xPairSourceError::D0Block2SourceReceipt)
 }
 
 /// Resolves the typed D0 producer boundary before a pair candidate can be created.
@@ -415,6 +465,21 @@ pub fn produce_flat7x_pair_d0_pcm_frame_candidate(
     }
     if settings.source_extent != binding.source_extent {
         return Err(Flat7xPairSourceError::SourceIdentityMismatch);
+    }
+    let d0_identity = binding.d0_source_identity();
+    let shared_identity = binding.role_map_receipt().shared_analysis_identity();
+    if settings.source_generation_receipt
+        != settings.block2_source_receipt.source_generation_receipt()
+        || !settings.block2_source_receipt.matches_source_identity(
+            d0_identity.programme_id(),
+            d0_identity.attempt_id(),
+            d0_identity.callback_index(),
+            d0_identity.source_transaction_id(),
+            d0_identity.source_index(),
+            shared_identity.analysis_after_generation(),
+        )
+    {
+        return Err(Flat7xPairSourceError::D0Block2SourceIdentityMismatch);
     }
     let frame_candidate = produce_flat7x_d0_frame_from_pcm_source(Flat7xD0PcmFrameInput {
         pcm_rows: binding.d0_rows.rows(),
@@ -918,7 +983,8 @@ mod pair_access_unit_integration_tests {
 
     use super::{
         Flat7xD0AudioSpanInput, Flat7xD0AudioSpanReceipt, Flat7xD0Ci16Addbsi,
-        Flat7xPairSourceError, assemble_flat7x_i0_frame_candidate_from_binding,
+        Flat7xD0SourceIdentity, Flat7xPairSourceError,
+        assemble_flat7x_i0_frame_candidate_from_binding,
         assemble_flat7x_pair_access_unit_candidate, assemble_flat7x_pair_i0_frame_candidate,
         bind_flat7x_pair_source, prepare_flat7x_pair_audio_blocks,
         produce_flat7x_pair_d0_pcm_frame_candidate,
@@ -949,9 +1015,10 @@ mod pair_access_unit_integration_tests {
             },
             bap::{BapParameters, Flat7xD0BapParameters, load_bap_parameters},
             d0_frame_assembler::{
-                D0_CRC2_FIELD_BITS, D0Block2SkipFieldInput, D0BlockTwoAudioSpans,
-                D0FrameAudioBlockInput, Flat7xD0FrameBitInput, Flat7xD0FrameTailPolicy,
-                OpaqueD0AudioBitSpan,
+                D0_CRC2_FIELD_BITS, D0Block2F13SourceLineage, D0Block2F14kSourceReceiptInput,
+                D0Block2SkipFieldInput, D0Block2SourceReceipt, D0Block2SourceReceiptError,
+                D0BlockTwoAudioSpans, D0FrameAudioBlockInput, Flat7xD0FrameBitInput,
+                Flat7xD0FrameTailPolicy, OpaqueD0AudioBitSpan,
             },
             d0_frame_layout::CallerOwnedUnboundD0Block2InsertionPoint,
             emdf_skip_field::flat7x_d0_block2_skipfld_bit_length,
@@ -967,6 +1034,7 @@ mod pair_access_unit_integration_tests {
                 CallerOwnedAc3Cplinu, CallerOwnedI0CrcrsvSeed, Flat7xI0FrameAssemblyError,
                 I0AuxDataInput, OpaqueI0Ac3BitSpan,
             },
+            owner::Flat7xD0SourceGenerationReceipt,
             policy_parameters::{PolicyProfile, load_policy_parameters},
             selected_frame_trial::{
                 BlockExponentPlan, CoefficientBlockInput, ConverterHeaderInput,
@@ -1047,6 +1115,63 @@ mod pair_access_unit_integration_tests {
     const FULLBAND_CHANNELS: usize = 5;
     const FULLBAND_BINS: usize = 217;
     const LFE_BINS: usize = 7;
+
+    fn d0_block2_source_receipt_for_test<'a>(
+        identity: &Flat7xD0SourceIdentity,
+        container: &'a [u8],
+    ) -> (Flat7xD0SourceGenerationReceipt, D0Block2SourceReceipt<'a>) {
+        let source_index = identity.source_index();
+        let source_transaction_id = identity.source_transaction_id().clone();
+        let callback_lineage = CallbackLineageIdentity::new(
+            identity.programme_id().clone(),
+            identity.attempt_id(),
+            identity.callback_index(),
+        );
+        let source_generation_receipt = Flat7xD0SourceGenerationReceipt::synthetic_for_test(
+            source_transaction_id.clone(),
+            41,
+            callback_lineage.clone(),
+            source_index,
+            identity.analysis_generation().value(),
+        );
+        let block2_source_receipt = D0Block2SourceReceipt::synthetic_for_source_for_test(
+            &source_generation_receipt,
+            &source_generation_receipt,
+            (12, 13),
+            (
+                source_index,
+                jocforge_domain::timeline::JocGeneratedWriterIndex::new(source_index.value()),
+            ),
+            container,
+        )
+        .unwrap();
+        (source_generation_receipt, block2_source_receipt)
+    }
+
+    fn bind_block2_source_receipt_for_test<'a>(
+        metadata: &'a jocforge_domain::joc::emdf::metadata_owner::MetadataSourceProposal,
+        carried_f13_lineage: &'a D0Block2F13SourceLineage,
+        expected_source_generation_receipt: &'a Flat7xD0SourceGenerationReceipt,
+        f14k_source_generation_receipt: &'a Flat7xD0SourceGenerationReceipt,
+        protected_container: &'a jocforge_domain::integrity::keyless_checksum::ProtectedEmdfContainer,
+    ) -> Result<D0Block2SourceReceipt<'a>, D0Block2SourceReceiptError> {
+        let f13_receipt = metadata.receipt();
+        let au_index = f13_receipt
+            .au_index()
+            .ok_or(D0Block2SourceReceiptError::AccessUnitMismatch)?;
+        D0Block2SourceReceipt::from_f13_f14k_source_receipts(
+            metadata,
+            D0Block2F14kSourceReceiptInput {
+                f13_lineage: carried_f13_lineage,
+                source_index: f13_receipt.source_index(),
+                dispatch: f13_receipt.dispatch(),
+                au_index,
+                expected_source_generation_receipt,
+                f14k_source_generation_receipt,
+                protected_container,
+            },
+        )
+    }
 
     struct SyntheticD0AudioSpans {
         audio_bytes: [Vec<u8>; 6],
@@ -1405,6 +1530,8 @@ mod pair_access_unit_integration_tests {
             MathGeneratedTransformParameters::selected_math_generated_v1().unwrap();
         let d0_bap_parameters = Flat7xD0BapParameters::etsi_ts_102_366_v1_4_1();
         let emdf_container = [0xa5_u8];
+        let (source_generation_receipt, block2_source_receipt) =
+            d0_block2_source_receipt_for_test(binding.d0_source_identity(), &emdf_container);
         let frame = produce_flat7x_pair_d0_pcm_frame_candidate(
             &binding,
             Flat7xD0PcmFrameSettings {
@@ -1420,7 +1547,8 @@ mod pair_access_unit_integration_tests {
                     information: None,
                     addbsi: Flat7xD0Ci16Addbsi::new([0x01, 0x10]),
                 },
-                complete_emdf_container: &emdf_container,
+                source_generation_receipt: &source_generation_receipt,
+                block2_source_receipt: &block2_source_receipt,
                 bap_parameters: &d0_bap_parameters,
                 dynamic_range_codes: [None; 6],
             },
@@ -1453,6 +1581,23 @@ mod pair_access_unit_integration_tests {
         let callback_index = FrontendCallbackIndex::new(4);
         let callback_lineage =
             CallbackLineageIdentity::new(prepared.programme_id().clone(), attempt, callback_index);
+        let source_generation_owner =
+            jocforge_domain::codec::owner::CodecOwnerRoot::cold_for_flat7x(
+                jocforge_domain::profile::CodecRateProfile::Kbps1024,
+            )
+            .unwrap();
+        let source_generation_receipt = source_generation_owner
+            .issue_flat7x_d0_source_generation_receipt(
+                source_identity.source_stage_key().transaction_id().clone(),
+                callback_lineage.clone(),
+                source_identity,
+            )
+            .unwrap();
+        assert_eq!(source_generation_receipt.source_generation().value(), 1);
+        assert_ne!(
+            source_generation_receipt.source_generation().value(),
+            source_index.value()
+        );
         let bap_parameters: Arc<BapParameters> =
             Arc::new(load_bap_parameters(Some(BAP_PROVIDER)).unwrap());
         let numeric_plan = NumericPlanReceipt::from_parent_for_test(
@@ -1508,6 +1653,87 @@ mod pair_access_unit_integration_tests {
         };
         let (metadata, zero_slot_container, protected_container) =
             flat7x_receipt_gate_metadata_for_test(metadata_inputs);
+        let f13_receipt = metadata.receipt();
+        let f13_lineage =
+            jocforge_domain::codec::d0_frame_assembler::D0Block2F13SourceLineage::from_metadata_source(
+                &metadata,
+            )
+            .unwrap();
+        assert_ne!(
+            f13_lineage.consumer_transaction_id(),
+            f13_lineage.id14_producer_transaction_id()
+        );
+        let block2_receipt = bind_block2_source_receipt_for_test(
+            &metadata,
+            &f13_lineage,
+            &source_generation_receipt,
+            &source_generation_receipt,
+            &protected_container,
+        )
+        .unwrap();
+        assert_eq!(
+            block2_receipt.complete_emdf_container(),
+            protected_container.bytes()
+        );
+
+        let mismatched_owner_generation = f13_lineage.with_owner_generations_for_test(
+            f13_lineage
+                .metadata_owner_before_generation()
+                .wrapping_add(1),
+            f13_lineage.metadata_owner_after_generation(),
+        );
+        assert!(matches!(
+            bind_block2_source_receipt_for_test(
+                &metadata,
+                &mismatched_owner_generation,
+                &source_generation_receipt,
+                &source_generation_receipt,
+                &protected_container,
+            ),
+            Err(D0Block2SourceReceiptError::F13F14kReceiptMismatch)
+        ));
+        let mismatched_id14_producer = f13_lineage.with_id14_producer_generation_for_test(
+            CodecSourceIndex::new(f13_lineage.id14_producer_generation().value() + 1),
+        );
+        assert!(matches!(
+            bind_block2_source_receipt_for_test(
+                &metadata,
+                &mismatched_id14_producer,
+                &source_generation_receipt,
+                &source_generation_receipt,
+                &protected_container,
+            ),
+            Err(D0Block2SourceReceiptError::F13F14kReceiptMismatch)
+        ));
+        let mismatched_id14_writer = f13_lineage.with_id14_writer_generation_for_test(
+            jocforge_domain::timeline::JocGeneratedWriterIndex::new(
+                f13_lineage.id14_writer_generation().value() + 1,
+            ),
+        );
+        assert!(matches!(
+            bind_block2_source_receipt_for_test(
+                &metadata,
+                &mismatched_id14_writer,
+                &source_generation_receipt,
+                &source_generation_receipt,
+                &protected_container,
+            ),
+            Err(D0Block2SourceReceiptError::F13F14kReceiptMismatch)
+        ));
+        let mismatched_analysis_generation = source_generation_receipt
+            .with_analysis_generation_for_test(
+                source_generation_receipt.analysis_generation().value() + 1,
+            );
+        assert!(matches!(
+            bind_block2_source_receipt_for_test(
+                &metadata,
+                &f13_lineage,
+                &source_generation_receipt,
+                &mismatched_analysis_generation,
+                &protected_container,
+            ),
+            Err(D0Block2SourceReceiptError::SourceGenerationMismatch)
+        ));
 
         let i0_frame = match assemble_flat7x_i0_frame_candidate_from_binding(
             &binding,
@@ -1542,6 +1768,10 @@ mod pair_access_unit_integration_tests {
         let transform_parameters =
             MathGeneratedTransformParameters::selected_math_generated_v1().unwrap();
         let d0_bap_parameters = Flat7xD0BapParameters::etsi_ts_102_366_v1_4_1();
+        let (source_generation_receipt, block2_source_receipt) = d0_block2_source_receipt_for_test(
+            binding.d0_source_identity(),
+            protected_container.bytes(),
+        );
         let d0_frame = produce_flat7x_pair_d0_pcm_frame_candidate(
             &binding,
             Flat7xD0PcmFrameSettings {
@@ -1550,7 +1780,8 @@ mod pair_access_unit_integration_tests {
                 transform_parameters: &transform_parameters,
                 target,
                 bsi_structure: synthetic_d0_bsi(),
-                complete_emdf_container: protected_container.bytes(),
+                source_generation_receipt: &source_generation_receipt,
+                block2_source_receipt: &block2_source_receipt,
                 bap_parameters: &d0_bap_parameters,
                 dynamic_range_codes: [None; 6],
             },
@@ -1759,10 +1990,11 @@ mod pair_access_unit_integration_tests {
         let d0_bsi = synthetic_d0_bsi();
         let emdf_container = [0xa5_u8];
         let d0_audio = SyntheticD0AudioSpans::new(target, &d0_bsi, 1, 8);
-        let d0_skip_fields = [D0Block2SkipFieldInput {
-            insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(d0_audio.prefix_bits),
-            complete_emdf_container: &emdf_container,
-        }];
+        let d0_skip_fields = [D0Block2SkipFieldInput::synthetic_for_test(
+            CallerOwnedUnboundD0Block2InsertionPoint::new(d0_audio.prefix_bits),
+            &emdf_container,
+        )
+        .unwrap()];
         let d0_audio_blocks = d0_audio.frame_input(&d0_skip_fields);
         let d0_receipt = Flat7xD0AudioSpanReceipt::from_source_bound_producer(
             &binding,

@@ -608,6 +608,29 @@ impl<'a> ProgrammeOwnerRoots<'a> {
             .ok_or_else(|| "durable output length overflow".to_owned())?;
 
         let flat7x_selected = advance.flat7x_source_pcm_projection.is_some();
+        let flat7x_source_generation_matches = match (
+            flat7x_selected,
+            advance.f14k_source.source_generation_receipt(),
+        ) {
+            (true, Some(receipt)) => {
+                receipt.source_transaction_id() == &advance.source_transaction_id
+                    && receipt.callback_lineage().programme_id() == &self.programme_id
+                    && receipt.callback_lineage().attempt_id() == self.attempt
+                    && receipt.callback_lineage().callback_index() == callback_index
+                    && receipt.source_index() == source_index
+                    && receipt.codec_owner_after_generation() == advance.codec_root.generation()
+                    && receipt.analysis_generation().value()
+                        == analysis_generation(&advance.analysis_root)?
+            }
+            (false, None) => true,
+            _ => false,
+        };
+        if !flat7x_source_generation_matches {
+            return Err(
+                "Flat7x source-generation receipt is not bound to the F13/F14K and Codec after-roots"
+                    .to_owned(),
+            );
+        }
         let expected_au = source_index.value().checked_sub(SUPPRESSED_SOURCES);
         match (expected_au, advance.append.as_ref()) {
             (None, None) => {

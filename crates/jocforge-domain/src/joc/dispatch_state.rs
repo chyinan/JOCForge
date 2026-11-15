@@ -53,6 +53,16 @@ impl JocDispatchState {
         self.sequence_counter
     }
 
+    pub fn next_sequence_count(&self) -> Result<u16, JocDispatchError> {
+        match self.sequence_counter {
+            -1 => Ok(0),
+            0..=1_023 => {
+                u16::try_from(self.sequence_counter).map_err(|_| JocDispatchError::Sequence)
+            }
+            _ => Err(JocDispatchError::Sequence),
+        }
+    }
+
     pub const fn successful_dispatches(&self) -> u64 {
         self.successful_dispatches
     }
@@ -124,6 +134,10 @@ impl JocPayloadInput {
         producer_transaction_id: CallbackTransactionId,
     ) -> Result<Self, JocDispatchError> {
         Self::from_projection_with_optional_transaction(projection, Some(producer_transaction_id))
+    }
+
+    pub const fn clip_gain_index(&self) -> u8 {
+        self.clip_gain_index
     }
 
     fn from_projection_with_optional_transaction(
@@ -361,13 +375,7 @@ fn stage_joc_payload_inner(
     };
     validate_fit_lineage(Some(source_lineage), input)?;
     let lineage = source_lineage.clone();
-    let sequence_count = match before.sequence_counter {
-        -1 => 0,
-        0..=1_023 => {
-            u16::try_from(before.sequence_counter).map_err(|_| JocDispatchError::Sequence)?
-        }
-        _ => return Err(JocDispatchError::Sequence),
-    };
+    let sequence_count = before.next_sequence_count()?;
     let representation = if let Some(rows) = flat7x_rows {
         let profile = profile.ok_or(JocDispatchError::Flat7xProfileMismatch)?;
         if !is_flat7x_profile(profile) {
@@ -588,7 +596,7 @@ mod tests {
         );
         let after = CoefficientFitState::with_generation_for_test(dispatch.value());
         let rows_proposal = Flat7xCoefficientRowsProposal::from_source_lineage(
-            Flat7xCoefficientRowsProviderOutput::new(rows),
+            &Flat7xCoefficientRowsProviderOutput::synthetic_for_test(rows, lineage.clone()),
             lineage.clone(),
             after,
         )

@@ -3,7 +3,7 @@ status: partial-implementation-locally-verified
 topic: implementation-agent-status
 spec: JOCForge
 confidence: repository-status
-last_updated: 2026-11-14
+last_updated: 2026-11-15
 tags:
   - implementation
   - handoff
@@ -217,3 +217,11 @@ OpenJOC 0.20.1's `skip_observed=0` led to the ETSI Annex E.1.2.3 placement fix: 
 Corrected Release attempt `1794658627622854200` captured 8,417 AUs / 56,023,552 bytes, 6,656 bytes per AU, and CRC residual 0. The first published source carried a 288-byte protected F13 container. OpenJOC 0.20.1 review is pending; candidate remains experimental with `production_allowed=false`, and render/playback remain `NOT_RUN`.
 
 OpenJOC still reported `skip_observed=0` for that candidate. ETSI TS 102 366 V1.4.1 Annex E.1.2.4 orders `dithflag` before `dynrnge`; the D0 audblk writer now follows this order. The targeted D0 audio-frame (4), frame-assembly (5), frame-control (2), selected 5.1 all-rate (1), `cargo check -p jocforge --locked`, and fmt checks pass. The CLI carries the typed AU0 D0 frame receipt to the progress log. Short diagnostic attempt `1794661230282761900` captured 137 AUs / 911,872 bytes. AU0 receipt is audfrm `[94,171)`, skipflde bit 104, block-2 skiple bit 12,743, U9 skipl at 12,744 with C=230, EMDF `[12,753,14,593)`, nauxbits `[32,494,32,750)`, auxdatae 32,750, crcrsv 32,751, CRC2 `[32,752,32,768)`. OpenJOC 0.20.1 still reports `skip_observed=0`, 822 unresolved fields, zero EMDF/JOC, `malformed_aus=0`; first parser boundary divergence remains open. The short input is diagnostic; Love Song remains the target.
+
+## 2026-11-15 D0 block-two source-generation receipt
+
+- The single E-1037 Release attempt on `D:\Love Song 方大同.wav` completed Meter prepass (8,420 callbacks; selected LUFS -16.13749), then stopped at `Flat7xCoefficientSourceUnavailable` after g=0/g=1 priming. Exit code 2; elapsed 136,733 ms. Its attempt directory is empty: no candidate, partial file, or OpenJOC inspection.
+- The D0 block-two preassembly input now requires a Codec-owner-issued `Flat7xD0SourceGenerationReceipt`, an F13 lineage snapshot carried through F14K, F14K source/dispatch/AU identity, and the exact protected container. F13/F14K receipt mismatch and source-generation mismatch reject before D0 frame bytes or cursor are staged. Metadata owner before/after generations, consumer/producer transactions, ID14 producer/writer generations, Codec owner generation, D0 source generation, and the later F15 pair label remain separate fields and types.
+- External `Flat7xCoefficientRowsProviderOutput` now requires a provider-owned source lineage/transaction and Codec-owner-issued D0 source-generation receipt; the application checks it against the current expected receipt. OpenJOC index1 defines target order `[L,R,C,Ls,Rs,Lrs,Rrs]`; the current five-carrier-to-seven-row source map remains UNBOUND, so production still returns `Flat7xCoefficientSourceUnavailable`.
+- Focused verification passed: D0 receipt/frame assembler 8/8, D0 audio-frame 4/4, provider row/source receipt tests 3/3, application provider bridge 1/1, F13/F14K/F15 pair test 1/1, and selected 5.1 all-rate route 1/1. `cargo fmt --all -- --check` and workspace `cargo check --locked` pass. Workspace Clippy `-D warnings` still reports 28 findings in unchanged files; boundary check still reports the unchanged direct-slice inventory for `crates/jocforge-domain/src/meter/standalone_root.rs`.
+- No encoder or OpenJOC process was started. Production 15x7 coefficient mapping and values remain UNBOUND; the selected 5.1 path remains available.

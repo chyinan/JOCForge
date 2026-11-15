@@ -3,7 +3,7 @@ status: verified
 topic: washed-7.1-flat7x-conclusions
 spec: JOCForge
 confidence: sealed-package-backed
-last_updated: 2026-11-13
+last_updated: 2026-11-15
 tags:
   - Wash
   - AU
@@ -80,3 +80,14 @@ tags:
 
 - The Flat7x source-stage entry accepts the proposal created from provider output and the accepted QMF projection; it checks projection identity and generation before shared ID14 dispatch provenance. The selected 5.1 route remains on its five-row CoefficientFitProposal.
 - Wash package openjoc_full_matrix_serialization_order_v1 (manifest 4ba2c0b6133267541a046e416b42adaf9b6c02aa79c98b987563f7ac3de70f7b, seal 20d2a61bc3aff599756526e19f7e1168310d31829a64c7ff36bdbb33323c3821) reports parser traversal object → point/time slot → channel row → band, selector1 → 7 rows, and band_index 0..7 → 1,3,5,7,9,12,15,23. The local writer traverses Full rows in the same order; this match is structural inference only and the package supplies no coefficient values or production generator.
+
+- Wash's OpenJOC v0.20.1 AU-admission audit separates four parser gates: valid ID14 syntax/JOC-present, exactly one ID11 plus ID14 with matching present group_id/profile, the D0 last-dependent carrier placement, and D0's two-byte Type-A addbsi. An equal representable `Some(group_id)` is parser-accepted; absent/mismatched group ids fail presence/compat checks. ID14 downmix selector 1 remains a separate field.
+- OpenJOC's public library exposes `index_syncframes`, `group_access_units`, `inspect_audio_block_carriers` and `classify_skip_field_emdf`. The default JSON rate summary is stream-wide and drops per-AU block index and malformed-count detail; it cannot prove D0 block index 2. A complete absence check requires examined=6, unresolved=0 and malformed=0; after an unresolved/malformed block, later blocks are unobservable. Wash's attempt-local audit helper is `D:\jocforge_wash_tmp\openjoc_flat7x_structure_audit_probe\run-audit.ps1`; no candidate existed during this task, so the helper was not run.
+
+## 2026-11-15 D0 block-two preassembly receipt
+
+- Wash `FLAT7X-SOURCE-GENERATION-D0-BLOCK2-RECEIPT-WASH-V1` (manifest `3022119d7b4eef3d79021f576cb58defa8c2a9eccba24722306c67d49c131824`, seal `ae906eba1eaea91f2b68d80d74f7d52c32f61d84750f6fd3073f3407ad4d332b`) establishes the construction order: F13/F14K and D0 frame precede the later F15 `Flat7xSourceGeneration`. Wash's source-generation owner follow-up (manifest `203473bdf6ea258e9c5e383adeb33137db540e84e836937266524974a2e39cbf`, seal `896a83c6e6fe3e90cd3d96eb6f3c9b0f5c1faedd27a066f26fabcae67bcc0c39`) supplies a JOCForge model proposal: Codec owner issues a distinct typed D0 generation receipt before F13/F14K/D0; it is not derived from `source_index` and is kept distinct from Codec owner and F15 generation domains.
+- Local D0 block-two admission now requires the same F13 source-lineage snapshot to be carried through F14K, a matching Codec-owner-issued D0 generation receipt, the F14K source/dispatch/AU tuple, and the protected container. The application-level receipt test confirms F13 owner-generation and ID14 producer/writer-generation one-hot differences reject; the D0 generation test confirms a source-generation mismatch rejects before D0 assembly. These synthetic checks establish local fail-closed behavior, not a native owner equivalence.
+- Wash `JOCFORGE-FLAT7X-OBJECT-ROW-PROVIDER-BOUNDARY-WASH-V1` (manifest `ab3025cd5680784284b70da9a0fa97642e5e1d831f1f2382098f056e808ac37d`, seal `5e231d34e82590e96e659043588c2922ee689dd3f66613b425d97bacd3299499`) states that the current QMF fit is 15x5x12, selector1 expects seven rows, and D0's four coded PCM rows are a separate view. OpenJOC index1 row order is `[L,R,C,Ls,Rs,Lrs,Rrs]`; mapping the five current carrier rows into these seven remains UNBOUND. No zero-filled production provider is connected.
+- Wash OpenJOC v0.20.1 AU admission/group-id source receipts require separate gates for ID14 syntax, one ID11 plus one ID14 with matching `Some(group_id)`, D0 as the final dependent carrier with two-byte Type-A addbsi, and block index 2. Component-rate totals are stream-wide, not per-AU. A complete absence check requires examined=6, unresolved=0, malformed=0; unresolved/malformed later blocks remain unobservable. These parser findings are source/model evidence and do not establish candidate output acceptance.
+- E-1037 Release run ended at `Flat7xCoefficientSourceUnavailable` after Meter prepass and two priming callbacks; attempt directory stayed empty and OpenJOC did not run. Focused D0 receipt/assembler tests 8/8, audio-frame tests 4/4, provider receipt tests 3/3, application provider test 1/1, F13/F14K/F15 pair test 1/1 and selected 5.1 all-rate test 1/1 pass. Global Clippy/boundary failures are in unchanged baseline files.

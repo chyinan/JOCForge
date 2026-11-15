@@ -1,6 +1,7 @@
 // pattern: Functional Core
 //! Selected 15-object by 12-band coefficient fit proposal composition.
 
+use crate::codec::owner::Flat7xD0SourceGenerationReceipt;
 use crate::{
     joc::{
         coefficient_geometry::{
@@ -27,7 +28,7 @@ use crate::{
         spatial_audio_state::SelectedJocQmfProjection,
     },
     timeline::{CodecSourceIndex, JocDispatchIndex},
-    transaction::CallbackLineageIdentity,
+    transaction::{CallbackLineageIdentity, CallbackTransactionId},
 };
 
 #[cfg(test)]
@@ -208,11 +209,99 @@ impl FitSourceLineage {
 #[derive(Clone, Debug)]
 pub struct Flat7xCoefficientRowsProviderOutput<'a> {
     rows: Flat7xCoefficientRows<'a>,
+    source_receipt: Flat7xCoefficientRowsSourceReceipt,
+}
+
+/// Provider-owned source lineage for one Flat7x coefficient-row output.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Flat7xCoefficientRowsSourceReceipt {
+    producer_transaction_id: CallbackTransactionId,
+    source_lineage: FitSourceLineage,
+    source_generation_receipt: Flat7xD0SourceGenerationReceipt,
+}
+
+impl Flat7xCoefficientRowsSourceReceipt {
+    pub fn new(
+        producer_transaction_id: CallbackTransactionId,
+        source_lineage: FitSourceLineage,
+        source_generation_receipt: Flat7xD0SourceGenerationReceipt,
+    ) -> Result<Self, CoefficientFittingError> {
+        let source_generation_lineage = source_generation_receipt.callback_lineage();
+        if &producer_transaction_id != source_generation_receipt.source_transaction_id()
+            || &source_lineage.transaction_id != source_generation_lineage
+            || source_lineage.programme_id.as_str()
+                != source_generation_lineage.programme_id().as_str()
+            || source_lineage.attempt.value() != source_generation_lineage.attempt_id().value()
+            || source_lineage.source_index != source_generation_receipt.source_index()
+            || source_lineage.source_index.dispatch().ok() != Some(source_lineage.dispatch)
+        {
+            return Err(CoefficientFittingError::Lineage);
+        }
+        Ok(Self {
+            producer_transaction_id,
+            source_lineage,
+            source_generation_receipt,
+        })
+    }
+
+    pub fn producer_transaction_id(&self) -> &CallbackTransactionId {
+        &self.producer_transaction_id
+    }
+
+    pub const fn source_lineage(&self) -> &FitSourceLineage {
+        &self.source_lineage
+    }
+
+    pub const fn source_generation_receipt(&self) -> &Flat7xD0SourceGenerationReceipt {
+        &self.source_generation_receipt
+    }
 }
 
 impl<'a> Flat7xCoefficientRowsProviderOutput<'a> {
-    pub const fn new(rows: Flat7xCoefficientRows<'a>) -> Self {
-        Self { rows }
+    pub const fn new(
+        rows: Flat7xCoefficientRows<'a>,
+        source_receipt: Flat7xCoefficientRowsSourceReceipt,
+    ) -> Self {
+        Self {
+            rows,
+            source_receipt,
+        }
+    }
+
+    pub const fn rows(&self) -> Flat7xCoefficientRows<'a> {
+        self.rows
+    }
+
+    pub const fn source_receipt(&self) -> &Flat7xCoefficientRowsSourceReceipt {
+        &self.source_receipt
+    }
+
+    #[cfg(any(test, feature = "test-support"))]
+    /// Creates source-bound test evidence without asserting a production provider.
+    ///
+    /// # Panics
+    ///
+    /// Panics only if the fixed synthetic transaction identifier is invalid.
+    pub fn synthetic_for_test(
+        rows: Flat7xCoefficientRows<'a>,
+        source_lineage: FitSourceLineage,
+    ) -> Self {
+        let producer_transaction_id = CallbackTransactionId::new("synthetic-provider-source")
+            .expect("synthetic transaction id is valid");
+        let source_generation_receipt = Flat7xD0SourceGenerationReceipt::synthetic_for_test(
+            producer_transaction_id.clone(),
+            1,
+            source_lineage.transaction_id().clone(),
+            source_lineage.source_index(),
+            0,
+        );
+        let source_receipt = Flat7xCoefficientRowsSourceReceipt::new(
+            producer_transaction_id,
+            source_lineage,
+            source_generation_receipt,
+        )
+        .expect("test provider receipt is internally bound");
+        Self::new(rows, source_receipt)
     }
 }
 
@@ -246,19 +335,27 @@ impl<'a> Flat7xCoefficientRowsProposal<'a> {
     /// Binds provider output to the accepted projection that produced this source generation.
     pub fn from_provider_output(
         fit_before: &CoefficientFitState,
-        projection: &SelectedJocQmfProjection,
-        output: Flat7xCoefficientRowsProviderOutput<'a>,
+        expected_source_generation_receipt: &Flat7xD0SourceGenerationReceipt,
+        output: &Flat7xCoefficientRowsProviderOutput<'a>,
     ) -> Result<Self, CoefficientFittingError> {
-        let after = fit_before.after_external_flat7x_rows(projection.dispatch())?;
-        Self::from_source_lineage(output, FitSourceLineage::from_projection(projection), after)
+        if output.source_receipt.source_generation_receipt != *expected_source_generation_receipt {
+            return Err(CoefficientFittingError::Lineage);
+        }
+        let source_lineage = output.source_receipt.source_lineage.clone();
+        let after = fit_before.after_external_flat7x_rows(source_lineage.dispatch())?;
+        Self::new(output.rows, after, source_lineage)
     }
 
     /// Binds provider output to an already projection-derived source lineage.
+    #[cfg(any(test, feature = "test-support"))]
     pub fn from_source_lineage(
-        output: Flat7xCoefficientRowsProviderOutput<'a>,
+        output: &Flat7xCoefficientRowsProviderOutput<'a>,
         source_lineage: FitSourceLineage,
         after: CoefficientFitState,
     ) -> Result<Self, CoefficientFittingError> {
+        if output.source_receipt.source_lineage != source_lineage {
+            return Err(CoefficientFittingError::Lineage);
+        }
         Self::new(output.rows, after, source_lineage)
     }
 
@@ -427,6 +524,7 @@ pub enum CoefficientFittingError {
     NormalEquation(CoefficientNormalEquationError),
     Search(CoefficientSearchError),
     Generation,
+    Lineage,
     Shape,
 }
 
@@ -674,23 +772,29 @@ mod tests {
                 .unwrap()
                 .digest(),
         );
-        let after = CoefficientFitState::with_generation_for_test(dispatch.value());
-
-        let proposal = Flat7xCoefficientRowsProposal::from_source_lineage(
-            Flat7xCoefficientRowsProviderOutput::new(rows),
-            lineage.clone(),
-            after.clone(),
+        let fit_before = CoefficientFitState::cold();
+        let provider_output =
+            Flat7xCoefficientRowsProviderOutput::synthetic_for_test(rows, lineage.clone());
+        let expected_generation_receipt = provider_output
+            .source_receipt()
+            .source_generation_receipt()
+            .clone();
+        let proposal = Flat7xCoefficientRowsProposal::from_provider_output(
+            &fit_before,
+            &expected_generation_receipt,
+            &provider_output,
         )
         .unwrap();
-        assert_eq!(proposal.after(), &after);
+        assert_eq!(proposal.after().fit_generation(), dispatch.value());
         assert_eq!(proposal.source_lineage(), &lineage);
+        let mismatched_generation_receipt = expected_generation_receipt.with_generation_for_test(2);
         assert!(matches!(
-            Flat7xCoefficientRowsProposal::from_source_lineage(
-                Flat7xCoefficientRowsProviderOutput::new(rows),
-                lineage,
-                CoefficientFitState::with_generation_for_test(2),
+            Flat7xCoefficientRowsProposal::from_provider_output(
+                &fit_before,
+                &mismatched_generation_receipt,
+                &provider_output,
             ),
-            Err(CoefficientFittingError::Generation)
+            Err(CoefficientFittingError::Lineage)
         ));
     }
 

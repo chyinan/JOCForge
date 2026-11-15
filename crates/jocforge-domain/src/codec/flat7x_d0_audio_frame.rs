@@ -8,7 +8,7 @@ use super::{
     },
     bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError},
     d0_frame_assembler::{
-        D0_CRC2_FIELD_BITS, D0_TARGET_FRAME_BITS, D0Block2SkipFieldInput,
+        D0_CRC2_FIELD_BITS, D0_TARGET_FRAME_BITS, D0Block2SkipFieldInput, D0Block2SourceReceipt,
         Flat7xD0FrameAssemblyError, Flat7xD0FrameAssemblyReceipt, Flat7xD0FrameBitInput,
         Flat7xD0FrameTailPolicy, assemble_flat7x_d0_frame_bits_with_tail_policy,
     },
@@ -44,7 +44,7 @@ pub const FLAT7X_D0_DEFAULT_FLOOR_CODE: u8 = 7;
 pub struct Flat7xD0AudioFrameInput<'a> {
     pub target: Flat7xI0D0TargetPlan,
     pub bsi_structure: Flat7xD0BsiStructure,
-    pub complete_emdf_container: &'a [u8],
+    pub block2_source_receipt: &'a D0Block2SourceReceipt<'a>,
     pub bap_parameters: &'a Flat7xD0BapParameters,
     pub spectrum_by_block: &'a [Flat7xD0SpectrumBlock; FLAT7X_D0_BAP_BLOCK_COUNT],
     pub exponent_rows_by_block:
@@ -170,9 +170,10 @@ pub fn produce_flat7x_d0_audio_frame(
 ) -> Result<Flat7xD0AudioFrameCandidate, Flat7xD0AudioFrameError> {
     let bsi_bit_length =
         measure_flat7x_d0_bsi_structure(input.target, &input.bsi_structure)?.value();
-    let emdf_length = u16::try_from(input.complete_emdf_container.len()).map_err(|_| {
-        Flat7xD0AudioFrameError::EmdfSkipField(D0EmdfSkipFieldWriteError::ContainerTooLarge)
-    })?;
+    let emdf_length = u16::try_from(input.block2_source_receipt.complete_emdf_container().len())
+        .map_err(|_| {
+            Flat7xD0AudioFrameError::EmdfSkipField(D0EmdfSkipFieldWriteError::ContainerTooLarge)
+        })?;
     let skipfield_bits = flat7x_d0_block2_skipfld_bit_length(emdf_length)?;
 
     let decoded_exponents_by_block = std::array::from_fn(|block| {
@@ -303,7 +304,7 @@ pub fn produce_flat7x_d0_audio_frame(
             insertion_point: CallerOwnedUnboundD0Block2InsertionPoint::new(
                 block_receipts[2].prefix_before_skipfield_bits(),
             ),
-            complete_emdf_container: input.complete_emdf_container,
+            source_receipt: input.block2_source_receipt.clone(),
         }];
         let audio_blocks = [
             block_candidates[0]

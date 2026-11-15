@@ -12,9 +12,9 @@ use crate::{
 use jocforge_application::flat7x_pair_source::{
     CallerOwnedI0CrcrsvSeed, Flat7xD0BapParameters, Flat7xD0BsiStructure, Flat7xD0PcmFrameSettings,
     Flat7xI0FrameAssemblyError, Flat7xPairSourceError, I0AudioBlockSeriesBudget, I0AuxDataInput,
-    OpaqueI0Ac3BitSpan, assemble_flat7x_i0_frame_candidate_from_binding, bind_flat7x_pair_source,
-    flat7x_i0_audio_block_policy_v1, produce_flat7x_pair_d0_pcm_frame_candidate,
-    stage_flat7x_pair_d0_pcm_block_series,
+    OpaqueI0Ac3BitSpan, assemble_flat7x_i0_frame_candidate_from_binding,
+    bind_flat7x_d0_block2_source_receipt, bind_flat7x_pair_source, flat7x_i0_audio_block_policy_v1,
+    produce_flat7x_pair_d0_pcm_frame_candidate, stage_flat7x_pair_d0_pcm_block_series,
 };
 use jocforge_application::{
     PreparedJobInput,
@@ -27,8 +27,8 @@ use jocforge_application::{
     independent_meter_callback::{AttemptId, CallbackTransactionId, GtcOwnerReceipt},
     integrity_source_bridge::{
         F14kPayloadOutcome, F14kSourceCandidate, IntegrityF12SourceReceipts,
-        IntegrityOwnerReceiptProposal, IntegrityProgrammeOwner, protect_metadata_source_for_frame,
-        stage_integrity_after_f12,
+        IntegrityOwnerReceiptProposal, IntegrityProgrammeOwner,
+        protect_metadata_source_for_frame_with_source_generation, stage_integrity_after_f12,
     },
     metadata_source_bridge::{
         MainMetadataBodiesInput, MetadataOwner, SelectedJocState,
@@ -342,6 +342,20 @@ pub(crate) fn stage_source_frame<'pcm>(
     } else {
         None
     };
+    let flat7x_d0_source_generation_receipt =
+        if let Some(projection) = flat7x_source_pcm_projection.as_ref() {
+            Some(
+                codec_before
+                    .issue_flat7x_d0_source_generation_receipt(
+                        source_transaction_id.clone(),
+                        callback_identity.clone(),
+                        projection.role_map_receipt().shared_analysis_identity(),
+                    )
+                    .map_err(|error| format!("Flat7x source-generation receipt: {error:?}"))?,
+            )
+        } else {
+            None
+        };
     let metadata_bodies = prepare_main_metadata_bodies_for_callback(
         MainMetadataBodiesInput {
             prepared,
@@ -363,9 +377,10 @@ pub(crate) fn stage_source_frame<'pcm>(
     )
     .map_err(|error| format!("F13 source stage: {error:?}"))?;
     let (joc_after, joc_receipt, mut metadata_source) = metadata_candidate.into_parts();
-    let f14k_source = protect_metadata_source_for_frame(
+    let f14k_source = protect_metadata_source_for_frame_with_source_generation(
         &mut metadata_source,
         admitted_plan.source_providers().keyless_integrity(),
+        flat7x_d0_source_generation_receipt.clone(),
     )
     .map_err(|error| format!("F14/F14K source stage: {error:?}"))?;
     if f14k_source.source_index() != source_index
@@ -444,6 +459,23 @@ pub(crate) fn stage_source_frame<'pcm>(
                     "Flat7x D0 BSI controls do not match the pair source role receipt".to_owned(),
                 ));
             }
+            let expected_source_generation_receipt = flat7x_d0_source_generation_receipt
+                .as_ref()
+                .ok_or_else(|| {
+                SourceFrameStageError::Pipeline(
+                    "Flat7x D0 source-generation receipt is missing".to_owned(),
+                )
+            })?;
+            let d0_block2_source_receipt = bind_flat7x_d0_block2_source_receipt(
+                &metadata_source,
+                &f14k_source,
+                expected_source_generation_receipt,
+            )
+            .map_err(|error| {
+                SourceFrameStageError::Pipeline(format!(
+                    "Flat7x D0 block-two source receipt: {error:?}"
+                ))
+            })?;
             let d0_frame_candidate = produce_flat7x_pair_d0_pcm_frame_candidate(
                 &binding,
                 Flat7xD0PcmFrameSettings {
@@ -460,7 +492,8 @@ pub(crate) fn stage_source_frame<'pcm>(
                         information: None,
                         addbsi: d0_bsi_inputs.ci16_addbsi(),
                     },
-                    complete_emdf_container: protected_container.bytes(),
+                    source_generation_receipt: expected_source_generation_receipt,
+                    block2_source_receipt: &d0_block2_source_receipt,
                     bap_parameters: &d0_bap_parameters,
                     dynamic_range_codes: d0_bsi_inputs.dynamic_range_codes(),
                 },

@@ -16,6 +16,7 @@ use super::{
     },
     frame_builder::Flat7xD0BsiStructure,
 };
+use super::{d0_frame_assembler::D0Block2SourceReceipt, owner::Flat7xD0SourceGenerationReceipt};
 use crate::profile::Flat7xI0D0TargetPlan;
 use crate::timeline::{
     AdmSampleIndex, CodecSourceIndex, FrontendCallbackIndex, source_for_callback,
@@ -224,7 +225,8 @@ pub struct Flat7xD0PcmFrameSettings<'a> {
     pub transform_parameters: &'a MathGeneratedTransformParameters,
     pub target: Flat7xI0D0TargetPlan,
     pub bsi_structure: Flat7xD0BsiStructure,
-    pub complete_emdf_container: &'a [u8],
+    pub source_generation_receipt: &'a Flat7xD0SourceGenerationReceipt,
+    pub block2_source_receipt: &'a D0Block2SourceReceipt<'a>,
     pub bap_parameters: &'a Flat7xD0BapParameters,
     pub dynamic_range_codes: [Option<u8>; FLAT7X_D0_BAP_BLOCK_COUNT],
 }
@@ -297,7 +299,7 @@ pub fn produce_flat7x_d0_frame_from_pcm_source(
     let frame = produce_flat7x_d0_audio_frame(&Flat7xD0AudioFrameInput {
         target: settings.target,
         bsi_structure: settings.bsi_structure,
-        complete_emdf_container: settings.complete_emdf_container,
+        block2_source_receipt: settings.block2_source_receipt,
         bap_parameters: settings.bap_parameters,
         spectrum_by_block: block_series.spectra(),
         exponent_rows_by_block: block_series.exponent_rows(),
