@@ -10,10 +10,20 @@ pub use jocforge_domain::codec::{
     owner::{CodecOwnerProposal, CodecOwnerRoot, CodecOwnerStageError},
     source_frame_writer::SelectedSourceFrameCandidate,
 };
+pub use jocforge_domain::joc::seven_carrier_windows::SevenCarrierQmfState;
 pub use jocforge_domain::transaction::CallbackLineageIdentity;
 pub use jocforge_domain::{
-    analysis::owner::AnalysisNumericPlanStage, drc::NoneDrcOwnerAfterProposal,
-    joc::emdf::metadata_owner::MetadataSourceProposal,
+    analysis::owner::AnalysisNumericPlanStage,
+    drc::NoneDrcOwnerAfterProposal,
+    joc::{
+        coefficient_fitting::{
+            CoefficientFitState, CoefficientFittingError, SevenCarrierCoefficientFitProposal,
+        },
+        emdf::metadata_owner::MetadataSourceProposal,
+        fit_score::FitScoreProvider,
+        seven_carrier_windows::SevenCarrierWindowSet,
+    },
+    spatial::spatial_audio_state::SelectedJocQmfProjection,
 };
 
 use jocforge_domain::{
@@ -26,13 +36,13 @@ use jocforge_domain::{
         },
     },
     joc::seven_carrier_windows::{
-        SevenCarrierQmfSourceIdentity, SevenCarrierQmfState, SevenCarrierWindowError,
-        SevenCarrierWindowProposal, SevenCarrierWindowSet, stage_seven_carrier_windows,
+        SevenCarrierQmfSourceIdentity, SevenCarrierWindowError, SevenCarrierWindowProposal,
+        stage_seven_carrier_windows,
     },
     profile::{
         Flat7xD0PcmRows, Flat7xI0D0TargetPlan, Flat7xI0PcmRows, Flat7xProvisionalSourcePcmView,
-        Flat7xProvisionalSourceRoleMap, Flat7xSourceRoleMapError, SevenCarrierPcmInput,
-        build_flat7x_provisional_source_role_map,
+        Flat7xProvisionalSourceRoleMap, Flat7xSourceRoleMapError, ResolvedEncodingProfile,
+        SevenCarrierPcmInput, build_flat7x_provisional_source_role_map,
         project_flat7x_source_pcm_rows as project_profile_source_pcm_rows,
     },
     publication::OutputSourceAfterProposal,
@@ -59,6 +69,8 @@ pub enum SourceFrameBridgeError {
     Flat7xSourceRoleMapLineageMismatch,
     SevenCarrierSourceIdentityMismatch,
     SevenCarrierWindow(SevenCarrierWindowError),
+    SevenCarrierCoefficientFitLineageMismatch,
+    SevenCarrierCoefficientFit(CoefficientFittingError),
     F12EmdfCursorMissing,
     F12EmdfCursorUnexpected,
     CodecSource(CodecSourceBridgeError),
@@ -271,6 +283,85 @@ pub fn stage_flat7x_seven_carrier_windows(
         role_map_receipt: receipt.clone(),
         source_extent: projection.source_extent(),
         qmf,
+    })
+}
+
+/// Source-bound C=7 coefficient-fit candidate over same-source target-slot and ADM-carrier windows.
+#[must_use]
+#[derive(Clone, Debug, PartialEq)]
+pub struct Flat7xSevenCarrierCoefficientCandidate {
+    carrier_windows: Flat7xSevenCarrierWindowCandidate,
+    fit: SevenCarrierCoefficientFitProposal,
+}
+
+impl Flat7xSevenCarrierCoefficientCandidate {
+    pub const fn carrier_windows(&self) -> &Flat7xSevenCarrierWindowCandidate {
+        &self.carrier_windows
+    }
+
+    pub const fn fit(&self) -> &SevenCarrierCoefficientFitProposal {
+        &self.fit
+    }
+
+    pub const fn rows(&self) -> &jocforge_domain::joc::coefficient_fitting::SevenCarrierFitRows {
+        self.fit.rows()
+    }
+
+    pub const fn production_allowed(&self) -> bool {
+        false
+    }
+}
+
+/// Fits the target-slot windows only when the seven-carrier PCM and spatial projections share
+/// programme, attempt, callback, source, transaction and analysis generation.
+pub fn stage_flat7x_seven_carrier_coefficient_fit(
+    profile: ResolvedEncodingProfile,
+    fit_before: &CoefficientFitState,
+    target_projection: &SelectedJocQmfProjection,
+    carrier_candidate: &Flat7xSevenCarrierWindowCandidate,
+    qmf_provider: &QmfReceiverFunctionalProvider,
+    score_provider: &FitScoreProvider,
+) -> Result<Flat7xSevenCarrierCoefficientCandidate, SourceFrameBridgeError> {
+    let role_receipt = carrier_candidate.role_map_receipt();
+    let shared_analysis = role_receipt.shared_analysis_identity();
+    let source_key = shared_analysis.source_stage_key();
+    let carrier_identity = carrier_candidate.windows().source_identity();
+    let expected_callback_lineage = CallbackLineageIdentity::new(
+        role_receipt.programme_id().clone(),
+        role_receipt.attempt_id(),
+        role_receipt.callback_index(),
+    );
+    if source_key.attempt_id() != role_receipt.attempt_id()
+        || source_key.transaction_id() != role_receipt.source_transaction_id()
+        || source_key.source_index() != role_receipt.source_index()
+        || shared_analysis.source_index() != role_receipt.source_index()
+        || carrier_identity.callback_lineage() != &expected_callback_lineage
+        || carrier_identity.source_transaction_id() != role_receipt.source_transaction_id()
+        || carrier_identity.source_index() != role_receipt.source_index()
+        || carrier_identity.analysis_generation() != shared_analysis.analysis_after_generation()
+        || target_projection.transaction_id() != &expected_callback_lineage
+        || target_projection.source_index() != role_receipt.source_index()
+        || role_receipt.source_index().dispatch().ok() != Some(target_projection.dispatch())
+        || carrier_candidate.source_extent().callback_index() != role_receipt.callback_index()
+        || carrier_candidate.source_extent().source_index() != role_receipt.source_index()
+        || carrier_candidate.windows().role_bindings() != role_receipt.role_map().joc_carrier_rows()
+    {
+        return Err(SourceFrameBridgeError::SevenCarrierCoefficientFitLineageMismatch);
+    }
+    let fit =
+        jocforge_domain::joc::coefficient_fitting::stage_seven_carrier_coefficient_fit_from_qmf(
+            profile,
+            fit_before,
+            target_projection,
+            carrier_candidate.windows(),
+            carrier_candidate.after_state(),
+            qmf_provider,
+            score_provider,
+        )
+        .map_err(SourceFrameBridgeError::SevenCarrierCoefficientFit)?;
+    Ok(Flat7xSevenCarrierCoefficientCandidate {
+        carrier_windows: carrier_candidate.clone(),
+        fit,
     })
 }
 

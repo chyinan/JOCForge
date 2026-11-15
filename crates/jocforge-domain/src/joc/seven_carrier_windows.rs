@@ -7,9 +7,9 @@ use crate::{
     spatial::{
         QmfMathematicalFftProvider, QmfReceiverFunctionalProvider,
         qmf_analysis_synthesis::{
-            QMF_ANALYSIS_SAMPLES_PER_SOURCE, QMF_ANALYSIS_SLOTS_PER_SOURCE,
-            QMF_ANALYSIS_SPECTRUM_WORDS, QmfAnalysisHistory, QmfAnalysisSynthesisError,
-            analyze_qmf_row,
+            QMF_ANALYSIS_SAMPLES_PER_SLOT, QMF_ANALYSIS_SAMPLES_PER_SOURCE,
+            QMF_ANALYSIS_SLOTS_PER_SOURCE, QMF_ANALYSIS_SPECTRUM_WORDS, QmfAnalysisHistory,
+            QmfAnalysisSynthesisError, analyze_qmf_row,
         },
     },
     timeline::{CodecSourceIndex, source_for_callback},
@@ -93,6 +93,85 @@ impl SevenCarrierQmfState {
     pub const fn analysis_history_by_carrier(&self) -> &[QmfAnalysisHistory; CARRIER_COUNT] {
         &self.analysis_history_by_carrier
     }
+
+    pub fn canonical_payload_bytes(&self) -> Result<Vec<u8>, SevenCarrierWindowError> {
+        let identity = self
+            .last_source_identity
+            .as_ref()
+            .ok_or(SevenCarrierWindowError::CanonicalStateUnavailable)?;
+        let role_bindings = self
+            .role_bindings
+            .as_ref()
+            .ok_or(SevenCarrierWindowError::CanonicalStateUnavailable)?;
+        let programme_id = identity.callback_lineage.programme_id().as_str();
+        let source_transaction_id = identity.source_transaction_id.as_str();
+        let mut bytes = Vec::with_capacity(
+            96 + programme_id.len()
+                + source_transaction_id.len()
+                + CARRIER_COUNT
+                    * (9 * QMF_ANALYSIS_SAMPLES_PER_SLOT * 4
+                        + QMF_ANALYSIS_SLOTS_PER_SOURCE * QMF_ANALYSIS_SPECTRUM_WORDS * 4),
+        );
+        bytes.extend_from_slice(b"SEVQMF01");
+        bytes.push(7);
+        for binding in role_bindings {
+            bytes.push(carrier_role_code(binding.role()));
+            bytes.push(binding.row().physical_host().value());
+        }
+        append_canonical_string(&mut bytes, programme_id)?;
+        bytes.extend_from_slice(&identity.callback_lineage.attempt_id().value().to_le_bytes());
+        bytes.extend_from_slice(
+            &identity
+                .callback_lineage
+                .callback_index()
+                .value()
+                .to_le_bytes(),
+        );
+        append_canonical_string(&mut bytes, source_transaction_id)?;
+        bytes.extend_from_slice(&identity.source_index.value().to_le_bytes());
+        bytes.extend_from_slice(&identity.analysis_generation.value().to_le_bytes());
+        for history in &self.analysis_history_by_carrier {
+            for word in history.rows().iter().flatten() {
+                bytes.extend_from_slice(&word.to_le_bytes());
+            }
+        }
+        for slots in &self.previous_slots_by_carrier {
+            for word in slots.iter().flatten() {
+                bytes.extend_from_slice(&word.to_le_bytes());
+            }
+        }
+        Ok(bytes)
+    }
+
+    pub fn matches_dispatch(&self, dispatch: crate::timeline::JocDispatchIndex) -> bool {
+        self.last_source_identity.as_ref().is_some_and(|identity| {
+            identity.source_index.value().checked_add(1) == Some(dispatch.value())
+                && self.role_bindings.is_some()
+        })
+    }
+}
+
+fn append_canonical_string(
+    bytes: &mut Vec<u8>,
+    value: &str,
+) -> Result<(), SevenCarrierWindowError> {
+    let length = u32::try_from(value.len())
+        .map_err(|_| SevenCarrierWindowError::CanonicalStateUnavailable)?;
+    bytes.extend_from_slice(&length.to_le_bytes());
+    bytes.extend_from_slice(value.as_bytes());
+    Ok(())
+}
+
+const fn carrier_role_code(role: Flat7xJocCarrierRole) -> u8 {
+    match role {
+        Flat7xJocCarrierRole::Left => 0,
+        Flat7xJocCarrierRole::Right => 1,
+        Flat7xJocCarrierRole::Center => 2,
+        Flat7xJocCarrierRole::LeftSurround => 3,
+        Flat7xJocCarrierRole::RightSurround => 4,
+        Flat7xJocCarrierRole::LeftRearSurround => 5,
+        Flat7xJocCarrierRole::RightRearSurround => 6,
+    }
 }
 
 /// Seven 48-slot raw-QMF windows in `[L,R,C,Ls,Rs,Lrs,Rrs]` order.
@@ -122,6 +201,17 @@ impl SevenCarrierWindowSet {
             .iter()
             .position(|binding| binding.role() == role)?;
         Some(self.windows_by_carrier[index].as_ref())
+    }
+
+    pub fn words_in_target_order(&self) -> Vec<u32> {
+        let mut words =
+            Vec::with_capacity(CARRIER_COUNT * WINDOW_SLOT_COUNT * QMF_ANALYSIS_SPECTRUM_WORDS);
+        for carrier_windows in &self.windows_by_carrier {
+            for spectrum in carrier_windows {
+                words.extend_from_slice(spectrum);
+            }
+        }
+        words
     }
 
     pub const fn production_allowed(&self) -> bool {
@@ -155,6 +245,7 @@ pub enum SevenCarrierWindowError {
     SourceClockMismatch,
     SourceSequenceMismatch,
     RoleBindingMismatch,
+    CanonicalStateUnavailable,
     PcmRowLengthMismatch {
         role: Flat7xJocCarrierRole,
         actual_samples: usize,

@@ -5,6 +5,7 @@ use crate::{
     joc::{
         coefficient_fitting::{
             CoefficientFitProposal, FitSourceLineage, Flat7xCoefficientRowsProposal,
+            SevenCarrierCoefficientFitProposal,
         },
         coefficient_representation::{
             RepresentationRetryError, RepresentationRetryProvider, RepresentationWriteResult,
@@ -24,6 +25,7 @@ use crate::{
 };
 
 const SELECTED_CAPACITY_BYTES: u16 = 372;
+const FLAT7X_CAPACITY_BYTES: u16 = 511;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct JocDispatchState {
@@ -343,6 +345,93 @@ pub fn stage_joc_payload_with_flat7x_rows(
         return Err(JocDispatchError::Flat7xProfileMismatch);
     }
     stage_joc_payload_inner(before, None, Some(rows), input, None, Some(profile))
+}
+
+/// Writes one C=7 fit proposal through the selected Flat7x ID14 representation path.
+pub fn stage_joc_payload_with_seven_carrier_fit(
+    before: &JocDispatchState,
+    fit: &SevenCarrierCoefficientFitProposal,
+    input: &JocPayloadInput,
+    retry_provider: &RepresentationRetryProvider,
+    profile: ResolvedEncodingProfile,
+) -> Result<JocPayloadProposal, JocDispatchError> {
+    if !is_flat7x_profile(profile) {
+        return Err(JocDispatchError::Flat7xProfileMismatch);
+    }
+    if before.retired {
+        return Err(JocDispatchError::Retired);
+    }
+    if before.next_dispatch != input.dispatch
+        || input
+            .source_index
+            .dispatch()
+            .map_err(|_| JocDispatchError::Clock)?
+            != input.dispatch
+    {
+        return Err(JocDispatchError::Clock);
+    }
+    let producer_transaction_id = input
+        .producer_transaction_id
+        .as_ref()
+        .ok_or(JocDispatchError::Lineage)?;
+    validate_fit_lineage(Some(fit.target_lineage()), input)?;
+    let source_identity = fit.qmf_source_identity();
+    if fit.after().fit_generation() != input.dispatch.value()
+        || source_identity.callback_lineage() != &input.transaction_id
+        || source_identity.source_index() != input.source_index
+        || source_identity.source_transaction_id() != producer_transaction_id
+        || fit.rows().payload_downmix_index() != JocPayloadDownmixIndex::SevenChannel
+        || fit.rows().row_layout()
+            != crate::joc::coefficient_representation::JocCoefficientRowLayout::SevenChannel
+    {
+        return Err(JocDispatchError::Lineage);
+    }
+
+    let sequence_count = before.next_sequence_count()?;
+    let representation = fit
+        .write_payload_with_resolved_profile(
+            profile,
+            retry_provider,
+            input.clip_gain_index,
+            sequence_count,
+            FLAT7X_CAPACITY_BYTES,
+        )
+        .map_err(JocDispatchError::Retry)?;
+    let mut after = before.clone();
+    after.next_dispatch = JocDispatchIndex::new(
+        input
+            .dispatch
+            .value()
+            .checked_add(1)
+            .ok_or(JocDispatchError::Clock)?,
+    );
+    after.sequence_counter = if before.sequence_counter == 1_023 {
+        1
+    } else {
+        before
+            .sequence_counter
+            .checked_add(1)
+            .ok_or(JocDispatchError::Sequence)?
+    };
+    after.successful_dispatches = before
+        .successful_dispatches
+        .checked_add(1)
+        .ok_or(JocDispatchError::Clock)?;
+    after.committed_writer_count = before
+        .committed_writer_count
+        .checked_add(1)
+        .ok_or(JocDispatchError::Clock)?;
+    Ok(JocPayloadProposal {
+        after,
+        dispatch: input.dispatch,
+        writer_generation: input.source_index,
+        sequence_count,
+        clip_gain_index: input.clip_gain_index,
+        descriptor_target_gain_word: input.descriptor_target_gain_word,
+        lineage: fit.target_lineage().clone(),
+        producer_transaction_id: Some(producer_transaction_id.clone()),
+        representation,
+    })
 }
 
 fn stage_joc_payload_inner(

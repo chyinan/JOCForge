@@ -24,6 +24,8 @@ pub struct FitScoreProvider {
     exp_a: Vec<f64>,
     exp_b: Vec<f64>,
     scalars: ScoreScalars,
+    #[cfg(test)]
+    test_score_override: Option<f64>,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -92,6 +94,38 @@ impl FitScoreProvider {
             exp_a,
             exp_b,
             scalars,
+            #[cfg(test)]
+            test_score_override: None,
+        })
+    }
+
+    #[cfg(test)]
+    pub(crate) fn constant_for_test(score: f64) -> Result<Self, FitScoreError> {
+        if !score.is_finite() {
+            return Err(FitScoreError::NumericDomain);
+        }
+        Ok(Self {
+            near_one: [1.0; 4],
+            log_a: Vec::new(),
+            log_b: Vec::new(),
+            log_c: Vec::new(),
+            base_correction_a_64: 0.0,
+            base_correction_b_64: 0.0,
+            exp_a: Vec::new(),
+            exp_b: Vec::new(),
+            scalars: ScoreScalars {
+                e: 0.0,
+                eh: 0.0,
+                el: 0.0,
+                lh: 0.0,
+                ll: 0.0,
+                nh: 0.0,
+                nl: 0.0,
+                rh: 0.0,
+                rl: 0.0,
+                k: 0.0,
+            },
+            test_score_override: Some(score),
         })
     }
 
@@ -101,6 +135,10 @@ impl FitScoreProvider {
         model_energy: f64,
         target_energy: f64,
     ) -> Result<f64, FitScoreError> {
+        #[cfg(test)]
+        if let Some(score) = self.test_score_override {
+            return Ok(score);
+        }
         if !error.is_finite()
             || !model_energy.is_finite()
             || !target_energy.is_finite()

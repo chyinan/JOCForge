@@ -19,9 +19,9 @@ use jocforge_domain::{
     profile::resolve_selected_profile,
     source_axis::{SourceAxisBinding, SourceAxisError, SourceAxisOwnerGeneration},
     spatial::{
-        SpatialAudioMachine, SpatialControlMachine, SpatialProductionCallbackParentParts,
-        SpatialProductionCallbackProposal, ValidatedComponentParameterProvider,
-        ValidatedWindowQ15Provider,
+        SpatialAudioCallbackOutcome, SpatialAudioMachine, SpatialControlMachine,
+        SpatialProductionCallbackParentParts, SpatialProductionCallbackProposal,
+        ValidatedComponentParameterProvider, ValidatedWindowQ15Provider,
         diffusion_filter::DiffusionFilterParameters,
         frontend_stages::{
             FrontendFeatureStageError, stage_spatial_control_frontend_features_from_installed48,
@@ -505,6 +505,15 @@ impl MainSpatialCallbackParentParts {
 impl MainSpatialCallbackCandidate {
     pub const fn proposal(&self) -> &SpatialProductionCallbackProposal {
         &self.proposal
+    }
+
+    pub fn joc_qmf_projection(
+        &self,
+    ) -> Option<&jocforge_domain::spatial::spatial_audio_state::SelectedJocQmfProjection> {
+        match self.proposal.spatial_audio_outcome() {
+            SpatialAudioCallbackOutcome::Priming => None,
+            SpatialAudioCallbackOutcome::Joc(projection) => Some(projection),
+        }
     }
 
     pub fn into_parent_parts(self) -> MainSpatialCallbackParentParts {

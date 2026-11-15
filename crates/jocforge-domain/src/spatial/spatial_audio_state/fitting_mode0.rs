@@ -245,6 +245,13 @@ impl SelectedJocQmfProjection {
         }
     }
 
+    #[cfg(feature = "test-support")]
+    #[must_use]
+    pub fn with_target_object_windows_for_test(mut self, words: Vec<u32>) -> Self {
+        self.target_object_windows48 = words.into_boxed_slice();
+        self
+    }
+
     pub(crate) fn programme_id(&self) -> &SourceFlagsProgrammeId {
         &self.programme_id
     }
@@ -253,7 +260,7 @@ impl SelectedJocQmfProjection {
         self.attempt
     }
 
-    pub(crate) const fn transaction_id(&self) -> &CallbackLineageIdentity {
+    pub const fn transaction_id(&self) -> &CallbackLineageIdentity {
         &self.transaction_id
     }
 
@@ -269,7 +276,7 @@ impl SelectedJocQmfProjection {
         self.callback_index
     }
 
-    pub(crate) const fn source_index(&self) -> CodecSourceIndex {
+    pub const fn source_index(&self) -> CodecSourceIndex {
         self.source_index
     }
 
@@ -277,7 +284,7 @@ impl SelectedJocQmfProjection {
         self.receiver_generation_after
     }
 
-    pub(crate) const fn dispatch(&self) -> JocDispatchIndex {
+    pub const fn dispatch(&self) -> JocDispatchIndex {
         self.dispatch
     }
 

@@ -32,7 +32,9 @@ use jocforge_application::{
     },
     metadata_source_bridge::{
         MainMetadataBodiesInput, MetadataOwner, SelectedJocState,
-        prepare_main_metadata_bodies_for_callback, stage_main_metadata_source,
+        prepare_main_metadata_bodies_for_callback,
+        prepare_main_metadata_bodies_for_callback_with_seven_carrier_fit,
+        stage_main_metadata_source,
     },
     meter_finalization_bridge::{
         ProgrammeMeasurementReceipt, StandaloneMeterRoot, unchanged_meter_root_receipt,
@@ -50,8 +52,9 @@ use jocforge_application::{
     },
     source_frame_bridge::{
         CodecOwnerRoot, Flat7xD0PcmSourceExtent, Flat7xD0PcmSourceExtentOrigin,
-        Flat7xSourcePcmProjection, build_flat7x_source_pcm_projection,
+        Flat7xSourcePcmProjection, SevenCarrierQmfState, build_flat7x_source_pcm_projection,
         prepare_admitted_source_frame, stage_codec_owner_after_flat7x_pair,
+        stage_flat7x_seven_carrier_coefficient_fit, stage_flat7x_seven_carrier_windows,
     },
     spatial_callback::{MainSpatialCallbackCandidate, MainSpatialColdRoots},
 };
@@ -356,19 +359,74 @@ pub(crate) fn stage_source_frame<'pcm>(
         } else {
             None
         };
-    let metadata_bodies = prepare_main_metadata_bodies_for_callback(
-        MainMetadataBodiesInput {
-            prepared,
-            joc_profile,
-            spatial_callback: &spatial_callback,
-            joc_before,
-            source_transaction_id: source_transaction_id.clone(),
-            qmf_functional: main_providers.spatial_audio().qmf_receiver_functional(),
-            fit_score: admitted_plan.source_providers().fit_score(),
-            retry: admitted_plan.source_providers().representation_retry(),
-        },
-        main_callback_transaction.clone(),
-    )
+    let flat7x_seven_carrier_fit_candidate = if let Some(source_projection) =
+        flat7x_source_pcm_projection.as_ref()
+    {
+        let qmf_before = joc_before
+            .fit()
+            .seven_carrier_qmf_state()
+            .cloned()
+            .unwrap_or_else(SevenCarrierQmfState::cold);
+        let carrier_windows = stage_flat7x_seven_carrier_windows(
+            source_projection,
+            &qmf_before,
+            main_providers.spatial_audio().qmf_receiver_functional(),
+            main_providers.spatial_audio().qmf_mathematical_fft(),
+        )
+        .map_err(|error| {
+            SourceFrameStageError::Pipeline(format!("Flat7x seven-carrier QMF windows: {error:?}"))
+        })?;
+        let target_projection = spatial_callback.joc_qmf_projection().ok_or_else(|| {
+            SourceFrameStageError::Pipeline(
+                "Flat7x seven-carrier fit requires a ready spatial target projection".to_owned(),
+            )
+        })?;
+        Some(
+            stage_flat7x_seven_carrier_coefficient_fit(
+                joc_profile,
+                joc_before.fit(),
+                target_projection,
+                &carrier_windows,
+                main_providers.spatial_audio().qmf_receiver_functional(),
+                admitted_plan.source_providers().fit_score(),
+            )
+            .map_err(|error| {
+                SourceFrameStageError::Pipeline(format!(
+                    "Flat7x seven-carrier coefficient fit: {error:?}"
+                ))
+            })?,
+        )
+    } else {
+        None
+    };
+    let metadata_input = MainMetadataBodiesInput {
+        prepared,
+        joc_profile,
+        spatial_callback: &spatial_callback,
+        joc_before,
+        source_transaction_id: source_transaction_id.clone(),
+        qmf_functional: main_providers.spatial_audio().qmf_receiver_functional(),
+        fit_score: admitted_plan.source_providers().fit_score(),
+        retry: admitted_plan.source_providers().representation_retry(),
+    };
+    let metadata_bodies = if let Some(fit_candidate) = flat7x_seven_carrier_fit_candidate {
+        let source_generation_receipt =
+            flat7x_d0_source_generation_receipt
+                .as_ref()
+                .ok_or_else(|| {
+                    SourceFrameStageError::Pipeline(
+                        "Flat7x source-generation receipt is required for the C=7 fit".to_owned(),
+                    )
+                })?;
+        prepare_main_metadata_bodies_for_callback_with_seven_carrier_fit(
+            metadata_input,
+            main_callback_transaction.clone(),
+            fit_candidate,
+            source_generation_receipt,
+        )
+    } else {
+        prepare_main_metadata_bodies_for_callback(metadata_input, main_callback_transaction.clone())
+    }
     .map_err(|error| format!("F05/F13 body stage: {error:?}"))?;
     let metadata_candidate = stage_main_metadata_source(
         metadata_before,

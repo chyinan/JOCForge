@@ -4,7 +4,9 @@
 use jocforge_domain::{
     codec::owner::Flat7xD0SourceGenerationReceipt,
     joc::{
-        coefficient_fitting::{Flat7xCoefficientRowsProposal, Flat7xCoefficientRowsProviderOutput},
+        coefficient_fitting::{
+            FitSourceLineage, Flat7xCoefficientRowsProposal, Flat7xCoefficientRowsProviderOutput,
+        },
         coefficient_representation::RepresentationRetryProvider,
         emdf::metadata_bodies::{
             MetadataBodiesError, MetadataBodiesProposal, assemble_metadata_bodies,
@@ -14,6 +16,7 @@ use jocforge_domain::{
         programme_state::{
             JocSourceStageErrorKind, SelectedJocAfterProposal, SelectedJocStateError,
             stage_selected_joc_source_with_flat7x_rows,
+            stage_selected_joc_source_with_seven_carrier_fit,
             stage_selected_joc_source_with_transaction_for_profile,
         },
     },
@@ -38,6 +41,7 @@ pub use jocforge_domain::joc::{
     programme_state::SelectedJocState,
 };
 
+use crate::source_frame_bridge::Flat7xSevenCarrierCoefficientCandidate;
 use crate::{PreparedJobInput, spatial_callback::MainSpatialCallbackCandidate};
 
 /// Failures while deriving the F13 owner from a same-input Meter receipt.
@@ -168,6 +172,63 @@ pub fn stage_flat7x_joc_source_from_provider_output(
     )
 }
 
+/// Sends the local C=7 fit rows through the existing Flat7x row validator and ID14 writer seam.
+///
+/// The Codec owner must supply the real D0 source-generation receipt for this source before this
+/// function can create the row receipt. The returned JOC after-state remains a proposal.
+pub fn stage_flat7x_joc_source_from_seven_carrier_fit(
+    before: &SelectedJocState,
+    projection: &SelectedJocQmfProjection,
+    candidate: &crate::source_frame_bridge::Flat7xSevenCarrierCoefficientCandidate,
+    expected_source_generation_receipt: &Flat7xD0SourceGenerationReceipt,
+    retry_provider: &RepresentationRetryProvider,
+    profile: ResolvedEncodingProfile,
+) -> Result<SelectedJocAfterProposal, SelectedJocStateError> {
+    if select_main_metadata_joc_source_route(profile, true)?
+        != MainMetadataJocSourceRoute::Flat7xRows
+    {
+        return Err(SelectedJocStateError::Source(
+            JocSourceStageErrorKind::Flat7xCoefficientProfileMismatch,
+        ));
+    }
+
+    let fit = candidate.fit();
+    let fit_lineage = FitSourceLineage::from_projection(projection);
+    let source_identity = fit.qmf_source_identity();
+    let role_receipt = candidate.carrier_windows().role_map_receipt();
+    if fit.target_lineage() != &fit_lineage
+        || source_identity.callback_lineage() != projection.transaction_id()
+        || source_identity.source_index() != projection.source_index()
+        || source_identity.source_transaction_id()
+            != expected_source_generation_receipt.source_transaction_id()
+        || source_identity.callback_lineage()
+            != expected_source_generation_receipt.callback_lineage()
+        || source_identity.source_index() != expected_source_generation_receipt.source_index()
+        || source_identity.analysis_generation()
+            != expected_source_generation_receipt.analysis_generation()
+        || role_receipt.source_index() != source_identity.source_index()
+        || role_receipt.source_transaction_id() != source_identity.source_transaction_id()
+        || role_receipt
+            .shared_analysis_identity()
+            .analysis_after_generation()
+            != source_identity.analysis_generation()
+    {
+        return Err(SelectedJocStateError::Source(
+            JocSourceStageErrorKind::Flat7xCoefficientLineageMismatch,
+        ));
+    }
+
+    stage_selected_joc_source_with_seven_carrier_fit(
+        before,
+        projection,
+        expected_source_generation_receipt.source_transaction_id(),
+        fit,
+        expected_source_generation_receipt,
+        retry_provider,
+        profile,
+    )
+}
+
 /// Failures while staging F13 source state from same-source ID11/ID2/ID14 bodies.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum MainMetadataSourceStageError {
@@ -280,7 +341,7 @@ pub fn prepare_main_metadata_bodies_for_callback(
     input: MainMetadataBodiesInput<'_>,
     gtc_transaction_id: CallbackTransactionId,
 ) -> Result<MainMetadataBodiesCandidate, MetadataSourceBridgeError> {
-    prepare_main_metadata_bodies_for_callback_inner(input, gtc_transaction_id, None, None)
+    prepare_main_metadata_bodies_for_callback_inner(input, gtc_transaction_id, None, None, None)
 }
 
 /// Prepares the Flat7x JOC/F13 body proposal from explicit same-source seven-row input.
@@ -295,6 +356,23 @@ pub fn prepare_main_metadata_bodies_for_callback_with_flat7x_rows(
         gtc_transaction_id,
         Some(flat7x_rows),
         Some(source_generation_receipt),
+        None,
+    )
+}
+
+/// Prepares the Flat7x JOC/F13 body proposal from locally fitted same-source seven-carrier windows.
+pub fn prepare_main_metadata_bodies_for_callback_with_seven_carrier_fit(
+    input: MainMetadataBodiesInput<'_>,
+    gtc_transaction_id: CallbackTransactionId,
+    fit_candidate: Flat7xSevenCarrierCoefficientCandidate,
+    source_generation_receipt: &Flat7xD0SourceGenerationReceipt,
+) -> Result<MainMetadataBodiesCandidate, MetadataSourceBridgeError> {
+    prepare_main_metadata_bodies_for_callback_inner(
+        input,
+        gtc_transaction_id,
+        None,
+        Some(source_generation_receipt),
+        Some(fit_candidate),
     )
 }
 
@@ -303,6 +381,7 @@ fn prepare_main_metadata_bodies_for_callback_inner(
     gtc_transaction_id: CallbackTransactionId,
     flat7x_rows: Option<Flat7xCoefficientRowsProviderOutput<'_>>,
     source_generation_receipt: Option<&Flat7xD0SourceGenerationReceipt>,
+    flat7x_fit_candidate: Option<Flat7xSevenCarrierCoefficientCandidate>,
 ) -> Result<MainMetadataBodiesCandidate, MetadataSourceBridgeError> {
     let MainMetadataBodiesInput {
         prepared,
@@ -314,9 +393,11 @@ fn prepare_main_metadata_bodies_for_callback_inner(
         fit_score,
         retry,
     } = input;
-    let joc_source_route =
-        select_main_metadata_joc_source_route(joc_profile, flat7x_rows.is_some())
-            .map_err(MetadataSourceBridgeError::Joc)?;
+    let joc_source_route = select_main_metadata_joc_source_route(
+        joc_profile,
+        flat7x_rows.is_some() || flat7x_fit_candidate.is_some(),
+    )
+    .map_err(MetadataSourceBridgeError::Joc)?;
     if !spatial_callback.is_bound_to(prepared) {
         return Err(MetadataSourceBridgeError::SpatialCallbackIdentityMismatch);
     }
@@ -336,17 +417,28 @@ fn prepare_main_metadata_bodies_for_callback_inner(
         .ok_or(MetadataSourceBridgeError::ReaderTargetReceiptMissing)?;
     let joc_after = match joc_source_route {
         MainMetadataJocSourceRoute::Flat7xRows => {
-            let output = flat7x_rows.ok_or_else(flat7x_source_unavailable)?;
             let expected_source_generation_receipt = source_generation_receipt
                 .ok_or(MetadataSourceBridgeError::Flat7xSourceGenerationReceiptMissing)?;
-            stage_flat7x_joc_source_from_provider_output(
-                joc_before,
-                projection,
-                source_transaction_id.clone(),
-                expected_source_generation_receipt,
-                output,
-                joc_profile,
-            )
+            if let Some(fit_candidate) = flat7x_fit_candidate {
+                stage_flat7x_joc_source_from_seven_carrier_fit(
+                    joc_before,
+                    projection,
+                    &fit_candidate,
+                    expected_source_generation_receipt,
+                    retry,
+                    joc_profile,
+                )
+            } else {
+                let output = flat7x_rows.ok_or_else(flat7x_source_unavailable)?;
+                stage_flat7x_joc_source_from_provider_output(
+                    joc_before,
+                    projection,
+                    source_transaction_id.clone(),
+                    expected_source_generation_receipt,
+                    output,
+                    joc_profile,
+                )
+            }
         }
         MainMetadataJocSourceRoute::SelectedFivePointOneFit => {
             stage_selected_joc_source_with_transaction_for_profile(

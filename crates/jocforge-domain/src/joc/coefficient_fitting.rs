@@ -9,19 +9,30 @@ use crate::{
             stage_geometry_from_qmf,
         },
         coefficient_normal_equations::{
-            CoefficientNormalEquationError, build_selected_normal_equations,
+            CoefficientNormalEquationError, build_normal_equations_for_carriers,
+            build_selected_normal_equations,
         },
-        coefficient_payload::Flat7xCoefficientRows,
+        coefficient_payload::{
+            CoefficientPayloadInput, CoefficientPayloadObject, CoefficientPayloadPoint,
+            Flat7xCoefficientRows,
+        },
         coefficient_representation::{
             FitRepresentationInput, JocCoefficientRowLayout, RepresentationRetryError,
             RepresentationRetryProvider, RepresentationWriteResult,
             write_fit_representation_with_resolved_profile, write_fit_representation_with_retry,
         },
-        coefficient_search::{CoefficientSearchError, search_selected_coefficient_cell},
+        coefficient_search::{
+            CoefficientSearchError, search_coefficient_cell_for_carriers,
+            search_selected_coefficient_cell,
+        },
         fit_score::FitScoreProvider,
+        seven_carrier_windows::{
+            SevenCarrierQmfSourceIdentity, SevenCarrierQmfState, SevenCarrierWindowSet,
+        },
         temporal_weights::{TemporalWeightError, TemporalWeightProposal, TemporalWeightState},
     },
-    profile::ResolvedEncodingProfile,
+    profile::JocReconstructionLayout,
+    profile::{JocPayloadDownmixIndex, ResolvedEncodingProfile},
     spatial::{
         QmfReceiverFunctionalProvider,
         source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
@@ -33,7 +44,6 @@ use crate::{
 
 #[cfg(test)]
 use crate::joc::coefficient_payload::{
-    CoefficientPayloadInput, CoefficientPayloadObject, CoefficientPayloadPoint,
     CoefficientPayloadWriterFailure, write_selected_id14_coefficient_payload,
 };
 #[cfg(test)]
@@ -42,6 +52,7 @@ use crate::joc::emdf::metadata_owner::MetadataPayloadBody;
 const OBJECT_COUNT: usize = 15;
 const CHANNEL_COUNT: usize = 5;
 const BAND_COUNT: usize = 12;
+const SEVEN_CHANNEL_COUNT: usize = 7;
 #[cfg(test)]
 const SOURCE_ROWS: usize = 16;
 #[cfg(test)]
@@ -58,6 +69,7 @@ pub struct CoefficientFitState {
     temporal: TemporalWeightState,
     geometry: CoefficientGeometryState,
     fit_generation: u64,
+    seven_carrier_qmf: Option<SevenCarrierQmfState>,
 }
 
 impl CoefficientFitState {
@@ -66,6 +78,7 @@ impl CoefficientFitState {
             temporal: TemporalWeightState::cold(),
             geometry: CoefficientGeometryState::cold(),
             fit_generation: 0,
+            seven_carrier_qmf: None,
         }
     }
 
@@ -79,6 +92,10 @@ impl CoefficientFitState {
 
     pub const fn fit_generation(&self) -> u64 {
         self.fit_generation
+    }
+
+    pub const fn seven_carrier_qmf_state(&self) -> Option<&SevenCarrierQmfState> {
+        self.seven_carrier_qmf.as_ref()
     }
 
     /// Advances the source clock for external Flat7x rows while preserving the existing
@@ -98,6 +115,7 @@ impl CoefficientFitState {
                 .geometry
                 .with_generation_preserving_values(dispatch.value()),
             fit_generation: dispatch.value(),
+            seven_carrier_qmf: self.seven_carrier_qmf.clone(),
         })
     }
 
@@ -107,6 +125,7 @@ impl CoefficientFitState {
             temporal: TemporalWeightState::cold(),
             geometry: CoefficientGeometryState::with_generation_for_test(generation),
             fit_generation: generation,
+            seven_carrier_qmf: None,
         }
     }
 }
@@ -128,6 +147,275 @@ pub struct CoefficientFitProposal {
     score_call_count: u32,
     representation_offset: Option<u8>,
     source_lineage: Option<FitSourceLineage>,
+}
+
+/// Diagnostic full/sparse coefficient rows from one seven-carrier QMF window set.
+#[derive(Clone, Debug, PartialEq)]
+pub struct SevenCarrierFitRows {
+    qmf_source_identity: SevenCarrierQmfSourceIdentity,
+    full_words: Vec<u32>,
+    sparse_words: Vec<u32>,
+    selected_channels: Vec<u16>,
+    score_call_count: u32,
+}
+
+impl SevenCarrierFitRows {
+    pub const fn qmf_source_identity(&self) -> &SevenCarrierQmfSourceIdentity {
+        &self.qmf_source_identity
+    }
+
+    pub fn full_words(&self) -> &[u32] {
+        &self.full_words
+    }
+
+    pub fn sparse_words(&self) -> &[u32] {
+        &self.sparse_words
+    }
+
+    pub fn selected_channels(&self) -> &[u16] {
+        &self.selected_channels
+    }
+
+    pub const fn score_call_count(&self) -> u32 {
+        self.score_call_count
+    }
+
+    pub const fn row_layout(&self) -> JocCoefficientRowLayout {
+        JocCoefficientRowLayout::SevenChannel
+    }
+
+    pub const fn payload_downmix_index(&self) -> JocPayloadDownmixIndex {
+        JocPayloadDownmixIndex::SevenChannel
+    }
+
+    pub const fn production_allowed(&self) -> bool {
+        false
+    }
+
+    pub fn coefficient_payload_input(
+        &self,
+        clip_gain_index: u8,
+        sequence_count: u16,
+        capacity_bytes: u16,
+        representation_offset: Option<u8>,
+    ) -> Result<CoefficientPayloadInput, CoefficientFittingError> {
+        let mut objects = Vec::with_capacity(OBJECT_COUNT);
+        for object in 0..OBJECT_COUNT {
+            let channel_rows = (0..SEVEN_CHANNEL_COUNT)
+                .map(|channel| {
+                    (0..BAND_COUNT)
+                        .map(|band| {
+                            f32::from_bits(
+                                self.full_words
+                                    [(object * SEVEN_CHANNEL_COUNT + channel) * BAND_COUNT + band],
+                            )
+                        })
+                        .collect::<Vec<_>>()
+                })
+                .collect::<Vec<_>>();
+            let selected_channels = (0..BAND_COUNT)
+                .map(|band| {
+                    u8::try_from(self.selected_channels[object * BAND_COUNT + band])
+                        .map_err(|_| CoefficientFittingError::Shape)
+                })
+                .collect::<Result<Vec<_>, _>>()?;
+            objects.push(CoefficientPayloadObject {
+                present: true,
+                band_enum: 5,
+                mode: 1,
+                points: vec![CoefficientPayloadPoint {
+                    channel_rows,
+                    selected_channels,
+                }],
+                offsets: representation_offset.map(|offset| vec![offset]),
+            });
+        }
+        Ok(CoefficientPayloadInput {
+            downmix_index: self.payload_downmix_index().value(),
+            extension_config: 0,
+            clip_gain_index,
+            sequence_count,
+            time_slot_limit: 24,
+            capacity_bytes,
+            objects,
+        })
+    }
+}
+
+/// Same-source C=7 coefficient-fit proposal for the Flat7x reconstruction layout.
+#[derive(Clone, Debug, PartialEq)]
+pub struct SevenCarrierCoefficientFitProposal {
+    after: CoefficientFitState,
+    rows: SevenCarrierFitRows,
+    target_lineage: FitSourceLineage,
+    representation_offset: Option<u8>,
+}
+
+impl SevenCarrierCoefficientFitProposal {
+    pub const fn after(&self) -> &CoefficientFitState {
+        &self.after
+    }
+
+    pub const fn rows(&self) -> &SevenCarrierFitRows {
+        &self.rows
+    }
+
+    pub const fn target_lineage(&self) -> &FitSourceLineage {
+        &self.target_lineage
+    }
+
+    pub const fn qmf_source_identity(&self) -> &SevenCarrierQmfSourceIdentity {
+        self.rows.qmf_source_identity()
+    }
+
+    pub const fn production_allowed(&self) -> bool {
+        false
+    }
+
+    pub fn write_payload_with_resolved_profile(
+        &self,
+        profile: ResolvedEncodingProfile,
+        provider: &RepresentationRetryProvider,
+        clip_gain_index: u8,
+        sequence_count: u16,
+        capacity_bytes: u16,
+    ) -> Result<RepresentationWriteResult, RepresentationRetryError> {
+        write_fit_representation_with_resolved_profile(
+            provider,
+            FitRepresentationInput {
+                full_words: self.rows.full_words(),
+                sparse_words: self.rows.sparse_words(),
+                selected_channels: self.rows.selected_channels(),
+                representation_offset: self.representation_offset,
+                row_layout: JocCoefficientRowLayout::SevenChannel,
+            },
+            clip_gain_index,
+            sequence_count,
+            capacity_bytes,
+            profile,
+        )
+    }
+}
+
+/// Fits the 15 target-slot rows against a same-source seven-carrier raw-QMF window set.
+///
+/// The diagnostic policy begins with all seven target roles eligible, then extends the existing
+/// support-growth search in role order. Geometry-based five-channel eligibility and coefficient
+/// payload ownership remain separate inputs and are not inferred here.
+pub fn fit_seven_carrier_window_set(
+    target_windows: &[u32],
+    carrier_windows: &SevenCarrierWindowSet,
+    weight_words: &[u32; 48],
+    score_provider: &FitScoreProvider,
+) -> Result<SevenCarrierFitRows, CoefficientFittingError> {
+    let carrier_words = carrier_windows.words_in_target_order();
+    let equations = build_normal_equations_for_carriers::<SEVEN_CHANNEL_COUNT>(
+        target_windows,
+        &carrier_words,
+        weight_words,
+    )
+    .map_err(CoefficientFittingError::NormalEquation)?;
+    if equations.len() != OBJECT_COUNT * BAND_COUNT {
+        return Err(CoefficientFittingError::Shape);
+    }
+
+    let mut full_words = vec![ZERO_BITS; OBJECT_COUNT * SEVEN_CHANNEL_COUNT * BAND_COUNT];
+    let mut sparse_words = vec![ZERO_BITS; OBJECT_COUNT * BAND_COUNT];
+    let mut selected_channels = vec![0_u16; OBJECT_COUNT * BAND_COUNT];
+    let mut score_call_count = 0_u32;
+    for equation in &equations {
+        let object = usize::from(equation.object());
+        let band = usize::from(equation.band());
+        let result = search_coefficient_cell_for_carriers::<SEVEN_CHANNEL_COUNT>(
+            score_provider,
+            equation,
+            target_windows,
+            &carrier_words,
+            weight_words,
+            [true; SEVEN_CHANNEL_COUNT],
+        )
+        .map_err(CoefficientFittingError::Search)?;
+        for channel in 0..SEVEN_CHANNEL_COUNT {
+            full_words[(object * SEVEN_CHANNEL_COUNT + channel) * BAND_COUNT + band] =
+                result.stored_words()[channel];
+        }
+        sparse_words[object * BAND_COUNT + band] = result.sparse_stored_word();
+        selected_channels[object * BAND_COUNT + band] = u16::from(result.sparse_selected_channel());
+        for stage in result.stages() {
+            score_call_count = score_call_count
+                .checked_add(u32::from(stage.candidate_count()))
+                .ok_or(CoefficientFittingError::Shape)?;
+        }
+    }
+
+    Ok(SevenCarrierFitRows {
+        qmf_source_identity: carrier_windows.source_identity().clone(),
+        full_words,
+        sparse_words,
+        selected_channels,
+        score_call_count,
+    })
+}
+
+/// Stages a C=7 fit from one spatial target-slot projection and its same-source ADM-QMF windows.
+pub fn stage_seven_carrier_coefficient_fit_from_qmf(
+    profile: ResolvedEncodingProfile,
+    before: &CoefficientFitState,
+    projection: &SelectedJocQmfProjection,
+    carrier_windows: &SevenCarrierWindowSet,
+    carrier_after_state: &SevenCarrierQmfState,
+    qmf_provider: &QmfReceiverFunctionalProvider,
+    score_provider: &FitScoreProvider,
+) -> Result<SevenCarrierCoefficientFitProposal, CoefficientFittingError> {
+    let expected_dispatch = before
+        .fit_generation
+        .checked_add(1)
+        .ok_or(CoefficientFittingError::Generation)?;
+    let source_identity = carrier_windows.source_identity();
+    if before.geometry.generation() != before.fit_generation
+        || projection.dispatch().value() != expected_dispatch
+        || projection.source_index().dispatch().ok() != Some(projection.dispatch())
+        || source_identity.callback_lineage() != projection.transaction_id()
+        || source_identity.source_index() != projection.source_index()
+        || profile.joc_reconstruction_layout() != JocReconstructionLayout::Flat7x
+        || profile.joc_payload_downmix_index() != JocPayloadDownmixIndex::SevenChannel
+    {
+        return Err(CoefficientFittingError::Lineage);
+    }
+    let target_words = projection.target_object_window_words();
+    let temporal = before
+        .temporal
+        .stage_target_windows48(target_words)
+        .map_err(CoefficientFittingError::Temporal)?;
+    let geometry = stage_geometry_from_qmf(
+        &before.geometry,
+        projection,
+        temporal.after().weight_words(),
+        qmf_provider,
+    )
+    .map_err(CoefficientFittingError::Geometry)?;
+    let rows = fit_seven_carrier_window_set(
+        target_words,
+        carrier_windows,
+        temporal.after().weight_words(),
+        score_provider,
+    )?;
+    let fit_generation = geometry.after().generation();
+    let representation_offset = temporal
+        .before_segment()
+        .changed()
+        .then_some(temporal.before_segment().start());
+    Ok(SevenCarrierCoefficientFitProposal {
+        after: CoefficientFitState {
+            temporal: temporal.into_after(),
+            geometry: geometry.into_after(),
+            fit_generation,
+            seven_carrier_qmf: Some(carrier_after_state.clone()),
+        },
+        rows,
+        target_lineage: FitSourceLineage::from_projection(projection),
+        representation_offset,
+    })
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -586,6 +874,7 @@ pub fn stage_coefficient_fit_from_qmf(
         projection.target_object_window_words(),
         projection.carrier_window_words(),
         score_provider,
+        before.seven_carrier_qmf.clone(),
         Some(FitSourceLineage::from_projection(projection)),
     )
 }
@@ -618,6 +907,7 @@ pub(crate) fn stage_coefficient_fit_with_geometry_inputs(
         target_words,
         carrier_words,
         score_provider,
+        before.seven_carrier_qmf.clone(),
         None,
     )
 }
@@ -628,6 +918,7 @@ fn assemble_fit(
     target_words: &[u32],
     carrier_words: &[u32],
     score_provider: &FitScoreProvider,
+    seven_carrier_qmf: Option<SevenCarrierQmfState>,
     source_lineage: Option<FitSourceLineage>,
 ) -> Result<CoefficientFitProposal, CoefficientFittingError> {
     let fit_generation = geometry.after().generation();
@@ -683,6 +974,7 @@ fn assemble_fit(
             temporal: temporal.into_after(),
             geometry: geometry.into_after(),
             fit_generation,
+            seven_carrier_qmf,
         },
         #[cfg(test)]
         row_states_after,
