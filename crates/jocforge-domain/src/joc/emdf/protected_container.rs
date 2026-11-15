@@ -30,12 +30,14 @@ const MAX_ID14_PAYLOAD_BYTES: u32 = 372;
 const MAX_ID2_PAYLOAD_BYTES: u32 = 8;
 const MAX_ID1_PAYLOAD_BYTES: u32 = 10;
 const SELECTED_JOC_DOWNMIX_INDEXES: [u8; 2] = [1, 3];
-const EXPECTED_PAYLOAD_IDS: [CurrentPayloadId; 4] = [
+const SELECTED_FOUR_PAYLOAD_IDS: [CurrentPayloadId; 4] = [
     CurrentPayloadId::Oamd,
     CurrentPayloadId::Joc,
     CurrentPayloadId::AdditionalBsi,
     CurrentPayloadId::Programme,
 ];
+const FLAT7X_DIAGNOSTIC_PAYLOAD_IDS: [CurrentPayloadId; 2] =
+    [CurrentPayloadId::Oamd, CurrentPayloadId::Joc];
 
 /// The carriage mode selected by the caller's fixed programme plan.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -97,6 +99,41 @@ impl CurrentPayloadId {
             2 => Some(Self::AdditionalBsi),
             1 => Some(Self::Programme),
             _ => None,
+        }
+    }
+}
+
+/// Payload sequence admitted for one selected or diagnostic-only Flat7x container.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum CurrentEmdfPayloadSequence {
+    /// Existing selected sequence retained for the default 5.1 path and its baseline.
+    SelectedFourPayloads,
+    /// Flat7x experimental candidate sequence; production remains disabled.
+    Flat7xExperimentalJocPair,
+}
+
+impl CurrentEmdfPayloadSequence {
+    /// Returns the ordered payload types admitted by this container sequence.
+    pub const fn payload_ids(self) -> &'static [CurrentPayloadId] {
+        match self {
+            Self::SelectedFourPayloads => &SELECTED_FOUR_PAYLOAD_IDS,
+            Self::Flat7xExperimentalJocPair => &FLAT7X_DIAGNOSTIC_PAYLOAD_IDS,
+        }
+    }
+
+    /// Returns the ordered wire IDs retained in receipts and serializer reports.
+    pub const fn ordered_wire_ids(self) -> &'static [u8] {
+        match self {
+            Self::SelectedFourPayloads => &[11, 14, 2, 1],
+            Self::Flat7xExperimentalJocPair => &[11, 14],
+        }
+    }
+
+    /// Returns the stable diagnostic label for this composition.
+    pub const fn label(self) -> &'static str {
+        match self {
+            Self::SelectedFourPayloads => "selected_four_payloads_v1",
+            Self::Flat7xExperimentalJocPair => "flat7x_experimental_joc_pair_v1",
         }
     }
 }
@@ -357,6 +394,7 @@ pub struct ParsedCurrentEmdfContainer {
     bytes: Vec<u8>,
     mode: CurrentEmdfCarriageMode,
     carrier_block: CarrierBlock,
+    payload_sequence: CurrentEmdfPayloadSequence,
     id14_provenance: Id14ProducerProvenance,
     payloads: Vec<ProtectedPayload>,
 }
@@ -377,6 +415,11 @@ impl ParsedCurrentEmdfContainer {
         self.carrier_block
     }
 
+    /// Returns the profile-scoped ordered payload sequence validated for this container.
+    pub const fn payload_sequence(&self) -> CurrentEmdfPayloadSequence {
+        self.payload_sequence
+    }
+
     /// Returns the selected ID14 producer identity retained from the popped source.
     pub const fn id14_provenance(&self) -> &Id14ProducerProvenance {
         &self.id14_provenance
@@ -388,20 +431,22 @@ impl ParsedCurrentEmdfContainer {
     }
 }
 
-/// Test-only typed shell for exercising downstream receipt predicates.
+/// Test-only typed shell for exercising downstream receipt predicates under one sequence.
 ///
 /// It deliberately bypasses `parse_current_emdf_container`; callers must keep
 /// the fixture classified as receipt-mechanics coverage, not parser evidence.
 #[cfg(any(test, feature = "test-support"))]
-pub(crate) fn synthetic_receipt_gate_container_for_test(
+pub(crate) fn synthetic_receipt_gate_container_for_sequence_for_test(
     bytes: Vec<u8>,
     carrier_block: CarrierBlock,
     id14_provenance: Id14ProducerProvenance,
+    payload_sequence: CurrentEmdfPayloadSequence,
 ) -> ParsedCurrentEmdfContainer {
     ParsedCurrentEmdfContainer {
         bytes,
         mode: CurrentEmdfCarriageMode::DeployedCompat,
         carrier_block,
+        payload_sequence,
         id14_provenance,
         payloads: Vec::new(),
     }
@@ -996,9 +1041,27 @@ pub fn parse_current_emdf_container(
     carrier_block: CarrierBlock,
     id14_provenance: &Id14ProducerProvenance,
 ) -> Result<ParsedCurrentEmdfContainer, CurrentEmdfParserError> {
+    parse_current_emdf_container_with_sequence(
+        bytes,
+        expected_mode,
+        carrier_block,
+        id14_provenance,
+        CurrentEmdfPayloadSequence::SelectedFourPayloads,
+    )
+}
+
+/// Parses a selected protected EMDF container under one explicit payload sequence.
+pub fn parse_current_emdf_container_with_sequence(
+    bytes: &[u8],
+    expected_mode: CurrentEmdfCarriageMode,
+    carrier_block: CarrierBlock,
+    id14_provenance: &Id14ProducerProvenance,
+    payload_sequence: CurrentEmdfPayloadSequence,
+) -> Result<ParsedCurrentEmdfContainer, CurrentEmdfParserError> {
     if carrier_block.value() != 2 {
         return Err(CurrentEmdfParserError::UnsupportedCarrierBlock);
     }
+    let expected_payload_ids = payload_sequence.payload_ids();
     let body_bytes = validate_outer_header(bytes)?;
     let mut reader = BitReader::new(body_bytes);
     if reader.read_bits(2)? != 0 {
@@ -1008,14 +1071,14 @@ pub fn parse_current_emdf_container(
         return Err(CurrentEmdfParserError::UnsupportedKeyId);
     }
 
-    let mut parsed_payloads = Vec::with_capacity(EXPECTED_PAYLOAD_IDS.len());
-    let mut seen_ids = Vec::with_capacity(EXPECTED_PAYLOAD_IDS.len());
+    let mut parsed_payloads = Vec::with_capacity(expected_payload_ids.len());
+    let mut seen_ids = Vec::with_capacity(expected_payload_ids.len());
     let mut payload_index = 0;
     loop {
         let payload_wire_id = u8::try_from(reader.read_bits(5)?)
             .map_err(|_| CurrentEmdfParserError::UnboundPayload(u8::MAX))?;
         if payload_wire_id == 0 {
-            if let Some(expected) = EXPECTED_PAYLOAD_IDS.get(payload_index) {
+            if let Some(expected) = expected_payload_ids.get(payload_index) {
                 return Err(CurrentEmdfParserError::MissingPayload(
                     expected.wire_value(),
                 ));
@@ -1025,7 +1088,7 @@ pub fn parse_current_emdf_container(
         if seen_ids.contains(&payload_wire_id) {
             return Err(CurrentEmdfParserError::DuplicatePayload(payload_wire_id));
         }
-        let Some(expected) = EXPECTED_PAYLOAD_IDS.get(payload_index).copied() else {
+        let Some(expected) = expected_payload_ids.get(payload_index).copied() else {
             if CurrentPayloadId::from_wire(payload_wire_id).is_some() {
                 return Err(CurrentEmdfParserError::DuplicatePayload(payload_wire_id));
             }
@@ -1112,6 +1175,7 @@ pub fn parse_current_emdf_container(
         bytes: bytes.to_vec(),
         mode: expected_mode,
         carrier_block,
+        payload_sequence,
         id14_provenance: id14_provenance.clone(),
         payloads: parsed_payloads,
     })

@@ -79,6 +79,7 @@ pub fn stage_flat7x_pair_f12_integrity(
         }
     };
     let d0_placement = input.d0_frame.block2_placement_receipt();
+    let metadata_payload_sequence = input.f13_metadata.receipt().payload_sequence();
     let d0_layout = input
         .d0_frame
         .frame_candidate()
@@ -89,6 +90,7 @@ pub fn stage_flat7x_pair_f12_integrity(
     let authoritative_skip = d0_layout.block_two_skip_field();
     let i0_source_generation = input.i0_frame.source_generation_receipt();
     if d0_placement.au_index() != au_index
+        || d0_placement.payload_sequence() != metadata_payload_sequence
         || d0_placement.block_index().zero_based_value() != 2
         || d0_placement.container_bytes() == 0
         || d0_placement.container_bytes() > 511
@@ -143,6 +145,8 @@ pub fn stage_flat7x_pair_f12_integrity(
     if input.f14k_source.source_index() != source_index
         || input.f14k_source.dispatch() != dispatch
         || input.f14k_source.au_index() != Some(au_index)
+        || input.f14k_source.payload_sequence() != Some(metadata_payload_sequence)
+        || parsed_container.parsed_container().payload_sequence() != metadata_payload_sequence
         || protected_length != protected.bytes().len()
         || usize::from(d0_placement.container_bytes()) != protected_length
         || parsed_container.bytes() != protected.bytes()

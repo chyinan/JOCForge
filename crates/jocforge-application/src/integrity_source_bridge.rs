@@ -19,7 +19,7 @@ use jocforge_domain::{
     },
     joc::emdf::{
         metadata_owner::{MetadataOwnerError, MetadataSourceProposal},
-        protected_container::{CarrierBlock, CurrentEmdfCarriageMode},
+        protected_container::{CarrierBlock, CurrentEmdfCarriageMode, CurrentEmdfPayloadSequence},
     },
     timeline::{
         AdmSampleCount, ClockError, CodecSourceIndex, JocDispatchIndex, PublicationDisposition,
@@ -124,6 +124,13 @@ impl F14kSourceCandidate {
 
     pub const fn f13_source_lineage(&self) -> Option<&D0Block2F13SourceLineage> {
         self.f13_source_lineage.as_ref()
+    }
+
+    pub const fn payload_sequence(&self) -> Option<CurrentEmdfPayloadSequence> {
+        match self.f13_source_lineage.as_ref() {
+            Some(lineage) => Some(lineage.payload_sequence()),
+            None => None,
+        }
     }
 }
 
@@ -316,6 +323,7 @@ pub(crate) fn published_payload_candidate_with_source_generation_for_test(
     zero_slot_container: &[u8],
     terminal_layout: &serde_json::Value,
     source_generation_receipt: &Flat7xD0SourceGenerationReceipt,
+    f13_source_lineage: D0Block2F13SourceLineage,
 ) -> Result<F14kSourceCandidate, F14kSourceBridgeError> {
     published_payload_candidate_with_source_generation(
         source_index,
@@ -325,7 +333,7 @@ pub(crate) fn published_payload_candidate_with_source_generation_for_test(
         zero_slot_container,
         terminal_layout,
         Some(source_generation_receipt.clone()),
-        None,
+        Some(f13_source_lineage),
     )
 }
 

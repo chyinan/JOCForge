@@ -22,6 +22,7 @@ use jocforge_domain::{
         },
         selected_frame_trial::SelectedSourceNumericPlan,
     },
+    joc::emdf::protected_container::CurrentEmdfPayloadSequence,
     profile::{
         CodecRateProfile, Flat7xD0PcmRows, Flat7xI0D0TargetPlan, Flat7xI0PcmRows,
         JocReconstructionLayout, ResolvedEncodingProfile,
@@ -153,6 +154,7 @@ pub struct D0Block2PlacementReceipt {
     block_index: D0AudioBlockIndex,
     bit_span: D0FrameBitSpan,
     container_bytes: u16,
+    payload_sequence: CurrentEmdfPayloadSequence,
     source_generation_receipt: Flat7xD0SourceGenerationReceipt,
     au_index: PublishedAuIndex,
 }
@@ -168,6 +170,10 @@ impl D0Block2PlacementReceipt {
 
     pub const fn container_bytes(&self) -> u16 {
         self.container_bytes
+    }
+
+    pub const fn payload_sequence(&self) -> CurrentEmdfPayloadSequence {
+        self.payload_sequence
     }
 
     pub const fn codec_source_generation(&self) -> Flat7xD0SourceGeneration {
@@ -511,6 +517,7 @@ pub fn produce_flat7x_pair_d0_pcm_frame_candidate(
     }
     let d0_identity = binding.d0_source_identity();
     let shared_identity = binding.role_map_receipt().shared_analysis_identity();
+    let payload_sequence = settings.block2_source_receipt.payload_sequence();
     if settings.source_generation_receipt
         != settings.block2_source_receipt.source_generation_receipt()
         || !settings.block2_source_receipt.matches_source_identity(
@@ -553,6 +560,7 @@ pub fn produce_flat7x_pair_d0_pcm_frame_candidate(
             block_index,
             bit_span,
             container_bytes,
+            payload_sequence,
             source_generation_receipt: settings.source_generation_receipt.clone(),
             au_index,
         },
@@ -1149,6 +1157,7 @@ mod pair_access_unit_integration_tests {
         },
         joc::emdf::metadata_owner::test_support::{
             Flat7xReceiptGateMetadataTestInputs, flat7x_receipt_gate_metadata_for_test,
+            flat7x_receipt_gate_metadata_for_test_with_payload_sequence,
         },
         profile::{
             D0EmdfSkipFieldExtent, EncodingProfile, Flat7xI0D0TargetPlan, Flat7xSourceGeneration,
@@ -1780,12 +1789,28 @@ mod pair_access_unit_integration_tests {
             keyless_integrity_provider: KEYLESS_INTEGRITY_PROVIDER,
         };
         let (metadata, zero_slot_container, protected_container) =
-            flat7x_receipt_gate_metadata_for_test(metadata_inputs);
+            flat7x_receipt_gate_metadata_for_test_with_payload_sequence(
+                metadata_inputs,
+                jocforge_domain::joc::emdf::protected_container::
+                    CurrentEmdfPayloadSequence::Flat7xExperimentalJocPair,
+            );
         let f13_lineage =
             jocforge_domain::codec::d0_frame_assembler::D0Block2F13SourceLineage::from_metadata_source(
                 &metadata,
             )
             .unwrap();
+        let payload_sequence = jocforge_domain::joc::emdf::protected_container::
+            CurrentEmdfPayloadSequence::Flat7xExperimentalJocPair;
+        assert_eq!(metadata.receipt().payload_sequence(), payload_sequence);
+        assert_eq!(f13_lineage.payload_sequence(), payload_sequence);
+        assert_eq!(
+            metadata
+                .parsed_container()
+                .unwrap()
+                .parsed_container()
+                .payload_sequence(),
+            payload_sequence
+        );
         assert_ne!(
             f13_lineage.consumer_transaction_id(),
             f13_lineage.id14_producer_transaction_id()
@@ -1802,6 +1827,7 @@ mod pair_access_unit_integration_tests {
             block2_receipt.complete_emdf_container(),
             protected_container.bytes()
         );
+        assert_eq!(block2_receipt.payload_sequence(), payload_sequence);
 
         let mismatched_owner_generation = f13_lineage.with_owner_generations_for_test(
             f13_lineage
@@ -1897,11 +1923,7 @@ mod pair_access_unit_integration_tests {
         let transform_parameters =
             MathGeneratedTransformParameters::selected_math_generated_v1().unwrap();
         let d0_bap_parameters = Flat7xD0BapParameters::etsi_ts_102_366_v1_4_1();
-        let block2_source_receipt = d0_block2_source_receipt_with_generation_for_test(
-            binding.d0_source_identity(),
-            &source_generation_receipt,
-            protected_container.bytes(),
-        );
+        let block2_source_receipt = block2_receipt;
         let d0_frame = produce_flat7x_pair_d0_pcm_frame_candidate(
             &binding,
             Flat7xD0PcmFrameSettings {
@@ -1917,6 +1939,10 @@ mod pair_access_unit_integration_tests {
             },
         )
         .unwrap();
+        assert_eq!(
+            d0_frame.block2_placement_receipt().payload_sequence(),
+            payload_sequence
+        );
 
         // SYNTHETIC/TEST_ONLY F14K receipt-gate bytes use the same protected-container/cursor
         // path as production. The F12 pair stage below also verifies those exact bytes at the
@@ -2022,12 +2048,14 @@ mod pair_access_unit_integration_tests {
                 "body_bytes": 12
             }),
             &source_generation_receipt,
+            f13_lineage.clone(),
         )
         .unwrap();
         assert_eq!(
             f14k_source.protected_container(),
             Some(&protected_container)
         );
+        assert_eq!(f14k_source.payload_sequence(), Some(payload_sequence));
         let mut mismatched_i0_frame = i0_frame.clone();
         mismatched_i0_frame.source_generation_receipt = source_generation_receipt
             .with_generation_for_test(source_generation_receipt.source_generation().value() + 1);
@@ -2143,6 +2171,12 @@ mod pair_access_unit_integration_tests {
         )
         .unwrap();
 
+        assert_eq!(
+            output_candidate
+                .d0_block2_placement_receipt()
+                .payload_sequence(),
+            payload_sequence
+        );
         assert_eq!(output_candidate.append_proposal().bytes().len(), 6_656);
         assert_eq!(
             output_candidate.source_generation().value(),

@@ -471,6 +471,7 @@ pub fn stage_flat7x_pcm_pair_for_f15<'a>(
         .layout();
     let authoritative_skip = layout.block_two_skip_field();
     if f13_metadata.receipt().au_index() != Some(block2_placement.au_index())
+        || f13_metadata.receipt().payload_sequence() != block2_placement.payload_sequence()
         || block2_placement.block_index().zero_based_value() != 2
         || block2_placement.container_bytes() == 0
         || block2_placement.container_bytes() > 511

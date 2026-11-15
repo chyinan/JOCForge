@@ -652,6 +652,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
                         .source_generation_receipt()
                         .codec_owner_after_generation()
                         == advance.codec_root.generation()
+                    && advance.f14k_source.payload_sequence() == Some(placement.payload_sequence())
                     && advance.f14k_source.source_generation_receipt()
                         == Some(placement.source_generation_receipt())
             }

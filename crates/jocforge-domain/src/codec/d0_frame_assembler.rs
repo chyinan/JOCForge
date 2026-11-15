@@ -21,7 +21,9 @@ use super::{
 use crate::{
     analysis::source_frame::AnalysisOwnerGeneration,
     integrity::keyless_checksum::ProtectedEmdfContainer,
-    joc::emdf::metadata_owner::MetadataSourceProposal,
+    joc::emdf::{
+        metadata_owner::MetadataSourceProposal, protected_container::CurrentEmdfPayloadSequence,
+    },
     timeline::{
         CodecSourceIndex, FrontendCallbackIndex, JocDispatchIndex, JocGeneratedWriterIndex,
         PublicationDisposition, PublishedAuIndex, publication_for_source, source_for_callback,
@@ -74,6 +76,7 @@ pub struct D0Block2F13SourceLineage {
     source_index: CodecSourceIndex,
     dispatch: JocDispatchIndex,
     au_index: PublishedAuIndex,
+    payload_sequence: CurrentEmdfPayloadSequence,
     metadata_owner_before_generation: u64,
     metadata_owner_after_generation: u64,
     id14_producer_transaction_id: CallbackTransactionId,
@@ -115,6 +118,7 @@ impl D0Block2F13SourceLineage {
             source_index: receipt.source_index(),
             dispatch: receipt.dispatch(),
             au_index,
+            payload_sequence: receipt.payload_sequence(),
             metadata_owner_before_generation: receipt.before_generation(),
             metadata_owner_after_generation: receipt.proposed_after_generation(),
             id14_producer_transaction_id,
@@ -145,6 +149,10 @@ impl D0Block2F13SourceLineage {
 
     pub const fn au_index(&self) -> PublishedAuIndex {
         self.au_index
+    }
+
+    pub const fn payload_sequence(&self) -> CurrentEmdfPayloadSequence {
+        self.payload_sequence
     }
 
     pub const fn metadata_owner_after_generation(&self) -> u64 {
@@ -326,6 +334,10 @@ impl<'a> D0Block2SourceReceipt<'a> {
         self.f13.au_index
     }
 
+    pub const fn payload_sequence(&self) -> CurrentEmdfPayloadSequence {
+        self.f13.payload_sequence()
+    }
+
     pub const fn complete_emdf_container(&self) -> &'a [u8] {
         self.complete_emdf_container
     }
@@ -378,6 +390,7 @@ impl<'a> D0Block2SourceReceipt<'a> {
             source_index,
             dispatch: JocDispatchIndex::new(3),
             au_index: PublishedAuIndex::new(0),
+            payload_sequence: CurrentEmdfPayloadSequence::SelectedFourPayloads,
             metadata_owner_before_generation: 0,
             metadata_owner_after_generation: 1,
             id14_producer_transaction_id: transaction_id,
@@ -462,6 +475,7 @@ impl<'a> D0Block2SourceReceipt<'a> {
             source_index,
             dispatch,
             au_index,
+            payload_sequence: CurrentEmdfPayloadSequence::SelectedFourPayloads,
             metadata_owner_before_generation: metadata_owner_generations.0,
             metadata_owner_after_generation: metadata_owner_generations.1,
             id14_producer_transaction_id: expected_source_generation_receipt

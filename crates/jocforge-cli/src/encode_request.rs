@@ -794,6 +794,7 @@ fn run_inner(
     let mut flat7x_d0_block2_placement_receipts = 0_u64;
     let mut flat7x_d0_block2_max_container_bytes = 0_u16;
     let mut flat7x_d0_block2_overflow_receipts = 0_u64;
+    let mut flat7x_emdf_payload_sequence: Option<&'static str> = None;
     let callback_result = (|| {
         let mut roots = roots;
         let normal_callbacks = roots.normal_callbacks().value();
@@ -875,6 +876,19 @@ fn run_inner(
                     (Some(append), Some(placement))
                         if append.durable && append.au_index == placement.au_index().value() =>
                     {
+                        let payload_sequence = placement.payload_sequence().label();
+                        match flat7x_emdf_payload_sequence {
+                            Some(previous) if previous != payload_sequence => {
+                                return Err(EncodeRequestError::SourcePipeline(
+                                    "Flat7x EMDF payload sequence changed within one programme"
+                                        .to_owned(),
+                                ));
+                            }
+                            Some(_) => {}
+                            None => {
+                                flat7x_emdf_payload_sequence = Some(payload_sequence);
+                            }
+                        }
                         flat7x_d0_block2_placement_receipts = flat7x_d0_block2_placement_receipts
                             .checked_add(1)
                             .ok_or_else(|| {
@@ -1079,6 +1093,13 @@ fn run_inner(
                 roots.published_aus(),
             )));
         }
+        if flat7x_emdf_payload_sequence != Some("flat7x_experimental_joc_pair_v1") {
+            staging.abandon_attempt();
+            return Err(EncodeRequestError::SourcePipeline(
+                "Flat7x candidate did not retain the diagnostic JOC-pair payload sequence"
+                    .to_owned(),
+            ));
+        }
     }
     if !roots.is_complete_for_eof() {
         staging.abandon_attempt();
@@ -1121,6 +1142,11 @@ fn run_inner(
     let _metadata_eof_receipt = metadata_eof_receipt;
 
     if resolved_joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
+        let payload_sequence = flat7x_emdf_payload_sequence.ok_or_else(|| {
+            EncodeRequestError::SourcePipeline(
+                "Flat7x experimental candidate has no payload-sequence receipt".to_owned(),
+            )
+        })?;
         let candidate = match capture_flat7x_experimental_candidate(
             &mut staging,
             roots.output(),
@@ -1135,11 +1161,12 @@ fn run_inner(
             }
         };
         eprintln!(
-            "experimental candidate captured: status=EXPERIMENTAL_CANDIDATE output={} bytes={} sha256={} attempt={} d0_block_two_placement_receipts={}/{} d0_block_two_container_max_C={} overflow_receipts={} production_allowed={} final_product_exposure=false programme_done=false render=NOT_RUN playback=NOT_RUN",
+            "experimental candidate captured: status=EXPERIMENTAL_CANDIDATE output={} bytes={} sha256={} attempt={} emdf_payload_sequence={} d0_block_two_placement_receipts={}/{} d0_block_two_container_max_C={} overflow_receipts={} production_allowed={} final_product_exposure=false programme_done=false render=NOT_RUN playback=NOT_RUN",
             candidate.candidate_path().display(),
             candidate.bytes_written(),
             hex_lower(candidate.sha256()),
             candidate.attempt_id(),
+            payload_sequence,
             flat7x_d0_block2_placement_receipts,
             roots.published_aus(),
             flat7x_d0_block2_max_container_bytes,

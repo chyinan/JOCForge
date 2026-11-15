@@ -8,6 +8,7 @@ use crate::{
         metadata_carrier::stage_metadata_carrier,
     },
     meter::measurement_receipt::{ProgrammeMeasurementReceipt, ProgrammeMeasurementReceiptInput},
+    profile::{EncodingProfile, JocReconstructionLayout, resolve_selected_profile},
 };
 use serde_json::{Value, json};
 use std::path::PathBuf;
@@ -53,13 +54,13 @@ fn id1_configuration(attempt: u64) -> Id1MeasurementConfiguration {
 
 fn owner_for_attempt(attempt: u64) -> MetadataOwner {
     let root = fixture_root();
-    MetadataOwner::new(
-        id1_configuration(attempt),
-        5,
+    let provider = canonical_lf_fixture_bytes(
         &std::fs::read(root.join("metadata-public-provider.json")).unwrap(),
+    );
+    let wrapper = canonical_lf_fixture_bytes(
         &std::fs::read(root.join("metadata-wrapper-config.json")).unwrap(),
-    )
-    .unwrap()
+    );
+    MetadataOwner::new(id1_configuration(attempt), 5, &provider, &wrapper).unwrap()
 }
 
 fn owner() -> MetadataOwner {
@@ -135,6 +136,31 @@ fn source_call(case: &Value) -> MetadataSourceCall {
         },
         wrapper_configuration: input["wrapper_config"].clone(),
     }
+}
+
+fn stage_source_with_bound_id14_provenance(
+    owner: &MetadataOwner,
+    case: &Value,
+    spatial_digest: crate::spatial::SpatialAudioDigest,
+) -> MetadataSourceProposal {
+    let mut call = source_call(case);
+    bind_test_id14_provenance(&mut call, spatial_digest);
+    let producer = call.bodies.id14_provenance.clone().unwrap();
+    let bodies = MetadataBodiesProposal::for_test_with_id14_provenance(
+        call.programme_id.clone(),
+        call.attempt,
+        call.source_lineage.clone(),
+        call.source_index,
+        call.bodies,
+        producer,
+    );
+    owner
+        .stage_source(MetadataStageInput {
+            au_index: call.au_index,
+            transaction_id: call.consumer_transaction_id.unwrap(),
+            bodies,
+        })
+        .unwrap()
 }
 
 fn bind_test_id14_provenance(
@@ -474,11 +500,12 @@ fn flat7x_synthetic_metadata_proposal(
         consumer_au_index: Some(au_index),
         disposition: Id14PopDisposition::Published,
     };
-    let parsed_container =
-        crate::joc::emdf::protected_container::synthetic_receipt_gate_container_for_test(
+    let parsed_container = crate::joc::emdf::protected_container::
+        synthetic_receipt_gate_container_for_sequence_for_test(
             protected_container.to_vec(),
             crate::joc::emdf::protected_container::CarrierBlock::new(carrier_block).unwrap(),
             producer,
+            CurrentEmdfPayloadSequence::SelectedFourPayloads,
         );
 
     proposal.receipt.programme_id = programme_id.clone();
@@ -506,6 +533,7 @@ fn flat7x_synthetic_metadata_proposal(
         consumer_au_index: au_index,
         id14_queue_pop: queue_pop,
         queue_pop_receipts: Vec::new(),
+        published_payload_queue_pop_receipts: Vec::new(),
     });
     proposal
 }
@@ -1285,6 +1313,137 @@ fn published_metadata_proposal_stages_into_the_selected_carrier() {
         u16::try_from(emdf.len() - 4).unwrap()
     );
     assert_eq!(carrier.payload_cursor().bit_offset(), 10_058);
+}
+
+#[test]
+fn flat7x_emdf_pair_is_profile_scoped_and_keeps_four_queue_operations() {
+    let vectors = vectors();
+    let calls = vectors["continuous_calls"].as_array().unwrap();
+    let root = fixture_root();
+    let provider = canonical_lf_fixture_bytes(
+        &std::fs::read(root.join("metadata-public-provider.json")).unwrap(),
+    );
+    let wrapper = canonical_lf_fixture_bytes(
+        &std::fs::read(root.join("metadata-wrapper-config.json")).unwrap(),
+    );
+    let flat7x_profile = resolve_selected_profile(
+        &EncodingProfile::selected_with_joc_reconstruction_layout(JocReconstructionLayout::Flat7x),
+    )
+    .unwrap();
+    let mut selected = owner();
+    let mut flat7x = MetadataOwner::new_for_profile(
+        id1_configuration(0),
+        5,
+        &provider,
+        &wrapper,
+        flat7x_profile,
+    )
+    .unwrap();
+    let spatial_digest = crate::spatial::SpatialAudioMachine::new_cold(EncodingProfile::selected())
+        .unwrap()
+        .digest();
+
+    for call in &calls[..2] {
+        selected = stage_source_with_bound_id14_provenance(&selected, call, spatial_digest)
+            .into_after_owner();
+        flat7x = stage_source_with_bound_id14_provenance(&flat7x, call, spatial_digest)
+            .into_after_owner();
+    }
+
+    let selected_proposal =
+        stage_source_with_bound_id14_provenance(&selected, &calls[2], spatial_digest);
+    let flat7x_proposal =
+        stage_source_with_bound_id14_provenance(&flat7x, &calls[2], spatial_digest);
+    let published_ids = |proposal: &MetadataSourceProposal| {
+        proposal.receipt().as_json()["published_payloads"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|payload| u8::try_from(payload["id"].as_u64().unwrap()).unwrap())
+            .collect::<Vec<_>>()
+    };
+    let queue_ids = |receipts: &[MetadataQueuePopReceipt]| {
+        receipts
+            .iter()
+            .map(MetadataQueuePopReceipt::queue_id)
+            .collect::<Vec<_>>()
+    };
+    let operation_ids = |proposal: &MetadataSourceProposal| {
+        proposal.receipt().as_json()["queue_operations"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|operation| u8::try_from(operation["queue_id"].as_u64().unwrap()).unwrap())
+            .collect::<Vec<_>>()
+    };
+
+    assert_eq!(
+        selected_proposal.receipt().payload_sequence(),
+        CurrentEmdfPayloadSequence::SelectedFourPayloads
+    );
+    assert_eq!(published_ids(&selected_proposal), [11, 14, 2, 1]);
+    assert_eq!(selected_proposal.receipt().queue_pop_receipts().len(), 4);
+    assert_eq!(
+        queue_ids(selected_proposal.receipt().queue_pop_receipts()),
+        [11, 1, 2, 14]
+    );
+    assert_eq!(
+        queue_ids(
+            selected_proposal
+                .receipt()
+                .published_payload_queue_pop_receipts()
+        ),
+        [11, 14, 2, 1]
+    );
+
+    assert_eq!(
+        flat7x_proposal.receipt().payload_sequence(),
+        CurrentEmdfPayloadSequence::Flat7xExperimentalJocPair
+    );
+    assert_eq!(published_ids(&flat7x_proposal), [11, 14]);
+    assert_eq!(flat7x_proposal.receipt().queue_pop_receipts().len(), 4);
+    assert_eq!(
+        queue_ids(flat7x_proposal.receipt().queue_pop_receipts()),
+        [11, 1, 2, 14]
+    );
+    assert_eq!(
+        queue_ids(
+            flat7x_proposal
+                .receipt()
+                .published_payload_queue_pop_receipts()
+        ),
+        [11, 14]
+    );
+    assert!(
+        flat7x_proposal
+            .receipt()
+            .queue_pop_receipts()
+            .iter()
+            .all(|pop| pop.producer().producer_transaction_id().is_some()
+                && pop.consumer_transaction_id()
+                    == flat7x_proposal.consumer_transaction_id().unwrap()
+                && pop.consumer_source_index() == CodecSourceIndex::new(2)
+                && pop.consumer_dispatch() == JocDispatchIndex::new(3)
+                && pop.consumer_au_index() == Some(PublishedAuIndex::new(0))
+                && pop.disposition() == Id14PopDisposition::Published
+                && pop.writer_generation()
+                    == CodecSourceIndex::new(u64::from(pop.queue_id() == 14)))
+    );
+    assert_eq!(operation_ids(&flat7x_proposal), [11, 1, 2, 14]);
+    let consumer_transaction_id = flat7x_proposal.consumer_transaction_id().unwrap().as_str();
+    assert!(
+        flat7x_proposal.receipt().as_json()["queue_operations"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .all(|operation| operation["popped_writer"].as_u64()
+                == Some(u64::from(operation["queue_id"].as_u64() == Some(14)))
+                && operation["popped_producer_provenance"].is_object()
+                && operation["consumer_source_index"].as_u64() == Some(2)
+                && operation["consumer_dispatch"].as_u64() == Some(3)
+                && operation["consumer_transaction_id"].as_str() == Some(consumer_transaction_id))
+    );
+    assert!(flat7x_proposal.emdf().is_some());
 }
 
 #[test]
