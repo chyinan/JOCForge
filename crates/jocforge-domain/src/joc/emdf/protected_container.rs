@@ -882,7 +882,7 @@ fn parse_joc_payload(
         } else {
             let mut previous_channel = u8::try_from(reader.read_bits(3)?)
                 .map_err(|_| CurrentEmdfParserError::TruncatedBitstream)?;
-            if previous_channel > 4 {
+            if previous_channel >= coefficient_channel_count {
                 return Err(CurrentEmdfParserError::JocChannelIndex(descriptor_index));
             }
             let position_table = codebooks.table(match coefficient_channel_count {
