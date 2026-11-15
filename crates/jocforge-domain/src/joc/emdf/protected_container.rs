@@ -486,7 +486,7 @@ pub enum CurrentEmdfParserError {
     JocTwoPointProfile(u8),
     /// A steep point offset is outside the selected 0..=23 slot domain.
     JocPointOffset(u8),
-    /// ID14 selected channel index is outside 0..=4.
+    /// ID14 selected channel index is outside the selected profile's carrier range.
     JocChannelIndex(u8),
     /// The selected codebook table or bounded Huffman body is invalid.
     Huffman(HuffmanError),
@@ -797,7 +797,7 @@ fn parse_joc_payload(
         extension_config,
         clip_gain_index,
     )?;
-    let coefficient_channel_count = match downmix_index {
+    let coefficient_channel_count: u8 = match downmix_index {
         1 => 7,
         3 => 5,
         _ => return Err(CurrentEmdfParserError::JocSelectedHeader),
@@ -885,12 +885,18 @@ fn parse_joc_payload(
             if previous_channel > 4 {
                 return Err(CurrentEmdfParserError::JocChannelIndex(descriptor_index));
             }
-            let position_table = codebooks.table(HuffmanCodebookId::Position5);
+            let position_table = codebooks.table(match coefficient_channel_count {
+                5 => HuffmanCodebookId::Position5,
+                7 => HuffmanCodebookId::Position7,
+                _ => return Err(CurrentEmdfParserError::JocSelectedHeader),
+            });
             for _band in 1..descriptor.band_count {
                 let position_symbol = read_huffman_symbol(&mut reader, position_table)?;
-                previous_channel =
-                    u8::try_from((u16::from(previous_channel) + position_symbol) % 5)
-                        .map_err(|_| CurrentEmdfParserError::JocChannelIndex(descriptor_index))?;
+                previous_channel = u8::try_from(
+                    (u16::from(previous_channel) + position_symbol)
+                        % u16::from(coefficient_channel_count),
+                )
+                .map_err(|_| CurrentEmdfParserError::JocChannelIndex(descriptor_index))?;
                 position_symbol_count = position_symbol_count
                     .checked_add(1)
                     .ok_or(CurrentEmdfParserError::VaruintOverflow)?;
