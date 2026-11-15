@@ -480,8 +480,39 @@ pub(crate) fn stage_source_frame<'pcm>(
             let skip = layout.block_two_skip_field();
             let skip_span = skip.bit_span();
             let container_bytes = skip.payload_bytes();
-            let container_bits = u32::from(container_bytes) * 8;
-            let container_start_bit = skip_span.end_bit() - container_bits;
+            let d0_frame = d0_frame_candidate.frame_candidate().frame();
+            let d0_audio_receipt = d0_frame.receipt();
+            let block_two_receipt = d0_audio_receipt.block_receipts()[2];
+            let block_two_layout = layout.audio_blocks()[2];
+            let block_two_prefix = block_two_layout.leading_audio_span();
+            let block_two_mantissas = block_two_layout.trailing_audio_span().ok_or_else(|| {
+                SourceFrameStageError::Pipeline(
+                    "Flat7x D0 block-2 has no post-skipfield mantissa span".to_owned(),
+                )
+            })?;
+            let d0_emdf_container_start =
+                d0_frame_candidate.emdf_container_start().ok_or_else(|| {
+                    SourceFrameStageError::Pipeline(
+                        "Flat7x D0 protected EMDF payload cursor is missing".to_owned(),
+                    )
+                })?;
+            let protected_container_length = u16::try_from(protected_container.bytes().len()).ok();
+            if block_two_receipt.block_index().value() != 2
+                || block_two_prefix.bit_length() != block_two_receipt.prefix_before_skipfield_bits()
+                || skip.insertion_point().offset_within_audio_span_bits()
+                    != block_two_prefix.bit_length()
+                || skip_span.start_bit() != block_two_prefix.end_bit()
+                || block_two_mantissas.start_bit() != skip_span.end_bit()
+                || block_two_mantissas.bit_length() != block_two_receipt.mantissa_bits()
+                || !(1..=511).contains(&container_bytes)
+                || protected_container_length != Some(container_bytes)
+                || d0_emdf_container_start.bit_offset() != skip_span.start_bit() + 10
+            {
+                return Err(SourceFrameStageError::Pipeline(
+                    "Flat7x D0 protected EMDF cursor must place the complete block-2 skipfield after the block prefix and before its mantissas".to_owned(),
+                ));
+            }
+            let container_start_bit = d0_emdf_container_start.bit_offset();
             let nauxbits = assembly.frame_auxbits_span();
             let crc2 = assembly.crc2_span();
             flat7x_d0_frame_syntax = Some(Flat7xD0FrameSyntaxSummary {

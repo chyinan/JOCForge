@@ -1234,8 +1234,15 @@ mod pair_access_unit_integration_tests {
         let transient = load_transient_parameters(Some(TRANSIENT_PARAMETERS)).unwrap();
         let transform =
             MathGeneratedTransformParameters::from_provider_bytes(F08_PARAMETERS).unwrap();
+        // Git checks this text fixture out as CRLF on Windows; provider identity is pinned to
+        // the canonical LF bytes stored in the repository blob.
+        let policy_parameters = POLICY_PARAMETERS
+            .iter()
+            .copied()
+            .filter(|byte| *byte != b'\r')
+            .collect::<Vec<_>>();
         let policy =
-            load_policy_parameters(PolicyProfile::selected(), Some(POLICY_PARAMETERS)).unwrap();
+            load_policy_parameters(PolicyProfile::selected(), Some(&policy_parameters)).unwrap();
         root.prepare_f07_source(
             AttemptId::new(2),
             CallbackTransactionId::new(transaction_id).unwrap(),
@@ -1549,6 +1556,43 @@ mod pair_access_unit_integration_tests {
             },
         )
         .unwrap();
+
+        // SYNTHETIC/TEST_ONLY F14K receipt-gate bytes use the same protected-container/cursor
+        // path as production. The F12 pair stage below also verifies those exact bytes at the
+        // reported payload cursor in the assembled D0 frame.
+        let d0_audio_frame = d0_frame.frame_candidate().frame();
+        let d0_audio_receipt = d0_audio_frame.receipt();
+        let d0_assembly = d0_audio_receipt.frame_assembly();
+        let d0_layout = d0_assembly.layout();
+        let block_two_receipt = d0_audio_receipt.block_receipts()[2];
+        let block_two_layout = d0_layout.audio_blocks()[2];
+        let block_two_prefix = block_two_layout.leading_audio_span();
+        let block_two_mantissas = block_two_layout.trailing_audio_span().unwrap();
+        let skip = d0_layout.block_two_skip_field();
+        let skip_span = skip.bit_span();
+        assert_eq!(block_two_receipt.block_index().value(), 2);
+        assert_eq!(
+            block_two_prefix.bit_length(),
+            block_two_receipt.prefix_before_skipfield_bits()
+        );
+        assert_eq!(
+            skip.insertion_point().offset_within_audio_span_bits(),
+            block_two_prefix.bit_length()
+        );
+        assert_eq!(skip_span.start_bit(), block_two_prefix.end_bit());
+        assert_eq!(block_two_mantissas.start_bit(), skip_span.end_bit());
+        assert_eq!(
+            block_two_mantissas.bit_length(),
+            block_two_receipt.mantissa_bits()
+        );
+        assert_eq!(
+            usize::from(skip.payload_bytes()),
+            protected_container.bytes().len()
+        );
+        assert_eq!(
+            d0_frame.emdf_container_start().unwrap().bit_offset(),
+            skip_span.start_bit() + 10
+        );
 
         let keyless_provider = validate_keyless_provider(KEYLESS_INTEGRITY_PROVIDER).unwrap();
         let mut integrity_owner = IntegrityProgrammeOwner::cold_from_provider_for_rate(

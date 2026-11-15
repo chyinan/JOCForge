@@ -37,6 +37,19 @@ fn metadata_vectors(bytes: &[u8]) -> Value {
     serde_json::from_slice(bytes).expect("metadata owner vectors must be valid JSON")
 }
 
+fn canonical_lf_fixture_bytes(bytes: &[u8]) -> Vec<u8> {
+    let mut canonical = Vec::with_capacity(bytes.len());
+    let mut index = 0;
+    while index < bytes.len() {
+        if bytes[index] == b'\r' && bytes.get(index + 1) == Some(&b'\n') {
+            index += 1;
+        }
+        canonical.push(bytes[index]);
+        index += 1;
+    }
+    canonical
+}
+
 fn id1_configuration(attempt: u64) -> Id1MeasurementConfiguration {
     let measurement =
         ProgrammeMeasurementReceipt::from_verified_prepass(ProgrammeMeasurementReceiptInput {
@@ -62,13 +75,10 @@ fn metadata_owner(
     metadata_public_provider: &[u8],
     metadata_wrapper_config: &[u8],
 ) -> MetadataOwner {
-    MetadataOwner::new(
-        id1_configuration(0),
-        5,
-        metadata_public_provider,
-        metadata_wrapper_config,
-    )
-    .unwrap()
+    // Hash-pinned JSON fixtures are canonical LF bytes; Git may check them out CRLF on Windows.
+    let provider = canonical_lf_fixture_bytes(metadata_public_provider);
+    let wrapper = canonical_lf_fixture_bytes(metadata_wrapper_config);
+    MetadataOwner::new(id1_configuration(0), 5, &provider, &wrapper).unwrap()
 }
 
 fn decode_hex(text: &str) -> Vec<u8> {
@@ -231,8 +241,9 @@ fn receipt_gate_emdf(
         "wire_bytes": 16,
         "body_bytes": 12
     });
+    let keyless_provider_bytes = canonical_lf_fixture_bytes(keyless_integrity_provider);
     let provider =
-        crate::integrity::keyless_checksum::validate_keyless_provider(keyless_integrity_provider)
+        crate::integrity::keyless_checksum::validate_keyless_provider(&keyless_provider_bytes)
             .expect("selected public keyless provider fixture validates");
     let protected =
         crate::integrity::keyless_checksum::protect_emdf_container(&provider, &zero_slot, &layout)
