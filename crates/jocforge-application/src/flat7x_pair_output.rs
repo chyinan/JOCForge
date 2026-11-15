@@ -224,9 +224,10 @@ pub fn preflight_flat7x_pair_io_stage(
     )
     .map_err(Flat7xPairIoStageError::ByteSequenceComposition)?;
 
-    let retirement = match output_owner
-        .stage_next_access_unit(sequence, Flat7xAuSourceReceiptInput::new(None, None, None))
-    {
+    let retirement = match output_owner.stage_next_access_unit(
+        sequence,
+        Flat7xAuSourceReceiptInput::new(None, None, None, None),
+    ) {
         Err(retirement) => retirement,
         Ok(_proposal) => return Err(Flat7xPairIoStageError::AppendProposalUnexpected),
     };
@@ -263,6 +264,8 @@ pub enum Flat7xPairAppendProposalError {
     F13MetadataReceiptMissing,
     I0IntegrityReceiptMissing,
     D0IntegrityReceiptMissing,
+    CodecSourceGenerationReceiptMissing,
+    CodecSourceGenerationReceiptMismatch,
     I0IntegrityRoleMismatch,
     D0IntegrityRoleMismatch,
     F13SourceIdentityMismatch,
@@ -374,6 +377,12 @@ pub fn stage_receipted_i0_with_opaque_d0<'a>(
     let d0 = receipt_input
         .d0_integrity()
         .ok_or(Flat7xPairAppendProposalError::D0IntegrityReceiptMissing)?;
+    let codec_source_generation_receipt = receipt_input
+        .codec_source_generation_receipt()
+        .ok_or(Flat7xPairAppendProposalError::CodecSourceGenerationReceiptMissing)?;
+    if codec_source_generation_receipt != i0_frame.source_generation_receipt() {
+        return Err(Flat7xPairAppendProposalError::CodecSourceGenerationReceiptMismatch);
+    }
     if i0.role() != jocforge_domain::profile::Flat7xSubstreamRole::IndependentI0 {
         return Err(Flat7xPairAppendProposalError::I0IntegrityRoleMismatch);
     }
@@ -448,7 +457,7 @@ pub fn stage_receipted_i0_with_opaque_d0<'a>(
 /// completed frame receipt, and the two Integrity receipts retain their typed I0/D0 roles.
 pub fn stage_flat7x_pcm_pair_for_f15<'a>(
     i0_frame: &Flat7xPairI0FrameCandidate,
-    d0_frame: &Flat7xPairD0PcmFrameCandidate,
+    d0_frame: &'a Flat7xPairD0PcmFrameCandidate,
     source_generation: Flat7xSourceGeneration,
     f13_metadata: &'a jocforge_domain::joc::emdf::metadata_owner::MetadataSourceProposal,
     f12_pair: &'a IntegrityGtcFlat7xF12PairProposal,
@@ -505,6 +514,7 @@ pub fn stage_flat7x_pcm_pair_for_f15<'a>(
         Some(Flat7xAuIntegrityFrameReceipt::dependent_d0(
             f12_pair.receipts().d0(),
         )),
+        Some(block2_placement.source_generation_receipt()),
     );
     let append_proposal = stage_receipted_i0_with_opaque_d0(
         i0_frame,

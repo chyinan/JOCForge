@@ -327,6 +327,7 @@ struct Flat7xReceiptGateFixture {
     metadata: MetadataSourceProposal,
     i0: crate::integrity::programme_owner::IntegrityF12SourceReceipts,
     d0: crate::integrity::programme_owner::IntegrityF12SourceReceipts,
+    codec_source_generation: crate::codec::owner::Flat7xD0SourceGenerationReceipt,
 }
 
 fn flat7x_receipt_gate_fixture(
@@ -336,7 +337,7 @@ fn flat7x_receipt_gate_fixture(
     d0_transaction_override: Option<&str>,
 ) -> Flat7xReceiptGateFixture {
     use crate::{
-        codec::bitio::FrameBitCursor,
+        codec::{bitio::FrameBitCursor, owner::Flat7xD0SourceGenerationReceipt},
         integrity::{
             keyless_checksum::sha256,
             programme_owner::{
@@ -378,6 +379,16 @@ fn flat7x_receipt_gate_fixture(
         &zero_slot,
         &protected_bytes,
         carrier_block,
+    );
+    let codec_source_generation = Flat7xD0SourceGenerationReceipt::synthetic_for_test(
+        metadata
+            .consumer_transaction_id()
+            .expect("test metadata has a source transaction")
+            .clone(),
+        7,
+        metadata.receipt().transaction_id().clone(),
+        source_index,
+        0,
     );
 
     let generation = pair["f15_candidate"]["i0_source_generation_label"]
@@ -451,6 +462,7 @@ fn flat7x_receipt_gate_fixture(
         metadata,
         i0: i0_receipt,
         d0: d0_receipt,
+        codec_source_generation,
     }
 }
 
@@ -540,7 +552,36 @@ fn flat7x_synthetic_metadata_proposal(
 
 #[test]
 fn flat7x_f15_wash_pair_vector_checks_receipt_mechanics_only() {
+    use crate::publication::{
+        Flat7xAuAttemptRetirementReason, Flat7xAuIntegrityFrameReceipt, Flat7xAuOutputOwner,
+        Flat7xAuOutputOwnerError, Flat7xAuSourceReceiptInput,
+    };
+
     let vector = flat7x_receipt_pair_vector();
+    let missing_codec_receipt = flat7x_receipt_gate_fixture(&vector, 2, 16, None);
+    let retirement = Flat7xAuOutputOwner::cold("wash-f15-missing-codec-receipt", 1)
+        .unwrap()
+        .stage_next_access_unit(
+            missing_codec_receipt.sequence,
+            Flat7xAuSourceReceiptInput::new(
+                Some(&missing_codec_receipt.metadata),
+                Some(Flat7xAuIntegrityFrameReceipt::independent_i0(
+                    &missing_codec_receipt.i0,
+                )),
+                Some(Flat7xAuIntegrityFrameReceipt::dependent_d0(
+                    &missing_codec_receipt.d0,
+                )),
+                None,
+            ),
+        )
+        .unwrap_err();
+    assert_eq!(
+        retirement.reason(),
+        Flat7xAuAttemptRetirementReason::StageRejected(
+            Flat7xAuOutputOwnerError::CodecSourceGenerationReceiptMissing
+        )
+    );
+
     let pair = flat7x_receipt_gate_fixture(&vector, 2, 16, None);
     let proposal = crate::publication::Flat7xAuOutputOwner::cold("wash-f15-positive", 1)
         .unwrap()
@@ -550,6 +591,7 @@ fn flat7x_f15_wash_pair_vector_checks_receipt_mechanics_only() {
                 Some(&pair.metadata),
                 Some(crate::publication::Flat7xAuIntegrityFrameReceipt::independent_i0(&pair.i0)),
                 Some(crate::publication::Flat7xAuIntegrityFrameReceipt::dependent_d0(&pair.d0)),
+                Some(&pair.codec_source_generation),
             ),
         )
         .expect("synthetic Wash pair satisfies the F15 receipt predicates");
@@ -557,6 +599,28 @@ fn flat7x_f15_wash_pair_vector_checks_receipt_mechanics_only() {
     let entry = proposal.ledger_entry();
     assert_eq!(entry.au_index().value(), 0);
     assert_eq!(entry.source_generation().value(), 42);
+    assert_eq!(
+        entry.codec_source_generation_receipt(),
+        &pair.codec_source_generation
+    );
+    assert_eq!(
+        entry.codec_source_generation_receipt().source_index(),
+        CodecSourceIndex::new(11)
+    );
+    assert_eq!(
+        entry
+            .codec_source_generation_receipt()
+            .codec_owner_after_generation()
+            .value(),
+        7
+    );
+    assert_eq!(
+        entry
+            .codec_source_generation_receipt()
+            .source_generation()
+            .value(),
+        7
+    );
     assert_eq!(
         entry.metadata_identity(),
         (
@@ -596,6 +660,7 @@ fn flat7x_f15_wash_rejection_vectors_retire_the_whole_attempt() {
                 Some(Flat7xAuIntegrityFrameReceipt::dependent_d0(
                     &identity_mismatch.d0,
                 )),
+                Some(&identity_mismatch.codec_source_generation),
             ),
         )
         .unwrap_err();
@@ -619,6 +684,7 @@ fn flat7x_f15_wash_rejection_vectors_retire_the_whole_attempt() {
                 Some(Flat7xAuIntegrityFrameReceipt::dependent_d0(
                     &wrong_carrier.d0,
                 )),
+                Some(&wrong_carrier.codec_source_generation),
             ),
         )
         .unwrap_err();
@@ -638,6 +704,7 @@ fn flat7x_f15_wash_rejection_vectors_retire_the_whole_attempt() {
                 Some(&oversized.metadata),
                 Some(Flat7xAuIntegrityFrameReceipt::independent_i0(&oversized.i0)),
                 Some(Flat7xAuIntegrityFrameReceipt::dependent_d0(&oversized.d0)),
+                Some(&oversized.codec_source_generation),
             ),
         )
         .unwrap_err();
@@ -645,6 +712,44 @@ fn flat7x_f15_wash_rejection_vectors_retire_the_whole_attempt() {
         retirement.reason(),
         Flat7xAuAttemptRetirementReason::StageRejected(
             Flat7xAuOutputOwnerError::MetadataContainerExtentMismatch
+        )
+    );
+}
+
+#[test]
+fn flat7x_f15_rejects_codec_source_receipt_with_foreign_source_index() {
+    use crate::publication::{
+        Flat7xAuAttemptRetirementReason, Flat7xAuIntegrityFrameReceipt, Flat7xAuOutputOwner,
+        Flat7xAuOutputOwnerError, Flat7xAuSourceReceiptInput,
+    };
+
+    let vector = flat7x_receipt_pair_vector();
+    let pair = flat7x_receipt_gate_fixture(&vector, 2, 16, None);
+    let foreign_source_index_receipt =
+        crate::codec::owner::Flat7xD0SourceGenerationReceipt::synthetic_for_test(
+            pair.codec_source_generation.source_transaction_id().clone(),
+            pair.codec_source_generation.source_generation().value(),
+            pair.codec_source_generation.callback_lineage().clone(),
+            CodecSourceIndex::new(pair.codec_source_generation.source_index().value() + 1),
+            0,
+        );
+    let retirement = Flat7xAuOutputOwner::cold("wash-f15-foreign-codec-source", 1)
+        .unwrap()
+        .stage_next_access_unit(
+            pair.sequence,
+            Flat7xAuSourceReceiptInput::new(
+                Some(&pair.metadata),
+                Some(Flat7xAuIntegrityFrameReceipt::independent_i0(&pair.i0)),
+                Some(Flat7xAuIntegrityFrameReceipt::dependent_d0(&pair.d0)),
+                Some(&foreign_source_index_receipt),
+            ),
+        )
+        .unwrap_err();
+
+    assert_eq!(
+        retirement.reason(),
+        Flat7xAuAttemptRetirementReason::StageRejected(
+            Flat7xAuOutputOwnerError::CodecSourceGenerationReceiptMismatch
         )
     );
 }

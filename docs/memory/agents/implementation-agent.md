@@ -14,6 +14,8 @@ tags:
 
 ## 当前状态
 
+- 2026-11-15 F15 receipt ledger now retains the full Codec-owned `Flat7xD0SourceGenerationReceipt` copied from D0 block-two placement. The application requires exact equality with the I0 candidate receipt; the domain binds source transaction, callback lineage, source index and dispatch to F13. The F15 `Flat7xSourceGeneration` remains a separate field/type. Focused receipt tests, workspace check, fmt and selected 5.1 all-rate routing pass. Clippy `-D warnings` remains red on existing diagnostics; production authorization remains disabled.
+
 - 隔离分支为 `experimental/independent-encoder`。本 slice 之前的远端基线包含 Flat7x CLI selector/profile/header plumbing 与 F13 typed validation reason；本次 target-plan 变化单独交付。
 - 新增 `codec::access_unit_composer::write_flat7x_i0_d0_access_unit_bytes`：固定 I0→D0 opaque byte composition，校验 2560/4096/6656-byte extents、zero cursor 和整段容量后一次写入；synthetic-only、`production_allowed=false`，未连接生产路径。
 - 新增 `codec::elementary_stream_composer::compose_flat7x_elementary_stream`：按序组合 caller-supplied opaque 6656-byte AUs，checked size、byte-aligned cursor 与整段容量预检后 private staging 并一次写入；空序列拒绝，synthetic-only、`production_allowed=false`，未连接文件/GTC/product encode。结构测试已串接 D0 frame→AU→双 AU stream 并验证 receipt-derived D0 offsets 与 CRC2尾部保持。

@@ -2562,6 +2562,7 @@ mod pair_access_unit_integration_tests {
             Some(Flat7xAuIntegrityFrameReceipt::dependent_d0(
                 receipts.d0_integrity_receipts(),
             )),
+            Some(i0_frame.source_generation_receipt()),
         );
 
         let wrong_generation = Flat7xOpaqueD0FrameInput::new(
@@ -2587,6 +2588,30 @@ mod pair_access_unit_integration_tests {
             Err(Flat7xPairAppendProposalError::SourceGenerationMismatch)
         ));
 
+        let mismatched_codec_source_generation_receipt = i0_frame
+            .source_generation_receipt()
+            .with_generation_for_test(99);
+        let mismatched_receipt_input = Flat7xAuSourceReceiptInput::new(
+            Some(receipts.metadata_source_proposal()),
+            Some(Flat7xAuIntegrityFrameReceipt::independent_i0(
+                receipts.i0_integrity_receipts(),
+            )),
+            Some(Flat7xAuIntegrityFrameReceipt::dependent_d0(
+                receipts.d0_integrity_receipts(),
+            )),
+            Some(&mismatched_codec_source_generation_receipt),
+        );
+        assert!(matches!(
+            stage_receipted_i0_with_opaque_d0(
+                &i0_frame,
+                source_generation,
+                d0_input,
+                Flat7xAuOutputOwner::cold(receipts.attempt_id(), 1).unwrap(),
+                mismatched_receipt_input,
+            ),
+            Err(Flat7xPairAppendProposalError::CodecSourceGenerationReceiptMismatch)
+        ));
+
         let proposal = stage_receipted_i0_with_opaque_d0(
             &i0_frame,
             source_generation,
@@ -2606,6 +2631,33 @@ mod pair_access_unit_integration_tests {
         assert_eq!(
             proposal.ledger_entry().source_generation(),
             source_generation
+        );
+        assert_eq!(
+            proposal.ledger_entry().codec_source_generation_receipt(),
+            i0_frame.source_generation_receipt()
+        );
+        assert_eq!(
+            proposal
+                .ledger_entry()
+                .codec_source_generation_receipt()
+                .source_index(),
+            source_index
+        );
+        assert_eq!(
+            proposal
+                .ledger_entry()
+                .codec_source_generation_receipt()
+                .codec_owner_after_generation()
+                .value(),
+            3
+        );
+        assert_eq!(
+            proposal
+                .ledger_entry()
+                .codec_source_generation_receipt()
+                .source_generation()
+                .value(),
+            3
         );
         assert_eq!(
             proposal.ledger_entry().metadata_identity(),
