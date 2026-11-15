@@ -634,6 +634,7 @@ pub(crate) fn stage_source_frame<'pcm>(
             let i0_frame = match assemble_flat7x_i0_frame_candidate_from_binding(
                 &binding,
                 frame_candidate.numeric_plan_receipt(),
+                expected_source_generation_receipt,
                 i0_policy,
                 i0_budget,
                 I0AuxDataInput::Absent,
@@ -657,6 +658,7 @@ pub(crate) fn stage_source_frame<'pcm>(
                     assemble_flat7x_i0_frame_candidate_from_binding(
                         &binding,
                         frame_candidate.numeric_plan_receipt(),
+                        expected_source_generation_receipt,
                         i0_policy,
                         i0_budget,
                         I0AuxDataInput::Present(OpaqueI0Ac3BitSpan::new(

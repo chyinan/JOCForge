@@ -307,6 +307,28 @@ pub(crate) fn published_payload_candidate(
     )
 }
 
+#[cfg(test)]
+pub(crate) fn published_payload_candidate_with_source_generation_for_test(
+    source_index: CodecSourceIndex,
+    dispatch: JocDispatchIndex,
+    au_index: Option<PublishedAuIndex>,
+    provider: &KeylessIntegrityProvider,
+    zero_slot_container: &[u8],
+    terminal_layout: &serde_json::Value,
+    source_generation_receipt: &Flat7xD0SourceGenerationReceipt,
+) -> Result<F14kSourceCandidate, F14kSourceBridgeError> {
+    published_payload_candidate_with_source_generation(
+        source_index,
+        dispatch,
+        au_index,
+        provider,
+        zero_slot_container,
+        terminal_layout,
+        Some(source_generation_receipt.clone()),
+        None,
+    )
+}
+
 fn published_payload_candidate_with_source_generation(
     source_index: CodecSourceIndex,
     dispatch: JocDispatchIndex,

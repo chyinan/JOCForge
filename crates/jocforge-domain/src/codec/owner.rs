@@ -95,7 +95,7 @@ impl Flat7xD0SourceGenerationReceipt {
         Self {
             source_transaction_id: self.source_transaction_id.clone(),
             source_generation: Flat7xD0SourceGeneration(CodecOwnerGeneration(generation)),
-            codec_owner_after_generation: self.codec_owner_after_generation,
+            codec_owner_after_generation: CodecOwnerGeneration(generation),
             callback_lineage: self.callback_lineage.clone(),
             source_index: self.source_index,
             analysis_generation: self.analysis_generation,

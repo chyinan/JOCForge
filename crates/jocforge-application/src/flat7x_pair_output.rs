@@ -465,6 +465,7 @@ pub fn stage_flat7x_pcm_pair_for_f15<'a>(
     let block2_placement = d0_frame.block2_placement_receipt();
     if f13_metadata.receipt().au_index() != Some(block2_placement.au_index())
         || block2_placement.block_index().zero_based_value() != 2
+        || i0_frame.source_generation_receipt() != block2_placement.source_generation_receipt()
     {
         return Err(Flat7xPairAppendProposalError::D0Block2PlacementMismatch);
     }
