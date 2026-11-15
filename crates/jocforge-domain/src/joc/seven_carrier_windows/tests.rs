@@ -2,14 +2,16 @@ use std::sync::Arc;
 
 use super::*;
 use crate::{
+    codec::owner::Flat7xD0SourceGenerationReceipt,
     frontend::{
         PackageManifestEvidence, ProviderFileEvidence,
         selected_adm_graph::{SelectedAdmGraph, parse_selected_adm_graph},
     },
     joc::coefficient_fitting::{CoefficientFitState, stage_seven_carrier_coefficient_fit_from_qmf},
     joc::coefficient_payload::Flat7xCoefficientRows,
+    joc::coefficient_representation::{JocCoefficientRowLayout, RepresentationRetryProvider},
+    joc::programme_state::{SelectedJocState, stage_selected_joc_source_with_seven_carrier_fit},
     joc::{coefficient_fitting::fit_seven_carrier_window_set, fit_score::FitScoreProvider},
-    joc::{dispatch_state::JocDispatchState, programme_state::SelectedJocState},
     profile::{
         EncodingProfile, Flat7xI0D0TargetPlan, Flat7xProvisionalSourceRoleMap,
         JocReconstructionLayout, build_flat7x_provisional_source_role_map,
@@ -31,6 +33,9 @@ const QMF_FUNCTIONAL_BYTES: &[u8] =
     include_bytes!("../../../tests/fixtures/f04_parameters/qmf-receiver-functional-v1.json");
 const QMF_FFT_BYTES: &[u8] =
     include_bytes!("../../../tests/fixtures/f04_parameters/qmf-mathematical-fft-v1.json");
+const JOC_FUNCTIONAL_BYTES: &[u8] = include_bytes!(
+    "../../../tests/fixtures/synthetic_qmf_fit_checkpoints/approved-joc-functional.json"
+);
 const AXML: &[u8] =
     include_bytes!("../../../tests/fixtures/selected_adm_graph/source_metadata.xml");
 const CHNA: &[u8] =
@@ -266,7 +271,7 @@ fn seven_carrier_window_fit_emits_fifteen_by_seven_by_twelve_rows() {
 }
 
 #[test]
-fn flat7x_fit_installs_seven_carrier_history_in_the_joc_owner_snapshot() {
+fn flat7x_fit_crosses_selected_dispatch_and_writes_seven_row_id14() {
     let role_map = selected_role_map();
     let physical_rows = vec![vec![0_u32; PCM_SAMPLES_PER_SOURCE]; PHYSICAL_ROWS];
     let input = projected_input(&role_map, &physical_rows);
@@ -315,12 +320,64 @@ fn flat7x_fit_installs_seven_carrier_history_in_the_joc_owner_snapshot() {
     .unwrap();
     assert!(fit.after().seven_carrier_qmf_state().is_some());
     assert_eq!(fit.rows().full_words().len(), 15 * 7 * 12);
+    assert_eq!(
+        fit.rows().row_layout(),
+        JocCoefficientRowLayout::SevenChannel
+    );
+    assert_eq!(fit.rows().payload_downmix_index().value(), 1);
 
-    let selected_joc = SelectedJocState::from_staged(
-        fit.after().clone(),
-        JocDispatchState::with_root_clock_for_test(1, 0),
+    let payload_input = fit
+        .rows()
+        .coefficient_payload_input(128, 0, 372, None)
+        .unwrap();
+    assert_eq!(payload_input.downmix_index, 1);
+    assert_eq!(payload_input.objects.len(), 15);
+    assert!(payload_input.objects.iter().all(|object| {
+        object.present
+            && object.points.len() == 1
+            && object.points[0].channel_rows.len() == 7
+            && object.points[0]
+                .channel_rows
+                .iter()
+                .all(|row| row.len() == 12)
+    }));
+
+    // This test deliberately crosses the production selected-dispatch function. Its body is
+    // written by stage_joc_payload_with_seven_carrier_fit, not a test-only payload helper.
+    let fit_source = fit.qmf_source_identity();
+    let producer_transaction_id = fit_source.source_transaction_id().clone();
+    let source_generation_receipt = Flat7xD0SourceGenerationReceipt::synthetic_for_test(
+        producer_transaction_id.clone(),
+        1,
+        target_projection.transaction_id().clone(),
+        target_projection.source_index(),
+        fit_source.analysis_generation().value(),
+    );
+    // The provider's pinned identity is over LF bytes; normalize Windows autocrlf checkout bytes.
+    let joc_functional_lf = std::str::from_utf8(JOC_FUNCTIONAL_BYTES)
+        .unwrap()
+        .replace("\r\n", "\n");
+    let retry_provider =
+        RepresentationRetryProvider::from_approved_bytes(joc_functional_lf.as_bytes()).unwrap();
+    let selected_before = SelectedJocState::cold();
+    let selected_after = stage_selected_joc_source_with_seven_carrier_fit(
+        &selected_before,
+        &target_projection,
+        &producer_transaction_id,
+        &fit,
+        &source_generation_receipt,
+        &retry_provider,
+        profile,
     )
     .unwrap();
+    let id14_body = &selected_after.id14_body().body().bytes;
+    assert!(id14_body.len() >= 2);
+    assert_eq!(id14_body[0] >> 5, 1); // actual ID14 reconstruction/downmix index
+    let object_count_minus_one =
+        (u16::from(id14_body[0] & 0x1f) << 1) | u16::from(id14_body[1] >> 7);
+    assert_eq!(object_count_minus_one + 1, 15);
+
+    let selected_joc = selected_after.after();
     let canonical = selected_joc.canonical_bytes().unwrap();
     assert!(canonical.starts_with(b"JOCSEL01"));
     assert!(canonical.windows(8).any(|window| window == b"J7QMF001"));
