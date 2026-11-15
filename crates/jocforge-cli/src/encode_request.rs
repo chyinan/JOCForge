@@ -709,6 +709,7 @@ fn run_inner(
         measurement,
         source_providers.metadata_owner().provider_file(),
         source_providers.metadata_owner().wrapper_file(),
+        resolved_joc_profile,
     )
     .map_err(EncodeRequestError::MetadataOwner)?;
     eprintln!(

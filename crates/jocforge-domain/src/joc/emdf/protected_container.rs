@@ -1221,11 +1221,17 @@ fn validate_selected_configuration(
             if configuration.codec_data_reserved.is_some() {
                 false
             } else if id == CurrentPayloadId::Oamd {
-                configuration.frame_aligned == Some(false)
+                let selected_id11 = configuration.frame_aligned == Some(false)
                     && configuration.create_duplicate.is_none()
                     && configuration.remove_duplicate.is_none()
                     && configuration.priority.is_none()
-                    && configuration.processing_allowed.is_none()
+                    && configuration.processing_allowed.is_none();
+                let flat7x_id11 = configuration.frame_aligned == Some(true)
+                    && configuration.create_duplicate == Some(false)
+                    && configuration.remove_duplicate == Some(false)
+                    && configuration.priority == Some(0)
+                    && configuration.processing_allowed == Some(0);
+                selected_id11 || flat7x_id11
             } else {
                 configuration.frame_aligned == Some(true)
                     && configuration.create_duplicate == Some(false)

@@ -24,6 +24,7 @@ use super::{
 };
 use crate::joc::id14_body::Id14ProducerProvenance;
 use crate::{
+    profile::{JocReconstructionLayout, ResolvedEncodingProfile},
     spatial::source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
     timeline::{
         CodecSourceIndex, FrontendCallbackIndex, JocDispatchIndex, OrdinaryPayloadWriterIndex,
@@ -50,6 +51,12 @@ const PUBLICATION_ORDER: [u8; 4] = [11, 14, 2, 1];
 const CANONICAL_QUEUE_ORDER: [u8; 4] = [1, 2, 11, 14];
 const METADATA_OWNER_ID: &str = "metadata";
 const METADATA_STATE_REF: &str = "owners.metadata";
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum MetadataWrapperProfile {
+    Selected,
+    Flat7x,
+}
 
 /// Non-payload discriminator for the first failed F13 protected-container binding predicate.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -1617,6 +1624,7 @@ pub struct MetadataOwner {
     provider_sha256: [u8; 32],
     wrapper_configuration: Value,
     wrapper_config_sha256: String,
+    wrapper_profile: MetadataWrapperProfile,
     state: MetadataState,
     retired: bool,
 }
@@ -1631,8 +1639,69 @@ impl MetadataOwner {
         provider_file: &[u8],
         wrapper_file: &[u8],
     ) -> Result<Self, MetadataOwnerError> {
+        Self::new_with_wrapper_profile(
+            id1_configuration,
+            expected_sources,
+            provider_file,
+            wrapper_file,
+            MetadataWrapperProfile::Selected,
+        )
+    }
+
+    /// Creates fresh F13 state using the wrapper values selected by the resolved programme.
+    pub fn new_for_profile(
+        id1_configuration: Id1MeasurementConfiguration,
+        expected_sources: u64,
+        provider_file: &[u8],
+        wrapper_file: &[u8],
+        profile: ResolvedEncodingProfile,
+    ) -> Result<Self, MetadataOwnerError> {
+        let wrapper_profile =
+            if profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
+                MetadataWrapperProfile::Flat7x
+            } else {
+                MetadataWrapperProfile::Selected
+            };
+        Self::new_with_wrapper_profile(
+            id1_configuration,
+            expected_sources,
+            provider_file,
+            wrapper_file,
+            wrapper_profile,
+        )
+    }
+
+    fn new_with_wrapper_profile(
+        id1_configuration: Id1MeasurementConfiguration,
+        expected_sources: u64,
+        provider_file: &[u8],
+        wrapper_file: &[u8],
+        wrapper_profile: MetadataWrapperProfile,
+    ) -> Result<Self, MetadataOwnerError> {
         let provider =
             ValidatedMetadataOwnerProvider::from_approved_bytes(provider_file, wrapper_file)?;
+        let mut wrapper_configuration = provider.wrapper_configuration.clone();
+        if wrapper_profile == MetadataWrapperProfile::Flat7x {
+            let id11 = wrapper_configuration
+                .get_mut("payloads")
+                .and_then(Value::as_object_mut)
+                .and_then(|payloads| payloads.get_mut("11"))
+                .and_then(Value::as_object_mut)
+                .ok_or(MetadataOwnerError::WrapperIdentity)?;
+            id11.insert("payload_frame_aligned".to_owned(), Value::Bool(true));
+            id11.insert("create_duplicate".to_owned(), Value::Bool(false));
+            id11.insert("remove_duplicate".to_owned(), Value::Bool(false));
+            id11.insert("priority".to_owned(), Value::from(0));
+            id11.insert("processing_allowed".to_owned(), Value::from(0));
+        }
+        let wrapper_config_sha256 = if wrapper_profile == MetadataWrapperProfile::Flat7x {
+            let canonical = serde_json::to_vec(&wrapper_configuration)
+                .map_err(|_| MetadataOwnerError::WrapperIdentity)?;
+            sha256_hex(&canonical)
+        } else {
+            provider.wrapper_config_sha256.clone()
+        };
+        let provider_sha256 = provider.provider_sha256;
         Ok(Self {
             programme_id: id1_configuration.programme_id().clone(),
             attempt: id1_configuration.attempt(),
@@ -1640,10 +1709,11 @@ impl MetadataOwner {
             id1_configuration,
             provider_file: provider.provider_file,
             wrapper_file: provider.wrapper_file,
-            provider_sha256: provider.provider_sha256,
-            wrapper_configuration: provider.wrapper_configuration,
-            wrapper_config_sha256: provider.wrapper_config_sha256,
-            state: MetadataState::cold(provider.provider_sha256),
+            provider_sha256,
+            wrapper_configuration,
+            wrapper_config_sha256,
+            wrapper_profile,
+            state: MetadataState::cold(provider_sha256),
             retired: false,
         })
     }
@@ -1787,6 +1857,7 @@ impl MetadataOwner {
             provider_sha256: self.provider_sha256,
             wrapper_configuration: self.wrapper_configuration.clone(),
             wrapper_config_sha256: self.wrapper_config_sha256.clone(),
+            wrapper_profile: self.wrapper_profile,
             state,
             retired: self.retired,
         }
@@ -2232,11 +2303,12 @@ impl MetadataOwner {
         {
             return Err(MetadataOwnerError::ProgrammeIdentity);
         }
-        Self::new(
+        Self::new_with_wrapper_profile(
             id1_configuration,
             self.expected_sources,
             &self.provider_file,
             &self.wrapper_file,
+            self.wrapper_profile,
         )
     }
 
@@ -2526,6 +2598,7 @@ impl MetadataEofProposal {
             provider_sha256: before.provider_sha256,
             wrapper_configuration: before.wrapper_configuration.clone(),
             wrapper_config_sha256: before.wrapper_config_sha256.clone(),
+            wrapper_profile: before.wrapper_profile,
             state: after_state,
             retired: false,
         };

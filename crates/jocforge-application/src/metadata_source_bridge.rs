@@ -61,6 +61,7 @@ pub fn prepare_metadata_owner_from_measurement(
     measurement: &MeasurementDependentOwnerInputs,
     provider_file: &[u8],
     wrapper_file: &[u8],
+    joc_profile: ResolvedEncodingProfile,
 ) -> Result<MetadataOwner, MetadataOwnerPreparationError> {
     let receipt = measurement.receipt();
     let id1 = measurement.id1_configuration();
@@ -86,8 +87,14 @@ pub fn prepare_metadata_owner_from_measurement(
         .map_err(MetadataOwnerPreparationError::SourceSchedule)?
         .as_tuple()
         .3;
-    MetadataOwner::new(id1.clone(), expected_sources, provider_file, wrapper_file)
-        .map_err(MetadataOwnerPreparationError::Owner)
+    MetadataOwner::new_for_profile(
+        id1.clone(),
+        expected_sources,
+        provider_file,
+        wrapper_file,
+        joc_profile,
+    )
+    .map_err(MetadataOwnerPreparationError::Owner)
 }
 
 /// Errors while binding the F05JOC proposal and F13 body set to one MAIN callback.

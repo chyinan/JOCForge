@@ -823,6 +823,7 @@ fn authorized_adm_bwf_stages_complete_independent_meter_prepass_receipt() {
         &measurement_dependents,
         metadata_provider_bundle.provider_file(),
         metadata_provider_bundle.wrapper_file(),
+        prepared.configuration().selected_profile(),
     )
     .unwrap();
     assert_eq!(metadata_owner.state_reference().generation(), 0);
