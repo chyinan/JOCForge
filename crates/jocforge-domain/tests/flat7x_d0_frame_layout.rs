@@ -187,12 +187,14 @@ fn synthetic_layout_vectors_reject_missing_duplicate_misplaced_and_oversized_fie
 }
 
 #[test]
-fn block_three_cannot_carry_a_skip_field() {
+fn block_three_cannot_carry_a_second_skip_field_after_block_two() {
     let vectors: Value = serde_json::from_str(INPUT_ONLY_VECTORS).unwrap();
     let case = vector(&vectors, "valid-single-block-two-field");
     let mut fields = fields_by_block(case);
-    let skip_field = fields[2].pop().unwrap();
+    let skip_field = fields[2].first().copied().unwrap();
     fields[3].push(skip_field);
+    assert_eq!(fields[2].len(), 1);
+    assert_eq!(fields[3].len(), 1);
     let input = six_block_input(audio_block_lengths(case), block_field_refs(&fields));
 
     assert!(matches!(
