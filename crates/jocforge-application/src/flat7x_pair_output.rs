@@ -26,8 +26,8 @@ pub use jocforge_domain::publication::{
 use crate::flat7x_pair_source::Flat7xPairAccessUnitCandidate;
 
 use crate::flat7x_pair_source::{
-    Flat7xD0SourceIdentity, Flat7xPairD0PcmFrameCandidate, Flat7xPairI0FrameCandidate,
-    d0_identity_matches_role_map,
+    D0Block2PlacementReceipt, Flat7xD0SourceIdentity, Flat7xPairD0PcmFrameCandidate,
+    Flat7xPairI0FrameCandidate, d0_identity_matches_role_map,
 };
 
 use jocforge_domain::{
@@ -266,6 +266,7 @@ pub enum Flat7xPairAppendProposalError {
     I0IntegrityRoleMismatch,
     D0IntegrityRoleMismatch,
     F13SourceIdentityMismatch,
+    D0Block2PlacementMismatch,
     IntegritySourceIdentityMismatch,
     SourceTransactionMismatch,
     AuPlan(Flat7xAuPlanValidationError),
@@ -461,6 +462,12 @@ pub fn stage_flat7x_pcm_pair_for_f15<'a>(
     {
         return Err(Flat7xPairAppendProposalError::PairSourceIdentityMismatch);
     }
+    let block2_placement = d0_frame.block2_placement_receipt();
+    if f13_metadata.receipt().au_index() != Some(block2_placement.au_index())
+        || block2_placement.block_index().zero_based_value() != 2
+    {
+        return Err(Flat7xPairAppendProposalError::D0Block2PlacementMismatch);
+    }
     let target = Flat7xI0D0TargetPlan::approved_contract();
     let layout = d0_frame
         .frame_candidate()
@@ -501,6 +508,7 @@ pub fn stage_flat7x_pcm_pair_for_f15<'a>(
         append_proposal,
         after_history: d0_frame.after_history().clone(),
         source_generation,
+        block2_placement: block2_placement.clone(),
         f12_pair,
     })
 }
@@ -514,6 +522,7 @@ pub struct Flat7xPcmPairF15Candidate<'a> {
     append_proposal: Flat7xAuAppendProposal<'a>,
     after_history: Flat7xD0OverlapHistory,
     source_generation: Flat7xSourceGeneration,
+    block2_placement: D0Block2PlacementReceipt,
     f12_pair: &'a IntegrityGtcFlat7xF12PairProposal,
 }
 
@@ -528,6 +537,10 @@ impl<'a> Flat7xPcmPairF15Candidate<'a> {
 
     pub const fn source_generation(&self) -> Flat7xSourceGeneration {
         self.source_generation
+    }
+
+    pub const fn d0_block2_placement_receipt(&self) -> &D0Block2PlacementReceipt {
+        &self.block2_placement
     }
 
     pub const fn integrity_after_owner(&self) -> &IntegrityProgrammeOwner {

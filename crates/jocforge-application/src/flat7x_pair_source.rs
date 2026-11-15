@@ -12,6 +12,7 @@ use jocforge_domain::{
         },
         bitio::FrameBitCursor,
         d0_frame_assembler::{Flat7xD0FrameBitInput, Flat7xD0FrameTailPolicy},
+        d0_frame_layout::{D0AudioBlockIndex, D0FrameBitSpan},
         flat7x_d0_pcm_source::{
             Flat7xD0PcmFrameInput, Flat7xD0PcmSourceError, produce_flat7x_d0_frame_from_pcm_source,
             stage_flat7x_d0_pcm_block_series,
@@ -25,7 +26,7 @@ use jocforge_domain::{
         CodecRateProfile, Flat7xD0PcmRows, Flat7xI0D0TargetPlan, Flat7xI0PcmRows,
         JocReconstructionLayout, ResolvedEncodingProfile,
     },
-    timeline::{CodecSourceIndex, FrontendCallbackIndex},
+    timeline::{CodecSourceIndex, FrontendCallbackIndex, PublishedAuIndex},
     transaction::{AttemptId, CallbackTransactionId, ProgrammeId},
     transform::fullband_exponent_pipeline::NumericPlanReceipt,
 };
@@ -34,7 +35,7 @@ pub use jocforge_domain::codec::{
     d0_frame_assembler::{
         D0Block2F14kSourceReceiptInput, D0Block2SourceReceipt, D0Block2SourceReceiptError,
     },
-    owner::Flat7xD0SourceGenerationReceipt,
+    owner::{Flat7xD0SourceGeneration, Flat7xD0SourceGenerationReceipt},
 };
 
 pub use jocforge_domain::codec::ac3_audio_block::{
@@ -146,6 +147,37 @@ impl Flat7xD0SourceIdentity {
     }
 }
 
+/// AU-bound proof of the complete skip-field span in the assembled D0 block two.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct D0Block2PlacementReceipt {
+    block_index: D0AudioBlockIndex,
+    bit_span: D0FrameBitSpan,
+    source_generation_receipt: Flat7xD0SourceGenerationReceipt,
+    au_index: PublishedAuIndex,
+}
+
+impl D0Block2PlacementReceipt {
+    pub const fn block_index(&self) -> D0AudioBlockIndex {
+        self.block_index
+    }
+
+    pub const fn bit_span(&self) -> D0FrameBitSpan {
+        self.bit_span
+    }
+
+    pub const fn codec_source_generation(&self) -> Flat7xD0SourceGeneration {
+        self.source_generation_receipt.source_generation()
+    }
+
+    pub const fn source_generation_receipt(&self) -> &Flat7xD0SourceGenerationReceipt {
+        &self.source_generation_receipt
+    }
+
+    pub const fn au_index(&self) -> PublishedAuIndex {
+        self.au_index
+    }
+}
+
 /// Immutable source-bound D0 audio spans issued by a caller-owned D0 producer.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Flat7xD0AudioSpanReceipt<'a> {
@@ -215,6 +247,7 @@ pub enum Flat7xPairSourceError {
     D0Block2AccessUnitMissing,
     D0Block2F14kGenerationReceiptMissing,
     D0Block2ProtectedContainerMissing,
+    D0Block2PlacementMismatch,
     D0PcmFrame(Flat7xD0PcmSourceError),
     I0AudioBlockSeries(I0AudioBlockSeriesError),
     I0FrameAssembly(Flat7xI0FrameAssemblyError),
@@ -352,6 +385,7 @@ pub struct Flat7xPairD0PcmFrameCandidate {
     source_identity: Flat7xD0SourceIdentity,
     source_role_map_receipt: Flat7xSourceRoleMapReceipt,
     frame_candidate: Flat7xD0PcmFrameCandidate,
+    block2_placement: D0Block2PlacementReceipt,
 }
 
 /// Six-block D0 transform and next overlap history for a bound pair source.
@@ -427,6 +461,10 @@ impl Flat7xPairD0PcmFrameCandidate {
         &self.frame_candidate
     }
 
+    pub const fn block2_placement_receipt(&self) -> &D0Block2PlacementReceipt {
+        &self.block2_placement
+    }
+
     pub const fn after_history(
         &self,
     ) -> &jocforge_domain::codec::flat7x_d0_pcm_source::Flat7xD0OverlapHistory {
@@ -481,16 +519,30 @@ pub fn produce_flat7x_pair_d0_pcm_frame_candidate(
     {
         return Err(Flat7xPairSourceError::D0Block2SourceIdentityMismatch);
     }
+    let au_index = settings.block2_source_receipt.au_index();
     let frame_candidate = produce_flat7x_d0_frame_from_pcm_source(Flat7xD0PcmFrameInput {
         pcm_rows: binding.d0_rows.rows(),
         settings,
     })
     .map_err(Flat7xPairSourceError::D0PcmFrame)?;
 
+    let layout = frame_candidate.frame().receipt().frame_assembly().layout();
+    let block_index = layout.audio_blocks()[2].block_index();
+    let bit_span = layout.block_two_skip_field().bit_span();
+    if block_index.zero_based_value() != 2 || bit_span.bit_length() == 0 {
+        return Err(Flat7xPairSourceError::D0Block2PlacementMismatch);
+    }
+
     Ok(Flat7xPairD0PcmFrameCandidate {
         source_identity: binding.d0_source_identity.clone(),
         source_role_map_receipt: binding.role_map_receipt.clone(),
         frame_candidate,
+        block2_placement: D0Block2PlacementReceipt {
+            block_index,
+            bit_span,
+            source_generation_receipt: settings.source_generation_receipt.clone(),
+            au_index,
+        },
     })
 }
 

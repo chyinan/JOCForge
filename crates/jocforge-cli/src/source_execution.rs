@@ -709,6 +709,19 @@ pub(crate) fn stage_source_frame<'pcm>(
                     "Flat7x paired F15 candidate ({FLAT7X_SOURCE_GENERATION_MODEL_ID}): {error:?}"
                 ))
             })?;
+            let block2_placement = f15_pair.d0_block2_placement_receipt();
+            if block2_placement.au_index().value() == 0 {
+                let bit_span = block2_placement.bit_span();
+                eprintln!(
+                    "Flat7x D0 block-two placement: au={} block={} bits={}..{} codec_source_generation={} f15_source_generation={}",
+                    block2_placement.au_index().value(),
+                    block2_placement.block_index().zero_based_value(),
+                    bit_span.start_bit(),
+                    bit_span.end_bit(),
+                    block2_placement.codec_source_generation().value(),
+                    f15_pair.source_generation().value(),
+                );
+            }
             let output_owner_proposal =
                 prepare_output_source_from_flat7x_pair(output_binding_before, &f15_pair).map_err(
                     |error| {

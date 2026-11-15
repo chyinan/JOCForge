@@ -322,6 +322,10 @@ impl<'a> D0Block2SourceReceipt<'a> {
         &self.source_generation_receipt
     }
 
+    pub const fn au_index(&self) -> PublishedAuIndex {
+        self.f13.au_index
+    }
+
     pub const fn complete_emdf_container(&self) -> &'a [u8] {
         self.complete_emdf_container
     }
