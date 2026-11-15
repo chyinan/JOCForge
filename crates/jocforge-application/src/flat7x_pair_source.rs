@@ -1703,18 +1703,29 @@ mod pair_access_unit_integration_tests {
                 jocforge_domain::profile::CodecRateProfile::Kbps1024,
             )
             .unwrap();
-        let source_generation_receipt = source_generation_owner
+        let owner_issued_source_generation_receipt = source_generation_owner
             .issue_flat7x_d0_source_generation_receipt(
                 source_identity.source_stage_key().transaction_id().clone(),
                 callback_lineage.clone(),
                 source_identity,
             )
             .unwrap();
-        assert_eq!(source_generation_receipt.source_generation().value(), 1);
+        assert_eq!(
+            owner_issued_source_generation_receipt
+                .source_generation()
+                .value(),
+            1
+        );
         assert_ne!(
-            source_generation_receipt.source_generation().value(),
+            owner_issued_source_generation_receipt
+                .source_generation()
+                .value(),
             source_index.value()
         );
+        // Model the two completed priming callbacks while keeping the independent F15 label at s=2.
+        let source_generation_receipt =
+            owner_issued_source_generation_receipt.with_generation_for_test(3);
+        assert_eq!(source_generation_receipt.source_generation().value(), 3);
         let bap_parameters: Arc<BapParameters> =
             Arc::new(load_bap_parameters(Some(BAP_PROVIDER)).unwrap());
         let numeric_plan = NumericPlanReceipt::from_parent_for_test(
