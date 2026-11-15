@@ -14,7 +14,7 @@ jocforge encode "D:\input.adm.wav" "D:\output.ec3" --data-rate 1024
 - Flat7x/JOC reconstruction index 1, 15 JOC objects, seven coefficient rows, and complexity 16. Coefficient rows are separate from ADM physical input rows.
 - One complete EMDF skip field in D0 block 2; payloads are limited to 1..511 bytes and oversized fields reject.
 
-The selected Flat7x CLI route currently stops at `Flat7xCoefficientSourceUnavailable`. OpenJOC defines the 15-object/seven-row payload shape, while the source map from the existing five QMF carrier rows to seven coefficient rows is still UNBOUND. The recent E-1037 Love Song attempt completed Meter prepass, then stopped before frame assembly; its isolated attempt directory contains no candidate. The selected 5.1 example above remains usable, and its outputs are not equivalent to DEE.
+The selected Flat7x CLI route currently stops at `Flat7xCoefficientSourceUnavailable`. OpenJOC defines the 15-object/seven-row payload shape. A separate borrowed PCM view now maps ADM bed roles into JOC order `[L,R,C,Ls,Rs,Lrs,Rrs]`; the selected graph fixture resolves to physical rows `[0,1,2,4,5,6,7]`, while I0 and D0 keep their own coded-row maps. This role selection remains provisional, and the source map from QMF carrier rows to seven coefficient rows is still UNBOUND. The recent E-1037 Love Song attempt completed Meter prepass, then stopped before frame assembly; its isolated attempt directory contains no candidate. The selected 5.1 example above remains usable, and its outputs are not equivalent to DEE.
 
 Target command (currently fails closed before frame assembly and writes no output file):
 

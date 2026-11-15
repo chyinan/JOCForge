@@ -27,7 +27,7 @@ use jocforge_domain::{
     },
     profile::{
         Flat7xD0PcmRows, Flat7xI0D0TargetPlan, Flat7xI0PcmRows, Flat7xProvisionalSourcePcmView,
-        Flat7xProvisionalSourceRoleMap, Flat7xSourceRoleMapError,
+        Flat7xProvisionalSourceRoleMap, Flat7xSourceRoleMapError, SevenCarrierPcmInput,
         build_flat7x_provisional_source_role_map,
         project_flat7x_source_pcm_rows as project_profile_source_pcm_rows,
     },
@@ -161,6 +161,10 @@ impl<'a> Flat7xSourcePcmProjection<'a> {
 
     pub const fn d0_rows(&self) -> Flat7xD0PcmRows<'a> {
         self.pcm_view.d0()
+    }
+
+    pub const fn seven_carrier_pcm_input(&self) -> SevenCarrierPcmInput<'a> {
+        self.pcm_view.seven_carrier_input()
     }
 
     pub const fn physical_row_count(&self) -> u16 {

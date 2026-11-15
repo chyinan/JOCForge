@@ -1,9 +1,9 @@
 // pattern: Functional Core
-//! Replaceable profile-specific ADM-row routing for the Flat7x I0/D0 source roles.
+//! Replaceable profile-specific ADM-row routing for Flat7x I0/D0 and JOC source roles.
 //!
 //! The `PhysicalHostIndex` values come from the admitted ADM graph and address RIFF PCM rows.
 //! The D0 `chanmap` locations use ETSI's separate MSB-indexed 16-bit domain. JOC reconstruction
-//! carriers remain on `Flat7xI0D0TargetPlan`; this map does not reinterpret them.
+//! JOC carrier roles have their own row bindings; codec coded-row order remains separate.
 //!
 //! PROVISIONAL ASSUMPTION: selected DirectSpeakers bed roles `front_*`, `side_*`, `rear_*`, and
 //! `lfe` are the source rows for the target I0 core and D0 mapped surround channels. The row
@@ -24,6 +24,15 @@ const I0_ROLE_ROWS: [(Flat7xI0CarrierRole, &str); 6] = [
     (Flat7xI0CarrierRole::LeftSurround, "side_left"),
     (Flat7xI0CarrierRole::RightSurround, "side_right"),
     (Flat7xI0CarrierRole::LowFrequencyEffects, "lfe"),
+];
+const JOC_CARRIER_ROLE_ROWS: [(Flat7xJocCarrierRole, &str); 7] = [
+    (Flat7xJocCarrierRole::Left, "front_left"),
+    (Flat7xJocCarrierRole::Right, "front_right"),
+    (Flat7xJocCarrierRole::Center, "front_center"),
+    (Flat7xJocCarrierRole::LeftSurround, "side_left"),
+    (Flat7xJocCarrierRole::RightSurround, "side_right"),
+    (Flat7xJocCarrierRole::LeftRearSurround, "rear_left"),
+    (Flat7xJocCarrierRole::RightRearSurround, "rear_right"),
 ];
 
 const REQUIRED_BED_ROLES: [&str; 8] = [
@@ -179,12 +188,70 @@ impl<'a> Flat7xD0PcmRows<'a> {
     }
 }
 
+/// Semantic order for the seven JOC reconstruction carrier inputs.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Flat7xJocCarrierRole {
+    Left,
+    Right,
+    Center,
+    LeftSurround,
+    RightSurround,
+    LeftRearSurround,
+    RightRearSurround,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Flat7xJocCarrierRowBinding {
+    role: Flat7xJocCarrierRole,
+    row: AdmPcmRow,
+}
+
+impl Flat7xJocCarrierRowBinding {
+    pub const fn role(self) -> Flat7xJocCarrierRole {
+        self.role
+    }
+
+    pub const fn row(self) -> AdmPcmRow {
+        self.row
+    }
+}
+
+/// Borrowed ADM PCM rows in JOC target order `[L, R, C, Ls, Rs, Lrs, Rrs]`.
+///
+/// The physical rows come from the admitted source role map. LFE and top-side rows remain outside
+/// this seven-row view; I0 and D0 keep their own coded-row views. The current role-map policy is
+/// still provisional.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct SevenCarrierPcmInput<'a> {
+    rows_in_target_order: [&'a [u32]; 7],
+}
+
+impl<'a> SevenCarrierPcmInput<'a> {
+    pub const fn rows_in_target_order(self) -> [&'a [u32]; 7] {
+        self.rows_in_target_order
+    }
+
+    pub const fn row(self, role: Flat7xJocCarrierRole) -> &'a [u32] {
+        let index = match role {
+            Flat7xJocCarrierRole::Left => 0,
+            Flat7xJocCarrierRole::Right => 1,
+            Flat7xJocCarrierRole::Center => 2,
+            Flat7xJocCarrierRole::LeftSurround => 3,
+            Flat7xJocCarrierRole::RightSurround => 4,
+            Flat7xJocCarrierRole::LeftRearSurround => 5,
+            Flat7xJocCarrierRole::RightRearSurround => 6,
+        };
+        self.rows_in_target_order[index]
+    }
+}
+
 /// Borrowed source PCM projection after applying the provisional profile-specific role map.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Flat7xProvisionalSourcePcmView<'a> {
     physical_row_count: u16,
     i0: Flat7xI0PcmRows<'a>,
     d0: Flat7xD0PcmRows<'a>,
+    seven_carriers: SevenCarrierPcmInput<'a>,
 }
 
 impl<'a> Flat7xProvisionalSourcePcmView<'a> {
@@ -198,6 +265,11 @@ impl<'a> Flat7xProvisionalSourcePcmView<'a> {
 
     pub const fn d0(self) -> Flat7xD0PcmRows<'a> {
         self.d0
+    }
+
+    /// Returns independently selected ADM role rows in JOC target order.
+    pub const fn seven_carrier_input(self) -> SevenCarrierPcmInput<'a> {
+        self.seven_carriers
     }
 
     pub const fn provisional(self) -> bool {
@@ -224,6 +296,7 @@ pub struct Flat7xProvisionalSourceRoleMap {
     physical_row_count: u16,
     i0_rows: [Flat7xI0RowBinding; 6],
     d0_rows: [Flat7xD0RowBinding; 3],
+    joc_carrier_rows: [Flat7xJocCarrierRowBinding; 7],
     d0_channel_map: DependentChannelMap,
 }
 
@@ -240,6 +313,10 @@ impl Flat7xProvisionalSourceRoleMap {
         &self.d0_rows
     }
 
+    pub const fn joc_carrier_rows(&self) -> &[Flat7xJocCarrierRowBinding; 7] {
+        &self.joc_carrier_rows
+    }
+
     pub const fn d0_channel_map(&self) -> DependentChannelMap {
         self.d0_channel_map
     }
@@ -249,7 +326,7 @@ impl Flat7xProvisionalSourceRoleMap {
     }
 
     pub const fn assumption_id(&self) -> &'static str {
-        "flat7x-direct-speaker-bed-rows-to-i0-d0-roles-v1"
+        "flat7x-direct-speaker-bed-rows-to-i0-d0-joc-roles-v1"
     }
 }
 
@@ -316,10 +393,23 @@ pub fn project_flat7x_source_pcm_rows<'a>(
         return Err(Flat7xSourceRoleMapError::D0ChannelMapLocationMismatch);
     }
 
+    let mut seven_carrier_rows = [&[][..]; 7];
+    for (destination, binding) in seven_carrier_rows.iter_mut().zip(role_map.joc_carrier_rows) {
+        *destination = physical_pcm_rows
+            .get(usize::from(binding.row.physical_host().value()))
+            .ok_or(Flat7xSourceRoleMapError::PhysicalHostOutOfRange {
+                row: binding.row.physical_host().value(),
+                physical_rows: role_map.physical_row_count,
+            })?;
+    }
+
     Ok(Flat7xProvisionalSourcePcmView {
         physical_row_count: role_map.physical_row_count(),
         i0: Flat7xI0PcmRows { rows: i0_rows },
         d0: Flat7xD0PcmRows { rows: d0_rows },
+        seven_carriers: SevenCarrierPcmInput {
+            rows_in_target_order: seven_carrier_rows,
+        },
     })
 }
 
@@ -385,6 +475,11 @@ pub fn build_flat7x_provisional_source_role_map(
         role,
         row: rows_by_role[speaker_role],
     });
+    let joc_carrier_rows =
+        JOC_CARRIER_ROLE_ROWS.map(|(role, speaker_role)| Flat7xJocCarrierRowBinding {
+            role,
+            row: rows_by_role[speaker_role],
+        });
 
     // ETSI TS 102 366 V1.4.1 Table E.1.4 defines chanmap locations 3 and 4 as the
     // individual surround channels and location 6 as the Lrs/Rrs pair.
@@ -426,6 +521,7 @@ pub fn build_flat7x_provisional_source_role_map(
         physical_row_count,
         i0_rows,
         d0_rows,
+        joc_carrier_rows,
         d0_channel_map: channel_map,
     })
 }
@@ -463,7 +559,7 @@ mod tests {
         assert!(map.is_provisional());
         assert_eq!(map.d0_channel_map().value(), D0_TARGET_CHANNEL_MAP);
         assert_eq!(
-            map.i0_rows().map(|binding| binding.role()),
+            map.i0_rows().map(Flat7xI0RowBinding::role),
             [
                 Flat7xI0CarrierRole::Left,
                 Flat7xI0CarrierRole::Center,
@@ -560,6 +656,48 @@ mod tests {
                         .value()
                 ),
             ]
+        );
+        assert_eq!(
+            pcm_view
+                .seven_carrier_input()
+                .rows_in_target_order()
+                .map(|row| row[0]),
+            [0, 1, 2, 4, 5, 6, 7]
+        );
+        assert_eq!(
+            pcm_view
+                .seven_carrier_input()
+                .row(Flat7xJocCarrierRole::LeftRearSurround)[0],
+            6
+        );
+        assert_eq!(pcm_view.i0().rows()[5][0], 3);
+
+        let one_hot_physical_rows = (0..38)
+            .map(|row| {
+                let marker = if row < 10 { 1_u32 << row } else { 0 };
+                vec![marker; PCM_SAMPLES_PER_SOURCE]
+            })
+            .collect::<Vec<_>>();
+        let one_hot_view = project_flat7x_source_pcm_rows(&map, &one_hot_physical_rows).unwrap();
+        assert_eq!(
+            map.joc_carrier_rows()
+                .map(|binding| binding.row().physical_host().value()),
+            [0, 1, 2, 4, 5, 6, 7]
+        );
+        assert_eq!(
+            one_hot_view
+                .seven_carrier_input()
+                .rows_in_target_order()
+                .map(|row| row[0]),
+            [1, 2, 4, 16, 32, 64, 128]
+        );
+        assert_eq!(
+            one_hot_view.i0().rows().map(|row| row[0]),
+            [1, 4, 2, 16, 32, 8]
+        );
+        assert_eq!(
+            one_hot_view.d0().rows().map(|row| row[0]),
+            [16, 32, 64, 128]
         );
     }
 
