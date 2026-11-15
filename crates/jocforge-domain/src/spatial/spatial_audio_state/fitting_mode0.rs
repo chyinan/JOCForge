@@ -13,7 +13,11 @@ use crate::{
     spatial::{
         DescriptorMathematicalProvider, QmfMathematicalFftProvider, QmfReceiverFunctionalProvider,
         post_window_fanout::CallbackPhase,
-        qmf_analysis_synthesis::{QmfAnalysisHistory, QmfAnalysisSynthesisError, analyze_qmf_slot},
+        qmf_analysis_synthesis::{
+            QMF_ANALYSIS_SAMPLES_PER_SLOT, QMF_ANALYSIS_SLOTS_PER_SOURCE,
+            QMF_ANALYSIS_SPECTRUM_WORDS, QmfAnalysisHistory, QmfAnalysisSynthesisError,
+            analyze_qmf_row,
+        },
         source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
     },
     timeline::{
@@ -24,9 +28,9 @@ use crate::{
 };
 
 const CARRIER_LANES: [usize; 5] = [0, 1, 2, 4, 5];
-const SLOT_COUNT: usize = 24;
-const SLOT_SAMPLES: usize = 64;
-const SPECTRUM_WORDS: usize = 128;
+const SLOT_COUNT: usize = QMF_ANALYSIS_SLOTS_PER_SOURCE;
+const SLOT_SAMPLES: usize = QMF_ANALYSIS_SAMPLES_PER_SLOT;
+const SPECTRUM_WORDS: usize = QMF_ANALYSIS_SPECTRUM_WORDS;
 const TARGET_COUNT: usize = 15;
 const ANALYSIS_HISTORY_ROWS: usize = 9;
 const TEMPORAL_SPAN: usize = 896;
@@ -895,20 +899,14 @@ fn analyze_one_row(
     functional: &QmfReceiverFunctionalProvider,
     fft: &QmfMathematicalFftProvider,
 ) -> Result<(Vec<u32>, [RawBytes; ANALYSIS_HISTORY_ROWS]), Mode0FittingError> {
-    let mut history = history_from_words(history_before)?;
+    let history = history_from_words(history_before)?;
+    let result = analyze_qmf_row(input_words_as_f32, &history, functional, fft)
+        .map_err(map_analysis_error)?;
     let mut spectra = Vec::with_capacity(SLOT_COUNT * SPECTRUM_WORDS);
-    for slot in 0..SLOT_COUNT {
-        let mut samples = [0.0_f32; SLOT_SAMPLES];
-        for (sample, value) in samples.iter_mut().enumerate() {
-            *value = input_words_as_f32[slot * SLOT_SAMPLES + sample];
-        }
-        let result =
-            analyze_qmf_slot(&samples, &history, functional, fft).map_err(map_analysis_error)?;
-        spectra.extend_from_slice(result.spectrum_words());
-        history = QmfAnalysisHistory::from_words(*result.history_after().rows())
-            .map_err(map_analysis_error)?;
+    for slot in result.spectrum_by_slot() {
+        spectra.extend_from_slice(slot);
     }
-    Ok((spectra, raw_history(history.rows())))
+    Ok((spectra, raw_history(result.history_after().rows())))
 }
 
 fn history_from_words(

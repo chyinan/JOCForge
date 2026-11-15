@@ -224,11 +224,16 @@ impl Flat7xJocCarrierRowBinding {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct SevenCarrierPcmInput<'a> {
     rows_in_target_order: [&'a [u32]; 7],
+    role_bindings: [Flat7xJocCarrierRowBinding; 7],
 }
 
 impl<'a> SevenCarrierPcmInput<'a> {
     pub const fn rows_in_target_order(self) -> [&'a [u32]; 7] {
         self.rows_in_target_order
+    }
+
+    pub const fn role_bindings(&self) -> &[Flat7xJocCarrierRowBinding; 7] {
+        &self.role_bindings
     }
 
     pub const fn row(self, role: Flat7xJocCarrierRole) -> &'a [u32] {
@@ -409,6 +414,7 @@ pub fn project_flat7x_source_pcm_rows<'a>(
         d0: Flat7xD0PcmRows { rows: d0_rows },
         seven_carriers: SevenCarrierPcmInput {
             rows_in_target_order: seven_carrier_rows,
+            role_bindings: role_map.joc_carrier_rows,
         },
     })
 }

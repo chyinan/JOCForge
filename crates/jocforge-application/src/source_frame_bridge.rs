@@ -25,6 +25,10 @@ use jocforge_domain::{
             SelectedSourceFrameWriterError, prepare_selected_source_frame_candidate,
         },
     },
+    joc::seven_carrier_windows::{
+        SevenCarrierQmfSourceIdentity, SevenCarrierQmfState, SevenCarrierWindowError,
+        SevenCarrierWindowProposal, SevenCarrierWindowSet, stage_seven_carrier_windows,
+    },
     profile::{
         Flat7xD0PcmRows, Flat7xI0D0TargetPlan, Flat7xI0PcmRows, Flat7xProvisionalSourcePcmView,
         Flat7xProvisionalSourceRoleMap, Flat7xSourceRoleMapError, SevenCarrierPcmInput,
@@ -32,6 +36,7 @@ use jocforge_domain::{
         project_flat7x_source_pcm_rows as project_profile_source_pcm_rows,
     },
     publication::OutputSourceAfterProposal,
+    spatial::{QmfMathematicalFftProvider, QmfReceiverFunctionalProvider},
     timeline::{
         CodecSourceIndex, FrontendCallbackIndex, PublicationDisposition, publication_for_source,
         source_for_callback,
@@ -52,6 +57,8 @@ pub enum SourceFrameBridgeError {
     MetadataSourceLineageMismatch,
     Flat7xSourceRoleMap(Flat7xSourceRoleMapError),
     Flat7xSourceRoleMapLineageMismatch,
+    SevenCarrierSourceIdentityMismatch,
+    SevenCarrierWindow(SevenCarrierWindowError),
     F12EmdfCursorMissing,
     F12EmdfCursorUnexpected,
     CodecSource(CodecSourceBridgeError),
@@ -84,6 +91,10 @@ impl Flat7xSourceRoleMapReceipt {
 
     pub const fn callback_index(&self) -> FrontendCallbackIndex {
         self.callback_index
+    }
+
+    pub const fn attempt_id(&self) -> AttemptId {
+        self.attempt_id
     }
 
     pub const fn source_index(&self) -> CodecSourceIndex {
@@ -170,6 +181,97 @@ impl<'a> Flat7xSourcePcmProjection<'a> {
     pub const fn physical_row_count(&self) -> u16 {
         self.pcm_view.physical_row_count()
     }
+}
+
+/// Source-bound, noncommitting QMF windows and history after-value for the seven ADM roles.
+#[must_use]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Flat7xSevenCarrierWindowCandidate {
+    role_map_receipt: Flat7xSourceRoleMapReceipt,
+    source_extent: Flat7xD0PcmSourceExtent,
+    qmf: SevenCarrierWindowProposal,
+}
+
+impl Flat7xSevenCarrierWindowCandidate {
+    pub const fn role_map_receipt(&self) -> &Flat7xSourceRoleMapReceipt {
+        &self.role_map_receipt
+    }
+
+    pub const fn source_extent(&self) -> Flat7xD0PcmSourceExtent {
+        self.source_extent
+    }
+
+    pub const fn windows(&self) -> &SevenCarrierWindowSet {
+        self.qmf.windows()
+    }
+
+    pub const fn after_state(&self) -> &SevenCarrierQmfState {
+        self.qmf.after_state()
+    }
+
+    pub fn is_bound_to_projection(&self, projection: &Flat7xSourcePcmProjection<'_>) -> bool {
+        let receipt = projection.role_map_receipt();
+        let identity = self.windows().source_identity();
+        let shared = receipt.shared_analysis_identity();
+        self.role_map_receipt == *receipt
+            && self.source_extent == projection.source_extent()
+            && identity.callback_lineage().programme_id() == receipt.programme_id()
+            && identity.callback_lineage().attempt_id() == receipt.attempt_id()
+            && identity.callback_lineage().callback_index() == receipt.callback_index()
+            && identity.source_transaction_id() == receipt.source_transaction_id()
+            && identity.source_index() == receipt.source_index()
+            && identity.analysis_generation() == shared.analysis_after_generation()
+            && self.windows().role_bindings() == receipt.role_map().joc_carrier_rows()
+    }
+
+    pub const fn production_allowed(&self) -> bool {
+        false
+    }
+}
+
+/// Builds seven same-source raw QMF windows from an admitted ADM PCM projection.
+pub fn stage_flat7x_seven_carrier_windows(
+    projection: &Flat7xSourcePcmProjection<'_>,
+    before: &SevenCarrierQmfState,
+    functional_provider: &QmfReceiverFunctionalProvider,
+    fft_provider: &QmfMathematicalFftProvider,
+) -> Result<Flat7xSevenCarrierWindowCandidate, SourceFrameBridgeError> {
+    let receipt = projection.role_map_receipt();
+    let shared = receipt.shared_analysis_identity();
+    let source_key = shared.source_stage_key();
+    if source_key.attempt_id() != receipt.attempt_id()
+        || source_key.transaction_id() != receipt.source_transaction_id()
+        || source_key.source_index() != receipt.source_index()
+        || shared.source_index() != receipt.source_index()
+        || projection.source_extent().callback_index() != receipt.callback_index()
+        || projection.source_extent().source_index() != receipt.source_index()
+    {
+        return Err(SourceFrameBridgeError::SevenCarrierSourceIdentityMismatch);
+    }
+    let source_identity = SevenCarrierQmfSourceIdentity::new(
+        CallbackLineageIdentity::new(
+            receipt.programme_id().clone(),
+            receipt.attempt_id(),
+            receipt.callback_index(),
+        ),
+        receipt.source_transaction_id().clone(),
+        receipt.source_index(),
+        shared.analysis_after_generation(),
+    )
+    .map_err(SourceFrameBridgeError::SevenCarrierWindow)?;
+    let qmf = stage_seven_carrier_windows(
+        projection.seven_carrier_pcm_input(),
+        source_identity,
+        before,
+        functional_provider,
+        fft_provider,
+    )
+    .map_err(SourceFrameBridgeError::SevenCarrierWindow)?;
+    Ok(Flat7xSevenCarrierWindowCandidate {
+        role_map_receipt: receipt.clone(),
+        source_extent: projection.source_extent(),
+        qmf,
+    })
 }
 
 /// Builds the profile-specific provisional ADM-row map and binds it to one already staged

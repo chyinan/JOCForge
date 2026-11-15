@@ -23,6 +23,7 @@ pub mod metadata_carrier;
 pub mod model_complexity;
 pub mod oamd;
 pub mod programme_state;
+pub mod seven_carrier_windows;
 pub mod source_stage;
 pub mod temporal_weights;
 
