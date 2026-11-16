@@ -27,6 +27,7 @@ use crate::{
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Flat7xPairF12StageError {
     PairSourceIdentityMismatch,
+    SourceExtentMismatch,
     SourceClockMismatch,
     F13ReceiptMismatch,
     F13ContainerMissing,
@@ -64,6 +65,9 @@ pub fn stage_flat7x_pair_f12_integrity(
         || !d0_identity_matches_role_map(d0_identity, d0_role_map)
     {
         return Err(Flat7xPairF12StageError::PairSourceIdentityMismatch);
+    }
+    if input.i0_frame.source_extent() != input.d0_frame.source_extent() {
+        return Err(Flat7xPairF12StageError::SourceExtentMismatch);
     }
 
     let source_index = d0_identity.source_index();

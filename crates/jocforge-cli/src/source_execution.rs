@@ -57,7 +57,7 @@ use jocforge_application::{
         Flat7xSourcePcmProjection, SevenCarrierQmfState, build_flat7x_i0_analysis_input,
         build_flat7x_source_pcm_projection, prepare_admitted_source_frame,
         stage_codec_owner_after_flat7x_pair, stage_flat7x_seven_carrier_coefficient_fit,
-        stage_flat7x_seven_carrier_windows,
+        stage_flat7x_seven_carrier_windows, validate_flat7x_i0_projection_extent,
     },
     spatial_callback::{MainSpatialCallbackCandidate, MainSpatialColdRoots},
 };
@@ -296,6 +296,7 @@ pub(crate) fn stage_source_frame<'pcm>(
                 prepared,
                 Flat7xI0D0TargetPlan::approved_contract(),
                 source_index,
+                source_extent,
                 pcm_source.physical_pcm_rows(),
             )
             .map_err(|error| {
@@ -350,6 +351,15 @@ pub(crate) fn stage_source_frame<'pcm>(
                     .to_owned(),
             ));
         }
+        validate_flat7x_i0_projection_extent(
+            i0_analysis_input.source_extent(),
+            projection.source_extent(),
+        )
+        .map_err(|error| {
+            SourceFrameStageError::Pipeline(format!(
+                "Flat7x I0 analysis and D0/JOC projection source extent: {error:?}"
+            ))
+        })?;
         Some(projection)
     } else {
         None

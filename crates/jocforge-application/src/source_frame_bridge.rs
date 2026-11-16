@@ -70,6 +70,7 @@ pub enum SourceFrameBridgeError {
     MetadataSourceLineageMismatch,
     Flat7xSourceRoleMap(Flat7xSourceRoleMapError),
     Flat7xSourceRoleMapLineageMismatch,
+    Flat7xI0SourceExtentMismatch,
     Flat7xI0Audio(InstalledAudioProjectionError),
     SevenCarrierSourceIdentityMismatch,
     SevenCarrierWindow(SevenCarrierWindowError),
@@ -177,12 +178,17 @@ pub struct Flat7xSourcePcmProjection<'a> {
 #[derive(Debug, Eq, PartialEq)]
 pub struct Flat7xI0AnalysisInput {
     role_map: Flat7xProvisionalSourceRoleMap,
+    source_extent: Flat7xD0PcmSourceExtent,
     installed_audio: SourcedInstalledAudioFrame,
 }
 
 impl Flat7xI0AnalysisInput {
     pub const fn role_map(&self) -> &Flat7xProvisionalSourceRoleMap {
         &self.role_map
+    }
+
+    pub const fn source_extent(&self) -> Flat7xD0PcmSourceExtent {
+        self.source_extent
     }
 
     pub const fn installed_audio(&self) -> &SourcedInstalledAudioFrame {
@@ -199,10 +205,14 @@ pub fn build_flat7x_i0_analysis_input(
     prepared: &PreparedJobInput,
     target: Flat7xI0D0TargetPlan,
     source_index: CodecSourceIndex,
+    source_extent: Flat7xD0PcmSourceExtent,
     physical_pcm_rows: &[Vec<u32>],
 ) -> Result<Flat7xI0AnalysisInput, SourceFrameBridgeError> {
     let role_map = build_flat7x_provisional_source_role_map(prepared.graph().graph(), target)
         .map_err(SourceFrameBridgeError::Flat7xSourceRoleMap)?;
+    if source_extent.source_index() != source_index {
+        return Err(SourceFrameBridgeError::Flat7xI0SourceExtentMismatch);
+    }
     if usize::from(role_map.physical_row_count())
         != usize::from(prepared.configuration().wave().channels())
     {
@@ -214,8 +224,21 @@ pub fn build_flat7x_i0_analysis_input(
         .map_err(SourceFrameBridgeError::Flat7xI0Audio)?;
     Ok(Flat7xI0AnalysisInput {
         role_map,
+        source_extent,
         installed_audio,
     })
+}
+
+/// Checks that the I0 analysis rows and the D0/JOC projection came from one validated sample window.
+pub fn validate_flat7x_i0_projection_extent(
+    i0_extent: Flat7xD0PcmSourceExtent,
+    projection_extent: Flat7xD0PcmSourceExtent,
+) -> Result<(), SourceFrameBridgeError> {
+    if i0_extent == projection_extent {
+        Ok(())
+    } else {
+        Err(SourceFrameBridgeError::Flat7xI0SourceExtentMismatch)
+    }
 }
 
 /// Packs already selected Flat7x I0 roles into F07's established external lane order.
@@ -791,5 +814,36 @@ mod integrity_cursor_tests {
                 ((role * 1_536 + 1_535) as f32).to_bits()
             );
         }
+    }
+}
+
+#[cfg(test)]
+mod flat7x_i0_extent_tests {
+    use super::{SourceFrameBridgeError, validate_flat7x_i0_projection_extent};
+    use jocforge_domain::codec::flat7x_d0_pcm_source::Flat7xD0PcmSourceExtent;
+    use jocforge_domain::timeline::{AdmSampleIndex, CodecSourceIndex, FrontendCallbackIndex};
+
+    fn reader_extent(source: u64, callback: u32) -> Flat7xD0PcmSourceExtent {
+        Flat7xD0PcmSourceExtent::new(
+            CodecSourceIndex::new(source),
+            FrontendCallbackIndex::new(callback),
+            AdmSampleIndex::new(u64::from(callback) * 1_536),
+            1_536,
+            0,
+        )
+        .unwrap()
+    }
+
+    #[test]
+    fn i0_and_projection_require_the_same_validated_sample_extent() {
+        let i0_extent = reader_extent(0, 2);
+        assert_eq!(
+            validate_flat7x_i0_projection_extent(i0_extent, i0_extent),
+            Ok(())
+        );
+        assert_eq!(
+            validate_flat7x_i0_projection_extent(i0_extent, reader_extent(1, 3)),
+            Err(SourceFrameBridgeError::Flat7xI0SourceExtentMismatch)
+        );
     }
 }

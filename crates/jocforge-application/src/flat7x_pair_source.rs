@@ -249,6 +249,7 @@ pub enum Flat7xPairSourceError {
     UnsupportedProfile,
     ProfileTargetMismatch,
     SourceIdentityMismatch,
+    SourceExtentMismatch,
     D0AudioSpanProducerDisabled(Flat7xD0AudioSpanProducerState),
     D0AudioSpanSourceIdentityMismatch,
     D0Block2SourceIdentityMismatch,
@@ -473,6 +474,10 @@ impl Flat7xPairD0PcmFrameCandidate {
         &self.frame_candidate
     }
 
+    pub const fn source_extent(&self) -> Flat7xD0PcmSourceExtent {
+        self.frame_candidate.source_extent()
+    }
+
     pub const fn block2_placement_receipt(&self) -> &D0Block2PlacementReceipt {
         &self.block2_placement
     }
@@ -514,7 +519,7 @@ pub fn produce_flat7x_pair_d0_pcm_frame_candidate(
         return Err(Flat7xPairSourceError::ProfileTargetMismatch);
     }
     if settings.source_extent != binding.source_extent {
-        return Err(Flat7xPairSourceError::SourceIdentityMismatch);
+        return Err(Flat7xPairSourceError::SourceExtentMismatch);
     }
     let d0_identity = binding.d0_source_identity();
     let shared_identity = binding.role_map_receipt().shared_analysis_identity();
@@ -627,6 +632,7 @@ impl<'pcm, 'd0> Flat7xPairAudioBlockCandidate<'pcm, 'd0> {
 pub struct Flat7xPairI0FrameCandidate {
     resolved_profile: ResolvedEncodingProfile,
     source_role_map_receipt: Flat7xSourceRoleMapReceipt,
+    source_extent: Flat7xD0PcmSourceExtent,
     source_generation_receipt: Flat7xD0SourceGenerationReceipt,
     i0_frame: Flat7xI0Ac3AudioSeriesFrameCandidate,
 }
@@ -646,6 +652,10 @@ impl Flat7xPairI0FrameCandidate {
 
     pub const fn source_role_map_receipt(&self) -> &Flat7xSourceRoleMapReceipt {
         &self.source_role_map_receipt
+    }
+
+    pub const fn source_extent(&self) -> Flat7xD0PcmSourceExtent {
+        self.source_extent
     }
 
     pub const fn source_generation_receipt(&self) -> &Flat7xD0SourceGenerationReceipt {
@@ -748,6 +758,11 @@ fn assemble_flat7x_i0_frame_candidate_from_series(
     {
         return Err(Flat7xPairSourceError::SourceIdentityMismatch);
     }
+    if binding.source_extent.source_index() != binding.source_index
+        || binding.source_extent.callback_index() != binding.role_map_receipt.callback_index()
+    {
+        return Err(Flat7xPairSourceError::SourceExtentMismatch);
+    }
     if !d0_source_generation_matches_binding(binding, source_generation_receipt) {
         return Err(Flat7xPairSourceError::D0Block2SourceIdentityMismatch);
     }
@@ -764,6 +779,7 @@ fn assemble_flat7x_i0_frame_candidate_from_series(
     Ok(Flat7xPairI0FrameCandidate {
         resolved_profile: binding.resolved_profile,
         source_role_map_receipt: binding.role_map_receipt.clone(),
+        source_extent: binding.source_extent,
         source_generation_receipt: source_generation_receipt.clone(),
         i0_frame,
     })
@@ -789,6 +805,7 @@ fn d0_source_generation_matches_binding(
 pub struct Flat7xPairAccessUnitCandidate {
     resolved_profile: ResolvedEncodingProfile,
     source_role_map_receipt: Flat7xSourceRoleMapReceipt,
+    source_extent: Flat7xD0PcmSourceExtent,
     d0_source_identity: Flat7xD0SourceIdentity,
     access_unit: Flat7xI0D0AuCandidate,
 }
@@ -808,6 +825,10 @@ impl Flat7xPairAccessUnitCandidate {
 
     pub const fn source_role_map_receipt(&self) -> &Flat7xSourceRoleMapReceipt {
         &self.source_role_map_receipt
+    }
+
+    pub const fn source_extent(&self) -> Flat7xD0PcmSourceExtent {
+        self.source_extent
     }
 
     pub const fn d0_source_identity(&self) -> &Flat7xD0SourceIdentity {
@@ -853,6 +874,9 @@ pub fn assemble_flat7x_pair_access_unit_candidate(
     {
         return Err(Flat7xPairSourceError::SourceIdentityMismatch);
     }
+    if binding.source_extent != i0_frame.source_extent {
+        return Err(Flat7xPairSourceError::SourceExtentMismatch);
+    }
 
     let access_unit = assemble_flat7x_i0_d0_au_candidate_with_tail_policy(
         binding.target,
@@ -867,6 +891,7 @@ pub fn assemble_flat7x_pair_access_unit_candidate(
     Ok(Flat7xPairAccessUnitCandidate {
         resolved_profile: binding.resolved_profile,
         source_role_map_receipt: role_map.clone(),
+        source_extent: i0_frame.source_extent,
         d0_source_identity: binding.d0_source_identity.clone(),
         access_unit,
     })
@@ -2053,6 +2078,25 @@ mod pair_access_unit_integration_tests {
             Some(&protected_container)
         );
         assert_eq!(f14k_source.payload_sequence(), Some(payload_sequence));
+        let mut mismatched_i0_extent = i0_frame.clone();
+        let d0_extent = d0_frame.source_extent();
+        mismatched_i0_extent.source_extent = d0_extent_for_source(
+            CodecSourceIndex::new(d0_extent.source_index().value() + 1),
+            FrontendCallbackIndex::new(d0_extent.callback_index().value() + 1),
+        );
+        assert_eq!(
+            stage_flat7x_pair_f12_integrity(Flat7xPairF12StageInput {
+                integrity_before: &integrity_owner,
+                i0_frame: &mismatched_i0_extent,
+                d0_frame: &d0_frame,
+                f13_metadata: &metadata,
+                f14k_source: &f14k_source,
+                keyless_integrity: &keyless_provider,
+            })
+            .unwrap_err(),
+            crate::flat7x_pair_integrity::Flat7xPairF12StageError::SourceExtentMismatch
+        );
+
         let mut mismatched_i0_frame = i0_frame.clone();
         mismatched_i0_frame.source_generation_receipt = source_generation_receipt
             .with_generation_for_test(source_generation_receipt.source_generation().value() + 1);
@@ -2323,6 +2367,29 @@ mod pair_access_unit_integration_tests {
         assert_eq!(
             candidate.d0_source_identity(),
             pair_audio.source_binding().d0_source_identity()
+        );
+        assert_eq!(
+            i0_frame.source_extent(),
+            pair_audio.source_binding().source_extent()
+        );
+        assert_eq!(
+            candidate.source_extent(),
+            pair_audio.source_binding().source_extent()
+        );
+        let mut mismatched_i0_extent = i0_frame.clone();
+        let source_extent = i0_frame.source_extent();
+        mismatched_i0_extent.source_extent = d0_extent_for_source(
+            CodecSourceIndex::new(source_extent.source_index().value() + 1),
+            FrontendCallbackIndex::new(source_extent.callback_index().value() + 1),
+        );
+        assert_eq!(
+            assemble_flat7x_pair_access_unit_candidate(
+                &pair_audio,
+                &mismatched_i0_extent,
+                synthetic_d0_bsi(),
+            )
+            .unwrap_err(),
+            Flat7xPairSourceError::SourceExtentMismatch
         );
         assert_eq!(candidate.access_unit_bytes().len(), 6_656);
         assert_eq!(candidate.access_unit().d0_frame_bytes().len(), 4_096);
