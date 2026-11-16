@@ -642,3 +642,11 @@ Source-clock audit: `encode_request` binds reader rows at callback `g` to `first
 The Flat7x-only I0 analysis input now carries the validated reader extent and requires exact equality with the same callback's D0/JOC projection. That extent remains attached through the I0 frame and paired AU candidates, and the F12 I0/D0 join checks equal extents. The shared selected 5.1 F04 route is unchanged. The receipt binds the consumed reader window; `first_sample` to AU `j` remains `UNBOUND`, and no row shift was made.
 
 Verification: workspace check, format check, focused extent equality test, and selected 5.1 all-rate regression passed. The feature-gated pair integration test stopped before the new extent assertion because its synthetic q=400 I0 allocation needs 22,518 bits against a 20,480-bit budget. No PCM/q/audio policy change or encoder run was made. Continue with the approved source-clock mapping review; keep timing conversion separate from the encoded AU index.
+
+
+## 2026-11-16 E-1123 full-song candidate
+
+A one-shot Wash Fresh GO produced the candidate with Release commit add93721527c3aa915e8729de0ecb5d69cac6476 from the designated Love Song input. The run committed 8,417 AUs / 56,023,552 bytes, with D0 block-two placement receipts 8,417/8,417, max C=461, overflow=0 and AU CRC residuals 0. Candidate SHA-256 81071d12024295e31e2215c2d4edd512e5110fb7fdffe0acb491a42d6a72566f exactly matches E-1121, so the metadata-only source-extent change did not alter encoded bytes. The attempt log also records 7 pending drop receipts, programme_done=false, production_allowed=false; render and playback remain NOT_RUN. E-1123 was not rechecked with OpenJOC; the existing OpenJOC 0.20.1 result is for the same exact candidate hash: decoder admission 8,416/8,417, AU6721 flagged for 1004-bit auxiliary-data alignment. No new listening render or subjective result exists.
+
+
+User listening feedback: E-1123 sounded as bad as the previous version. Its candidate hash matches E-1121 exactly, so the new metadata-only extent commit left encoded audio bytes unchanged. No numerical similarity score or new render was recorded.

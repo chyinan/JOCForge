@@ -254,3 +254,11 @@ Callback/source timestamps are distinct types in the current code: input rows at
 The Flat7x-only `Flat7xI0AnalysisInput` now carries the validated `Flat7xD0PcmSourceExtent` from the same reader callback, including source/callback indices, `first_sample`, valid/padded counts, and origin. The CLI requires exact equality with the extent on `Flat7xSourcePcmProjection`. `Flat7xPairI0FrameCandidate` and the paired AU candidate retain that extent; I0 frame staging checks its callback/source against the pair binding, AU composition checks I0 against the binding, and the F12 pair stage checks I0 against the D0 frame extent. The shared selected 5.1 analysis/F04 route is unchanged.
 
 This receipt binds the reader window consumed by Flat7x I0. The sample-window-to-published-AU conversion remains `UNBOUND`; no PCM shift or q/audio policy change was made. `cargo fmt --all -- --check`, `cargo check --workspace --locked`, the new I0/projection extent test (1/1), and selected 5.1 multi-rate regression (1/1) pass. A feature-gated pair integration test stops earlier at its existing synthetic q=400 budget input (22,518 required bits vs 20,480 available), before reaching the new extent assertion. No encoder run was started.
+
+
+## 2026-11-16 E-1123 candidate result
+
+The one-shot E-1123 Release run on commit add93721527c3aa915e8729de0ecb5d69cac6476 produced 8,417 AUs / 56,023,552 bytes. Candidate SHA-256 81071d12024295e31e2215c2d4edd512e5110fb7fdffe0acb491a42d6a72566f is byte-identical to E-1121. D0 block-two receipts: 8,417/8,417; max C=461; overflow=0; AU CRC residual=0. Attempt status remains experimental: 7 pending drop receipts, programme_done=false, production_allowed=false, render/playback NOT_RUN. The E-1121 OpenJOC 0.20.1 parser result applies to the identical bytes; E-1123 itself was not reinspected. No new render or listening was performed.
+
+
+User listening feedback for E-1123: it sounded as bad as the previous version. The candidate SHA-256 matches E-1121 exactly, so encoded audio bytes did not change; no objective similarity score or new render is recorded.
