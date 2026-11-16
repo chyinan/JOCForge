@@ -266,3 +266,11 @@ User listening feedback for E-1123: it sounded as bad as the previous version. T
 ## 2026-11-17 Wash timebase boundary
 
 Wash records DEE file_position start/end as seconds minus offset, with validation using round(sample_rate x seconds) and stored signed-64 sample positions using truncation. embedded_timecode omits offset subtraction; FFOA is independent. The first source-range consumer selects source-array positions, but owner/generation, endpoint convention, connection to AtmosReader cursor/limit, and join to JOCForge first_sample/source/AU remain UNBOUND. Do not use correlation peaks as a timing correction.
+
+## 2026-11-17 comparison and D0 boundaries
+
+The user reports E-1123 sounds as bad as the previous version; its bytes are identical to E-1121. The keyless candidate is hash/size-matched to GENERATION.json, but the generation record is not bound to the Python run or current entrypoint/source. The reported Rust failure artifact remains USER_REPORTED_FAILURE_FILE_ID_UNBOUND.
+
+Wash source evidence binds DEE file_position adjustment and sample conversion but not the JOCForge sample-window-to-AU join. Do not infer a row shift from the correlation lag alone.
+
+D0 record-vector begin/end pointer operations and the first opaque skipfld record owner are now registered in the shared handoff; U9 syntax, block identity, complete C, and native overflow behavior remain UNBOUND.

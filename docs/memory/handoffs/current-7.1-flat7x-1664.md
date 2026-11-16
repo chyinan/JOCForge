@@ -654,3 +654,23 @@ User listening feedback: E-1123 sounded as bad as the previous version. Its cand
 ## 2026-11-17 DEE timebase sample-range boundary
 
 Wash-only static receipt dee_atmos_ddp_timebase_sample_range_consumer_wash_v1 (manifest 553f7c4764628a885d062b820038254887fdc529cc9c7503e7c7de57eeb58336; seal 1166524d...; normal/O verified) records that the DEE file_position branch subtracts offset seconds from start/end seconds, uses round(sample_rate x seconds) for validation, and truncates the adjusted products to signed-64 sample positions. The embedded_timecode branch preserves start/end seconds without offset subtraction; FFOA remains a separate seconds field. The first source-range consumer is FUN_180145380; its second caller was not followed. The mapping from those sample bounds to AtmosReader cursor limits, JOCForge first_sample/source/AU coordinates, and endpoint inclusivity remains UNBOUND. E1123 bad listening result therefore still has no justified sample shift rule.
+
+## 2026-11-17 DEE loader-list boundary
+
+The attempt-209 Wash package (manifest 55f497137061217b0c0bbcf238b217c858c778c13e3d607acff09e47526acbe2; seal 73c4b8a90de9c677779115dccbab37263cae28c016507ba58123572514e20b70; normal/O pass) binds the 7.1 test host default root to D:/Programs/dee71joc/test_dee and the default list path to D:/Programs/dee71joc/test_dee/dee_loader.list; the file is absent. Host global context +0xF8 can override the caller default and the chosen string is written to path collection +0x40. The separate semicolon-list parser input has no typed join to that collection/file. The filter wrapper census has no code consumer, so filter registration and selected-child identity remain UNBOUND. Attempt-208 GO remains consumed; no run or config change was made.
+
+## 2026-11-17 Geometry descriptor and R8 lineage
+
+Wash-only Ghidra receipts on candidate 2b7 bind the selected writer path as follows: FUN_1402ac760@0x1402ac78a passes a stack address in R8; its LEA R8 base is RSP and the exact slot normalizes to function-entry RSP-0x58, with no direct store or initializer before the call. The alternative FUN_1402ad5b0 path has R8 live-in, one .pdata DATA reference, and no validated direct E8 caller. In FUN_1402ad5d0, R8 is preserved through R15 and restored before CALL@0x1402ad674 to FUN_1402ad310. That callee reads an 8-byte qword through [R8] and writes it to the RDX stack descriptor at offset 0. The native owner/generation, R8 pointee contents, descriptor field type, and D0 row join remain UNBOUND; no record bytes were read.
+
+## 2026-11-17 D0 record-vector and skipfld boundaries
+
+Wash address lineage binds record-vector begin at worker_state+0x190 and end at worker_state+0x198; a CMP compares them, and the unselected fallthrough writes byte 1 at begin+0x10, increments the begin pointer by 0x40, then compares it to end. The comparison outcome and record-field semantics remain UNBOUND. Separately, the selected skipfld writer path reads U16 count and U64 source from an opaque record pointer at FUN_14074a990.param_1+0x10cc; U9 assignment, D0 block ordinal, complete C, capacity, and native overflow disposition remain UNBOUND. The target contract stays one D0 block-2 skipfld, C<=511, reject overflow, no cross-field continuation.
+
+## 2026-11-17 audio identity and D0 record boundaries
+
+The user reported that E-1123 sounds as bad as the previous version; its candidate hash is identical to E-1121, so encoded audio bytes did not change. A separate keyless candidate file matches its generation receipt by hash and size, but its Python run/source binding is UNBOUND. The Rust failure artifact is USER_REPORTED_FAILURE_FILE_ID_UNBOUND.
+
+DEE timebase static evidence now binds file_position start/end seconds minus offset, rounded validation and truncating signed-64 sample positions; embedded_timecode and FFOA are separate. The join from those sample bounds to the JOCForge AU clock remains UNBOUND.
+
+The D0 record-vector begin/end path compares worker_state+0x190 and +0x198; its unselected fallthrough writes byte 1 at begin+0x10, increments the pointer by 0x40, then compares to end. Record/row semantics remain UNBOUND. The skipfld writer path reaches an opaque record pointer at FUN_14074a990.param_1+0x10cc; native U9/skipfld assignment, D0 ordinal, C and capacity remain UNBOUND.

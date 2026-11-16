@@ -2278,3 +2278,15 @@ This binds which validated reader window fed I0. It preserves `first_sample=g×1
 ## 2026-11-17 DEE timebase boundary
 
 A hash-bound Wash receipt records the DEE file_position branch as start/end seconds minus offset seconds, with rounded sample-rate validation and truncating signed-64 sample-position storage. embedded_timecode keeps a separate path without offset subtraction; FFOA is a separate seconds value. The first source-range consumer is FUN_180145380. Its typed owner/generation, half-open versus inclusive endpoint, second caller, link to AtmosReader cursor/limit, and join to JOCForge first_sample/source/AU timeline remain UNBOUND. No audio-row shift is supported by this receipt.
+
+## 2026-11-17 DEE loader-list boundary
+
+Wash binds the attempt-209 host default path to D:/Programs/dee71joc/test_dee/dee_loader.list; that file is absent in the exact path and the searched DME/6.7 roots. The host may select global-context +0xF8 override or caller default and stores the chosen string in path-collection +0x40. The semicolon-list parser consumes module-path text, but no static owner edge joins +0x40 or the list artifact to that parser input. Filter registration and child selection remain UNBOUND; no speculative list was created and no DEE run was made.
+
+## 2026-11-17 listening and native-boundary update
+
+E-1123 is byte-identical to E-1121 and the user reported equal poor listening quality; no objective similarity score or new render is available. The keyless candidate hash matches its generation record, while its producing run/source binding and the Rust failure file identity remain UNBOUND.
+
+DEE file_position conversion is statically bound to offset-subtracted seconds and sample-position truncation, but the source-sample-to-AU join remains UNBOUND. D0 record-vector begin/end structure is partially bound; record field meanings remain UNBOUND.
+
+The D0 skipfld writer reaches an opaque record pointer. Native U9 assignment, D0 block identity, full EMDF C, capacity, and overflow behavior remain UNBOUND.

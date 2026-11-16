@@ -91,3 +91,19 @@ tags:
 - Wash `JOCFORGE-FLAT7X-OBJECT-ROW-PROVIDER-BOUNDARY-WASH-V1` (manifest `ab3025cd5680784284b70da9a0fa97642e5e1d831f1f2382098f056e808ac37d`, seal `5e231d34e82590e96e659043588c2922ee689dd3f66613b425d97bacd3299499`) states that the current QMF fit is 15x5x12, selector1 expects seven rows, and D0's four coded PCM rows are a separate view. OpenJOC index1 row order is `[L,R,C,Ls,Rs,Lrs,Rrs]`; mapping the five current carrier rows into these seven remains UNBOUND. No zero-filled production provider is connected.
 - Wash OpenJOC v0.20.1 AU admission/group-id source receipts require separate gates for ID14 syntax, one ID11 plus one ID14 with matching `Some(group_id)`, D0 as the final dependent carrier with two-byte Type-A addbsi, and block index 2. Component-rate totals are stream-wide, not per-AU. A complete absence check requires examined=6, unresolved=0, malformed=0; unresolved/malformed later blocks remain unobservable. These parser findings are source/model evidence and do not establish candidate output acceptance.
 - E-1037 Release run ended at `Flat7xCoefficientSourceUnavailable` after Meter prepass and two priming callbacks; attempt directory stayed empty and OpenJOC did not run. Focused D0 receipt/assembler tests 8/8, audio-frame tests 4/4, provider receipt tests 3/3, application provider test 1/1, F13/F14K/F15 pair test 1/1 and selected 5.1 all-rate test 1/1 pass. Global Clippy/boundary failures are in unchanged baseline files.
+
+## 2026-11-17 DEE loader-list registration boundary
+
+Wash-only static evidence separates the host-derived default path, the global-context +0xF8 override, and the path-collection field +0x40. FUN_140028090 selects the override when nonempty or uses the caller-supplied default; the host default resolves to D:/Programs/dee71joc/test_dee/dee_loader.list. That file is absent at the exact path and was not found in the scanned DEE 6.7 or DME roots. FUN_14009f400 parses semicolon-separated module-path strings, but no typed edge binds the +0x40 collection or dee_loader.list content to that parser input. The filter alias wrapper has only data references with zero code consumers. Filter registration and selection of the DME child versus the 6.7 candidate remain UNBOUND. No DEE process was run and no configuration file was created or modified.
+
+## 2026-11-17 D0 record-vector and skipfld boundaries
+
+Wash address lineage binds record-vector begin at worker_state+0x190 and end at worker_state+0x198; a CMP compares them, and the unselected fallthrough writes byte 1 at begin+0x10, increments the begin pointer by 0x40, then compares it to end. The comparison outcome and record-field semantics remain UNBOUND. Separately, the selected skipfld writer path reads U16 count and U64 source from an opaque record pointer at FUN_14074a990.param_1+0x10cc; U9 assignment, D0 block ordinal, complete C, capacity, and native overflow disposition remain UNBOUND. The target contract stays one D0 block-2 skipfld, C<=511, reject overflow, no cross-field continuation.
+
+## 2026-11-17 keyless and vector boundaries
+
+The keyless candidate file hash/size match its generation record, but the receipt is not bound to a Python invocation, entrypoint hash, or source commit. The separate Rust failure sample remains USER_REPORTED_FAILURE_FILE_ID_UNBOUND; no historical candidate substitutes for it.
+
+Static D0 record-vector receipts bind begin pointer worker_state+0x190 and end pointer +0x198. A compare is followed on the unselected fallthrough by a byte write at begin+0x10, an address increment of 0x40, and another compare; branch outcome and field meaning remain UNBOUND.
+
+The D0 block-2 skipfld writer path reaches an opaque record pointer at FUN_14074a990.param_1+0x10cc, with U16 count and U64 source expressions. Native U9 assignment, D0 ordinal, complete EMDF length C, capacity and overflow behavior remain UNBOUND.
