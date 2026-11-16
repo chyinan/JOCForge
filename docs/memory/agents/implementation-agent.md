@@ -262,3 +262,7 @@ The one-shot E-1123 Release run on commit add93721527c3aa915e8729de0ecb5d69cac64
 
 
 User listening feedback for E-1123: it sounded as bad as the previous version. The candidate SHA-256 matches E-1121 exactly, so encoded audio bytes did not change; no objective similarity score or new render is recorded.
+
+## 2026-11-17 Wash timebase boundary
+
+Wash records DEE file_position start/end as seconds minus offset, with validation using round(sample_rate x seconds) and stored signed-64 sample positions using truncation. embedded_timecode omits offset subtraction; FFOA is independent. The first source-range consumer selects source-array positions, but owner/generation, endpoint convention, connection to AtmosReader cursor/limit, and join to JOCForge first_sample/source/AU remain UNBOUND. Do not use correlation peaks as a timing correction.

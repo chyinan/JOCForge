@@ -650,3 +650,7 @@ A one-shot Wash Fresh GO produced the candidate with Release commit add93721527c
 
 
 User listening feedback: E-1123 sounded as bad as the previous version. Its candidate hash matches E-1121 exactly, so the new metadata-only extent commit left encoded audio bytes unchanged. No numerical similarity score or new render was recorded.
+
+## 2026-11-17 DEE timebase sample-range boundary
+
+Wash-only static receipt dee_atmos_ddp_timebase_sample_range_consumer_wash_v1 (manifest 553f7c4764628a885d062b820038254887fdc529cc9c7503e7c7de57eeb58336; seal 1166524d...; normal/O verified) records that the DEE file_position branch subtracts offset seconds from start/end seconds, uses round(sample_rate x seconds) for validation, and truncates the adjusted products to signed-64 sample positions. The embedded_timecode branch preserves start/end seconds without offset subtraction; FFOA remains a separate seconds field. The first source-range consumer is FUN_180145380; its second caller was not followed. The mapping from those sample bounds to AtmosReader cursor limits, JOCForge first_sample/source/AU coordinates, and endpoint inclusivity remains UNBOUND. E1123 bad listening result therefore still has no justified sample shift rule.
