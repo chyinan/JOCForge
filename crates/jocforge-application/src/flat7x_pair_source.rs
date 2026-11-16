@@ -41,7 +41,8 @@ pub use jocforge_domain::codec::{
 
 pub use jocforge_domain::codec::ac3_audio_block::{
     Ac3DeltaBitAllocationInput, Ac3MantissaQuantizerPolicy, I0AudioBlockControlPolicy,
-    I0AudioBlockSeriesBudget, I0AudioBlockSeriesPolicy, I0BapCandidateQ,
+    I0AudioBlockSeriesBudget, I0AudioBlockSeriesError as Flat7xI0AudioBlockSeriesError,
+    I0AudioBlockSeriesPolicy, I0BapCandidateQ,
 };
 pub use jocforge_domain::codec::bap::Flat7xD0BapParameters;
 pub use jocforge_domain::codec::flat7x_d0_pcm_source::{
@@ -680,23 +681,19 @@ pub fn assemble_flat7x_pair_i0_frame_candidate(
     )
 }
 
-/// Returns the first replaceable I0 audio policy wired into the Flat7x source callback.
-pub fn flat7x_i0_audio_block_policy_v1() -> Option<I0AudioBlockSeriesPolicy> {
-    let first_block_q = I0BapCandidateQ::new(16)?;
-    let remaining_blocks_q = I0BapCandidateQ::new(0)?;
+/// Builds the Flat7x I0 audio policy from the same-source selected core frame's accepted q.
+pub fn flat7x_i0_audio_block_policy_v1(
+    selected_core_q: I0BapCandidateQ,
+) -> Option<I0AudioBlockSeriesPolicy> {
     Some(I0AudioBlockSeriesPolicy {
         blocks: std::array::from_fn(|block| I0AudioBlockControlPolicy {
-            candidate_q: if block == 0 {
-                first_block_q
-            } else {
-                remaining_blocks_q
-            },
+            candidate_q: selected_core_q,
             slow_decay_code: 2,
             fast_decay_code: 1,
             slow_gain_code: 1,
             floor_code: 7,
             fast_gain_codes: [0; 6],
-            caller_all_active_fine_zero: block != 0,
+            caller_all_active_fine_zero: false,
             dither_flags: [false; 5],
             dynamic_range_code: Some(0x30 + u8::try_from(block).unwrap_or(u8::MAX)),
         }),
@@ -1564,13 +1561,13 @@ mod pair_access_unit_integration_tests {
     fn synthetic_i0_policy() -> I0AudioBlockSeriesPolicy {
         I0AudioBlockSeriesPolicy {
             blocks: std::array::from_fn(|block| I0AudioBlockControlPolicy {
-                candidate_q: I0BapCandidateQ::new(if block == 0 { 16 } else { 0 }).unwrap(),
+                candidate_q: I0BapCandidateQ::new(400).unwrap(),
                 slow_decay_code: 2,
                 fast_decay_code: 1,
                 slow_gain_code: 1,
                 floor_code: 7,
                 fast_gain_codes: [0; 6],
-                caller_all_active_fine_zero: block != 0,
+                caller_all_active_fine_zero: false,
                 dither_flags: [false; 5],
                 dynamic_range_code: Some(0x30 + u8::try_from(block).unwrap()),
             }),
@@ -2664,5 +2661,24 @@ mod pair_access_unit_integration_tests {
             (source_index, source_index.dispatch().unwrap(), expected_au)
         );
         assert!(!proposal.production_allowed());
+    }
+}
+
+#[cfg(test)]
+mod i0_audio_policy_tests {
+    use super::{I0BapCandidateQ, flat7x_i0_audio_block_policy_v1};
+
+    #[test]
+    fn flat7x_i0_policy_uses_the_selected_q_for_all_live_audio_blocks() {
+        let q = I0BapCandidateQ::new(400).unwrap();
+        let policy = flat7x_i0_audio_block_policy_v1(q).unwrap();
+
+        assert!(policy.blocks.iter().all(|block| block.candidate_q == q));
+        assert!(
+            policy
+                .blocks
+                .iter()
+                .all(|block| !block.caller_all_active_fine_zero)
+        );
     }
 }

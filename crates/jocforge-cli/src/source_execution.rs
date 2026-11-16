@@ -11,10 +11,10 @@ use crate::{
 };
 use jocforge_application::flat7x_pair_source::{
     CallerOwnedI0CrcrsvSeed, D0Block2PlacementReceipt, Flat7xD0BapParameters, Flat7xD0BsiStructure,
-    Flat7xD0PcmFrameSettings, Flat7xI0FrameAssemblyError, Flat7xPairSourceError,
-    I0AudioBlockSeriesBudget, I0AuxDataInput, OpaqueI0Ac3BitSpan,
-    assemble_flat7x_i0_frame_candidate_from_binding, bind_flat7x_d0_block2_source_receipt,
-    bind_flat7x_pair_source, flat7x_i0_audio_block_policy_v1,
+    Flat7xD0PcmFrameSettings, Flat7xI0AudioBlockSeriesError, Flat7xI0FrameAssemblyError,
+    Flat7xPairSourceError, I0AudioBlockSeriesBudget, I0AuxDataInput, I0BapCandidateQ,
+    OpaqueI0Ac3BitSpan, assemble_flat7x_i0_frame_candidate_from_binding,
+    bind_flat7x_d0_block2_source_receipt, bind_flat7x_pair_source, flat7x_i0_audio_block_policy_v1,
     produce_flat7x_pair_d0_pcm_frame_candidate, stage_flat7x_pair_d0_pcm_block_series,
 };
 use jocforge_application::{
@@ -658,62 +658,114 @@ pub(crate) fn stage_source_frame<'pcm>(
                 crc2_start_bit: crc2.start_bit(),
                 crc2_end_bit: crc2.end_bit(),
             });
-            let i0_policy = flat7x_i0_audio_block_policy_v1().ok_or_else(|| {
-                SourceFrameStageError::Pipeline(
-                    "Flat7x I0 local block policy could not be constructed".to_owned(),
-                )
-            })?;
             let i0_budget = I0AudioBlockSeriesBudget::new(20_480);
-            let i0_frame = match assemble_flat7x_i0_frame_candidate_from_binding(
-                &binding,
-                frame_candidate.numeric_plan_receipt(),
-                expected_source_generation_receipt,
-                i0_policy,
-                i0_budget,
-                I0AuxDataInput::Absent,
-                CallerOwnedI0CrcrsvSeed { value: false },
-            ) {
-                Ok(candidate) => candidate,
-                Err(Flat7xPairSourceError::I0FrameAssembly(
-                    Flat7xI0FrameAssemblyError::FrameSpanMismatch {
-                        actual_bits,
-                        required_bits,
-                    },
-                )) if actual_bits < required_bits => {
-                    let auxdata_bits = required_bits - actual_bits;
-                    let auxdata_length =
-                        usize::try_from(auxdata_bits.div_ceil(8)).map_err(|_| {
-                            SourceFrameStageError::Pipeline(
-                                "Flat7x I0 auxdata extent overflow".to_owned(),
-                            )
-                        })?;
-                    let auxdata = vec![0_u8; auxdata_length];
-                    assemble_flat7x_i0_frame_candidate_from_binding(
-                        &binding,
-                        frame_candidate.numeric_plan_receipt(),
-                        expected_source_generation_receipt,
-                        i0_policy,
-                        i0_budget,
-                        I0AuxDataInput::Present(OpaqueI0Ac3BitSpan::new(
-                            &auxdata,
-                            0,
-                            auxdata_bits,
-                        )),
-                        CallerOwnedI0CrcrsvSeed { value: false },
+            // The selected core frame supplies a same-source upper bound; test only its
+            // attempted q values at or below that bound against the stricter I0 extent.
+            let selected_core_q = frame_candidate.frame().q();
+            let mut q_candidates = frame_candidate
+                .attempted_qs()
+                .iter()
+                .copied()
+                .filter(|q| *q <= selected_core_q)
+                .collect::<Vec<_>>();
+            q_candidates.sort_unstable_by(|left, right| right.cmp(left));
+            q_candidates.dedup();
+            let all_q_candidates = q_candidates.clone();
+            let mut rejected_q = Vec::new();
+            let mut selected_i0_frame = None;
+            for q_value in q_candidates {
+                let Some(candidate_q) = I0BapCandidateQ::new(q_value) else {
+                    continue;
+                };
+                let i0_policy = flat7x_i0_audio_block_policy_v1(candidate_q).ok_or_else(|| {
+                    SourceFrameStageError::Pipeline(
+                        "Flat7x I0 local block policy could not be constructed".to_owned(),
                     )
-                    .map_err(|error| {
-                        SourceFrameStageError::Pipeline(format!(
-                            "Flat7x I0 frame candidate ({}): {error:?}",
+                })?;
+                let candidate = match assemble_flat7x_i0_frame_candidate_from_binding(
+                    &binding,
+                    frame_candidate.numeric_plan_receipt(),
+                    expected_source_generation_receipt,
+                    i0_policy,
+                    i0_budget,
+                    I0AuxDataInput::Absent,
+                    CallerOwnedI0CrcrsvSeed { value: false },
+                ) {
+                    Ok(candidate) => candidate,
+                    Err(Flat7xPairSourceError::I0AudioBlockSeries(
+                        Flat7xI0AudioBlockSeriesError::AudioBlockBudgetExceeded { .. },
+                    )) => {
+                        rejected_q.push(q_value);
+                        continue;
+                    }
+                    Err(Flat7xPairSourceError::I0FrameAssembly(
+                        Flat7xI0FrameAssemblyError::FrameSpanMismatch {
+                            actual_bits,
+                            required_bits,
+                        },
+                    )) if actual_bits > required_bits => {
+                        rejected_q.push(q_value);
+                        continue;
+                    }
+                    Err(Flat7xPairSourceError::I0FrameAssembly(
+                        Flat7xI0FrameAssemblyError::FrameSpanMismatch {
+                            actual_bits,
+                            required_bits,
+                        },
+                    )) if actual_bits < required_bits => {
+                        let auxdata_bits = required_bits - actual_bits;
+                        let auxdata_length =
+                            usize::try_from(auxdata_bits.div_ceil(8)).map_err(|_| {
+                                SourceFrameStageError::Pipeline(
+                                    "Flat7x I0 auxdata extent overflow".to_owned(),
+                                )
+                            })?;
+                        let auxdata = vec![0_u8; auxdata_length];
+                        match assemble_flat7x_i0_frame_candidate_from_binding(
+                            &binding,
+                            frame_candidate.numeric_plan_receipt(),
+                            expected_source_generation_receipt,
+                            i0_policy,
+                            i0_budget,
+                            I0AuxDataInput::Present(OpaqueI0Ac3BitSpan::new(
+                                &auxdata,
+                                0,
+                                auxdata_bits,
+                            )),
+                            CallerOwnedI0CrcrsvSeed { value: false },
+                        ) {
+                            Ok(candidate) => candidate,
+                            Err(Flat7xPairSourceError::I0AudioBlockSeries(
+                                Flat7xI0AudioBlockSeriesError::AudioBlockBudgetExceeded { .. },
+                            ))
+                            | Err(Flat7xPairSourceError::I0FrameAssembly(
+                                Flat7xI0FrameAssemblyError::FrameSpanMismatch { .. },
+                            )) => {
+                                rejected_q.push(q_value);
+                                continue;
+                            }
+                            Err(error) => {
+                                return Err(SourceFrameStageError::Pipeline(format!(
+                                    "Flat7x I0 frame candidate q={q_value} ({}): {error:?}",
+                                    jocforge_application::flat7x_pair_source::FLAT7X_I0_AUDIO_BLOCK_POLICY_ID,
+                                )));
+                            }
+                        }
+                    }
+                    Err(error) => {
+                        return Err(SourceFrameStageError::Pipeline(format!(
+                            "Flat7x I0 frame candidate q={q_value} ({}): {error:?}",
                             jocforge_application::flat7x_pair_source::FLAT7X_I0_AUDIO_BLOCK_POLICY_ID,
-                        ))
-                    })?
-                }
-                Err(error) => {
-                    return Err(SourceFrameStageError::Pipeline(format!(
-                        "Flat7x I0 frame candidate ({}): {error:?}",
-                        jocforge_application::flat7x_pair_source::FLAT7X_I0_AUDIO_BLOCK_POLICY_ID,
-                    )));
-                }
+                        )));
+                    }
+                };
+                selected_i0_frame = Some((q_value, candidate));
+                break;
+            }
+            let Some((_selected_i0_q, i0_frame)) = selected_i0_frame else {
+                return Err(SourceFrameStageError::Pipeline(format!(
+                    "Flat7x I0 bitrate-fit search found no candidate; attempted_qs={all_q_candidates:?} rejected_qs={rejected_q:?}"
+                )));
             };
             let f12_pair = stage_flat7x_pair_f12_integrity(Flat7xPairF12StageInput {
                 integrity_before,
