@@ -3,7 +3,7 @@
 
 use crate::joc::coefficient_payload::{
     CoefficientPayloadInput, CoefficientPayloadObject, CoefficientPayloadOutcome,
-    CoefficientPayloadPoint, CoefficientPayloadWriterFailure,
+    CoefficientPayloadPoint, CoefficientPayloadWriterFailure, selected_channel_count,
     write_selected_id14_coefficient_payload, write_selected_id14_coefficient_payload_for_profile,
 };
 use crate::{
@@ -20,7 +20,6 @@ use sha2::{Digest, Sha256};
 
 const FUNCTIONAL_SHA256: &str = "af08ef531f8708ab81cd6af0bf8ae71504ffb19ba76d5fb8571b1ae8db53c747";
 const OBJECT_COUNT: usize = 15;
-const CHANNEL_COUNT: usize = 5;
 const BAND_COUNT: usize = 12;
 const BAND_COUNTS: [usize; 8] = [1, 3, 5, 7, 9, 12, 15, 23];
 const MAX_ATTEMPTS: u8 = 16;
@@ -90,6 +89,12 @@ pub struct FitRepresentationInput<'a> {
     pub sparse_words: &'a [u32],
     pub selected_channels: &'a [u16],
     pub representation_offset: Option<u8>,
+    /// Caller-supplied row axis; it must match `downmix_index` and `full_words` exactly.
+    pub channel_row_count: usize,
+    /// ID14 coefficient selector; kept independent from the resolved JOC layout profile.
+    pub downmix_index: u8,
+    /// Caller-supplied initial representation mode. Selector 1 requires a sparse mode (2 or 3).
+    pub initial_mode: u8,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -235,7 +240,7 @@ fn write_fit_representation_with_profile(
     let mut attempts = Vec::with_capacity(4);
     for attempt in 0..MAX_ATTEMPTS {
         let input = CoefficientPayloadInput {
-            downmix_index: 3,
+            downmix_index: fit.downmix_index,
             extension_config: 0,
             clip_gain_index,
             sequence_count,
@@ -341,7 +346,14 @@ impl ObjectRepresentation {
 fn initial_objects(
     fit: FitRepresentationInput<'_>,
 ) -> Result<Vec<ObjectRepresentation>, RepresentationRetryError> {
-    if fit.full_words.len() != OBJECT_COUNT * CHANNEL_COUNT * BAND_COUNT
+    let expected_channel_count = usize::from(
+        selected_channel_count(fit.downmix_index)
+            .map_err(|_| RepresentationRetryError::FitShape)?,
+    );
+    if fit.channel_row_count != expected_channel_count
+        || fit.initial_mode > 3
+        || (fit.downmix_index == 1 && fit.initial_mode < 2)
+        || fit.full_words.len() != OBJECT_COUNT * fit.channel_row_count * BAND_COUNT
         || fit.sparse_words.len() != OBJECT_COUNT * BAND_COUNT
         || fit.selected_channels.len() != OBJECT_COUNT * BAND_COUNT
         || fit.representation_offset.is_some_and(|offset| offset >= 24)
@@ -350,12 +362,12 @@ fn initial_objects(
     }
     let mut objects = Vec::with_capacity(OBJECT_COUNT);
     for object in 0..OBJECT_COUNT {
-        let channel_rows = (0..CHANNEL_COUNT)
+        let channel_rows = (0..fit.channel_row_count)
             .map(|channel| {
                 (0..BAND_COUNT)
                     .map(|band| {
-                        let word =
-                            fit.full_words[(object * CHANNEL_COUNT + channel) * BAND_COUNT + band];
+                        let word = fit.full_words
+                            [(object * fit.channel_row_count + channel) * BAND_COUNT + band];
                         let value = f32::from_bits(word);
                         if value.is_finite() {
                             Ok(value)
@@ -380,7 +392,7 @@ fn initial_objects(
             .map(|band| {
                 let value = u8::try_from(fit.selected_channels[object * BAND_COUNT + band])
                     .map_err(|_| RepresentationRetryError::FitShape)?;
-                if usize::from(value) < CHANNEL_COUNT {
+                if usize::from(value) < fit.channel_row_count {
                     Ok(value)
                 } else {
                     Err(RepresentationRetryError::FitShape)
@@ -389,7 +401,7 @@ fn initial_objects(
             .collect::<Result<Vec<_>, _>>()?;
         objects.push(ObjectRepresentation {
             band_enum: 5,
-            mode: 1,
+            mode: fit.initial_mode,
             channel_rows,
             selected_channels,
             sparse_backup,
@@ -397,4 +409,154 @@ fn initial_objects(
         });
     }
     Ok(objects)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{
+        BAND_COUNT, FitRepresentationInput, OBJECT_COUNT, RepresentationRetryError, initial_objects,
+    };
+
+    fn nonzero_fit_words(channel_count: usize) -> (Vec<u32>, Vec<u32>, Vec<u16>) {
+        let full_words = (0..OBJECT_COUNT)
+            .flat_map(|object| {
+                (0..channel_count).flat_map(move |channel| {
+                    (0..BAND_COUNT).map(move |band| {
+                        let ordinal = (object * channel_count + channel) * BAND_COUNT + band + 1;
+                        f32::from(u16::try_from(ordinal).unwrap()).to_bits()
+                    })
+                })
+            })
+            .collect();
+        let sparse_words = (0..OBJECT_COUNT * BAND_COUNT)
+            .map(|index| f32::from(u16::try_from(index + 1).unwrap()).to_bits())
+            .collect();
+        let selected_channels = (0..OBJECT_COUNT)
+            .flat_map(|_| {
+                (0..BAND_COUNT).map(move |band| u16::try_from(band % channel_count).unwrap())
+            })
+            .collect();
+        (full_words, sparse_words, selected_channels)
+    }
+
+    #[test]
+    fn explicit_seven_row_fit_preserves_each_callers_nonzero_row() {
+        let (full_words, sparse_words, selected_channels) = nonzero_fit_words(7);
+        let fit = FitRepresentationInput {
+            full_words: &full_words,
+            sparse_words: &sparse_words,
+            selected_channels: &selected_channels,
+            representation_offset: None,
+            channel_row_count: 7,
+            downmix_index: 1,
+            initial_mode: 2,
+        };
+
+        let objects = initial_objects(fit).unwrap();
+        assert_eq!(objects.len(), OBJECT_COUNT);
+        assert_eq!(objects[0].channel_rows.len(), 7);
+        assert_eq!(objects[0].mode, 2);
+        for channel in 0..7 {
+            let row = &objects[0].channel_rows[channel];
+            assert_eq!(row.len(), BAND_COUNT);
+            assert!(row.iter().all(|value| value.is_finite() && *value != 0.0));
+            assert_eq!(
+                row[0],
+                f32::from(u16::try_from(channel * BAND_COUNT + 1).unwrap())
+            );
+        }
+        for left in 0..7 {
+            for right in left + 1..7 {
+                assert_ne!(
+                    objects[0].channel_rows[left],
+                    objects[0].channel_rows[right]
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn row_count_selector_and_sparse_mode_must_match_the_id14_shape() {
+        let (full_words_7, sparse_words, selected_channels_7) = nonzero_fit_words(7);
+        let seven_row_selector_three = FitRepresentationInput {
+            full_words: &full_words_7,
+            sparse_words: &sparse_words,
+            selected_channels: &selected_channels_7,
+            representation_offset: None,
+            channel_row_count: 7,
+            downmix_index: 3,
+            initial_mode: 2,
+        };
+        assert!(matches!(
+            initial_objects(seven_row_selector_three),
+            Err(RepresentationRetryError::FitShape)
+        ));
+
+        let (full_words_6, sparse_words_6, selected_channels_6) = nonzero_fit_words(6);
+        let six_row_selector_one = FitRepresentationInput {
+            full_words: &full_words_6,
+            sparse_words: &sparse_words_6,
+            selected_channels: &selected_channels_6,
+            representation_offset: None,
+            channel_row_count: 6,
+            downmix_index: 1,
+            initial_mode: 2,
+        };
+        assert!(matches!(
+            initial_objects(six_row_selector_one),
+            Err(RepresentationRetryError::FitShape)
+        ));
+
+        let seven_row_full_mode = FitRepresentationInput {
+            channel_row_count: 7,
+            downmix_index: 1,
+            initial_mode: 1,
+            ..seven_row_selector_three
+        };
+        assert!(matches!(
+            initial_objects(seven_row_full_mode),
+            Err(RepresentationRetryError::FitShape)
+        ));
+
+        let (full_words_5, sparse_words_5, selected_channels_5) = nonzero_fit_words(5);
+        let selector_one_with_five_rows = FitRepresentationInput {
+            full_words: &full_words_5,
+            sparse_words: &sparse_words_5,
+            selected_channels: &selected_channels_5,
+            representation_offset: None,
+            channel_row_count: 5,
+            downmix_index: 1,
+            initial_mode: 2,
+        };
+        assert!(matches!(
+            initial_objects(selector_one_with_five_rows),
+            Err(RepresentationRetryError::FitShape)
+        ));
+    }
+
+    #[test]
+    fn selected_five_channel_fit_keeps_its_five_rows_and_selector_three() {
+        let (full_words, sparse_words, selected_channels) = nonzero_fit_words(5);
+        let fit = FitRepresentationInput {
+            full_words: &full_words,
+            sparse_words: &sparse_words,
+            selected_channels: &selected_channels,
+            representation_offset: None,
+            channel_row_count: 5,
+            downmix_index: 3,
+            initial_mode: 1,
+        };
+
+        let objects = initial_objects(fit).unwrap();
+        assert!(objects.iter().all(|object| object.channel_rows.len() == 5));
+        assert!(objects.iter().all(|object| object.mode == 1));
+        for (object_index, object) in objects.iter().enumerate() {
+            for (channel, row) in object.channel_rows.iter().enumerate() {
+                for (band, value) in row.iter().enumerate() {
+                    let ordinal = (object_index * 5 + channel) * BAND_COUNT + band + 1;
+                    assert_eq!(*value, f32::from(u16::try_from(ordinal).unwrap()));
+                }
+            }
+        }
+    }
 }

@@ -360,7 +360,9 @@ fn write_selected_id14_coefficient_payload_inner(
     })
 }
 
-fn selected_channel_count(downmix_index: u8) -> Result<u8, CoefficientPayloadWriterFailure> {
+pub(crate) fn selected_channel_count(
+    downmix_index: u8,
+) -> Result<u8, CoefficientPayloadWriterFailure> {
     match downmix_index {
         1 => Ok(7),
         3 => Ok(5),
