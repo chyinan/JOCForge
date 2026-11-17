@@ -19,7 +19,7 @@ use crate::{
         fit_score::FitScoreProvider,
         temporal_weights::{TemporalWeightError, TemporalWeightProposal, TemporalWeightState},
     },
-    profile::ResolvedEncodingProfile,
+    profile::{JocReconstructionLayout, ResolvedEncodingProfile},
     spatial::{
         QmfReceiverFunctionalProvider,
         source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
@@ -291,6 +291,7 @@ impl CoefficientFitProposal {
         sequence_count: u16,
         capacity_bytes: u16,
     ) -> Result<RepresentationWriteResult, RepresentationRetryError> {
+        validate_fixed_five_row_fit_profile(profile)?;
         write_fit_representation_with_resolved_profile(
             provider,
             FitRepresentationInput {
@@ -316,6 +317,18 @@ impl CoefficientFitProposal {
 
     pub fn into_after(self) -> CoefficientFitState {
         self.after
+    }
+}
+
+/// The current fit proposal owns five rows. Flat7x needs a different caller-owned seven-row
+/// proposal; this gate rejects the C5 producer without deriving downmix from the profile header.
+fn validate_fixed_five_row_fit_profile(
+    profile: ResolvedEncodingProfile,
+) -> Result<(), RepresentationRetryError> {
+    if profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
+        Err(RepresentationRetryError::SevenRowCoefficientProviderUnavailable)
+    } else {
+        Ok(())
     }
 }
 
@@ -519,7 +532,7 @@ mod tests {
             programme_state::SelectedJocState,
             source_stage::assemble_staged_source,
         },
-        profile::EncodingProfile,
+        profile::{EncodingProfile, JocReconstructionLayout, resolve_selected_profile},
         spatial::{
             SpatialAudioMachine, validate_f04_parameter_package_manifest,
             validate_qmf_receiver_functional_provider,
@@ -540,6 +553,22 @@ mod tests {
     );
     const JOC_MATH: &[u8] =
         include_bytes!("../../tests/fixtures/synthetic_qmf_fit_checkpoints/approved-joc-math.json");
+
+    #[test]
+    fn fixed_five_row_production_fit_fails_closed_for_flat7x_profile() {
+        let flat7x =
+            resolve_selected_profile(&EncodingProfile::selected_with_joc_reconstruction_layout(
+                JocReconstructionLayout::Flat7x,
+            ))
+            .unwrap();
+        assert!(matches!(
+            validate_fixed_five_row_fit_profile(flat7x),
+            Err(RepresentationRetryError::SevenRowCoefficientProviderUnavailable)
+        ));
+
+        let selected_5_1 = resolve_selected_profile(&EncodingProfile::selected()).unwrap();
+        assert!(validate_fixed_five_row_fit_profile(selected_5_1).is_ok());
+    }
 
     #[test]
     fn three_generations_match_full_sparse_selected_and_all_score_call_counts() {

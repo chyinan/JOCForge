@@ -180,6 +180,7 @@ pub enum RepresentationRetryError {
     CapacityDomain,
     Writer(CoefficientPayloadWriterFailure),
     MinimumRepresentationExceedsCapacity,
+    SevenRowCoefficientProviderUnavailable,
 }
 
 impl std::fmt::Display for RepresentationRetryError {
