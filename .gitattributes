@@ -13,6 +13,8 @@ crates/jocforge-domain/tests/fixtures/current_features/feature-*.json text eol=c
 crates/jocforge-domain/tests/fixtures/target_cold/f03-selected-target-cold-v1.json text eol=crlf whitespace=cr-at-eol
 crates/jocforge-domain/tests/fixtures/f04_parameters/component-parameter-mathematical-v1.json text eol=crlf whitespace=cr-at-eol
 crates/jocforge-domain/tests/fixtures/f04_parameters/window-q15.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/diffusion_filter/diffusion-constructor-mathematical-v1.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/diffusion_filter/diffusion-mathematical-v1.json text eol=crlf whitespace=cr-at-eol
 crates/jocforge-application/tests/fixtures/input_eof_lifecycle/** text eol=crlf whitespace=cr-at-eol
 crates/jocforge-application/tests/fixtures/reader_source_join/** text eol=crlf whitespace=cr-at-eol
 crates/jocforge-application/assets/providers/** -text whitespace=cr-at-eol
