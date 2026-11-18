@@ -40,10 +40,36 @@ pub struct Flat7xD0PcmSourceExtent {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Flat7xD0PcmSourceExtentOrigin {
     ReaderCallback,
+    ProgrammeAudioWindow,
     CachedDrainRepeatPreviousCallbackV1,
 }
 
 impl Flat7xD0PcmSourceExtent {
+    /// The first two codec sources prime the transform before AU zero.
+    pub fn for_programme_audio(
+        source_index: CodecSourceIndex,
+        callback_index: FrontendCallbackIndex,
+        total_samples: u64,
+    ) -> Result<Self, Flat7xD0PcmSourceExtentError> {
+        if source_for_callback(callback_index) != Some(source_index) {
+            return Err(Flat7xD0PcmSourceExtentError::CallbackSourceMismatch);
+        }
+        let first = source_index.value().saturating_sub(2) * SOURCE_SAMPLES_U64;
+        let valid_samples = if source_index.value() < 2 {
+            0
+        } else {
+            total_samples.saturating_sub(first).min(SOURCE_SAMPLES_U64) as u16
+        };
+        Ok(Self {
+            source_index,
+            callback_index,
+            first_sample: AdmSampleIndex::new(first),
+            valid_samples,
+            padded_samples: SOURCE_SAMPLES as u16 - valid_samples,
+            origin: Flat7xD0PcmSourceExtentOrigin::ProgrammeAudioWindow,
+        })
+    }
+
     pub fn new(
         source_index: CodecSourceIndex,
         callback_index: FrontendCallbackIndex,

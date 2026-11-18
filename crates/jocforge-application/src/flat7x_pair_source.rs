@@ -18,7 +18,8 @@ use jocforge_domain::{
             stage_flat7x_d0_pcm_block_series,
         },
         i0_frame_assembler::{
-            Flat7xI0Ac3AudioSeriesFrameCandidate, assemble_flat7x_i0_ac3_frame_from_audio_series,
+            Flat7xI0Ac3AudioSeriesFrameCandidate, Flat7xI0Ac3FrameHeaderFields,
+            assemble_flat7x_i0_audio_with_header,
         },
         selected_frame_trial::SelectedSourceNumericPlan,
     },
@@ -340,6 +341,7 @@ pub fn require_flat7x_d0_frame_input<'a>(
 #[must_use]
 #[derive(Clone)]
 pub struct Flat7xPairSourceBinding<'pcm> {
+    i0_header: Flat7xI0Ac3FrameHeaderFields,
     resolved_profile: ResolvedEncodingProfile,
     target: Flat7xI0D0TargetPlan,
     source_index: CodecSourceIndex,
@@ -351,6 +353,12 @@ pub struct Flat7xPairSourceBinding<'pcm> {
 }
 
 impl Flat7xPairSourceBinding<'_> {
+    #[must_use]
+    pub fn with_programme_levels(mut self, dialnorm: u8, compr: Option<u8>) -> Self {
+        self.i0_header.dialnorm = dialnorm;
+        self.i0_header.compr = compr;
+        self
+    }
     pub const fn resolved_profile(&self) -> ResolvedEncodingProfile {
         self.resolved_profile
     }
@@ -696,7 +704,7 @@ pub fn flat7x_i0_audio_block_policy_v1(
     selected_core_q: I0BapCandidateQ,
 ) -> Option<I0AudioBlockSeriesPolicy> {
     Some(I0AudioBlockSeriesPolicy {
-        blocks: std::array::from_fn(|block| I0AudioBlockControlPolicy {
+        blocks: [I0AudioBlockControlPolicy {
             candidate_q: selected_core_q,
             slow_decay_code: 2,
             fast_decay_code: 1,
@@ -705,8 +713,8 @@ pub fn flat7x_i0_audio_block_policy_v1(
             fast_gain_codes: [0; 6],
             caller_all_active_fine_zero: false,
             dither_flags: [false; 5],
-            dynamic_range_code: Some(0x30 + u8::try_from(block).unwrap_or(u8::MAX)),
-        }),
+            dynamic_range_code: None,
+        }; 6],
         cplinu: CallerOwnedAc3Cplinu::Independent,
         delta_bit_allocation: Ac3DeltaBitAllocationInput::Absent,
         quantizer_policy: Ac3MantissaQuantizerPolicy::NearestTiesEven,
@@ -767,12 +775,14 @@ fn assemble_flat7x_i0_frame_candidate_from_series(
         return Err(Flat7xPairSourceError::D0Block2SourceIdentityMismatch);
     }
 
-    let i0_frame = assemble_flat7x_i0_ac3_frame_from_audio_series(
+    let i0_frame = assemble_flat7x_i0_audio_with_header(
         binding.target,
         binding.role_map_receipt.shared_analysis_identity(),
         i0_audio_blocks,
         auxdata,
         crcrsv_seed,
+        binding.i0_header,
+        2, // Lo/Ro for the horizontal programme mix.
     )
     .map_err(Flat7xPairSourceError::I0FrameAssembly)?;
 
@@ -936,6 +946,7 @@ pub fn bind_flat7x_pair_source<'pcm>(
         return Err(Flat7xPairSourceError::SourceIdentityMismatch);
     }
     Ok(Flat7xPairSourceBinding {
+        i0_header: Flat7xI0Ac3FrameHeaderFields::official_demo_sample_non_crc_fields(),
         resolved_profile: profile,
         target,
         source_index: numeric_plan.identity().source_index(),

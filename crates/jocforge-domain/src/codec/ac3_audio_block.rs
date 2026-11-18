@@ -263,15 +263,15 @@ pub struct I0AudioBlockSeriesPolicy {
 /// Auditable assumptions used by this candidate-only projection from the selected F12 plan.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum I0AudioBlockAssumptionId {
-    SelectedF12SpectrumAsI0Ac3LongBlockSyntaxV1,
+    SelectedSpectrumWithSourceBlockSwitch,
     SelectedF09F10ExponentStrategyWithD15RecodeOnExponentChangeV1,
 }
 
 impl I0AudioBlockAssumptionId {
     pub const fn id(self) -> &'static str {
         match self {
-            Self::SelectedF12SpectrumAsI0Ac3LongBlockSyntaxV1 => {
-                "PROVISIONAL_I0_SELECTED_F12_51_SPECTRUM_LONG_BLOCKS_V1"
+            Self::SelectedSpectrumWithSourceBlockSwitch => {
+                "FLAT7X_I0_SELECTED_SPECTRUM_SOURCE_BLOCK_SWITCH"
             }
             Self::SelectedF09F10ExponentStrategyWithD15RecodeOnExponentChangeV1 => {
                 "PROVISIONAL_I0_F09_F10_EXPSTR_D15_RECODE_ON_EXPONENT_CHANGE_V1"
@@ -705,8 +705,8 @@ pub fn produce_ac3_audio_block(
 
 /// Produces six candidate I0 `audblk` spans from one source-bound selected numeric plan.
 ///
-/// The selected F12 5.1 coefficient/exponent rows are reused as the I0 spectrum with long-block
-/// syntax under the explicit `SelectedF12SpectrumAsI0Ac3LongBlockSyntaxV1` assumption. F09/F10 block strategy values are
+/// The selected F12 5.1 coefficient/exponent rows are reused as the I0 spectrum with source block-switch
+/// syntax under the explicit `SelectedSpectrumWithSourceBlockSwitch` assumption. F09/F10 block strategy values are
 /// interpreted as AC-3 `chexpstr`/`lfeexpstr` values under the separate
 /// `SelectedF09F10ExponentStrategyWithD15RecodeOnExponentChangeV1` assumption. Strategy zero does
 /// not serialize the caller's packed groups; it reuses prior bandwidth and gain-range fields. If
@@ -1002,7 +1002,7 @@ pub fn produce_i0_audio_block_series(
             let prefix = write_i0_ac3_audio_block_prefix(
                 &mut writer,
                 I0Ac3AudioBlockPrefixInput {
-                    block_switch_flags: [false; FULLBAND_CHANNEL_COUNT],
+                    block_switch_flags: plan.short_flags[block_index],
                     dither_flags: block_policy.dither_flags,
                     dynamic_range_code: block_policy.dynamic_range_code,
                 },
@@ -1076,7 +1076,7 @@ pub fn produce_i0_audio_block_series(
         delta_bit_allocation: policy.delta_bit_allocation,
         quantizer_policy: policy.quantizer_policy,
         assumptions: [
-            I0AudioBlockAssumptionId::SelectedF12SpectrumAsI0Ac3LongBlockSyntaxV1,
+            I0AudioBlockAssumptionId::SelectedSpectrumWithSourceBlockSwitch,
             I0AudioBlockAssumptionId::SelectedF09F10ExponentStrategyWithD15RecodeOnExponentChangeV1,
         ],
     };
@@ -2036,7 +2036,7 @@ mod i0_audio_block_series_tests {
         assert!(!candidate.production_allowed());
         assert_eq!(
             candidate.receipt().assumptions()[0].id(),
-            "PROVISIONAL_I0_SELECTED_F12_51_SPECTRUM_LONG_BLOCKS_V1"
+            "FLAT7X_I0_SELECTED_SPECTRUM_SOURCE_BLOCK_SWITCH"
         );
         assert_eq!(
             candidate.receipt().assumptions()[1].id(),
@@ -2130,7 +2130,7 @@ mod i0_audio_block_series_tests {
     }
 
     #[test]
-    fn i0_audio_block_series_uses_long_block_syntax_for_short_marked_source() {
+    fn i0_audio_block_series_writes_source_block_switch_in_the_matching_channel() {
         let mut plan = numeric_plan();
         plan.short_flags[0][0] = true;
         let mut transaction = source_transaction();
@@ -2143,10 +2143,12 @@ mod i0_audio_block_series_tests {
         )
         .unwrap();
 
+        assert_eq!(candidate.blocks()[0].bytes()[0] >> 3, 0b10000);
+        assert_eq!(candidate.blocks()[1].bytes()[0] >> 3, 0);
         assert_eq!(candidate.blocks().len(), I0_BLOCKS);
         assert_eq!(
             candidate.receipt().assumptions()[0].id(),
-            "PROVISIONAL_I0_SELECTED_F12_51_SPECTRUM_LONG_BLOCKS_V1"
+            "FLAT7X_I0_SELECTED_SPECTRUM_SOURCE_BLOCK_SWITCH"
         );
     }
 
@@ -2264,7 +2266,7 @@ mod i0_audio_block_series_tests {
         assert_eq!(
             frame_candidate.audio_assumptions(),
             &[
-                I0AudioBlockAssumptionId::SelectedF12SpectrumAsI0Ac3LongBlockSyntaxV1,
+                I0AudioBlockAssumptionId::SelectedSpectrumWithSourceBlockSwitch,
                 I0AudioBlockAssumptionId::SelectedF09F10ExponentStrategyWithD15RecodeOnExponentChangeV1,
             ]
         );

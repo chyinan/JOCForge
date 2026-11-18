@@ -11,6 +11,7 @@ pub use jocforge_domain::codec::{
     source_frame_writer::SelectedSourceFrameCandidate,
 };
 pub use jocforge_domain::joc::seven_carrier_windows::SevenCarrierQmfState;
+pub use jocforge_domain::profile::Flat7xSceneMix;
 pub use jocforge_domain::transaction::CallbackLineageIdentity;
 pub use jocforge_domain::{
     analysis::owner::AnalysisNumericPlanStage,
@@ -255,6 +256,24 @@ pub fn installed_audio_from_flat7x_i0_rows(
 }
 
 impl<'a> Flat7xSourcePcmProjection<'a> {
+    pub fn from_scene_mix(
+        receipt: Flat7xSourceRoleMapReceipt,
+        extent: Flat7xD0PcmSourceExtent,
+        mix: &'a Flat7xSceneMix,
+    ) -> Result<Self, SourceFrameBridgeError> {
+        if receipt.role_map() != mix.role_map()
+            || receipt.source_index() != extent.source_index()
+            || receipt.callback_index() != extent.callback_index()
+        {
+            return Err(SourceFrameBridgeError::Flat7xSourceRoleMapLineageMismatch);
+        }
+        Ok(Self {
+            role_map_receipt: receipt,
+            source_extent: extent,
+            pcm_view: mix.pcm_view(),
+        })
+    }
+
     pub const fn role_map_receipt(&self) -> &Flat7xSourceRoleMapReceipt {
         &self.role_map_receipt
     }

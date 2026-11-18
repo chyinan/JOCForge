@@ -674,3 +674,33 @@ The user reported that E-1123 sounds as bad as the previous version; its candida
 DEE timebase static evidence now binds file_position start/end seconds minus offset, rounded validation and truncating signed-64 sample positions; embedded_timecode and FFOA are separate. The join from those sample bounds to the JOCForge AU clock remains UNBOUND.
 
 The D0 record-vector begin/end path compares worker_state+0x190 and +0x198; its unselected fallthrough writes byte 1 at begin+0x10, increments the pointer by 0x40, then compares to end. Record/row semantics remain UNBOUND. The skipfld writer path reaches an opaque record pointer at FUN_14074a990.param_1+0x10cc; native U9/skipfld assignment, D0 ordinal, C and capacity remain UNBOUND.
+
+## 2026-11-18 Flat7x 对象音频短复现
+
+在本工作树构建待测 CLI 后运行 `rtk proxy python scripts/check_flat7x_object_audio.py target/release/jocforge.exe C:/Users/chyinan/Downloads/openjoc.exe`（NumPy、SciPy、OpenJOC 0.20.1）。同一段 1.792 秒的合成 ADM 先播放前左床轨，再播放对象，统一渲染到 7.1。现有 Release 的两段峰值为 0.25410241、0，退出码 1。加 `--baseline` 可重跑 5.1 对照，峰值为 0.07902644、0.06789017，退出码 0。该脚本检测整段静音；修复载体混音后再核对对象位置、电平和时间。
+
+## 2026-11-18 E-1123 前左断音与 I0 比特分配
+
+截图对应文件 SHA-256 `81071d12024295e31e2215c2d4edd512e5110fb7fdffe0acb491a42d6a72566f`。FFmpeg 8.1、`-drc_scale 0`，取前左，完整码流解码与逐 AU 提取 2,560 B I0 后解码的 12,928,512 个样本逐点相同。按 AU（1,536 样本）检查，8,417 帧中 3,089 帧前左逐样本为零，逐帧解析的 I0 block 0 SNR offset 组合值 q 在全部这些帧上均为 16。全曲 q=16 共 3,920 帧。AU 6854–6896（含）对应 219.328–220.704 秒，43 帧连续为零；对原 ADM 前左加 4,864 样本实测关联偏移后，对应各窗 RMS 为 −35.6 至 −24.2 dBFS。同时间戳 E-1106 的各窗前左 RMS 为 −33.8 至 −15.0 dBFS。
+
+在独立临时 CLI 里只扩充 I0 的候选 q（保留已有值，补入 16 至 selected_core_q、步长 16 的网格），仍由原 I0 writer 逐个试装。合成输入为连续 997 Hz 前左，其他床轨按段加入确定性噪声，96 AU。原策略出现两段各 11 帧精确静音，试验版为 0 帧；逐帧 D0 内容相同。该实验支持修正 I0 候选搜索；全曲修正后输出、对象载体混音和电平仍待验证。
+
+## 2026-11-18 Flat7x I0 断音和对象载体修正
+
+Flat7x CLI 在现有 I0 候选中补入每档 coarse SNR，逐次试装 2,560 字节帧。载体来自七路床声道、按当前 ADM 横向位置分配的对象，以及折入对应侧声道的顶部床轨。对象声像在前后两次控制更新之间按样本过渡，I0 单独折入后环绕，LFE 单独传送。该混音是本项目的实验策略。宽度、扩散、重建时序、电平和同源官方听感仍有待独立评估。
+
+最终 Release SHA-256 为 `1206e8217e43a74cf49892acb6beeec5b8fd6819da6e2edf2597917790c74809`。用 `scripts/check_flat7x_object_audio.py` 对照，OpenJOC 0.20.2 七声道加 LFE 渲染的对象段峰值从 0 恢复至 0.11538743；加 `--continuity` 验证的 96 个 I0 前左窗口由 22 个静音降至 0。默认 5.1 的标记样本码流哈希与原基线一致。用原始 36 轨 PCM 截取《Love Song》3:37–3:45 并保留原 ADM metadata 编码，共 250 AU。按片段时间对照，全段 I0 前左静音帧为 0，原缺口对应位置为 0/43。短片独立启动计量和控制时钟。片段、对象与连续音三个样本分别用 OpenJOC 0.20.1 和 0.20.2 的 observed-vendor-compat 模式渲染，两版本的各样本逐点一致。正式输出还需整曲验证。
+
+试听交付在 `D:/JOCForge-attempts/flat7x-love-song-3m37s-u8pxcs6c/`。片段码流 SHA-256 为 `ebea48f4b41ac4101432faf68f5446474dff28987a42e5261c22955a8d2bb316`，最终构建复跑结果相同。workspace check、fmt 和 7 项声道／QMF 测试通过。全量测试停在 IO 的 meter_input_probe 示例依赖，严格 Clippy 有既有诊断，边界脚本停在 meter/standalone_root.rs 清单。
+
+## 2026-11-18 完整曲 Flat7x 复测
+
+使用 Release JOCForge SHA-256 `1206e8217e43a74cf49892acb6beeec5b8fd6819da6e2edf2597917790c74809`、Love Song 源文件 SHA-256 `34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5`，完成 8,417 个 callback 的全曲编码。候选为 8,417 AU、56,023,552 B、SHA-256 `6aa607ec320733bdffd76b0b8f06d66b61f6f5cff95df6b0851c36ead3c39eca`。编码器记录 8,417/8,417 个 D0 block-two placement receipt、overflow 0、CRC residual 0；候选状态为 EXPERIMENTAL_CANDIDATE。
+
+OpenJOC 0.20.2 用户给定 Release 在整曲 render-joc 中报 `E-AC-3 EMDF auxiliary data is not byte-aligned: 5132 bits`。I0 是 legacy independent AC-3，独立 E-AC-3 frame-end EMDF classifier 会把 AC-3 auxbits 送进 E-AC-3 byte-alignment 分类。OpenJOC 0.20.1 的本地诊断 parser-probe binary（SHA-256 `d7e8afc8b28349e23afbeaace51b8c1985ad0f88a832929d160345b4e729b355`，只对 LegacyIndependent AC-3 跳过 frame-end EMDF 分类）检查 8,417/8,417 AU decoder-admitted，malformed 0，timing continuous，并成功渲染 48 kHz、8 ch、12,928,544 frames / 269.3447 s float WAV。该诊断渲染不替代官方 OpenJOC 0.20.2 验收。
+
+FFmpeg 8.1 DRC scale 0 单独解码所有 I0 帧，FL 8,417/8,417 无全零 AU；原来 43 AU 连续断音区也是 0/43。probe WAV 每通道 32 ms RMS 连续无静音窗口，LFE 内容静音计 1,319 窗口。输出路径 `D:/JOCForge-attempts/love-song-flat7x-full-20261118-074017/`，保留 run.json、编码/渲染日志、OpenJOC inspect JSON 和全曲电平统计。
+
+## 2026-11-18 MKA 播放确认
+
+用户确认最终 Lo/Ro 整曲码流无损封装成 MKA 后，通过 Audition 和 Windows 媒体播放器打开及试听验证。README 已补充编码和封装命令。

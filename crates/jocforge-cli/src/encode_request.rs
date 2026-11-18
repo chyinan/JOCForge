@@ -804,11 +804,12 @@ fn run_inner(
         let mut committed_callbacks = 0_u64;
         let mut callback_progress = ProgressBar::new("Programme callbacks");
         callback_progress.update(0, total_callbacks);
+        let mut carrier_delay = std::collections::VecDeque::new();
         for callback_value in 0..total_callbacks {
             let callback_value_u32 =
                 u32::try_from(callback_value).map_err(|_| EncodeRequestError::ClockMismatch)?;
             let callback_index = FrontendCallbackIndex::new(callback_value_u32);
-            let pending = if callback_value < normal_callbacks {
+            let mut pending = if callback_value < normal_callbacks {
                 stage_main_callback_candidate(
                     &prepared,
                     &parsed,
@@ -827,13 +828,50 @@ fn run_inner(
                     callback_index,
                     &roots,
                     &main_providers,
-                    resolved_joc_profile.joc_reconstruction_layout()
-                        == JocReconstructionLayout::Flat7x,
                 )?
             };
             if pending.callback_index != callback_index {
                 return Err(EncodeRequestError::ClockMismatch);
             }
+            let carriers = if flat7x_selected {
+                let mix = match pending.flat7x_mix.take() {
+                    Some(mix) => mix,
+                    None => carrier_delay
+                        .back()
+                        .map(jocforge_application::source_frame_bridge::Flat7xSceneMix::silence)
+                        .ok_or(EncodeRequestError::ClockMismatch)?,
+                };
+                if carrier_delay.is_empty() {
+                    carrier_delay.resize(4, mix.silence());
+                }
+                carrier_delay.push_back(mix);
+                let mut output = carrier_delay
+                    .pop_front()
+                    .ok_or(EncodeRequestError::ClockMismatch)?;
+                output.align_analysis_windows(&carrier_delay[0], &carrier_delay[1]);
+                pending
+                    .source_index
+                    .map(|source_index| {
+                        let extent = Flat7xD0PcmSourceExtent::for_programme_audio(
+                            source_index,
+                            callback_index,
+                            prepared.configuration().source_samples(),
+                        )
+                        .map_err(|error| {
+                            EncodeRequestError::SourcePipeline(format!(
+                                "Flat7x audio window: {error:?}"
+                            ))
+                        })?;
+                        Ok::<_, EncodeRequestError>(crate::source_execution::Flat7xCarrierFrame {
+                            input_sha256: prepared.resource_identity().input_sha256(),
+                            source_extent: extent,
+                            mix: output,
+                        })
+                    })
+                    .transpose()?
+            } else {
+                None
+            };
             let callback_transaction_id = pending.transaction_id.clone();
 
             if let Some(source_index) = pending.source_index {
@@ -862,7 +900,7 @@ fn run_inner(
                     roots.output(),
                     &plan,
                     &mut staging,
-                    pending.flat7x_physical_pcm_rows.as_ref(),
+                    carriers.as_ref(),
                 )
                 .map_err(map_source_frame_stage_error)?;
                 let (next_roots, receipt) = roots
@@ -1219,7 +1257,7 @@ fn run_inner(
 struct PendingMainCallback {
     callback_index: FrontendCallbackIndex,
     source_index: Option<CodecSourceIndex>,
-    flat7x_physical_pcm_rows: Option<crate::source_execution::Flat7xPcmSourceRows>,
+    flat7x_mix: Option<jocforge_application::source_frame_bridge::Flat7xSceneMix>,
     frontend: Option<FrontendControlReplacementCandidate>,
     spatial: MainSpatialCallbackCandidate,
     reader_eof_candidate: ReaderEofReplacementCandidate,
@@ -1234,7 +1272,7 @@ fn stage_main_callback_candidate(
     roots: &MainSpatialColdRoots,
     reader_eof_before: &ReaderEofMachine,
     providers: &crate::selected_spatial_callback_providers::SelectedMainSpatialCallbackProviders,
-    preserve_flat7x_pcm_rows: bool,
+    render_flat7x_carriers: bool,
 ) -> Result<PendingMainCallback, EncodeRequestError> {
     let frame = read_frontend_pcm_callback(
         parsed,
@@ -1289,6 +1327,22 @@ fn stage_main_callback_candidate(
     .map_err(|error| {
         EncodeRequestError::SourcePipeline(format!("ReaderEof callback stage: {error:?}"))
     })?;
+    let source_index = frame.source_index();
+    let flat7x_mix = if render_flat7x_carriers {
+        let previous = roots.frontend_control().committed().dynamic_after_state();
+        let mix = jocforge_application::source_frame_bridge::Flat7xSceneMix::render(
+            prepared.graph().graph(),
+            frame.physical_pcm_rows(),
+            controls.physical_rows(),
+            previous.map(|state| state.physical_rows()),
+        )
+        .map_err(|error| {
+            EncodeRequestError::SourcePipeline(format!("Flat7x carrier mix: {error:?}"))
+        })?;
+        Some(mix)
+    } else {
+        None
+    };
     let values = providers.callback_values().providers();
     let spatial = stage_main_spatial_callback(MainSpatialCallbackInput {
         prepared,
@@ -1309,47 +1363,10 @@ fn stage_main_callback_candidate(
     if spatial.callback_index() != callback_index {
         return Err(EncodeRequestError::ClockMismatch);
     }
-    let source_index = frame.source_index();
-    let flat7x_source_extent = if preserve_flat7x_pcm_rows {
-        source_index
-            .map(|source_index| {
-                Flat7xD0PcmSourceExtent::new(
-                    source_index,
-                    callback_index,
-                    frame.first_sample(),
-                    u16::try_from(frame.actual_samples().value())
-                        .map_err(|_| EncodeRequestError::ClockMismatch)?,
-                    u16::try_from(frame.padding_samples())
-                        .map_err(|_| EncodeRequestError::ClockMismatch)?,
-                )
-                .map_err(|error| {
-                    EncodeRequestError::SourcePipeline(format!(
-                        "Flat7x PCM source extent: {error:?}"
-                    ))
-                })
-            })
-            .transpose()?
-    } else {
-        None
-    };
-    let flat7x_physical_pcm_rows = if preserve_flat7x_pcm_rows {
-        source_index.map(|source_index| {
-            crate::source_execution::Flat7xPcmSourceRows::new(
-                *frame.input_sha256(),
-                callback_index,
-                source_index,
-                crate::source_execution::Flat7xPcmRowDelivery::NormalCallback,
-                flat7x_source_extent,
-                frame.physical_pcm_rows().to_vec(),
-            )
-        })
-    } else {
-        None
-    };
     Ok(PendingMainCallback {
         callback_index,
         source_index,
-        flat7x_physical_pcm_rows,
+        flat7x_mix,
         frontend: Some(frontend),
         spatial,
         reader_eof_candidate,
@@ -1363,7 +1380,6 @@ fn stage_main_cached_callback_candidate(
     callback_index: FrontendCallbackIndex,
     roots: &ProgrammeOwnerRoots<'_>,
     providers: &crate::selected_spatial_callback_providers::SelectedMainSpatialCallbackProviders,
-    preserve_flat7x_pcm_rows: bool,
 ) -> Result<PendingMainCallback, EncodeRequestError> {
     let source_index =
         source_for_callback_clock(callback_index).ok_or(EncodeRequestError::ClockMismatch)?;
@@ -1381,15 +1397,11 @@ fn stage_main_cached_callback_candidate(
         .ok_or_else(|| {
             EncodeRequestError::SourcePipeline("MAIN F01E after-state unavailable".to_owned())
         })?;
-    let held_controls = MainHeldControlOutput::AdmInput(
-        after
-            .held_source_view_for_cached_callback(callback_lineage)
-            .map_err(|error| {
-                EncodeRequestError::SourcePipeline(format!(
-                    "MAIN cached F01E held controls: {error:?}"
-                ))
-            })?,
-    );
+    let held_controls = after
+        .held_source_view_for_cached_callback(callback_lineage)
+        .map_err(|error| {
+            EncodeRequestError::SourcePipeline(format!("MAIN cached F01E held controls: {error:?}"))
+        })?;
     let reader_eof_candidate = stage_reader_eof_cached_drain(
         roots.reader_eof(),
         callback_index,
@@ -1403,7 +1415,7 @@ fn stage_main_cached_callback_candidate(
     let values = providers.callback_values().providers();
     let spatial = stage_main_spatial_cached_callback(MainSpatialCachedCallbackInput {
         prepared,
-        controls: held_controls,
+        controls: MainHeldControlOutput::AdmInput(held_controls),
         spatial_control: roots.main().spatial_control(),
         spatial_audio: roots.main().spatial_audio(),
         p11_geometry: &values.p11_geometry,
@@ -1419,61 +1431,15 @@ fn stage_main_cached_callback_candidate(
     if spatial.callback_index() != callback_index {
         return Err(EncodeRequestError::ClockMismatch);
     }
-    let flat7x_physical_pcm_rows = if preserve_flat7x_pcm_rows {
-        let source_extent = Flat7xD0PcmSourceExtent::repeat_previous_callback_for_cached_drain(
-            source_index,
-            callback_index,
-        )
-        .map_err(|error| {
-            EncodeRequestError::SourcePipeline(format!(
-                "Flat7x cached-drain PCM source extent: {error:?}"
-            ))
-        })?;
-        Some(crate::source_execution::Flat7xPcmSourceRows::new(
-            prepared.resource_identity().input_sha256(),
-            callback_index,
-            source_index,
-            crate::source_execution::Flat7xPcmRowDelivery::CachedDrain,
-            Some(source_extent),
-            cached_flat7x_physical_pcm_rows(prepared, roots)?,
-        ))
-    } else {
-        None
-    };
     Ok(PendingMainCallback {
         callback_index,
         source_index: Some(source_index),
-        flat7x_physical_pcm_rows,
+        flat7x_mix: None,
         frontend: None,
         spatial,
         reader_eof_candidate,
         transaction_id,
     })
-}
-
-fn cached_flat7x_physical_pcm_rows(
-    prepared: &PreparedJobInput,
-    roots: &ProgrammeOwnerRoots<'_>,
-) -> Result<Vec<Vec<u32>>, EncodeRequestError> {
-    let physical_row_count = usize::from(prepared.configuration().wave().channels());
-    let expected_words = physical_row_count
-        .checked_mul(1_536)
-        .ok_or(EncodeRequestError::ClockMismatch)?;
-    let cached_words = roots
-        .main()
-        .spatial_control()
-        .committed()
-        .previous_pcm_bits();
-    if cached_words.len() != expected_words {
-        return Err(EncodeRequestError::SourcePipeline(format!(
-            "Flat7x cached PCM extent: expected {expected_words} words, found {}",
-            cached_words.len()
-        )));
-    }
-    Ok(cached_words
-        .chunks_exact(1_536)
-        .map(|row| row.to_vec())
-        .collect())
 }
 
 struct FileReferenceParts {

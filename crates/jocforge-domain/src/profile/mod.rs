@@ -19,8 +19,9 @@ pub use flat7x_source_role_map::{
     AdmPcmRow, Flat7xD0ChannelMapLocation, Flat7xD0ChannelSource, Flat7xD0PcmRows,
     Flat7xD0RowBinding, Flat7xD0SourceRole, Flat7xI0CarrierRole, Flat7xI0PcmRows,
     Flat7xI0RowBinding, Flat7xJocCarrierRole, Flat7xJocCarrierRowBinding,
-    Flat7xProvisionalSourcePcmView, Flat7xProvisionalSourceRoleMap, Flat7xSourceRoleMapError,
-    SevenCarrierPcmInput, build_flat7x_provisional_source_role_map, project_flat7x_source_pcm_rows,
+    Flat7xProvisionalSourcePcmView, Flat7xProvisionalSourceRoleMap, Flat7xSceneMix,
+    Flat7xSourceRoleMapError, SevenCarrierPcmInput, build_flat7x_provisional_source_role_map,
+    project_flat7x_source_pcm_rows,
 };
 
 pub use production::{

@@ -236,16 +236,16 @@ pub fn write_flat7x_i0_ac3_bsi_tail(
 
 /// Sample-observed I0 BSI-tail fields after the official sample header ending at bit 70.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct Flat7xI0ObservedBsiTailValues;
+pub struct Flat7xI0ObservedBsiTailValues { dmixmod: u8 }
 
 impl Flat7xI0ObservedBsiTailValues {
     /// BSI-tail values observed in `OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2`.
     pub const fn official_demo_sample() -> Self {
-        Self
+        Self { dmixmod: 1 }
     }
 
     pub const fn dmixmod(self) -> u8 {
-        1
+        self.dmixmod
     }
 
     pub const fn ltrtcmixlev(self) -> u8 {
@@ -368,9 +368,17 @@ pub fn write_flat7x_i0_official_demo_bsi_tail(
             actual: start.bit_offset(),
         });
     }
+    write_flat7x_i0_bsid6_suffix(writer, 1)
+}
+
+pub(crate) fn write_flat7x_i0_bsid6_suffix(
+    writer: &mut FrameBitWriter<'_>,
+    dmixmod: u8,
+) -> Result<Flat7xI0OfficialDemoBsiTailReceipt, Flat7xI0OfficialDemoBsiTailError> {
+    let start = writer.cursor();
     writer.preflight_capacity(OFFICIAL_DEMO_I0_BSI_TAIL_BITS)?;
 
-    let values = Flat7xI0ObservedBsiTailValues::official_demo_sample();
+    let values = Flat7xI0ObservedBsiTailValues { dmixmod };
     writer.write_bit(values.langcode_present())?;
     writer.write_bit(values.audprodie_present())?;
     writer.write_bit(values.copyrightb())?;

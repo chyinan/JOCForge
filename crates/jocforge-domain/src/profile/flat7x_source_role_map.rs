@@ -5,10 +5,10 @@
 //! The D0 `chanmap` locations use ETSI's separate MSB-indexed 16-bit domain. JOC reconstruction
 //! JOC carrier roles have their own row bindings; codec coded-row order remains separate.
 //!
-//! PROVISIONAL ASSUMPTION: selected DirectSpeakers bed roles `front_*`, `side_*`, `rear_*`, and
-//! `lfe` are the source rows for the target I0 core and D0 mapped surround channels. The row
-//! selection is replaceable and is not a DEE owner or runtime lineage finding.
+//! Bed roles identify the carrier order. The CLI renders objects and height beds into that
+//! layout before staging the I0 compatibility mix, D0 audio and seven reconstruction inputs.
 
+use crate::frontend::normal_control_snapshot::NormalControlRow;
 use std::collections::BTreeMap;
 
 use crate::frontend::selected_adm_graph::{PhysicalHostIndex, SelectedAdmGraph, SelectedTrackKind};
@@ -290,6 +290,7 @@ pub enum Flat7xSourceRoleMapError {
     PhysicalPcmRowCountMismatch { expected: u16, actual: usize },
     PhysicalPcmSampleCountMismatch { row: usize, actual: usize },
     DuplicateBedRole(&'static str),
+    ControlRowMismatch,
     MissingBedRole(&'static str),
     D0ChannelMapMismatch { actual: u16 },
     D0ChannelMapLocationMismatch,
@@ -331,8 +332,202 @@ impl Flat7xProvisionalSourceRoleMap {
     }
 
     pub const fn assumption_id(&self) -> &'static str {
-        "flat7x-direct-speaker-bed-rows-to-i0-d0-joc-roles-v1"
+        "flat7x-bed-role-carrier-order-v1"
     }
+}
+
+/// Local Flat7x encoder mix. The fullband rows feed both the codec and the JOC fit.
+#[derive(Clone)]
+pub struct Flat7xSceneMix {
+    map: Flat7xProvisionalSourceRoleMap,
+    carriers: [Vec<u32>; 7],
+    core_surrounds: [Vec<u32>; 2],
+    lfe: Vec<u32>,
+    aligned_core: Option<[Vec<u32>; 6]>,
+    fit_carriers: Option<[Vec<u32>; 7]>,
+}
+
+impl Flat7xSceneMix {
+    pub fn render(
+        graph: &SelectedAdmGraph,
+        pcm: &[Vec<u32>],
+        controls: &[NormalControlRow],
+        previous: Option<&[NormalControlRow]>,
+    ) -> Result<Self, Flat7xSourceRoleMapError> {
+        let map = build_flat7x_provisional_source_role_map(
+            graph,
+            Flat7xI0D0TargetPlan::approved_contract(),
+        )?;
+        let beds = project_flat7x_source_pcm_rows(&map, pcm)?;
+        if controls.len() != pcm.len() || previous.is_some_and(|rows| rows.len() != pcm.len()) {
+            return Err(Flat7xSourceRoleMapError::ControlRowMismatch);
+        }
+        let mut mix = beds
+            .seven_carrier_input()
+            .rows_in_target_order()
+            .map(|row| row.iter().copied().map(f32::from_bits).collect::<Vec<_>>());
+        for track in graph.tracks() {
+            let host = usize::from(track.physical_host().value());
+            let (start, end) = match track.kind() {
+                SelectedTrackKind::Object { .. } => {
+                    let end = object_pan(&controls[host], track.uid())?;
+                    let start = match previous {
+                        Some(rows) => object_pan(&rows[host], track.uid())?,
+                        None => end,
+                    };
+                    (start, end)
+                }
+                SelectedTrackKind::DirectSpeakersBed {
+                    role: "top_side_left",
+                    ..
+                } => {
+                    let gains = [0., 0., 0., 1., 0., 0., 0.];
+                    (gains, gains)
+                }
+                SelectedTrackKind::DirectSpeakersBed {
+                    role: "top_side_right",
+                    ..
+                } => {
+                    let gains = [0., 0., 0., 0., 1., 0., 0.];
+                    (gains, gains)
+                }
+                SelectedTrackKind::DirectSpeakersBed { .. } => continue,
+            };
+            for ((lane, first), last) in mix.iter_mut().zip(start).zip(end) {
+                if first == 0.0 && last == 0.0 {
+                    continue;
+                }
+                let step = (last - first) / PCM_SAMPLES_PER_SOURCE as f32;
+                for (i, (sum, &word)) in lane.iter_mut().zip(&pcm[host]).enumerate() {
+                    *sum += f32::from_bits(word) * (first + (i + 1) as f32 * step);
+                }
+            }
+        }
+        let pcm_word = |x: f32| x.clamp(-1.0, 1.0).to_bits();
+        let core_surrounds = std::array::from_fn(|side| {
+            mix[3 + side]
+                .iter()
+                .zip(&mix[5 + side])
+                .map(|(&side, &rear)| pcm_word(side + std::f32::consts::FRAC_1_SQRT_2 * rear))
+                .collect()
+        });
+        Ok(Self {
+            aligned_core: None,
+            fit_carriers: None,
+            lfe: beds.i0().rows()[5].to_vec(),
+            carriers: mix.map(|lane| lane.into_iter().map(pcm_word).collect()),
+            core_surrounds,
+            map,
+        })
+    }
+
+    #[must_use]
+    pub fn silence(&self) -> Self {
+        let mut silent = self.clone();
+        for row in silent
+            .carriers
+            .iter_mut()
+            .chain(&mut silent.core_surrounds)
+            .chain(std::iter::once(&mut silent.lfe))
+        {
+            row.fill(0);
+        }
+        silent.aligned_core = None;
+        silent.fit_carriers = None;
+        silent
+    }
+
+    /// I0 analysis adds four 256-sample blocks more latency than the D0 MDCT.
+    /// Normalize the external PCM scale before the I0 transform.
+    pub fn align_analysis_windows(&mut self, following: &Self, second: &Self) {
+        const OFFSET_IN_FOLLOWING: usize = 34 * 64 - PCM_SAMPLES_PER_SOURCE;
+        let current = self.pcm_view().i0().rows();
+        let next = following.pcm_view().i0().rows();
+        self.aligned_core = Some(std::array::from_fn(|lane| {
+            current[lane][1024..]
+                .iter()
+                .chain(&next[lane][..1024])
+                .map(|&word| (f32::from_bits(word) * 0.5).to_bits())
+                .collect()
+        }));
+        // The spatial target window precedes the codec-aligned carrier window by
+        // 34 QMF slots. Sample the same part of the programme on both sides of the fit.
+        self.fit_carriers = Some(std::array::from_fn(|lane| {
+            following.carriers[lane][OFFSET_IN_FOLLOWING..]
+                .iter()
+                .chain(&second.carriers[lane][..OFFSET_IN_FOLLOWING])
+                .copied()
+                .collect()
+        }));
+    }
+
+    pub const fn role_map(&self) -> &Flat7xProvisionalSourceRoleMap {
+        &self.map
+    }
+
+    pub fn pcm_view(&self) -> Flat7xProvisionalSourcePcmView<'_> {
+        let [l, r, c, ls, rs, lb, rb] = self.carriers.each_ref().map(Vec::as_slice);
+        let [left_surround, right_surround] = self.core_surrounds.each_ref().map(Vec::as_slice);
+        Flat7xProvisionalSourcePcmView {
+            physical_row_count: self.map.physical_row_count(),
+            i0: Flat7xI0PcmRows {
+                rows: self.aligned_core.as_ref().map_or(
+                    [l, c, r, left_surround, right_surround, &self.lfe],
+                    |rows| rows.each_ref().map(Vec::as_slice),
+                ),
+            },
+            d0: Flat7xD0PcmRows {
+                rows: [ls, rs, lb, rb],
+            },
+            seven_carriers: SevenCarrierPcmInput {
+                rows_in_target_order: self
+                    .fit_carriers
+                    .as_ref()
+                    .unwrap_or(&self.carriers)
+                    .each_ref()
+                    .map(Vec::as_slice),
+                role_bindings: self.map.joc_carrier_rows,
+            },
+        }
+    }
+}
+
+// Equal-power horizontal projection on the selected layout's front, side and rear lines.
+// The vertical coordinate stays with the object metadata for reconstruction.
+fn object_pan(row: &NormalControlRow, uid: &str) -> Result<[f32; 7], Flat7xSourceRoleMapError> {
+    let NormalControlRow::Object13 {
+        control, track_uid, ..
+    } = row
+    else {
+        return Err(Flat7xSourceRoleMapError::ControlRowMismatch);
+    };
+    if track_uid != uid {
+        return Err(Flat7xSourceRoleMapError::ControlRowMismatch);
+    }
+    if row.source_flags_view().mute_word() != 0 {
+        return Ok([0.; 7]);
+    }
+    let words = control.words();
+    let x = f32::from_bits(words[5]);
+    let y = f32::from_bits(words[6]);
+    if !(0.0..=1.0).contains(&x) || !(0.0..=1.0).contains(&y) {
+        return Err(Flat7xSourceRoleMapError::ControlRowMismatch);
+    }
+    let front = (1.0 - 2.0 * y).max(0.0);
+    let rear = (2.0 * y - 1.0).max(0.0);
+    let side = 1.0 - front - rear;
+    let left = (1.0 - 2.0 * x).max(0.0);
+    let right = (2.0 * x - 1.0).max(0.0);
+    Ok([
+        front * left,
+        front * right,
+        front * (1.0 - left - right),
+        side * (1.0 - x),
+        side * x,
+        rear * (1.0 - x),
+        rear * x,
+    ]
+    .map(f32::sqrt))
 }
 
 /// Projects one callback's physical PCM rows through the profile-specific I0 and D0 bindings.
