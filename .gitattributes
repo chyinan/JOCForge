@@ -15,6 +15,20 @@ crates/jocforge-domain/tests/fixtures/f04_parameters/component-parameter-mathema
 crates/jocforge-domain/tests/fixtures/f04_parameters/window-q15.json text eol=crlf whitespace=cr-at-eol
 crates/jocforge-domain/tests/fixtures/diffusion_filter/diffusion-constructor-mathematical-v1.json text eol=crlf whitespace=cr-at-eol
 crates/jocforge-domain/tests/fixtures/diffusion_filter/diffusion-mathematical-v1.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/four_lane_mean_square/CONTRACT.md text eol=lf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/four_lane_mean_square/CONTRACT.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/four_lane_mean_square/INPUTS.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/four_lane_mean_square/EXPECTED.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/four_lane_mean_square/RUNTIME-RECEIPT.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/four_lane_mean_square/PROVENANCE.json text eol=lf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/four_lane_mean_square/INDEPENDENT-CHECK.json text eol=lf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/policy_authorized/PARAMETERS.json text eol=lf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/synthetic_qmf_fit_checkpoints/approved-joc-functional.json text eol=lf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/synthetic_qmf_fit_checkpoints/approved-joc-math.json text eol=lf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/synthetic_fit_cell_boundaries/CONTRACT.md text eol=lf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/synthetic_fit_cell_boundaries/approved-joc-math.json text eol=lf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/synthetic_fit_cell_boundaries/EXPECTED.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/synthetic_fit_cell_boundaries/INPUT-ONLY.json text eol=crlf whitespace=cr-at-eol
 crates/jocforge-application/tests/fixtures/input_eof_lifecycle/** text eol=crlf whitespace=cr-at-eol
 crates/jocforge-application/tests/fixtures/reader_source_join/** text eol=crlf whitespace=cr-at-eol
 crates/jocforge-application/assets/providers/** -text whitespace=cr-at-eol
