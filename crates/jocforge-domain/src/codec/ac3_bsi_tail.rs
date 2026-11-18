@@ -236,7 +236,9 @@ pub fn write_flat7x_i0_ac3_bsi_tail(
 
 /// Sample-observed I0 BSI-tail fields after the official sample header ending at bit 70.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct Flat7xI0ObservedBsiTailValues { dmixmod: u8 }
+pub struct Flat7xI0ObservedBsiTailValues {
+    dmixmod: u8,
+}
 
 impl Flat7xI0ObservedBsiTailValues {
     /// BSI-tail values observed in `OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2`.
