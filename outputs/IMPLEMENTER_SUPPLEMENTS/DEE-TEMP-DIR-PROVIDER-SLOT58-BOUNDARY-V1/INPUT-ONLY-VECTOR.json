@@ -1,0 +1,12 @@
+{
+  "callsite_rva": "0x7bb83",
+  "dispatch_slot": "+0x58",
+  "input_object": "path_object from known temp resolver",
+  "not_a_pass_record": true,
+  "receiver_member": "+0x68",
+  "returned_al_used_for": "conditional loop branch",
+  "runtime_owner_generation": "NOT_CAPTURED",
+  "schema": "washed-temp-provider-slot58-input-only.v1",
+  "status": "STATIC_EDGE_ONLY_NOT_RUN",
+  "target_body": "NOT_FOLLOWED"
+}

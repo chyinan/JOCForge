@@ -1,0 +1,10 @@
+{
+  "checker_normal": "PASS",
+  "checker_python_O": "PASS",
+  "checksums_verified": 8,
+  "manifest_sha256": "e8818d445b0d9adf79c70cfd513e04c76b25b621a5f31c36df28e3cb67e7e8f7",
+  "package_id": "misc_temp_storage_dispatch_boundary_wash_v1",
+  "package_seal_sha256": "54d5b71c1b87fbe7560d59390a0f530dacf84a78d6db37200be869d3b0a82d03",
+  "payloads_verified": 7,
+  "raw_source_or_decompilation_copied": false
+}

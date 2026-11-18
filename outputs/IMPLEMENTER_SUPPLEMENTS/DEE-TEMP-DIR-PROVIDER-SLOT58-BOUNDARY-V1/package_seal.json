@@ -1,0 +1,38 @@
+{
+  "file_count": 6,
+  "files": [
+    {
+      "bytes": 1924,
+      "file": "EVIDENCE.json",
+      "sha256": "f0cfab17bd5c9ea159966c6ae1c9d73a58aa862c29fb3ce92be9daffa586c308"
+    },
+    {
+      "bytes": 418,
+      "file": "INPUT-ONLY-VECTOR.json",
+      "sha256": "ae44e3d5b60bf6e3f0f09a8e30ddd64e8ef4b234aa8f147d9764a55d99eecd6d"
+    },
+    {
+      "bytes": 1019,
+      "file": "FINDINGS.md",
+      "sha256": "934fbd459e74d06a06407ea0e0bce9510fd3e3357d8933a90af583b69a1077c2"
+    },
+    {
+      "bytes": 416,
+      "file": "SOURCE-PACKAGE.json",
+      "sha256": "333a8a23ec8abc673721c4d964c5b8b669f7a37fe06dcd65cbbf013aa3b8b684"
+    },
+    {
+      "bytes": 1535,
+      "file": "CHECK.py",
+      "sha256": "809ad40378d0d0893e8b3a749640dcfa4e9ab3df6968999b460cadfe158d4615"
+    },
+    {
+      "bytes": 1290,
+      "file": "MANIFEST.json",
+      "sha256": "2869ed98545a27f02fb5d6baa114cd9cc22c8bc2ab28060061291ba0f4c9503b"
+    }
+  ],
+  "schema": "washed-implementer-supplement-seal.v1",
+  "status": "SEALED_PARTIAL",
+  "supplement_id": "DEE-TEMP-DIR-PROVIDER-SLOT58-BOUNDARY-V1"
+}
