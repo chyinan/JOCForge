@@ -704,3 +704,24 @@ FFmpeg 8.1 DRC scale 0 单独解码所有 I0 帧，FL 8,417/8,417 无全零 AU�
 ## 2026-11-18 MKA 播放确认
 
 用户确认最终 Lo/Ro 整曲码流无损封装成 MKA 后，通过 Audition 和 Windows 媒体播放器打开及试听验证。README 已补充编码和封装命令。
+
+The coefficient-body/profile join remains `UNBOUND`. The local Flat7x fit path builds 15×5×12 inputs with `downmix_index=3` and mode 1, while the target header profile is index 1/7 channels; the profile-aware writer keeps these selectors separate. Its admission requires mode≥2 and seven channel rows for selector1. Wash withdrew the synthetic-zero-row idea and is seeking an approved 7-row producer contract; no coefficient-width trial or new attempt has run.
+
+## 2026-11-17 current working-tree source audit
+
+This is a read-only source observation of the current dirty `JOCForge-isolated` working tree at HEAD `2cdb18c50580b77b3bb8f60529ad96f7cf5ccbd5`; it records code wiring and does not promote the candidate to validated output.
+
+- The Flat7x source callback builds D0 audio from the bound PCM rows/history and the protected F14K container, builds its I0 frame through `flat7x_i0_audio_block_policy_v1` and the shared `produce_i0_audio_block_series` producer, then stages same-source F12 receipts and an F15 I0→D0 pair proposal.
+- The callback now calls `append_flat7x_pair_with_output_proposal`, stages the Codec after-state from the pair and D0 history, and returns that proposal through the parent callback transaction. This current code path supersedes the earlier `Flat7xPairOutputNotConnected` source snapshot above.
+- The legacy main-branch value is still the abstract split between I0 input, D0 ownership and ordered pair composition. Its concrete source indices, channel maps, rate allocation and FFmpeg path remain outside the Flat7x target.
+- The existing selected 5.1 route remains a separate route. Static wiring does not establish 7.1 listening parity, decoder admission or product readiness. D0 source-role/native audio contract and the ID14 coefficient-body/profile join remain open; the current target remains `production_allowed=false`.
+- No test binary, build or encoder was run during this audit. The current working tree was already dirty and was otherwise left untouched.
+
+## 2026-11-18 Flat7x 对象轨与床轨对照
+
+本次验证使用 `codex/flat7x-profile-separation` 工作树（HEAD `8797b9a04`）里的现有 Release 二进制，SHA-256 为 `d05d2bf1f4de7f7af1664b4c050e99abf52b2fabbba66a7dcc595e8f4a37312b`。当前隔离工作树 `b93dc8a08` 的七路系数入口另有拒绝逻辑。以下为测试夹具的本地测量。
+
+- 单轨投影。用仓库 selected_adm_graph 的 36 轨 CHNA 前缀，每次只在一条物理轨第 768 个采样点写入 0.5。逐轨调用实际的 `project_flat7x_source_pcm_rows`。26 条对象轨进入 I0、D0、七路拟合输入的计数分别为 0、0、0。两条顶部床轨的计数也是 0、0、0。其余八条床轨对应计数为 6、4、7。代码入口在该工作树 `profile/flat7x_source_role_map.rs` 的 `build_flat7x_provisional_source_role_map`，按 DirectSpeakersBed 筛选。
+- 端到端。使用同一夹具的完整 38 轨 AXML、CHNA、DBMD 和独立生成的 48 kHz PCM24。共 56 个 1,536-sample 区间。以零起算，物理轨 0（front_left）从区间 8 起、物理轨 10（Object）从区间 32 起各播放 10 个区间的 997 Hz 正弦，幅度 0.125，两端各 240 样本渐变，其余 PCM 为零。默认 1,024 kbps 5.1 与 1,664 kbps Flat7x 各输出 56 AU。OpenJOC 0.20.1、observed-vendor-compat、相同 7.1 输出布局，以 0.82 秒分割两段，跨全部声道取绝对峰值。5.1 的床轨／对象段为 0.07902644／0.06789017，Flat7x 为 0.2541024／0.0。Flat7x 后段八声道全零。两份码流的 SHA-256 依次为 `c94ca73cfb713aa10adf2333d8ce4b79988b04bc7aec7cc8f66cf9d430ddc4d8` 和 `90d635171e8a245d4e14beebf17302916d0cb256df737c29634e936eb896b82a`。
+- 核心声道电平。FFmpeg 8.1 使用 `-drc_scale 0`，解码 5.1 E-AC-3，以及每个 Flat7x AU 的前 2,560 字节独立 AC-3。对解码索引 9–12 的四个 1,536-sample 区间分别做 997 Hz 正余弦最小二乘拟合。前左基波幅度分别约为 0.12486 和 0.24977–0.25067。此观测仅覆盖该输入电平、声道和设置，增益来源待定位。
+- 后续验证。用同一对标记先验证全场景对象／床轨混入目标载体，再对照实际解码基底与七路拟合输入的声道顺序、电平和样本时间。对象行与 OAMD 槽位可用移动对象单独验证。试听及官方同源母带比较仍待进行。

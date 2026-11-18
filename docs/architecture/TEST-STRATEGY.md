@@ -26,4 +26,6 @@ F05JL retains one `cfg(test)` synthetic receipt validator, but production tests 
 
 validation 的 structural parser、channel-map、topology、frame report 和 W04 与 production 分离。parser 成功不代表 codec conformance、音频正确或产品验收通过。
 
+AC-3 I0 block-zero tests use deterministic synthetic PCM impulses, explicit exponent/BAP/DRC/coupling/delta/gain/quantizer inputs, a scalar ETSI long-transform check, and BAP 1/2/4 group vectors across every full-band and final LFE exponent-set boundary. The validation-only AC-3 parser checks the supported syntax branch and exact bit cursor; these results cover one production-disabled block and do not establish six-block rate fit, frame parse/decode or product output.
+
 验证命令：fmt/check/clippy/test --locked 和 `python -X utf8 -B scripts/check-boundaries.py`。CI 在 Windows 和 Linux 运行。`INDEPENDENT_IMPLEMENTATION_VALIDATION` 和 `PRODUCT_ACCEPTANCE/W04` 仍为 `NOT_RUN`，不得由静态检查或单元测试替代。

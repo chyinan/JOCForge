@@ -18,20 +18,22 @@
 | domain/profile/flat7x_access_unit_target | 1664 kbps Flat7x I0/D0 target plan, metadata validator and CRC-checked byte-sequence candidate | Concatenates caller-provided frame slices in I0→D0 order; syntax parsing, runtime lineage and F15 publication remain separate; `production_allowed=false`. |
 | domain/publication/flat7x_au_output | Target-only F15 staging owner, pair-aware AU ledger entry, and typed append receipt candidate | Validates whole-unit length/hash and per-frame CRC fields; GTC and product binding remain open; selected 5.1 `OutputOwner` is unchanged. |
 | io/flat7x_au_append | Staging-file adapter for one composed I0+D0 proposal | Checks offset, write totals, sync and exact readback, then returns a receipt candidate; failed staging requires attempt abandonment; no final exposure or 5.1 sink connection. |
-| domain/transform | 变换领域规则 | 空壳 |
+| domain/transform | Selected F08 analysis transform stages | Existing F08 stages preserve their dual-bank/history contract. The AC-3 prototype applies the public ETSI long-transform equation with the validated mathematical window provider and returns one block-local spectrum. |
 | domain/codec/bitio | bounded MSB-first `FrameBitWriter` and `FrameBitCursor` | Preflights compound field capacity and preserves surrounding bits outside each written range. |
-| domain/codec/emdf_skip_field | Flat7x target-scoped D0 block-2 skip-field serializer | Requires a complete nonempty container and writes `skiple=1` + U9 `skipl` + C bytes; C=1..511; missing/oversize input returns before writing. Generic `skiple=0` syntax remains outside this target API. Caller cursor/owner binding and full D0 frame assembly remain open. |
+| domain/codec/emdf_skip_field | Flat7x target-scoped D0 block-2 skip-field serializer | Requires a complete nonempty container and writes `skiple=1` + U9 `skipl` + C bytes; C=1..511; missing/oversize input returns before writing. Generic `skiple=0` syntax remains outside this target API. The synthetic D0 assembler places it at the caller layout cursor; native cursor/owner binding remains open. |
 | domain/codec/frame_syntax | selected E-AC-3 schema 边界 | 空壳；无字段实现 |
 | domain/codec/frame_size | 4,096-byte AU size contract | 空壳；无计算实现 |
-| domain/codec/bap | F12A BAP 边界 | 空壳；无算法 |
-| domain/codec/mantissa | mantissa production 边界 | 空壳；无算法 |
-| domain/codec/frame_builder | Flat7x I0 AC-3 header segment | Writes the approved 62/70-bit header through optional `compr` and returns before caller-owned BSI tail; no audio or CRC generation. |
+| domain/codec/bap | F12A BAP row allocation | Existing 48 kHz independent-row calculator consumes explicit exponent/allocation controls and a hash-validated public BAP provider; coupling, delta and AHT remain outside this selected helper. |
+| domain/codec/mantissa | Selected F12S clipping and quantization | The 5.1 writer keeps its selected F12S path. AC-3 block quantization has an isolated ETSI reconstruction-table mapping and an explicit caller-selected tie policy. |
+| domain/codec/frame_builder | Selected D0 BSI composition and Flat7x I0 AC-3 header segment | D0 composition consumes explicit BSI values; the I0 header helper writes syncinfo through optional `compr` and returns before caller-owned BSI tail. Neither helper creates audio. |
 | domain/codec/ac3_bsi_tail | Flat7x I0 AC-3 BSI-tail serializer | Writes caller-authored optionals at header end 62/70, omits acmod=0-only fields for target acmod=7, validates field widths and bounded addbsi extent, and returns a tail receipt. |
+| domain/codec/d0_frame_assembler | Flat7x dependent D0 six-block frame structure | Copies caller-owned opaque block spans, inserts one block-2 skip-field, generates approved E-AC-3 CRC2 after staging, and checks the frame residual; synthetic only, production disabled. |
 | domain/codec/i0_frame_assembler | Flat7x I0 AC-3 structural frame assembly | Keeps the opaque-span API and adds a typed-field entry that serializes BSI privately, then composes six caller audio-block spans, optional auxdata, CRC1/CRC2 and one caller commit; audio production and product admission remain open. |
+| domain/codec/ac3_audio_block | AC-3 3/2+LFE block-zero producer prototype | Produces one complete long-transform audblk from explicit PCM windows, exponent plans and bit-allocation controls. Supports independent channels, caller-selected chbwcod 48 / 217 bins, cplinu, delta absence and optional skip data; gainrng code 0 is the supported caller value; `production_allowed=false`. |
 | domain/codec/core_layout | 5.1 六 carrier 边界 | 空壳；无 sample mapping |
 | domain/codec/substream_topology | 1 independent / 0 dependent 边界 | 空壳；无 writer |
 | domain/codec/rate_profile | 1,024 kbps / 6 blocks / 1,536 samples / 4,096 bytes 边界 | 空壳；无 rate plan |
-| domain/integrity/crc16 | E-AC-3 CRC16 生成和 residual 检查 | 多项式 `0x8005`、初值 0、MSB-first；当前由 F14K keyless root 使用 |
+| domain/integrity/crc16 | E-AC-3 CRC16 generation and residual verification | Polynomial `0x8005`, init 0, MSB-first; reused by the keyless F14K owner and additive Flat7x D0 assembler. I0 AC-3 generation uses the codec-specific adapter below. |
 | domain/integrity/ac3_crc16 | ETSI-derived AC-3 CRC1/CRC2 generation | Reuses the polynomial/bitwise primitive, derives CRC1 from the suffix, applies the crcrsv collision adjustment and verifies residuals for the production-disabled I0 assembler. |
 | domain/integrity/keyless_checksum | 公共 keyless profile 校验、CRC32 和 CRC8 | 仅接受 `keyless-crc32-crc8-crc16.v1`；拒绝其他 profile，不接触认证材料 |
 | domain/integrity/programme_owner | F14K 单 owner 状态、SOURCE/DISPATCH/AU stages 和局部提交 | keyless root 局部验证；全局 CallbackTransaction、私有认证和 native receipt 格式仍未实现 |
@@ -43,6 +45,7 @@
 | io/atomic_output | 临时写入、flush、rename 和回滚副作用 | 空壳 |
 | CLI | 参数、退出码、未来 I/O 协调 | help/version/拒绝编码 |
 | validation/eac3_parser | E-AC-3 structural parser | 空壳；validation only |
+| validation/ac3_audio_block_parser | AC-3 block-zero structure parser | Validation-only parser checks the supported acmod=7/lfeon=1 branch, exponent syntax, BAP-derived mantissa extent and exact block bit cursor. |
 | validation/channel_map_validator | channel-map validator | 空壳；validation only |
 | validation/topology_validator | substream topology validator | 空壳；validation only |
 | validation/frame_report | frame report | 空壳；validation only |
