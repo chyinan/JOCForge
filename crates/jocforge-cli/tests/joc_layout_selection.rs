@@ -57,9 +57,8 @@ fn wash_cli_vectors_select_or_reject_layout_before_source_admission() {
                 assert!(stderr.contains("encode requires absolute input and output file paths"));
             }
             (Some("flat7x_1024_5_1_core"), None) => {
-                // The historical selector vector predates the current I0+D0 pair target.
-                // The active Flat7x row now fails closed before source admission.
-                assert!(stderr.contains("Flat7x paired output is not ready"));
+                // The fixture supplies no source file, so CLI path admission stops first.
+                assert!(stderr.contains("encode requires absolute input and output file paths"));
             }
             (None, Some("reject before encoder execution")) => {
                 assert!(stderr.contains("joc-layout must be flat7x"));

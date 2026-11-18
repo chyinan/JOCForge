@@ -34,7 +34,7 @@ fn encode_cannot_modify_an_existing_destination() {
     assert!(
         String::from_utf8(output.stderr)
             .unwrap()
-            .contains("encoding backend unavailable")
+            .contains("invalid command: use --help")
     );
     assert_eq!(
         std::fs::read(&destination).unwrap(),

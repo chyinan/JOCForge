@@ -809,7 +809,7 @@ fn d0_source_generation_matches_binding(
         && receipt.analysis_generation().value() == identity.analysis_generation().value()
 }
 
-/// Complete in-memory I0→D0 AU candidate with the selected profile and both source receipts.
+/// Complete in-memory I0 and D0 AU candidate with the selected profile and both source receipts.
 #[must_use]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Flat7xPairAccessUnitCandidate {
@@ -860,10 +860,10 @@ impl Flat7xPairAccessUnitCandidate {
     }
 }
 
-/// Builds the paired I0→D0 byte candidate from the same profile, source receipt and D0 input.
+/// Builds the paired I0 and D0 byte candidate from the same profile, source receipt and D0 input.
 ///
 /// The D0 BSI and six opaque audio spans remain caller-owned. The existing D0 assembler validates
-/// its target, six block positions and single block-index-2 skip-field before the I0→D0 composer
+/// its target, six block positions and single block-index-2 skip-field before the I0 and D0 composer
 /// emits one in-memory AU candidate. This function performs no CLI, AU-owner, file or publication
 /// call.
 pub fn assemble_flat7x_pair_access_unit_candidate(
@@ -1597,7 +1597,7 @@ mod pair_access_unit_integration_tests {
     fn synthetic_i0_policy() -> I0AudioBlockSeriesPolicy {
         I0AudioBlockSeriesPolicy {
             blocks: std::array::from_fn(|block| I0AudioBlockControlPolicy {
-                candidate_q: I0BapCandidateQ::new(400).unwrap(),
+                candidate_q: I0BapCandidateQ::new(352).unwrap(),
                 slow_decay_code: 2,
                 fast_decay_code: 1,
                 slow_gain_code: 1,
@@ -1642,7 +1642,11 @@ mod pair_access_unit_integration_tests {
     #[test]
     fn pair_binding_produces_a_source_bound_d0_frame_from_its_projected_pcm_rows() {
         let prepared = selected_prepared_input();
-        let analysis = analysis_numeric_stage(&prepared, "flat7x-d0-pcm-binding-source");
+        let analysis = analysis_numeric_stage_for_source(
+            &prepared,
+            "flat7x-d0-pcm-binding-source",
+            CodecSourceIndex::new(2),
+        );
         let bap_parameters: Arc<BapParameters> =
             Arc::new(load_bap_parameters(Some(BAP_PROVIDER)).unwrap());
         let numeric_plan = NumericPlanReceipt::from_parent_for_test(
@@ -1651,7 +1655,7 @@ mod pair_access_unit_integration_tests {
         );
         let target = Flat7xI0D0TargetPlan::approved_contract();
         let source_identity = numeric_plan.identity();
-        let callback_index = FrontendCallbackIndex::new(2);
+        let callback_index = FrontendCallbackIndex::new(4);
         let callback_lineage = CallbackLineageIdentity::new(
             prepared.programme_id().clone(),
             source_identity.source_stage_key().attempt_id(),
@@ -2273,7 +2277,11 @@ mod pair_access_unit_integration_tests {
     #[test]
     fn application_pair_candidate_composes_matching_i0_d0_frames_in_one_au() {
         let prepared = selected_prepared_input();
-        let analysis = analysis_numeric_stage(&prepared, "flat7x-pair-integration-source");
+        let analysis = analysis_numeric_stage_for_source(
+            &prepared,
+            "flat7x-pair-integration-source",
+            CodecSourceIndex::new(2),
+        );
         let bap_parameters: Arc<BapParameters> =
             Arc::new(load_bap_parameters(Some(BAP_PROVIDER)).unwrap());
         // Test support binds synthetic codec values to the exact prepared-source analysis receipt.
@@ -2284,7 +2292,7 @@ mod pair_access_unit_integration_tests {
 
         let target = Flat7xI0D0TargetPlan::approved_contract();
         let source_identity = numeric_plan.identity();
-        let callback_index = FrontendCallbackIndex::new(2);
+        let callback_index = FrontendCallbackIndex::new(4);
         let callback_lineage = CallbackLineageIdentity::new(
             prepared.programme_id().clone(),
             source_identity.source_stage_key().attempt_id(),
@@ -2313,7 +2321,7 @@ mod pair_access_unit_integration_tests {
 
         let d0_bsi = synthetic_d0_bsi();
         let emdf_container = [0xa5_u8];
-        let d0_audio = SyntheticD0AudioSpans::new(target, &d0_bsi, 1, 8);
+        let d0_audio = SyntheticD0AudioSpans::new(target, &d0_bsi, 1, 85);
         let d0_skip_fields = [D0Block2SkipFieldInput::synthetic_for_test(
             CallerOwnedUnboundD0Block2InsertionPoint::new(d0_audio.prefix_bits),
             &emdf_container,
