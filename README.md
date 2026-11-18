@@ -32,6 +32,10 @@ if ($LASTEXITCODE -ne 0) { throw "Flat 7.1 编码失败" }
 ffmpeg -n -i "$ec3" -map 0:a:0 -c:a copy -f matroska (Join-Path $out "output.mka")
 ```
 
+![Adobe Audition 中打开的 MKA 编码结果，八条轨道依次为 L、R、C、LFE、Ls、Rs、Lsd、Rsd](docs/assets/screenshot.png)
+
+上图是《Love Song》编码结果封装为 MKA 后在 Adobe Audition 中的波形与频谱视图。八条轨道依次为 L、R、C、LFE、Ls、Rs、Lsd、Rsd，时间轴总长 4 分 29 秒。
+
 **MP4**（可选用 `.m4a` 后缀）
 
 ```powershell
