@@ -239,9 +239,16 @@ fn selected_spatial_audio_provider_bundle() -> SelectedSpatialAudioProviderBundl
     let manifest = PackageManifestEvidence::new(Arc::from(F01E_MANIFEST), None);
     let component = ProviderFileEvidence::new(Arc::from(COMPONENT_PARAMETERS), None);
     let window = ProviderFileEvidence::new(Arc::from(WINDOW_Q15), None);
-    let qmf_receiver = ProviderFileEvidence::new(Arc::from(QMF_RECEIVER_FUNCTIONAL), None);
-    let qmf_fft = ProviderFileEvidence::new(Arc::from(QMF_MATHEMATICAL_FFT), None);
-    let descriptor = ProviderFileEvidence::new(Arc::from(DESCRIPTOR_MATHEMATICAL), None);
+    let qmf_receiver = ProviderFileEvidence::new(
+        Arc::from(windows_package_bytes(QMF_RECEIVER_FUNCTIONAL)),
+        None,
+    );
+    let qmf_fft =
+        ProviderFileEvidence::new(Arc::from(windows_package_bytes(QMF_MATHEMATICAL_FFT)), None);
+    let descriptor = ProviderFileEvidence::new(
+        Arc::from(windows_package_bytes(DESCRIPTOR_MATHEMATICAL)),
+        None,
+    );
     SelectedSpatialAudioProviderBundle::validate_selected(
         &SelectedSpatialAudioProviderEvidence::new(
             &manifest,
@@ -253,6 +260,14 @@ fn selected_spatial_audio_provider_bundle() -> SelectedSpatialAudioProviderBundl
         ),
     )
     .unwrap()
+}
+
+fn windows_package_bytes(bytes: &[u8]) -> Vec<u8> {
+    std::str::from_utf8(bytes)
+        .unwrap()
+        .replace("\r\n", "\n")
+        .replace('\n', "\r\n")
+        .into_bytes()
 }
 
 fn selected_meter_root(
