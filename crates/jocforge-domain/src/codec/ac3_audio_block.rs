@@ -1861,6 +1861,7 @@ mod i0_audio_block_series_tests {
                 CallerOwnedI0CrcrsvSeed { value: false },
             )
         };
+        // Synthetic caller-owned auxdata fills the fixed target extent for this structural vector.
         let frame_candidate = match assemble(I0AuxDataInput::Absent) {
             Ok(candidate) => candidate,
             Err(Flat7xI0FrameAssemblyError::FrameSpanMismatch {
@@ -2234,7 +2235,6 @@ mod i0_audio_block_series_tests {
                 CallerOwnedI0CrcrsvSeed { value: false },
             )
         };
-        // Synthetic caller-owned auxdata fills the fixed target extent for this structural vector.
         let frame_candidate = match assemble(I0AuxDataInput::Absent) {
             Ok(candidate) => candidate,
             Err(Flat7xI0FrameAssemblyError::FrameSpanMismatch {
