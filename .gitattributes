@@ -5,6 +5,9 @@ crates/jocforge-domain/src/meter/k_matrix_parameters.json -text whitespace=cr-at
 crates/jocforge-domain/src/meter/k_matrix_bounds.json text eol=crlf whitespace=cr-at-eol
 crates/jocforge-domain/src/meter/truepeak_parameters.json text eol=crlf whitespace=cr-at-eol
 crates/jocforge-domain/src/meter/truepeak_log_parameters.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/transient_channel/PARAMETERS.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/src/joc/huffman/codebooks.json text eol=crlf whitespace=cr-at-eol
 crates/jocforge-application/assets/providers/** -text whitespace=cr-at-eol
 crates/jocforge-application/assets/providers/live_joc_coordinator.json text eol=crlf whitespace=cr-at-eol
 crates/jocforge-application/assets/providers/public_bap_48k.json text eol=crlf whitespace=cr-at-eol
