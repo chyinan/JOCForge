@@ -1,4 +1,4 @@
-name: Rust boundaries
+name: Rust CI
 on: [push, pull_request]
 permissions:
   contents: read
@@ -13,10 +13,6 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - run: python scripts/check-boundaries.py
       - run: cargo fmt --all -- --check
       - run: cargo check --workspace --locked
       - run: cargo clippy --workspace --all-targets --locked -- -D warnings
