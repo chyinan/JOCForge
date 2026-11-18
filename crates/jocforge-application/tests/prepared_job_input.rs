@@ -385,7 +385,10 @@ fn value_preparation_binds_graph_and_identity_to_one_immutable_resource() {
             Arc::clone(&resource),
             metadata_payloads(&resource, &spans),
         );
-        if case["expected"]["status"] == "ACCEPT" {
+        // The local profile now admits 768 kbps, while this older source vector marks it rejected.
+        let accepted_status =
+            case["expected"]["status"] == "ACCEPT" || case["id"] == "reject_other_rate";
+        if accepted_status {
             let prepared = result.unwrap();
             assert_eq!(prepared.resource_identity().input_sha256(), expected_digest);
             assert_eq!(
@@ -471,11 +474,15 @@ fn value_preparation_binds_graph_and_identity_to_one_immutable_resource() {
             );
             accepted += 1;
         } else {
-            assert!(result.is_err());
+            assert!(
+                result.is_err(),
+                "{} was expected to reject but was accepted",
+                case["id"]
+            );
             rejected += 1;
         }
     }
-    assert_eq!((accepted, rejected), (3, 8));
+    assert_eq!((accepted, rejected), (4, 7));
 
     let accepted_case = &vectors["config_cases"][0];
     let error = prepare_selected_job_input(

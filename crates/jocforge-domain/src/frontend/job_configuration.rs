@@ -1793,7 +1793,7 @@ fn optional_authored_time_string(
         None => Ok(String::new()),
         Some(value) if value.trim().is_empty() => Ok(String::new()),
         Some(value) if value.trim() == allowed_value => Ok(allowed_value.to_owned()),
-        Some(value) => Ok(value.to_owned()),
+        Some(_) => Err(JobConfigurationError::TimeDomain),
     }
 }
 

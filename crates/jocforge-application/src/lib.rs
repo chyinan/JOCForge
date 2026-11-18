@@ -754,7 +754,7 @@ pub fn prepare_selected_job_input(
     let dbmd_span = bind_resource_payload(&resource, *b"dbmd", metadata_payloads.dbmd)?;
     let graph = parse_selected_adm_graph(metadata_payloads.axml, metadata_payloads.chna)
         .map_err(PreparedJobInputError::GraphParse)?;
-    if usize::from(wave.channels()) != graph.tracks().len() {
+    if wave.channels() != graph.receipt().physical_track_count() {
         return Err(PreparedJobInputError::WaveTrackCountMismatch);
     }
     if graph.receipt().axml_sha256() != &axml_span.payload_sha256()
