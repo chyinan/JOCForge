@@ -1,2 +1,17 @@
 /target/
+/target-diagnostic/
 __pycache__/
+
+# Local scratch and transient scripts kept outside the tracked tree
+/.boundary-scratch/
+/.test-tmp/
+/.tmp*
+/.map_*
+
+# Tool-generated logs and editor state
+debug.log
+/docs/memory/.obsidian/
+
+# Local intake staging and held-back packages
+/outputs/INCOMING_WASH/
+/outputs/quarantine/
