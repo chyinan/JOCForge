@@ -46,7 +46,9 @@ if ($LASTEXITCODE -ne 0) { throw "MP4 封装失败" }
 Rename-Item -LiteralPath $mp4 -NewName "output.m4a"
 ```
 
-Flat7x 在 CLI 中仍标为实验性，ETSI 严格符合性和 W04 产品验收仍待完成。
+生成的 `.m4a` 已实测可由 iOS 系统解码器打开。
+
+Flat7x 在 CLI 中仍标为实验性。
 
 ## 5.1 编码
 
