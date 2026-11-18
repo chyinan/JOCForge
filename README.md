@@ -1,25 +1,77 @@
 # JOCForge
 
-**5.1 多码率 CLI：可用。** The selected 48 kHz / 5.1 six-carrier E-AC-3 JOC CLI path supports explicit rates of 384, 448, 576, 640, 768, and 1024 kbps. Local verification covers input/profile admission, frame sizing, keyless integrity, and a full-file output at each rate. These outputs are not equivalent to DEE; DEE parity and W04 acceptance are not established.
+## Flat 7.1 编码
 
-Example: encode the selected 5.1 profile at 1024 kbps.
+**JOCForge 已打通 Flat 7.1 的整曲编码与播放。** CLI 将 48 kHz ADM BWF 编码为 1,664 kbps 的 E-AC-3 JOC 码流。每个访问单元包含 640 kbps 的独立 AC-3 核心和 1,024 kbps 的依赖 E-AC-3 子流，使用 Flat 7.X 重建配置（索引 1）、七路载体和 15 个 JOC 对象。
+
+整曲实测使用方大同《Love Song》（4 分 29 秒）。OpenJOC 0.20.2 在兼容模式下接纳了全部 8,417 个访问单元并完成 7.1 渲染。最终码流无损封装为 MKA 后，已实测可在 Adobe Audition 中打开，并可用 Windows 媒体播放器播放。
+
+### 从 ADM 编码到 EC3
+
+在仓库根目录运行以下 PowerShell 命令，将输入路径换成自己的 ADM BWF。需要 Rust 工具链和 FFmpeg。Flat7x CLI 要求输出到新的空目录，并使用 `.candidate.ec3` 后缀。
 
 ```powershell
-jocforge encode "D:\input.adm.wav" "D:\output.ec3" --data-rate 1024
+cargo build --release --locked -p jocforge
+if ($LASTEXITCODE -ne 0) { throw "构建失败" }
+
+$adm = (Resolve-Path -LiteralPath "D:\Audio\input.adm.wav").Path
+$out = (New-Item -ItemType Directory -Path (Join-Path $PWD ("flat7x-" + [guid]::NewGuid()))).FullName
+$ec3 = Join-Path $out "output.candidate.ec3"
+
+.\target\release\jocforge.exe encode "$adm" "$ec3" --joc-layout flat7x
+if ($LASTEXITCODE -ne 0) { throw "Flat 7.1 编码失败" }
 ```
 
-**Flat7x 7.1：结构开发中，生产编码 fail-closed。** The target follows the official demo structure:
+### 无损封装为 MKA 或 MP4
 
-- I0: 640 kbps legacy AC-3; D0: 1024 kbps E-AC-3 with `chanmap=0x1A00` (1,664 kbps aggregate target).
-- Flat7x/JOC reconstruction index 1, 15 JOC objects/reconstruction rows, and complexity 16. These reconstruction rows are separate from ADM physical input rows.
-- One complete EMDF skip field in D0 block 2; payloads are limited to 1..511 bytes and oversized fields reject.
+在同一个 PowerShell 会话中任选一种容器。`-c:a copy` 直接复制 EC3 音轨并保留 JOC 元数据。
 
-Flat7x has staged I0/D0 frame and AU structures, pair integrity, append, and finalization seams. The production callback currently fails closed before ID14 serialization because it has no same-source provider for seven real coefficient rows with source lineage. The caller-shaped seven-row representation interface accepts explicit input rows but is not connected to a production producer. Previously generated experimental candidates had severe audible defects; this branch does not claim a usable 7.1 encode. The selected 5.1 route remains separate and available.
+**MKA**（已实测可在 Audition 和 Windows 媒体播放器中打开）
 
-The existing selected 5.1 path remains available.
+```powershell
+ffmpeg -n -i "$ec3" -map 0:a:0 -c:a copy -f matroska (Join-Path $out "output.mka")
+```
 
-Rust 2024 workspace: domain, application, io, CLI and independent validation. See [architecture](docs/architecture/ARCHITECTURE.md).
+**MP4**（可选用 `.m4a` 后缀）
 
-Run `rtk cargo fmt --all -- --check`, `rtk cargo check --workspace --locked`, `rtk cargo clippy --workspace --all-targets --locked -- -D warnings` and `rtk cargo test --workspace --locked`. Run `rtk proxy python scripts/check-boundaries.py` for dependency checks.
+```powershell
+$mp4 = Join-Path $out "output.mp4"
+ffmpeg -n -i "$ec3" -map 0:a:0 -c:a copy -f mp4 "$mp4"
+if ($LASTEXITCODE -ne 0) { throw "MP4 封装失败" }
+```
 
-`jocforge --help` and `--version` work. The CLI accepts a selected ADM BWF input/output pair for the available 5.1 route, or `encode --job-xml <job.xml>` for the strict selected ADM BWF / elementary EC-3 subset. XML branches `adm` and `atmos_mezz` use the same BWF reader and remain distinct in normalized configuration identity. Add `--preflight-only` to stop after XML/input admission without starting Meter or creating output. MP4/DASH packaging and unclosed XML options reject explicitly; successful parsing does not establish their audio effects. The application `encode()` API still returns `SourcePipelineUnavailable`; this API limitation is separate from the selected 5.1 CLI path. Flat7x profile/header and AU structure are staged, while the production JOC body path remains fail-closed until a source-bound seven-row coefficient provider is available. Independent parser/render and W04 acceptance remain open.
+需要 `.m4a` 文件时，再运行下面的命令。FFmpeg 根据 `.m4a` 后缀默认选择 `ipod` 封装器；先生成 MP4 再改名，可以保留 MP4 封装和其中的 `ec-3` 音轨。
+
+```powershell
+Rename-Item -LiteralPath $mp4 -NewName "output.m4a"
+```
+
+Flat7x 在 CLI 中仍标为实验性，ETSI 严格符合性和 W04 产品验收仍待完成。
+
+## 5.1 编码
+
+JOCForge 的命令行编码器支持将 48 kHz ADM BWF 编码为带 5.1 声道核心的 E-AC-3 JOC 码流。可选码率为 384、448、576、640、768 和 1024 kbps。六档码率均已在本地完成整文件编码，并通过输入配置、帧长和无密钥完整性检查。与 Dolby Encoding Engine（DEE）的等效性及 W04 产品验收仍待验证。
+
+下面的 PowerShell 命令使用上文构建的 Release 编码器，以 1024 kbps 输出 5.1 码流。
+
+```powershell
+.\target\release\jocforge.exe encode "D:\input.adm.wav" "D:\output.ec3" --data-rate 1024
+```
+
+### 使用 XML 作业文件
+
+除直接指定输入和输出文件外，也可以用 `jocforge encode --job-xml <job.xml>` 读取作业配置。当前支持 ADM BWF 输入和 EC-3 裸码流输出。`adm` 和 `atmos_mezz` 两种输入配置共用 BWF 读取器，解析后保留各自的输入类型。添加 `--preflight-only` 可只检查 XML 和输入文件。MP4 封装可在编码后按上文示例使用 FFmpeg 完成。CLI 的 XML 作业不支持直接输出 MP4 或 DASH。
+
+XML 解析器可识别并保留 Line 和 RF 两种动态范围控制（DRC）设置中的六个预设名称。当前可编码的 Line/RF 组合为 `none/none` 和 `film_light/film_light`。其他组合会在编码前被拒绝，若传入下游接口则返回 `UnsupportedDrcEffect`。
+
+### 开发与检查
+
+项目采用 Rust 2024 工作区，包含领域逻辑、应用、文件读写、命令行和独立验证五个模块。编码请使用 CLI，应用层的 `encode()` 接口目前返回 `SourcePipelineUnavailable`。命令参数和版本可通过 `jocforge --help` 和 `jocforge --version` 查看。[架构说明](docs/architecture/ARCHITECTURE.md)
+
+```powershell
+rtk cargo fmt --all -- --check
+rtk cargo check --workspace --locked
+rtk cargo clippy --workspace --all-targets --locked -- -D warnings
+rtk cargo test --workspace --locked
+rtk proxy python scripts/check-boundaries.py
+```

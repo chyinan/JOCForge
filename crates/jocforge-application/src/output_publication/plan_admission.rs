@@ -19,8 +19,9 @@ use jocforge_domain::{
     },
     meter::prepared_job_identity::PreparedJobInputIdentity,
     profile::{
-        EmdfCarriageProfile, EncodingProfile, JocReconstructionLayout, ProfileError,
-        ResolvedEncodingProfile, resolve_selected_profile,
+        CarrierCodecProfile, EmdfCarriageProfile, EncodingProfile, JocPayloadDownmixIndex,
+        JocReconstructionLayout, ProfileError, ResolvedEncodingProfile, SubstreamTopology,
+        resolve_selected_profile,
     },
     timeline::{AdmSampleCount, ClockError, ProgrammeCounts, programme_counts},
     transaction::{AttemptId, ProgrammeId},
@@ -540,6 +541,14 @@ fn validate_f14_integrity_provider() -> Result<F14IntegrityProviderValue, ()> {
     Ok(F14IntegrityProviderValue { provider })
 }
 
+fn selected_five_point_one_provider_dimensions(profile: EncodingProfile) -> EncodingProfile {
+    profile
+        .with_carrier_codec(CarrierCodecProfile::IndependentEac3)
+        .with_joc_payload_downmix_index(JocPayloadDownmixIndex::FiveChannel)
+        .with_joc_reconstruction_layout(JocReconstructionLayout::ExistingSelectedFivePointOne)
+        .with_substream_topology(SubstreamTopology::SelectedSingleIndependentZeroDependent)
+}
+
 #[derive(Clone)]
 struct F15PlanParentContext {
     programme_id: ProgrammeId,
@@ -562,11 +571,15 @@ impl F15PlanParentContext {
         {
             return Err(F15PlanAdmissionError::ResolvedProfileMismatch);
         }
-        let profile_dimensions = EncodingProfile::selected_with_rate_and_carriage(
-            resolved_profile.codec_rate(),
-            resolved_profile.carriage(),
-        )
-        .with_joc_reconstruction_layout(resolved_profile.joc_reconstruction_layout());
+        let profile_dimensions =
+            EncodingProfile::selected_with_rate_and_carriage_and_joc_reconstruction_layout(
+                resolved_profile.codec_rate(),
+                resolved_profile.carriage(),
+                resolved_profile.joc_reconstruction_layout(),
+            )
+            .with_carrier_codec(resolved_profile.carrier_codec())
+            .with_substream_topology(resolved_profile.substream_topology())
+            .with_joc_payload_downmix_index(resolved_profile.joc_payload_downmix_index());
         let re_resolved = resolve_selected_profile(&profile_dimensions)
             .map_err(F15PlanAdmissionError::Profile)?;
         if re_resolved != resolved_profile {
@@ -629,12 +642,11 @@ impl F15RoleValidatedValue<CodecF12Role> for CodecF12ProviderValue {
             && self.profile.audio_blocks == 6
             && self.bap.provider_sha256() == sha256_bytes(PUBLIC_BAP_48K)
             && resolved_profile.codec_rate().frame_bytes().is_some()
-            && profile_dimensions.with_joc_reconstruction_layout(
-                JocReconstructionLayout::ExistingSelectedFivePointOne,
-            ) == EncodingProfile::selected_with_rate_and_carriage(
-                resolved_profile.codec_rate(),
-                resolved_profile.carriage(),
-            )
+            && selected_five_point_one_provider_dimensions(profile_dimensions)
+                == EncodingProfile::selected_with_rate_and_carriage(
+                    resolved_profile.codec_rate(),
+                    resolved_profile.carriage(),
+                )
     }
 }
 
@@ -655,10 +667,7 @@ impl F15RoleValidatedValue<JocF05JlRole> for JocF05JlProviderValue {
             && self.profile.capacity_bytes == 372
             && self.profile.dispatch_count == 4_249
             && self.profile.published_writer_count == 4_247
-            && profile_dimensions
-                .with_joc_reconstruction_layout(
-                    JocReconstructionLayout::ExistingSelectedFivePointOne,
-                )
+            && selected_five_point_one_provider_dimensions(profile_dimensions)
                 .same_dimensions_except_codec_rate(EncodingProfile::selected_with_carriage(
                     resolved_profile.carriage(),
                 ))
@@ -680,12 +689,11 @@ impl F15RoleValidatedValue<F13MetadataRole> for F13MetadataProviderValue {
                 == "6d94c55c8c011fd4762e60ec92ed491f19b17540c72ba82094a36f6e666f2ef7"
             && sha256_hex(self.metadata_owner.wrapper_file())
                 == "722e93ad671e4faab6ae9f33125bd49f8f369f717db0c9a3600cd861cdbd5a56"
-            && profile_dimensions.with_joc_reconstruction_layout(
-                JocReconstructionLayout::ExistingSelectedFivePointOne,
-            ) == EncodingProfile::selected_with_rate_and_carriage(
-                resolved_profile.codec_rate(),
-                resolved_profile.carriage(),
-            )
+            && selected_five_point_one_provider_dimensions(profile_dimensions)
+                == EncodingProfile::selected_with_rate_and_carriage(
+                    resolved_profile.codec_rate(),
+                    resolved_profile.carriage(),
+                )
     }
 }
 
@@ -698,12 +706,11 @@ impl F15RoleValidatedValue<F14IntegrityRole> for F14IntegrityProviderValue {
         self.provider.profile_id() == "keyless-crc32-crc8-crc16.v1"
             && self.provider.provider_sha256().to_hex()
                 == "57b117ab76c597ad6f6d65af65eecc17d2df78cf0874d092fe1f67585e47bd75"
-            && profile_dimensions.with_joc_reconstruction_layout(
-                JocReconstructionLayout::ExistingSelectedFivePointOne,
-            ) == EncodingProfile::selected_with_rate_and_carriage(
-                resolved_profile.codec_rate(),
-                resolved_profile.carriage(),
-            )
+            && selected_five_point_one_provider_dimensions(profile_dimensions)
+                == EncodingProfile::selected_with_rate_and_carriage(
+                    resolved_profile.codec_rate(),
+                    resolved_profile.carriage(),
+                )
     }
 }
 

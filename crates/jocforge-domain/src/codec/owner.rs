@@ -4,14 +4,15 @@
 use crate::codec::flat7x_d0_pcm_source::Flat7xD0OverlapHistory;
 use crate::profile::Flat7xI0D0TargetPlan;
 use crate::{
+    analysis::source_frame::SharedAnalysisIdentity,
     analysis::structure_refresh::{F07_BLOCKS_PER_FRAME, F07_FULLBAND_LANES},
     codec::frame_size::Eac3FrameSize,
     integrity::crc16::eac3_crc16,
     publication::{OutputSourceAfterProposal, OutputSourceCommitReceipt},
     timeline::{CodecSourceIndex, FrontendCallbackIndex, PublishedAuIndex, source_for_callback},
     transaction::{
-        AttemptId, CallbackTransactionId, GtcOwnerId, GtcOwnerReceipt, GtcOwnerReceiptError,
-        GtcOwnerStateSnapshot,
+        AttemptId, CallbackLineageIdentity, CallbackTransactionId, GtcOwnerId, GtcOwnerReceipt,
+        GtcOwnerReceiptError, GtcOwnerStateSnapshot,
     },
 };
 use sha2::{Digest, Sha256};
@@ -34,6 +35,121 @@ pub struct CodecOwnerGeneration(u64);
 impl CodecOwnerGeneration {
     pub const fn value(self) -> u64 {
         self.0
+    }
+}
+
+/// Flat7x D0 source generation, distinct from both Codec owner and F15 pair generations.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Flat7xD0SourceGeneration(CodecOwnerGeneration);
+
+impl Flat7xD0SourceGeneration {
+    pub const fn value(self) -> u64 {
+        self.0.value()
+    }
+}
+
+/// Source-generation evidence issued by the committed Codec owner for one Flat7x source.
+///
+/// This counter follows Codec owner transitions and remains distinct from the later F15 source
+/// label. Its transaction and analysis identity are retained alongside the generation value.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Flat7xD0SourceGenerationReceipt {
+    source_transaction_id: CallbackTransactionId,
+    source_generation: Flat7xD0SourceGeneration,
+    codec_owner_after_generation: CodecOwnerGeneration,
+    callback_lineage: CallbackLineageIdentity,
+    source_index: CodecSourceIndex,
+    analysis_generation: crate::analysis::source_frame::AnalysisOwnerGeneration,
+}
+
+impl Flat7xD0SourceGenerationReceipt {
+    pub fn source_transaction_id(&self) -> &CallbackTransactionId {
+        &self.source_transaction_id
+    }
+
+    pub const fn source_generation(&self) -> Flat7xD0SourceGeneration {
+        self.source_generation
+    }
+
+    pub const fn codec_owner_after_generation(&self) -> CodecOwnerGeneration {
+        self.codec_owner_after_generation
+    }
+
+    pub const fn callback_lineage(&self) -> &CallbackLineageIdentity {
+        &self.callback_lineage
+    }
+
+    pub const fn source_index(&self) -> CodecSourceIndex {
+        self.source_index
+    }
+
+    pub const fn analysis_generation(
+        &self,
+    ) -> crate::analysis::source_frame::AnalysisOwnerGeneration {
+        self.analysis_generation
+    }
+
+    #[cfg(any(test, feature = "test-support"))]
+    #[must_use]
+    pub fn with_generation_for_test(&self, generation: u64) -> Self {
+        Self {
+            source_transaction_id: self.source_transaction_id.clone(),
+            source_generation: Flat7xD0SourceGeneration(CodecOwnerGeneration(generation)),
+            codec_owner_after_generation: CodecOwnerGeneration(generation),
+            callback_lineage: self.callback_lineage.clone(),
+            source_index: self.source_index,
+            analysis_generation: self.analysis_generation,
+        }
+    }
+
+    #[cfg(any(test, feature = "test-support"))]
+    #[must_use]
+    pub fn with_analysis_generation_for_test(&self, generation: u64) -> Self {
+        Self {
+            source_transaction_id: self.source_transaction_id.clone(),
+            source_generation: self.source_generation,
+            codec_owner_after_generation: self.codec_owner_after_generation,
+            callback_lineage: self.callback_lineage.clone(),
+            source_index: self.source_index,
+            analysis_generation:
+                crate::analysis::source_frame::AnalysisOwnerGeneration::from_parent_snapshot(
+                    generation,
+                ),
+        }
+    }
+
+    #[cfg(any(test, feature = "test-support"))]
+    #[must_use]
+    pub fn with_codec_owner_generation_for_test(&self, generation: CodecOwnerGeneration) -> Self {
+        Self {
+            source_transaction_id: self.source_transaction_id.clone(),
+            source_generation: self.source_generation,
+            codec_owner_after_generation: generation,
+            callback_lineage: self.callback_lineage.clone(),
+            source_index: self.source_index,
+            analysis_generation: self.analysis_generation,
+        }
+    }
+
+    #[cfg(any(test, feature = "test-support"))]
+    pub fn synthetic_for_test(
+        source_transaction_id: CallbackTransactionId,
+        source_generation: u64,
+        callback_lineage: CallbackLineageIdentity,
+        source_index: CodecSourceIndex,
+        analysis_generation: u64,
+    ) -> Self {
+        Self {
+            source_transaction_id,
+            source_generation: Flat7xD0SourceGeneration(CodecOwnerGeneration(source_generation)),
+            codec_owner_after_generation: CodecOwnerGeneration(source_generation),
+            callback_lineage,
+            source_index,
+            analysis_generation:
+                crate::analysis::source_frame::AnalysisOwnerGeneration::from_parent_snapshot(
+                    analysis_generation,
+                ),
+        }
     }
 }
 
@@ -106,6 +222,39 @@ impl CodecOwnerRoot {
 
     pub const fn d0_overlap_history(&self) -> Option<&Flat7xD0OverlapHistory> {
         self.d0_overlap_history.as_ref()
+    }
+
+    /// Issues the next Flat7x source token from this owner's own committed generation.
+    pub fn issue_flat7x_d0_source_generation_receipt(
+        &self,
+        source_transaction_id: CallbackTransactionId,
+        callback_lineage: CallbackLineageIdentity,
+        shared_analysis_identity: &SharedAnalysisIdentity,
+    ) -> Result<Flat7xD0SourceGenerationReceipt, CodecOwnerStageError> {
+        if self.d0_overlap_history.is_none() {
+            return Err(CodecOwnerStageError::D0HistoryUnavailable);
+        }
+        let source_key = shared_analysis_identity.source_stage_key();
+        if source_key.attempt_id() != callback_lineage.attempt_id()
+            || source_key.transaction_id() != &source_transaction_id
+            || source_for_callback(callback_lineage.callback_index())
+                != Some(shared_analysis_identity.source_index())
+        {
+            return Err(CodecOwnerStageError::SourceIdentityMismatch);
+        }
+        let next_generation = self
+            .generation
+            .value()
+            .checked_add(1)
+            .ok_or(CodecOwnerStageError::GenerationOverflow)?;
+        Ok(Flat7xD0SourceGenerationReceipt {
+            source_transaction_id,
+            source_generation: Flat7xD0SourceGeneration(CodecOwnerGeneration(next_generation)),
+            codec_owner_after_generation: CodecOwnerGeneration(next_generation),
+            callback_lineage,
+            source_index: shared_analysis_identity.source_index(),
+            analysis_generation: shared_analysis_identity.analysis_after_generation(),
+        })
     }
 
     /// Serializes this complete owner value as the selected canonical JSON preimage.
@@ -461,6 +610,7 @@ pub enum CodecOwnerStageError {
     UnexpectedDurableAppend,
     DurableAppendMismatch,
     D0HistoryUnavailable,
+    SourceIdentityMismatch,
     SourceStageRequired,
     BeforeStateMismatch,
     GenerationMismatch,

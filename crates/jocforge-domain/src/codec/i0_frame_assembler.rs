@@ -9,7 +9,6 @@ use super::{
         Flat7xI0Ac3BsiTailError, Flat7xI0Ac3BsiTailInput, Flat7xI0Ac3BsiTailReceipt,
         Flat7xI0OfficialDemoBsiTailError, Flat7xI0OfficialDemoBsiTailReceipt,
         I0_BSI_TAIL_MINIMUM_BITS, write_flat7x_i0_ac3_bsi_tail,
-        write_flat7x_i0_official_demo_bsi_tail,
     },
     bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError},
     frame_builder::{
@@ -517,13 +516,15 @@ impl<'a> OpaqueI0Ac3BitSpan<'a> {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum I0AuxDataInput<'a> {
     Absent,
+    /// Fill unused audio capacity with zero stuffing and leave auxdatae clear.
+    PadToFrame,
     Present(OpaqueI0Ac3BitSpan<'a>),
 }
 
 impl I0AuxDataInput<'_> {
     const fn payload_bit_length(self) -> u32 {
         match self {
-            Self::Absent => 0,
+            Self::Absent | Self::PadToFrame => 0,
             Self::Present(span) => span.bit_length(),
         }
     }
@@ -948,6 +949,26 @@ pub fn assemble_flat7x_i0_ac3_frame_from_audio_series(
     auxdata: I0AuxDataInput<'_>,
     crcrsv_seed: CallerOwnedI0CrcrsvSeed,
 ) -> Result<Flat7xI0Ac3AudioSeriesFrameCandidate, Flat7xI0FrameAssemblyError> {
+    assemble_flat7x_i0_audio_with_header(
+        target,
+        expected_source_identity,
+        audio_series,
+        auxdata,
+        crcrsv_seed,
+        Flat7xI0Ac3FrameHeaderFields::official_demo_sample_non_crc_fields(),
+        1,
+    )
+}
+
+pub fn assemble_flat7x_i0_audio_with_header(
+    target: Flat7xI0D0TargetPlan,
+    expected_source_identity: &SharedAnalysisIdentity,
+    audio_series: &I0AudioBlockSeriesCandidate,
+    auxdata: I0AuxDataInput<'_>,
+    crcrsv_seed: CallerOwnedI0CrcrsvSeed,
+    header_fields: Flat7xI0Ac3FrameHeaderFields,
+    dmixmod: u8,
+) -> Result<Flat7xI0Ac3AudioSeriesFrameCandidate, Flat7xI0FrameAssemblyError> {
     validate_target(target)?;
     if audio_series.receipt().source_identity() != expected_source_identity {
         return Err(Flat7xI0FrameAssemblyError::SourceIdentityMismatch);
@@ -980,11 +1001,16 @@ pub fn assemble_flat7x_i0_ac3_frame_from_audio_series(
         }
     }
 
-    let header_fields = Flat7xI0Ac3FrameHeaderFields::official_demo_sample_non_crc_fields();
+    let header_end = if header_fields.compr.is_some() {
+        70
+    } else {
+        62
+    };
     let mut bsi_scratch = [0_u8; I0_TARGET_FRAME_BYTES];
     let bsi_tail_receipt = {
-        let mut bsi_writer = FrameBitWriter::new(&mut bsi_scratch, FrameBitCursor::new(70))?;
-        write_flat7x_i0_official_demo_bsi_tail(&mut bsi_writer)?
+        let mut bsi_writer =
+            FrameBitWriter::new(&mut bsi_scratch, FrameBitCursor::new(header_end))?;
+        super::ac3_bsi_tail::write_flat7x_i0_bsid6_suffix(&mut bsi_writer, dmixmod)?
     };
     let bsi_tail = OpaqueI0Ac3BitSpan::new(
         &bsi_scratch,
@@ -1084,7 +1110,10 @@ pub fn assemble_flat7x_i0_ac3_frame(
             actual_bits: u32::MAX,
             required_bits: I0_TARGET_FRAME_BITS,
         })?;
-    if total_bits != I0_TARGET_FRAME_BITS {
+    if total_bits > I0_TARGET_FRAME_BITS
+        || (total_bits < I0_TARGET_FRAME_BITS
+            && !matches!(input.auxdata, I0AuxDataInput::PadToFrame))
+    {
         return Err(Flat7xI0FrameAssemblyError::FrameSpanMismatch {
             actual_bits: total_bits,
             required_bits: I0_TARGET_FRAME_BITS,
@@ -1128,7 +1157,7 @@ pub fn assemble_flat7x_i0_ac3_frame(
     }
 
     let aux_payload_span = match input.auxdata {
-        I0AuxDataInput::Absent => None,
+        I0AuxDataInput::Absent | I0AuxDataInput::PadToFrame => None,
         I0AuxDataInput::Present(span) => Some(copy_i0_span(
             &mut staging,
             frame_cursor,
@@ -1142,7 +1171,11 @@ pub fn assemble_flat7x_i0_ac3_frame(
             required_bits: I0_TARGET_FRAME_BITS,
         },
     )?;
-    let auxdatae_start_bit = frame_cursor;
+    let auxdatae_start_bit = if matches!(input.auxdata, I0AuxDataInput::PadToFrame) {
+        I0_TARGET_FRAME_BITS - I0_ERRORCHECK_FIELD_BITS - 1
+    } else {
+        frame_cursor
+    };
     let auxdatae_end_bit = {
         let mut auxdatae_writer =
             FrameBitWriter::new(&mut staging, FrameBitCursor::new(auxdatae_start_bit))?;

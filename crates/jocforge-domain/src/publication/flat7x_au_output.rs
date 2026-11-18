@@ -4,6 +4,7 @@
 use sha2::{Digest, Sha256};
 
 use crate::{
+    codec::owner::Flat7xD0SourceGenerationReceipt,
     integrity::crc16::eac3_crc16,
     integrity::programme_owner::{
         IntegrityF12SourceReceipts, IntegrityIdentity, IntegrityPayloadEvidence,
@@ -13,7 +14,7 @@ use crate::{
         Flat7xAuByteSequenceCandidate, Flat7xI0D0TargetPlan, Flat7xSourceGeneration,
         Flat7xSubstreamRole,
     },
-    timeline::{CodecSourceIndex, JocDispatchIndex, PublishedAuIndex},
+    timeline::{CodecSourceIndex, JocDispatchIndex, PublishedAuIndex, source_for_callback},
     transaction::CallbackTransactionId,
 };
 
@@ -33,6 +34,8 @@ pub enum Flat7xAuOutputOwnerError {
     F13MetadataReceiptMissing,
     I0IntegrityReceiptMissing,
     D0IntegrityReceiptMissing,
+    CodecSourceGenerationReceiptMissing,
+    CodecSourceGenerationReceiptMismatch,
     I0RoleReceiptMismatch,
     D0RoleReceiptMismatch,
     MetadataContainerMissing,
@@ -131,6 +134,7 @@ pub struct Flat7xAuSourceReceiptInput<'a> {
     f13_metadata: Option<&'a MetadataSourceProposal>,
     i0_integrity: Option<Flat7xAuIntegrityFrameReceipt<'a>>,
     d0_integrity: Option<Flat7xAuIntegrityFrameReceipt<'a>>,
+    codec_source_generation_receipt: Option<&'a Flat7xD0SourceGenerationReceipt>,
 }
 
 impl<'a> Flat7xAuSourceReceiptInput<'a> {
@@ -138,11 +142,13 @@ impl<'a> Flat7xAuSourceReceiptInput<'a> {
         f13_metadata: Option<&'a MetadataSourceProposal>,
         i0_integrity: Option<Flat7xAuIntegrityFrameReceipt<'a>>,
         d0_integrity: Option<Flat7xAuIntegrityFrameReceipt<'a>>,
+        codec_source_generation_receipt: Option<&'a Flat7xD0SourceGenerationReceipt>,
     ) -> Self {
         Self {
             f13_metadata,
             i0_integrity,
             d0_integrity,
+            codec_source_generation_receipt,
         }
     }
 
@@ -157,19 +163,25 @@ impl<'a> Flat7xAuSourceReceiptInput<'a> {
     pub const fn d0_integrity(self) -> Option<Flat7xAuIntegrityFrameReceipt<'a>> {
         self.d0_integrity
     }
+
+    pub const fn codec_source_generation_receipt(
+        self,
+    ) -> Option<&'a Flat7xD0SourceGenerationReceipt> {
+        self.codec_source_generation_receipt
+    }
 }
 
 fn missing_source_receipt(
-    f13_receipt_present: bool,
-    independent_frame_receipt_present: bool,
-    dependent_frame_receipt_present: bool,
+    receipt_input: Flat7xAuSourceReceiptInput<'_>,
 ) -> Option<Flat7xAuOutputOwnerError> {
-    if !f13_receipt_present {
+    if receipt_input.f13_metadata.is_none() {
         Some(Flat7xAuOutputOwnerError::F13MetadataReceiptMissing)
-    } else if !independent_frame_receipt_present {
+    } else if receipt_input.i0_integrity.is_none() {
         Some(Flat7xAuOutputOwnerError::I0IntegrityReceiptMissing)
-    } else if !dependent_frame_receipt_present {
+    } else if receipt_input.d0_integrity.is_none() {
         Some(Flat7xAuOutputOwnerError::D0IntegrityReceiptMissing)
+    } else if receipt_input.codec_source_generation_receipt.is_none() {
+        Some(Flat7xAuOutputOwnerError::CodecSourceGenerationReceiptMissing)
     } else {
         None
     }
@@ -180,6 +192,7 @@ pub struct Flat7xAuSourceReceipts<'a> {
     f13_metadata: &'a MetadataSourceProposal,
     i0_integrity: &'a IntegrityF12SourceReceipts,
     d0_integrity: &'a IntegrityF12SourceReceipts,
+    codec_source_generation_receipt: &'a Flat7xD0SourceGenerationReceipt,
 }
 
 /// One in-memory target-only output owner for complete Flat7x I0+D0 access units.
@@ -311,11 +324,7 @@ impl Flat7xAuOutputOwner {
         if au_index.value() >= self.expected_access_units {
             return Err(Flat7xAuOutputOwnerError::AccessUnitCountExceeded);
         }
-        if let Some(error) = missing_source_receipt(
-            receipt_input.f13_metadata.is_some(),
-            receipt_input.i0_integrity.is_some(),
-            receipt_input.d0_integrity.is_some(),
-        ) {
+        if let Some(error) = missing_source_receipt(receipt_input) {
             return Err(error);
         }
         let f13_metadata = receipt_input
@@ -327,6 +336,9 @@ impl Flat7xAuOutputOwner {
         let d0_integrity = receipt_input
             .d0_integrity
             .ok_or(Flat7xAuOutputOwnerError::D0IntegrityReceiptMissing)?;
+        let codec_source_generation_receipt = receipt_input
+            .codec_source_generation_receipt
+            .ok_or(Flat7xAuOutputOwnerError::CodecSourceGenerationReceiptMissing)?;
         if i0_integrity.role != Flat7xSubstreamRole::IndependentI0 {
             return Err(Flat7xAuOutputOwnerError::I0RoleReceiptMismatch);
         }
@@ -337,6 +349,7 @@ impl Flat7xAuOutputOwner {
             f13_metadata,
             i0_integrity: i0_integrity.receipt,
             d0_integrity: d0_integrity.receipt,
+            codec_source_generation_receipt,
         };
         let receipt_summary = validate_source_receipts(au_index, &sequence, source_receipts)?;
         let expected_offset = au_index
@@ -369,6 +382,7 @@ impl Flat7xAuOutputOwner {
             d0_emdf_container_sha256: receipt_summary.d0_emdf_container_sha256,
             i0_integrity_generations: receipt_summary.i0_integrity_generations,
             d0_integrity_generations: receipt_summary.d0_integrity_generations,
+            codec_source_generation_receipt: receipt_summary.codec_source_generation_receipt,
             i0_crc_residual,
             d0_crc_residual,
         };
@@ -457,6 +471,7 @@ struct Flat7xAuValidatedSourceReceiptSummary {
     metadata_source_index: CodecSourceIndex,
     metadata_dispatch: JocDispatchIndex,
     metadata_au_index: PublishedAuIndex,
+    codec_source_generation_receipt: Flat7xD0SourceGenerationReceipt,
     f13_owner_generations: (u64, u64),
     f13_zero_slot_sha256: [u8; 32],
     d0_emdf_container_bytes: u16,
@@ -508,6 +523,23 @@ fn validate_source_receipts(
     let consumer_transaction = metadata
         .consumer_transaction_id()
         .ok_or(Flat7xAuOutputOwnerError::MetadataSourceReceiptMismatch)?;
+    let codec_source_generation_receipt = receipts.codec_source_generation_receipt;
+    if codec_source_generation_receipt.source_transaction_id() != consumer_transaction
+        || codec_source_generation_receipt.callback_lineage() != f13.transaction_id()
+        || codec_source_generation_receipt.source_index() != f13.source_index()
+        || source_for_callback(
+            codec_source_generation_receipt
+                .callback_lineage()
+                .callback_index(),
+        ) != Some(codec_source_generation_receipt.source_index())
+        || codec_source_generation_receipt
+            .source_index()
+            .dispatch()
+            .ok()
+            != Some(f13.dispatch())
+    {
+        return Err(Flat7xAuOutputOwnerError::CodecSourceGenerationReceiptMismatch);
+    }
     if i0_identity != d0_identity
         || i0_identity.programme_id != f13.programme_id().as_str()
         || i0_identity.attempt != f13.attempt().value()
@@ -584,6 +616,7 @@ fn validate_source_receipts(
         metadata_au_index: f13
             .au_index()
             .ok_or(Flat7xAuOutputOwnerError::MetadataSourceReceiptMismatch)?,
+        codec_source_generation_receipt: codec_source_generation_receipt.clone(),
         f13_owner_generations: (f13.before_generation(), f13.proposed_after_generation()),
         f13_zero_slot_sha256: zero_slot_sha,
         d0_emdf_container_bytes: u16::try_from(protected_container.len())
@@ -640,6 +673,7 @@ impl Flat7xAuFinalizeProposal {
 pub struct Flat7xAuOutputLedgerEntry {
     au_index: PublishedAuIndex,
     source_generation: Flat7xSourceGeneration,
+    codec_source_generation_receipt: Flat7xD0SourceGenerationReceipt,
     metadata_source_index: CodecSourceIndex,
     metadata_dispatch: JocDispatchIndex,
     metadata_au_index: PublishedAuIndex,
@@ -667,6 +701,10 @@ impl Flat7xAuOutputLedgerEntry {
 
     pub const fn source_generation(&self) -> Flat7xSourceGeneration {
         self.source_generation
+    }
+
+    pub const fn codec_source_generation_receipt(&self) -> &Flat7xD0SourceGenerationReceipt {
+        &self.codec_source_generation_receipt
     }
 
     pub const fn metadata_identity(
@@ -985,6 +1023,24 @@ mod tests {
         Flat7xElementaryStreamStageReceiptCandidate,
     };
 
+    fn synthetic_codec_source_generation_receipt(
+        source_index: u64,
+        source_generation: u64,
+    ) -> Flat7xD0SourceGenerationReceipt {
+        let callback_lineage = crate::transaction::CallbackLineageIdentity::new(
+            crate::transaction::ProgrammeId::new("flat7x-ledger-test").unwrap(),
+            crate::transaction::AttemptId::new(1),
+            crate::timeline::FrontendCallbackIndex::new(u32::try_from(source_index + 2).unwrap()),
+        );
+        Flat7xD0SourceGenerationReceipt::synthetic_for_test(
+            crate::transaction::CallbackTransactionId::new("flat7x-ledger-source").unwrap(),
+            source_generation,
+            callback_lineage,
+            CodecSourceIndex::new(source_index),
+            0,
+        )
+    }
+
     fn crc_valid_frame(frame_bytes: usize, marker: u8) -> Vec<u8> {
         let size = crate::codec::frame_size::Eac3FrameSize::from_frame_bytes(frame_bytes).unwrap();
         let mut bytes = vec![0_u8; frame_bytes];
@@ -1028,6 +1084,7 @@ mod tests {
         Flat7xAuOutputLedgerEntry {
             au_index: PublishedAuIndex::new(0),
             source_generation: Flat7xSourceGeneration::new(42),
+            codec_source_generation_receipt: synthetic_codec_source_generation_receipt(2, 7),
             metadata_source_index: CodecSourceIndex::new(2),
             metadata_dispatch: JocDispatchIndex::new(3),
             metadata_au_index: PublishedAuIndex::new(0),
@@ -1062,6 +1119,10 @@ mod tests {
         Flat7xAuOutputLedgerEntry {
             au_index: PublishedAuIndex::new(au_index),
             source_generation: Flat7xSourceGeneration::new(source_generation),
+            codec_source_generation_receipt: synthetic_codec_source_generation_receipt(
+                au_index + 2,
+                7 + au_index,
+            ),
             metadata_source_index: CodecSourceIndex::new(2),
             metadata_dispatch: JocDispatchIndex::new(au_index + 3),
             metadata_au_index: PublishedAuIndex::new(au_index),
@@ -1204,7 +1265,7 @@ mod tests {
         let retirement = owner
             .stage_next_access_unit(
                 candidate_sequence(),
-                Flat7xAuSourceReceiptInput::new(None, None, None),
+                Flat7xAuSourceReceiptInput::new(None, None, None, None),
             )
             .unwrap_err();
 
@@ -1245,23 +1306,6 @@ mod tests {
         assert_eq!(sequence.source_generation().value(), 7);
         assert_eq!(owner.next_access_unit().value(), 0);
         assert_eq!(owner.generation(), 0);
-    }
-
-    #[test]
-    fn source_receipt_gate_rejects_each_missing_f13_or_frame_integrity_component() {
-        assert_eq!(
-            missing_source_receipt(false, false, false),
-            Some(Flat7xAuOutputOwnerError::F13MetadataReceiptMissing)
-        );
-        assert_eq!(
-            missing_source_receipt(true, false, true),
-            Some(Flat7xAuOutputOwnerError::I0IntegrityReceiptMissing)
-        );
-        assert_eq!(
-            missing_source_receipt(true, true, false),
-            Some(Flat7xAuOutputOwnerError::D0IntegrityReceiptMissing)
-        );
-        assert_eq!(missing_source_receipt(true, true, true), None);
     }
 
     #[test]

@@ -8,7 +8,7 @@ use super::{
     Flat7xAuSourceReceiptInput,
 };
 use crate::{
-    codec::frame_size::Eac3FrameSize,
+    codec::{frame_size::Eac3FrameSize, owner::Flat7xD0SourceGenerationReceipt},
     integrity::{
         crc16::eac3_crc16,
         keyless_checksum::sha256,
@@ -37,6 +37,7 @@ pub struct Flat7xAuAppendTestFixture {
     metadata: MetadataSourceProposal,
     i0_integrity: IntegrityF12SourceReceipts,
     d0_integrity: IntegrityF12SourceReceipts,
+    codec_source_generation: Flat7xD0SourceGenerationReceipt,
     i0_frame: Vec<u8>,
     d0_frame: Vec<u8>,
     source_generation: Flat7xSourceGeneration,
@@ -99,12 +100,23 @@ impl Flat7xAuAppendTestFixture {
             Some(crate::codec::bitio::FrameBitCursor::new(512)),
             Some(protected_container.output_sha256()),
         );
+        let codec_source_generation = Flat7xD0SourceGenerationReceipt::synthetic_for_test(
+            metadata
+                .consumer_transaction_id()
+                .expect("test metadata has a source transaction")
+                .clone(),
+            7,
+            metadata.receipt().transaction_id().clone(),
+            source_index,
+            0,
+        );
 
         Self {
             attempt_id: attempt.to_string(),
             metadata,
             i0_integrity,
             d0_integrity,
+            codec_source_generation,
             i0_frame,
             d0_frame,
             source_generation: Flat7xSourceGeneration::new(
@@ -186,12 +198,23 @@ impl Flat7xAuAppendTestFixture {
             Some(crate::codec::bitio::FrameBitCursor::new(512)),
             Some(protected_container.output_sha256()),
         );
+        let codec_source_generation = Flat7xD0SourceGenerationReceipt::synthetic_for_test(
+            metadata
+                .consumer_transaction_id()
+                .expect("adjusted test metadata has a source transaction")
+                .clone(),
+            7,
+            metadata.receipt().transaction_id().clone(),
+            identity.source_index,
+            0,
+        );
 
         Self {
             attempt_id: identity.attempt.to_string(),
             metadata,
             i0_integrity,
             d0_integrity,
+            codec_source_generation,
             i0_frame: i0_frame_bytes.to_vec(),
             d0_frame: d0_frame_bytes.to_vec(),
             source_generation,
@@ -271,6 +294,7 @@ impl Flat7xAuAppendTestFixture {
                     Some(Flat7xAuIntegrityFrameReceipt::dependent_d0(
                         &self.d0_integrity,
                     )),
+                    Some(&self.codec_source_generation),
                 ),
             )
     }

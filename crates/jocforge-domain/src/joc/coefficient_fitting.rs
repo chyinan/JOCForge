@@ -1,6 +1,7 @@
 // pattern: Functional Core
 //! Selected 15-object by 12-band coefficient fit proposal composition.
 
+use crate::codec::owner::Flat7xD0SourceGenerationReceipt;
 use crate::{
     joc::{
         coefficient_geometry::{
@@ -8,30 +9,41 @@ use crate::{
             stage_geometry_from_qmf,
         },
         coefficient_normal_equations::{
-            CoefficientNormalEquationError, build_selected_normal_equations,
+            CoefficientNormalEquationError, build_normal_equations_for_carriers,
+            build_selected_normal_equations,
+        },
+        coefficient_payload::{
+            CoefficientPayloadInput, CoefficientPayloadObject, CoefficientPayloadPoint,
+            Flat7xCoefficientRows,
         },
         coefficient_representation::{
-            FitRepresentationInput, RepresentationRetryError, RepresentationRetryProvider,
-            RepresentationWriteResult, write_fit_representation_with_resolved_profile,
-            write_fit_representation_with_retry,
+            FitRepresentationInput, JocCoefficientRowLayout, RepresentationRetryError,
+            RepresentationRetryProvider, RepresentationWriteResult,
+            write_fit_representation_with_resolved_profile, write_fit_representation_with_retry,
         },
-        coefficient_search::{CoefficientSearchError, search_selected_coefficient_cell},
+        coefficient_search::{
+            CoefficientSearchError, search_coefficient_cell_for_carriers,
+            search_selected_coefficient_cell,
+        },
         fit_score::FitScoreProvider,
+        seven_carrier_windows::{
+            SevenCarrierQmfSourceIdentity, SevenCarrierQmfState, SevenCarrierWindowSet,
+        },
         temporal_weights::{TemporalWeightError, TemporalWeightProposal, TemporalWeightState},
     },
-    profile::{JocReconstructionLayout, ResolvedEncodingProfile},
+    profile::JocReconstructionLayout,
+    profile::{JocPayloadDownmixIndex, ResolvedEncodingProfile},
     spatial::{
         QmfReceiverFunctionalProvider,
         source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
         spatial_audio_state::SelectedJocQmfProjection,
     },
-    timeline::CodecSourceIndex,
-    transaction::CallbackLineageIdentity,
+    timeline::{CodecSourceIndex, JocDispatchIndex},
+    transaction::{CallbackLineageIdentity, CallbackTransactionId},
 };
 
 #[cfg(test)]
 use crate::joc::coefficient_payload::{
-    CoefficientPayloadInput, CoefficientPayloadObject, CoefficientPayloadPoint,
     CoefficientPayloadWriterFailure, write_selected_id14_coefficient_payload,
 };
 #[cfg(test)]
@@ -40,6 +52,7 @@ use crate::joc::emdf::metadata_owner::MetadataPayloadBody;
 const OBJECT_COUNT: usize = 15;
 const CHANNEL_COUNT: usize = 5;
 const BAND_COUNT: usize = 12;
+const SEVEN_CHANNEL_COUNT: usize = 7;
 #[cfg(test)]
 const SOURCE_ROWS: usize = 16;
 #[cfg(test)]
@@ -56,6 +69,7 @@ pub struct CoefficientFitState {
     temporal: TemporalWeightState,
     geometry: CoefficientGeometryState,
     fit_generation: u64,
+    seven_carrier_qmf: Option<SevenCarrierQmfState>,
 }
 
 impl CoefficientFitState {
@@ -64,6 +78,7 @@ impl CoefficientFitState {
             temporal: TemporalWeightState::cold(),
             geometry: CoefficientGeometryState::cold(),
             fit_generation: 0,
+            seven_carrier_qmf: None,
         }
     }
 
@@ -79,12 +94,38 @@ impl CoefficientFitState {
         self.fit_generation
     }
 
+    pub const fn seven_carrier_qmf_state(&self) -> Option<&SevenCarrierQmfState> {
+        self.seven_carrier_qmf.as_ref()
+    }
+
+    /// Advances the source clock for external Flat7x rows while preserving the existing
+    /// temporal and geometry values. No coefficient fitting or numeric update is performed.
+    pub fn after_external_flat7x_rows(
+        &self,
+        dispatch: JocDispatchIndex,
+    ) -> Result<Self, CoefficientFittingError> {
+        if self.geometry.generation() != self.fit_generation
+            || self.fit_generation.checked_add(1) != Some(dispatch.value())
+        {
+            return Err(CoefficientFittingError::Generation);
+        }
+        Ok(Self {
+            temporal: self.temporal.clone(),
+            geometry: self
+                .geometry
+                .with_generation_preserving_values(dispatch.value()),
+            fit_generation: dispatch.value(),
+            seven_carrier_qmf: self.seven_carrier_qmf.clone(),
+        })
+    }
+
     #[cfg(test)]
     pub(crate) const fn with_generation_for_test(generation: u64) -> Self {
         Self {
             temporal: TemporalWeightState::cold(),
             geometry: CoefficientGeometryState::with_generation_for_test(generation),
             fit_generation: generation,
+            seven_carrier_qmf: None,
         }
     }
 }
@@ -108,6 +149,275 @@ pub struct CoefficientFitProposal {
     source_lineage: Option<FitSourceLineage>,
 }
 
+/// Diagnostic full/sparse coefficient rows from one seven-carrier QMF window set.
+#[derive(Clone, Debug, PartialEq)]
+pub struct SevenCarrierFitRows {
+    qmf_source_identity: SevenCarrierQmfSourceIdentity,
+    full_words: Vec<u32>,
+    sparse_words: Vec<u32>,
+    selected_channels: Vec<u16>,
+    score_call_count: u32,
+}
+
+impl SevenCarrierFitRows {
+    pub const fn qmf_source_identity(&self) -> &SevenCarrierQmfSourceIdentity {
+        &self.qmf_source_identity
+    }
+
+    pub fn full_words(&self) -> &[u32] {
+        &self.full_words
+    }
+
+    pub fn sparse_words(&self) -> &[u32] {
+        &self.sparse_words
+    }
+
+    pub fn selected_channels(&self) -> &[u16] {
+        &self.selected_channels
+    }
+
+    pub const fn score_call_count(&self) -> u32 {
+        self.score_call_count
+    }
+
+    pub const fn row_layout(&self) -> JocCoefficientRowLayout {
+        JocCoefficientRowLayout::SevenChannel
+    }
+
+    pub const fn payload_downmix_index(&self) -> JocPayloadDownmixIndex {
+        JocPayloadDownmixIndex::SevenChannel
+    }
+
+    pub const fn production_allowed(&self) -> bool {
+        false
+    }
+
+    pub fn coefficient_payload_input(
+        &self,
+        clip_gain_index: u8,
+        sequence_count: u16,
+        capacity_bytes: u16,
+        representation_offset: Option<u8>,
+    ) -> Result<CoefficientPayloadInput, CoefficientFittingError> {
+        let mut objects = Vec::with_capacity(OBJECT_COUNT);
+        for object in 0..OBJECT_COUNT {
+            let channel_rows = (0..SEVEN_CHANNEL_COUNT)
+                .map(|channel| {
+                    (0..BAND_COUNT)
+                        .map(|band| {
+                            f32::from_bits(
+                                self.full_words
+                                    [(object * SEVEN_CHANNEL_COUNT + channel) * BAND_COUNT + band],
+                            )
+                        })
+                        .collect::<Vec<_>>()
+                })
+                .collect::<Vec<_>>();
+            let selected_channels = (0..BAND_COUNT)
+                .map(|band| {
+                    u8::try_from(self.selected_channels[object * BAND_COUNT + band])
+                        .map_err(|_| CoefficientFittingError::Shape)
+                })
+                .collect::<Result<Vec<_>, _>>()?;
+            objects.push(CoefficientPayloadObject {
+                present: true,
+                band_enum: 5,
+                mode: 1,
+                points: vec![CoefficientPayloadPoint {
+                    channel_rows,
+                    selected_channels,
+                }],
+                offsets: representation_offset.map(|offset| vec![offset]),
+            });
+        }
+        Ok(CoefficientPayloadInput {
+            downmix_index: self.payload_downmix_index().value(),
+            extension_config: 0,
+            clip_gain_index,
+            sequence_count,
+            time_slot_limit: 24,
+            capacity_bytes,
+            objects,
+        })
+    }
+}
+
+/// Same-source C=7 coefficient-fit proposal for the Flat7x reconstruction layout.
+#[derive(Clone, Debug, PartialEq)]
+pub struct SevenCarrierCoefficientFitProposal {
+    after: CoefficientFitState,
+    rows: SevenCarrierFitRows,
+    target_lineage: FitSourceLineage,
+    representation_offset: Option<u8>,
+}
+
+impl SevenCarrierCoefficientFitProposal {
+    pub const fn after(&self) -> &CoefficientFitState {
+        &self.after
+    }
+
+    pub const fn rows(&self) -> &SevenCarrierFitRows {
+        &self.rows
+    }
+
+    pub const fn target_lineage(&self) -> &FitSourceLineage {
+        &self.target_lineage
+    }
+
+    pub const fn qmf_source_identity(&self) -> &SevenCarrierQmfSourceIdentity {
+        self.rows.qmf_source_identity()
+    }
+
+    pub const fn production_allowed(&self) -> bool {
+        false
+    }
+
+    pub fn write_payload_with_resolved_profile(
+        &self,
+        profile: ResolvedEncodingProfile,
+        provider: &RepresentationRetryProvider,
+        clip_gain_index: u8,
+        sequence_count: u16,
+        capacity_bytes: u16,
+    ) -> Result<RepresentationWriteResult, RepresentationRetryError> {
+        write_fit_representation_with_resolved_profile(
+            provider,
+            FitRepresentationInput {
+                full_words: self.rows.full_words(),
+                sparse_words: self.rows.sparse_words(),
+                selected_channels: self.rows.selected_channels(),
+                representation_offset: self.representation_offset,
+                row_layout: JocCoefficientRowLayout::SevenChannel,
+            },
+            clip_gain_index,
+            sequence_count,
+            capacity_bytes,
+            profile,
+        )
+    }
+}
+
+/// Fits the 15 target-slot rows against a same-source seven-carrier raw-QMF window set.
+///
+/// The diagnostic policy begins with all seven target roles eligible, then extends the existing
+/// support-growth search in role order. Geometry-based five-channel eligibility and coefficient
+/// payload ownership remain separate inputs and are not inferred here.
+pub fn fit_seven_carrier_window_set(
+    target_windows: &[u32],
+    carrier_windows: &SevenCarrierWindowSet,
+    weight_words: &[u32; 48],
+    score_provider: &FitScoreProvider,
+) -> Result<SevenCarrierFitRows, CoefficientFittingError> {
+    let carrier_words = carrier_windows.words_in_target_order();
+    let equations = build_normal_equations_for_carriers::<SEVEN_CHANNEL_COUNT>(
+        target_windows,
+        &carrier_words,
+        weight_words,
+    )
+    .map_err(CoefficientFittingError::NormalEquation)?;
+    if equations.len() != OBJECT_COUNT * BAND_COUNT {
+        return Err(CoefficientFittingError::Shape);
+    }
+
+    let mut full_words = vec![ZERO_BITS; OBJECT_COUNT * SEVEN_CHANNEL_COUNT * BAND_COUNT];
+    let mut sparse_words = vec![ZERO_BITS; OBJECT_COUNT * BAND_COUNT];
+    let mut selected_channels = vec![0_u16; OBJECT_COUNT * BAND_COUNT];
+    let mut score_call_count = 0_u32;
+    for equation in &equations {
+        let object = usize::from(equation.object());
+        let band = usize::from(equation.band());
+        let result = search_coefficient_cell_for_carriers::<SEVEN_CHANNEL_COUNT>(
+            score_provider,
+            equation,
+            target_windows,
+            &carrier_words,
+            weight_words,
+            [true; SEVEN_CHANNEL_COUNT],
+        )
+        .map_err(CoefficientFittingError::Search)?;
+        for channel in 0..SEVEN_CHANNEL_COUNT {
+            full_words[(object * SEVEN_CHANNEL_COUNT + channel) * BAND_COUNT + band] =
+                result.stored_words()[channel];
+        }
+        sparse_words[object * BAND_COUNT + band] = result.sparse_stored_word();
+        selected_channels[object * BAND_COUNT + band] = u16::from(result.sparse_selected_channel());
+        for stage in result.stages() {
+            score_call_count = score_call_count
+                .checked_add(u32::from(stage.candidate_count()))
+                .ok_or(CoefficientFittingError::Shape)?;
+        }
+    }
+
+    Ok(SevenCarrierFitRows {
+        qmf_source_identity: carrier_windows.source_identity().clone(),
+        full_words,
+        sparse_words,
+        selected_channels,
+        score_call_count,
+    })
+}
+
+/// Stages a C=7 fit from one spatial target-slot projection and its same-source ADM-QMF windows.
+pub fn stage_seven_carrier_coefficient_fit_from_qmf(
+    profile: ResolvedEncodingProfile,
+    before: &CoefficientFitState,
+    projection: &SelectedJocQmfProjection,
+    carrier_windows: &SevenCarrierWindowSet,
+    carrier_after_state: &SevenCarrierQmfState,
+    qmf_provider: &QmfReceiverFunctionalProvider,
+    score_provider: &FitScoreProvider,
+) -> Result<SevenCarrierCoefficientFitProposal, CoefficientFittingError> {
+    let expected_dispatch = before
+        .fit_generation
+        .checked_add(1)
+        .ok_or(CoefficientFittingError::Generation)?;
+    let source_identity = carrier_windows.source_identity();
+    if before.geometry.generation() != before.fit_generation
+        || projection.dispatch().value() != expected_dispatch
+        || projection.source_index().dispatch().ok() != Some(projection.dispatch())
+        || source_identity.callback_lineage() != projection.transaction_id()
+        || source_identity.source_index() != projection.source_index()
+        || profile.joc_reconstruction_layout() != JocReconstructionLayout::Flat7x
+        || profile.joc_payload_downmix_index() != JocPayloadDownmixIndex::SevenChannel
+    {
+        return Err(CoefficientFittingError::Lineage);
+    }
+    let target_words = projection.target_object_window_words();
+    let temporal = before
+        .temporal
+        .stage_target_windows48(target_words)
+        .map_err(CoefficientFittingError::Temporal)?;
+    let geometry = stage_geometry_from_qmf(
+        &before.geometry,
+        projection,
+        temporal.after().weight_words(),
+        qmf_provider,
+    )
+    .map_err(CoefficientFittingError::Geometry)?;
+    let rows = fit_seven_carrier_window_set(
+        target_words,
+        carrier_windows,
+        temporal.after().weight_words(),
+        score_provider,
+    )?;
+    let fit_generation = geometry.after().generation();
+    let representation_offset = temporal
+        .before_segment()
+        .changed()
+        .then_some(temporal.before_segment().start());
+    Ok(SevenCarrierCoefficientFitProposal {
+        after: CoefficientFitState {
+            temporal: temporal.into_after(),
+            geometry: geometry.into_after(),
+            fit_generation,
+            seven_carrier_qmf: Some(carrier_after_state.clone()),
+        },
+        rows,
+        target_lineage: FitSourceLineage::from_projection(projection),
+        representation_offset,
+    })
+}
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FitSourceLineage {
     programme_id: SourceFlagsProgrammeId,
@@ -120,6 +430,19 @@ pub struct FitSourceLineage {
 }
 
 impl FitSourceLineage {
+    /// Derives the JOC source lineage from an already accepted QMF projection.
+    pub fn from_projection(projection: &SelectedJocQmfProjection) -> Self {
+        Self {
+            programme_id: projection.programme_id().clone(),
+            attempt: projection.attempt(),
+            transaction_id: projection.transaction_id().clone(),
+            source_index: projection.source_index(),
+            dispatch: projection.dispatch(),
+            spatial_before_generation: projection.spatial_before_generation(),
+            spatial_before_digest: projection.spatial_before_digest(),
+        }
+    }
+
     pub fn programme_id(&self) -> &SourceFlagsProgrammeId {
         &self.programme_id
     }
@@ -167,6 +490,173 @@ impl FitSourceLineage {
             spatial_before_generation,
             spatial_before_digest,
         }
+    }
+}
+
+/// Validated row values returned by an authoritative Flat7x row provider.
+#[derive(Clone, Debug)]
+pub struct Flat7xCoefficientRowsProviderOutput<'a> {
+    rows: Flat7xCoefficientRows<'a>,
+    source_receipt: Flat7xCoefficientRowsSourceReceipt,
+}
+
+/// Provider-owned source lineage for one Flat7x coefficient-row output.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Flat7xCoefficientRowsSourceReceipt {
+    producer_transaction_id: CallbackTransactionId,
+    source_lineage: FitSourceLineage,
+    source_generation_receipt: Flat7xD0SourceGenerationReceipt,
+}
+
+impl Flat7xCoefficientRowsSourceReceipt {
+    pub fn new(
+        producer_transaction_id: CallbackTransactionId,
+        source_lineage: FitSourceLineage,
+        source_generation_receipt: Flat7xD0SourceGenerationReceipt,
+    ) -> Result<Self, CoefficientFittingError> {
+        let source_generation_lineage = source_generation_receipt.callback_lineage();
+        if &producer_transaction_id != source_generation_receipt.source_transaction_id()
+            || &source_lineage.transaction_id != source_generation_lineage
+            || source_lineage.programme_id.as_str()
+                != source_generation_lineage.programme_id().as_str()
+            || source_lineage.attempt.value() != source_generation_lineage.attempt_id().value()
+            || source_lineage.source_index != source_generation_receipt.source_index()
+            || source_lineage.source_index.dispatch().ok() != Some(source_lineage.dispatch)
+        {
+            return Err(CoefficientFittingError::Lineage);
+        }
+        Ok(Self {
+            producer_transaction_id,
+            source_lineage,
+            source_generation_receipt,
+        })
+    }
+
+    pub fn producer_transaction_id(&self) -> &CallbackTransactionId {
+        &self.producer_transaction_id
+    }
+
+    pub const fn source_lineage(&self) -> &FitSourceLineage {
+        &self.source_lineage
+    }
+
+    pub const fn source_generation_receipt(&self) -> &Flat7xD0SourceGenerationReceipt {
+        &self.source_generation_receipt
+    }
+}
+
+impl<'a> Flat7xCoefficientRowsProviderOutput<'a> {
+    pub const fn new(
+        rows: Flat7xCoefficientRows<'a>,
+        source_receipt: Flat7xCoefficientRowsSourceReceipt,
+    ) -> Self {
+        Self {
+            rows,
+            source_receipt,
+        }
+    }
+
+    pub const fn rows(&self) -> Flat7xCoefficientRows<'a> {
+        self.rows
+    }
+
+    pub const fn source_receipt(&self) -> &Flat7xCoefficientRowsSourceReceipt {
+        &self.source_receipt
+    }
+
+    #[cfg(any(test, feature = "test-support"))]
+    /// Creates source-bound test evidence without asserting a production provider.
+    ///
+    /// # Panics
+    ///
+    /// Panics only if the fixed synthetic transaction identifier is invalid.
+    pub fn synthetic_for_test(
+        rows: Flat7xCoefficientRows<'a>,
+        source_lineage: FitSourceLineage,
+    ) -> Self {
+        let producer_transaction_id = CallbackTransactionId::new("synthetic-provider-source")
+            .expect("synthetic transaction id is valid");
+        let source_generation_receipt = Flat7xD0SourceGenerationReceipt::synthetic_for_test(
+            producer_transaction_id.clone(),
+            1,
+            source_lineage.transaction_id().clone(),
+            source_lineage.source_index(),
+            0,
+        );
+        let source_receipt = Flat7xCoefficientRowsSourceReceipt::new(
+            producer_transaction_id,
+            source_lineage,
+            source_generation_receipt,
+        )
+        .expect("test provider receipt is internally bound");
+        Self::new(rows, source_receipt)
+    }
+}
+
+/// Caller-provided Flat7x rows paired with the fit owner's same-source after-state and lineage.
+#[derive(Clone, Debug)]
+pub struct Flat7xCoefficientRowsProposal<'a> {
+    rows: Flat7xCoefficientRows<'a>,
+    after: CoefficientFitState,
+    source_lineage: FitSourceLineage,
+}
+
+impl<'a> Flat7xCoefficientRowsProposal<'a> {
+    pub(crate) fn new(
+        rows: Flat7xCoefficientRows<'a>,
+        after: CoefficientFitState,
+        source_lineage: FitSourceLineage,
+    ) -> Result<Self, CoefficientFittingError> {
+        if after.fit_generation() != source_lineage.dispatch().value()
+            || source_lineage.source_index().value().checked_add(1)
+                != Some(source_lineage.dispatch().value())
+        {
+            return Err(CoefficientFittingError::Generation);
+        }
+        Ok(Self {
+            rows,
+            after,
+            source_lineage,
+        })
+    }
+
+    /// Binds provider output to the accepted projection that produced this source generation.
+    pub fn from_provider_output(
+        fit_before: &CoefficientFitState,
+        expected_source_generation_receipt: &Flat7xD0SourceGenerationReceipt,
+        output: &Flat7xCoefficientRowsProviderOutput<'a>,
+    ) -> Result<Self, CoefficientFittingError> {
+        if output.source_receipt.source_generation_receipt != *expected_source_generation_receipt {
+            return Err(CoefficientFittingError::Lineage);
+        }
+        let source_lineage = output.source_receipt.source_lineage.clone();
+        let after = fit_before.after_external_flat7x_rows(source_lineage.dispatch())?;
+        Self::new(output.rows, after, source_lineage)
+    }
+
+    /// Binds provider output to an already projection-derived source lineage.
+    #[cfg(any(test, feature = "test-support"))]
+    pub fn from_source_lineage(
+        output: &Flat7xCoefficientRowsProviderOutput<'a>,
+        source_lineage: FitSourceLineage,
+        after: CoefficientFitState,
+    ) -> Result<Self, CoefficientFittingError> {
+        if output.source_receipt.source_lineage != source_lineage {
+            return Err(CoefficientFittingError::Lineage);
+        }
+        Self::new(output.rows, after, source_lineage)
+    }
+
+    pub const fn rows(&self) -> Flat7xCoefficientRows<'a> {
+        self.rows
+    }
+
+    pub const fn after(&self) -> &CoefficientFitState {
+        &self.after
+    }
+
+    pub const fn source_lineage(&self) -> &FitSourceLineage {
+        &self.source_lineage
     }
 }
 
@@ -273,9 +763,7 @@ impl CoefficientFitProposal {
                 sparse_words: &self.sparse_words,
                 selected_channels: &self.selected_channels,
                 representation_offset: self.representation_offset,
-                channel_row_count: CHANNEL_COUNT,
-                downmix_index: 3,
-                initial_mode: 1,
+                row_layout: JocCoefficientRowLayout::FiveChannel,
             },
             clip_gain_index,
             sequence_count,
@@ -291,7 +779,6 @@ impl CoefficientFitProposal {
         sequence_count: u16,
         capacity_bytes: u16,
     ) -> Result<RepresentationWriteResult, RepresentationRetryError> {
-        validate_fixed_five_row_fit_profile(profile)?;
         write_fit_representation_with_resolved_profile(
             provider,
             FitRepresentationInput {
@@ -299,9 +786,7 @@ impl CoefficientFitProposal {
                 sparse_words: &self.sparse_words,
                 selected_channels: &self.selected_channels,
                 representation_offset: self.representation_offset,
-                channel_row_count: CHANNEL_COUNT,
-                downmix_index: 3,
-                initial_mode: 1,
+                row_layout: JocCoefficientRowLayout::FiveChannel,
             },
             clip_gain_index,
             sequence_count,
@@ -320,18 +805,6 @@ impl CoefficientFitProposal {
     }
 }
 
-/// The current fit proposal owns five rows. Flat7x needs a different caller-owned seven-row
-/// proposal; this gate rejects the C5 producer without deriving downmix from the profile header.
-fn validate_fixed_five_row_fit_profile(
-    profile: ResolvedEncodingProfile,
-) -> Result<(), RepresentationRetryError> {
-    if profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
-        Err(RepresentationRetryError::SevenRowCoefficientProviderUnavailable)
-    } else {
-        Ok(())
-    }
-}
-
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum CoefficientFittingError {
     Temporal(TemporalWeightError),
@@ -339,6 +812,7 @@ pub enum CoefficientFittingError {
     NormalEquation(CoefficientNormalEquationError),
     Search(CoefficientSearchError),
     Generation,
+    Lineage,
     Shape,
 }
 
@@ -400,15 +874,8 @@ pub fn stage_coefficient_fit_from_qmf(
         projection.target_object_window_words(),
         projection.carrier_window_words(),
         score_provider,
-        Some(FitSourceLineage {
-            programme_id: projection.programme_id().clone(),
-            attempt: projection.attempt(),
-            transaction_id: projection.transaction_id().clone(),
-            source_index: projection.source_index(),
-            dispatch: projection.dispatch(),
-            spatial_before_generation: projection.spatial_before_generation(),
-            spatial_before_digest: projection.spatial_before_digest(),
-        }),
+        before.seven_carrier_qmf.clone(),
+        Some(FitSourceLineage::from_projection(projection)),
     )
 }
 
@@ -440,6 +907,7 @@ pub(crate) fn stage_coefficient_fit_with_geometry_inputs(
         target_words,
         carrier_words,
         score_provider,
+        before.seven_carrier_qmf.clone(),
         None,
     )
 }
@@ -450,6 +918,7 @@ fn assemble_fit(
     target_words: &[u32],
     carrier_words: &[u32],
     score_provider: &FitScoreProvider,
+    seven_carrier_qmf: Option<SevenCarrierQmfState>,
     source_lineage: Option<FitSourceLineage>,
 ) -> Result<CoefficientFitProposal, CoefficientFittingError> {
     let fit_generation = geometry.after().generation();
@@ -505,6 +974,7 @@ fn assemble_fit(
             temporal: temporal.into_after(),
             geometry: geometry.into_after(),
             fit_generation,
+            seven_carrier_qmf,
         },
         #[cfg(test)]
         row_states_after,
@@ -532,7 +1002,7 @@ mod tests {
             programme_state::SelectedJocState,
             source_stage::assemble_staged_source,
         },
-        profile::{EncodingProfile, JocReconstructionLayout, resolve_selected_profile},
+        profile::EncodingProfile,
         spatial::{
             SpatialAudioMachine, validate_f04_parameter_package_manifest,
             validate_qmf_receiver_functional_provider,
@@ -555,19 +1025,69 @@ mod tests {
         include_bytes!("../../tests/fixtures/synthetic_qmf_fit_checkpoints/approved-joc-math.json");
 
     #[test]
-    fn fixed_five_row_production_fit_fails_closed_for_flat7x_profile() {
-        let flat7x =
-            resolve_selected_profile(&EncodingProfile::selected_with_joc_reconstruction_layout(
-                JocReconstructionLayout::Flat7x,
-            ))
-            .unwrap();
+    fn flat7x_rows_proposal_carries_same_source_after_generation() {
+        // SYNTHETIC/TEST_ONLY shape values verify typed provenance, not audio coefficient fitting.
+        let point = CoefficientPayloadPoint {
+            channel_rows: (0..7).map(|_| vec![0.25]).collect(),
+            selected_channels: Vec::new(),
+        };
+        let input = CoefficientPayloadInput {
+            downmix_index: 1,
+            extension_config: 0,
+            clip_gain_index: 128,
+            sequence_count: 0,
+            time_slot_limit: 24,
+            capacity_bytes: 372,
+            objects: (0..15)
+                .map(|_| CoefficientPayloadObject {
+                    present: true,
+                    band_enum: 0,
+                    mode: 1,
+                    points: vec![point.clone()],
+                    offsets: None,
+                })
+                .collect(),
+        };
+        let rows = Flat7xCoefficientRows::new(&input).unwrap();
+        let programme_id = SourceFlagsProgrammeId::new("flat7x-rows-proposal-test").unwrap();
+        let attempt = SourceFlagsAttempt::new(1);
+        let source_index = CodecSourceIndex::new(0);
+        let dispatch = crate::timeline::JocDispatchIndex::new(1);
+        let lineage = FitSourceLineage::for_test(
+            programme_id.clone(),
+            attempt,
+            CallbackLineageIdentity::new(programme_id, attempt, FrontendCallbackIndex::new(2)),
+            source_index,
+            dispatch,
+            0,
+            SpatialAudioMachine::new_cold(EncodingProfile::selected())
+                .unwrap()
+                .digest(),
+        );
+        let fit_before = CoefficientFitState::cold();
+        let provider_output =
+            Flat7xCoefficientRowsProviderOutput::synthetic_for_test(rows, lineage.clone());
+        let expected_generation_receipt = provider_output
+            .source_receipt()
+            .source_generation_receipt()
+            .clone();
+        let proposal = Flat7xCoefficientRowsProposal::from_provider_output(
+            &fit_before,
+            &expected_generation_receipt,
+            &provider_output,
+        )
+        .unwrap();
+        assert_eq!(proposal.after().fit_generation(), dispatch.value());
+        assert_eq!(proposal.source_lineage(), &lineage);
+        let mismatched_generation_receipt = expected_generation_receipt.with_generation_for_test(2);
         assert!(matches!(
-            validate_fixed_five_row_fit_profile(flat7x),
-            Err(RepresentationRetryError::SevenRowCoefficientProviderUnavailable)
+            Flat7xCoefficientRowsProposal::from_provider_output(
+                &fit_before,
+                &mismatched_generation_receipt,
+                &provider_output,
+            ),
+            Err(CoefficientFittingError::Lineage)
         ));
-
-        let selected_5_1 = resolve_selected_profile(&EncodingProfile::selected()).unwrap();
-        assert!(validate_fixed_five_row_fit_profile(selected_5_1).is_ok());
     }
 
     #[test]

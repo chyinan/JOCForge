@@ -30,12 +30,14 @@ const MAX_ID14_PAYLOAD_BYTES: u32 = 372;
 const MAX_ID2_PAYLOAD_BYTES: u32 = 8;
 const MAX_ID1_PAYLOAD_BYTES: u32 = 10;
 const SELECTED_JOC_DOWNMIX_INDEXES: [u8; 2] = [1, 3];
-const EXPECTED_PAYLOAD_IDS: [CurrentPayloadId; 4] = [
+const SELECTED_FOUR_PAYLOAD_IDS: [CurrentPayloadId; 4] = [
     CurrentPayloadId::Oamd,
     CurrentPayloadId::Joc,
     CurrentPayloadId::AdditionalBsi,
     CurrentPayloadId::Programme,
 ];
+const FLAT7X_DIAGNOSTIC_PAYLOAD_IDS: [CurrentPayloadId; 2] =
+    [CurrentPayloadId::Oamd, CurrentPayloadId::Joc];
 
 /// The carriage mode selected by the caller's fixed programme plan.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -97,6 +99,41 @@ impl CurrentPayloadId {
             2 => Some(Self::AdditionalBsi),
             1 => Some(Self::Programme),
             _ => None,
+        }
+    }
+}
+
+/// Payload sequence admitted for one selected or diagnostic-only Flat7x container.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum CurrentEmdfPayloadSequence {
+    /// Existing selected sequence retained for the default 5.1 path and its baseline.
+    SelectedFourPayloads,
+    /// Flat7x experimental candidate sequence; production remains disabled.
+    Flat7xExperimentalJocPair,
+}
+
+impl CurrentEmdfPayloadSequence {
+    /// Returns the ordered payload types admitted by this container sequence.
+    pub const fn payload_ids(self) -> &'static [CurrentPayloadId] {
+        match self {
+            Self::SelectedFourPayloads => &SELECTED_FOUR_PAYLOAD_IDS,
+            Self::Flat7xExperimentalJocPair => &FLAT7X_DIAGNOSTIC_PAYLOAD_IDS,
+        }
+    }
+
+    /// Returns the ordered wire IDs retained in receipts and serializer reports.
+    pub const fn ordered_wire_ids(self) -> &'static [u8] {
+        match self {
+            Self::SelectedFourPayloads => &[11, 14, 2, 1],
+            Self::Flat7xExperimentalJocPair => &[11, 14],
+        }
+    }
+
+    /// Returns the stable diagnostic label for this composition.
+    pub const fn label(self) -> &'static str {
+        match self {
+            Self::SelectedFourPayloads => "selected_four_payloads_v1",
+            Self::Flat7xExperimentalJocPair => "flat7x_experimental_joc_pair_v1",
         }
     }
 }
@@ -357,6 +394,7 @@ pub struct ParsedCurrentEmdfContainer {
     bytes: Vec<u8>,
     mode: CurrentEmdfCarriageMode,
     carrier_block: CarrierBlock,
+    payload_sequence: CurrentEmdfPayloadSequence,
     id14_provenance: Id14ProducerProvenance,
     payloads: Vec<ProtectedPayload>,
 }
@@ -377,6 +415,11 @@ impl ParsedCurrentEmdfContainer {
         self.carrier_block
     }
 
+    /// Returns the profile-scoped ordered payload sequence validated for this container.
+    pub const fn payload_sequence(&self) -> CurrentEmdfPayloadSequence {
+        self.payload_sequence
+    }
+
     /// Returns the selected ID14 producer identity retained from the popped source.
     pub const fn id14_provenance(&self) -> &Id14ProducerProvenance {
         &self.id14_provenance
@@ -388,20 +431,22 @@ impl ParsedCurrentEmdfContainer {
     }
 }
 
-/// Test-only typed shell for exercising downstream receipt predicates.
+/// Test-only typed shell for exercising downstream receipt predicates under one sequence.
 ///
 /// It deliberately bypasses `parse_current_emdf_container`; callers must keep
 /// the fixture classified as receipt-mechanics coverage, not parser evidence.
 #[cfg(any(test, feature = "test-support"))]
-pub(crate) fn synthetic_receipt_gate_container_for_test(
+pub(crate) fn synthetic_receipt_gate_container_for_sequence_for_test(
     bytes: Vec<u8>,
     carrier_block: CarrierBlock,
     id14_provenance: Id14ProducerProvenance,
+    payload_sequence: CurrentEmdfPayloadSequence,
 ) -> ParsedCurrentEmdfContainer {
     ParsedCurrentEmdfContainer {
         bytes,
         mode: CurrentEmdfCarriageMode::DeployedCompat,
         carrier_block,
+        payload_sequence,
         id14_provenance,
         payloads: Vec::new(),
     }
@@ -486,7 +531,7 @@ pub enum CurrentEmdfParserError {
     JocTwoPointProfile(u8),
     /// A steep point offset is outside the selected 0..=23 slot domain.
     JocPointOffset(u8),
-    /// ID14 selected channel index is outside 0..=4.
+    /// ID14 selected channel index is outside the selected profile's carrier range.
     JocChannelIndex(u8),
     /// The selected codebook table or bounded Huffman body is invalid.
     Huffman(HuffmanError),
@@ -797,6 +842,11 @@ fn parse_joc_payload(
         extension_config,
         clip_gain_index,
     )?;
+    let coefficient_channel_count: u8 = match downmix_index {
+        1 => 7,
+        3 => 5,
+        _ => return Err(CurrentEmdfParserError::JocSelectedHeader),
+    };
     if sequence_count != provenance.sequence_count() {
         return Err(CurrentEmdfParserError::JocSequenceMismatch {
             expected: provenance.sequence_count(),
@@ -864,7 +914,7 @@ fn parse_joc_payload(
             descriptor.mode,
             JocCodingMode::FullCoarse | JocCodingMode::FullFine
         ) {
-            for _channel in 0..5 {
+            for _channel in 0..coefficient_channel_count {
                 let mut previous = initial_previous;
                 for _band in 0..descriptor.band_count {
                     let symbol = read_huffman_symbol(&mut reader, coefficient_table)?;
@@ -877,15 +927,21 @@ fn parse_joc_payload(
         } else {
             let mut previous_channel = u8::try_from(reader.read_bits(3)?)
                 .map_err(|_| CurrentEmdfParserError::TruncatedBitstream)?;
-            if previous_channel > 4 {
+            if previous_channel >= coefficient_channel_count {
                 return Err(CurrentEmdfParserError::JocChannelIndex(descriptor_index));
             }
-            let position_table = codebooks.table(HuffmanCodebookId::Position5);
+            let position_table = codebooks.table(match coefficient_channel_count {
+                5 => HuffmanCodebookId::Position5,
+                7 => HuffmanCodebookId::Position7,
+                _ => return Err(CurrentEmdfParserError::JocSelectedHeader),
+            });
             for _band in 1..descriptor.band_count {
                 let position_symbol = read_huffman_symbol(&mut reader, position_table)?;
-                previous_channel =
-                    u8::try_from((u16::from(previous_channel) + position_symbol) % 5)
-                        .map_err(|_| CurrentEmdfParserError::JocChannelIndex(descriptor_index))?;
+                previous_channel = u8::try_from(
+                    (u16::from(previous_channel) + position_symbol)
+                        % u16::from(coefficient_channel_count),
+                )
+                .map_err(|_| CurrentEmdfParserError::JocChannelIndex(descriptor_index))?;
                 position_symbol_count = position_symbol_count
                     .checked_add(1)
                     .ok_or(CurrentEmdfParserError::VaruintOverflow)?;
@@ -985,9 +1041,27 @@ pub fn parse_current_emdf_container(
     carrier_block: CarrierBlock,
     id14_provenance: &Id14ProducerProvenance,
 ) -> Result<ParsedCurrentEmdfContainer, CurrentEmdfParserError> {
+    parse_current_emdf_container_with_sequence(
+        bytes,
+        expected_mode,
+        carrier_block,
+        id14_provenance,
+        CurrentEmdfPayloadSequence::SelectedFourPayloads,
+    )
+}
+
+/// Parses a selected protected EMDF container under one explicit payload sequence.
+pub fn parse_current_emdf_container_with_sequence(
+    bytes: &[u8],
+    expected_mode: CurrentEmdfCarriageMode,
+    carrier_block: CarrierBlock,
+    id14_provenance: &Id14ProducerProvenance,
+    payload_sequence: CurrentEmdfPayloadSequence,
+) -> Result<ParsedCurrentEmdfContainer, CurrentEmdfParserError> {
     if carrier_block.value() != 2 {
         return Err(CurrentEmdfParserError::UnsupportedCarrierBlock);
     }
+    let expected_payload_ids = payload_sequence.payload_ids();
     let body_bytes = validate_outer_header(bytes)?;
     let mut reader = BitReader::new(body_bytes);
     if reader.read_bits(2)? != 0 {
@@ -997,14 +1071,14 @@ pub fn parse_current_emdf_container(
         return Err(CurrentEmdfParserError::UnsupportedKeyId);
     }
 
-    let mut parsed_payloads = Vec::with_capacity(EXPECTED_PAYLOAD_IDS.len());
-    let mut seen_ids = Vec::with_capacity(EXPECTED_PAYLOAD_IDS.len());
+    let mut parsed_payloads = Vec::with_capacity(expected_payload_ids.len());
+    let mut seen_ids = Vec::with_capacity(expected_payload_ids.len());
     let mut payload_index = 0;
     loop {
         let payload_wire_id = u8::try_from(reader.read_bits(5)?)
             .map_err(|_| CurrentEmdfParserError::UnboundPayload(u8::MAX))?;
         if payload_wire_id == 0 {
-            if let Some(expected) = EXPECTED_PAYLOAD_IDS.get(payload_index) {
+            if let Some(expected) = expected_payload_ids.get(payload_index) {
                 return Err(CurrentEmdfParserError::MissingPayload(
                     expected.wire_value(),
                 ));
@@ -1014,7 +1088,7 @@ pub fn parse_current_emdf_container(
         if seen_ids.contains(&payload_wire_id) {
             return Err(CurrentEmdfParserError::DuplicatePayload(payload_wire_id));
         }
-        let Some(expected) = EXPECTED_PAYLOAD_IDS.get(payload_index).copied() else {
+        let Some(expected) = expected_payload_ids.get(payload_index).copied() else {
             if CurrentPayloadId::from_wire(payload_wire_id).is_some() {
                 return Err(CurrentEmdfParserError::DuplicatePayload(payload_wire_id));
             }
@@ -1101,6 +1175,7 @@ pub fn parse_current_emdf_container(
         bytes: bytes.to_vec(),
         mode: expected_mode,
         carrier_block,
+        payload_sequence,
         id14_provenance: id14_provenance.clone(),
         payloads: parsed_payloads,
     })
@@ -1210,11 +1285,17 @@ fn validate_selected_configuration(
             if configuration.codec_data_reserved.is_some() {
                 false
             } else if id == CurrentPayloadId::Oamd {
-                configuration.frame_aligned == Some(false)
+                let selected_id11 = configuration.frame_aligned == Some(false)
                     && configuration.create_duplicate.is_none()
                     && configuration.remove_duplicate.is_none()
                     && configuration.priority.is_none()
-                    && configuration.processing_allowed.is_none()
+                    && configuration.processing_allowed.is_none();
+                let flat7x_id11 = configuration.frame_aligned == Some(true)
+                    && configuration.create_duplicate == Some(false)
+                    && configuration.remove_duplicate == Some(false)
+                    && configuration.priority == Some(0)
+                    && configuration.processing_allowed == Some(0);
+                selected_id11 || flat7x_id11
             } else {
                 configuration.frame_aligned == Some(true)
                     && configuration.create_duplicate == Some(false)
@@ -1396,12 +1477,30 @@ impl<'a> BitReader<'a> {
 mod tests {
     use super::{
         BitReader, CarrierBlock, CurrentEmdfCarriageMode, CurrentEmdfParserError, CurrentPayloadId,
-        PayloadConfiguration, SELECTED_JOC_DOWNMIX_INDEXES, check_joc_payload_capacity,
-        clear_bit_range, read_varuint, selected_payload_capacity, selected_xy_table,
-        selected_z_table, validate_outer_header, validate_selected_configuration,
-        validate_selected_joc_header,
+        JocCodingMode, PayloadConfiguration, SELECTED_JOC_DOWNMIX_INDEXES,
+        check_joc_payload_capacity, clear_bit_range, parse_joc_payload, read_varuint,
+        selected_payload_capacity, selected_xy_table, selected_z_table, validate_outer_header,
+        validate_selected_configuration, validate_selected_joc_header,
     };
     use crate::integrity::keyless_checksum::{crc8_smbus, crc32_iso_hdlc};
+    use crate::{
+        joc::{
+            coefficient_fitting::FitSourceLineage,
+            coefficient_payload::{
+                CoefficientPayloadInput, CoefficientPayloadObject, CoefficientPayloadPoint,
+                Flat7xCoefficientRows,
+            },
+            id14_body::{
+                Id14ObjectCount, Id14ProducerIdentity, Id14ProducerProvenance, Id14SequenceCount,
+            },
+        },
+        profile::{EncodingProfile, JocReconstructionLayout, resolve_selected_profile},
+        spatial::SpatialAudioMachine,
+        timeline::{
+            CodecSourceIndex, FrontendCallbackIndex, JocDispatchIndex, JocGeneratedWriterIndex,
+        },
+        transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId},
+    };
 
     #[test]
     fn approved_f14k_crc_primitives_match_known_check_values() {
@@ -1502,6 +1601,83 @@ mod tests {
             validate_selected_joc_header(1, 14, 0, 128),
             Err(CurrentEmdfParserError::JocSelectedHeader)
         );
+    }
+
+    #[test]
+    fn flat7x_full_rows_roundtrip_selector_one_fifteen_objects_and_seven_rows() {
+        // SYNTHETIC/TEST_ONLY values exercise parser/serializer shape only, not audio fitting.
+        let point = CoefficientPayloadPoint {
+            channel_rows: (0..7).map(|_| vec![0.25]).collect(),
+            selected_channels: Vec::new(),
+        };
+        let input = CoefficientPayloadInput {
+            downmix_index: 1,
+            extension_config: 0,
+            clip_gain_index: 128,
+            sequence_count: 0,
+            time_slot_limit: 24,
+            capacity_bytes: 372,
+            objects: (0..15)
+                .map(|_| CoefficientPayloadObject {
+                    present: true,
+                    band_enum: 0,
+                    mode: 1,
+                    points: vec![point.clone()],
+                    offsets: None,
+                })
+                .collect(),
+        };
+        let profile =
+            resolve_selected_profile(&EncodingProfile::selected_with_joc_reconstruction_layout(
+                JocReconstructionLayout::Flat7x,
+            ))
+            .unwrap();
+        let rows = Flat7xCoefficientRows::new(&input).unwrap();
+        let payload = rows
+            .write_payload(profile)
+            .unwrap()
+            .payload()
+            .unwrap()
+            .to_vec();
+
+        let programme_id = ProgrammeId::new("flat7x-synthetic-parser-test").unwrap();
+        let attempt = AttemptId::new(1);
+        let source_index = CodecSourceIndex::new(0);
+        let dispatch = JocDispatchIndex::new(1);
+        let lineage = FitSourceLineage::for_test(
+            programme_id.clone(),
+            attempt,
+            CallbackLineageIdentity::new(programme_id, attempt, FrontendCallbackIndex::new(0)),
+            source_index,
+            dispatch,
+            0,
+            SpatialAudioMachine::new_cold(EncodingProfile::selected())
+                .unwrap()
+                .digest(),
+        );
+        let provenance = Id14ProducerProvenance::new(
+            Id14ProducerIdentity {
+                lineage,
+                producer_transaction_id: None,
+                producer_generation: source_index,
+                dispatch,
+                writer: JocGeneratedWriterIndex::new(0),
+                sequence_count: Id14SequenceCount::new(0).unwrap(),
+                object_count: Id14ObjectCount::from_selected_slots(15).unwrap(),
+            },
+            &payload,
+        )
+        .unwrap();
+
+        let parsed = parse_joc_payload(&payload, &provenance).unwrap();
+        assert_eq!(parsed.downmix_index(), 1);
+        assert_eq!(parsed.object_count(), 15);
+        assert_eq!(parsed.descriptors().len(), 15);
+        assert!(parsed.descriptors().iter().all(|descriptor| {
+            descriptor.band_count() == 1 && descriptor.mode() == JocCodingMode::FullFine
+        }));
+        assert_eq!(parsed.coefficient_symbol_count(), 105);
+        assert_eq!(parsed.position_symbol_count(), 0);
     }
 
     #[test]

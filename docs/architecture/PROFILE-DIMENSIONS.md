@@ -1,14 +1,16 @@
 # Profile 维度
 
-Rust `EncodingProfile` 以 immutable fields 表达输入、carrier、downmix control、reconstruction layout、topology、rate 和 EMDF carriage。既有 5.1 rows 保持原解析结果；新增的 Flat7x partial row 在 1024 kbps / 5.1 core 上解析为独立 reconstruction-layout 值，并由 profile-aware JOC header writer 序列化。完整 Flat7x 文件与官方演示结构验收仍为 `NOT_RUN`。另有经批准的 7.1 flat7x / 1664 profile contract，描述 I0/D0 AU 目标；它与本节的 1024/5.1 partial row 分开。Validation 使用独立 `ValidationProfile`，公共 API 不把 render target 传入 production resolver。
+Rust `EncodingProfile` 以 immutable fields 分开表达输入、core carrier、carrier codec、JOC algorithm controls、ID14 payload `downmix_index`、reconstruction layout、substream topology、rate 和 EMDF carriage。既有 5.1 row 继续使用 independent E-AC-3、payload selector 3 和五行 coefficient input；Flat7x row 明确使用 AC-3 I0 / dependent E-AC-3 D0、payload selector 1 和 reconstruction index 1。七行 coefficient producer 与完整 Flat7x 输出验收仍为 `NOT_RUN`。Validation 使用独立 `ValidationProfile`，公共 API 不把 render target 传入 production resolver。
 
 | 维度 | 类型 | 当前唯一允许值 | 拒绝规则 |
 |---|---|---|---|
 | Authored input | `AuthoredInputProfile` | ADM BWF；PCM24；48 kHz；实际行数随输入携带 | 输入行数必须与 RIFF PCM channel count 和 CHNA declared track count 一致，并满足选定 ADM graph 约束；不补齐、截断或重排。 |
 | Core carrier | `CoreCarrierProfile` | 5.1；六 carrier | 其他布局或 carrier 数返回 `UNSUPPORTED_PROFILE`。 |
-| JOC downmix control | `JocDownmixProfile` | `SelectedMode0Phase1Index3`，保留 mode0 / phase1 / internal index3 control | 此 control 与 reconstruction-layout index 分开存储。 |
+| Carrier codec | `CarrierCodecProfile` | 5.1：independent E-AC-3；Flat7x：independent AC-3 I0 + dependent E-AC-3 D0 | carrier syntax、topology 和 reconstruction layout 分别登记。 |
+| JOC downmix control | `JocDownmixProfile` | `SelectedMode0Phase1Index3`，保留 mode0 / phase1 algorithm control | algorithm control 与 ID14 payload `downmix_index` 和 reconstruction-layout index 分开存储。 |
+| ID14 payload downmix | `JocPayloadDownmixIndex` | 5.1：FiveChannel / U3 3；Flat7x：SevenChannel / U3 1 | coefficient producer row layout 必须匹配此 selector。 |
 | JOC reconstruction layout | `JocReconstructionLayout` | `ExistingSelectedFivePointOne` 保持既有 header 输入；新增 `Flat7x` 对应 `joc_dmx_config_idx=1` | `Flat7x` 仅与本节 1024 kbps / 5.1 core row 组合；其他未登记值返回 `UNSUPPORTED_PROFILE`。 |
-| Substream topology | `SubstreamTopology` | 1 个 independent；0 个 dependent | multi-independent 或任意 dependent 返回 `UNSUPPORTED_PROFILE`。 |
+| Substream topology | `SubstreamTopology` | 5.1：1 个 independent；0 个 dependent；Flat7x：independent I0 + dependent D0 | 未登记 topology 返回 `UNSUPPORTED_PROFILE`。 |
 | Codec rate | `CodecRateProfile` / `SelectedDataRate` | 48 kHz 下显式单值 384、448、576、640、768 或 1,024 kbps；6 blocks；1,536 samples/AU；每档对应一个固定 AU 字节数 | 不在六值表内、multi-token 或无法解析的 rate 返回 `UNSUPPORTED_PROFILE`。其他布局和采样率仍不支持。 |
 | EMDF carriage | `EmdfCarriageProfile` | `deployed_compat`（默认）或 `etsi_emdf`（可选） | 未登记模式返回 `UNSUPPORTED_PROFILE`，不得降级。 |
 | Validation render target | `ValidationProfile.render_target` | OpenJOC 7.1.4，仅用于 validation | 不参与 production profile resolution。 |
@@ -17,9 +19,9 @@ Rust `EncodingProfile` 以 immutable fields 表达输入、carrier、downmix con
 
 当前支持一组共享其余维度的 production profile row。`EmdfCarriageProfile` 在各 row 内允许两个受审 carriage mode。下表不包含 `RenderTarget`。
 
-| AuthoredInputProfile | CoreCarrierProfile | JocDownmixProfile | JocReconstructionLayout | SubstreamTopology | CodecRateProfile | EmdfCarriageProfile |
-|---|---|---|---|---|---|---|
-| selected ADM BWF / PCM24 / 48 kHz；N 个物理行，10 ≤ N ≤ 256，CHNA=N，10 个 bed + N−10 个 object | 5.1 / 六 carrier | mode0 / phase1 / internal index3 | `ExistingSelectedFivePointOne` | single independent / zero dependent | 每个显式单值对应下表：6 blocks / 1,536 samples/AU | `deployed_compat` 或 `etsi_emdf` |
+| AuthoredInputProfile | CoreCarrierProfile | CarrierCodecProfile | JocDownmixProfile | JocPayloadDownmixIndex | JocReconstructionLayout | SubstreamTopology | CodecRateProfile | EmdfCarriageProfile |
+|---|---|---|---|---|---|---|---|---|
+| selected ADM BWF / PCM24 / 48 kHz；N 个物理行，10 ≤ N ≤ 256，CHNA=N，10 个 bed + N−10 个 object | 5.1 / 六 carrier | independent E-AC-3 | mode0 / phase1 algorithm control | FiveChannel / 3 | `ExistingSelectedFivePointOne` | single independent / zero dependent | 每个显式单值对应下表：6 blocks / 1,536 samples/AU | `deployed_compat` 或 `etsi_emdf` |
 
 | data_rate（kbps） | selector code | E-AC-3 `frmsiz` code | AU bytes | 33 AU bytes |
 |---:|---:|---:|---:|---:|
@@ -32,19 +34,26 @@ Rust `EncodingProfile` 以 immutable fields 表达输入、carrier、downmix con
 
 The six size/code pairs are bounded to the selected 48 kHz/5.1 profile and Wash's 33-syncframe observations. Only one explicit XML token is admitted. The schema's optional default and multi-token `xs:list` runtime semantics remain unbound and are not enabled. This row expansion does not establish DEE runtime host dispatch for every setting or full end-to-end six-rate output equivalence.
 
-## 局部新增：1024 kbps / 5.1 core 的 Flat7x reconstruction layout
+## Flat7x profile separation
 
-Status: profile-model and header-field slice implemented; complete Flat7x output acceptance `NOT_RUN`.
+Status: carrier-codec route, payload selector and header reconstruction selector are separately modeled; seven-row coefficient producer and complete Flat7x output acceptance remain `NOT_RUN`.
 
 | Dimension | Existing selected row | Additive partial row |
 |---|---|---|
 | `CoreCarrierProfile` | 5.1 / six carrier | 5.1 / six carrier，复用原 audio-generation inputs |
+| `CarrierCodecProfile` | independent E-AC-3 | independent AC-3 I0 BSID6 + dependent E-AC-3 D0 BSID16 |
 | `CodecRateProfile` | Selected explicit rate rows | 1024 kbps |
-| `JocDownmixProfile` | mode0 / phase1 / internal index3 | Same typed value and behavior |
+| `JocDownmixProfile` | mode0 / phase1 algorithm control | Same typed control, separate from payload selector |
+| `JocPayloadDownmixIndex` | FiveChannel / ID14 U3 value 3 | SevenChannel / ID14 U3 value 1 |
 | `JocReconstructionLayout` | `ExistingSelectedFivePointOne` | `Flat7x` |
 | `joc_dmx_config_idx` | Existing header input value | 3-bit value 1（ETSI 7.X `Lb/Rb`） |
+| `SubstreamTopology` | one independent / zero dependent | independent I0 + dependent D0 |
 
-`EncodingProfile::with_joc_reconstruction_layout` creates this immutable configuration value, and the resolver admits Flat7x only at 1024 kbps while preserving the selected input, 5.1 carrier, topology and EMDF carriage dimensions. The optional CLI selector `--joc-layout flat7x` supplies that value; omission preserves the selected 5.1 layout. `ResolvedEncodingProfile` carries both the existing downmix control and the new layout through the source-stage calls to the JOC-header writer. The writer serializes the layout index before the 6-bit object-count field and 3-bit extension index; the existing 5.1 writer path retains its current bytes.
+The selected-profile factory gives the Flat7x row its own carrier codec route, pair topology, seven-channel payload selector and reconstruction layout. `joc_payload_downmix_index` and `joc_dmx_config_idx` remain separate typed fields even though both have wire value 1 for this row. The existing 5.1 row continues to resolve as independent E-AC-3 with payload selector 3. Its coefficient rows and payload bytes are preserved.
+
+`Flat7xI0D0TargetPlan` supplies the frame pair: I0 is legacy AC-3 BSID6 at 640 kbps / 2,560 bytes; D0 is dependent E-AC-3 BSID16 at 1,024 kbps / 4,096 bytes (`frmsiz=2047`). The official sample's D0 is separately 640 kbps / 2,560 bytes (`frmsiz=1279`); sample and target rate rows stay distinct.
+
+`FitRepresentationInput.row_layout` makes coefficient row shape explicit. The current fit producer supplies `FiveChannel`; the Flat7x payload selector requires `SevenChannel`, so the high-level producer rejects the mismatched input before writing an ID14 body. Seven-row values remain a separate producer seam and are not synthesized.
 
 GTC projection is the resolved immutable profile value within the existing attempt identity and generation. It adds no mutable owner or commit boundary. `joc_num_objects_bits` remains a 6-bit field with object count encoded as bits+1; `complexity_index_type_a` remains a separate 8-bit additional-BSI field. ADM row count, E-AC-3 channel-map locations and JOC channel count remain distinct dimensions. Complete Flat7x stream structure, audio output and official-demo acceptance remain `NOT_RUN`.
 

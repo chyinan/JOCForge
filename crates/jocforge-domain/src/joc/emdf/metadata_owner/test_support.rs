@@ -6,12 +6,13 @@
 use super::{
     Id14PopDisposition, Id14QueuePopReceipt, MetadataBodies, MetadataOwner, MetadataPayloadBody,
     MetadataQueueProducerProvenance, MetadataSourceCall, MetadataSourceProposal,
-    MetadataStageInput, ParsedMetadataSourceContainer,
+    MetadataStageInput, ParsedMetadataSourceContainer, canonical_lf_fixture_bytes,
 };
 use crate::timeline::{CodecSourceIndex, JocDispatchIndex, PublishedAuIndex};
 use crate::{
     joc::emdf::{
         id1_configuration::Id1MeasurementConfiguration, metadata_bodies::MetadataBodiesProposal,
+        protected_container::CurrentEmdfPayloadSequence,
     },
     meter::measurement_receipt::{ProgrammeMeasurementReceipt, ProgrammeMeasurementReceiptInput},
     spatial::SpatialAudioDigest,
@@ -62,13 +63,10 @@ fn metadata_owner(
     metadata_public_provider: &[u8],
     metadata_wrapper_config: &[u8],
 ) -> MetadataOwner {
-    MetadataOwner::new(
-        id1_configuration(0),
-        5,
-        metadata_public_provider,
-        metadata_wrapper_config,
-    )
-    .unwrap()
+    // Hash-pinned JSON fixtures are canonical LF bytes; Git may check them out CRLF on Windows.
+    let provider = canonical_lf_fixture_bytes(metadata_public_provider);
+    let wrapper = canonical_lf_fixture_bytes(metadata_wrapper_config);
+    MetadataOwner::new(id1_configuration(0), 5, &provider, &wrapper).unwrap()
 }
 
 fn decode_hex(text: &str) -> Vec<u8> {
@@ -231,8 +229,9 @@ fn receipt_gate_emdf(
         "wire_bytes": 16,
         "body_bytes": 12
     });
+    let keyless_provider_bytes = canonical_lf_fixture_bytes(keyless_integrity_provider);
     let provider =
-        crate::integrity::keyless_checksum::validate_keyless_provider(keyless_integrity_provider)
+        crate::integrity::keyless_checksum::validate_keyless_provider(&keyless_provider_bytes)
             .expect("selected public keyless provider fixture validates");
     let protected =
         crate::integrity::keyless_checksum::protect_emdf_container(&provider, &zero_slot, &layout)
@@ -247,6 +246,7 @@ fn synthetic_f13_metadata_proposal(
     zero_slot_container: &[u8],
     protected_container: &[u8],
     carrier_block: u8,
+    payload_sequence: CurrentEmdfPayloadSequence,
 ) -> MetadataSourceProposal {
     let (_before, mut proposal) = source_zero_proposal(input);
     let programme_id =
@@ -287,11 +287,12 @@ fn synthetic_f13_metadata_proposal(
         consumer_au_index: Some(au_index),
         disposition: Id14PopDisposition::Published,
     };
-    let parsed_container =
-        crate::joc::emdf::protected_container::synthetic_receipt_gate_container_for_test(
+    let parsed_container = crate::joc::emdf::protected_container::
+        synthetic_receipt_gate_container_for_sequence_for_test(
             protected_container.to_vec(),
             crate::joc::emdf::protected_container::CarrierBlock::new(carrier_block).unwrap(),
             producer,
+            payload_sequence,
         );
 
     proposal.receipt.programme_id = programme_id.clone();
@@ -305,6 +306,7 @@ fn synthetic_f13_metadata_proposal(
     proposal.receipt.proposed_after_generation = f13["metadata_owner_generation_after_candidate"]
         .as_u64()
         .unwrap();
+    proposal.receipt.payload_sequence = payload_sequence;
     proposal.receipt.id14_queue_pop = Some(queue_pop.clone());
     proposal.receipt.emdf = Some(zero_slot_container.to_vec());
     proposal.emdf = Some(zero_slot_container.to_vec());
@@ -319,6 +321,7 @@ fn synthetic_f13_metadata_proposal(
         consumer_au_index: au_index,
         id14_queue_pop: queue_pop,
         queue_pop_receipts: Vec::new(),
+        published_payload_queue_pop_receipts: Vec::new(),
     });
     proposal
 }
@@ -330,6 +333,23 @@ fn synthetic_f13_metadata_proposal(
 /// Panics when a checked-in fixture is missing, malformed, or no longer matches the test contract.
 pub fn flat7x_receipt_gate_metadata_for_test(
     input: Flat7xReceiptGateMetadataTestInputs<'_>,
+) -> (
+    MetadataSourceProposal,
+    Vec<u8>,
+    crate::integrity::keyless_checksum::ProtectedEmdfContainer,
+) {
+    flat7x_receipt_gate_metadata_for_test_with_payload_sequence(
+        input,
+        CurrentEmdfPayloadSequence::SelectedFourPayloads,
+    )
+}
+
+/// Returns synthetic F15 receipt-gate values labeled with one payload sequence.
+///
+/// The container shell still bypasses parser execution; this varies receipt lineage only.
+pub fn flat7x_receipt_gate_metadata_for_test_with_payload_sequence(
+    input: Flat7xReceiptGateMetadataTestInputs<'_>,
+    payload_sequence: CurrentEmdfPayloadSequence,
 ) -> (
     MetadataSourceProposal,
     Vec<u8>,
@@ -359,6 +379,7 @@ pub fn flat7x_receipt_gate_metadata_for_test(
         &zero_slot_container,
         &protected_bytes,
         2,
+        payload_sequence,
     );
     (metadata, zero_slot_container, protected)
 }

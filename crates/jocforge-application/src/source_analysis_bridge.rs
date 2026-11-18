@@ -11,7 +11,9 @@ use jocforge_domain::{
         owner::AnalysisNumericPlanStage,
         source_analysis::{
             SourceAnalysisError, SpatialSourceAnalysisInput, prepare_source_analysis,
+            prepare_source_analysis_with_installed_audio,
         },
+        source_frame::SourcedInstalledAudioFrame,
         structure_refresh::F07_FULLBAND_LANES,
     },
     codec::policy_parameters::{
@@ -124,11 +126,22 @@ pub struct SpatialSourceAnalysisBridgeInput<'a> {
 pub fn prepare_source_analysis_from_spatial_callback(
     input: SpatialSourceAnalysisBridgeInput<'_>,
 ) -> Result<Box<AnalysisNumericPlanStage>, SourceAnalysisBridgeError> {
+    prepare_source_analysis_from_spatial_callback_with_installed_audio(input, None)
+}
+
+/// Stages F07-F10 using a profile-selected source frame while retaining the same ready F04
+/// callback and source identity checks. The `None` route remains the selected 5.1 behavior.
+pub fn prepare_source_analysis_from_spatial_callback_with_installed_audio(
+    input: SpatialSourceAnalysisBridgeInput<'_>,
+    installed_audio: Option<&SourcedInstalledAudioFrame>,
+) -> Result<Box<AnalysisNumericPlanStage>, SourceAnalysisBridgeError> {
     thread::scope(|scope| {
         let worker = thread::Builder::new()
             .name("jocforge-main-source-analysis".to_owned())
             .stack_size(SOURCE_ANALYSIS_STACK_BYTES)
-            .spawn_scoped(scope, move || prepare_source_analysis_inner(input))
+            .spawn_scoped(scope, move || {
+                prepare_source_analysis_inner(input, installed_audio)
+            })
             .map_err(|_| SourceAnalysisBridgeError::WorkerUnavailable)?;
         worker
             .join()
@@ -138,6 +151,7 @@ pub fn prepare_source_analysis_from_spatial_callback(
 
 fn prepare_source_analysis_inner(
     input: SpatialSourceAnalysisBridgeInput<'_>,
+    installed_audio: Option<&SourcedInstalledAudioFrame>,
 ) -> Result<Box<AnalysisNumericPlanStage>, SourceAnalysisBridgeError> {
     let SpatialSourceAnalysisBridgeInput {
         prepared,
@@ -173,14 +187,28 @@ fn prepare_source_analysis_inner(
         SpatialAudioCallbackOutcome::Joc(projection) => projection.as_ref(),
     };
 
-    let analysis_stage = prepare_source_analysis(SpatialSourceAnalysisInput {
-        analysis_before,
-        attempt_id,
-        transaction_id: source_transaction_id,
-        projection,
-        previous_short,
-        providers,
-    })
+    let analysis_stage = if let Some(installed_audio) = installed_audio {
+        prepare_source_analysis_with_installed_audio(
+            SpatialSourceAnalysisInput {
+                analysis_before,
+                attempt_id,
+                transaction_id: source_transaction_id,
+                projection,
+                previous_short,
+                providers,
+            },
+            installed_audio,
+        )
+    } else {
+        prepare_source_analysis(SpatialSourceAnalysisInput {
+            analysis_before,
+            attempt_id,
+            transaction_id: source_transaction_id,
+            projection,
+            previous_short,
+            providers,
+        })
+    }
     .map_err(SourceAnalysisBridgeError::SourceAnalysis)?;
     Ok(Box::new(analysis_stage))
 }
@@ -188,11 +216,66 @@ fn prepare_source_analysis_inner(
 #[cfg(test)]
 mod tests {
     use super::SelectedSourceAnalysisProviders;
+    use jocforge_domain::{
+        analysis::{
+            owner::AnalysisOwnerRoot,
+            source_analysis::{SourceAnalysisInput, prepare_source_analysis_frame},
+            source_frame::installed_audio_from_external_pcm_rows,
+            structure_refresh::F07_FULLBAND_LANES,
+        },
+        timeline::CodecSourceIndex,
+        transaction::{AttemptId, CallbackTransactionId},
+    };
 
     #[test]
     fn source_analysis_loads_selected_dee_window_from_domain_provider() {
         let providers = SelectedSourceAnalysisProviders::load_approved().unwrap();
 
         assert_eq!(providers.transform.window_f32_bits()[21], 0x3c0e_a5aa);
+    }
+
+    #[test]
+    fn nonzero_six_lane_source_reaches_f08_fullband_and_lfe_inputs() {
+        let providers = SelectedSourceAnalysisProviders::load_approved().unwrap();
+        let rows: [Vec<u32>; 6] = std::array::from_fn(|lane| {
+            let mut row = vec![0.0_f32.to_bits(); 1_536];
+            row[128] = (0.25_f32 + lane as f32 * 0.03125).to_bits();
+            row
+        });
+        let source_index = CodecSourceIndex::new(2);
+        let installed_audio = installed_audio_from_external_pcm_rows(
+            source_index,
+            std::array::from_fn(|lane| rows[lane].as_slice()),
+        )
+        .unwrap();
+        let stage = prepare_source_analysis_frame(SourceAnalysisInput {
+            analysis_before: &AnalysisOwnerRoot::cold(),
+            attempt_id: AttemptId::new(3),
+            transaction_id: CallbackTransactionId::new("flat7x-i0-analysis-test").unwrap(),
+            installed_audio: &installed_audio,
+            previous_short: [false; F07_FULLBAND_LANES],
+            providers: providers.providers(),
+        })
+        .unwrap();
+        let numeric_plan = stage.plan().expect("F07-F10 plan is staged");
+        let f08 = numeric_plan.f08();
+
+        for lane in 0..F07_FULLBAND_LANES {
+            assert!(
+                (0..6).any(|block| {
+                    f08.fullband_exponent_inputs()[block * F07_FULLBAND_LANES + lane]
+                        .primary_clipped_f32_bits()
+                        .iter()
+                        .any(|word| *word != 0)
+                }),
+                "F08 fullband lane {lane} receives nonzero source coefficients"
+            );
+        }
+        assert!(f08.lfe_exponent_inputs().iter().any(|input| {
+            input
+                .primary_clipped_f32_bits()
+                .iter()
+                .any(|word| *word != 0)
+        }));
     }
 }

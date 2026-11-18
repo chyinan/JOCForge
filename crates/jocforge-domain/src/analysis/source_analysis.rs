@@ -4,7 +4,7 @@
 use crate::{
     codec::policy_parameters::PolicyParameters,
     spatial::spatial_audio_state::SelectedJocQmfProjection,
-    timeline::CodecSourceIndex,
+    timeline::{CodecSourceIndex, source_for_callback},
     transaction::{AttemptId, CallbackTransactionId},
     transform::math_generated_parameters::MathGeneratedTransformParameters,
 };
@@ -26,6 +26,7 @@ use super::{
 pub enum SourceAnalysisError {
     Projection(InstalledAudioProjectionError),
     ProjectionAttemptMismatch,
+    InstalledAudioSourceMismatch,
     Analysis(AnalysisOwnerStageError),
 }
 
@@ -81,6 +82,42 @@ pub fn prepare_source_analysis(
         attempt_id,
         transaction_id,
         installed_audio: &installed_audio,
+        previous_short,
+        providers,
+    })
+}
+
+/// Runs the same F07-F10 stages with a profile-selected six-lane source frame.
+///
+/// The ready receiver projection still supplies the callback, attempt, and source identity
+/// checks; only its six audio rows are replaced by the typed caller-selected frame.
+#[inline(never)]
+pub fn prepare_source_analysis_with_installed_audio(
+    input: SpatialSourceAnalysisInput<'_>,
+    installed_audio: &SourcedInstalledAudioFrame,
+) -> Result<AnalysisNumericPlanStage, SourceAnalysisError> {
+    let SpatialSourceAnalysisInput {
+        analysis_before,
+        attempt_id,
+        transaction_id,
+        projection,
+        previous_short,
+        providers,
+    } = input;
+    if projection.attempt() != attempt_id {
+        return Err(SourceAnalysisError::ProjectionAttemptMismatch);
+    }
+    let source_index = source_for_callback(projection.callback_index()).ok_or(
+        SourceAnalysisError::Projection(InstalledAudioProjectionError::CallbackHasNoCodecSource),
+    )?;
+    if source_index != projection.source_index() || installed_audio.source_index() != source_index {
+        return Err(SourceAnalysisError::InstalledAudioSourceMismatch);
+    }
+    prepare_source_analysis_frame(SourceAnalysisInput {
+        analysis_before,
+        attempt_id,
+        transaction_id,
+        installed_audio,
         previous_short,
         providers,
     })

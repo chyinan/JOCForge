@@ -8,9 +8,11 @@ use crate::joc::{
         restore_trial_coefficient,
     },
     coefficient_solver::{
-        CoefficientSolverError, normalize_selected_solution, solve_selected_support,
+        CoefficientSolverError, normalize_solution_for_carriers, solve_support_for_carriers,
     },
-    fit_score::{FitScoreError, FitScoreEvaluation, FitScoreProvider, score_trial_coefficients},
+    fit_score::{
+        FitScoreError, FitScoreEvaluation, FitScoreProvider, score_trial_coefficients_for_carriers,
+    },
 };
 
 const CHANNEL_COUNT: usize = 5;
@@ -21,18 +23,18 @@ const ZERO_BITS: u32 = 0x0000_0000;
 const PENALTY_F32_BITS: u32 = 0x3f8f_5c29; // R32(28/25)
 
 #[derive(Clone, Debug, PartialEq)]
-pub struct CoefficientFitStage {
+pub struct CoefficientFitStage<const CARRIER_COUNT: usize = CHANNEL_COUNT> {
     iteration: u8,
     candidate_count: u8,
     winner_index: u8,
-    support: [bool; CHANNEL_COUNT],
-    stored_words: [u32; CHANNEL_COUNT],
-    trial_words: [u32; CHANNEL_COUNT],
+    support: [bool; CARRIER_COUNT],
+    stored_words: [u32; CARRIER_COUNT],
+    trial_words: [u32; CARRIER_COUNT],
     score: FitScoreEvaluation,
     penalized_score: f64,
 }
 
-impl CoefficientFitStage {
+impl<const CARRIER_COUNT: usize> CoefficientFitStage<CARRIER_COUNT> {
     pub const fn iteration(&self) -> u8 {
         self.iteration
     }
@@ -45,15 +47,15 @@ impl CoefficientFitStage {
         self.winner_index
     }
 
-    pub const fn support(&self) -> &[bool; CHANNEL_COUNT] {
+    pub const fn support(&self) -> &[bool; CARRIER_COUNT] {
         &self.support
     }
 
-    pub const fn stored_words(&self) -> &[u32; CHANNEL_COUNT] {
+    pub const fn stored_words(&self) -> &[u32; CARRIER_COUNT] {
         &self.stored_words
     }
 
-    pub const fn trial_words(&self) -> &[u32; CHANNEL_COUNT] {
+    pub const fn trial_words(&self) -> &[u32; CARRIER_COUNT] {
         &self.trial_words
     }
 
@@ -67,21 +69,21 @@ impl CoefficientFitStage {
 }
 
 #[derive(Clone, Debug, PartialEq)]
-pub struct CoefficientFitResult {
-    support: [bool; CHANNEL_COUNT],
-    stored_words: [u32; CHANNEL_COUNT],
+pub struct CoefficientFitResult<const CARRIER_COUNT: usize = CHANNEL_COUNT> {
+    support: [bool; CARRIER_COUNT],
+    stored_words: [u32; CARRIER_COUNT],
     sparse_selected_channel: u8,
     sparse_stored_word: u32,
     winning_stage: u8,
-    stages: Vec<CoefficientFitStage>,
+    stages: Vec<CoefficientFitStage<CARRIER_COUNT>>,
 }
 
-impl CoefficientFitResult {
-    pub const fn support(&self) -> &[bool; CHANNEL_COUNT] {
+impl<const CARRIER_COUNT: usize> CoefficientFitResult<CARRIER_COUNT> {
+    pub const fn support(&self) -> &[bool; CARRIER_COUNT] {
         &self.support
     }
 
-    pub const fn stored_words(&self) -> &[u32; CHANNEL_COUNT] {
+    pub const fn stored_words(&self) -> &[u32; CARRIER_COUNT] {
         &self.stored_words
     }
 
@@ -97,7 +99,7 @@ impl CoefficientFitResult {
         self.winning_stage
     }
 
-    pub fn stages(&self) -> &[CoefficientFitStage] {
+    pub fn stages(&self) -> &[CoefficientFitStage<CARRIER_COUNT>] {
         &self.stages
     }
 }
@@ -129,6 +131,32 @@ pub fn search_selected_coefficient_cell(
     weight_words: &[u32; SLOT_COUNT],
     initial_eligibility: [bool; CHANNEL_COUNT],
 ) -> Result<CoefficientFitResult, CoefficientSearchError> {
+    search_coefficient_cell_for_carriers::<CHANNEL_COUNT>(
+        provider,
+        equation,
+        target_words,
+        carrier_words,
+        weight_words,
+        initial_eligibility,
+    )
+}
+
+/// Runs the existing support-growth search for a fixed carrier count.
+/// For C=5, candidate and floating-point accumulation order remain unchanged. C=7 extends the
+/// same experimental policy in target-role order and remains a non-production strategy.
+pub fn search_coefficient_cell_for_carriers<const CARRIER_COUNT: usize>(
+    provider: &FitScoreProvider,
+    equation: &CoefficientNormalEquation<CARRIER_COUNT>,
+    target_words: &[u32],
+    carrier_words: &[u32],
+    weight_words: &[u32; SLOT_COUNT],
+    initial_eligibility: [bool; CARRIER_COUNT],
+) -> Result<CoefficientFitResult<CARRIER_COUNT>, CoefficientSearchError> {
+    let iteration_limit =
+        u8::try_from(CARRIER_COUNT).map_err(|_| CoefficientSearchError::InputShape)?;
+    if CARRIER_COUNT == 0 {
+        return Err(CoefficientSearchError::EmptyInitialEligibility);
+    }
     if !initial_eligibility.iter().any(|enabled| *enabled) {
         return Err(CoefficientSearchError::EmptyInitialEligibility);
     }
@@ -137,21 +165,26 @@ pub fn search_selected_coefficient_cell(
     let precision = CoefficientPrecision::from_wire_mode(wire_mode)
         .map_err(CoefficientSearchError::Quantization)?;
     let mut candidate_supports = single_channel_supports(initial_eligibility);
-    let mut stages = Vec::with_capacity(if high_band { 2 } else { 5 });
+    let mut stages = Vec::with_capacity(if high_band {
+        2
+    } else {
+        usize::from(iteration_limit)
+    });
     let mut overall_stage = 0_u8;
     let mut overall_penalized = f64::INFINITY;
-    let mut overall_support = [false; CHANNEL_COUNT];
-    let mut overall_stored = [ZERO_BITS; CHANNEL_COUNT];
+    let mut overall_support = [false; CARRIER_COUNT];
+    let mut overall_stored = [ZERO_BITS; CARRIER_COUNT];
     let mut sparse_selected_channel = 0_u8;
     let mut sparse_stored_word = ZERO_BITS;
 
-    for iteration in 0..5_u8 {
+    for iteration in 0..iteration_limit {
         if candidate_supports.is_empty() {
             break;
         }
-        let mut winner: Option<(usize, Candidate)> = None;
+        let mut winner: Option<(usize, Candidate<CARRIER_COUNT>)> = None;
+        let mut last_scaled_range_error = None;
         for (candidate_index, support) in candidate_supports.iter().copied().enumerate() {
-            let candidate = evaluate_candidate(
+            let candidate = match evaluate_candidate::<CARRIER_COUNT>(
                 provider,
                 equation,
                 target_words,
@@ -159,7 +192,18 @@ pub fn search_selected_coefficient_cell(
                 weight_words,
                 support,
                 precision,
-            )?;
+            ) {
+                Ok(candidate) => candidate,
+                Err(
+                    error @ CoefficientSearchError::Quantization(
+                        CoefficientQuantizationError::ScaledI32Range,
+                    ),
+                ) if CARRIER_COUNT == 7 => {
+                    last_scaled_range_error = Some(error);
+                    continue;
+                }
+                Err(error) => return Err(error),
+            };
             if winner
                 .as_ref()
                 .is_none_or(|(_, current)| candidate.score.score() < current.score.score())
@@ -167,7 +211,12 @@ pub fn search_selected_coefficient_cell(
                 winner = Some((candidate_index, candidate));
             }
         }
-        let (winner_index, winner) = winner.ok_or(CoefficientSearchError::InputShape)?;
+        let (winner_index, winner) = match winner {
+            Some(winner) => winner,
+            None => {
+                return Err(last_scaled_range_error.unwrap_or(CoefficientSearchError::InputShape));
+            }
+        };
         if iteration == 0 {
             let selected = winner
                 .support
@@ -204,7 +253,7 @@ pub fn search_selected_coefficient_cell(
 
         if high_band {
             if iteration == 0 {
-                candidate_supports = single_channel_supports([true; CHANNEL_COUNT]);
+                candidate_supports = single_channel_supports([true; CARRIER_COUNT]);
                 continue;
             }
             break;
@@ -226,28 +275,33 @@ pub fn search_selected_coefficient_cell(
 }
 
 #[derive(Clone, Debug)]
-struct Candidate {
-    support: [bool; CHANNEL_COUNT],
-    stored_words: [u32; CHANNEL_COUNT],
-    trial_words: [u32; CHANNEL_COUNT],
+struct Candidate<const CARRIER_COUNT: usize> {
+    support: [bool; CARRIER_COUNT],
+    stored_words: [u32; CARRIER_COUNT],
+    trial_words: [u32; CARRIER_COUNT],
     score: FitScoreEvaluation,
 }
 
-fn evaluate_candidate(
+fn evaluate_candidate<const CARRIER_COUNT: usize>(
     provider: &FitScoreProvider,
-    equation: &CoefficientNormalEquation,
+    equation: &CoefficientNormalEquation<CARRIER_COUNT>,
     target_words: &[u32],
     carrier_words: &[u32],
     weight_words: &[u32; SLOT_COUNT],
-    support: [bool; CHANNEL_COUNT],
+    support: [bool; CARRIER_COUNT],
     precision: CoefficientPrecision,
-) -> Result<Candidate, CoefficientSearchError> {
+) -> Result<Candidate<CARRIER_COUNT>, CoefficientSearchError> {
     let solved =
-        solve_selected_support(equation, support).map_err(CoefficientSearchError::Solver)?;
-    let normalized =
-        normalize_selected_solution(equation, &solved, target_words, carrier_words, weight_words)
-            .map_err(CoefficientSearchError::Solver)?;
-    let mut trial_words = [ZERO_BITS; CHANNEL_COUNT];
+        solve_support_for_carriers(equation, support).map_err(CoefficientSearchError::Solver)?;
+    let normalized = normalize_solution_for_carriers(
+        equation,
+        &solved,
+        target_words,
+        carrier_words,
+        weight_words,
+    )
+    .map_err(CoefficientSearchError::Solver)?;
+    let mut trial_words = [ZERO_BITS; CARRIER_COUNT];
     for (trial, stored) in trial_words
         .iter_mut()
         .zip(normalized.stored_words().iter().copied())
@@ -258,7 +312,7 @@ fn evaluate_candidate(
             .map_err(CoefficientSearchError::Quantization)?
             .to_bits();
     }
-    let score = score_trial_coefficients(
+    let score = score_trial_coefficients_for_carriers(
         provider,
         equation,
         target_words,
@@ -275,20 +329,24 @@ fn evaluate_candidate(
     })
 }
 
-fn single_channel_supports(eligibility: [bool; CHANNEL_COUNT]) -> Vec<[bool; CHANNEL_COUNT]> {
+fn single_channel_supports<const CARRIER_COUNT: usize>(
+    eligibility: [bool; CARRIER_COUNT],
+) -> Vec<[bool; CARRIER_COUNT]> {
     eligibility
         .into_iter()
         .enumerate()
         .filter(|(_, enabled)| *enabled)
         .map(|(channel, _)| {
-            let mut support = [false; CHANNEL_COUNT];
+            let mut support = [false; CARRIER_COUNT];
             support[channel] = true;
             support
         })
         .collect()
 }
 
-fn add_one_channel_supports(current: [bool; CHANNEL_COUNT]) -> Vec<[bool; CHANNEL_COUNT]> {
+fn add_one_channel_supports<const CARRIER_COUNT: usize>(
+    current: [bool; CARRIER_COUNT],
+) -> Vec<[bool; CARRIER_COUNT]> {
     current
         .iter()
         .enumerate()
@@ -316,6 +374,24 @@ mod tests {
     );
     const MATH: &[u8] =
         include_bytes!("../../tests/fixtures/synthetic_qmf_fit_checkpoints/approved-joc-math.json");
+
+    #[test]
+    fn seven_carrier_support_growth_uses_target_role_order() {
+        let candidates = single_channel_supports([true; 7]);
+        assert_eq!(candidates.len(), 7);
+        assert_eq!(
+            candidates[0],
+            [true, false, false, false, false, false, false]
+        );
+        assert_eq!(
+            candidates[6],
+            [false, false, false, false, false, false, true]
+        );
+
+        let expanded = add_one_channel_supports(candidates[0]);
+        assert_eq!(expanded.len(), 6);
+        assert_eq!(expanded[0], [true, true, false, false, false, false, false]);
+    }
 
     #[test]
     fn six_boundary_cases_match_all_stage_winners_penalties_and_final_outputs() {

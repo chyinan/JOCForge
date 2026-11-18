@@ -13,7 +13,11 @@ use crate::{
     spatial::{
         DescriptorMathematicalProvider, QmfMathematicalFftProvider, QmfReceiverFunctionalProvider,
         post_window_fanout::CallbackPhase,
-        qmf_analysis_synthesis::{QmfAnalysisHistory, QmfAnalysisSynthesisError, analyze_qmf_slot},
+        qmf_analysis_synthesis::{
+            QMF_ANALYSIS_SAMPLES_PER_SLOT, QMF_ANALYSIS_SLOTS_PER_SOURCE,
+            QMF_ANALYSIS_SPECTRUM_WORDS, QmfAnalysisHistory, QmfAnalysisSynthesisError,
+            analyze_qmf_row,
+        },
         source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
     },
     timeline::{
@@ -24,9 +28,9 @@ use crate::{
 };
 
 const CARRIER_LANES: [usize; 5] = [0, 1, 2, 4, 5];
-const SLOT_COUNT: usize = 24;
-const SLOT_SAMPLES: usize = 64;
-const SPECTRUM_WORDS: usize = 128;
+const SLOT_COUNT: usize = QMF_ANALYSIS_SLOTS_PER_SOURCE;
+const SLOT_SAMPLES: usize = QMF_ANALYSIS_SAMPLES_PER_SLOT;
+const SPECTRUM_WORDS: usize = QMF_ANALYSIS_SPECTRUM_WORDS;
 const TARGET_COUNT: usize = 15;
 const ANALYSIS_HISTORY_ROWS: usize = 9;
 const TEMPORAL_SPAN: usize = 896;
@@ -189,6 +193,65 @@ pub struct SelectedJocQmfProjection {
 }
 
 impl SelectedJocQmfProjection {
+    /// Builds an identity-only projection for application route/provenance tests.
+    ///
+    /// Window and spatial payload buffers are empty; this fixture must not be used for fitting,
+    /// serialization, or audio behavior tests.
+    #[cfg(feature = "test-support")]
+    pub fn identity_only_for_test(
+        programme_id: SourceFlagsProgrammeId,
+        attempt: SourceFlagsAttempt,
+        transaction_id: CallbackLineageIdentity,
+        spatial_before_generation: u64,
+        spatial_before_digest: super::SpatialAudioDigest,
+        callback_index: FrontendCallbackIndex,
+        source_index: CodecSourceIndex,
+    ) -> Self {
+        let dispatch = source_index.dispatch().expect("bounded source test index");
+        let empty_finite_rows = std::array::from_fn(|_| Vec::<FiniteF32>::new().into_boxed_slice());
+        let geometry_row = JocGeometryRowState {
+            current_words: [0; 6],
+            target_words: [0; 6],
+            slope_words: [0; 6],
+            remaining_words: [0; 6],
+        };
+        Self {
+            programme_id,
+            attempt,
+            transaction_id,
+            spatial_before_generation,
+            spatial_before_digest,
+            callback_index,
+            source_index,
+            receiver_generation_after: ReceiverCallbackCount::new(dispatch.value()),
+            dispatch,
+            component_origin_generation: callback_index,
+            lfe_origin_generation: callback_index,
+            target_reader_invocation: ReaderInvocationIndex::new(source_index.value()),
+            target_history_producer_generations: [HistoryProducerGeneration::Cold; 16],
+            target_state_before_sha256: [0; 32],
+            target_state_after_sha256: [0; 32],
+            target_sha256: [0; 32],
+            target_semantic_sha256: [0; 32],
+            target_update_words: [0; 96],
+            descriptor_selected_index: 128,
+            descriptor_target_gain_word: 0x3f80_0000,
+            s09_return: empty_finite_rows.clone(),
+            final_six: empty_finite_rows,
+            target_object_windows48: Vec::new().into_boxed_slice(),
+            carrier_windows48: Vec::new().into_boxed_slice(),
+            geometry_rows_before: [geometry_row; 16],
+            geometry_rows_after: [geometry_row; 16],
+        }
+    }
+
+    #[cfg(feature = "test-support")]
+    #[must_use]
+    pub fn with_target_object_windows_for_test(mut self, words: Vec<u32>) -> Self {
+        self.target_object_windows48 = words.into_boxed_slice();
+        self
+    }
+
     pub(crate) fn programme_id(&self) -> &SourceFlagsProgrammeId {
         &self.programme_id
     }
@@ -197,7 +260,7 @@ impl SelectedJocQmfProjection {
         self.attempt
     }
 
-    pub(crate) const fn transaction_id(&self) -> &CallbackLineageIdentity {
+    pub const fn transaction_id(&self) -> &CallbackLineageIdentity {
         &self.transaction_id
     }
 
@@ -213,7 +276,7 @@ impl SelectedJocQmfProjection {
         self.callback_index
     }
 
-    pub(crate) const fn source_index(&self) -> CodecSourceIndex {
+    pub const fn source_index(&self) -> CodecSourceIndex {
         self.source_index
     }
 
@@ -221,7 +284,7 @@ impl SelectedJocQmfProjection {
         self.receiver_generation_after
     }
 
-    pub(crate) const fn dispatch(&self) -> JocDispatchIndex {
+    pub const fn dispatch(&self) -> JocDispatchIndex {
         self.dispatch
     }
 
@@ -843,20 +906,14 @@ fn analyze_one_row(
     functional: &QmfReceiverFunctionalProvider,
     fft: &QmfMathematicalFftProvider,
 ) -> Result<(Vec<u32>, [RawBytes; ANALYSIS_HISTORY_ROWS]), Mode0FittingError> {
-    let mut history = history_from_words(history_before)?;
+    let history = history_from_words(history_before)?;
+    let result = analyze_qmf_row(input_words_as_f32, &history, functional, fft)
+        .map_err(map_analysis_error)?;
     let mut spectra = Vec::with_capacity(SLOT_COUNT * SPECTRUM_WORDS);
-    for slot in 0..SLOT_COUNT {
-        let mut samples = [0.0_f32; SLOT_SAMPLES];
-        for (sample, value) in samples.iter_mut().enumerate() {
-            *value = input_words_as_f32[slot * SLOT_SAMPLES + sample];
-        }
-        let result =
-            analyze_qmf_slot(&samples, &history, functional, fft).map_err(map_analysis_error)?;
-        spectra.extend_from_slice(result.spectrum_words());
-        history = QmfAnalysisHistory::from_words(*result.history_after().rows())
-            .map_err(map_analysis_error)?;
+    for slot in result.spectrum_by_slot() {
+        spectra.extend_from_slice(slot);
     }
-    Ok((spectra, raw_history(history.rows())))
+    Ok((spectra, raw_history(result.history_after().rows())))
 }
 
 fn history_from_words(

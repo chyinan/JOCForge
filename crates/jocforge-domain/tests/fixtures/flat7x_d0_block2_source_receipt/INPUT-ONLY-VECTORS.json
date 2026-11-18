@@ -1,0 +1,24 @@
+{
+  "schema": "flat7x-d0-block2-source-receipt-v1",
+  "classification": "SYNTHETIC_CONTROL_VALUES_ONLY",
+  "payload_or_audio_values": false,
+  "preassembly_generation_mismatch": {
+    "programme_id": "synthetic-programme",
+    "attempt": 1,
+    "callback_index": 4,
+    "source_transaction_id": "synthetic-source-s2",
+    "source_index": 2,
+    "dispatch": 3,
+    "au_index": 0,
+    "analysis_generation": 0,
+    "metadata_owner_before_generation": 12,
+    "metadata_owner_after_generation": 14,
+    "id14_producer_generation": 0,
+    "id14_writer_generation": 1,
+    "expected_source_generation": 0,
+    "supplied_block2_source_generation": 1,
+    "expected_decision": "REJECT_SOURCE_GENERATION_MISMATCH_BEFORE_D0_ASSEMBLY",
+    "execution": "IMPLEMENTED_TEST"
+  },
+  "scope_note": "Generation fields retain their own types and owners. Numeric equality across Metadata, ID14 writer, and Flat7x D0 source generation is not used to infer identity."
+}

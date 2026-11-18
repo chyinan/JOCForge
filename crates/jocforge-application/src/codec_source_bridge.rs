@@ -118,8 +118,8 @@ pub fn bind_selected_codec_bsi_source(
 ///
 /// The mapping reuses the existing selected F06ND-to-F12 field projection. It carries numeric RF
 /// and per-block line codes into the target D0 structure and keeps authored downmix values
-/// separate from PCM row roles. The CI16 scalar comes from the target profile and is independent
-/// from the Type-A complexity index; the caller selects the official profile's absent-mixing form.
+/// separate from PCM row roles. The two CI16 addbsi bytes come from the target profile and remain
+/// separate from Type-A `complexity16`; the caller selects the official profile's absent-mixing form.
 pub fn bind_flat7x_d0_bsi_source_inputs(
     prepared: &PreparedJobInput,
     shared_analysis: &SharedAnalysisReceipt,
@@ -139,7 +139,7 @@ pub fn bind_flat7x_d0_bsi_source_inputs(
         compr: drc_fields.rf_code(),
         dynamic_range_codes: *drc_fields.line_codes(),
         mixing: map_flat7x_d0_mixing_values(mixing),
-        ci16_addbsi: Flat7xD0Ci16Addbsi::new(target.d0_ci16_addbsi_value()),
+        ci16_addbsi: Flat7xD0Ci16Addbsi::new(target.d0_ci16_addbsi_bytes()),
     })
 }
 

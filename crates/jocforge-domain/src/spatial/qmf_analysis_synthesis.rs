@@ -13,6 +13,11 @@ const MODE1_DELAY_SLOT_COUNT: usize = 10;
 const BAND0_FIR_HISTORY_COMPLEX_COUNT: usize = 20;
 const SYNTHESIS_HISTORY_WORD_COUNT: usize = 576;
 const SIGN_BIT: u32 = 0x8000_0000;
+pub(crate) const QMF_ANALYSIS_SAMPLES_PER_SLOT: usize = ANALYSIS_SAMPLE_COUNT;
+pub(crate) const QMF_ANALYSIS_SPECTRUM_WORDS: usize = SPECTRUM_WORD_COUNT;
+pub(crate) const QMF_ANALYSIS_SLOTS_PER_SOURCE: usize = 24;
+pub(crate) const QMF_ANALYSIS_SAMPLES_PER_SOURCE: usize =
+    QMF_ANALYSIS_SAMPLES_PER_SLOT * QMF_ANALYSIS_SLOTS_PER_SOURCE;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 /// `InvalidInput` maps to F04_INPUT_ERROR; `NumericFailure` maps to F04_NUMERIC_FAILURE.
@@ -21,7 +26,7 @@ pub enum QmfAnalysisSynthesisError {
     NumericFailure,
 }
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 /// One lane's nine analysis-history rows, stored as F32 U32 words in `H0..H8` order.
 pub struct QmfAnalysisHistory {
     rows: [[u32; ANALYSIS_SAMPLE_COUNT]; ANALYSIS_HISTORY_ROWS],
@@ -56,6 +61,33 @@ impl QmfAnalysisHistory {
 pub struct QmfAnalysisSlotResult {
     spectrum_words: [u32; SPECTRUM_WORD_COUNT],
     history_after: QmfAnalysisHistory,
+}
+
+#[derive(Debug, Eq, PartialEq)]
+pub(crate) struct QmfAnalysisRowResult {
+    spectrum_by_slot: Box<[[u32; SPECTRUM_WORD_COUNT]; QMF_ANALYSIS_SLOTS_PER_SOURCE]>,
+    history_after: QmfAnalysisHistory,
+}
+
+impl QmfAnalysisRowResult {
+    pub(crate) const fn spectrum_by_slot(
+        &self,
+    ) -> &[[u32; SPECTRUM_WORD_COUNT]; QMF_ANALYSIS_SLOTS_PER_SOURCE] {
+        &self.spectrum_by_slot
+    }
+
+    pub(crate) const fn history_after(&self) -> &QmfAnalysisHistory {
+        &self.history_after
+    }
+
+    pub(crate) fn into_parts(
+        self,
+    ) -> (
+        Box<[[u32; SPECTRUM_WORD_COUNT]; QMF_ANALYSIS_SLOTS_PER_SOURCE]>,
+        QmfAnalysisHistory,
+    ) {
+        (self.spectrum_by_slot, self.history_after)
+    }
 }
 
 impl QmfAnalysisSlotResult {
@@ -188,6 +220,35 @@ pub fn analyze_qmf_slot(
         history_after: QmfAnalysisHistory {
             rows: trace.history_after_9x64,
         },
+    })
+}
+
+/// Analyzes one complete source row as consecutive 64-sample QMF slots.
+///
+/// Each slot uses the preceding slot's history, and the returned history belongs to this row
+/// only. The caller owns role selection, cross-source state, and whether to retain the proposal.
+pub(crate) fn analyze_qmf_row(
+    source_samples: &[f32],
+    history_before: &QmfAnalysisHistory,
+    functional_provider: &QmfReceiverFunctionalProvider,
+    fft_provider: &QmfMathematicalFftProvider,
+) -> Result<QmfAnalysisRowResult, QmfAnalysisSynthesisError> {
+    if source_samples.len() != QMF_ANALYSIS_SAMPLES_PER_SOURCE {
+        return Err(QmfAnalysisSynthesisError::InvalidInput);
+    }
+    let mut history = QmfAnalysisHistory::from_words(*history_before.rows())?;
+    let mut spectrum_by_slot = [[0_u32; SPECTRUM_WORD_COUNT]; QMF_ANALYSIS_SLOTS_PER_SOURCE];
+    for slot in 0..QMF_ANALYSIS_SLOTS_PER_SOURCE {
+        let slot_samples = std::array::from_fn(|sample| {
+            source_samples[slot * QMF_ANALYSIS_SAMPLES_PER_SLOT + sample]
+        });
+        let result = analyze_qmf_slot(&slot_samples, &history, functional_provider, fft_provider)?;
+        spectrum_by_slot[slot] = *result.spectrum_words();
+        history = QmfAnalysisHistory::from_words(*result.history_after().rows())?;
+    }
+    Ok(QmfAnalysisRowResult {
+        spectrum_by_slot: Box::new(spectrum_by_slot),
+        history_after: history,
     })
 }
 

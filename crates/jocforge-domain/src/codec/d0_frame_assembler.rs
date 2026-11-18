@@ -16,6 +16,19 @@ use super::{
     frame_builder::{
         Flat7xD0BsiStructure, Flat7xD0BsiStructureError, write_flat7x_d0_bsi_structure,
     },
+    owner::Flat7xD0SourceGenerationReceipt,
+};
+use crate::{
+    analysis::source_frame::AnalysisOwnerGeneration,
+    integrity::keyless_checksum::ProtectedEmdfContainer,
+    joc::emdf::{
+        metadata_owner::MetadataSourceProposal, protected_container::CurrentEmdfPayloadSequence,
+    },
+    timeline::{
+        CodecSourceIndex, FrontendCallbackIndex, JocDispatchIndex, JocGeneratedWriterIndex,
+        PublicationDisposition, PublishedAuIndex, publication_for_source, source_for_callback,
+    },
+    transaction::{AttemptId, CallbackLineageIdentity, CallbackTransactionId, ProgrammeId},
 };
 use crate::{integrity::crc16::eac3_crc16, profile::Flat7xI0D0TargetPlan};
 
@@ -56,10 +69,452 @@ impl<'a> OpaqueD0AudioBitSpan<'a> {
     }
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct D0Block2F13SourceLineage {
+    consumer_transaction_id: CallbackTransactionId,
+    callback_lineage: CallbackLineageIdentity,
+    source_index: CodecSourceIndex,
+    dispatch: JocDispatchIndex,
+    au_index: PublishedAuIndex,
+    payload_sequence: CurrentEmdfPayloadSequence,
+    metadata_owner_before_generation: u64,
+    metadata_owner_after_generation: u64,
+    id14_producer_transaction_id: CallbackTransactionId,
+    id14_producer_generation: CodecSourceIndex,
+    id14_writer_generation: JocGeneratedWriterIndex,
+}
+
+impl D0Block2F13SourceLineage {
+    /// Extracts the exact callback, owner-generation, and ID14 producer receipt from F13.
+    pub fn from_metadata_source(
+        metadata_source: &MetadataSourceProposal,
+    ) -> Result<Self, D0Block2SourceReceiptError> {
+        let receipt = metadata_source.receipt();
+        let consumer_transaction_id = metadata_source
+            .consumer_transaction_id()
+            .cloned()
+            .ok_or(D0Block2SourceReceiptError::F13SourceTransactionMissing)?;
+        let id14_queue_pop = receipt
+            .id14_queue_pop()
+            .ok_or(D0Block2SourceReceiptError::Id14QueueReceiptMissing)?;
+        if id14_queue_pop.consumer_transaction_id() != &consumer_transaction_id
+            || id14_queue_pop.consumer_source_index() != receipt.source_index()
+            || id14_queue_pop.consumer_dispatch() != receipt.dispatch()
+            || id14_queue_pop.consumer_au_index() != receipt.au_index()
+        {
+            return Err(D0Block2SourceReceiptError::Id14ConsumerIdentityMismatch);
+        }
+        let id14_provenance = id14_queue_pop.producer();
+        let id14_producer_transaction_id = id14_provenance
+            .producer_transaction_id()
+            .cloned()
+            .ok_or(D0Block2SourceReceiptError::Id14ProducerTransactionMissing)?;
+        let au_index = receipt
+            .au_index()
+            .ok_or(D0Block2SourceReceiptError::AccessUnitMismatch)?;
+        Ok(Self {
+            consumer_transaction_id,
+            callback_lineage: receipt.transaction_id().clone(),
+            source_index: receipt.source_index(),
+            dispatch: receipt.dispatch(),
+            au_index,
+            payload_sequence: receipt.payload_sequence(),
+            metadata_owner_before_generation: receipt.before_generation(),
+            metadata_owner_after_generation: receipt.proposed_after_generation(),
+            id14_producer_transaction_id,
+            id14_producer_generation: id14_provenance.producer_generation(),
+            id14_writer_generation: id14_provenance.writer(),
+        })
+    }
+
+    pub const fn metadata_owner_before_generation(&self) -> u64 {
+        self.metadata_owner_before_generation
+    }
+
+    pub fn consumer_transaction_id(&self) -> &CallbackTransactionId {
+        &self.consumer_transaction_id
+    }
+
+    pub fn id14_producer_transaction_id(&self) -> &CallbackTransactionId {
+        &self.id14_producer_transaction_id
+    }
+
+    pub const fn source_index(&self) -> CodecSourceIndex {
+        self.source_index
+    }
+
+    pub const fn dispatch(&self) -> JocDispatchIndex {
+        self.dispatch
+    }
+
+    pub const fn au_index(&self) -> PublishedAuIndex {
+        self.au_index
+    }
+
+    pub const fn payload_sequence(&self) -> CurrentEmdfPayloadSequence {
+        self.payload_sequence
+    }
+
+    pub const fn metadata_owner_after_generation(&self) -> u64 {
+        self.metadata_owner_after_generation
+    }
+
+    pub const fn id14_producer_generation(&self) -> CodecSourceIndex {
+        self.id14_producer_generation
+    }
+
+    pub const fn id14_writer_generation(&self) -> JocGeneratedWriterIndex {
+        self.id14_writer_generation
+    }
+
+    #[cfg(any(test, feature = "test-support"))]
+    #[must_use]
+    pub fn with_owner_generations_for_test(&self, before: u64, after: u64) -> Self {
+        let mut changed = self.clone();
+        changed.metadata_owner_before_generation = before;
+        changed.metadata_owner_after_generation = after;
+        changed
+    }
+
+    #[cfg(any(test, feature = "test-support"))]
+    #[must_use]
+    pub fn with_id14_generations_for_test(
+        &self,
+        producer: CodecSourceIndex,
+        writer: JocGeneratedWriterIndex,
+    ) -> Self {
+        let mut changed = self.clone();
+        changed.id14_producer_generation = producer;
+        changed.id14_writer_generation = writer;
+        changed
+    }
+
+    #[cfg(any(test, feature = "test-support"))]
+    #[must_use]
+    pub fn with_id14_producer_generation_for_test(&self, producer: CodecSourceIndex) -> Self {
+        let mut changed = self.clone();
+        changed.id14_producer_generation = producer;
+        changed
+    }
+
+    #[cfg(any(test, feature = "test-support"))]
+    #[must_use]
+    pub fn with_id14_writer_generation_for_test(&self, writer: JocGeneratedWriterIndex) -> Self {
+        let mut changed = self.clone();
+        changed.id14_writer_generation = writer;
+        changed
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) struct D0Block2F14kSourceLineage {
+    source_index: CodecSourceIndex,
+    dispatch: JocDispatchIndex,
+    au_index: PublishedAuIndex,
+}
+
+/// Untrusted, typed inputs from the F14K candidate; the assembler receipt constructor validates
+/// each field against the admitted F13 proposal and Codec-owner-issued generation receipt.
+#[derive(Clone, Copy, Debug)]
+pub struct D0Block2F14kSourceReceiptInput<'a> {
+    pub f13_lineage: &'a D0Block2F13SourceLineage,
+    pub source_index: CodecSourceIndex,
+    pub dispatch: JocDispatchIndex,
+    pub au_index: PublishedAuIndex,
+    pub expected_source_generation_receipt: &'a Flat7xD0SourceGenerationReceipt,
+    pub f14k_source_generation_receipt: &'a Flat7xD0SourceGenerationReceipt,
+    pub protected_container: &'a ProtectedEmdfContainer,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum D0Block2SourceReceiptError {
+    SourceClockMismatch,
+    AccessUnitMismatch,
+    F13F14kSourceMismatch,
+    F13F14kDispatchMismatch,
+    F13F14kAccessUnitMismatch,
+    F13F14kReceiptMismatch,
+    F13SourceTransactionMissing,
+    Id14QueueReceiptMissing,
+    Id14ConsumerIdentityMismatch,
+    Id14ProducerTransactionMissing,
+    SourceGenerationMismatch,
+    ProtectedContainerMissing,
+}
+
+/// Source, owner-generation, and protected-container evidence required before block-two assembly.
+///
+/// Its Codec-owner-issued D0 source generation is distinct from the later F15
+/// `Flat7xSourceGeneration` label.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct D0Block2SourceReceipt<'a> {
+    f13: D0Block2F13SourceLineage,
+    f14k: D0Block2F14kSourceLineage,
+    source_generation_receipt: Flat7xD0SourceGenerationReceipt,
+    complete_emdf_container: &'a [u8],
+}
+
+impl<'a> D0Block2SourceReceipt<'a> {
+    /// Binds an F13 proposal to the exact F13 receipt copied through F14K and the protected
+    /// container produced from that same source.
+    pub fn from_f13_f14k_source_receipts(
+        f13_source: &MetadataSourceProposal,
+        f14k: D0Block2F14kSourceReceiptInput<'a>,
+    ) -> Result<Self, D0Block2SourceReceiptError> {
+        let f13 = D0Block2F13SourceLineage::from_metadata_source(f13_source)?;
+        if &f13 != f14k.f13_lineage {
+            return Err(D0Block2SourceReceiptError::F13F14kReceiptMismatch);
+        }
+        Self::new(
+            f13,
+            D0Block2F14kSourceLineage {
+                source_index: f14k.source_index,
+                dispatch: f14k.dispatch,
+                au_index: f14k.au_index,
+            },
+            f14k.expected_source_generation_receipt,
+            f14k.f14k_source_generation_receipt,
+            f14k.protected_container.bytes(),
+        )
+    }
+
+    fn new(
+        f13: D0Block2F13SourceLineage,
+        f14k: D0Block2F14kSourceLineage,
+        expected_source_generation_receipt: &Flat7xD0SourceGenerationReceipt,
+        f14k_source_generation_receipt: &Flat7xD0SourceGenerationReceipt,
+        complete_emdf_container: &'a [u8],
+    ) -> Result<Self, D0Block2SourceReceiptError> {
+        if f13.source_index.dispatch().ok() != Some(f13.dispatch)
+            || source_for_callback(f13.callback_lineage.callback_index()) != Some(f13.source_index)
+        {
+            return Err(D0Block2SourceReceiptError::SourceClockMismatch);
+        }
+        let expected_au = match publication_for_source(f13.source_index) {
+            Ok(PublicationDisposition::Published(consumption)) => consumption.au,
+            _ => return Err(D0Block2SourceReceiptError::AccessUnitMismatch),
+        };
+        if expected_au != f13.au_index {
+            return Err(D0Block2SourceReceiptError::AccessUnitMismatch);
+        }
+        if f13.source_index != f14k.source_index {
+            return Err(D0Block2SourceReceiptError::F13F14kSourceMismatch);
+        }
+        if f13.dispatch != f14k.dispatch {
+            return Err(D0Block2SourceReceiptError::F13F14kDispatchMismatch);
+        }
+        if f13.au_index != f14k.au_index {
+            return Err(D0Block2SourceReceiptError::F13F14kAccessUnitMismatch);
+        }
+        if expected_source_generation_receipt != f14k_source_generation_receipt
+            || f14k_source_generation_receipt.source_transaction_id()
+                != &f13.consumer_transaction_id
+            || f14k_source_generation_receipt.callback_lineage() != &f13.callback_lineage
+            || f14k_source_generation_receipt.source_index() != f13.source_index
+        {
+            return Err(D0Block2SourceReceiptError::SourceGenerationMismatch);
+        }
+        if complete_emdf_container.is_empty() {
+            return Err(D0Block2SourceReceiptError::ProtectedContainerMissing);
+        }
+
+        Ok(Self {
+            f13,
+            f14k,
+            source_generation_receipt: f14k_source_generation_receipt.clone(),
+            complete_emdf_container,
+        })
+    }
+
+    pub const fn source_generation_receipt(&self) -> &Flat7xD0SourceGenerationReceipt {
+        &self.source_generation_receipt
+    }
+
+    pub const fn au_index(&self) -> PublishedAuIndex {
+        self.f13.au_index
+    }
+
+    pub const fn payload_sequence(&self) -> CurrentEmdfPayloadSequence {
+        self.f13.payload_sequence()
+    }
+
+    pub const fn complete_emdf_container(&self) -> &'a [u8] {
+        self.complete_emdf_container
+    }
+
+    pub fn matches_source_identity(
+        &self,
+        programme_id: &ProgrammeId,
+        attempt_id: AttemptId,
+        callback_index: FrontendCallbackIndex,
+        source_transaction_id: &CallbackTransactionId,
+        source_index: CodecSourceIndex,
+        analysis_generation: AnalysisOwnerGeneration,
+    ) -> bool {
+        let lineage = &self.f13.callback_lineage;
+        lineage.programme_id() == programme_id
+            && lineage.attempt_id() == attempt_id
+            && lineage.callback_index() == callback_index
+            && &self.f13.consumer_transaction_id == source_transaction_id
+            && self.f13.source_index == source_index
+            && self.f14k.source_index == source_index
+            && self.source_generation_receipt.source_transaction_id() == source_transaction_id
+            && self.source_generation_receipt.callback_lineage() == lineage
+            && self.source_generation_receipt.source_index() == source_index
+            && self.source_generation_receipt.analysis_generation() == analysis_generation
+    }
+
+    #[cfg(any(test, feature = "test-support"))]
+    /// Creates deterministic lineage for syntax-only assembler tests.
+    ///
+    /// # Panics
+    ///
+    /// Panics only if the fixed test identifiers become invalid under their constructors.
+    pub fn synthetic_for_test(
+        container: &'a [u8],
+        producer_generation: u64,
+        writer_generation: u64,
+    ) -> Result<Self, D0Block2SourceReceiptError> {
+        let source_index = CodecSourceIndex::new(2);
+        let attempt = AttemptId::new(1);
+        let callback_index = FrontendCallbackIndex::new(4);
+        let transaction_id = CallbackTransactionId::new("synthetic-source-s2")
+            .expect("test transaction id is valid");
+        let f13 = D0Block2F13SourceLineage {
+            consumer_transaction_id: transaction_id.clone(),
+            callback_lineage: CallbackLineageIdentity::new(
+                ProgrammeId::new("synthetic-programme").expect("test programme id is valid"),
+                attempt,
+                callback_index,
+            ),
+            source_index,
+            dispatch: JocDispatchIndex::new(3),
+            au_index: PublishedAuIndex::new(0),
+            payload_sequence: CurrentEmdfPayloadSequence::SelectedFourPayloads,
+            metadata_owner_before_generation: 0,
+            metadata_owner_after_generation: 1,
+            id14_producer_transaction_id: transaction_id,
+            id14_producer_generation: CodecSourceIndex::new(producer_generation),
+            id14_writer_generation: JocGeneratedWriterIndex::new(writer_generation),
+        };
+        Self::new(
+            f13,
+            D0Block2F14kSourceLineage {
+                source_index,
+                dispatch: JocDispatchIndex::new(3),
+                au_index: PublishedAuIndex::new(0),
+            },
+            &Flat7xD0SourceGenerationReceipt::synthetic_for_test(
+                CallbackTransactionId::new("synthetic-source-s2")
+                    .expect("test transaction id is valid"),
+                1,
+                CallbackLineageIdentity::new(
+                    ProgrammeId::new("synthetic-programme").expect("test programme id is valid"),
+                    attempt,
+                    callback_index,
+                ),
+                source_index,
+                0,
+            ),
+            &Flat7xD0SourceGenerationReceipt::synthetic_for_test(
+                CallbackTransactionId::new("synthetic-source-s2")
+                    .expect("test transaction id is valid"),
+                1,
+                CallbackLineageIdentity::new(
+                    ProgrammeId::new("synthetic-programme").expect("test programme id is valid"),
+                    attempt,
+                    callback_index,
+                ),
+                source_index,
+                0,
+            ),
+            container,
+        )
+    }
+
+    #[cfg(any(test, feature = "test-support"))]
+    pub fn synthetic_for_source_for_test(
+        expected_source_generation_receipt: &Flat7xD0SourceGenerationReceipt,
+        f14k_source_generation_receipt: &Flat7xD0SourceGenerationReceipt,
+        metadata_owner_generations: (u64, u64),
+        id14_generations: (CodecSourceIndex, JocGeneratedWriterIndex),
+        container: &'a [u8],
+    ) -> Result<Self, D0Block2SourceReceiptError> {
+        Self::synthetic_with_source_receipts_for_test(
+            expected_source_generation_receipt,
+            f14k_source_generation_receipt,
+            metadata_owner_generations,
+            id14_generations,
+            container,
+        )
+    }
+
+    #[cfg(any(test, feature = "test-support"))]
+    pub fn synthetic_with_source_receipts_for_test(
+        expected_source_generation_receipt: &Flat7xD0SourceGenerationReceipt,
+        f14k_source_generation_receipt: &Flat7xD0SourceGenerationReceipt,
+        metadata_owner_generations: (u64, u64),
+        id14_generations: (CodecSourceIndex, JocGeneratedWriterIndex),
+        container: &'a [u8],
+    ) -> Result<Self, D0Block2SourceReceiptError> {
+        let source_index = expected_source_generation_receipt.source_index();
+        let dispatch = source_index
+            .dispatch()
+            .map_err(|_| D0Block2SourceReceiptError::SourceClockMismatch)?;
+        let au_index = match publication_for_source(source_index) {
+            Ok(PublicationDisposition::Published(consumption)) => consumption.au,
+            _ => return Err(D0Block2SourceReceiptError::AccessUnitMismatch),
+        };
+        let f13 = D0Block2F13SourceLineage {
+            consumer_transaction_id: expected_source_generation_receipt
+                .source_transaction_id()
+                .clone(),
+            callback_lineage: expected_source_generation_receipt
+                .callback_lineage()
+                .clone(),
+            source_index,
+            dispatch,
+            au_index,
+            payload_sequence: CurrentEmdfPayloadSequence::SelectedFourPayloads,
+            metadata_owner_before_generation: metadata_owner_generations.0,
+            metadata_owner_after_generation: metadata_owner_generations.1,
+            id14_producer_transaction_id: expected_source_generation_receipt
+                .source_transaction_id()
+                .clone(),
+            id14_producer_generation: id14_generations.0,
+            id14_writer_generation: id14_generations.1,
+        };
+        Self::new(
+            f13,
+            D0Block2F14kSourceLineage {
+                source_index,
+                dispatch,
+                au_index,
+            },
+            expected_source_generation_receipt,
+            f14k_source_generation_receipt,
+            container,
+        )
+    }
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct D0Block2SkipFieldInput<'a> {
     pub insertion_point: CallerOwnedUnboundD0Block2InsertionPoint,
-    pub complete_emdf_container: &'a [u8],
+    pub source_receipt: D0Block2SourceReceipt<'a>,
+}
+
+impl<'a> D0Block2SkipFieldInput<'a> {
+    #[cfg(any(test, feature = "test-support"))]
+    pub fn synthetic_for_test(
+        insertion_point: CallerOwnedUnboundD0Block2InsertionPoint,
+        container: &'a [u8],
+    ) -> Result<Self, D0Block2SourceReceiptError> {
+        Ok(Self {
+            insertion_point,
+            source_receipt: D0Block2SourceReceipt::synthetic_for_test(container, 2, 2)?,
+        })
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -423,10 +878,15 @@ fn assemble_flat7x_d0_frame_bits_inner(
         }
     }
     let block_two_input = block_two_input.ok_or(Flat7xD0FrameAssemblyError::BlockTwoMissing)?;
-    let container_bytes =
-        u16::try_from(block_two_input.skip_fields[0].complete_emdf_container.len()).map_err(
-            |_| Flat7xD0FrameAssemblyError::SkipField(D0EmdfSkipFieldWriteError::ContainerTooLarge),
-        )?;
+    let container_bytes = u16::try_from(
+        block_two_input.skip_fields[0]
+            .source_receipt
+            .complete_emdf_container()
+            .len(),
+    )
+    .map_err(|_| {
+        Flat7xD0FrameAssemblyError::SkipField(D0EmdfSkipFieldWriteError::ContainerTooLarge)
+    })?;
     let block_two_layout_field = [D0Block2SkipFieldLayoutInput {
         insertion_point: block_two_input.skip_fields[0].insertion_point,
         payload_bytes: container_bytes,
@@ -546,7 +1006,9 @@ fn assemble_flat7x_d0_frame_bits_inner(
                     )?;
                     write_flat7x_d0_block2_skipfld(
                         &mut field_writer,
-                        block_two.skip_fields[0].complete_emdf_container,
+                        block_two.skip_fields[0]
+                            .source_receipt
+                            .complete_emdf_container(),
                     )?
                     .bit_offset()
                 };

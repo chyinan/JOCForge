@@ -26,8 +26,8 @@ pub use jocforge_domain::publication::{
 use crate::flat7x_pair_source::Flat7xPairAccessUnitCandidate;
 
 use crate::flat7x_pair_source::{
-    Flat7xD0SourceIdentity, Flat7xPairD0PcmFrameCandidate, Flat7xPairI0FrameCandidate,
-    d0_identity_matches_role_map,
+    D0Block2PlacementReceipt, Flat7xD0SourceIdentity, Flat7xPairD0PcmFrameCandidate,
+    Flat7xPairI0FrameCandidate, d0_identity_matches_role_map,
 };
 
 use jocforge_domain::{
@@ -224,9 +224,10 @@ pub fn preflight_flat7x_pair_io_stage(
     )
     .map_err(Flat7xPairIoStageError::ByteSequenceComposition)?;
 
-    let retirement = match output_owner
-        .stage_next_access_unit(sequence, Flat7xAuSourceReceiptInput::new(None, None, None))
-    {
+    let retirement = match output_owner.stage_next_access_unit(
+        sequence,
+        Flat7xAuSourceReceiptInput::new(None, None, None, None),
+    ) {
         Err(retirement) => retirement,
         Ok(_proposal) => return Err(Flat7xPairIoStageError::AppendProposalUnexpected),
     };
@@ -263,9 +264,12 @@ pub enum Flat7xPairAppendProposalError {
     F13MetadataReceiptMissing,
     I0IntegrityReceiptMissing,
     D0IntegrityReceiptMissing,
+    CodecSourceGenerationReceiptMissing,
+    CodecSourceGenerationReceiptMismatch,
     I0IntegrityRoleMismatch,
     D0IntegrityRoleMismatch,
     F13SourceIdentityMismatch,
+    D0Block2PlacementMismatch,
     IntegritySourceIdentityMismatch,
     SourceTransactionMismatch,
     AuPlan(Flat7xAuPlanValidationError),
@@ -373,6 +377,12 @@ pub fn stage_receipted_i0_with_opaque_d0<'a>(
     let d0 = receipt_input
         .d0_integrity()
         .ok_or(Flat7xPairAppendProposalError::D0IntegrityReceiptMissing)?;
+    let codec_source_generation_receipt = receipt_input
+        .codec_source_generation_receipt()
+        .ok_or(Flat7xPairAppendProposalError::CodecSourceGenerationReceiptMissing)?;
+    if codec_source_generation_receipt != i0_frame.source_generation_receipt() {
+        return Err(Flat7xPairAppendProposalError::CodecSourceGenerationReceiptMismatch);
+    }
     if i0.role() != jocforge_domain::profile::Flat7xSubstreamRole::IndependentI0 {
         return Err(Flat7xPairAppendProposalError::I0IntegrityRoleMismatch);
     }
@@ -447,7 +457,7 @@ pub fn stage_receipted_i0_with_opaque_d0<'a>(
 /// completed frame receipt, and the two Integrity receipts retain their typed I0/D0 roles.
 pub fn stage_flat7x_pcm_pair_for_f15<'a>(
     i0_frame: &Flat7xPairI0FrameCandidate,
-    d0_frame: &Flat7xPairD0PcmFrameCandidate,
+    d0_frame: &'a Flat7xPairD0PcmFrameCandidate,
     source_generation: Flat7xSourceGeneration,
     f13_metadata: &'a jocforge_domain::joc::emdf::metadata_owner::MetadataSourceProposal,
     f12_pair: &'a IntegrityGtcFlat7xF12PairProposal,
@@ -461,14 +471,29 @@ pub fn stage_flat7x_pcm_pair_for_f15<'a>(
     {
         return Err(Flat7xPairAppendProposalError::PairSourceIdentityMismatch);
     }
-    let target = Flat7xI0D0TargetPlan::approved_contract();
+    let block2_placement = d0_frame.block2_placement_receipt();
     let layout = d0_frame
         .frame_candidate()
         .frame()
         .receipt()
         .frame_assembly()
         .layout();
-    let skip = layout.block_two_skip_field();
+    let authoritative_skip = layout.block_two_skip_field();
+    if f13_metadata.receipt().au_index() != Some(block2_placement.au_index())
+        || f13_metadata.receipt().payload_sequence() != block2_placement.payload_sequence()
+        || block2_placement.block_index().zero_based_value() != 2
+        || block2_placement.container_bytes() == 0
+        || block2_placement.container_bytes() > 511
+        || block2_placement.bit_span() != authoritative_skip.bit_span()
+        || block2_placement.container_bytes() != authoritative_skip.payload_bytes()
+        || block2_placement.bit_span().bit_length()
+            != 10 + u32::from(block2_placement.container_bytes()) * 8
+        || i0_frame.source_generation_receipt() != block2_placement.source_generation_receipt()
+    {
+        return Err(Flat7xPairAppendProposalError::D0Block2PlacementMismatch);
+    }
+    let target = Flat7xI0D0TargetPlan::approved_contract();
+    let skip = authoritative_skip;
     let skip_target = target.d0_emdf_skip_field();
     let skip_extent = D0EmdfSkipFieldExtent::new(
         source_generation,
@@ -489,6 +514,7 @@ pub fn stage_flat7x_pcm_pair_for_f15<'a>(
         Some(Flat7xAuIntegrityFrameReceipt::dependent_d0(
             f12_pair.receipts().d0(),
         )),
+        Some(block2_placement.source_generation_receipt()),
     );
     let append_proposal = stage_receipted_i0_with_opaque_d0(
         i0_frame,
@@ -501,6 +527,7 @@ pub fn stage_flat7x_pcm_pair_for_f15<'a>(
         append_proposal,
         after_history: d0_frame.after_history().clone(),
         source_generation,
+        block2_placement: block2_placement.clone(),
         f12_pair,
     })
 }
@@ -514,6 +541,7 @@ pub struct Flat7xPcmPairF15Candidate<'a> {
     append_proposal: Flat7xAuAppendProposal<'a>,
     after_history: Flat7xD0OverlapHistory,
     source_generation: Flat7xSourceGeneration,
+    block2_placement: D0Block2PlacementReceipt,
     f12_pair: &'a IntegrityGtcFlat7xF12PairProposal,
 }
 
@@ -528,6 +556,10 @@ impl<'a> Flat7xPcmPairF15Candidate<'a> {
 
     pub const fn source_generation(&self) -> Flat7xSourceGeneration {
         self.source_generation
+    }
+
+    pub const fn d0_block2_placement_receipt(&self) -> &D0Block2PlacementReceipt {
+        &self.block2_placement
     }
 
     pub const fn integrity_after_owner(&self) -> &IntegrityProgrammeOwner {

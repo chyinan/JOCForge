@@ -33,7 +33,7 @@ Commit `35503d6d404dbafbdbdddc05cbe1b8abaefa4043` 已将 Flat7x I0+D0 durable ap
 
 当前工作树新增同源 D0 BSI producer input：`bind_flat7x_d0_bsi_source_inputs` 从 `NoneDrcOwnerAfterProposal` 和 prepared authored downmix 取得 dialnorm、RF `compr`、六个 line DRC codes 与 mixing values，并保留 shared-analysis identity；CLI 在 D0 frame 组装前与 pair source role receipt 比对。它复用现有 F06ND/F12 field projection 和 `FLAT7X-D0-FOUR-CHANNEL-ENCODER-POLICY-V1`，没有新增 audio math。selected 5.1 path不变。
 
-Wash 已封存官方 AU0 D0 的 CI16 scalar `0x0110`，实现侧已将它作为 target profile 输入贯通 D0 BSI source bridge 与 required `Flat7xD0Ci16Addbsi` writer field。`addbsie=1`、`addbsil=1` 和两字节 payload 由同一 writer 输出；它与 Type-A `complexity16` 保持为独立 profile fields。全输入 CLI、当前代码的新编码 attempt、OpenJOC render 与 W04 尚未运行，`production_allowed=false` 继续保留。
+Wash 已封存官方 AU0 D0 的两字节 CI16 field `0x01 0x10`，实现侧已将其按 byte array 贯通 D0 BSI source bridge 与 required `Flat7xD0Ci16Addbsi` writer field。Parser shape 为 byte0 bit0 extension-present、byte0 bits1..7 reserved zero、byte1 U8 complexity index 16；它与 Type-A `complexity16` 的 join 仍 `UNBOUND`。全输入 CLI、OpenJOC render 与 W04 尚未运行，`production_allowed=false` 继续保留。
 
 ## 隔离仓库中已验证的内容
 
@@ -441,9 +441,9 @@ OpenJOC 0.20.1 reported `skip_observed=0` for the previous candidate. ETSI TS 10
 
 ## 2026-11-15 D0 CI16 addbsi and parser boundary
 
-Wash package `official_demo_d0_addbsi_ci16_v1` (manifest `2a15393cecf15a5f03e58e8f788ff0bd9ea9cf50456b7b23a0ca06f0744112dc`, seal `f1d4da8420911e723098d6f7b983226851928f069ada1cbec18eae87f7607b9b`) supplies the official sample's D0 suffix: `mixmdate=0`, `infomdate=0`, `addbsie=1`, `addbsil=1`, and CI16 `0x0110` at bits `[85,101)`. Raw bytes were not saved. CI16 remains separate from Type-A `complexity16`; their semantic join is `UNBOUND`.
+Wash package `official_demo_d0_addbsi_ci16_v1` (manifest `2a15393cecf15a5f03e58e8f788ff0bd9ea9cf50456b7b23a0ca06f0744112dc`, seal `f1d4da8420911e723098d6f7b983226851928f069ada1cbec18eae87f7607b9b`) supplies the official sample's D0 suffix: `mixmdate=0`, `infomdate=0`, `addbsie=1`, `addbsil=1`, and two CI16 bytes `0x01 0x10` at bits `[85,101)`. Raw bytes were not persisted. Parser-side shape is extension-present in byte0 bit0, zero reserved bits in byte0 bits1..7, and U8 complexity index 16 in byte1; its join to Type-A `complexity16` remains `UNBOUND`.
 
-The approved Flat7x target now carries this scalar, `bind_flat7x_d0_bsi_source_inputs` passes it through `Flat7xD0BsiSourceInputs`, and the typed D0 BSI structure requires it. The writer emits the two-byte field and its presence/length markers. The official-profile caller selects `mixing=None`, yielding `mixmdate=0` and `infomdate=0`; the lower-level mixing writer and admitted mixing inputs remain available for another explicit profile. OpenJOC's parser-diagnostic supplement (manifest `74d14c065df0da40772051b7f87e5c91dd0e0190cc2b60f98a73a6923c322b45`, seal `163432856af5ba942ce1d37efb0db39f5350cf76c5b02ef82ebb1bf0f4a25663`) records parser-only clues for this BSI admission and Huffman truncation boundary; executable/source build join remains `UNBOUND`.
+The approved Flat7x target carries these two bytes, bind_flat7x_d0_bsi_source_inputs passes them through Flat7xD0BsiSourceInputs, and the typed D0 BSI structure requires them. The writer emits both bytes with addbsie/addbsil. The official-profile caller selects mixing=None, yielding mixmdate=0 and infomdate=0; the lower-level mixing writer remains available to another explicit profile. OpenJOC's parser-diagnostic supplement (manifest 74d14c065df0da40772051b7f87e5c91dd0e0190cc2b60f98a73a6923c322b45, seal 163432856af5ba942ce1d37efb0db39f5350cf76c5b02ef82ebb1bf0f4a25663) records parser-only clues for BSI admission and the Huffman truncation boundary; executable/source build join remains UNBOUND.
 
 Focused verification passed: D0 BSI structure 6/6, frame assembler 5/5, frame layout 4/4, audio frame 4/4, application Flat7x tests 6/6, selected 5.1 all-rate route 1/1, CLI check, and fmt check. No new encoding attempt was started. The previous short diagnostic candidate parsed skip field and EMDF on 137/137 AUs, while its ID14 payload remained malformed with truncated Huffman / missing addbsi reports; it predates this CI16 connection. The current target remains experimental with `production_allowed=false`.
 
@@ -457,4 +457,250 @@ Attempt `1794675000832477100` naturally completed: 137 AUs / 911,872 bytes, prog
 
 OpenJOC reports correct outer I0+D0 / 48-kHz / six-block / 7.1 / `chanmap=0x1A00` structure, 137/137 skip fields parsed, 137 EMDF containers, and IDs 11/14 present. CI16 admission is visible on all AUs (`addbsi_signaled_aus=137`, `complexity_indices=[16]`); the prior missing-addbsi diagnostic is gone. ID14 still parses 0/137: first failure is `TruncatedCodeword` from physical reader EOF; `malformed_aus=137`, stream parse fails, decoder admission is false. Deployed compatibility passes; ETSI strict reports payload flag deviations. Decode, render, and playback are `NOT_RUN`; raw payload was not read, `production_allowed=false`.
 
-The coefficient-body/profile join remains `UNBOUND`. The local Flat7x fit path builds 15×5×12 inputs with `downmix_index=3` and mode 1, while the target header profile is index 1/7 channels; the profile-aware writer keeps these selectors separate. Its admission requires mode≥2 and seven channel rows for selector1. Wash withdrew the synthetic-zero-row idea and is seeking an approved 7-row producer contract; no coefficient-width trial or new attempt has run.
+The coefficient-body/profile join remains UNBOUND. Selected 5.1 uses ID14 selector 3 with five rows; Flat7x keeps payload selector 1 separate from header reconstruction index 1. Wash package official-demo-au0-d0-skipfld-id14-block-ordinal-wash-v1 (manifest 9e42b53bbf3ae5d01f7161af079958adf2c9d26b7ee33a7bcb36a7e3cb572958) reports D0 block 2, channel_count 7, 15 present object slots and 15 Full/0 Sparse data points. The profile resolver accepts only the Flat7x seven-channel selector. Its Full-mode exception is limited to 15 present objects with one Full point each; sparse, absent-object and multi-point shapes remain rejected. The available fitter still supplies five rows and fails closed at the typed row-layout gate. No synthetic zero rows were added.
+
+## 2026-11-15 isolated profile-separation increment
+
+Feature worktree `C:\Users\chyinan\.codex\worktrees\JOCForge-isolated\flat7x-profile-separation`, branch `codex/flat7x-profile-separation`, starts at `2cdb18c50580b77b3bb8f60529ad96f7cf5ccbd5`. It adds separate profile fields for carrier codec route, substream topology, JOC reconstruction layout and ID14 payload `downmix_index`. Flat7x selects I0 legacy AC-3 BSID6 plus dependent D0 E-AC-3 BSID16, header index1, payload index1 and pair topology. Selected 5.1 remains independent E-AC-3 with payload index3 and its five-row fit.
+
+FitRepresentationInput.row_layout distinguishes FiveChannel and SevenChannel coefficient inputs. The current fitter remains FiveChannel, so the Flat7x profile returns CoefficientRowLayoutMismatch before payload writing. The resolver admits only the matching Flat7x carrier/topology/selector tuple; 5.1 remains independent E-AC-3 with selector 3 and five rows. The Full-mode exception matches the observed 15-present, one-Full-point-per-object shape. No seven-row values, synthetic zero rows or new audio algorithm were added. Current verification: observed-shape gate 1/1, JOC reconstruction/profile integration 8/8, application Flat7x tests 6/6, selected 5.1 all-rate route 1/1, CLI check, and fmt check pass. No new encoder attempt was run on this worktree.
+
+## 2026-11-15 Flat7x seven-row serializer seam
+
+The second independent increment adds Flat7xCoefficientRows over caller-owned coefficient payload input. Admission requires selector 1, 15 present objects, one Full point per object, exactly seven channel rows per point, and each row length matching that object's band enum. The type's writer additionally requires the resolved Flat7x profile. The public profile-aware writer rejects selector/profile mismatches; profile=None keeps the existing 5.1 behavior.
+
+The isolated parser maps mode 0/1 to FullCoarse/FullFine and 2/3 to SparseCoarse/SparseFine. The synthetic test fixture serializes 15 FullFine objects with one band across seven rows; the local parser reads 15 descriptors and 105 coefficient symbols. It is explicitly SYNTHETIC/TEST_ONLY and never enters production fitting. The existing fitter remains FiveChannel, so there is still no 7-row coefficient value producer or encode candidate.
+
+Verification: coefficient_payload unit tests 2/2; protected_container unit tests 12/12; JOC reconstruction/profile integration 8/8; selected 5.1 all-rate route 1/1; CLI cargo check and fmt check pass. No encoding, OpenJOC, or full workspace test was run.
+
+An additional selected 5.1 coefficient-fitting regression was attempted with cargo test -p jocforge-domain --lib coefficient_fitting::tests::three_generations_match_full_sparse_selected_and_all_score_call_counts --locked -j1. It stopped before coefficient serialization at RepresentationRetryProvider::from_approved_bytes with ProviderIdentity (coefficient_fitting.rs:558); the provider source and this path are outside this increment. The selected 5.1 all-rate route test passed separately.
+
+## 2026-11-15 Flat7x application source seam
+
+The selected 5.1 application path still uses CoefficientFitProposal and its 15x5 fitter. Flat7x now has a separate source entry accepting Flat7xCoefficientRowsProposal with validated 15x7 row shape, FitSourceLineage, and fit after-state. Source identity/generation is checked against the current projection; ID14 serialization then uses the existing dispatch provenance boundary. The profile-aware source entry without a rows proposal returns Flat7xCoefficientSourceUnavailable before running the five-row fitter. No 15x7 production provider is connected, and no encoding/OpenJOC run was started.
+
+## 2026-11-15 Flat7x row proposal application seam
+
+Flat7xCoefficientRowsProviderOutput carries validated row values. The application entry binds this output to the accepted QMF projection with Flat7xCoefficientRowsProposal::from_provider_output, deriving FitSourceLineage and a source-clock after-state that preserves temporal/geometry values while advancing generation to dispatch. The default profile-aware entry without provider output returns Flat7xCoefficientSourceUnavailable before running the five-row QMF fitter. The 5.1 profile keeps the current CoefficientFitProposal / FiveChannel route.
+
+Verification: source row routing 1/1, row proposal same-source generation 1/1, Flat7x coefficient payload shape 2/2, application Flat7x tests 6/6, selected 5.1 all-rate route 1/1, CLI cargo check, fmt check, and diff check pass. The 15x7 producer remains unavailable; no encoder/OpenJOC run or candidate was created.
+
+Verification for this incremental source seam: source-route tests 1/1; Flat7x rows proposal same-source after-generation test 1/1; shared dispatch provenance test 1/1; application route test 1/1; application Flat7x tests 6/6; selected 5.1 all-rate route 1/1; cargo check, fmt check, and diff check pass. Flat7x production remains unavailable without the authoritative rows provider; no encoding or OpenJOC run was made.
+
+## 2026-11-15 Flat7x application bridge test
+
+The public application seam accepts Flat7xCoefficientRowsProviderOutput, derives the proposal lineage from the accepted QMF projection, and crosses the common JOC dispatch provenance path. The application integration test uses a test-support identity-only projection plus SYNTHETIC/TEST_ONLY coefficient-row values; it verifies source generation, dispatch, producer transaction, and object count without a media/audio fixture. The authoritative coefficient provider remains absent, so the default Flat7x route still fails closed.
+
+## 2026-11-15 Full-matrix parser order
+
+Wash reports package openjoc_full_matrix_serialization_order_v1 (manifest 4ba2c0b6133267541a046e416b42adaf9b6c02aa79c98b987563f7ac3de70f7b; seal 20d2a61bc3aff599756526e19f7e1168310d31829a64c7ff36bdbb33323c3821): parser traversal is object → point/time slot → channel row → band; selector1 uses seven rows; band_index 0..7 maps to 1,3,5,7,9,12,15,23. The local Full serializer loop follows this order, which is a structural inference. No coefficient values or production rule are provided.
+
+## 2026-11-15 synthetic ID14-to-AU structure test
+
+The application bridge test uses SYNTHETIC/TEST_ONLY values for 15 present FullFine objects with one seven-row point each, serializes ID14 through the existing Flat7x source proposal, and checks selector 1 / object count 15. A separate frame test uses independent opaque SYNTHETIC/TEST_ONLY bytes for block-2 skipfld framing, D0 assembly and I0-to-D0 AU composition. It checks D0 chanmap 0x1A00, CI16 bytes 01 10, C<=511, atomic C=512 rejection, separate I0 640-kbps / D0 1024-kbps extents, aggregate 1664 kbps, and I0-before-D0 order in one AU. The skipfld fixture is not the ID14 body, a protected F13 container, or an EMDF parser-acceptance result. The tests remain nonpublishing; no candidate or real audio was created, and the authoritative production 15x7 coefficient provider remains missing.
+
+Focused application bridge and opaque skipfld tests passed 3/3, the existing 15-object/seven-row parser round-trip passed 1/1, selected 5.1 all-rate regression passed 1/1, CLI check and fmt check passed. One stale test-only constructor call was aligned with the current provider/proposal API to enable that parser regression; production code is unchanged. Boundary check still fails on the existing F06 standalone_root.rs byte/hash inventory mismatch (expected 48,077 bytes; current branch file 49,292 bytes); this test slice does not touch that file or its map row.
+
+## 2026-11-15 complete EMDF test-builder boundary
+
+The existing test-support receipt gate does not build a parser-shaped F13 container from the current ID14 body. flat7x_receipt_gate_metadata_for_test creates a fixed 16-byte receipt-gate shell, and synthetic_receipt_gate_container_for_test explicitly bypasses parse_current_emdf_container with an empty payload list. The production EMDF serializer is private to MetadataOwner and is invoked from process_source_inner over queued ID1/ID2/ID11/ID14 bodies; no existing test-support API accepts a dynamic Id14BodyProposal and produces a full zero-slot container plus terminal layout. protect_emdf_container only protects caller-supplied zero-slot bytes. Therefore the ID14 serialization and opaque skipfld tests remain separate. A protected, parser-shaped EMDF containing this ID14 body and its parser acceptance remain NOT_RUN.
+
+## 2026-11-15 OpenJOC AU0 carrier source-probe receipt
+
+The earlier presence-only v0.20.1 carrier source probe reports D0 block2 and I0 blocks 3/4/5. Combined with the separate AU0 ID11/14 receipt it supported only a strong structural inference at that time. The later carrier-payload-id receipt below supersedes the inference for source-model ID-to-block association. Neither receipt observes original binary EMDF bytes; binary join remains UNBOUND.
+
+
+## 2026-11-15 OpenJOC AU0 D0 block2 ID11/14 source-probe receipt
+
+Wash single-file carrier-payload-id-report.json SHA-256 795684e1866159d0ff78480419b943bdf493aac10c278020f244b1003183994a is OpenJOC v0.20.1 tag-source MODEL evidence. One carrier record reports frame_owner D0/Dependent/substream0, block_index 2, skip_field_present true, classification PARSED, and payload_ids [11,14]. This is a direct association within the source-probe model and supersedes the earlier uniqueness-based inference for that model. The report still has binary_build_join UNBOUND, payload bytes/bit strings NOT_CAPTURED, and field_owner/generation UNBOUND. Public inspect alone does not expose payload-ID-to-block; this is not a direct observation of original binary EMDF bytes. The target still requires the complete EMDF container in D0 block2. Continuity report carrier-continuity-au1-4-report.json (SHA-256 1d235a51850be975315bc9de6e3ae9e2cade91bb8b2aa09e1770911d0ec268b8) reports the same D0/Dependent/0 block_index 2 parsed IDs 11/14 carrier in every AU1-4, with the AU4 boundary confirmed; together with AU0 this repeats across five AUs. This remains source-probe MODEL evidence only: binary_build_join is UNBOUND, payload bytes/bit strings are NOT_CAPTURED, PCM is NOT_RUN, and no original-binary or DEE output was observed.
+
+## 2026-11-15 synthetic Flat7x paired-header contract test
+
+The application structure test now uses existing complete I0 and D0 frame assemblers on synthetic opaque spans, then composes their actual builder output into the 6656-byte I0-to-D0 AU. I0 AC-3 header fields read back as fscod=0, frmsizecod=36 and BSID6, with six assembled block spans. D0 E-AC-3 prefix fields read back as strmtyp=1, substreamid=0, frmsiz=2047, fscod=0, numblkscod=3 and BSID16. Target remains I0 640/2560 plus D0 1024/4096, 48 kHz, six blocks, 1536 samples/frame. This is a SYNTHETIC/TEST_ONLY local writer-contract check, not binary/OpenJOC parity; its opaque skipfield bytes are not an EMDF container. The OpenJOC binary build join remains UNBOUND.
+
+## 2026-11-15 F13/F14K block-2 protected-container source seam
+
+CLI now carries the F14K ProtectedEmdfContainer bytes to the D0 frame builder. Before returning its D0 syntax summary, it verifies C is 1..511 and equals the protected container length, skip insertion follows the block-two prefix, the trailing block-two span is exactly the mantissa span, and the EMDF payload cursor shared with F12 is skipfield start + 10 bits. The F12 pair test succeeds only after matching those same protected bytes at the cursor. Test-support provider/wrapper/keyless JSON fixtures are normalized from Windows CRLF to canonical LF for their pinned identities; this is test-only. The focused source/container/cursor integration test passed 1/1, 5.1 all-rate regression passed 1/1, CLI cargo check and fmt passed. Its receipt-gate container is synthetic and bypasses parser acceptance; no full-length candidate ran, and no new Fresh GO was issued.
+
+## 2026-11-15 D0 block-two preassembly source receipt
+
+The single E-1037 Release run on `D:\Love Song 方大同.wav` completed Meter prepass (8,420 callbacks; selected LUFS -16.13749), then stopped after g=0/g=1 priming at `Flat7xCoefficientSourceUnavailable`. It exited 2 after 136,733 ms; the unique attempt directory is empty, with no candidate or partial file, so OpenJOC inspection did not run.
+
+The block-two input now carries the Codec-owner-issued D0 generation receipt, the exact F13 lineage snapshot copied through F14K, F14K source/dispatch/AU identity, and the protected container. The constructor accepts an admitted F13 proposal plus the F13 lineage retained by F14K; it compares that complete typed lineage before assembly. Consumer and ID14 producer transactions, F13 owner generations, ID14 producer/writer generations, AnalysisOwnerGeneration, CodecOwnerGeneration, Flat7xD0SourceGeneration, and the later F15 Flat7xSourceGeneration remain distinct. Tests mutate owner generations, ID14 producer/writer generations, and analysis generation one at a time and confirm rejection before frame assembly.
+
+OpenJOC selector1 defines target rows `[L,R,C,Ls,Rs,Lrs,Rrs]`, but the mapping from current 15x5x12 fit rows to seven coefficient rows remains UNBOUND. The zero-filled adapter was removed, and no synthetic rows are connected to production. The CLI continues to fail closed at `Flat7xCoefficientSourceUnavailable`. The selected 5.1 path is unchanged and not equivalent to DEE.
+
+Focused verification: D0 receipt/frame assembler 8/8, D0 audio-frame 4/4, provider receipt proposal 3/3, application provider bridge 1/1, F13/F14K/F15 pair test 1/1, selected 5.1 all-rate route 1/1, workspace fmt/check. Workspace Clippy `-D warnings` reports 28 findings in unchanged files. Boundary check reports the unchanged direct-slice inventory for `crates/jocforge-domain/src/meter/standalone_root.rs`.
+
+## 2026-11-15 protected F13 container and D0 block-2 cursor seam
+
+The CLI published-source path passes F14K protected-container bytes to the existing D0 PCM frame builder. A fail-closed check now binds C to the protected container length (1..511), matches block-two skip insertion to the prefix receipt, requires the post-field span to equal block-two mantissa bits, and takes the payload cursor from Flat7xPairD0PcmFrameCandidate.emdf_container_start; that cursor must equal skipfield start + 10. F12 consumes the same cursor and verifies the protected bytes in the completed frame. The D0 audio-block builder already separates block-two prefix from packed mantissas; the skipfield lies between those spans. A focused pair/F12 integration test with SYNTHETIC/TEST_ONLY receipt-gate bytes passed after the assertions were added. Git-CRLF normalization in metadata test-support was needed for the hash-pinned JSON fixture on Windows; it changes only test inputs. No encoding candidate was started; Fresh GO is still required.
+
+## OpenJOC structure audit for the next candidate
+
+For any future candidate, use Wash's `D:\jocforge_wash_tmp\openjoc_flat7x_structure_audit_probe\run-audit.ps1` in a fresh attempt-local audit directory and the user-designated OpenJOC v0.20.1 binary. The default CLI component-rate JSON is stream aggregate and drops per-AU block index/malformed counts; it cannot prove the D0 block-2 IDs. The public walker API preserves per-AU `block_index` and payload IDs. Separate the gates: ID14 syntax, exactly one ID11 and ID14 with matching present group_id/profile, D0 as the last dependent carrier, and valid two-byte D0 Type-A addbsi. Complete absence requires examined=6, unresolved=0, malformed=0; unresolved/malformed later blocks are unobservable. This helper was not run because E-1037 produced no candidate. The standing authorization E-1052 applies to later attempts after the production provider and preflight are ready, using a separate registered attempt directory each time.
+
+## 2026-11-15 seven-carrier input shape
+
+`SevenCarrierPcmInput` is available from `Flat7xSourcePcmProjection` as a borrowed view in `[L,R,C,Ls,Rs,Lrs,Rrs]` order. The role map stores JOC bindings independently from I0 `[L,C,R,Ls,Rs,LFE]` and D0 `[Ls,Rs,Lrs,Rrs]`; the selected graph fixture maps JOC roles to physical rows `[0,1,2,4,5,6,7]`, leaving LFE row 3 and top-side rows on the physical N-row view. The role-map assumption remains provisional. This increment adds no QMF windows, carrier histories, object-slot lineage, coefficient values, or CLI provider. `Flat7xCoefficientSourceUnavailable` remains the production result. The one-hot mapping test, fmt check, workspace check, and diff check pass; Clippy and boundary check retain their documented existing findings.
+
+## 2026-11-15 seven-carrier QMF window producer
+
+`stage_flat7x_seven_carrier_windows` consumes the seven PCM slices from `Flat7xSourcePcmProjection`; each row goes through the shared `analyze_qmf_row` kernel with its own `QmfAnalysisHistory`. `SevenCarrierWindowSet` concatenates each role's prior 24 QMF slots with the current 24 slots into 48-slot raw-QMF windows, and retains the role bindings plus source/analysis/callback identity. The source receipt remains attached by `Flat7xSevenCarrierWindowCandidate`. No five-carrier mode-0 delay/FIR state is reused. The QMF state proposal is not installed by a programme owner, and no 15x7 coefficient fit or CLI provider exists yet; Flat7x still fails closed. Lane isolation/history rollover 2/2, mode-0 fitting 2/2, 5.1 all-rate route 1/1, workspace check, fmt and diff checks pass. Clippy has 27 existing findings; boundary check retains the unchanged `standalone_root.rs` inventory mismatch.
+
+## 2026-11-15 C7 equation and solver primitives
+
+The existing C5 normal equations, solver, normalizer, score and search have carrier-count-generic entry points with C=5 wrappers. A C=7 call computes 15×12 equation cells with 7×7 Gram matrices and 7-word cross/solution arrays; support growth follows `[L,R,C,Ls,Rs,Lrs,Rrs]`. The C7 fit now joins same-source target-slot and SevenCarrierWindowSet inputs, advances the JOC fit after-state, and writes selector-1 ID14 through representation retry using the actual Codec D0 source-generation receipt. Seven QMF histories are held in the JOC owner canonical extension; C5 state bytes remain unchanged. `source_execution` selects this path only for Flat7x. The first real candidate attempt should use the user's short ADM BWF `D:\testADM.wav`; OpenJOC inspection and playback remain pending. Existing solver/score fixture tests still fail identity/manifest checks.
+
+## 2026-11-15 first OpenJOC render and ID14 capacity correction
+
+E-1092 `D:\testADM.wav` produced a 137-AU experimental candidate. OpenJOC 0.20.1 parsed/admitted all AUs under observed-vendor compatibility and rendered an 8-channel 48 kHz 7.1 WAV. The rendered path is experimental with unresolved semantic binding. Wash's custom target check still flags OAMD `DynamicOnly + LFE` against its expected `Mixed bed + 15 dynamic`. Wash's scalar review confirms additional payload IDs are legal when exactly one ID11 precedes exactly one ID14; the probe's exact-two-item rule is too strict for `[11,14,2,1]`. ETSI strict is not a pass.
+
+E-1093 on full Love Song completed the 8,420-callback Meter pass and stopped in F14/F14K at the first published source with `EMDF_PAYLOAD_CAPACITY_EXCEEDED`. The unique attempt contains no AU append or candidate. The C7 representation retry incorrectly used 511 bytes, which is the complete D0 skipfld container maximum; the ID14 inner payload parser caps at 372. The writer now uses 372 for ID14 while the D0 container bound remains 511. Next run the full Love Song target once in a new attempt directory, then use OpenJOC 0.20.1 inspect and render.
+
+E-1095 with that capacity fix completed Meter and appended 19 AUs / 126,464 bytes, then stopped at local `EMDF_JOC_CHANNEL_INDEX`. OpenJOC 0.20.1 parsed and admitted all 19 partial AUs under observed-vendor compatibility. The local parser had applied the five-channel `Position5`/0..4 rule to selector 1; the approved generic seven-channel grammar supplies `Position7` and indices 0..6. E-1097 showed the initial U3 check still used `>4` after Position7/modulo7 were added; the follow-up now uses the selected carrier count for the table, modulus and range. C7 sparse retry is restored. The exact offending scalar was not captured. Full Love Song still needs a fresh complete run, then OpenJOC inspect/render and listening. Wash reports the OAMD `DynamicOnly + LFE` variant as one `Speaker(RcLfe)` anchor plus 15 dynamic anchors; the ID14-row-to-OAMD-slot identity join remains open.
+
+E-1096 used the temporary Full-only retry policy and completed 513 AUs before C7 search returned `ScaledI32Range`. The first unrepresentable support candidate previously aborted search before other target-role supports were evaluated. C7 now skips only scaled-I32-overflowing candidates, continues the support traversal, and fails if none are representable; it does not clamp coefficients. Selected 5.1 behavior remains unchanged. Next action is a fresh full Love Song attempt.
+
+## First full-length 7.1 render
+
+E-1098 completed the full Love Song encode and EOF: 8,417 AUs, 56,023,552 bytes, 269.344 s, 1,664 kbps aggregate. OpenJOC 0.20.1 parsed and decoder-admitted all 8,417 AUs under observed-vendor compatibility; malformed=0, frame and metadata timing continuous. The full 7.1 render is `D:\JOCForge-attempts\E1098-love-song-flat7x-20261115-3f86ce3\render\love-song-flat7x-openjoc-7.1.wav` (48 kHz, 8-channel IEEE float32, 12,928,544 frames, LFE index3). This is an experimental render with unresolved semantic binding; no listening comparison has been made. ETSI strict reports ID11 wrapper flags and `codecdatae=0` on both ID11/ID14, while observed-vendor compatibility passes. The selected 5.1 all-rate profile/frame-size regression passed 1/1.
+
+Next: user listening; align ID11 wrapper flags to official scalar comparison while keeping observed `codecdatae=0`; retain a same-AU/source D0 block-two placement receipt; resolve ID14 row to OAMD slot identity. The candidate remains non-production and not final-exposed.
+
+## E-1100 wrapper and placement receipt
+
+E-1099 was externally stopped at 3,217 AU / 21,412,352 bytes; OpenJOC parsed/admitted all 3,217 partial AUs under observed-vendor compatibility, malformed=0. E-1100 completed 8,417 AUs / 56,023,552 bytes / 269.344 s and EOF. OpenJOC 0.20.1 parsed/admitted all AUs, skip fields 8,417/8,417, malformed=0, timing continuous; ETSI strict reports only `codecdatae=0` for ID11/14. The OpenJOC render is `D:\JOCForge-attempts\E1100-love-song-flat7x-20261115-26d0454\render\love-song-flat7x-openjoc-7.1.wav` (48 kHz, 8ch IEEE float32, 12,928,544 frames, LFE index3).
+
+The Flat7x wrapper overlay sets ID11 aligned=true, duplicate false/false, priority=0 and proc=0 while retaining codecdatae=0. The selected 5.1 wrapper stays unchanged. OpenJOC object scalar reports 16 ordered slots: index0 non-dynamic, indices1..15 dynamic; its report does not label index0 as `Speaker(RcLfe)`.
+
+AU0 carries `D0Block2PlacementReceipt`: block 2, absolute D0 frame bits 12201..15979, PublishedAuIndex0, and Codec-owner D0 source-generation receipt 3. The separate F15 source-generation label is 2 (source-index-derived); these are distinct typed domains. Placement is retained from D0 frame candidate through F15. The Codec after-root still lacks an explicit comparison against that receipt, so the later root join remains provisional. The selected 5.1 all-rate regression passed 1/1.
+
+## 2026-11-15 E-1104 output and ID1/ID2 composition
+
+E-1104 (`b256d3e6e`) completed the Love Song Release run: 8,417 AUs / 56,023,552 bytes; all 8,417 D0 block-two placement receipts passed, maximum `C=474`, overflow=0. Candidate SHA-256 is `3887541587a42b5c69880192bf0fe7b6b8c8b1380e55ddf48fefd1842365a783`. OpenJOC 0.20.1 observed-vendor compatibility parsed/admitted all AUs, with continuous timing and no malformed AUs, and rendered an 8-channel 48 kHz float WAV at `D:\JOCForge-attempts\E1104-love-song-flat7x-20261115-b256d3e\render\love-song-flat7x-openjoc-7.1.wav`. It has 12,928,544 frames versus 12,928,512 coded samples; Wash's OpenJOC source trace attributes the 32-frame tail to `FinalLinkedGain` EOF drain. The Codec after-root now checks the expected generation from D0 placement against the actual Codec after-root, closing the provisional E-1100 join note above. Product exposure remains disabled; user listening and spatial identity remain open.
+
+Wash-sanitized AU0 metadata for the user-designated MKA reports ordered payloads `[11,14]` across 23,033 AUs; E-1104 reports `[11,14,2,1]` across 8,417. The AU0 metadata file is `D:\JOCForge-attempts\official-demo-openjoc-20261115-03\AU0-METADATA.json`, SHA-256 `aabd2d359d3a1ace38e1180e8e1b26e2501a51ab08eb71df628fed8ef2a04b51`; its command log SHA-256 is `76a7340928e6e145c1cef3ea855df7ec00c0120254aa273b10689ff950d29b4c`. These files are not registered as a manifest-backed supplement in the isolated catalog. The registered `OFFICIAL-ATMOS-DEMO-STRUCTURE-WASHED-V2` package (manifest SHA-256 `c4104e674a9c3df06ead8f6741a7366e58068602789806d1a91d045c1dfd731a`) records one ID11 and one ID14 per AU. Do not compare sorted/unique `access_units[*].payload_ids` with ordered `emdf.payload_orders`. The sanitized AU0 metadata reports `codecdatae=false` on ID11/ID14, so E-1104's ETSI strict failure on those fields is a shared observed value, not a candidate/reference difference.
+
+Source trace confirms the extra payloads have typed inputs and data:
+
+- ID2 (`AdditionalBsi`) is built by `metadata_bodies::assemble_metadata_bodies` → `id2_wire::build_id2_body` from the selected line/RF DRC profile strings plus the same-writer ID11 header's LFE flag. The builder also writes the selected phase and format values (1/1). It is 3 bytes / 21 valid bits. `film_light` maps to code 2; `none` maps to 0. This EMDF item is distinct from D0 frame addbsi complexity.
+- ID1 (`Programme`) is initialized from a completed same-programme measurement in `Id1MeasurementConfiguration::from_measurement`, then `MetadataOwner::process_source_inner` advances `TimerState` by 1,536 samples and writes the timer output each source. E-1104 lengths are 2–3 bytes. The fields carry measurement/timer data, not blank defaults.
+
+The local route's F13 contract explicitly produces and orders four bodies `[11,14,2,1]` (`METADATA-OWNER-ROOT-V1`, manifest `94774c412ce8457f3220d84e4b3386c0b48c21837d4a4943570791bb66f034b3`; body rules in `ID1-ID2-BODY-VALIDATION-V1`, manifest `25c85fee542bb4b68c039fc42d3ab686e0d7abe544fc5e32b6eaedc2d2967f1b`). Wash's OpenJOC source audit reports IDs 1/2 remain in generic EMDF payload/order/configuration/length summaries; only ID11/OAMD and ID14/JOC enter specialized parsing and `JocFrameInput`. Other decoder effects and target-specific standard optionality remain unresolved. E-1104 remains the four-payload baseline; the new Flat7x diagnostic mode emits `[11,14]` while retaining all four queue operations and ID1/ID2 pop provenance. The mode remains `production_allowed=false`; no acoustic or global decoder-effect claim is made. Wash also traced the native `RC_LFE` literal to an output write; row0-to-OAMD-slot identity remains `UNBOUND`.
+
+## 2026-11-15 E-1105 and F15 Codec receipt ledger
+
+E-1105 completed 8,417 AUs / 56,023,552 bytes with Flat7x experimental EMDF sequence `[11,14]`; D0 block-two placement receipts were 8,417/8,417, max `C=461`, overflow=0. OpenJOC 0.20.1 observed-vendor compatibility admitted all AUs, malformed=0, and frame/metadata timing were continuous; ETSI strict reported `codecdatae=0` for ID11/14. Its 7.1 render is 8-channel, 48 kHz IEEE float32, 12,928,544 frames. The render is available at `D:\JOCForge-attempts\E1105-love-song-flat7x-joc-pair-20261115-c2cc1e9\render\love-song-flat7x-joc-pair-openjoc-7.1.wav`; user listening remains open.
+
+F15 input now carries the complete Codec `Flat7xD0SourceGenerationReceipt` from the D0 block-two placement; the application checks exact equality with the I0 candidate receipt, and the AU ledger retains the typed receipt. Domain validation binds its transaction, callback lineage, source index and dispatch to F13. F15 `Flat7xSourceGeneration` stays a separate label. Focused receipt tests, `cargo check --workspace --locked`, fmt and the selected 5.1 all-rate route pass. Clippy `-D warnings` remains red on existing diagnostics; `production_allowed=false`. Spatial role mapping and audible validation remain open.
+
+## 2026-11-15 profile-aware ID14 U3 regression
+
+The discriminator test directly calls `write_id14_header_for_profile` with `Id14HeaderInput.downmix_index=3`. Flat7x's resolved `joc_dmx_config_idx=Some(1)` serializes U3=1; selected 5.1's `None` preserves U3=3. The focused test and selected 5.1 all-rate route test pass. No production writer or audio path changed.
+
+## 2026-11-15 F13 serializer to sequence-aware F14K parser
+
+`flat7x_f13_serialized_bytes_roundtrip_through_sequence_aware_f14k_parser` stages source 2 through `MetadataOwner`, so the selected Flat7x F13 serializer produces the actual zero-slot bytes. Synthetic input-only OAMD and ID14 payloads are passed through F14K protection and `MetadataSourceProposal::bind_protected_container`, which invokes the sequence-aware parser. The test verifies F13 `[11,14]` serialization order, parsed payload order and bytes, declared/consumed container length, F14K protection ranges/codes, and zero terminal padding. The focused roundtrip and selected 5.1 all-rate regression pass; no audio is generated and production behavior is unchanged.
+
+## 2026-11-16 E-1106 selected 5.1 PCM baseline
+
+E-1106 used the same `D:\Love Song 方大同.wav` input and the default selected 5.1 route at 1,024 kbps; no Flat7x selector was passed. The Release run completed naturally with 8,419 sources / 8,417 published AUs, one 4,096-byte E-AC-3 frame per AU, six blocks / 1,536 coded samples per AU, and 12,928,512 coded samples total. Candidate SHA-256 is `bc01dcfc3b21cfefc4f20e522762e466d98d03375a14988d0b440d437f1db0a5`.
+
+OpenJOC 0.20.1 observed-vendor compatibility admitted 8,417/8,417 AUs with zero malformed AUs and continuous frame/metadata timing. The inspect reports an I0-only 5.1 AC-3-mode frame, `acmod=7`, LFE on, six coded channels, and JOC profile index3 / five reconstruction inputs / 15 objects / CI16. ETSI strict reports ID11 `codecdatae=0`, `payload_frame_aligned=0`, and absent duplicate/priority/proc fields versus expected zero; ID14 `codecdatae=0` also differs from strict expectations.
+
+The OpenJOC 5.1 PCM baseline is `D:\JOCForge-attempts\E1106-love-song-5.1-1024-baseline-20261116\render\love-song-5.1-openjoc.wav`: 6 channels, 48 kHz, IEEE float32, 12,928,544 frames / 77,571,264 samples, order `FL, FR, FC, LFE, Ls, Rs`. This is the comparison render for the E-1105 7.1 file; listening/PCM comparison remains pending.
+
+## 2026-11-15 Flat7x selected-dispatch coverage
+
+`flat7x_fit_crosses_selected_dispatch_and_writes_seven_row_id14` now runs the existing seven-carrier QMF window and fit stages, then directly calls `stage_selected_joc_source_with_seven_carrier_fit`; that production function calls `stage_joc_payload_with_seven_carrier_fit`. The test checks the fit's projected 15 objects each have one coefficient point with seven 12-band rows, the selected row layout/downmix index are C=7/index 1, and the actual written ID14 header has reconstruction index 1 and object count 15. Inputs use synthetic zero PCM and test identities; the test verifies dispatch wiring and serialized shape, not audio quality or authoritative coefficient values.
+
+The selected 5.1 all-rate route test and the Flat7x owner-sequence test pass 1/1 each. The application F14K/D0/F15 equality test passes 1/1 using a test-only receipt-gate shell; the full E-1105 OpenJOC inspection will verify the real serialized container. `rtk cargo fmt --all -- --check` and `rtk cargo check --workspace --locked` pass. Workspace Clippy reports 29 existing diagnostics; boundary check stops on the existing `crates/jocforge-domain/src/meter/standalone_root.rs` inventory mismatch. The full workspace test suite was not run.
+
+## 2026-11-16 Flat7x I0 source routing correction
+
+The E-1105 OpenJOC internal-base decode has zero RMS on `L`, `R`, `C`, and `LFE`; its side and rear lanes contain signal. The E-1106 selected 5.1 base decode contains nonzero core-channel signal. Flat7x now builds a same-source six-lane `SourcedInstalledAudioFrame` from the provisional ADM I0 rows, reorders `[L,C,R,Ls,Rs,LFE]` to the existing F07 lane order `[L,R,C,LFE,Ls,Rs]`, and runs the existing F07-F10 and I0 AC-3 writer path. The selected 5.1 path still uses F04 final-six.
+
+Focused row-packing tests, the nonzero F08 fullband/LFE numeric-plan test, selected 5.1 all-rate regression, workspace check, and format check pass. Workspace Clippy still fails on existing diagnostics; the boundary checker reports the pre-existing `standalone_root.rs` direct-slice inventory mismatch. Full Love Song Release re-encode and OpenJOC internal-base RMS verification remain pending. Provisional ADM-row role mapping remains explicitly named and replaceable.
+
+## 2026-11-16 I0 BAP allocation and frame-budget fit
+
+E-1109 confirmed that row routing alone did not restore audio. The first input and coefficient stages carried signal, but the initial I0 policy set q=0 and `caller_all_active_fine_zero=true` for blocks 1–5; those blocks returned zero BAP rows. E-1115 logged `[2693,95,95,95,95,95]` audio bits for the six blocks under that policy.
+
+The Flat7x I0 caller now uses the same-source selected 5.1 core-frame q trial list as candidates for the separate 640-kbps AC-3 I0 writer. It tries the source-specific values in descending order, bounded above by the selected core q, and rejects candidates that exceed 20,480 audio bits or the 2,560-byte I0 frame. All six blocks use the selected candidate q with fine-zero forcing disabled. The selected 5.1 writer and its search are unchanged. If no same-source trial fits, source staging fails closed.
+
+E-1120 used an active 256-ms segment of Love Song beginning at 30 s. The search selected q=400; block bits `[5146,2548,2548,2548,2548,2548]` total 17,886. Candidate SHA-256 `0d8db5b8e90039e53ebbaf2d27112362a05adb4b2c3e50bca0c39c8f3e0aaf58` is the same as E-1119's q=400 probe. OpenJOC 0.20.1 admitted 8/8 AUs with no malformed AUs. Internal-base RMS in `[L,R,C,LFE,Ls,Rs,Lrs,Rrs]` order was `[0.047170944,0.05005221,0.207763587,0.000000065,0.020916467,0.02042932,0.000002712,0.000003142]`; core L/R/C now decode with signal. The source segment has very low LFE energy, so full-song LFE behavior remains to be measured.
+
+The targeted policy test and selected 5.1 all-rate regression pass. E-1121 completed 8,417 AUs / 56,023,552 bytes, candidate SHA-256 `81071d12024295e31e2215c2d4edd512e5110fb7fdffe0acb491a42d6a72566f`; block-two placement receipts are 8,417/8,417, max C=461, overflow=0, and all frame CRC residuals are zero. OpenJOC 0.20.1 reports deployed-compatibility pass and 8,417 stream-parsed AUs, while decoder admission is 8,416/8,417 and AU 6721 is marked malformed with `EMDF auxiliary data is not byte-aligned: 1004 bits`. Neighboring AUs 6720 and 6722–6723 pass. The E1121 D0 frame bytes are identical to E1105/E1109 throughout all 8,417 AUs. OpenJOC reports I0 as legacy-independent AC-3; the generic trailing 14-bit read at AU 6721 is 1004 versus 0 in E1105/E1109. Wash confirms ETSI TS 102 366 V1.4.1 §4.4.4.1 permits non-byte-aligned AC-3 auxbits and notes OpenJOC applies its E-AC-3 EMDF auxiliary classifier to each access-unit frame without a LegacyIndependent gate. The exact mapping from that I0 raw bit span to the AC-3 auxbits field remains `UNBOUND`, so OpenJOC's parser disposition alone does not establish a candidate syntax violation. Full OpenJOC decode/render stops at the parser error; full-song listening remains `NOT_RUN`. The ADM row-role mapping remains provisional and the candidate remains `production_allowed=false`.
+
+An isolated parser-probe build from the exact OpenJOC v0.20.1 source tag (commit `eb5cdd5562017b7ec4d54bb243dd3a626310ecb9`) skips frame-end EMDF classification for LegacyIndependent AC-3 frames. The probe binary SHA-256 is `d7e8afc8b28349e23afbeaace51b8c1985ad0f88a832929d160345b4e729b355`; its patch SHA-256 is `45e222043b9fc470b0251b9a21f9c4273f00aa909ac54dfea9799b6a8b65298b`. With that validation-only build, E1121 parsed/admitted 8,417/8,417 and rendered a full 8-channel 48-kHz float WAV at `D:\JOCForge-attempts\E1121-love-song-flat7x-i0-budget-fit-20261116-8dddc9d\render\love-song-flat7x-i0-budget-fit-parser-probe-7.1.wav` (SHA-256 `be97c46a2fc00df5b61116b8155f00e33a931e7839aff6cdbf9405098a264f2e`). The internal-base core RMS is `[L=.03049982,R=.03160754,C=.08086876,LFE=.00557430]`; E-1106 comparison windows show a repeatable approximately -5,120-sample lag for L/R/C/LFE. This indicates the core signal is present and exposes a remaining source-time alignment question. The temporary probe is not the official binary, so its render is diagnostic, not official decoder acceptance.
+
+Source-clock audit: `encode_request` binds reader rows at callback `g` to `first_sample=g×1536`; the selected programme clock maps that callback to `s=g-2`, and the publication clock maps source `s` to AU `j=s-2`. The Flat7x I0 path currently passes those current-callback physical rows into F07. Against corresponding source rows, E1121 internal-base windows peak at lag -4,864 samples for I0 L/R/C and -5,888 for D0 Ls/Rs/Lrs/Rrs; E-1106 core peaks at +256. This gives an approximately 1,024-sample I0-to-D0 offset, but the typed source-window-to-AU sample conversion remains `UNBOUND`; do not adjust it by the measured lag alone. Wash has been asked to bind the mapping from existing clock and source-extent contracts.
+
+## 2026-11-16 I0 source-extent receipt
+
+The Flat7x-only I0 analysis input now carries the validated reader extent and requires exact equality with the same callback's D0/JOC projection. That extent remains attached through the I0 frame and paired AU candidates, and the F12 I0/D0 join checks equal extents. The shared selected 5.1 F04 route is unchanged. The receipt binds the consumed reader window; `first_sample` to AU `j` remains `UNBOUND`, and no row shift was made.
+
+Verification: workspace check, format check, focused extent equality test, and selected 5.1 all-rate regression passed. The feature-gated pair integration test stopped before the new extent assertion because its synthetic q=400 I0 allocation needs 22,518 bits against a 20,480-bit budget. No PCM/q/audio policy change or encoder run was made. Continue with the approved source-clock mapping review; keep timing conversion separate from the encoded AU index.
+
+
+## 2026-11-16 E-1123 full-song candidate
+
+A one-shot Wash Fresh GO produced the candidate with Release commit add93721527c3aa915e8729de0ecb5d69cac6476 from the designated Love Song input. The run committed 8,417 AUs / 56,023,552 bytes, with D0 block-two placement receipts 8,417/8,417, max C=461, overflow=0 and AU CRC residuals 0. Candidate SHA-256 81071d12024295e31e2215c2d4edd512e5110fb7fdffe0acb491a42d6a72566f exactly matches E-1121, so the metadata-only source-extent change did not alter encoded bytes. The attempt log also records 7 pending drop receipts, programme_done=false, production_allowed=false; render and playback remain NOT_RUN. E-1123 was not rechecked with OpenJOC; the existing OpenJOC 0.20.1 result is for the same exact candidate hash: decoder admission 8,416/8,417, AU6721 flagged for 1004-bit auxiliary-data alignment. No new listening render or subjective result exists.
+
+
+User listening feedback: E-1123 sounded as bad as the previous version. Its candidate hash matches E-1121 exactly, so the new metadata-only extent commit left encoded audio bytes unchanged. No numerical similarity score or new render was recorded.
+
+## 2026-11-17 DEE timebase sample-range boundary
+
+Wash-only static receipt dee_atmos_ddp_timebase_sample_range_consumer_wash_v1 (manifest 553f7c4764628a885d062b820038254887fdc529cc9c7503e7c7de57eeb58336; seal 1166524d...; normal/O verified) records that the DEE file_position branch subtracts offset seconds from start/end seconds, uses round(sample_rate x seconds) for validation, and truncates the adjusted products to signed-64 sample positions. The embedded_timecode branch preserves start/end seconds without offset subtraction; FFOA remains a separate seconds field. The first source-range consumer is FUN_180145380; its second caller was not followed. The mapping from those sample bounds to AtmosReader cursor limits, JOCForge first_sample/source/AU coordinates, and endpoint inclusivity remains UNBOUND. E1123 bad listening result therefore still has no justified sample shift rule.
+
+## 2026-11-17 DEE loader-list boundary
+
+The attempt-209 Wash package (manifest 55f497137061217b0c0bbcf238b217c858c778c13e3d607acff09e47526acbe2; seal 73c4b8a90de9c677779115dccbab37263cae28c016507ba58123572514e20b70; normal/O pass) binds the 7.1 test host default root to D:/Programs/dee71joc/test_dee and the default list path to D:/Programs/dee71joc/test_dee/dee_loader.list; the file is absent. Host global context +0xF8 can override the caller default and the chosen string is written to path collection +0x40. The separate semicolon-list parser input has no typed join to that collection/file. The filter wrapper census has no code consumer, so filter registration and selected-child identity remain UNBOUND. Attempt-208 GO remains consumed; no run or config change was made.
+
+## 2026-11-17 Geometry descriptor and R8 lineage
+
+Wash-only Ghidra receipts on candidate 2b7 bind the selected writer path as follows: FUN_1402ac760@0x1402ac78a passes a stack address in R8; its LEA R8 base is RSP and the exact slot normalizes to function-entry RSP-0x58, with no direct store or initializer before the call. The alternative FUN_1402ad5b0 path has R8 live-in, one .pdata DATA reference, and no validated direct E8 caller. In FUN_1402ad5d0, R8 is preserved through R15 and restored before CALL@0x1402ad674 to FUN_1402ad310. That callee reads an 8-byte qword through [R8] and writes it to the RDX stack descriptor at offset 0. The native owner/generation, R8 pointee contents, descriptor field type, and D0 row join remain UNBOUND; no record bytes were read.
+
+## 2026-11-17 D0 record-vector and skipfld boundaries
+
+Wash address lineage binds record-vector begin at worker_state+0x190 and end at worker_state+0x198; a CMP compares them, and the unselected fallthrough writes byte 1 at begin+0x10, increments the begin pointer by 0x40, then compares it to end. The comparison outcome and record-field semantics remain UNBOUND. Separately, the selected skipfld writer path reads U16 count and U64 source from an opaque record pointer at FUN_14074a990.param_1+0x10cc; U9 assignment, D0 block ordinal, complete C, capacity, and native overflow disposition remain UNBOUND. The target contract stays one D0 block-2 skipfld, C<=511, reject overflow, no cross-field continuation.
+
+## 2026-11-17 audio identity and D0 record boundaries
+
+The user reported that E-1123 sounds as bad as the previous version; its candidate hash is identical to E-1121, so encoded audio bytes did not change. A separate keyless candidate file matches its generation receipt by hash and size, but its Python run/source binding is UNBOUND. The Rust failure artifact is USER_REPORTED_FAILURE_FILE_ID_UNBOUND.
+
+DEE timebase static evidence now binds file_position start/end seconds minus offset, rounded validation and truncating signed-64 sample positions; embedded_timecode and FFOA are separate. The join from those sample bounds to the JOCForge AU clock remains UNBOUND.
+
+The D0 record-vector begin/end path compares worker_state+0x190 and +0x198; its unselected fallthrough writes byte 1 at begin+0x10, increments the pointer by 0x40, then compares to end. Record/row semantics remain UNBOUND. The skipfld writer path reaches an opaque record pointer at FUN_14074a990.param_1+0x10cc; native U9/skipfld assignment, D0 ordinal, C and capacity remain UNBOUND.
+
+## 2026-11-18 Flat7x 对象音频短复现
+
+在本工作树构建待测 CLI 后运行 `rtk proxy python scripts/check_flat7x_object_audio.py target/release/jocforge.exe C:/Users/chyinan/Downloads/openjoc.exe`（NumPy、SciPy、OpenJOC 0.20.1）。同一段 1.792 秒的合成 ADM 先播放前左床轨，再播放对象，统一渲染到 7.1。现有 Release 的两段峰值为 0.25410241、0，退出码 1。加 `--baseline` 可重跑 5.1 对照，峰值为 0.07902644、0.06789017，退出码 0。该脚本检测整段静音；修复载体混音后再核对对象位置、电平和时间。
+
+## 2026-11-18 E-1123 前左断音与 I0 比特分配
+
+截图对应文件 SHA-256 `81071d12024295e31e2215c2d4edd512e5110fb7fdffe0acb491a42d6a72566f`。FFmpeg 8.1、`-drc_scale 0`，取前左，完整码流解码与逐 AU 提取 2,560 B I0 后解码的 12,928,512 个样本逐点相同。按 AU（1,536 样本）检查，8,417 帧中 3,089 帧前左逐样本为零，逐帧解析的 I0 block 0 SNR offset 组合值 q 在全部这些帧上均为 16。全曲 q=16 共 3,920 帧。AU 6854–6896（含）对应 219.328–220.704 秒，43 帧连续为零；对原 ADM 前左加 4,864 样本实测关联偏移后，对应各窗 RMS 为 −35.6 至 −24.2 dBFS。同时间戳 E-1106 的各窗前左 RMS 为 −33.8 至 −15.0 dBFS。
+
+在独立临时 CLI 里只扩充 I0 的候选 q（保留已有值，补入 16 至 selected_core_q、步长 16 的网格），仍由原 I0 writer 逐个试装。合成输入为连续 997 Hz 前左，其他床轨按段加入确定性噪声，96 AU。原策略出现两段各 11 帧精确静音，试验版为 0 帧；逐帧 D0 内容相同。该实验支持修正 I0 候选搜索；全曲修正后输出、对象载体混音和电平仍待验证。
+
+## 2026-11-18 Flat7x I0 断音和对象载体修正
+
+Flat7x CLI 在现有 I0 候选中补入每档 coarse SNR，逐次试装 2,560 字节帧。载体来自七路床声道、按当前 ADM 横向位置分配的对象，以及折入对应侧声道的顶部床轨。对象声像在前后两次控制更新之间按样本过渡，I0 单独折入后环绕，LFE 单独传送。该混音是本项目的实验策略。宽度、扩散、重建时序、电平和同源官方听感仍有待独立评估。
+
+最终 Release SHA-256 为 `1206e8217e43a74cf49892acb6beeec5b8fd6819da6e2edf2597917790c74809`。用 `scripts/check_flat7x_object_audio.py` 对照，OpenJOC 0.20.2 七声道加 LFE 渲染的对象段峰值从 0 恢复至 0.11538743；加 `--continuity` 验证的 96 个 I0 前左窗口由 22 个静音降至 0。默认 5.1 的标记样本码流哈希与原基线一致。用原始 36 轨 PCM 截取《Love Song》3:37–3:45 并保留原 ADM metadata 编码，共 250 AU。按片段时间对照，全段 I0 前左静音帧为 0，原缺口对应位置为 0/43。短片独立启动计量和控制时钟。片段、对象与连续音三个样本分别用 OpenJOC 0.20.1 和 0.20.2 的 observed-vendor-compat 模式渲染，两版本的各样本逐点一致。正式输出还需整曲验证。
+
+试听交付在 `D:/JOCForge-attempts/flat7x-love-song-3m37s-u8pxcs6c/`。片段码流 SHA-256 为 `ebea48f4b41ac4101432faf68f5446474dff28987a42e5261c22955a8d2bb316`，最终构建复跑结果相同。workspace check、fmt 和 7 项声道／QMF 测试通过。全量测试停在 IO 的 meter_input_probe 示例依赖，严格 Clippy 有既有诊断，边界脚本停在 meter/standalone_root.rs 清单。
+
+## 2026-11-18 完整曲 Flat7x 复测
+
+使用 Release JOCForge SHA-256 `1206e8217e43a74cf49892acb6beeec5b8fd6819da6e2edf2597917790c74809`、Love Song 源文件 SHA-256 `34ecda6afa708aaf436930b86cc8d120a73faff2847088be975b10a22039f8b5`，完成 8,417 个 callback 的全曲编码。候选为 8,417 AU、56,023,552 B、SHA-256 `6aa607ec320733bdffd76b0b8f06d66b61f6f5cff95df6b0851c36ead3c39eca`。编码器记录 8,417/8,417 个 D0 block-two placement receipt、overflow 0、CRC residual 0；候选状态为 EXPERIMENTAL_CANDIDATE。
+
+OpenJOC 0.20.2 用户给定 Release 在整曲 render-joc 中报 `E-AC-3 EMDF auxiliary data is not byte-aligned: 5132 bits`。I0 是 legacy independent AC-3，独立 E-AC-3 frame-end EMDF classifier 会把 AC-3 auxbits 送进 E-AC-3 byte-alignment 分类。OpenJOC 0.20.1 的本地诊断 parser-probe binary（SHA-256 `d7e8afc8b28349e23afbeaace51b8c1985ad0f88a832929d160345b4e729b355`，只对 LegacyIndependent AC-3 跳过 frame-end EMDF 分类）检查 8,417/8,417 AU decoder-admitted，malformed 0，timing continuous，并成功渲染 48 kHz、8 ch、12,928,544 frames / 269.3447 s float WAV。该诊断渲染不替代官方 OpenJOC 0.20.2 验收。
+
+FFmpeg 8.1 DRC scale 0 单独解码所有 I0 帧，FL 8,417/8,417 无全零 AU；原来 43 AU 连续断音区也是 0/43。probe WAV 每通道 32 ms RMS 连续无静音窗口，LFE 内容静音计 1,319 窗口。输出路径 `D:/JOCForge-attempts/love-song-flat7x-full-20261118-074017/`，保留 run.json、编码/渲染日志、OpenJOC inspect JSON 和全曲电平统计。
+
+## 2026-11-18 MKA 播放确认
+
+用户确认最终 Lo/Ro 整曲码流无损封装成 MKA 后，通过 Audition 和 Windows 媒体播放器打开及试听验证。README 已补充编码和封装命令。

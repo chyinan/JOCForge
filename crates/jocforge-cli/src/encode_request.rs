@@ -30,9 +30,10 @@ use jocforge_application::{
         MetadataOwnerPreparationError, SelectedJocState, prepare_metadata_owner_from_measurement,
     },
     meter_source_bridge::{
-        CodecRateProfile, EncodingProfile, Flat7xI0D0TargetPlan,
-        FrontendControlReplacementCandidate, JocReconstructionLayout, ResolvedEncodingProfile,
-        resolve_selected_profile,
+        CarrierCodecProfile, CodecRateProfile, EncodingProfile, Flat7xFrameCodec,
+        Flat7xI0D0TargetPlan, Flat7xSubstreamRole, FrontendControlReplacementCandidate,
+        JocPayloadDownmixIndex, JocReconstructionLayout, ResolvedEncodingProfile,
+        SubstreamTopology, resolve_selected_profile,
     },
     output_publication::{AttemptId, OutputStagingOwnerId},
     parse_selected_job_file_references, prepare_selected_job_input,
@@ -247,25 +248,37 @@ fn resolve_encode_request_route(
     if codec_rate.kbps().is_none() {
         return Err(EncodeRequestError::UnsupportedDataRate);
     }
-    let selected_profile = EncodingProfile::selected_with_codec_rate(codec_rate)
-        .with_joc_reconstruction_layout(joc_layout);
+    let selected_profile = EncodingProfile::selected_with_codec_rate_and_joc_reconstruction_layout(
+        codec_rate, joc_layout,
+    );
     let resolved = resolve_selected_profile(&selected_profile)
         .map_err(|_| EncodeRequestError::UnsupportedJocLayout)?;
 
-    match resolved.joc_reconstruction_layout() {
-        JocReconstructionLayout::ExistingSelectedFivePointOne => {
+    match resolved.carrier_codec() {
+        CarrierCodecProfile::IndependentEac3 => {
             Ok(EncodeRequestRoute::SelectedFivePointOne(resolved))
         }
-        JocReconstructionLayout::Flat7x => {
+        CarrierCodecProfile::Flat7xAc3I0DependentEac3D0 => {
             let target = Flat7xI0D0TargetPlan::approved_contract();
-            if target.reconstruction_layout() != JocReconstructionLayout::Flat7x
+            if resolved.joc_reconstruction_layout() != JocReconstructionLayout::Flat7x
+                || resolved.substream_topology()
+                    != SubstreamTopology::Flat7xIndependentI0DependentD0
+                || resolved.joc_dmx_config_idx() != Some(1)
+                || resolved.joc_payload_downmix_index() != JocPayloadDownmixIndex::SevenChannel
+                || target.reconstruction_layout() != JocReconstructionLayout::Flat7x
+                || target.i0().role() != Flat7xSubstreamRole::IndependentI0
+                || target.i0().codec() != Flat7xFrameCodec::Ac3
+                || target.i0().bsid() != 6
+                || target.d0().role() != Flat7xSubstreamRole::DependentD0
+                || target.d0().codec() != Flat7xFrameCodec::Eac3
+                || target.d0().bsid() != 16
                 || target.d0().rate() != resolved.codec_rate()
             {
                 return Err(EncodeRequestError::UnsupportedJocLayout);
             }
             Ok(EncodeRequestRoute::Flat7xI0D0Pair(target))
         }
-        JocReconstructionLayout::Unsupported => Err(EncodeRequestError::UnsupportedJocLayout),
+        CarrierCodecProfile::Unsupported => Err(EncodeRequestError::UnsupportedJocLayout),
     }
 }
 
@@ -609,11 +622,11 @@ fn run_inner(
         .map_err(EncodeRequestError::PreparedInput)?;
     let selected_profile = prepared.configuration().selected_profile();
     let resolved_joc_profile = resolve_selected_profile(
-        &EncodingProfile::selected_with_rate_and_carriage(
+        &EncodingProfile::selected_with_rate_and_carriage_and_joc_reconstruction_layout(
             selected_profile.codec_rate(),
             selected_profile.carriage(),
-        )
-        .with_joc_reconstruction_layout(joc_layout),
+            joc_layout,
+        ),
     )
     .map_err(|_| EncodeRequestError::UnsupportedJocLayout)?;
     let (frame_bytes, aggregate_rate_kbps) =
@@ -696,6 +709,7 @@ fn run_inner(
         measurement,
         source_providers.metadata_owner().provider_file(),
         source_providers.metadata_owner().wrapper_file(),
+        resolved_joc_profile,
     )
     .map_err(EncodeRequestError::MetadataOwner)?;
     eprintln!(
@@ -775,6 +789,12 @@ fn run_inner(
     )
     .map_err(EncodeRequestError::SourcePipeline)?;
 
+    let flat7x_selected =
+        resolved_joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x;
+    let mut flat7x_d0_block2_placement_receipts = 0_u64;
+    let mut flat7x_d0_block2_max_container_bytes = 0_u16;
+    let mut flat7x_d0_block2_overflow_receipts = 0_u64;
+    let mut flat7x_emdf_payload_sequence: Option<&'static str> = None;
     let callback_result = (|| {
         let mut roots = roots;
         let normal_callbacks = roots.normal_callbacks().value();
@@ -784,11 +804,12 @@ fn run_inner(
         let mut committed_callbacks = 0_u64;
         let mut callback_progress = ProgressBar::new("Programme callbacks");
         callback_progress.update(0, total_callbacks);
+        let mut carrier_delay = std::collections::VecDeque::new();
         for callback_value in 0..total_callbacks {
             let callback_value_u32 =
                 u32::try_from(callback_value).map_err(|_| EncodeRequestError::ClockMismatch)?;
             let callback_index = FrontendCallbackIndex::new(callback_value_u32);
-            let pending = if callback_value < normal_callbacks {
+            let mut pending = if callback_value < normal_callbacks {
                 stage_main_callback_candidate(
                     &prepared,
                     &parsed,
@@ -807,13 +828,50 @@ fn run_inner(
                     callback_index,
                     &roots,
                     &main_providers,
-                    resolved_joc_profile.joc_reconstruction_layout()
-                        == JocReconstructionLayout::Flat7x,
                 )?
             };
             if pending.callback_index != callback_index {
                 return Err(EncodeRequestError::ClockMismatch);
             }
+            let carriers = if flat7x_selected {
+                let mix = match pending.flat7x_mix.take() {
+                    Some(mix) => mix,
+                    None => carrier_delay
+                        .back()
+                        .map(jocforge_application::source_frame_bridge::Flat7xSceneMix::silence)
+                        .ok_or(EncodeRequestError::ClockMismatch)?,
+                };
+                if carrier_delay.is_empty() {
+                    carrier_delay.resize(4, mix.silence());
+                }
+                carrier_delay.push_back(mix);
+                let mut output = carrier_delay
+                    .pop_front()
+                    .ok_or(EncodeRequestError::ClockMismatch)?;
+                output.align_analysis_windows(&carrier_delay[0], &carrier_delay[1]);
+                pending
+                    .source_index
+                    .map(|source_index| {
+                        let extent = Flat7xD0PcmSourceExtent::for_programme_audio(
+                            source_index,
+                            callback_index,
+                            prepared.configuration().source_samples(),
+                        )
+                        .map_err(|error| {
+                            EncodeRequestError::SourcePipeline(format!(
+                                "Flat7x audio window: {error:?}"
+                            ))
+                        })?;
+                        Ok::<_, EncodeRequestError>(crate::source_execution::Flat7xCarrierFrame {
+                            input_sha256: prepared.resource_identity().input_sha256(),
+                            source_extent: extent,
+                            mix: output,
+                        })
+                    })
+                    .transpose()?
+            } else {
+                None
+            };
             let callback_transaction_id = pending.transaction_id.clone();
 
             if let Some(source_index) = pending.source_index {
@@ -842,13 +900,64 @@ fn run_inner(
                     roots.output(),
                     &plan,
                     &mut staging,
-                    pending.flat7x_physical_pcm_rows.as_ref(),
+                    carriers.as_ref(),
                 )
                 .map_err(map_source_frame_stage_error)?;
                 let (next_roots, receipt) = roots
                     .commit_source_advance(callback_transaction_id, &prepared, advance)
                     .map_err(EncodeRequestError::SourcePipeline)?;
                 roots = next_roots;
+                match (
+                    receipt.append.as_ref(),
+                    receipt.flat7x_d0_block2_placement_receipt.as_ref(),
+                ) {
+                    (Some(append), Some(placement))
+                        if append.durable && append.au_index == placement.au_index().value() =>
+                    {
+                        let payload_sequence = placement.payload_sequence().label();
+                        match flat7x_emdf_payload_sequence {
+                            Some(previous) if previous != payload_sequence => {
+                                return Err(EncodeRequestError::SourcePipeline(
+                                    "Flat7x EMDF payload sequence changed within one programme"
+                                        .to_owned(),
+                                ));
+                            }
+                            Some(_) => {}
+                            None => {
+                                flat7x_emdf_payload_sequence = Some(payload_sequence);
+                            }
+                        }
+                        flat7x_d0_block2_placement_receipts = flat7x_d0_block2_placement_receipts
+                            .checked_add(1)
+                            .ok_or_else(|| {
+                                EncodeRequestError::SourcePipeline(
+                                    "D0 block-two placement receipt count overflow".to_owned(),
+                                )
+                            })?;
+                        flat7x_d0_block2_max_container_bytes =
+                            flat7x_d0_block2_max_container_bytes.max(placement.container_bytes());
+                        if placement.container_bytes() > 511 {
+                            flat7x_d0_block2_overflow_receipts = flat7x_d0_block2_overflow_receipts
+                                .checked_add(1)
+                                .ok_or_else(|| {
+                                    EncodeRequestError::SourcePipeline(
+                                        "D0 block-two placement overflow count overflow".to_owned(),
+                                    )
+                                })?;
+                        }
+                    }
+                    (Some(_), None) if flat7x_selected => {
+                        return Err(EncodeRequestError::SourcePipeline(
+                            "durable Flat7x AU has no D0 block-two placement receipt".to_owned(),
+                        ));
+                    }
+                    (Some(_), None) | (None, None) => {}
+                    _ => {
+                        return Err(EncodeRequestError::SourcePipeline(
+                            "D0 block-two placement receipt differs from its append".to_owned(),
+                        ));
+                    }
+                }
                 let flat7x_role_map_assumption = receipt
                     .flat7x_source_role_map
                     .as_ref()
@@ -1014,6 +1123,22 @@ fn run_inner(
             return Err(error);
         }
     };
+    if flat7x_selected {
+        if flat7x_d0_block2_placement_receipts != roots.published_aus() {
+            staging.abandon_attempt();
+            return Err(EncodeRequestError::SourcePipeline(format!(
+                "D0 block-two placement receipts {flat7x_d0_block2_placement_receipts}/{} do not match published AUs",
+                roots.published_aus(),
+            )));
+        }
+        if flat7x_emdf_payload_sequence != Some("flat7x_experimental_joc_pair_v1") {
+            staging.abandon_attempt();
+            return Err(EncodeRequestError::SourcePipeline(
+                "Flat7x candidate did not retain the diagnostic JOC-pair payload sequence"
+                    .to_owned(),
+            ));
+        }
+    }
     if !roots.is_complete_for_eof() {
         staging.abandon_attempt();
         return Err(EncodeRequestError::SourcePipeline(
@@ -1055,6 +1180,11 @@ fn run_inner(
     let _metadata_eof_receipt = metadata_eof_receipt;
 
     if resolved_joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
+        let payload_sequence = flat7x_emdf_payload_sequence.ok_or_else(|| {
+            EncodeRequestError::SourcePipeline(
+                "Flat7x experimental candidate has no payload-sequence receipt".to_owned(),
+            )
+        })?;
         let candidate = match capture_flat7x_experimental_candidate(
             &mut staging,
             roots.output(),
@@ -1069,11 +1199,16 @@ fn run_inner(
             }
         };
         eprintln!(
-            "experimental candidate captured: status=EXPERIMENTAL_CANDIDATE output={} bytes={} sha256={} attempt={} production_allowed={} final_product_exposure=false programme_done=false render=NOT_RUN playback=NOT_RUN",
+            "experimental candidate captured: status=EXPERIMENTAL_CANDIDATE output={} bytes={} sha256={} attempt={} emdf_payload_sequence={} d0_block_two_placement_receipts={}/{} d0_block_two_container_max_C={} overflow_receipts={} production_allowed={} final_product_exposure=false programme_done=false render=NOT_RUN playback=NOT_RUN",
             candidate.candidate_path().display(),
             candidate.bytes_written(),
             hex_lower(candidate.sha256()),
             candidate.attempt_id(),
+            payload_sequence,
+            flat7x_d0_block2_placement_receipts,
+            roots.published_aus(),
+            flat7x_d0_block2_max_container_bytes,
+            flat7x_d0_block2_overflow_receipts,
             candidate.production_allowed(),
         );
         return Ok(());
@@ -1122,7 +1257,7 @@ fn run_inner(
 struct PendingMainCallback {
     callback_index: FrontendCallbackIndex,
     source_index: Option<CodecSourceIndex>,
-    flat7x_physical_pcm_rows: Option<crate::source_execution::Flat7xPcmSourceRows>,
+    flat7x_mix: Option<jocforge_application::source_frame_bridge::Flat7xSceneMix>,
     frontend: Option<FrontendControlReplacementCandidate>,
     spatial: MainSpatialCallbackCandidate,
     reader_eof_candidate: ReaderEofReplacementCandidate,
@@ -1137,7 +1272,7 @@ fn stage_main_callback_candidate(
     roots: &MainSpatialColdRoots,
     reader_eof_before: &ReaderEofMachine,
     providers: &crate::selected_spatial_callback_providers::SelectedMainSpatialCallbackProviders,
-    preserve_flat7x_pcm_rows: bool,
+    render_flat7x_carriers: bool,
 ) -> Result<PendingMainCallback, EncodeRequestError> {
     let frame = read_frontend_pcm_callback(
         parsed,
@@ -1192,6 +1327,22 @@ fn stage_main_callback_candidate(
     .map_err(|error| {
         EncodeRequestError::SourcePipeline(format!("ReaderEof callback stage: {error:?}"))
     })?;
+    let source_index = frame.source_index();
+    let flat7x_mix = if render_flat7x_carriers {
+        let previous = roots.frontend_control().committed().dynamic_after_state();
+        let mix = jocforge_application::source_frame_bridge::Flat7xSceneMix::render(
+            prepared.graph().graph(),
+            frame.physical_pcm_rows(),
+            controls.physical_rows(),
+            previous.map(|state| state.physical_rows()),
+        )
+        .map_err(|error| {
+            EncodeRequestError::SourcePipeline(format!("Flat7x carrier mix: {error:?}"))
+        })?;
+        Some(mix)
+    } else {
+        None
+    };
     let values = providers.callback_values().providers();
     let spatial = stage_main_spatial_callback(MainSpatialCallbackInput {
         prepared,
@@ -1212,47 +1363,10 @@ fn stage_main_callback_candidate(
     if spatial.callback_index() != callback_index {
         return Err(EncodeRequestError::ClockMismatch);
     }
-    let source_index = frame.source_index();
-    let flat7x_source_extent = if preserve_flat7x_pcm_rows {
-        source_index
-            .map(|source_index| {
-                Flat7xD0PcmSourceExtent::new(
-                    source_index,
-                    callback_index,
-                    frame.first_sample(),
-                    u16::try_from(frame.actual_samples().value())
-                        .map_err(|_| EncodeRequestError::ClockMismatch)?,
-                    u16::try_from(frame.padding_samples())
-                        .map_err(|_| EncodeRequestError::ClockMismatch)?,
-                )
-                .map_err(|error| {
-                    EncodeRequestError::SourcePipeline(format!(
-                        "Flat7x PCM source extent: {error:?}"
-                    ))
-                })
-            })
-            .transpose()?
-    } else {
-        None
-    };
-    let flat7x_physical_pcm_rows = if preserve_flat7x_pcm_rows {
-        source_index.map(|source_index| {
-            crate::source_execution::Flat7xPcmSourceRows::new(
-                *frame.input_sha256(),
-                callback_index,
-                source_index,
-                crate::source_execution::Flat7xPcmRowDelivery::NormalCallback,
-                flat7x_source_extent,
-                frame.physical_pcm_rows().to_vec(),
-            )
-        })
-    } else {
-        None
-    };
     Ok(PendingMainCallback {
         callback_index,
         source_index,
-        flat7x_physical_pcm_rows,
+        flat7x_mix,
         frontend: Some(frontend),
         spatial,
         reader_eof_candidate,
@@ -1266,7 +1380,6 @@ fn stage_main_cached_callback_candidate(
     callback_index: FrontendCallbackIndex,
     roots: &ProgrammeOwnerRoots<'_>,
     providers: &crate::selected_spatial_callback_providers::SelectedMainSpatialCallbackProviders,
-    preserve_flat7x_pcm_rows: bool,
 ) -> Result<PendingMainCallback, EncodeRequestError> {
     let source_index =
         source_for_callback_clock(callback_index).ok_or(EncodeRequestError::ClockMismatch)?;
@@ -1284,15 +1397,11 @@ fn stage_main_cached_callback_candidate(
         .ok_or_else(|| {
             EncodeRequestError::SourcePipeline("MAIN F01E after-state unavailable".to_owned())
         })?;
-    let held_controls = MainHeldControlOutput::AdmInput(
-        after
-            .held_source_view_for_cached_callback(callback_lineage)
-            .map_err(|error| {
-                EncodeRequestError::SourcePipeline(format!(
-                    "MAIN cached F01E held controls: {error:?}"
-                ))
-            })?,
-    );
+    let held_controls = after
+        .held_source_view_for_cached_callback(callback_lineage)
+        .map_err(|error| {
+            EncodeRequestError::SourcePipeline(format!("MAIN cached F01E held controls: {error:?}"))
+        })?;
     let reader_eof_candidate = stage_reader_eof_cached_drain(
         roots.reader_eof(),
         callback_index,
@@ -1306,7 +1415,7 @@ fn stage_main_cached_callback_candidate(
     let values = providers.callback_values().providers();
     let spatial = stage_main_spatial_cached_callback(MainSpatialCachedCallbackInput {
         prepared,
-        controls: held_controls,
+        controls: MainHeldControlOutput::AdmInput(held_controls),
         spatial_control: roots.main().spatial_control(),
         spatial_audio: roots.main().spatial_audio(),
         p11_geometry: &values.p11_geometry,
@@ -1322,61 +1431,15 @@ fn stage_main_cached_callback_candidate(
     if spatial.callback_index() != callback_index {
         return Err(EncodeRequestError::ClockMismatch);
     }
-    let flat7x_physical_pcm_rows = if preserve_flat7x_pcm_rows {
-        let source_extent = Flat7xD0PcmSourceExtent::repeat_previous_callback_for_cached_drain(
-            source_index,
-            callback_index,
-        )
-        .map_err(|error| {
-            EncodeRequestError::SourcePipeline(format!(
-                "Flat7x cached-drain PCM source extent: {error:?}"
-            ))
-        })?;
-        Some(crate::source_execution::Flat7xPcmSourceRows::new(
-            prepared.resource_identity().input_sha256(),
-            callback_index,
-            source_index,
-            crate::source_execution::Flat7xPcmRowDelivery::CachedDrain,
-            Some(source_extent),
-            cached_flat7x_physical_pcm_rows(prepared, roots)?,
-        ))
-    } else {
-        None
-    };
     Ok(PendingMainCallback {
         callback_index,
         source_index: Some(source_index),
-        flat7x_physical_pcm_rows,
+        flat7x_mix: None,
         frontend: None,
         spatial,
         reader_eof_candidate,
         transaction_id,
     })
-}
-
-fn cached_flat7x_physical_pcm_rows(
-    prepared: &PreparedJobInput,
-    roots: &ProgrammeOwnerRoots<'_>,
-) -> Result<Vec<Vec<u32>>, EncodeRequestError> {
-    let physical_row_count = usize::from(prepared.configuration().wave().channels());
-    let expected_words = physical_row_count
-        .checked_mul(1_536)
-        .ok_or(EncodeRequestError::ClockMismatch)?;
-    let cached_words = roots
-        .main()
-        .spatial_control()
-        .committed()
-        .previous_pcm_bits();
-    if cached_words.len() != expected_words {
-        return Err(EncodeRequestError::SourcePipeline(format!(
-            "Flat7x cached PCM extent: expected {expected_words} words, found {}",
-            cached_words.len()
-        )));
-    }
-    Ok(cached_words
-        .chunks_exact(1_536)
-        .map(|row| row.to_vec())
-        .collect())
 }
 
 struct FileReferenceParts {

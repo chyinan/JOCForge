@@ -10,14 +10,28 @@ pub use jocforge_domain::codec::{
     owner::{CodecOwnerProposal, CodecOwnerRoot, CodecOwnerStageError},
     source_frame_writer::SelectedSourceFrameCandidate,
 };
+pub use jocforge_domain::joc::seven_carrier_windows::SevenCarrierQmfState;
+pub use jocforge_domain::profile::Flat7xSceneMix;
 pub use jocforge_domain::transaction::CallbackLineageIdentity;
 pub use jocforge_domain::{
-    analysis::owner::AnalysisNumericPlanStage, drc::NoneDrcOwnerAfterProposal,
-    joc::emdf::metadata_owner::MetadataSourceProposal,
+    analysis::owner::AnalysisNumericPlanStage,
+    drc::NoneDrcOwnerAfterProposal,
+    joc::{
+        coefficient_fitting::{
+            CoefficientFitState, CoefficientFittingError, SevenCarrierCoefficientFitProposal,
+        },
+        emdf::metadata_owner::MetadataSourceProposal,
+        fit_score::FitScoreProvider,
+        seven_carrier_windows::SevenCarrierWindowSet,
+    },
+    spatial::spatial_audio_state::SelectedJocQmfProjection,
 };
 
 use jocforge_domain::{
-    analysis::source_frame::{SharedAnalysisIdentity, SharedAnalysisReceipt},
+    analysis::source_frame::{
+        InstalledAudioProjectionError, SharedAnalysisIdentity, SharedAnalysisReceipt,
+        SourcedInstalledAudioFrame, installed_audio_from_external_pcm_rows,
+    },
     codec::{
         bap::BapParameters,
         published_emdf_binding::{PublishedEmdfBindingError, emdf_frame_input_for_source},
@@ -25,13 +39,18 @@ use jocforge_domain::{
             SelectedSourceFrameWriterError, prepare_selected_source_frame_candidate,
         },
     },
+    joc::seven_carrier_windows::{
+        SevenCarrierQmfSourceIdentity, SevenCarrierWindowError, SevenCarrierWindowProposal,
+        stage_seven_carrier_windows,
+    },
     profile::{
         Flat7xD0PcmRows, Flat7xI0D0TargetPlan, Flat7xI0PcmRows, Flat7xProvisionalSourcePcmView,
-        Flat7xProvisionalSourceRoleMap, Flat7xSourceRoleMapError,
-        build_flat7x_provisional_source_role_map,
+        Flat7xProvisionalSourceRoleMap, Flat7xSourceRoleMapError, ResolvedEncodingProfile,
+        SevenCarrierPcmInput, build_flat7x_provisional_source_role_map,
         project_flat7x_source_pcm_rows as project_profile_source_pcm_rows,
     },
     publication::OutputSourceAfterProposal,
+    spatial::{QmfMathematicalFftProvider, QmfReceiverFunctionalProvider},
     timeline::{
         CodecSourceIndex, FrontendCallbackIndex, PublicationDisposition, publication_for_source,
         source_for_callback,
@@ -52,6 +71,12 @@ pub enum SourceFrameBridgeError {
     MetadataSourceLineageMismatch,
     Flat7xSourceRoleMap(Flat7xSourceRoleMapError),
     Flat7xSourceRoleMapLineageMismatch,
+    Flat7xI0SourceExtentMismatch,
+    Flat7xI0Audio(InstalledAudioProjectionError),
+    SevenCarrierSourceIdentityMismatch,
+    SevenCarrierWindow(SevenCarrierWindowError),
+    SevenCarrierCoefficientFitLineageMismatch,
+    SevenCarrierCoefficientFit(CoefficientFittingError),
     F12EmdfCursorMissing,
     F12EmdfCursorUnexpected,
     CodecSource(CodecSourceBridgeError),
@@ -84,6 +109,10 @@ impl Flat7xSourceRoleMapReceipt {
 
     pub const fn callback_index(&self) -> FrontendCallbackIndex {
         self.callback_index
+    }
+
+    pub const fn attempt_id(&self) -> AttemptId {
+        self.attempt_id
     }
 
     pub const fn source_index(&self) -> CodecSourceIndex {
@@ -146,7 +175,105 @@ pub struct Flat7xSourcePcmProjection<'a> {
     pcm_view: Flat7xProvisionalSourcePcmView<'a>,
 }
 
+/// Flat7x's provisional six-row I0 source, routed into the existing F07 external lane order.
+#[derive(Debug, Eq, PartialEq)]
+pub struct Flat7xI0AnalysisInput {
+    role_map: Flat7xProvisionalSourceRoleMap,
+    source_extent: Flat7xD0PcmSourceExtent,
+    installed_audio: SourcedInstalledAudioFrame,
+}
+
+impl Flat7xI0AnalysisInput {
+    pub const fn role_map(&self) -> &Flat7xProvisionalSourceRoleMap {
+        &self.role_map
+    }
+
+    pub const fn source_extent(&self) -> Flat7xD0PcmSourceExtent {
+        self.source_extent
+    }
+
+    pub const fn installed_audio(&self) -> &SourcedInstalledAudioFrame {
+        &self.installed_audio
+    }
+}
+
+/// Builds the provisional Flat7x I0 row selection before F07-F10 analysis starts.
+///
+/// The source rows are mapped under `Flat7xProvisionalSourceRoleMap::assumption_id`; their I0
+/// carrier order `[L, C, R, Ls, Rs, LFE]` is reordered into F07's existing external order
+/// `[L, R, C, LFE, Ls, Rs]`. The selected five-point-one profile does not use this route.
+pub fn build_flat7x_i0_analysis_input(
+    prepared: &PreparedJobInput,
+    target: Flat7xI0D0TargetPlan,
+    source_index: CodecSourceIndex,
+    source_extent: Flat7xD0PcmSourceExtent,
+    physical_pcm_rows: &[Vec<u32>],
+) -> Result<Flat7xI0AnalysisInput, SourceFrameBridgeError> {
+    let role_map = build_flat7x_provisional_source_role_map(prepared.graph().graph(), target)
+        .map_err(SourceFrameBridgeError::Flat7xSourceRoleMap)?;
+    if source_extent.source_index() != source_index {
+        return Err(SourceFrameBridgeError::Flat7xI0SourceExtentMismatch);
+    }
+    if usize::from(role_map.physical_row_count())
+        != usize::from(prepared.configuration().wave().channels())
+    {
+        return Err(SourceFrameBridgeError::Flat7xSourceRoleMapLineageMismatch);
+    }
+    let pcm_view = project_profile_source_pcm_rows(&role_map, physical_pcm_rows)
+        .map_err(SourceFrameBridgeError::Flat7xSourceRoleMap)?;
+    let installed_audio = installed_audio_from_flat7x_i0_rows(source_index, pcm_view.i0().rows())
+        .map_err(SourceFrameBridgeError::Flat7xI0Audio)?;
+    Ok(Flat7xI0AnalysisInput {
+        role_map,
+        source_extent,
+        installed_audio,
+    })
+}
+
+/// Checks that the I0 analysis rows and the D0/JOC projection came from one validated sample window.
+pub fn validate_flat7x_i0_projection_extent(
+    i0_extent: Flat7xD0PcmSourceExtent,
+    projection_extent: Flat7xD0PcmSourceExtent,
+) -> Result<(), SourceFrameBridgeError> {
+    if i0_extent == projection_extent {
+        Ok(())
+    } else {
+        Err(SourceFrameBridgeError::Flat7xI0SourceExtentMismatch)
+    }
+}
+
+/// Packs already selected Flat7x I0 roles into F07's established external lane order.
+pub fn installed_audio_from_flat7x_i0_rows(
+    source_index: CodecSourceIndex,
+    i0_rows: [&[u32]; 6],
+) -> Result<SourcedInstalledAudioFrame, InstalledAudioProjectionError> {
+    installed_audio_from_external_pcm_rows(
+        source_index,
+        [
+            i0_rows[0], i0_rows[2], i0_rows[1], i0_rows[5], i0_rows[3], i0_rows[4],
+        ],
+    )
+}
+
 impl<'a> Flat7xSourcePcmProjection<'a> {
+    pub fn from_scene_mix(
+        receipt: Flat7xSourceRoleMapReceipt,
+        extent: Flat7xD0PcmSourceExtent,
+        mix: &'a Flat7xSceneMix,
+    ) -> Result<Self, SourceFrameBridgeError> {
+        if receipt.role_map() != mix.role_map()
+            || receipt.source_index() != extent.source_index()
+            || receipt.callback_index() != extent.callback_index()
+        {
+            return Err(SourceFrameBridgeError::Flat7xSourceRoleMapLineageMismatch);
+        }
+        Ok(Self {
+            role_map_receipt: receipt,
+            source_extent: extent,
+            pcm_view: mix.pcm_view(),
+        })
+    }
+
     pub const fn role_map_receipt(&self) -> &Flat7xSourceRoleMapReceipt {
         &self.role_map_receipt
     }
@@ -163,9 +290,183 @@ impl<'a> Flat7xSourcePcmProjection<'a> {
         self.pcm_view.d0()
     }
 
+    pub const fn seven_carrier_pcm_input(&self) -> SevenCarrierPcmInput<'a> {
+        self.pcm_view.seven_carrier_input()
+    }
+
     pub const fn physical_row_count(&self) -> u16 {
         self.pcm_view.physical_row_count()
     }
+}
+
+/// Source-bound, noncommitting QMF windows and history after-value for the seven ADM roles.
+#[must_use]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Flat7xSevenCarrierWindowCandidate {
+    role_map_receipt: Flat7xSourceRoleMapReceipt,
+    source_extent: Flat7xD0PcmSourceExtent,
+    qmf: SevenCarrierWindowProposal,
+}
+
+impl Flat7xSevenCarrierWindowCandidate {
+    pub const fn role_map_receipt(&self) -> &Flat7xSourceRoleMapReceipt {
+        &self.role_map_receipt
+    }
+
+    pub const fn source_extent(&self) -> Flat7xD0PcmSourceExtent {
+        self.source_extent
+    }
+
+    pub const fn windows(&self) -> &SevenCarrierWindowSet {
+        self.qmf.windows()
+    }
+
+    pub const fn after_state(&self) -> &SevenCarrierQmfState {
+        self.qmf.after_state()
+    }
+
+    pub fn is_bound_to_projection(&self, projection: &Flat7xSourcePcmProjection<'_>) -> bool {
+        let receipt = projection.role_map_receipt();
+        let identity = self.windows().source_identity();
+        let shared = receipt.shared_analysis_identity();
+        self.role_map_receipt == *receipt
+            && self.source_extent == projection.source_extent()
+            && identity.callback_lineage().programme_id() == receipt.programme_id()
+            && identity.callback_lineage().attempt_id() == receipt.attempt_id()
+            && identity.callback_lineage().callback_index() == receipt.callback_index()
+            && identity.source_transaction_id() == receipt.source_transaction_id()
+            && identity.source_index() == receipt.source_index()
+            && identity.analysis_generation() == shared.analysis_after_generation()
+            && self.windows().role_bindings() == receipt.role_map().joc_carrier_rows()
+    }
+
+    pub const fn production_allowed(&self) -> bool {
+        false
+    }
+}
+
+/// Builds seven same-source raw QMF windows from an admitted ADM PCM projection.
+pub fn stage_flat7x_seven_carrier_windows(
+    projection: &Flat7xSourcePcmProjection<'_>,
+    before: &SevenCarrierQmfState,
+    functional_provider: &QmfReceiverFunctionalProvider,
+    fft_provider: &QmfMathematicalFftProvider,
+) -> Result<Flat7xSevenCarrierWindowCandidate, SourceFrameBridgeError> {
+    let receipt = projection.role_map_receipt();
+    let shared = receipt.shared_analysis_identity();
+    let source_key = shared.source_stage_key();
+    if source_key.attempt_id() != receipt.attempt_id()
+        || source_key.transaction_id() != receipt.source_transaction_id()
+        || source_key.source_index() != receipt.source_index()
+        || shared.source_index() != receipt.source_index()
+        || projection.source_extent().callback_index() != receipt.callback_index()
+        || projection.source_extent().source_index() != receipt.source_index()
+    {
+        return Err(SourceFrameBridgeError::SevenCarrierSourceIdentityMismatch);
+    }
+    let source_identity = SevenCarrierQmfSourceIdentity::new(
+        CallbackLineageIdentity::new(
+            receipt.programme_id().clone(),
+            receipt.attempt_id(),
+            receipt.callback_index(),
+        ),
+        receipt.source_transaction_id().clone(),
+        receipt.source_index(),
+        shared.analysis_after_generation(),
+    )
+    .map_err(SourceFrameBridgeError::SevenCarrierWindow)?;
+    let qmf = stage_seven_carrier_windows(
+        projection.seven_carrier_pcm_input(),
+        source_identity,
+        before,
+        functional_provider,
+        fft_provider,
+    )
+    .map_err(SourceFrameBridgeError::SevenCarrierWindow)?;
+    Ok(Flat7xSevenCarrierWindowCandidate {
+        role_map_receipt: receipt.clone(),
+        source_extent: projection.source_extent(),
+        qmf,
+    })
+}
+
+/// Source-bound C=7 coefficient-fit candidate over same-source target-slot and ADM-carrier windows.
+#[must_use]
+#[derive(Clone, Debug, PartialEq)]
+pub struct Flat7xSevenCarrierCoefficientCandidate {
+    carrier_windows: Flat7xSevenCarrierWindowCandidate,
+    fit: SevenCarrierCoefficientFitProposal,
+}
+
+impl Flat7xSevenCarrierCoefficientCandidate {
+    pub const fn carrier_windows(&self) -> &Flat7xSevenCarrierWindowCandidate {
+        &self.carrier_windows
+    }
+
+    pub const fn fit(&self) -> &SevenCarrierCoefficientFitProposal {
+        &self.fit
+    }
+
+    pub const fn rows(&self) -> &jocforge_domain::joc::coefficient_fitting::SevenCarrierFitRows {
+        self.fit.rows()
+    }
+
+    pub const fn production_allowed(&self) -> bool {
+        false
+    }
+}
+
+/// Fits the target-slot windows only when the seven-carrier PCM and spatial projections share
+/// programme, attempt, callback, source, transaction and analysis generation.
+pub fn stage_flat7x_seven_carrier_coefficient_fit(
+    profile: ResolvedEncodingProfile,
+    fit_before: &CoefficientFitState,
+    target_projection: &SelectedJocQmfProjection,
+    carrier_candidate: &Flat7xSevenCarrierWindowCandidate,
+    qmf_provider: &QmfReceiverFunctionalProvider,
+    score_provider: &FitScoreProvider,
+) -> Result<Flat7xSevenCarrierCoefficientCandidate, SourceFrameBridgeError> {
+    let role_receipt = carrier_candidate.role_map_receipt();
+    let shared_analysis = role_receipt.shared_analysis_identity();
+    let source_key = shared_analysis.source_stage_key();
+    let carrier_identity = carrier_candidate.windows().source_identity();
+    let expected_callback_lineage = CallbackLineageIdentity::new(
+        role_receipt.programme_id().clone(),
+        role_receipt.attempt_id(),
+        role_receipt.callback_index(),
+    );
+    if source_key.attempt_id() != role_receipt.attempt_id()
+        || source_key.transaction_id() != role_receipt.source_transaction_id()
+        || source_key.source_index() != role_receipt.source_index()
+        || shared_analysis.source_index() != role_receipt.source_index()
+        || carrier_identity.callback_lineage() != &expected_callback_lineage
+        || carrier_identity.source_transaction_id() != role_receipt.source_transaction_id()
+        || carrier_identity.source_index() != role_receipt.source_index()
+        || carrier_identity.analysis_generation() != shared_analysis.analysis_after_generation()
+        || target_projection.transaction_id() != &expected_callback_lineage
+        || target_projection.source_index() != role_receipt.source_index()
+        || role_receipt.source_index().dispatch().ok() != Some(target_projection.dispatch())
+        || carrier_candidate.source_extent().callback_index() != role_receipt.callback_index()
+        || carrier_candidate.source_extent().source_index() != role_receipt.source_index()
+        || carrier_candidate.windows().role_bindings() != role_receipt.role_map().joc_carrier_rows()
+    {
+        return Err(SourceFrameBridgeError::SevenCarrierCoefficientFitLineageMismatch);
+    }
+    let fit =
+        jocforge_domain::joc::coefficient_fitting::stage_seven_carrier_coefficient_fit_from_qmf(
+            profile,
+            fit_before,
+            target_projection,
+            carrier_candidate.windows(),
+            carrier_candidate.after_state(),
+            qmf_provider,
+            score_provider,
+        )
+        .map_err(SourceFrameBridgeError::SevenCarrierCoefficientFit)?;
+    Ok(Flat7xSevenCarrierCoefficientCandidate {
+        carrier_windows: carrier_candidate.clone(),
+        fit,
+    })
 }
 
 /// Builds the profile-specific provisional ADM-row map and binds it to one already staged
@@ -391,12 +692,22 @@ pub fn stage_codec_owner_after_flat7x_pair(
         d0_frame.frame_candidate().frame().frame_bytes(),
         Flat7xI0D0TargetPlan::approved_contract(),
     )?;
-    codec_owner.stage_source_with_d0_overlap_history(
+    let proposal = codec_owner.stage_source_with_d0_overlap_history(
         &accepted_frame,
         &source_candidate.codec_short_flags(),
         Some(output_after),
         Some(d0_history_after),
-    )
+    )?;
+    let generation_receipt = d0_frame
+        .block2_placement_receipt()
+        .source_generation_receipt();
+    if proposal.source_index() != generation_receipt.source_index() {
+        return Err(CodecOwnerStageError::SourceIdentityMismatch);
+    }
+    if proposal.after_state().generation() != generation_receipt.codec_owner_after_generation() {
+        return Err(CodecOwnerStageError::GenerationMismatch);
+    }
+    Ok(proposal)
 }
 
 fn validate_metadata_source_lineage(
@@ -471,6 +782,7 @@ fn validate_metadata_source_lineage(
 mod integrity_cursor_tests {
     use super::*;
     use jocforge_domain::codec::bitio::FrameBitCursor;
+    use jocforge_domain::timeline::CodecSourceIndex;
 
     #[test]
     fn published_f12_cursor_must_be_present_but_may_be_bit_aligned() {
@@ -494,6 +806,63 @@ mod integrity_cursor_tests {
         assert_eq!(
             validate_f12_cursor_shape(false, Some(FrameBitCursor::new(24))),
             Err(SourceFrameBridgeError::F12EmdfCursorUnexpected)
+        );
+    }
+
+    #[test]
+    fn flat7x_i0_role_rows_enter_f07_in_external_lane_order() {
+        let role_rows: [Vec<u32>; 6] = std::array::from_fn(|role| {
+            (0..1_536)
+                .map(|sample| ((role * 1_536 + sample) as f32).to_bits())
+                .collect::<Vec<_>>()
+        });
+        let installed = installed_audio_from_flat7x_i0_rows(
+            CodecSourceIndex::new(11),
+            std::array::from_fn(|role| role_rows[role].as_slice()),
+        )
+        .unwrap();
+        let expected_role_by_external_lane = [0, 2, 1, 5, 3, 4];
+
+        for (lane, role) in expected_role_by_external_lane.into_iter().enumerate() {
+            assert_eq!(
+                installed.audio()[lane][0][0],
+                ((role * 1_536) as f32).to_bits()
+            );
+            assert_eq!(
+                installed.audio()[lane][5][255],
+                ((role * 1_536 + 1_535) as f32).to_bits()
+            );
+        }
+    }
+}
+
+#[cfg(test)]
+mod flat7x_i0_extent_tests {
+    use super::{SourceFrameBridgeError, validate_flat7x_i0_projection_extent};
+    use jocforge_domain::codec::flat7x_d0_pcm_source::Flat7xD0PcmSourceExtent;
+    use jocforge_domain::timeline::{AdmSampleIndex, CodecSourceIndex, FrontendCallbackIndex};
+
+    fn reader_extent(source: u64, callback: u32) -> Flat7xD0PcmSourceExtent {
+        Flat7xD0PcmSourceExtent::new(
+            CodecSourceIndex::new(source),
+            FrontendCallbackIndex::new(callback),
+            AdmSampleIndex::new(u64::from(callback) * 1_536),
+            1_536,
+            0,
+        )
+        .unwrap()
+    }
+
+    #[test]
+    fn i0_and_projection_require_the_same_validated_sample_extent() {
+        let i0_extent = reader_extent(0, 2);
+        assert_eq!(
+            validate_flat7x_i0_projection_extent(i0_extent, i0_extent),
+            Ok(())
+        );
+        assert_eq!(
+            validate_flat7x_i0_projection_extent(i0_extent, reader_extent(1, 3)),
+            Err(SourceFrameBridgeError::Flat7xI0SourceExtentMismatch)
         );
     }
 }

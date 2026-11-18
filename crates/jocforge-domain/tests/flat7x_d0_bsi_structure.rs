@@ -30,7 +30,7 @@ fn example_structures() -> [Flat7xD0BsiStructure; 2] {
                 audio_production: None,
                 sourcefscod: 1,
             }),
-            addbsi: Flat7xD0Ci16Addbsi::new(0x0110),
+            addbsi: Flat7xD0Ci16Addbsi::new([0x01, 0x10]),
         },
         Flat7xD0BsiStructure {
             dialnorm: 16,
@@ -54,7 +54,7 @@ fn example_structures() -> [Flat7xD0BsiStructure; 2] {
                 }),
                 sourcefscod: 0,
             }),
-            addbsi: Flat7xD0Ci16Addbsi::new(0x0110),
+            addbsi: Flat7xD0Ci16Addbsi::new([0x01, 0x10]),
         },
     ]
 }
@@ -149,7 +149,7 @@ fn dependent_bsi_diagnostic_moves_audfrm_start_to_bit_93() {
         }),
         block_mix: [None; 6],
         information: None,
-        addbsi: Flat7xD0Ci16Addbsi::new(0x0110),
+        addbsi: Flat7xD0Ci16Addbsi::new([0x01, 0x10]),
     };
     let target = Flat7xI0D0TargetPlan::approved_contract();
     let mut bytes = [0_u8; 16];
@@ -170,10 +170,9 @@ fn dependent_bsi_diagnostic_moves_audfrm_start_to_bit_93() {
 }
 
 #[test]
-fn target_ci16_scalar_is_written_as_the_required_two_byte_addbsi() {
+fn target_ci16_bytes_are_written_as_the_required_two_byte_addbsi() {
     let target = Flat7xI0D0TargetPlan::approved_contract();
-    assert_eq!(target.d0_ci16_addbsi_value(), 0x0110);
-    assert_eq!(target.complexity_index_type_a(), 16);
+    assert_eq!(target.d0_ci16_addbsi_bytes(), [0x01, 0x10]);
 
     let structure = Flat7xD0BsiStructure {
         dialnorm: 16,
@@ -181,7 +180,7 @@ fn target_ci16_scalar_is_written_as_the_required_two_byte_addbsi() {
         mixing: None,
         block_mix: [None; 6],
         information: None,
-        addbsi: Flat7xD0Ci16Addbsi::new(target.d0_ci16_addbsi_value()),
+        addbsi: Flat7xD0Ci16Addbsi::new(target.d0_ci16_addbsi_bytes()),
     };
     let mut bytes = [0_u8; 16];
     let end;
@@ -197,7 +196,8 @@ fn target_ci16_scalar_is_written_as_the_required_two_byte_addbsi() {
     let addbsi_start = end - 23;
     assert_eq!(read_bit(&bytes, addbsi_start), true);
     assert_eq!(read_unsigned(&bytes, addbsi_start + 1, 6), 1);
-    assert_eq!(read_unsigned(&bytes, addbsi_start + 7, 16), 0x0110);
+    assert_eq!(read_unsigned(&bytes, addbsi_start + 7, 8), 0x01);
+    assert_eq!(read_unsigned(&bytes, addbsi_start + 15, 8), 0x10);
 }
 
 #[test]

@@ -6,12 +6,12 @@ use crate::{
     joc::{
         coefficient_fitting::{
             CoefficientFitProposal, CoefficientFitState, CoefficientFittingError, FitSourceLineage,
-            stage_coefficient_fit_from_qmf,
+            Flat7xCoefficientRowsProposal, stage_coefficient_fit_from_qmf,
         },
         coefficient_representation::{RepresentationRetryError, RepresentationRetryProvider},
         dispatch_state::{
             JocDispatchError, JocDispatchState, JocPayloadInput, stage_joc_payload,
-            stage_joc_payload_for_profile,
+            stage_joc_payload_for_profile, stage_joc_payload_with_flat7x_rows,
         },
         emdf::metadata_bodies::{
             MetadataBodiesError, MetadataBodiesProposal, assemble_metadata_bodies,
@@ -20,7 +20,10 @@ use crate::{
         id14_body::Id14BodyProposal,
         oamd::reader_target::ReaderTargetUpdateReceipt,
     },
-    profile::ResolvedEncodingProfile,
+    profile::{
+        CarrierCodecProfile, JocPayloadDownmixIndex, JocReconstructionLayout,
+        ResolvedEncodingProfile, SubstreamTopology,
+    },
     spatial::{QmfReceiverFunctionalProvider, spatial_audio_state::SelectedJocQmfProjection},
     transaction::CallbackTransactionId,
 };
@@ -104,6 +107,9 @@ impl JocSourceProposal {
 #[derive(Debug)]
 pub enum JocSourceStageError {
     Fit(CoefficientFittingError),
+    Flat7xCoefficientSourceUnavailable,
+    Flat7xCoefficientProfileMismatch,
+    Flat7xCoefficientLineageMismatch,
     MissingFitLineage,
     Payload(JocDispatchError),
     Retry(RepresentationRetryError),
@@ -180,6 +186,9 @@ pub fn stage_joc_source_with_transaction_for_profile(
     retry_provider: &RepresentationRetryProvider,
     profile: ResolvedEncodingProfile,
 ) -> Result<JocSourceProposal, JocSourceStageError> {
+    if source_route_for_profile(profile, false)? != JocSourceRowRoute::SelectedFivePointOne {
+        return Err(JocSourceStageError::Flat7xCoefficientProfileMismatch);
+    }
     stage_joc_source_inner(
         fit_before,
         dispatch_before,
@@ -190,6 +199,140 @@ pub fn stage_joc_source_with_transaction_for_profile(
         Some(producer_transaction_id),
         Some(profile),
     )
+}
+
+/// Stages one Flat7x JOC source from caller-provided seven-row values and same-source fit state.
+pub fn stage_joc_source_with_flat7x_rows_for_transaction(
+    fit_before: &CoefficientFitState,
+    dispatch_before: &JocDispatchState,
+    projection: &SelectedJocQmfProjection,
+    producer_transaction_id: CallbackTransactionId,
+    rows_proposal: Flat7xCoefficientRowsProposal<'_>,
+    profile: ResolvedEncodingProfile,
+) -> Result<JocSourceProposal, JocSourceStageError> {
+    if source_route_for_profile(profile, true)? != JocSourceRowRoute::Flat7x {
+        return Err(JocSourceStageError::Flat7xCoefficientProfileMismatch);
+    }
+    if !flat7x_rows_match_source(&rows_proposal, fit_before, projection) {
+        return Err(JocSourceStageError::Flat7xCoefficientLineageMismatch);
+    }
+
+    let payload_input =
+        JocPayloadInput::from_projection_with_transaction(projection, producer_transaction_id)
+            .map_err(JocSourceStageError::Payload)?;
+    let payload = stage_joc_payload_with_flat7x_rows(
+        dispatch_before,
+        &rows_proposal,
+        &payload_input,
+        profile,
+    )
+    .map_err(JocSourceStageError::Payload)?;
+    let (dispatch_after, id14_body) = payload.into_parts().map_err(JocSourceStageError::Payload)?;
+    let fit_after = rows_proposal.after().clone();
+    let lineage = rows_proposal.source_lineage().clone();
+    if id14_body.body().writer_generation != lineage.source_index()
+        || dispatch_after.successful_dispatches() != fit_after.fit_generation()
+    {
+        return Err(JocSourceStageError::WriterLineage);
+    }
+    Ok(JocSourceProposal {
+        fit_after,
+        dispatch_after,
+        id14_body,
+        lineage,
+    })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{JocSourceRowRoute, JocSourceStageError, source_route_for_profile};
+    use crate::profile::{EncodingProfile, JocReconstructionLayout, resolve_selected_profile};
+
+    #[test]
+    fn row_source_route_keeps_five_point_one_and_fails_closed_without_flat7x_rows() {
+        let five_point_one = resolve_selected_profile(&EncodingProfile::selected()).unwrap();
+        let flat7x =
+            resolve_selected_profile(&EncodingProfile::selected_with_joc_reconstruction_layout(
+                JocReconstructionLayout::Flat7x,
+            ))
+            .unwrap();
+
+        assert!(matches!(
+            source_route_for_profile(five_point_one, false),
+            Ok(JocSourceRowRoute::SelectedFivePointOne)
+        ));
+        assert!(matches!(
+            source_route_for_profile(flat7x, false),
+            Err(JocSourceStageError::Flat7xCoefficientSourceUnavailable)
+        ));
+        assert!(matches!(
+            source_route_for_profile(flat7x, true),
+            Ok(JocSourceRowRoute::Flat7x)
+        ));
+        assert!(matches!(
+            source_route_for_profile(five_point_one, true),
+            Err(JocSourceStageError::Flat7xCoefficientProfileMismatch)
+        ));
+    }
+}
+
+fn flat7x_rows_match_source(
+    rows: &Flat7xCoefficientRowsProposal<'_>,
+    fit_before: &CoefficientFitState,
+    projection: &SelectedJocQmfProjection,
+) -> bool {
+    let lineage = rows.source_lineage();
+    fit_before.fit_generation() == projection.source_index().value()
+        && rows.after().fit_generation() == projection.dispatch().value()
+        && lineage.programme_id() == projection.programme_id()
+        && lineage.attempt() == projection.attempt()
+        && lineage.transaction_id() == projection.transaction_id()
+        && lineage.source_index() == projection.source_index()
+        && lineage.dispatch() == projection.dispatch()
+        && lineage.spatial_before_generation() == projection.spatial_before_generation()
+        && lineage.spatial_before_digest() == projection.spatial_before_digest()
+}
+
+fn is_flat7x_profile(profile: ResolvedEncodingProfile) -> bool {
+    profile.carrier_codec() == CarrierCodecProfile::Flat7xAc3I0DependentEac3D0
+        && profile.substream_topology() == SubstreamTopology::Flat7xIndependentI0DependentD0
+        && profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x
+        && profile.joc_payload_downmix_index() == JocPayloadDownmixIndex::SevenChannel
+}
+
+fn is_selected_five_point_one_profile(profile: ResolvedEncodingProfile) -> bool {
+    profile.carrier_codec() == CarrierCodecProfile::IndependentEac3
+        && profile.substream_topology() == SubstreamTopology::SelectedSingleIndependentZeroDependent
+        && profile.joc_reconstruction_layout()
+            == JocReconstructionLayout::ExistingSelectedFivePointOne
+        && profile.joc_payload_downmix_index() == JocPayloadDownmixIndex::FiveChannel
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum JocSourceRowRoute {
+    SelectedFivePointOne,
+    Flat7x,
+}
+
+fn source_route_for_profile(
+    profile: ResolvedEncodingProfile,
+    has_flat7x_rows: bool,
+) -> Result<JocSourceRowRoute, JocSourceStageError> {
+    if is_flat7x_profile(profile) {
+        return if has_flat7x_rows {
+            Ok(JocSourceRowRoute::Flat7x)
+        } else {
+            Err(JocSourceStageError::Flat7xCoefficientSourceUnavailable)
+        };
+    }
+    if is_selected_five_point_one_profile(profile) {
+        return if has_flat7x_rows {
+            Err(JocSourceStageError::Flat7xCoefficientProfileMismatch)
+        } else {
+            Ok(JocSourceRowRoute::SelectedFivePointOne)
+        };
+    }
+    Err(JocSourceStageError::Flat7xCoefficientProfileMismatch)
 }
 
 fn stage_joc_source_inner(

@@ -24,6 +24,8 @@ use super::{
 };
 use crate::joc::id14_body::Id14ProducerProvenance;
 use crate::{
+    joc::emdf::protected_container::CurrentEmdfPayloadSequence,
+    profile::{JocReconstructionLayout, ResolvedEncodingProfile},
     spatial::source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
     timeline::{
         CodecSourceIndex, FrontendCallbackIndex, JocDispatchIndex, OrdinaryPayloadWriterIndex,
@@ -46,10 +48,38 @@ const WRAPPER_FILE_SHA256: &str =
 const WRAPPER_CANONICAL_SHA256: &str =
     "e5d4a8f50324b4d1a7af7631b76244ea91da12cf9fa1f1b668c045c2ac6ad352";
 const QUEUE_MUTATION_ORDER: [u8; 4] = [11, 1, 2, 14];
-const PUBLICATION_ORDER: [u8; 4] = [11, 14, 2, 1];
 const CANONICAL_QUEUE_ORDER: [u8; 4] = [1, 2, 11, 14];
 const METADATA_OWNER_ID: &str = "metadata";
 const METADATA_STATE_REF: &str = "owners.metadata";
+
+#[cfg(any(test, feature = "test-support"))]
+pub(crate) fn canonical_lf_fixture_bytes(bytes: &[u8]) -> Vec<u8> {
+    let mut canonical = Vec::with_capacity(bytes.len());
+    let mut index = 0;
+    while index < bytes.len() {
+        if bytes[index] == b'\r' && bytes.get(index + 1) == Some(&b'\n') {
+            index += 1;
+        }
+        canonical.push(bytes[index]);
+        index += 1;
+    }
+    canonical
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum MetadataWrapperProfile {
+    Selected,
+    Flat7x,
+}
+
+impl MetadataWrapperProfile {
+    const fn payload_sequence(self) -> CurrentEmdfPayloadSequence {
+        match self {
+            Self::Selected => CurrentEmdfPayloadSequence::SelectedFourPayloads,
+            Self::Flat7x => CurrentEmdfPayloadSequence::Flat7xExperimentalJocPair,
+        }
+    }
+}
 
 /// Non-payload discriminator for the first failed F13 protected-container binding predicate.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -800,17 +830,21 @@ impl MetadataSourceProposal {
                 CurrentEmdfValidationReason::Id14QueuePopBindingMismatch,
             ));
         }
-        let parsed_container = crate::joc::emdf::protected_container::parse_current_emdf_container(
-            protected_bytes,
-            carriage_mode,
-            carrier_block,
-            queue_pop.producer(),
-        )
-        .map_err(|error| {
-            MetadataOwnerError::CurrentEmdfValidation(CurrentEmdfValidationReason::ParserRejected {
-                parser_code: error.code(),
-            })
-        })?;
+        let parsed_container =
+            crate::joc::emdf::protected_container::parse_current_emdf_container_with_sequence(
+                protected_bytes,
+                carriage_mode,
+                carrier_block,
+                queue_pop.producer(),
+                self.receipt.payload_sequence(),
+            )
+            .map_err(|error| {
+                MetadataOwnerError::CurrentEmdfValidation(
+                    CurrentEmdfValidationReason::ParserRejected {
+                        parser_code: error.code(),
+                    },
+                )
+            })?;
         if parsed_container.id14_provenance() != queue_pop.producer() {
             return Err(MetadataOwnerError::CurrentEmdfValidation(
                 CurrentEmdfValidationReason::ParsedId14ProvenanceMismatch,
@@ -829,6 +863,7 @@ impl MetadataSourceProposal {
         validate_current_container_pop_bindings(
             &parsed_container,
             &self.receipt.queue_pop_receipts,
+            &self.receipt.published_payload_queue_pop_receipts,
             &consumer,
         )
         .map_err(MetadataOwnerError::CurrentEmdfValidation)?;
@@ -842,6 +877,10 @@ impl MetadataSourceProposal {
             consumer_au_index,
             id14_queue_pop: queue_pop.clone(),
             queue_pop_receipts: self.receipt.queue_pop_receipts.clone(),
+            published_payload_queue_pop_receipts: self
+                .receipt
+                .published_payload_queue_pop_receipts
+                .clone(),
         });
         Ok(())
     }
@@ -1093,6 +1132,7 @@ pub struct ParsedMetadataSourceContainer {
     consumer_au_index: PublishedAuIndex,
     id14_queue_pop: Id14QueuePopReceipt,
     queue_pop_receipts: Vec<MetadataQueuePopReceipt>,
+    published_payload_queue_pop_receipts: Vec<MetadataQueuePopReceipt>,
 }
 
 impl ParsedMetadataSourceContainer {
@@ -1137,6 +1177,11 @@ impl ParsedMetadataSourceContainer {
     pub fn queue_pop_receipts(&self) -> &[MetadataQueuePopReceipt] {
         &self.queue_pop_receipts
     }
+
+    /// Returns queue pops paired with payloads emitted in the protected EMDF container.
+    pub fn published_payload_queue_pop_receipts(&self) -> &[MetadataQueuePopReceipt] {
+        &self.published_payload_queue_pop_receipts
+    }
 }
 
 #[derive(Debug)]
@@ -1154,12 +1199,14 @@ pub struct MetadataSourceReceipt {
     proposed_after_sha256: String,
     provider_sha256: String,
     wrapper_config_sha256: String,
+    payload_sequence: CurrentEmdfPayloadSequence,
     timer_before_sha256: String,
     timer_after_sha256: String,
     timer_refreshed_field: Option<u8>,
     queue_operations: Vec<QueueOperation>,
     published_payloads: Vec<PublishedPayload>,
     queue_pop_receipts: Vec<MetadataQueuePopReceipt>,
+    published_payload_queue_pop_receipts: Vec<MetadataQueuePopReceipt>,
     id14_queue_pop: Option<Id14QueuePopReceipt>,
     emdf: Option<Vec<u8>>,
     terminal_layout: Option<Value>,
@@ -1203,6 +1250,10 @@ impl MetadataSourceReceipt {
         self.id14_queue_pop.as_ref()
     }
 
+    pub const fn payload_sequence(&self) -> CurrentEmdfPayloadSequence {
+        self.payload_sequence
+    }
+
     pub fn queue_pop_provenance(&self, queue_id: u8) -> Option<&MetadataQueueProducerProvenance> {
         self.queue_operations
             .iter()
@@ -1213,6 +1264,11 @@ impl MetadataSourceReceipt {
 
     pub fn queue_pop_receipts(&self) -> &[MetadataQueuePopReceipt] {
         &self.queue_pop_receipts
+    }
+
+    /// Returns queue pops paired with payloads emitted in this source's EMDF container.
+    pub fn published_payload_queue_pop_receipts(&self) -> &[MetadataQueuePopReceipt] {
+        &self.published_payload_queue_pop_receipts
     }
 
     /// Dynamic F13 terminal offsets for this source's serialization, when published.
@@ -1237,11 +1293,12 @@ impl MetadataSourceReceipt {
             "proposed_after_sha256": self.proposed_after_sha256,
             "provider_sha256": self.provider_sha256,
             "wrapper_config_sha256": self.wrapper_config_sha256,
+            "payload_sequence": self.payload_sequence.label(),
             "timer_before_sha256": self.timer_before_sha256,
             "timer_after_sha256": self.timer_after_sha256,
             "timer_refreshed_field": self.timer_refreshed_field,
             "queue_operations": self.queue_operations.iter().map(QueueOperation::as_json).collect::<Vec<_>>(),
-            "publication_order": PUBLICATION_ORDER,
+            "publication_order": self.payload_sequence.ordered_wire_ids(),
             "published": self.au_index.is_some(),
             "published_payloads": self.published_payloads.iter().map(PublishedPayload::as_json).collect::<Vec<_>>(),
             "emdf_hex": self.emdf.as_ref().map(|bytes| hex_encode(bytes)),
@@ -1259,6 +1316,14 @@ impl MetadataSourceReceipt {
         if !self.queue_pop_receipts.is_empty() {
             value["queue_pop_receipts"] = Value::Array(
                 self.queue_pop_receipts
+                    .iter()
+                    .map(MetadataQueuePopReceipt::as_json)
+                    .collect(),
+            );
+        }
+        if !self.published_payload_queue_pop_receipts.is_empty() {
+            value["published_payload_queue_pop_receipts"] = Value::Array(
+                self.published_payload_queue_pop_receipts
                     .iter()
                     .map(MetadataQueuePopReceipt::as_json)
                     .collect(),
@@ -1617,6 +1682,7 @@ pub struct MetadataOwner {
     provider_sha256: [u8; 32],
     wrapper_configuration: Value,
     wrapper_config_sha256: String,
+    wrapper_profile: MetadataWrapperProfile,
     state: MetadataState,
     retired: bool,
 }
@@ -1631,8 +1697,69 @@ impl MetadataOwner {
         provider_file: &[u8],
         wrapper_file: &[u8],
     ) -> Result<Self, MetadataOwnerError> {
+        Self::new_with_wrapper_profile(
+            id1_configuration,
+            expected_sources,
+            provider_file,
+            wrapper_file,
+            MetadataWrapperProfile::Selected,
+        )
+    }
+
+    /// Creates fresh F13 state using the wrapper values selected by the resolved programme.
+    pub fn new_for_profile(
+        id1_configuration: Id1MeasurementConfiguration,
+        expected_sources: u64,
+        provider_file: &[u8],
+        wrapper_file: &[u8],
+        profile: ResolvedEncodingProfile,
+    ) -> Result<Self, MetadataOwnerError> {
+        let wrapper_profile =
+            if profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
+                MetadataWrapperProfile::Flat7x
+            } else {
+                MetadataWrapperProfile::Selected
+            };
+        Self::new_with_wrapper_profile(
+            id1_configuration,
+            expected_sources,
+            provider_file,
+            wrapper_file,
+            wrapper_profile,
+        )
+    }
+
+    fn new_with_wrapper_profile(
+        id1_configuration: Id1MeasurementConfiguration,
+        expected_sources: u64,
+        provider_file: &[u8],
+        wrapper_file: &[u8],
+        wrapper_profile: MetadataWrapperProfile,
+    ) -> Result<Self, MetadataOwnerError> {
         let provider =
             ValidatedMetadataOwnerProvider::from_approved_bytes(provider_file, wrapper_file)?;
+        let mut wrapper_configuration = provider.wrapper_configuration.clone();
+        if wrapper_profile == MetadataWrapperProfile::Flat7x {
+            let id11 = wrapper_configuration
+                .get_mut("payloads")
+                .and_then(Value::as_object_mut)
+                .and_then(|payloads| payloads.get_mut("11"))
+                .and_then(Value::as_object_mut)
+                .ok_or(MetadataOwnerError::WrapperIdentity)?;
+            id11.insert("payload_frame_aligned".to_owned(), Value::Bool(true));
+            id11.insert("create_duplicate".to_owned(), Value::Bool(false));
+            id11.insert("remove_duplicate".to_owned(), Value::Bool(false));
+            id11.insert("priority".to_owned(), Value::from(0));
+            id11.insert("processing_allowed".to_owned(), Value::from(0));
+        }
+        let wrapper_config_sha256 = if wrapper_profile == MetadataWrapperProfile::Flat7x {
+            let canonical = serde_json::to_vec(&wrapper_configuration)
+                .map_err(|_| MetadataOwnerError::WrapperIdentity)?;
+            sha256_hex(&canonical)
+        } else {
+            provider.wrapper_config_sha256.clone()
+        };
+        let provider_sha256 = provider.provider_sha256;
         Ok(Self {
             programme_id: id1_configuration.programme_id().clone(),
             attempt: id1_configuration.attempt(),
@@ -1640,10 +1767,11 @@ impl MetadataOwner {
             id1_configuration,
             provider_file: provider.provider_file,
             wrapper_file: provider.wrapper_file,
-            provider_sha256: provider.provider_sha256,
-            wrapper_configuration: provider.wrapper_configuration,
-            wrapper_config_sha256: provider.wrapper_config_sha256,
-            state: MetadataState::cold(provider.provider_sha256),
+            provider_sha256,
+            wrapper_configuration,
+            wrapper_config_sha256,
+            wrapper_profile,
+            state: MetadataState::cold(provider_sha256),
             retired: false,
         })
     }
@@ -1787,6 +1915,7 @@ impl MetadataOwner {
             provider_sha256: self.provider_sha256,
             wrapper_configuration: self.wrapper_configuration.clone(),
             wrapper_config_sha256: self.wrapper_config_sha256.clone(),
+            wrapper_profile: self.wrapper_profile,
             state,
             retired: self.retired,
         }
@@ -2030,8 +2159,10 @@ impl MetadataOwner {
             None
         };
 
+        let payload_sequence = self.wrapper_profile.payload_sequence();
+        let publication_order = payload_sequence.ordered_wire_ids();
         let mut queue_pop_receipts = Vec::new();
-        for queue_id in PUBLICATION_ORDER {
+        for queue_id in QUEUE_MUTATION_ORDER {
             let Some(operation) = operations
                 .iter()
                 .find(|operation| operation.queue_id == queue_id)
@@ -2074,10 +2205,20 @@ impl MetadataOwner {
             });
         }
 
+        let published_payload_queue_pop_receipts = publication_order
+            .iter()
+            .filter_map(|queue_id| {
+                queue_pop_receipts
+                    .iter()
+                    .find(|receipt| receipt.queue_id() == *queue_id)
+                    .cloned()
+            })
+            .collect::<Vec<_>>();
+
         let mut published_payloads = Vec::new();
         let mut emdf_output: Option<EmdfOutput> = None;
         if call.au_index.is_some() {
-            for queue_id in PUBLICATION_ORDER {
+            for queue_id in publication_order.iter().copied() {
                 let operation = operations
                     .iter()
                     .find(|operation| operation.queue_id == queue_id)
@@ -2142,12 +2283,14 @@ impl MetadataOwner {
             proposed_after_sha256,
             provider_sha256: hex_encode(&self.provider_sha256),
             wrapper_config_sha256: self.wrapper_config_sha256.clone(),
+            payload_sequence,
             timer_before_sha256,
             timer_after_sha256,
             timer_refreshed_field: timer_advance.refreshed_field,
             queue_operations: operations,
             published_payloads,
             queue_pop_receipts,
+            published_payload_queue_pop_receipts,
             id14_queue_pop,
             emdf: emdf.clone(),
             terminal_layout,
@@ -2232,11 +2375,12 @@ impl MetadataOwner {
         {
             return Err(MetadataOwnerError::ProgrammeIdentity);
         }
-        Self::new(
+        Self::new_with_wrapper_profile(
             id1_configuration,
             self.expected_sources,
             &self.provider_file,
             &self.wrapper_file,
+            self.wrapper_profile,
         )
     }
 
@@ -2248,6 +2392,7 @@ impl MetadataOwner {
 fn validate_current_container_pop_bindings(
     parsed: &crate::joc::emdf::protected_container::ParsedCurrentEmdfContainer,
     queue_pops: &[MetadataQueuePopReceipt],
+    published_payload_queue_pops: &[MetadataQueuePopReceipt],
     consumer: &MetadataSourceIdentity,
 ) -> Result<(), CurrentEmdfValidationReason> {
     let consumer_transaction_id = consumer
@@ -2257,8 +2402,10 @@ fn validate_current_container_pop_bindings(
     let consumer_au_index = consumer
         .au_index
         .ok_or(CurrentEmdfValidationReason::ConsumerIdentityMissing)?;
-    if parsed.payloads().len() != PUBLICATION_ORDER.len()
-        || queue_pops.len() != PUBLICATION_ORDER.len()
+    let payload_order = parsed.payload_sequence().ordered_wire_ids();
+    if parsed.payloads().len() != payload_order.len()
+        || published_payload_queue_pops.len() != payload_order.len()
+        || queue_pops.len() != QUEUE_MUTATION_ORDER.len()
     {
         return Err(CurrentEmdfValidationReason::PublicationShapeMismatch);
     }
@@ -2275,21 +2422,14 @@ fn validate_current_container_pop_bindings(
         .map(CodecSourceIndex::new)
         .ok_or(CurrentEmdfValidationReason::Id14WriterIndexUnderflow)?;
 
-    for ((expected_id, parsed_payload), queue_pop) in PUBLICATION_ORDER
-        .iter()
-        .copied()
-        .zip(parsed.payloads())
-        .zip(queue_pops)
-    {
+    for (expected_id, queue_pop) in QUEUE_MUTATION_ORDER.iter().copied().zip(queue_pops) {
         let expected_writer = if expected_id == 14 {
             joc_writer
         } else {
             ordinary_writer
         };
-        if parsed_payload.id().wire_value() != expected_id
-            || queue_pop.queue_id() != expected_id
+        if queue_pop.queue_id() != expected_id
             || queue_pop.writer_generation() != expected_writer
-            || parsed_payload.bytes() != queue_pop.payload()
             || queue_pop.consumer_programme_id() != &consumer.programme_id
             || queue_pop.consumer_attempt() != consumer.attempt
             || queue_pop.consumer_transaction_id() != consumer_transaction_id
@@ -2329,7 +2469,22 @@ fn validate_current_container_pop_bindings(
                 queue_id: expected_id,
             });
         }
+    }
 
+    for ((expected_id, parsed_payload), published_queue_pop) in payload_order
+        .iter()
+        .copied()
+        .zip(parsed.payloads())
+        .zip(published_payload_queue_pops)
+    {
+        let Some(source_queue_pop) = queue_pops
+            .iter()
+            .find(|queue_pop| queue_pop.queue_id() == expected_id)
+        else {
+            return Err(CurrentEmdfValidationReason::QueuePopReceiptMismatch {
+                queue_id: expected_id,
+            });
+        };
         let configuration = parsed_payload.configuration();
         let wrapper_configuration_matches = match expected_id {
             1 => {
@@ -2358,6 +2513,14 @@ fn validate_current_container_pop_bindings(
             }
             _ => true,
         };
+        if parsed_payload.id().wire_value() != expected_id
+            || parsed_payload.bytes() != published_queue_pop.payload()
+            || published_queue_pop != source_queue_pop
+        {
+            return Err(CurrentEmdfValidationReason::QueuePopReceiptMismatch {
+                queue_id: expected_id,
+            });
+        }
         if !wrapper_configuration_matches {
             return Err(CurrentEmdfValidationReason::WrapperConfigurationMismatch {
                 queue_id: expected_id,
@@ -2526,6 +2689,7 @@ impl MetadataEofProposal {
             provider_sha256: before.provider_sha256,
             wrapper_configuration: before.wrapper_configuration.clone(),
             wrapper_config_sha256: before.wrapper_config_sha256.clone(),
+            wrapper_profile: before.wrapper_profile,
             state: after_state,
             retired: false,
         };

@@ -10,11 +10,12 @@ use crate::{
     selected_spatial_callback_providers::SelectedMainSpatialCallbackProviders,
 };
 use jocforge_application::flat7x_pair_source::{
-    CallerOwnedI0CrcrsvSeed, Flat7xD0BapParameters, Flat7xD0BsiStructure, Flat7xD0PcmFrameSettings,
-    Flat7xI0FrameAssemblyError, Flat7xPairSourceError, I0AudioBlockSeriesBudget, I0AuxDataInput,
-    OpaqueI0Ac3BitSpan, assemble_flat7x_i0_frame_candidate_from_binding, bind_flat7x_pair_source,
-    flat7x_i0_audio_block_policy_v1, produce_flat7x_pair_d0_pcm_frame_candidate,
-    stage_flat7x_pair_d0_pcm_block_series,
+    CallerOwnedI0CrcrsvSeed, D0Block2PlacementReceipt, Flat7xD0BapParameters, Flat7xD0BsiStructure,
+    Flat7xD0PcmFrameSettings, Flat7xI0AudioBlockSeriesError, Flat7xI0FrameAssemblyError,
+    Flat7xPairSourceError, I0AudioBlockSeriesBudget, I0AuxDataInput, I0BapCandidateQ,
+    assemble_flat7x_i0_frame_candidate_from_binding, bind_flat7x_d0_block2_source_receipt,
+    bind_flat7x_pair_source, flat7x_i0_audio_block_policy_v1,
+    produce_flat7x_pair_d0_pcm_frame_candidate, stage_flat7x_pair_d0_pcm_block_series,
 };
 use jocforge_application::{
     PreparedJobInput,
@@ -27,12 +28,14 @@ use jocforge_application::{
     independent_meter_callback::{AttemptId, CallbackTransactionId, GtcOwnerReceipt},
     integrity_source_bridge::{
         F14kPayloadOutcome, F14kSourceCandidate, IntegrityF12SourceReceipts,
-        IntegrityOwnerReceiptProposal, IntegrityProgrammeOwner, protect_metadata_source_for_frame,
-        stage_integrity_after_f12,
+        IntegrityOwnerReceiptProposal, IntegrityProgrammeOwner,
+        protect_metadata_source_for_frame_with_source_generation, stage_integrity_after_f12,
     },
     metadata_source_bridge::{
         MainMetadataBodiesInput, MetadataOwner, SelectedJocState,
-        prepare_main_metadata_bodies_for_callback, stage_main_metadata_source,
+        prepare_main_metadata_bodies_for_callback,
+        prepare_main_metadata_bodies_for_callback_with_seven_carrier_fit,
+        stage_main_metadata_source,
     },
     meter_finalization_bridge::{
         ProgrammeMeasurementReceipt, StandaloneMeterRoot, unchanged_meter_root_receipt,
@@ -47,11 +50,13 @@ use jocforge_application::{
     source_analysis_bridge::{
         AnalysisOwnerRoot, SelectedSourceAnalysisProviders, SpatialSourceAnalysisBridgeInput,
         prepare_source_analysis_from_spatial_callback,
+        prepare_source_analysis_from_spatial_callback_with_installed_audio,
     },
     source_frame_bridge::{
-        CodecOwnerRoot, Flat7xD0PcmSourceExtent, Flat7xD0PcmSourceExtentOrigin,
-        Flat7xSourcePcmProjection, build_flat7x_source_pcm_projection,
+        CodecOwnerRoot, Flat7xD0PcmSourceExtent, Flat7xSceneMix, Flat7xSourcePcmProjection,
+        SevenCarrierQmfState, bind_flat7x_source_role_map, installed_audio_from_flat7x_i0_rows,
         prepare_admitted_source_frame, stage_codec_owner_after_flat7x_pair,
+        stage_flat7x_seven_carrier_coefficient_fit, stage_flat7x_seven_carrier_windows,
     },
     spatial_callback::{MainSpatialCallbackCandidate, MainSpatialColdRoots},
 };
@@ -89,64 +94,10 @@ pub(crate) struct Flat7xD0FrameSyntaxSummary {
     pub crc2_end_bit: u32,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum Flat7xPcmRowDelivery {
-    NormalCallback,
-    CachedDrain,
-}
-
-/// Physical RIFF PCM rows carried to the Flat7x source stage with their callback/source lineage.
-pub(crate) struct Flat7xPcmSourceRows {
-    input_sha256: [u8; 32],
-    callback_index: FrontendCallbackIndex,
-    source_index: CodecSourceIndex,
-    delivery: Flat7xPcmRowDelivery,
-    source_extent: Option<Flat7xD0PcmSourceExtent>,
-    physical_pcm_rows: Vec<Vec<u32>>,
-}
-
-impl Flat7xPcmSourceRows {
-    pub(crate) fn new(
-        input_sha256: [u8; 32],
-        callback_index: FrontendCallbackIndex,
-        source_index: CodecSourceIndex,
-        delivery: Flat7xPcmRowDelivery,
-        source_extent: Option<Flat7xD0PcmSourceExtent>,
-        physical_pcm_rows: Vec<Vec<u32>>,
-    ) -> Self {
-        Self {
-            input_sha256,
-            callback_index,
-            source_index,
-            delivery,
-            source_extent,
-            physical_pcm_rows,
-        }
-    }
-
-    pub const fn input_sha256(&self) -> &[u8; 32] {
-        &self.input_sha256
-    }
-
-    pub const fn callback_index(&self) -> FrontendCallbackIndex {
-        self.callback_index
-    }
-
-    pub const fn source_index(&self) -> CodecSourceIndex {
-        self.source_index
-    }
-
-    pub const fn delivery(&self) -> Flat7xPcmRowDelivery {
-        self.delivery
-    }
-
-    pub const fn source_extent(&self) -> Option<Flat7xD0PcmSourceExtent> {
-        self.source_extent
-    }
-
-    pub fn physical_pcm_rows(&self) -> &[Vec<u32>] {
-        &self.physical_pcm_rows
-    }
+pub(crate) struct Flat7xCarrierFrame {
+    pub input_sha256: [u8; 32],
+    pub source_extent: Flat7xD0PcmSourceExtent,
+    pub mix: Flat7xSceneMix,
 }
 
 /// Complete same-source after-values staged before a full programme parent replacement.
@@ -168,6 +119,7 @@ pub(crate) struct SourceFrameAdvance<'pcm> {
     pub frame_sha256: [u8; 32],
     pub metadata_container_bytes: Option<usize>,
     pub flat7x_d0_frame_syntax: Option<Flat7xD0FrameSyntaxSummary>,
+    pub flat7x_d0_block2_placement_receipt: Option<D0Block2PlacementReceipt>,
     pub f14k_source: F14kSourceCandidate,
     pub integrity_receipts: IntegrityF12SourceReceipts,
     pub flat7x_integrity_pair_receipts:
@@ -217,7 +169,7 @@ pub(crate) fn stage_source_frame<'pcm>(
     output_binding_before: &ProgrammeOutputBinding,
     admitted_plan: &AdmittedProductionPlan,
     staging: &mut ProgrammeOutputStaging,
-    flat7x_physical_pcm_rows: Option<&'pcm Flat7xPcmSourceRows>,
+    flat7x_carriers: Option<&'pcm Flat7xCarrierFrame>,
 ) -> Result<SourceFrameAdvance<'pcm>, SourceFrameStageError> {
     if source_for_callback_clock(callback_index) != Some(source_index)
         || spatial_callback.callback_index() != callback_index
@@ -240,79 +192,68 @@ pub(crate) fn stage_source_frame<'pcm>(
     )
     .map_err(|error| format!("Meter unchanged callback receipt: {error:?}"))?;
 
-    let analysis_box =
-        prepare_source_analysis_from_spatial_callback(SpatialSourceAnalysisBridgeInput {
-            prepared,
-            analysis_before,
-            spatial_callback: &spatial_callback,
-            attempt_id: attempt,
-            source_transaction_id: source_transaction_id.clone(),
-            previous_short: *codec_before.previous_short(),
-            providers: analysis_providers.providers(),
-        })
-        .map_err(|error| format!("F07-F10 source stage: {error:?}"))?;
-    let mut analysis_stage = *analysis_box;
-    let flat7x_source_pcm_projection =
+    let flat7x_callback_pcm =
         if joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
-            let pcm_source = flat7x_physical_pcm_rows.ok_or_else(|| {
-                "Flat7x source stage requires the callback's physical PCM rows".to_owned()
+            let pcm_source = flat7x_carriers.ok_or_else(|| {
+                "Flat7x source stage requires the callback's rendered carriers".to_owned()
             })?;
             let expected_input_sha = prepared.resource_identity().input_sha256();
-            let expected_delivery = if u64::from(callback_index.value())
-                < prepared.configuration().source_samples().div_ceil(1_536)
-            {
-                Flat7xPcmRowDelivery::NormalCallback
-            } else {
-                Flat7xPcmRowDelivery::CachedDrain
-            };
-            if pcm_source.input_sha256() != &expected_input_sha
-                || pcm_source.callback_index() != callback_index
-                || pcm_source.source_index() != source_index
-                || pcm_source.delivery() != expected_delivery
+            let source_extent = pcm_source.source_extent;
+            if pcm_source.input_sha256 != expected_input_sha
+                || source_extent.callback_index() != callback_index
+                || source_extent.source_index() != source_index
             {
                 return Err(SourceFrameStageError::Pipeline(
-                    "Flat7x PCM rows do not match the current callback/source lineage".to_owned(),
+                    "Flat7x programme window identity mismatch".to_owned(),
                 ));
             }
-            let source_extent = match (expected_delivery, pcm_source.source_extent()) {
-                (Flat7xPcmRowDelivery::NormalCallback, Some(extent))
-                    if extent.callback_index() == callback_index
-                        && extent.source_index() == source_index
-                        && extent.origin() == Flat7xD0PcmSourceExtentOrigin::ReaderCallback =>
-                {
-                    extent
-                }
-                (Flat7xPcmRowDelivery::CachedDrain, Some(extent))
-                    if extent.callback_index() == callback_index
-                        && extent.source_index() == source_index
-                        && extent.origin()
-                            == Flat7xD0PcmSourceExtentOrigin::CachedDrainRepeatPreviousCallbackV1 =>
-                {
-                    extent
-                }
-                _ => {
-                    return Err(SourceFrameStageError::Pipeline(
-                        "Flat7x PCM extent does not match the current callback/source lineage"
-                            .to_owned(),
-                    ));
-                }
-            };
+            let i0_analysis_input = installed_audio_from_flat7x_i0_rows(
+                source_index,
+                pcm_source.mix.pcm_view().i0().rows(),
+            )
+            .map_err(|error| format!("Flat7x I0 scene mix: {error:?}"))?;
+            Some((pcm_source, source_extent, i0_analysis_input))
+        } else {
+            None
+        };
+
+    let analysis_input = SpatialSourceAnalysisBridgeInput {
+        prepared,
+        analysis_before,
+        spatial_callback: &spatial_callback,
+        attempt_id: attempt,
+        source_transaction_id: source_transaction_id.clone(),
+        previous_short: *codec_before.previous_short(),
+        providers: analysis_providers.providers(),
+    };
+    let analysis_box = if let Some((_, _, i0_analysis_input)) = flat7x_callback_pcm.as_ref() {
+        prepare_source_analysis_from_spatial_callback_with_installed_audio(
+            analysis_input,
+            Some(i0_analysis_input),
+        )
+    } else {
+        prepare_source_analysis_from_spatial_callback(analysis_input)
+    }
+    .map_err(|error| format!("F07-F10 source stage: {error:?}"))?;
+    let mut analysis_stage = *analysis_box;
+    let flat7x_source_pcm_projection =
+        if let Some((pcm_source, source_extent, _)) = flat7x_callback_pcm.as_ref() {
             let shared_analysis = analysis_stage.shared_analysis().ok_or_else(|| {
                 "Flat7x role map requires the current shared source analysis".to_owned()
             })?;
-            Some(
-                build_flat7x_source_pcm_projection(
-                    prepared,
-                    Flat7xI0D0TargetPlan::approved_contract(),
-                    &callback_identity,
-                    source_index,
-                    &source_transaction_id,
-                    shared_analysis.identity(),
-                    source_extent,
-                    pcm_source.physical_pcm_rows(),
-                )
-                .map_err(|error| format!("Flat7x source PCM projection: {error:?}"))?,
+            let receipt = bind_flat7x_source_role_map(
+                prepared,
+                Flat7xI0D0TargetPlan::approved_contract(),
+                &callback_identity,
+                source_index,
+                &source_transaction_id,
+                shared_analysis.identity(),
             )
+            .map_err(|error| format!("Flat7x carrier role map: {error:?}"))?;
+            let projection =
+                Flat7xSourcePcmProjection::from_scene_mix(receipt, *source_extent, &pcm_source.mix)
+                    .map_err(|error| format!("Flat7x scene mix projection: {error:?}"))?;
+            Some(projection)
         } else {
             None
         };
@@ -342,19 +283,88 @@ pub(crate) fn stage_source_frame<'pcm>(
     } else {
         None
     };
-    let metadata_bodies = prepare_main_metadata_bodies_for_callback(
-        MainMetadataBodiesInput {
-            prepared,
-            joc_profile,
-            spatial_callback: &spatial_callback,
-            joc_before,
-            source_transaction_id: source_transaction_id.clone(),
-            qmf_functional: main_providers.spatial_audio().qmf_receiver_functional(),
-            fit_score: admitted_plan.source_providers().fit_score(),
-            retry: admitted_plan.source_providers().representation_retry(),
-        },
-        main_callback_transaction.clone(),
-    )
+    let flat7x_d0_source_generation_receipt =
+        if let Some(projection) = flat7x_source_pcm_projection.as_ref() {
+            Some(
+                codec_before
+                    .issue_flat7x_d0_source_generation_receipt(
+                        source_transaction_id.clone(),
+                        callback_identity.clone(),
+                        projection.role_map_receipt().shared_analysis_identity(),
+                    )
+                    .map_err(|error| format!("Flat7x source-generation receipt: {error:?}"))?,
+            )
+        } else {
+            None
+        };
+    let flat7x_seven_carrier_fit_candidate = if let Some(source_projection) =
+        flat7x_source_pcm_projection.as_ref()
+    {
+        let qmf_before = joc_before
+            .fit()
+            .seven_carrier_qmf_state()
+            .cloned()
+            .unwrap_or_else(SevenCarrierQmfState::cold);
+        let carrier_windows = stage_flat7x_seven_carrier_windows(
+            source_projection,
+            &qmf_before,
+            main_providers.spatial_audio().qmf_receiver_functional(),
+            main_providers.spatial_audio().qmf_mathematical_fft(),
+        )
+        .map_err(|error| {
+            SourceFrameStageError::Pipeline(format!("Flat7x seven-carrier QMF windows: {error:?}"))
+        })?;
+        let target_projection = spatial_callback.joc_qmf_projection().ok_or_else(|| {
+            SourceFrameStageError::Pipeline(
+                "Flat7x seven-carrier fit requires a ready spatial target projection".to_owned(),
+            )
+        })?;
+        Some(
+            stage_flat7x_seven_carrier_coefficient_fit(
+                joc_profile,
+                joc_before.fit(),
+                target_projection,
+                &carrier_windows,
+                main_providers.spatial_audio().qmf_receiver_functional(),
+                admitted_plan.source_providers().fit_score(),
+            )
+            .map_err(|error| {
+                SourceFrameStageError::Pipeline(format!(
+                    "Flat7x seven-carrier coefficient fit: {error:?}"
+                ))
+            })?,
+        )
+    } else {
+        None
+    };
+    let metadata_input = MainMetadataBodiesInput {
+        prepared,
+        joc_profile,
+        spatial_callback: &spatial_callback,
+        joc_before,
+        source_transaction_id: source_transaction_id.clone(),
+        qmf_functional: main_providers.spatial_audio().qmf_receiver_functional(),
+        fit_score: admitted_plan.source_providers().fit_score(),
+        retry: admitted_plan.source_providers().representation_retry(),
+    };
+    let metadata_bodies = if let Some(fit_candidate) = flat7x_seven_carrier_fit_candidate {
+        let source_generation_receipt =
+            flat7x_d0_source_generation_receipt
+                .as_ref()
+                .ok_or_else(|| {
+                    SourceFrameStageError::Pipeline(
+                        "Flat7x source-generation receipt is required for the C=7 fit".to_owned(),
+                    )
+                })?;
+        prepare_main_metadata_bodies_for_callback_with_seven_carrier_fit(
+            metadata_input,
+            main_callback_transaction.clone(),
+            fit_candidate,
+            source_generation_receipt,
+        )
+    } else {
+        prepare_main_metadata_bodies_for_callback(metadata_input, main_callback_transaction.clone())
+    }
     .map_err(|error| format!("F05/F13 body stage: {error:?}"))?;
     let metadata_candidate = stage_main_metadata_source(
         metadata_before,
@@ -363,9 +373,10 @@ pub(crate) fn stage_source_frame<'pcm>(
     )
     .map_err(|error| format!("F13 source stage: {error:?}"))?;
     let (joc_after, joc_receipt, mut metadata_source) = metadata_candidate.into_parts();
-    let f14k_source = protect_metadata_source_for_frame(
+    let f14k_source = protect_metadata_source_for_frame_with_source_generation(
         &mut metadata_source,
         admitted_plan.source_providers().keyless_integrity(),
+        flat7x_d0_source_generation_receipt.clone(),
     )
     .map_err(|error| format!("F14/F14K source stage: {error:?}"))?;
     if f14k_source.source_index() != source_index
@@ -407,6 +418,7 @@ pub(crate) fn stage_source_frame<'pcm>(
     let mut flat7x_d0_history_after = None;
     let mut flat7x_pair_after = None;
     let mut flat7x_d0_frame_syntax = None;
+    let mut flat7x_d0_block2_placement_receipt = None;
     if let Some(binding) = flat7x_pair_source_binding {
         let history_before = codec_before.d0_overlap_history().ok_or_else(|| {
             SourceFrameStageError::Pipeline(
@@ -444,6 +456,25 @@ pub(crate) fn stage_source_frame<'pcm>(
                     "Flat7x D0 BSI controls do not match the pair source role receipt".to_owned(),
                 ));
             }
+            let binding =
+                binding.with_programme_levels(d0_bsi_inputs.dialnorm(), d0_bsi_inputs.compr());
+            let expected_source_generation_receipt = flat7x_d0_source_generation_receipt
+                .as_ref()
+                .ok_or_else(|| {
+                SourceFrameStageError::Pipeline(
+                    "Flat7x D0 source-generation receipt is missing".to_owned(),
+                )
+            })?;
+            let d0_block2_source_receipt = bind_flat7x_d0_block2_source_receipt(
+                &metadata_source,
+                &f14k_source,
+                expected_source_generation_receipt,
+            )
+            .map_err(|error| {
+                SourceFrameStageError::Pipeline(format!(
+                    "Flat7x D0 block-two source receipt: {error:?}"
+                ))
+            })?;
             let d0_frame_candidate = produce_flat7x_pair_d0_pcm_frame_candidate(
                 &binding,
                 Flat7xD0PcmFrameSettings {
@@ -460,7 +491,8 @@ pub(crate) fn stage_source_frame<'pcm>(
                         information: None,
                         addbsi: d0_bsi_inputs.ci16_addbsi(),
                     },
-                    complete_emdf_container: protected_container.bytes(),
+                    source_generation_receipt: expected_source_generation_receipt,
+                    block2_source_receipt: &d0_block2_source_receipt,
                     bap_parameters: &d0_bap_parameters,
                     dynamic_range_codes: d0_bsi_inputs.dynamic_range_codes(),
                 },
@@ -480,8 +512,39 @@ pub(crate) fn stage_source_frame<'pcm>(
             let skip = layout.block_two_skip_field();
             let skip_span = skip.bit_span();
             let container_bytes = skip.payload_bytes();
-            let container_bits = u32::from(container_bytes) * 8;
-            let container_start_bit = skip_span.end_bit() - container_bits;
+            let d0_frame = d0_frame_candidate.frame_candidate().frame();
+            let d0_audio_receipt = d0_frame.receipt();
+            let block_two_receipt = d0_audio_receipt.block_receipts()[2];
+            let block_two_layout = layout.audio_blocks()[2];
+            let block_two_prefix = block_two_layout.leading_audio_span();
+            let block_two_mantissas = block_two_layout.trailing_audio_span().ok_or_else(|| {
+                SourceFrameStageError::Pipeline(
+                    "Flat7x D0 block-2 has no post-skipfield mantissa span".to_owned(),
+                )
+            })?;
+            let d0_emdf_container_start =
+                d0_frame_candidate.emdf_container_start().ok_or_else(|| {
+                    SourceFrameStageError::Pipeline(
+                        "Flat7x D0 protected EMDF payload cursor is missing".to_owned(),
+                    )
+                })?;
+            let protected_container_length = u16::try_from(protected_container.bytes().len()).ok();
+            if block_two_receipt.block_index().value() != 2
+                || block_two_prefix.bit_length() != block_two_receipt.prefix_before_skipfield_bits()
+                || skip.insertion_point().offset_within_audio_span_bits()
+                    != block_two_prefix.bit_length()
+                || skip_span.start_bit() != block_two_prefix.end_bit()
+                || block_two_mantissas.start_bit() != skip_span.end_bit()
+                || block_two_mantissas.bit_length() != block_two_receipt.mantissa_bits()
+                || !(1..=511).contains(&container_bytes)
+                || protected_container_length != Some(container_bytes)
+                || d0_emdf_container_start.bit_offset() != skip_span.start_bit() + 10
+            {
+                return Err(SourceFrameStageError::Pipeline(
+                    "Flat7x D0 protected EMDF cursor must place the complete block-2 skipfield after the block prefix and before its mantissas".to_owned(),
+                ));
+            }
+            let container_start_bit = d0_emdf_container_start.bit_offset();
             let nauxbits = assembly.frame_auxbits_span();
             let crc2 = assembly.crc2_span();
             flat7x_d0_frame_syntax = Some(Flat7xD0FrameSyntaxSummary {
@@ -500,60 +563,78 @@ pub(crate) fn stage_source_frame<'pcm>(
                 crc2_start_bit: crc2.start_bit(),
                 crc2_end_bit: crc2.end_bit(),
             });
-            let i0_policy = flat7x_i0_audio_block_policy_v1().ok_or_else(|| {
-                SourceFrameStageError::Pipeline(
-                    "Flat7x I0 local block policy could not be constructed".to_owned(),
-                )
-            })?;
             let i0_budget = I0AudioBlockSeriesBudget::new(20_480);
-            let i0_frame = match assemble_flat7x_i0_frame_candidate_from_binding(
-                &binding,
-                frame_candidate.numeric_plan_receipt(),
-                i0_policy,
-                i0_budget,
-                I0AuxDataInput::Absent,
-                CallerOwnedI0CrcrsvSeed { value: false },
-            ) {
-                Ok(candidate) => candidate,
-                Err(Flat7xPairSourceError::I0FrameAssembly(
-                    Flat7xI0FrameAssemblyError::FrameSpanMismatch {
-                        actual_bits,
-                        required_bits,
-                    },
-                )) if actual_bits < required_bits => {
-                    let auxdata_bits = required_bits - actual_bits;
-                    let auxdata_length =
-                        usize::try_from(auxdata_bits.div_ceil(8)).map_err(|_| {
-                            SourceFrameStageError::Pipeline(
-                                "Flat7x I0 auxdata extent overflow".to_owned(),
-                            )
-                        })?;
-                    let auxdata = vec![0_u8; auxdata_length];
-                    assemble_flat7x_i0_frame_candidate_from_binding(
-                        &binding,
-                        frame_candidate.numeric_plan_receipt(),
-                        i0_policy,
-                        i0_budget,
-                        I0AuxDataInput::Present(OpaqueI0Ac3BitSpan::new(
-                            &auxdata,
-                            0,
-                            auxdata_bits,
-                        )),
-                        CallerOwnedI0CrcrsvSeed { value: false },
-                    )
-                    .map_err(|error| {
-                        SourceFrameStageError::Pipeline(format!(
-                            "Flat7x I0 frame candidate ({}): {error:?}",
+            // The 5.1 search can skip the entire interval between its seed and its
+            // first midpoint. Try each coarse SNR offset against the smaller I0 frame.
+            let selected_core_q = frame_candidate.frame().q();
+            let mut q_candidates = frame_candidate
+                .attempted_qs()
+                .iter()
+                .copied()
+                .filter(|q| *q <= selected_core_q)
+                .collect::<Vec<_>>();
+            q_candidates.extend((16..=selected_core_q).step_by(16));
+            q_candidates.sort_unstable_by(|left, right| right.cmp(left));
+            q_candidates.dedup();
+            let all_q_candidates = q_candidates.clone();
+            let mut rejected_q = Vec::new();
+            let mut selected_i0_frame = None;
+            for q_value in q_candidates {
+                let Some(candidate_q) = I0BapCandidateQ::new(q_value) else {
+                    continue;
+                };
+                let mut i0_policy =
+                    flat7x_i0_audio_block_policy_v1(candidate_q).ok_or_else(|| {
+                        SourceFrameStageError::Pipeline(
+                            "Flat7x I0 local block policy could not be constructed".to_owned(),
+                        )
+                    })?;
+                for (block, code) in i0_policy
+                    .blocks
+                    .iter_mut()
+                    .zip(d0_bsi_inputs.dynamic_range_codes())
+                {
+                    block.dynamic_range_code = code;
+                }
+                let candidate = match assemble_flat7x_i0_frame_candidate_from_binding(
+                    &binding,
+                    frame_candidate.numeric_plan_receipt(),
+                    expected_source_generation_receipt,
+                    i0_policy,
+                    i0_budget,
+                    I0AuxDataInput::PadToFrame,
+                    CallerOwnedI0CrcrsvSeed { value: false },
+                ) {
+                    Ok(candidate) => candidate,
+                    Err(Flat7xPairSourceError::I0AudioBlockSeries(
+                        Flat7xI0AudioBlockSeriesError::AudioBlockBudgetExceeded { .. },
+                    )) => {
+                        rejected_q.push(q_value);
+                        continue;
+                    }
+                    Err(Flat7xPairSourceError::I0FrameAssembly(
+                        Flat7xI0FrameAssemblyError::FrameSpanMismatch {
+                            actual_bits,
+                            required_bits,
+                        },
+                    )) if actual_bits > required_bits => {
+                        rejected_q.push(q_value);
+                        continue;
+                    }
+                    Err(error) => {
+                        return Err(SourceFrameStageError::Pipeline(format!(
+                            "Flat7x I0 frame candidate q={q_value} ({}): {error:?}",
                             jocforge_application::flat7x_pair_source::FLAT7X_I0_AUDIO_BLOCK_POLICY_ID,
-                        ))
-                    })?
-                }
-                Err(error) => {
-                    return Err(SourceFrameStageError::Pipeline(format!(
-                        "Flat7x I0 frame candidate ({}): {error:?}",
-                        jocforge_application::flat7x_pair_source::FLAT7X_I0_AUDIO_BLOCK_POLICY_ID,
-                    )));
-                }
+                        )));
+                    }
+                };
+                selected_i0_frame = Some((q_value, candidate));
+                break;
+            }
+            let Some((_selected_i0_q, i0_frame)) = selected_i0_frame else {
+                return Err(SourceFrameStageError::Pipeline(format!(
+                    "Flat7x I0 bitrate-fit search found no candidate; attempted_qs={all_q_candidates:?} rejected_qs={rejected_q:?}"
+                )));
             };
             let f12_pair = stage_flat7x_pair_f12_integrity(Flat7xPairF12StageInput {
                 integrity_before,
@@ -587,6 +668,22 @@ pub(crate) fn stage_source_frame<'pcm>(
                     "Flat7x paired F15 candidate ({FLAT7X_SOURCE_GENERATION_MODEL_ID}): {error:?}"
                 ))
             })?;
+            let block2_placement = f15_pair.d0_block2_placement_receipt();
+            flat7x_d0_block2_placement_receipt = Some(block2_placement.clone());
+            if block2_placement.au_index().value() == 0 {
+                let bit_span = block2_placement.bit_span();
+                eprintln!(
+                    "Flat7x D0 block-two placement: au={} payload_sequence={} block={} bits={}..{} C={} codec_source_generation={} f15_source_generation={}",
+                    block2_placement.au_index().value(),
+                    block2_placement.payload_sequence().label(),
+                    block2_placement.block_index().zero_based_value(),
+                    bit_span.start_bit(),
+                    bit_span.end_bit(),
+                    block2_placement.container_bytes(),
+                    block2_placement.codec_source_generation().value(),
+                    f15_pair.source_generation().value(),
+                );
+            }
             let output_owner_proposal =
                 prepare_output_source_from_flat7x_pair(output_binding_before, &f15_pair).map_err(
                     |error| {
@@ -915,6 +1012,7 @@ pub(crate) fn stage_source_frame<'pcm>(
         frame_sha256,
         metadata_container_bytes,
         flat7x_d0_frame_syntax,
+        flat7x_d0_block2_placement_receipt,
         f14k_source,
         integrity_receipts,
         flat7x_integrity_pair_receipts,

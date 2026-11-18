@@ -18,15 +18,17 @@ pub use flat7x_access_unit_target::{
 pub use flat7x_source_role_map::{
     AdmPcmRow, Flat7xD0ChannelMapLocation, Flat7xD0ChannelSource, Flat7xD0PcmRows,
     Flat7xD0RowBinding, Flat7xD0SourceRole, Flat7xI0CarrierRole, Flat7xI0PcmRows,
-    Flat7xI0RowBinding, Flat7xProvisionalSourcePcmView, Flat7xProvisionalSourceRoleMap,
-    Flat7xSourceRoleMapError, build_flat7x_provisional_source_role_map,
+    Flat7xI0RowBinding, Flat7xJocCarrierRole, Flat7xJocCarrierRowBinding,
+    Flat7xProvisionalSourcePcmView, Flat7xProvisionalSourceRoleMap, Flat7xSceneMix,
+    Flat7xSourceRoleMapError, SevenCarrierPcmInput, build_flat7x_provisional_source_role_map,
     project_flat7x_source_pcm_rows,
 };
 
 pub use production::{
-    AuthoredInputProfile, CodecRateProfile, CoreCarrierProfile, EmdfCarriageProfile,
-    EncodingProfile, JocDownmixProfile, JocReconstructionLayout, ProfileError,
-    ResolvedEncodingProfile, SelectedDataRate, SubstreamTopology, resolve_selected_profile,
+    AuthoredInputProfile, CarrierCodecProfile, CodecRateProfile, CoreCarrierProfile,
+    EmdfCarriageProfile, EncodingProfile, JocDownmixProfile, JocPayloadDownmixIndex,
+    JocReconstructionLayout, ProfileError, ResolvedEncodingProfile, SelectedDataRate,
+    SubstreamTopology, resolve_selected_profile,
 };
 pub use validation::{RenderTarget, ValidationProfile};
 

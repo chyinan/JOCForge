@@ -4,7 +4,9 @@
 
 ## Profile API
 
-调用者提交含 input、core carrier、JOC downmix control、JOC reconstruction layout、topology、rate 和 EMDF carriage 的 immutable `EncodingProfile`。现有构造器保持 `ExistingSelectedFivePointOne` layout；`selected_with_joc_reconstruction_layout(Flat7x)` 创建 1024 kbps additive profile。CLI 的可选 `--joc-layout flat7x` 通过同一 profile resolver 选择该值；省略参数沿用现有 5.1 layout。resolver 返回 `ResolvedEncodingProfile`，其中分别保留 `JocDownmixProfile` 与 `JocReconstructionLayout`；profile-aware JOC-header writer 从后者取得 `joc_dmx_config_idx`。其他未登记组合返回类型化 `UNSUPPORTED_PROFILE`。
+调用者提交含 input、core carrier、carrier codec、JOC algorithm control、payload `downmix_index`、reconstruction layout、topology、rate 和 EMDF carriage 的 immutable `EncodingProfile`。selected 5.1 profile 使用 independent E-AC-3、single-independent topology 和 payload selector 3；Flat7x profile 使用 independent AC-3 I0/BSID6 + dependent E-AC-3 D0/BSID16、pair topology 和 payload selector 1。`joc_payload_downmix_index` 与 `JocReconstructionLayout` 分别保存，即使当前 target 的 wire values 都是 1。CLI 的 `--joc-layout flat7x` 选择 Flat7x route，省略参数保持 5.1 route。`ResolvedEncodingProfile` 同时暴露 carrier codec、topology、payload selector 和 reconstruction layout；CLI 按 carrier codec 路由，profile-aware header writer 从 reconstruction layout 写 `joc_dmx_config_idx`，ID14 coefficient producer 从 payload selector 选择 body channel width。
+
+`FitRepresentationInput.row_layout` 显式标记 FiveChannel 或 SevenChannel coefficient rows。当前 fit producer 提供 FiveChannel；Flat7x payload selector 1 需要 SevenChannel，因此 high-level writer 在输入边界返回 `CoefficientRowLayoutMismatch` 并留出七行 producer seam。七行 coefficient values 继续等待单独的 washed producer contract。
 
 `RenderTarget` 只存在于独立 `ValidationProfile`。Production encode 不接收 `RenderTarget`，render target 的变化不得影响 production profile resolution。
 
@@ -89,3 +91,17 @@ validation 可以读取最终产物，并调用结构解析、channel-map、topo
 ## F05T selected trim-section API
 
 `domain::joc::oamd::trim_section` 暴露纯函数 `encode_trim_body`、`decode_trim_body`、`parse_dbmd_sections` 和 `selected_trim_from_dbmd_sections`，以及 value-only `Trim`、`EncodedTrimBody` 和 `TrimSectionError`。该 direct slice 只覆盖 Type11 trim body 编解码、DBMD section framing 与 sections 9/10 的 selected default-trim projection；它不解析完整 DBMD 语义、不做非默认 trim 量化、不写入 F05O 外层 section，也不拥有 callback、queue 或 programme state。准确输入/输出与错误边界见 `IMPLEMENTATION-MAP.json` 的 `F05T/trim-section-codec` direct-slice 记录。
+
+## Flat7x coefficient-row serializer seam
+
+Flat7xCoefficientRows validates exactly 15 present objects, one Full point per object, and seven rows per point with the band count selected by each object descriptor. Its write_payload method accepts only the resolved Flat7x carrier/topology/selector profile. The public profile-aware low-level writer also rejects a payload downmix_index that differs from the resolved profile. Full mode codes 0 and 1 are FullCoarse and FullFine in the local ID14 parser; codes 2 and 3 are Sparse.
+
+The current coefficient fitter remains five-channel and is not connected to this seam. A SYNTHETIC/TEST_ONLY fixture serializes one band for 15 objects and the local parser reads selector 1, 15 FullFine descriptors, and 105 coefficient symbols (15 x 7 x 1). The fixture is a serializer/parser shape check, not an audio coefficient producer or candidate.
+
+## Flat7x application source seam
+
+The selected 5.1 path continues through prepare_main_metadata_bodies_for_callback and the existing CoefficientFitProposal / 15x5 fitter. Flat7x uses prepare_main_metadata_bodies_for_callback_with_flat7x_rows, which accepts Flat7xCoefficientRowsProviderOutput containing validated rows. The application binds that output to the accepted SelectedJocQmfProjection through Flat7xCoefficientRowsProposal::from_provider_output. The source after-state advances the fit/geometry source generation to the accepted dispatch while preserving temporal and geometry values; no five-row coefficient fitter is invoked on this branch. The default entry without provider output returns Flat7xCoefficientSourceUnavailable; no production 15x7 provider exists yet.
+
+## Flat7x full-matrix traversal
+
+The serializer consumes each object's point, then its channel rows, then each row's bands. Wash reports the OpenJOC parser uses the same object → point/time slot → channel row → band traversal, with selector 1 selecting seven rows and band_index 0..7 mapping to 1,3,5,7,9,12,15,23. The writer/parser order match is a structural inference; coefficient values and their production rule remain unavailable.

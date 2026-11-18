@@ -141,7 +141,7 @@ fn validate_queue_receipts(
     dispatch: crate::timeline::JocDispatchIndex,
     au_index: PublishedAuIndex,
 ) -> Result<(), PublishedEmdfBindingError> {
-    const PAYLOAD_ORDER: [u8; 4] = [11, 14, 2, 1];
+    let payload_order = parsed_container.payload_sequence().ordered_wire_ids();
     let expected_ordinary_writer = source_index
         .value()
         .checked_sub(2)
@@ -152,13 +152,13 @@ fn validate_queue_receipts(
         .checked_sub(1)
         .map(CodecSourceIndex::new)
         .ok_or(PublishedEmdfBindingError::ConsumerIdentityMismatch)?;
-    let queue_receipts = parsed.queue_pop_receipts();
+    let queue_receipts = parsed.published_payload_queue_pop_receipts();
     let payloads = parsed_container.payloads();
-    if queue_receipts.len() != PAYLOAD_ORDER.len() || payloads.len() != PAYLOAD_ORDER.len() {
+    if queue_receipts.len() != payload_order.len() || payloads.len() != payload_order.len() {
         return Err(PublishedEmdfBindingError::QueueReceiptMismatch);
     }
 
-    for ((payload_id, queue_receipt), payload) in PAYLOAD_ORDER
+    for ((payload_id, queue_receipt), payload) in payload_order
         .iter()
         .copied()
         .zip(queue_receipts)

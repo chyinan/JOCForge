@@ -7,6 +7,7 @@ use crate::source_execution::{
 use jocforge_application::{
     PreparedJobInput,
     drc_source_bridge::NoneDrcOwnerRoot,
+    flat7x_pair_source::D0Block2PlacementReceipt,
     independent_meter_callback::{AttemptId, CallbackTransactionId, GtcOwnerReceipt, ProgrammeId},
     integrity_source_bridge::IntegrityProgrammeOwner,
     metadata_source_bridge::{MetadataEofProposal, MetadataOwner, SelectedJocState},
@@ -82,6 +83,7 @@ pub(crate) struct ProgrammeCallbackCommit {
     pub frame_sha256: Option<[u8; 32]>,
     pub metadata_container_bytes: Option<usize>,
     pub flat7x_d0_frame_syntax: Option<Flat7xD0FrameSyntaxSummary>,
+    pub flat7x_d0_block2_placement_receipt: Option<D0Block2PlacementReceipt>,
     pub append: Option<DurableAppendSummary>,
     pub flat7x_source_role_map: Option<Flat7xSourceRoleMapReceipt>,
     pub phase_generation_before: u64,
@@ -465,6 +467,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
             frame_sha256: None,
             metadata_container_bytes: None,
             flat7x_d0_frame_syntax: None,
+            flat7x_d0_block2_placement_receipt: None,
             append: None,
             flat7x_source_role_map: None,
             phase_generation_before: phase_generation_after - 1,
@@ -608,7 +611,59 @@ impl<'a> ProgrammeOwnerRoots<'a> {
             .ok_or_else(|| "durable output length overflow".to_owned())?;
 
         let flat7x_selected = advance.flat7x_source_pcm_projection.is_some();
+        let flat7x_source_generation_matches = match (
+            flat7x_selected,
+            advance.f14k_source.source_generation_receipt(),
+        ) {
+            (true, Some(receipt)) => {
+                receipt.source_transaction_id() == &advance.source_transaction_id
+                    && receipt.callback_lineage().programme_id() == &self.programme_id
+                    && receipt.callback_lineage().attempt_id() == self.attempt
+                    && receipt.callback_lineage().callback_index() == callback_index
+                    && receipt.source_index() == source_index
+                    && receipt.codec_owner_after_generation() == advance.codec_root.generation()
+                    && receipt.analysis_generation().value()
+                        == analysis_generation(&advance.analysis_root)?
+            }
+            (false, None) => true,
+            _ => false,
+        };
+        if !flat7x_source_generation_matches {
+            return Err(
+                "Flat7x source-generation receipt is not bound to the F13/F14K and Codec after-roots"
+                    .to_owned(),
+            );
+        }
         let expected_au = source_index.value().checked_sub(SUPPRESSED_SOURCES);
+        let flat7x_block2_placement_matches = match (
+            flat7x_selected,
+            expected_au,
+            advance.flat7x_d0_block2_placement_receipt.as_ref(),
+        ) {
+            (true, Some(expected_au_index), Some(placement)) => {
+                placement.au_index().value() == expected_au_index
+                    && placement.block_index().zero_based_value() == 2
+                    && placement.container_bytes() > 0
+                    && placement.container_bytes() <= 511
+                    && placement.bit_span().bit_length()
+                        == 10 + u32::from(placement.container_bytes()) * 8
+                    && placement.source_generation_receipt().source_index() == source_index
+                    && placement
+                        .source_generation_receipt()
+                        .codec_owner_after_generation()
+                        == advance.codec_root.generation()
+                    && advance.f14k_source.payload_sequence() == Some(placement.payload_sequence())
+                    && advance.f14k_source.source_generation_receipt()
+                        == Some(placement.source_generation_receipt())
+            }
+            (true, None, None) | (false, _, None) => true,
+            _ => false,
+        };
+        if !flat7x_block2_placement_matches {
+            return Err(
+                "Flat7x D0 block-two placement receipt is not bound to the durable AU".to_owned(),
+            );
+        }
         match (expected_au, advance.append.as_ref()) {
             (None, None) => {
                 if advance.metadata_container_bytes.is_some()
@@ -707,6 +762,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
         let frame_sha256 = advance.frame_sha256;
         let metadata_container_bytes = advance.metadata_container_bytes;
         let flat7x_d0_frame_syntax = advance.flat7x_d0_frame_syntax;
+        let flat7x_d0_block2_placement_receipt = advance.flat7x_d0_block2_placement_receipt.clone();
         let append = advance.append;
         let flat7x_source_role_map = advance
             .flat7x_source_pcm_projection
@@ -751,6 +807,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
             frame_sha256: Some(frame_sha256),
             metadata_container_bytes,
             flat7x_d0_frame_syntax,
+            flat7x_d0_block2_placement_receipt,
             append,
             flat7x_source_role_map,
             phase_generation_before: next_phase_generation - 1,

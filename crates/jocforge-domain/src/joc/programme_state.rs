@@ -5,19 +5,26 @@
 //! limited to isolated JOC-stage validation.
 
 use crate::{
+    codec::owner::Flat7xD0SourceGenerationReceipt,
     joc::{
-        coefficient_fitting::CoefficientFitState,
+        coefficient_fitting::{
+            CoefficientFitState, Flat7xCoefficientRowsProposal, SevenCarrierCoefficientFitProposal,
+        },
         coefficient_representation::RepresentationRetryProvider,
-        dispatch_state::JocDispatchState,
+        dispatch_state::{
+            JocDispatchState, JocPayloadInput, stage_joc_payload_with_seven_carrier_fit,
+        },
         fit_score::FitScoreProvider,
         id14_body::Id14BodyProposal,
         source_stage::{
-            JocSourceStageError, stage_joc_source, stage_joc_source_with_transaction,
+            JocSourceStageError, stage_joc_source,
+            stage_joc_source_with_flat7x_rows_for_transaction, stage_joc_source_with_transaction,
             stage_joc_source_with_transaction_for_profile,
         },
     },
     profile::ResolvedEncodingProfile,
     spatial::{QmfReceiverFunctionalProvider, spatial_audio_state::SelectedJocQmfProjection},
+    timeline::JocDispatchIndex,
     transaction::{
         CallbackTransactionId, GtcOwnerId, GtcOwnerReceipt, GtcOwnerReceiptError,
         GtcOwnerStateSnapshot, OwnerStateRef,
@@ -26,6 +33,7 @@ use crate::{
 use sha2::{Digest, Sha256};
 
 const HEADER: &[u8; 8] = b"JOCSEL01";
+const SEVEN_CARRIER_QMF_EXTENSION_HEADER: &[u8; 8] = b"J7QMF001";
 const CANONICAL_BYTES: usize = 22_790;
 const TEMPORAL_BYTES: usize = 1_229;
 const GEOMETRY_BYTES: usize = 21_512;
@@ -47,6 +55,9 @@ pub enum JocSourceStageErrorKind {
     Lineage,
     Payload,
     Writer,
+    Flat7xCoefficientSourceUnavailable,
+    Flat7xCoefficientProfileMismatch,
+    Flat7xCoefficientLineageMismatch,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -101,7 +112,25 @@ impl SelectedJocState {
         bytes.push(u8::from(self.dispatch.is_retired()));
         bytes.extend_from_slice(&temporal);
         bytes.extend_from_slice(&geometry);
-        if bytes.len() != CANONICAL_BYTES {
+        let expected_length = if let Some(qmf_state) = self.fit.seven_carrier_qmf_state() {
+            let qmf_bytes = qmf_state
+                .canonical_payload_bytes()
+                .map_err(|_| SelectedJocStateError::Encoding)?;
+            bytes.extend_from_slice(SEVEN_CARRIER_QMF_EXTENSION_HEADER);
+            bytes.extend_from_slice(
+                &u32::try_from(qmf_bytes.len())
+                    .map_err(|_| SelectedJocStateError::Encoding)?
+                    .to_le_bytes(),
+            );
+            bytes.extend_from_slice(&qmf_bytes);
+            CANONICAL_BYTES
+                .checked_add(SEVEN_CARRIER_QMF_EXTENSION_HEADER.len() + 4)
+                .and_then(|length| length.checked_add(qmf_bytes.len()))
+                .ok_or(SelectedJocStateError::Encoding)?
+        } else {
+            CANONICAL_BYTES
+        };
+        if bytes.len() != expected_length {
             return Err(SelectedJocStateError::Encoding);
         }
         Ok(bytes)
@@ -161,6 +190,13 @@ impl SelectedJocState {
                 != completed
                     .checked_add(1)
                     .ok_or(SelectedJocStateError::Clock)?
+        {
+            return Err(SelectedJocStateError::Clock);
+        }
+        if self
+            .fit
+            .seven_carrier_qmf_state()
+            .is_some_and(|state| !state.matches_dispatch(JocDispatchIndex::new(completed)))
         {
             return Err(SelectedJocStateError::Clock);
         }
@@ -370,6 +406,103 @@ pub fn stage_selected_joc_source_with_transaction_for_profile(
     )
 }
 
+/// Parent-bound Flat7x entry with separate seven-row values and same-source fit after-state.
+pub fn stage_selected_joc_source_with_flat7x_rows(
+    before: &SelectedJocState,
+    projection: &SelectedJocQmfProjection,
+    producer_transaction_id: CallbackTransactionId,
+    rows_proposal: Flat7xCoefficientRowsProposal<'_>,
+    profile: ResolvedEncodingProfile,
+) -> Result<SelectedJocAfterProposal, SelectedJocStateError> {
+    let before_sha256 = before.state_sha256()?;
+    let source = stage_joc_source_with_flat7x_rows_for_transaction(
+        before.fit(),
+        before.dispatch(),
+        projection,
+        producer_transaction_id,
+        rows_proposal,
+        profile,
+    )
+    .map_err(|error| map_source_error(&error))?;
+    let (fit_after, dispatch_after, id14_body, lineage) = source.into_parts();
+    let after = SelectedJocState::from_staged(fit_after, dispatch_after)?;
+    if after.generation() != projection.dispatch().value()
+        || id14_body.body().writer_generation != projection.source_index()
+    {
+        return Err(SelectedJocStateError::Clock);
+    }
+    let after_sha256 = after.state_sha256()?;
+    Ok(SelectedJocAfterProposal {
+        before_generation: before.generation(),
+        before_sha256,
+        after,
+        after_sha256,
+        id14_body,
+        lineage,
+    })
+}
+
+/// Parent-bound source stage for the local C=7 fit and its Codec-issued D0 generation receipt.
+pub fn stage_selected_joc_source_with_seven_carrier_fit(
+    before: &SelectedJocState,
+    projection: &SelectedJocQmfProjection,
+    producer_transaction_id: &CallbackTransactionId,
+    fit: &SevenCarrierCoefficientFitProposal,
+    source_generation_receipt: &Flat7xD0SourceGenerationReceipt,
+    retry_provider: &RepresentationRetryProvider,
+    profile: ResolvedEncodingProfile,
+) -> Result<SelectedJocAfterProposal, SelectedJocStateError> {
+    let source_identity = fit.qmf_source_identity();
+    let expected_lineage =
+        crate::joc::coefficient_fitting::FitSourceLineage::from_projection(projection);
+    if fit.target_lineage() != &expected_lineage
+        || source_identity.callback_lineage() != projection.transaction_id()
+        || source_identity.source_index() != projection.source_index()
+        || source_identity.source_transaction_id() != producer_transaction_id
+        || source_generation_receipt.source_transaction_id() != producer_transaction_id
+        || source_generation_receipt.callback_lineage() != source_identity.callback_lineage()
+        || source_generation_receipt.source_index() != source_identity.source_index()
+        || source_generation_receipt.analysis_generation() != source_identity.analysis_generation()
+        || fit.after().fit_generation() != projection.dispatch().value()
+    {
+        return Err(SelectedJocStateError::Source(
+            JocSourceStageErrorKind::Flat7xCoefficientLineageMismatch,
+        ));
+    }
+    let before_sha256 = before.state_sha256()?;
+    let payload_input = JocPayloadInput::from_projection_with_transaction(
+        projection,
+        producer_transaction_id.clone(),
+    )
+    .map_err(|_| SelectedJocStateError::Source(JocSourceStageErrorKind::Payload))?;
+    let payload = stage_joc_payload_with_seven_carrier_fit(
+        before.dispatch(),
+        fit,
+        &payload_input,
+        retry_provider,
+        profile,
+    )
+    .map_err(|_| SelectedJocStateError::Source(JocSourceStageErrorKind::Writer))?;
+    let (dispatch_after, id14_body) = payload
+        .into_parts()
+        .map_err(|_| SelectedJocStateError::Source(JocSourceStageErrorKind::Writer))?;
+    let after = SelectedJocState::from_staged(fit.after().clone(), dispatch_after)?;
+    if after.generation() != projection.dispatch().value()
+        || id14_body.body().writer_generation != projection.source_index()
+    {
+        return Err(SelectedJocStateError::Clock);
+    }
+    let after_sha256 = after.state_sha256()?;
+    Ok(SelectedJocAfterProposal {
+        before_generation: before.generation(),
+        before_sha256,
+        after,
+        after_sha256,
+        id14_body,
+        lineage: fit.target_lineage().clone(),
+    })
+}
+
 fn stage_selected_joc_source_with_transaction_inner(
     before: &SelectedJocState,
     projection: &SelectedJocQmfProjection,
@@ -440,6 +573,15 @@ fn map_source_error(error: &JocSourceStageError) -> SelectedJocStateError {
             JocSourceStageErrorKind::Payload
         }
         JocSourceStageError::WriterLineage => JocSourceStageErrorKind::Writer,
+        JocSourceStageError::Flat7xCoefficientSourceUnavailable => {
+            JocSourceStageErrorKind::Flat7xCoefficientSourceUnavailable
+        }
+        JocSourceStageError::Flat7xCoefficientProfileMismatch => {
+            JocSourceStageErrorKind::Flat7xCoefficientProfileMismatch
+        }
+        JocSourceStageError::Flat7xCoefficientLineageMismatch => {
+            JocSourceStageErrorKind::Flat7xCoefficientLineageMismatch
+        }
     };
     SelectedJocStateError::Source(kind)
 }
