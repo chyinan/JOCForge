@@ -730,6 +730,10 @@ This is a read-only source observation of the current dirty `JOCForge-isolated` 
 
 ID14 容量回退曾允许七行 Flat7x 拟合从全矩阵切换到稀疏模式。当前修复保持七声道全矩阵并按批准映射降低 band enum，5.1 回退路径保持原逻辑。synthetic budget-retry 回归用例通过。对本机 4:53 Flat7x 候选用 OpenJOC 0.20.2 渲染后，26.8 秒峰值从旧码流的 0.623／0.475 降到新码流的 0.042／0.033；新候选 9,185 个 AU 全部解析。候选由本机含未提交 22 轨输入更改的工作树生成，状态仍为 `production_allowed=false`；LAV/PotPlayer 全曲复听待确认。
 
+## 2026-11-18 22 轨 ADM 输入
+
+《高嶺の花子さん》为 48 kHz PCM24，CHNA 有 10 条床轨和 12 条对象轨。Flat7x 曾误用参考输入的 36/38 轨列表做运行时筛选。现复用 SelectedSourceRowDimensions 的容量检查，并在 Meter 前按 ADM 角色预检。用原曲 30–33 秒 PCM 和原文件的 AXML、CHNA、DBMD 生成短输入。OpenJOC 0.20.2 接纳 94/94 AU，malformed 为 0，7.1 渲染完成。样本位于 D:/JOCForge-attempts/flat7x-22track-lmqhhqeg/。
+
 ## 2026-11-19 22 轨映射与过往试听版本
 
 远端 `experimental/independent-encoder` 原有 Flat7x role map 仅接受 36/38 行。当前 22 轨输入需要 SelectedSourceRowDimensions 动态映射；synthetic 覆盖 10/22/36/38 行并通过。CLI 在 Meter 前复用同一映射进行预检。

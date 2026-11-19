@@ -14,6 +14,8 @@ tags:
 
 ## 当前状态
 
+- 2026-11-19 CLI 根级 `--help` 的 JOCForge 标题已加入 OpenJOC 同款四段 24-bit RGB 渐变，说明副标题用绿色、帮助分区标题用 OpenJOC 的青色；交互终端着色条件及纯文本输出行为与 OpenJOC 一致。workspace version 已升到 1.0.0，Cargo.lock 同步更新。
+
 - 2026-11-19 CI no longer runs the source inventory/hash audit or promotes Clippy warnings with `-D warnings`. The prepared-input regression now binds WAVE channels to CHNA physical rows, rejects unsupported authored start/end times, and keeps 768 kbps accepted; F01E JSON fixture checkout line endings are pinned across platforms. CI retains workspace fmt/check/Clippy and targets prepared-input, CLI migration-boundary and dynamic 10/22/36/38-row mapping suites; broader domain fixture reconciliation remains separate.
 - JOCForge root and `encode` help now follow OpenJOC's sectioned CLI layout and use the supplied logo. `encode -h` and `encode --help` are supported, with direct-file defaults and the Flat7x candidate-output requirement shown in the command help.
 - Flat7x ID14 capacity fallback keeps seven-row objects in full-matrix mode, reduces their band count and preserves the seven carrier gains. The focused budget-retry test passes. A local full-song candidate rendered through OpenJOC 0.20.2 with the 26.8-second peak reduced from 0.623 to 0.042; full LAV/PotPlayer playback remains unverified.
