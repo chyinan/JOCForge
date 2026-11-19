@@ -9,7 +9,7 @@ use std::{
 };
 
 use crate::meter_prepass::{
-    SelectedMeterPrepassError, provider_supplements_dir, run_selected_meter_prepass_with_progress,
+    SelectedMeterPrepassError, run_meter_with_providers, unpack_provider_supplements,
 };
 use crate::output_publication::{
     OutputPublicationError, ProgrammeOutputStaging, capture_flat7x_experimental_candidate,
@@ -699,10 +699,12 @@ fn run_inner(
 
     eprintln!("Starting full-file Meter prepass...");
     let mut meter_progress = ProgressBar::new("Meter prepass");
-    let meter_prepass = run_selected_meter_prepass_with_progress(
+    let assets = unpack_provider_supplements().map_err(EncodeRequestError::MeterPrepass)?;
+    let meter_prepass = run_meter_with_providers(
         &prepared,
         &parsed,
         run_identity.attempt,
+        assets.path(),
         |completed, total| meter_progress.update(completed, total),
     )
     .map_err(EncodeRequestError::MeterPrepass)?;
@@ -730,7 +732,7 @@ fn run_inner(
         metadata_owner.state_reference().generation(),
     );
 
-    let supplements = provider_supplements_dir().map_err(EncodeRequestError::MeterPrepass)?;
+    let supplements = assets.path();
     let spatial_profile = EncodingProfile::selected_with_rate_and_carriage(
         selected_profile.codec_rate(),
         selected_profile.carriage(),
