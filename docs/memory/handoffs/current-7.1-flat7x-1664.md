@@ -725,3 +725,7 @@ This is a read-only source observation of the current dirty `JOCForge-isolated` 
 - 端到端。使用同一夹具的完整 38 轨 AXML、CHNA、DBMD 和独立生成的 48 kHz PCM24。共 56 个 1,536-sample 区间。以零起算，物理轨 0（front_left）从区间 8 起、物理轨 10（Object）从区间 32 起各播放 10 个区间的 997 Hz 正弦，幅度 0.125，两端各 240 样本渐变，其余 PCM 为零。默认 1,024 kbps 5.1 与 1,664 kbps Flat7x 各输出 56 AU。OpenJOC 0.20.1、observed-vendor-compat、相同 7.1 输出布局，以 0.82 秒分割两段，跨全部声道取绝对峰值。5.1 的床轨／对象段为 0.07902644／0.06789017，Flat7x 为 0.2541024／0.0。Flat7x 后段八声道全零。两份码流的 SHA-256 依次为 `c94ca73cfb713aa10adf2333d8ce4b79988b04bc7aec7cc8f66cf9d430ddc4d8` 和 `90d635171e8a245d4e14beebf17302916d0cb256df737c29634e936eb896b82a`。
 - 核心声道电平。FFmpeg 8.1 使用 `-drc_scale 0`，解码 5.1 E-AC-3，以及每个 Flat7x AU 的前 2,560 字节独立 AC-3。对解码索引 9–12 的四个 1,536-sample 区间分别做 997 Hz 正余弦最小二乘拟合。前左基波幅度分别约为 0.12486 和 0.24977–0.25067。此观测仅覆盖该输入电平、声道和设置，增益来源待定位。
 - 后续验证。用同一对标记先验证全场景对象／床轨混入目标载体，再对照实际解码基底与七路拟合输入的声道顺序、电平和样本时间。对象行与 OAMD 槽位可用移动对象单独验证。试听及官方同源母带比较仍待进行。
+
+## 2026-11-19 Flat7x 码率回退尖峰
+
+ID14 容量回退曾允许七行 Flat7x 拟合从全矩阵切换到稀疏模式。当前修复保持七声道全矩阵并按批准映射降低 band enum，5.1 回退路径保持原逻辑。synthetic budget-retry 回归用例通过。对本机 4:53 Flat7x 候选用 OpenJOC 0.20.2 渲染后，26.8 秒峰值从旧码流的 0.623／0.475 降到新码流的 0.042／0.033；新候选 9,185 个 AU 全部解析。候选由本机含未提交 22 轨输入更改的工作树生成，状态仍为 `production_allowed=false`；LAV/PotPlayer 全曲复听待确认。

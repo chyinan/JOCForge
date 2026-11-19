@@ -319,7 +319,11 @@ fn write_fit_representation_with_profile(
             }
             continue;
         }
-        if objects.iter().any(|object| object.mode == 0) {
+        // Preserve all seven channel gains when a Flat7x payload runs out of
+        // space. Sparse coding changes the gain of every unselected channel.
+        if payload_downmix_index == JocPayloadDownmixIndex::FiveChannel
+            && objects.iter().any(|object| object.mode == 0)
+        {
             for object in objects.iter_mut().filter(|object| object.mode == 0) {
                 object.mode = 2;
                 for band in 0..object.band_count() {
@@ -332,9 +336,15 @@ fn write_fit_representation_with_profile(
         if objects.iter().any(|object| object.band_enum > 0) {
             for object in objects.iter_mut().filter(|object| object.band_enum > 0) {
                 let map = provider.map(object.band_enum)?;
-                for (band, source) in map.iter().copied().enumerate() {
-                    let channel = usize::from(object.selected_channels[band]);
-                    object.channel_rows[channel][band] = object.channel_rows[channel][source];
+                if payload_downmix_index == JocPayloadDownmixIndex::SevenChannel {
+                    for row in &mut object.channel_rows {
+                        *row = map.iter().map(|&source| row[source]).collect();
+                    }
+                } else {
+                    for (band, source) in map.iter().copied().enumerate() {
+                        let channel = usize::from(object.selected_channels[band]);
+                        object.channel_rows[channel][band] = object.channel_rows[channel][source];
+                    }
                 }
                 object.band_enum -= 1;
                 let new_count = object.band_count();
@@ -458,6 +468,40 @@ fn initial_objects(
 mod tests {
     use super::{JocCoefficientRowLayout, RepresentationRetryError, validate_row_layout};
     use crate::profile::JocPayloadDownmixIndex;
+
+    #[test]
+    fn flat7x_budget_retry_reduces_bands_and_keeps_all_seven_rows() {
+        use crate::profile::{EncodingProfile, JocReconstructionLayout, resolve_selected_profile};
+
+        let profile =
+            resolve_selected_profile(&EncodingProfile::selected_with_joc_reconstruction_layout(
+                JocReconstructionLayout::Flat7x,
+            ))
+            .unwrap();
+        let maps = include_str!(
+            "../../tests/fixtures/synthetic_qmf_fit_checkpoints/approved-joc-functional.json"
+        )
+        .replace("\r\n", "\n");
+        let provider =
+            super::RepresentationRetryProvider::from_approved_bytes(maps.as_bytes()).unwrap();
+        let full: Vec<_> = (0..15 * 7 * 12)
+            .map(|i| ((i % 31) as f32 / 128.0).to_bits())
+            .collect();
+        let fit = super::FitRepresentationInput {
+            full_words: &full,
+            sparse_words: &[0; 15 * 12],
+            selected_channels: &[0; 15 * 12],
+            row_layout: JocCoefficientRowLayout::SevenChannel,
+            representation_offset: None,
+        };
+        let result = super::write_fit_representation_with_resolved_profile(
+            &provider, fit, 128, 0, 372, profile,
+        )
+        .unwrap();
+        let last = result.attempts().last().unwrap();
+        assert!(last.succeeded() && last.band_enum() < 5);
+        assert!(result.attempts().iter().all(|attempt| attempt.mode() < 2));
+    }
 
     #[test]
     fn row_layout_gate_preserves_five_channel_and_exposes_flat7x_input_seam() {
