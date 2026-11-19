@@ -729,3 +729,9 @@ This is a read-only source observation of the current dirty `JOCForge-isolated` 
 ## 2026-11-19 Flat7x 码率回退尖峰
 
 ID14 容量回退曾允许七行 Flat7x 拟合从全矩阵切换到稀疏模式。当前修复保持七声道全矩阵并按批准映射降低 band enum，5.1 回退路径保持原逻辑。synthetic budget-retry 回归用例通过。对本机 4:53 Flat7x 候选用 OpenJOC 0.20.2 渲染后，26.8 秒峰值从旧码流的 0.623／0.475 降到新码流的 0.042／0.033；新候选 9,185 个 AU 全部解析。候选由本机含未提交 22 轨输入更改的工作树生成，状态仍为 `production_allowed=false`；LAV/PotPlayer 全曲复听待确认。
+
+## 2026-11-19 22 轨映射与过往试听版本
+
+远端 `experimental/independent-encoder` 原有 Flat7x role map 仅接受 36/38 行。当前 22 轨输入需要 SelectedSourceRowDimensions 动态映射；synthetic 覆盖 10/22/36/38 行并通过。CLI 在 Meter 前复用同一映射进行预检。
+
+先前的 3m37 试听目录包含一个 250-AU、8 秒 EC3 片段及其 7.1 WAV，但目录内没有 encode log 或二进制版本信息。2026-11-18 的完整 4:53 Love Song 记录使用 encoder binary SHA-256 `1206e8217e43a74cf49892acb6beeec5b8fd6819da6e2edf2597917790c74809`；其中用户确认的是 Lo/Ro MKA 播放。该记录未绑定为完整的 7.1 LAV/PotPlayer 试听版本。

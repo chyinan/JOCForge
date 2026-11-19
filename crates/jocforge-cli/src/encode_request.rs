@@ -632,6 +632,13 @@ fn run_inner(
     let (frame_bytes, aggregate_rate_kbps) =
         if resolved_joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
             let target = Flat7xI0D0TargetPlan::approved_contract();
+            jocforge_application::source_frame_bridge::build_flat7x_provisional_source_role_map(
+                prepared.graph().graph(),
+                target,
+            )
+            .map_err(|error| {
+                EncodeRequestError::SourcePipeline(format!("Flat7x input layout: {error:?}"))
+            })?;
             (
                 usize::try_from(target.aggregate_frame_bytes())
                     .map_err(|_| EncodeRequestError::UnsupportedDataRate)?,

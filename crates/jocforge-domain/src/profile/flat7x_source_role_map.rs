@@ -627,14 +627,10 @@ pub fn build_flat7x_provisional_source_role_map(
 
     let physical_row_count = u16::try_from(graph.tracks().len())
         .map_err(|_| Flat7xSourceRoleMapError::UnsupportedPhysicalRowCount { actual: u16::MAX })?;
-    if !target
-        .accepted_physical_channel_counts()
-        .contains(&physical_row_count)
-    {
-        return Err(Flat7xSourceRoleMapError::UnsupportedPhysicalRowCount {
+    crate::source_axis::SelectedSourceRowDimensions::for_physical_rows(physical_row_count)
+        .map_err(|_| Flat7xSourceRoleMapError::UnsupportedPhysicalRowCount {
             actual: physical_row_count,
-        });
-    }
+        })?;
 
     let channel_map = target
         .d0()
@@ -903,26 +899,28 @@ mod tests {
     }
 
     #[test]
-    fn fixture_derived_36_row_chna_prefix_uses_the_same_semantic_row_bindings() {
-        let graph = graph_with_track_prefix(36);
-        let target = Flat7xI0D0TargetPlan::approved_contract();
-        let map = build_flat7x_provisional_source_role_map(&graph, target).unwrap();
+    fn supported_track_counts_use_the_same_semantic_row_bindings() {
+        for count in [10_u16, 22, 36, 38] {
+            let graph = graph_with_track_prefix(usize::from(count));
+            let target = Flat7xI0D0TargetPlan::approved_contract();
+            let map = build_flat7x_provisional_source_role_map(&graph, target).unwrap();
 
-        assert_eq!(map.physical_row_count(), 36);
-        assert_eq!(map.d0_channel_map().value(), D0_TARGET_CHANNEL_MAP);
-        let physical_rows = (0..36)
-            .map(|row| vec![u32::try_from(row).unwrap(); PCM_SAMPLES_PER_SOURCE])
-            .collect::<Vec<_>>();
-        let pcm_view = project_flat7x_source_pcm_rows(&map, &physical_rows).unwrap();
-        assert_eq!(pcm_view.physical_row_count(), 36);
-        let Flat7xD0ChannelSource::Single { row, .. } = map.d0_rows()[0].source() else {
-            panic!("D0 chanmap location 3 is a single surround channel");
-        };
-        assert_eq!(map.i0_rows()[3].row(), row);
-        assert_eq!(
-            pcm_view.i0().rows()[3],
-            physical_rows[usize::from(row.physical_host().value())]
-        );
+            assert_eq!(map.physical_row_count(), count);
+            assert_eq!(map.d0_channel_map().value(), D0_TARGET_CHANNEL_MAP);
+            let physical_rows = (0..count)
+                .map(|row| vec![u32::from(row); PCM_SAMPLES_PER_SOURCE])
+                .collect::<Vec<_>>();
+            let pcm_view = project_flat7x_source_pcm_rows(&map, &physical_rows).unwrap();
+            assert_eq!(pcm_view.physical_row_count(), count);
+            let Flat7xD0ChannelSource::Single { row, .. } = map.d0_rows()[0].source() else {
+                panic!("D0 chanmap location 3 is a single surround channel");
+            };
+            assert_eq!(map.i0_rows()[3].row(), row);
+            assert_eq!(
+                pcm_view.i0().rows()[3],
+                physical_rows[usize::from(row.physical_host().value())]
+            );
+        }
     }
 
     #[test]

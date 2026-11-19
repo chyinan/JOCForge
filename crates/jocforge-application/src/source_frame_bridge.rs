@@ -11,7 +11,7 @@ pub use jocforge_domain::codec::{
     source_frame_writer::SelectedSourceFrameCandidate,
 };
 pub use jocforge_domain::joc::seven_carrier_windows::SevenCarrierQmfState;
-pub use jocforge_domain::profile::Flat7xSceneMix;
+pub use jocforge_domain::profile::{Flat7xSceneMix, build_flat7x_provisional_source_role_map};
 pub use jocforge_domain::transaction::CallbackLineageIdentity;
 pub use jocforge_domain::{
     analysis::owner::AnalysisNumericPlanStage,
@@ -46,8 +46,7 @@ use jocforge_domain::{
     profile::{
         Flat7xD0PcmRows, Flat7xI0D0TargetPlan, Flat7xI0PcmRows, Flat7xProvisionalSourcePcmView,
         Flat7xProvisionalSourceRoleMap, Flat7xSourceRoleMapError, ResolvedEncodingProfile,
-        SevenCarrierPcmInput, build_flat7x_provisional_source_role_map,
-        project_flat7x_source_pcm_rows as project_profile_source_pcm_rows,
+        SevenCarrierPcmInput, project_flat7x_source_pcm_rows as project_profile_source_pcm_rows,
     },
     publication::OutputSourceAfterProposal,
     spatial::{QmfMathematicalFftProvider, QmfReceiverFunctionalProvider},
