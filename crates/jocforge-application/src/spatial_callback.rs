@@ -304,6 +304,10 @@ pub fn stage_main_frontend_adm_input_snapshot(
 }
 
 /// Inputs for one normal MAIN callback. PCM has already been read, padded, and identity-bound by IO.
+#[expect(
+    clippy::large_enum_variant,
+    reason = "The callback output keeps selected and ADM input results as direct typed variants"
+)]
 pub enum MainNormalControlOutput {
     Selected(NormalControlSnapshotOutput),
     AdmInput(NormalControlAdmInputOutput),
@@ -350,6 +354,10 @@ pub struct MainSpatialCachedCallbackInput<'a> {
     pub spatial_audio_providers: Option<&'a SelectedSpatialAudioProviderBundle>,
 }
 
+#[expect(
+    clippy::large_enum_variant,
+    reason = "The held-source output keeps selected and ADM input views as direct typed variants"
+)]
 pub enum MainHeldControlOutput {
     Selected(NormalControlHeldSourceView),
     AdmInput(NormalControlAdmHeldSourceView),
@@ -412,7 +420,7 @@ fn source_axis_binding(
     let source_ids = source_map
         .rows()
         .iter()
-        .map(|row| row.source_index())
+        .map(jocforge_domain::spatial::installed48_source_map::Installed48SourceRow::source_index)
         .collect::<Vec<_>>();
     let axis = SourceAxisBinding::new(
         source_ids,

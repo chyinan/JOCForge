@@ -88,8 +88,8 @@ impl CoefficientGeometryState {
 
     pub(crate) fn with_generation_preserving_values(&self, generation: u64) -> Self {
         Self {
-            carry18_words: self.carry18_words.clone(),
-            previous24_words: self.previous24_words.clone(),
+            carry18_words: self.carry18_words,
+            previous24_words: self.previous24_words,
             generation,
         }
     }

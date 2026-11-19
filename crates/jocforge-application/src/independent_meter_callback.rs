@@ -434,7 +434,7 @@ fn source_axis_binding(
     let source_ids = source_map
         .rows()
         .iter()
-        .map(|row| row.source_index())
+        .map(jocforge_domain::spatial::installed48_source_map::Installed48SourceRow::source_index)
         .collect::<Vec<_>>();
     let axis = SourceAxisBinding::new(
         source_ids,

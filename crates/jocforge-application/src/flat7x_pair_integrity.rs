@@ -51,6 +51,10 @@ pub struct Flat7xPairF12StageInput<'a> {
 
 /// Stages the paired F12 receipts from matching source-bound frames and their actual F13/F14K
 /// proposals. I0 carries absent F13 payload evidence; D0 carries the one protected EMDF container.
+#[expect(
+    clippy::needless_pass_by_value,
+    reason = "The typed per-source stage input is transferred as one pair transaction"
+)]
 pub fn stage_flat7x_pair_f12_integrity(
     input: Flat7xPairF12StageInput<'_>,
 ) -> Result<IntegrityGtcFlat7xF12PairProposal, Flat7xPairF12StageError> {

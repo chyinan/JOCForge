@@ -1015,9 +1015,9 @@ pub fn produce_i0_audio_block_series(
             write_selected_plan_exponent_syntax(
                 &mut writer,
                 exponent_plan,
-                &fullband_wire_strategy_codes,
-                &current_bandwidth_codes,
-                &current_gain_ranges,
+                fullband_wire_strategy_codes,
+                current_bandwidth_codes,
+                current_gain_ranges,
                 &encoded_fullband,
                 encoded_lfe,
             )?;
@@ -1087,13 +1087,13 @@ pub fn produce_i0_audio_block_series(
 fn write_selected_plan_exponent_syntax(
     writer: &mut FrameBitWriter<'_>,
     plan: &BlockExponentPlan,
-    fullband_strategy_codes: &[u8; FULLBAND_CHANNEL_COUNT],
-    bandwidth_codes: &[u8; FULLBAND_CHANNEL_COUNT],
-    gain_range_codes: &[u8; FULLBAND_CHANNEL_COUNT],
+    fullband_strategy_codes: [u8; FULLBAND_CHANNEL_COUNT],
+    bandwidth_codes: [u8; FULLBAND_CHANNEL_COUNT],
+    gain_range_codes: [u8; FULLBAND_CHANNEL_COUNT],
     fullband_rows: &[Option<EncodedExponentRow>; FULLBAND_CHANNEL_COUNT],
     lfe_row: Option<EncodedLfeExponentRow>,
 ) -> Result<(), I0AudioBlockSeriesError> {
-    for strategy_code in fullband_strategy_codes {
+    for strategy_code in &fullband_strategy_codes {
         writer.write_unsigned(u32::from(*strategy_code), 2)?;
     }
     writer.write_bit(plan.lfe.strategy == 1)?;

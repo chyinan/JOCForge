@@ -289,6 +289,10 @@ impl SelectedJocAfterProposal {
     }
 
     /// Binds the staged JOC after-state to the exact transaction carried by its ID14 producer.
+    #[expect(
+        clippy::needless_pass_by_value,
+        reason = "The single-token receipt entry consumes its transaction identity"
+    )]
     pub fn gtc_owner_receipt(
         &self,
         before: &SelectedJocState,

@@ -514,6 +514,10 @@ pub fn bind_flat7x_source_role_map(
 
 /// Projects this callback's physical PCM rows and retains their source-bound role receipt for
 /// downstream I0/D0 producer stages.
+#[expect(
+    clippy::too_many_arguments,
+    reason = "Each source, callback, role, extent, and PCM input remains separately typed"
+)]
 pub fn build_flat7x_source_pcm_projection<'a>(
     prepared: &PreparedJobInput,
     target: Flat7xI0D0TargetPlan,
@@ -625,10 +629,9 @@ fn validate_f12_cursor_shape(
     cursor: Option<jocforge_domain::codec::bitio::FrameBitCursor>,
 ) -> Result<(), SourceFrameBridgeError> {
     match (published, cursor) {
-        (false, None) => Ok(()),
+        (false, None) | (true, Some(_)) => Ok(()),
         (false, Some(_)) => Err(SourceFrameBridgeError::F12EmdfCursorUnexpected),
         (true, None) => Err(SourceFrameBridgeError::F12EmdfCursorMissing),
-        (true, Some(_)) => Ok(()),
     }
 }
 

@@ -747,3 +747,11 @@ ID14 容量回退曾允许七行 Flat7x 拟合从全矩阵切换到稀疏模式�
 复测命令为 `python scripts/compare_encode.py <旧版exe> <新版exe> <ADM.wav> --joc-layout flat7x`。省略布局参数可比较 5.1。
 
 全曲与各自留存的 EC3 逐字节比对通过。《高嶺の花子さん》Flat7x 共 9,185 AU、61,135,360 字节，SHA-256 为 `c002c15b16770b9b1ea3325b774bc3268ba12ec88347eaabb023ad742be43d6d`。《Love Song》5.1 / 1024 kbps 共 8,417 AU、34,476,032 字节，SHA-256 为 `bc01dcfc3b21cfefc4f20e522762e466d98d03375a14988d0b440d437f1db0a5`。本次基线可执行文件、输出和日志保存在 `D:/JOCForge-attempts/jocforge-speed-dx5uhfkf/`。
+
+## 2026-11-19 Workspace Clippy cleanup
+
+Source: `cargo clippy --locked` initially reported 70 warnings. Mechanical fixes addressed redundant clones/closures, borrows, match arms, boolean expressions, and formatting. Local lint expectations document intentionally owned transaction/proposal inputs, explicit owner boundaries, and stable typed error/output shapes.
+
+Verification: `cargo fmt --check`, `cargo check --locked --workspace`, and `cargo clippy --locked --workspace -- -D warnings` passed; strict Clippy reports zero issues. `cargo test --locked --workspace` completed with 649 passed, 10 failed, and 2 ignored. The failures are in metadata-owner, reader-target, current-features, source-flags, and meter-component test vectors; baseline comparison remains pending. `python scripts/check-boundaries.py` reports `integrity source identity tracks the additive role-rate pair API; test fixtures remain reachable only through non-default test-support dev dependencies`.
+
+Next: reproduce the ten failing tests on an unchanged worktree and locate the boundary rule producing the reported result before changing those contracts.

@@ -1000,6 +1000,10 @@ impl AnalysisNumericPlanStage {
     /// Consumes this source stage into a noncommitting parent handoff for the Analysis owner.
     ///
     /// Single-token wrapper for stages where the source and callback identities coincide.
+    #[expect(
+        clippy::needless_pass_by_value,
+        reason = "This convenience entry consumes the transaction identity for one handoff"
+    )]
     pub fn into_parent_proposal(
         self,
         before: &AnalysisOwnerRoot,

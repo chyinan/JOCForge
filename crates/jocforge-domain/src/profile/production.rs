@@ -259,7 +259,8 @@ impl EncodingProfile {
     ) -> Self {
         let selected = Self::selected_with_rate_and_carriage(codec_rate, emdf_carriage);
         match joc_reconstruction_layout {
-            JocReconstructionLayout::ExistingSelectedFivePointOne => Self {
+            JocReconstructionLayout::ExistingSelectedFivePointOne
+            | JocReconstructionLayout::Unsupported => Self {
                 joc_reconstruction_layout,
                 ..selected
             },
@@ -268,10 +269,6 @@ impl EncodingProfile {
                 joc_payload_downmix_index: JocPayloadDownmixIndex::SevenChannel,
                 joc_reconstruction_layout,
                 substream_topology: SubstreamTopology::Flat7xIndependentI0DependentD0,
-                ..selected
-            },
-            JocReconstructionLayout::Unsupported => Self {
-                joc_reconstruction_layout,
                 ..selected
             },
         }

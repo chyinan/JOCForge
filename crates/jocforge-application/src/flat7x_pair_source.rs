@@ -353,7 +353,6 @@ pub struct Flat7xPairSourceBinding<'pcm> {
 }
 
 impl Flat7xPairSourceBinding<'_> {
-    #[must_use]
     pub fn with_programme_levels(mut self, dialnorm: u8, compr: Option<u8>) -> Self {
         self.i0_header.dialnorm = dialnorm;
         self.i0_header.compr = compr;

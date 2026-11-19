@@ -7,6 +7,10 @@ const FULLBAND_ENDMANT: usize = 217;
 const LFE_ENDMANT: usize = 7;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
+#[expect(
+    clippy::struct_excessive_bools,
+    reason = "Parsed audblk flags retain independent one-bit wire fields"
+)]
 pub struct ParsedAc3AudioBlock {
     pub block_switch_flags: [bool; FULLBAND_CHANNELS],
     pub dither_flags: [bool; FULLBAND_CHANNELS],
@@ -255,7 +259,7 @@ pub fn parse_ac3_3_2_lfe_audio_block(
     .try_into()
     .map_err(|_| Ac3AudioBlockParseError::InvalidField)?;
 
-    let fields = mantissa_field_limits(&fullband_bap, &lfe_bap)?;
+    let fields = mantissa_field_limits(&fullband_bap, lfe_bap)?;
     for (width, max_code) in &fields {
         let code = reader.read_unsigned(*width)?;
         if code > u32::from(*max_code) {
@@ -359,7 +363,7 @@ fn read_lfe_exponents(
 
 fn mantissa_field_limits(
     fullband: &[[u8; FULLBAND_ENDMANT]; FULLBAND_CHANNELS],
-    lfe: &[u8; LFE_ENDMANT],
+    lfe: [u8; LFE_ENDMANT],
 ) -> Result<Vec<(u8, u16)>, Ac3AudioBlockParseError> {
     let baps = fullband
         .iter()

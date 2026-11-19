@@ -123,8 +123,8 @@ struct SelectedJocCoordinatorProfile {
 pub(super) struct JocF05JlProviderValue {
     _coordinator_bytes: Arc<[u8]>,
     profile: SelectedJocCoordinatorProfile,
-    _representation_retry: RepresentationRetryProvider,
-    _fit_score: FitScoreProvider,
+    representation_retry: RepresentationRetryProvider,
+    fit_score: FitScoreProvider,
     _huffman: HuffmanCodebooks,
 }
 
@@ -457,8 +457,8 @@ fn validate_joc_f05jl_provider() -> Result<JocF05JlProviderValue, ()> {
     Ok(JocF05JlProviderValue {
         _coordinator_bytes: Arc::from(LIVE_JOC_COORDINATOR),
         profile: coordinator_profile,
-        _representation_retry: representation_retry,
-        _fit_score: fit_score,
+        representation_retry,
+        fit_score,
         _huffman: huffman,
     })
 }
@@ -899,11 +899,11 @@ impl SelectedF15Plan {
     }
 
     pub(super) fn fit_score_provider(&self) -> &FitScoreProvider {
-        &self.providers.joc_f05jl.value._fit_score
+        &self.providers.joc_f05jl.value.fit_score
     }
 
     pub(super) fn representation_retry_provider(&self) -> &RepresentationRetryProvider {
-        &self.providers.joc_f05jl.value._representation_retry
+        &self.providers.joc_f05jl.value.representation_retry
     }
 
     pub(super) fn metadata_owner_provider(&self) -> &ValidatedMetadataOwnerProvider {

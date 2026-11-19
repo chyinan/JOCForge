@@ -268,9 +268,10 @@ fn write_fit_representation_with_profile(
     if !(1..=543).contains(&capacity_bytes) {
         return Err(RepresentationRetryError::CapacityDomain);
     }
-    let payload_downmix_index = profile
-        .map(ResolvedEncodingProfile::joc_payload_downmix_index)
-        .unwrap_or(JocPayloadDownmixIndex::FiveChannel);
+    let payload_downmix_index = profile.map_or(
+        JocPayloadDownmixIndex::FiveChannel,
+        ResolvedEncodingProfile::joc_payload_downmix_index,
+    );
     validate_row_layout(payload_downmix_index, fit.row_layout)?;
     let mut objects = initial_objects(fit)?;
     let downmix_index = payload_downmix_index.value();

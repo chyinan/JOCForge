@@ -264,6 +264,10 @@ fn absent_payload_candidate(
     )
 }
 
+#[expect(
+    clippy::too_many_arguments,
+    reason = "The absent-payload checks keep source clocks and each F13 field predicate explicit"
+)]
 fn absent_payload_candidate_with_source_generation(
     source_index: CodecSourceIndex,
     dispatch: JocDispatchIndex,
@@ -337,6 +341,10 @@ pub(crate) fn published_payload_candidate_with_source_generation_for_test(
     )
 }
 
+#[expect(
+    clippy::too_many_arguments,
+    reason = "The protected-payload stage keeps source clocks and each lineage input explicit"
+)]
 fn published_payload_candidate_with_source_generation(
     source_index: CodecSourceIndex,
     dispatch: JocDispatchIndex,
@@ -374,6 +382,10 @@ fn published_payload_candidate_with_source_generation(
 /// The source-frame candidate is the only source of completed frame bytes and the dynamic carrier
 /// cursor. This adapter cross-checks its typed payload and source key against F13/F14 before
 /// asking the Integrity owner to validate CRC16 and stage its after-root.
+#[expect(
+    clippy::too_many_arguments,
+    reason = "Owner, frame, provider, and source identities remain distinct validation inputs"
+)]
 pub fn stage_integrity_after_f12(
     integrity_owner: &IntegrityProgrammeOwner,
     metadata: &MetadataSourceProposal,

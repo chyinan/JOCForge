@@ -8,12 +8,12 @@ use clap_complete::Shell;
 use jocforge_application::meter_source_bridge::{CodecRateProfile, JocReconstructionLayout};
 use std::{fmt::Write as _, io::IsTerminal, path::PathBuf, process::ExitCode};
 
-const ROOT_LOGO: &str = r#"     ██╗ ██████╗  ██████╗███████╗ ██████╗ ██████╗  ██████╗ ███████╗
+const ROOT_LOGO: &str = r"     ██╗ ██████╗  ██████╗███████╗ ██████╗ ██████╗  ██████╗ ███████╗
      ██║██╔═══██╗██╔════╝██╔════╝██╔═══██╗██╔══██╗██╔════╝ ██╔════╝
      ██║██║   ██║██║     █████╗  ██║   ██║██████╔╝██║  ███╗█████╗
 ██   ██║██║   ██║██║     ██╔══╝  ██║   ██║██╔══██╗██║   ██║██╔══╝
 ╚█████╔╝╚██████╔╝╚██████╗██║     ╚██████╔╝██║  ██║╚██████╔╝███████╗
- ╚════╝  ╚═════╝  ╚═════╝╚═╝      ╚═════╝ ╚═╝  ╚═════╝ ╚══════╝"#;
+ ╚════╝  ╚═════╝  ╚═════╝╚═╝      ╚═════╝ ╚═╝  ╚═════╝ ╚══════╝";
 
 const ANSI_RESET: &str = "\x1b[0m";
 const ROOT_DESCRIPTION: &str = "Selected ADM BWF to E-AC-3 JOC encoder";

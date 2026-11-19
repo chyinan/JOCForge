@@ -176,6 +176,10 @@ pub fn stage_joc_source_with_transaction(
 
 /// Parent-bound profile-aware entry that carries the immutable layout selection through the
 /// existing JOC header writer for one source proposal.
+#[expect(
+    clippy::too_many_arguments,
+    reason = "The owner states, provider receipts, transaction, and profile stay separately typed"
+)]
 pub fn stage_joc_source_with_transaction_for_profile(
     fit_before: &CoefficientFitState,
     dispatch_before: &JocDispatchState,
@@ -202,6 +206,10 @@ pub fn stage_joc_source_with_transaction_for_profile(
 }
 
 /// Stages one Flat7x JOC source from caller-provided seven-row values and same-source fit state.
+#[expect(
+    clippy::needless_pass_by_value,
+    reason = "The validated row proposal is accepted once for this source stage"
+)]
 pub fn stage_joc_source_with_flat7x_rows_for_transaction(
     fit_before: &CoefficientFitState,
     dispatch_before: &JocDispatchState,
@@ -335,6 +343,10 @@ fn source_route_for_profile(
     Err(JocSourceStageError::Flat7xCoefficientProfileMismatch)
 }
 
+#[expect(
+    clippy::too_many_arguments,
+    reason = "The common staging kernel keeps its owner and provider inputs explicit"
+)]
 fn stage_joc_source_inner(
     fit_before: &CoefficientFitState,
     dispatch_before: &JocDispatchState,

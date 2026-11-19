@@ -307,7 +307,7 @@ pub fn preflight_from_job_xml(job_xml_path: &Path) -> Result<(), EncodeRequestEr
         let worker = thread::Builder::new()
             .name("jocforge-job-xml-preflight".to_owned())
             .stack_size(ENCODE_REQUEST_STACK_BYTES)
-            .spawn_scoped(scope, move || run_job_xml_preflight(request))
+            .spawn_scoped(scope, move || run_job_xml_preflight(&request))
             .map_err(|_| EncodeRequestError::WorkerUnavailable)?;
         worker
             .join()
@@ -355,7 +355,7 @@ fn resolve_job_xml_request(
     })
 }
 
-fn run_job_xml_preflight(request: ResolvedJobXmlRequest) -> Result<(), EncodeRequestError> {
+fn run_job_xml_preflight(request: &ResolvedJobXmlRequest) -> Result<(), EncodeRequestError> {
     if request.output_path.exists() {
         return Err(EncodeRequestError::OutputAlreadyExists);
     }
@@ -581,16 +581,15 @@ fn run_inner(
     if generated_rate.kbps().is_none() {
         return Err(EncodeRequestError::UnsupportedDataRate);
     }
-    let job_xml = match authored_job_xml {
-        Some(job_xml) => job_xml,
-        None => {
-            let input_reference = file_reference_parts(&input_path)?;
-            let output_reference = file_reference_parts(&output_path)?;
-            let rate_kbps = generated_rate
-                .kbps()
-                .ok_or(EncodeRequestError::UnsupportedDataRate)?;
-            selected_full_file_job_xml(&input_reference, &output_reference, rate_kbps).into_bytes()
-        }
+    let job_xml = if let Some(job_xml) = authored_job_xml {
+        job_xml
+    } else {
+        let input_reference = file_reference_parts(&input_path)?;
+        let output_reference = file_reference_parts(&output_path)?;
+        let rate_kbps = generated_rate
+            .kbps()
+            .ok_or(EncodeRequestError::UnsupportedDataRate)?;
+        selected_full_file_job_xml(&input_reference, &output_reference, rate_kbps).into_bytes()
     };
     let run_identity = fresh_run_identity()?;
     let resource = read_resource(&input_path).map_err(EncodeRequestError::InputFile)?;
@@ -960,7 +959,7 @@ fn run_inner(
                             "durable Flat7x AU has no D0 block-two placement receipt".to_owned(),
                         ));
                     }
-                    (Some(_), None) | (None, None) => {}
+                    (Some(_) | None, None) => {}
                     _ => {
                         return Err(EncodeRequestError::SourcePipeline(
                             "D0 block-two placement receipt differs from its append".to_owned(),
@@ -982,7 +981,10 @@ fn run_inner(
                         "source committed: g={} callback_tx={} source={} source_tx={} disposition=suppressed frame_sha256={} owner_receipts={} phase_generation={}->{}",
                         receipt.callback_index.value(),
                         receipt.callback_transaction_id.as_str(),
-                        receipt.source_index.map_or(u64::MAX, |index| index.value()),
+                        receipt.source_index.map_or(
+                            u64::MAX,
+                            jocforge_io::pcm::frontend_pcm_source::CodecSourceIndex::value,
+                        ),
                         receipt
                             .source_transaction_id
                             .as_ref()
@@ -1041,7 +1043,10 @@ fn run_inner(
                             "AU append committed: g={} callback_tx={} source={} source_tx={} au={} frame_bytes={} crc_residual={} durable={} published={}/{} role_map_assumption={} phase_generation={}->{}",
                             receipt.callback_index.value(),
                             receipt.callback_transaction_id.as_str(),
-                            receipt.source_index.map_or(u64::MAX, |index| index.value()),
+                            receipt.source_index.map_or(
+                                u64::MAX,
+                                jocforge_io::pcm::frontend_pcm_source::CodecSourceIndex::value,
+                            ),
                             receipt
                                 .source_transaction_id
                                 .as_ref()
@@ -1168,7 +1173,7 @@ fn run_inner(
             return Err(EncodeRequestError::SourcePipeline(error));
         }
     };
-    let (finalizing_roots, metadata_eof_receipt, finalize_proposal) =
+    let (finalizing_roots, _, finalize_proposal) =
         match roots.begin_finalizing(eof_proposal, eof_transaction_id) {
             Ok(value) => value,
             Err(error) => {
@@ -1186,8 +1191,6 @@ fn run_inner(
         roots.metadata().state_reference().generation(),
         roots.phase_generation(),
     );
-    let _metadata_eof_receipt = metadata_eof_receipt;
-
     if resolved_joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
         let payload_sequence = flat7x_emdf_payload_sequence.ok_or_else(|| {
             EncodeRequestError::SourcePipeline(
@@ -1273,6 +1276,10 @@ struct PendingMainCallback {
     transaction_id: CallbackTransactionId,
 }
 
+#[expect(
+    clippy::too_many_arguments,
+    reason = "The callback stage keeps its owner roots, providers, and callback controls explicit"
+)]
 fn stage_main_callback_candidate(
     prepared: &PreparedJobInput,
     parsed: &jocforge_io::pcm::riff_pcm24::ParsedRiffPcm24<'_>,

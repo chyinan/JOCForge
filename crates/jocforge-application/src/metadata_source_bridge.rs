@@ -99,6 +99,10 @@ pub fn prepare_metadata_owner_from_measurement(
 
 /// Errors while binding the F05JOC proposal and F13 body set to one MAIN callback.
 #[derive(Debug)]
+#[expect(
+    clippy::large_enum_variant,
+    reason = "The error preserves full typed transaction context for source-lineage failures"
+)]
 pub enum MetadataSourceBridgeError {
     SpatialCallbackIdentityMismatch,
     ProgrammeIdentityMismatch,
@@ -147,6 +151,10 @@ pub struct MainMetadataBodiesCandidate {
 }
 
 /// Binds Flat7x provider output to one accepted QMF source before JOC dispatch and ID14 staging.
+#[expect(
+    clippy::needless_pass_by_value,
+    reason = "The provider output is accepted once for this source-stage projection"
+)]
 pub fn stage_flat7x_joc_source_from_provider_output(
     before: &SelectedJocState,
     projection: &SelectedJocQmfProjection,
@@ -336,6 +344,10 @@ pub fn stage_main_metadata_source(
 /// The metadata owner still needs a finalized measurement-derived ID1 configuration. This
 /// function returns body values only; it creates no MetadataSourceProposal, EMDF container, or
 /// owner commit.
+#[expect(
+    clippy::result_large_err,
+    reason = "The bridge error retains complete typed callback and transaction context"
+)]
 pub fn prepare_main_metadata_bodies_from_spatial_callback(
     input: MainMetadataBodiesInput<'_>,
 ) -> Result<MainMetadataBodiesCandidate, MetadataSourceBridgeError> {
@@ -344,6 +356,10 @@ pub fn prepare_main_metadata_bodies_from_spatial_callback(
 }
 
 /// Prepares same-source F05/F13 body values and binds the JOC GTC receipt to its parent CALLBACK.
+#[expect(
+    clippy::result_large_err,
+    reason = "The bridge error retains complete typed callback and transaction context"
+)]
 pub fn prepare_main_metadata_bodies_for_callback(
     input: MainMetadataBodiesInput<'_>,
     gtc_transaction_id: CallbackTransactionId,
@@ -352,6 +368,10 @@ pub fn prepare_main_metadata_bodies_for_callback(
 }
 
 /// Prepares the Flat7x JOC/F13 body proposal from explicit same-source seven-row input.
+#[expect(
+    clippy::result_large_err,
+    reason = "The bridge error retains complete typed callback and transaction context"
+)]
 pub fn prepare_main_metadata_bodies_for_callback_with_flat7x_rows(
     input: MainMetadataBodiesInput<'_>,
     gtc_transaction_id: CallbackTransactionId,
@@ -368,6 +388,10 @@ pub fn prepare_main_metadata_bodies_for_callback_with_flat7x_rows(
 }
 
 /// Prepares the Flat7x JOC/F13 body proposal from locally fitted same-source seven-carrier windows.
+#[expect(
+    clippy::result_large_err,
+    reason = "The bridge error retains complete typed callback and transaction context"
+)]
 pub fn prepare_main_metadata_bodies_for_callback_with_seven_carrier_fit(
     input: MainMetadataBodiesInput<'_>,
     gtc_transaction_id: CallbackTransactionId,
@@ -383,6 +407,10 @@ pub fn prepare_main_metadata_bodies_for_callback_with_seven_carrier_fit(
     )
 }
 
+#[expect(
+    clippy::result_large_err,
+    reason = "The bridge error retains complete typed callback and transaction context"
+)]
 fn prepare_main_metadata_bodies_for_callback_inner(
     input: MainMetadataBodiesInput<'_>,
     gtc_transaction_id: CallbackTransactionId,

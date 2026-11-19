@@ -504,13 +504,13 @@ pub struct D0Block2SkipFieldInput<'a> {
     pub source_receipt: D0Block2SourceReceipt<'a>,
 }
 
-impl<'a> D0Block2SkipFieldInput<'a> {
+impl D0Block2SkipFieldInput<'_> {
     #[cfg(any(test, feature = "test-support"))]
     pub fn synthetic_for_test(
         insertion_point: CallerOwnedUnboundD0Block2InsertionPoint,
-        container: &'a [u8],
-    ) -> Result<Self, D0Block2SourceReceiptError> {
-        Ok(Self {
+        container: &[u8],
+    ) -> Result<D0Block2SkipFieldInput<'_>, D0Block2SourceReceiptError> {
+        Ok(D0Block2SkipFieldInput {
             insertion_point,
             source_receipt: D0Block2SourceReceipt::synthetic_for_test(container, 2, 2)?,
         })

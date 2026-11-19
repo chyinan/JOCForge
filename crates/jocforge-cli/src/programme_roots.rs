@@ -124,6 +124,10 @@ pub(crate) struct ProgrammeOwnerRoots<'a> {
 
 impl<'a> ProgrammeOwnerRoots<'a> {
     #[allow(clippy::too_many_arguments)]
+    #[expect(
+        clippy::large_types_passed_by_value,
+        reason = "The constructor transfers the codec root into the returned programme owner"
+    )]
     pub fn ready(
         prepared: &PreparedJobInput,
         profile: ResolvedEncodingProfile,
@@ -316,11 +320,11 @@ impl<'a> ProgrammeOwnerRoots<'a> {
     }
 
     pub const fn meter(&self) -> &StandaloneMeterRoot {
-        &self.meter
+        self.meter
     }
 
     pub const fn measurement(&self) -> &ProgrammeMeasurementReceipt {
-        &self.measurement
+        self.measurement
     }
 
     pub fn commit_callback_only(
@@ -378,8 +382,8 @@ impl<'a> ProgrammeOwnerRoots<'a> {
         receipts.push(
             unchanged_meter_root_receipt(
                 prepared,
-                &self.meter,
-                &self.measurement,
+                self.meter,
+                self.measurement,
                 transaction_id.clone(),
             )
             .map_err(|error| format!("Meter unchanged receipt: {error:?}"))?,
@@ -477,6 +481,10 @@ impl<'a> ProgrammeOwnerRoots<'a> {
         Ok((after, receipt))
     }
 
+    #[expect(
+        clippy::redundant_closure_for_method_calls,
+        reason = "The CLI reaches this domain ID through a transitive application type"
+    )]
     pub fn commit_source_advance(
         self,
         gtc_callback_transaction_id: CallbackTransactionId,
@@ -906,6 +914,10 @@ impl<'a> ProgrammeOwnerRoots<'a> {
     }
 }
 
+#[expect(
+    clippy::redundant_closure_for_method_calls,
+    reason = "The CLI reaches this domain ID through a transitive application type"
+)]
 fn flat7x_pair_receipts_match(
     pair: &jocforge_application::flat7x_pair_integrity::Flat7xI0D0F12PairReceipts,
     programme_id: &ProgrammeId,
@@ -975,8 +987,7 @@ fn validate_receipts(
             || receipt.after_generation()
                 != receipt
                     .before_generation()
-                    .checked_add(u64::from(changed))
-                    .unwrap_or(u64::MAX)
+                    .saturating_add(u64::from(changed))
         {
             return Err(format!(
                 "GTC owner receipt failed the parent batch check for {}",
@@ -1081,7 +1092,7 @@ fn analysis_generation(root: &AnalysisOwnerRoot) -> Result<u64, String> {
 fn drc_generation(root: &NoneDrcOwnerRoot) -> Result<u64, String> {
     root.state()
         .source_generation()
-        .map(|generation| generation.value())
+        .map(jocforge_io::pcm::frontend_pcm_source::CodecSourceIndex::value)
         .map_err(|error| format!("DRC owner generation: {error:?}"))
 }
 

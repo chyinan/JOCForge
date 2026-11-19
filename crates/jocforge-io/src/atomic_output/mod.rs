@@ -793,7 +793,7 @@ fn path_exists(path: &Path) -> io::Result<bool> {
 fn sync_parent_directory(directory: &Path) -> io::Result<()> {
     #[cfg(windows)]
     {
-        return windows_rename::open_parent_directory(directory)?.sync_all();
+        windows_rename::open_parent_directory(directory)?.sync_all()
     }
 
     #[cfg(not(windows))]

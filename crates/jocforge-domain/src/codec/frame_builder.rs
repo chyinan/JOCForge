@@ -392,7 +392,7 @@ fn append_flat7x_d0_mixing_metadata_and_infomdate_inner(
         0
     };
     let frame_block_mix_flag_bits =
-        u32::from(!(omit_absent_frame_block_mix_flag && !block_info_present));
+        u32::from(!omit_absent_frame_block_mix_flag || block_info_present);
     let total_bits = 2_u32
         .checked_add(mixing_value_bits)
         .and_then(|bits| bits.checked_add(frame_block_mix_flag_bits))

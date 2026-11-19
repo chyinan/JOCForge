@@ -525,7 +525,7 @@ pub fn stage_flat7x_pcm_pair_for_f15<'a>(
     )?;
     Ok(Flat7xPcmPairF15Candidate {
         append_proposal,
-        after_history: d0_frame.after_history().clone(),
+        after_history: *d0_frame.after_history(),
         source_generation,
         block2_placement: block2_placement.clone(),
         f12_pair,

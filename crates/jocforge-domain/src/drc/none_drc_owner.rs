@@ -802,6 +802,10 @@ impl NoneDrcOwnerAfterProposal {
 
     /// Single-token wrapper for routes where the source and parent tokens are identical.
     #[allow(dead_code)] // Consumed by the future 12-owner source transaction preflight.
+    #[expect(
+        clippy::needless_pass_by_value,
+        reason = "This convenience entry consumes the transaction identity for one receipt"
+    )]
     pub(crate) fn gtc_owner_receipt(
         &self,
         before: &NoneDrcOwnerRoot,
@@ -944,8 +948,8 @@ impl NoneDrcOwnerError {
             | Self::UnchangedSourceAlreadyAdvanced
             | Self::BeforeStateMismatch
             | Self::AfterStateMismatch
-            | Self::ParentTransactionMismatch => Some("DRC_INPUT_ERROR"),
-            Self::SourceTransactionMismatch => Some("DRC_INPUT_ERROR"),
+            | Self::ParentTransactionMismatch
+            | Self::SourceTransactionMismatch => Some("DRC_INPUT_ERROR"),
             Self::GtcReceipt(_) => Some("DRC_OWNER_RECEIPT_ERROR"),
             Self::GenerationOverflow => Some("NUMERIC_FAILURE"),
             Self::Callback(error) => error.outcome_code(),

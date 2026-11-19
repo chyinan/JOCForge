@@ -440,9 +440,9 @@ impl std::fmt::Display for OutputPublicationError {
         match self {
             Self::Io(error) => write!(formatter, "{error}"),
             Self::Owner(error) => write!(formatter, "{error}"),
-            Self::Flat7xPairOwner(error) => write!(formatter, "{error}"),
-            Self::Flat7xPairFinalize(error) => write!(formatter, "{error}"),
-            Self::ExperimentalCandidate(error) => write!(formatter, "{error}"),
+            Self::Flat7xPairOwner(error)
+            | Self::Flat7xPairFinalize(error)
+            | Self::ExperimentalCandidate(error) => write!(formatter, "{error}"),
             Self::ExperimentalCandidateRequired => formatter.write_str(
                 "Flat7x must use the experimental candidate capture path; generic final exposure is disabled",
             ),
@@ -613,6 +613,10 @@ fn stage_source_frame_output_inner(
 ///
 /// The selected BAP value comes from `admitted_plan`. All audio-bearing proposals remain inputs
 /// from the approved callback pipeline; the caller retains every owner replacement decision.
+#[expect(
+    clippy::too_many_arguments,
+    reason = "The staging boundary validates each typed owner input before publication"
+)]
 pub fn stage_admitted_source_frame_output(
     staging: &mut ProgrammeOutputStaging,
     binding: &ProgrammeOutputBinding,
@@ -760,6 +764,10 @@ pub fn capture_flat7x_experimental_candidate(
     }
 }
 
+#[expect(
+    clippy::needless_pass_by_value,
+    reason = "The finalize proposal is accepted once for candidate capture"
+)]
 fn capture_flat7x_candidate_inner(
     staging: &mut ProgrammeOutputStaging,
     binding: &ProgrammeOutputBinding,

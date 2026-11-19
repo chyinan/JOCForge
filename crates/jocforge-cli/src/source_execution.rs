@@ -142,6 +142,14 @@ impl From<String> for SourceFrameStageError {
 
 /// Stages F07-F15 for one actual source index without installing any owner root.
 #[allow(clippy::too_many_arguments)]
+#[expect(
+    clippy::needless_pass_by_value,
+    reason = "The parent callback identity is transferred through this one source stage"
+)]
+#[expect(
+    clippy::redundant_closure_for_method_calls,
+    reason = "The CLI does not depend directly on the domain crate that owns this AU index"
+)]
 pub(crate) fn stage_source_frame<'pcm>(
     prepared: &PreparedJobInput,
     joc_profile: ResolvedEncodingProfile,
@@ -776,12 +784,12 @@ pub(crate) fn stage_source_frame<'pcm>(
                         "Flat7x published source did not produce a paired F15 proposal".to_owned(),
                     ));
                 }
-                prepare_output_source_for_flat7x_suppressed(&output_binding_before, source_index)
+                prepare_output_source_for_flat7x_suppressed(output_binding_before, source_index)
                     .map_err(|error| format!("Flat7x suppressed F15 output proposal: {error}"))?
             } else {
                 prepare_output_source_from_candidate(
                     prepared,
-                    &output_binding_before,
+                    output_binding_before,
                     &metadata_source,
                     &frame_candidate,
                 )
@@ -825,53 +833,52 @@ pub(crate) fn stage_source_frame<'pcm>(
     let append = output_after.durable_append_receipt().map(to_append_summary);
     drop(frame_candidate);
 
-    let spatial_parent = match frontend_candidate {
-        Some(frontend) => main_roots_before
+    let spatial_parent = if let Some(frontend) = frontend_candidate {
+        main_roots_before
             .prepare_spatial_after_callback(
                 prepared,
                 frontend,
                 spatial_callback,
                 main_callback_transaction.clone(),
             )
-            .map_err(|error| format!("F01E/F03W/F04 parent proposal: {error:?}"))?,
-        None => {
-            let candidate_callback_index = spatial_callback.callback_index().value();
-            let source_lineage_callback_index =
-                spatial_callback.transaction_id().callback_index().value();
-            let frontend_callback_index = main_roots_before
-                .frontend_control()
-                .committed()
-                .callback_index()
-                .value();
-            let spatial_control_callback_index = main_roots_before
-                .spatial_control()
-                .committed()
-                .callback_index()
-                .value();
-            let spatial_audio_callback_index = main_roots_before
-                .spatial_audio()
-                .committed()
-                .callback_index()
-                .value();
-            main_roots_before
-                .prepare_spatial_after_cached_callback(
-                    prepared,
-                    spatial_callback,
-                    main_callback_transaction.clone(),
+            .map_err(|error| format!("F01E/F03W/F04 parent proposal: {error:?}"))?
+    } else {
+        let candidate_callback_index = spatial_callback.callback_index().value();
+        let source_lineage_callback_index =
+            spatial_callback.transaction_id().callback_index().value();
+        let frontend_callback_index = main_roots_before
+            .frontend_control()
+            .committed()
+            .callback_index()
+            .value();
+        let spatial_control_callback_index = main_roots_before
+            .spatial_control()
+            .committed()
+            .callback_index()
+            .value();
+        let spatial_audio_callback_index = main_roots_before
+            .spatial_audio()
+            .committed()
+            .callback_index()
+            .value();
+        main_roots_before
+            .prepare_spatial_after_cached_callback(
+                prepared,
+                spatial_callback,
+                main_callback_transaction.clone(),
+            )
+            .map_err(|error| {
+                format!(
+                    "cached F01E/F03W/F04 parent proposal: {error:?}; phase=cached_drain callback_index={} candidate_callback_index={} source_lineage_callback_index={} frontend_callback_index={} spatial_control_callback_index={} spatial_audio_callback_index={} source_index={}",
+                    callback_index.value(),
+                    candidate_callback_index,
+                    source_lineage_callback_index,
+                    frontend_callback_index,
+                    spatial_control_callback_index,
+                    spatial_audio_callback_index,
+                    source_index.value(),
                 )
-                .map_err(|error| {
-                    format!(
-                        "cached F01E/F03W/F04 parent proposal: {error:?}; phase=cached_drain callback_index={} candidate_callback_index={} source_lineage_callback_index={} frontend_callback_index={} spatial_control_callback_index={} spatial_audio_callback_index={} source_index={}",
-                        callback_index.value(),
-                        candidate_callback_index,
-                        source_lineage_callback_index,
-                        frontend_callback_index,
-                        spatial_control_callback_index,
-                        spatial_audio_callback_index,
-                        source_index.value(),
-                    )
-                })?
-        }
+            })?
     };
     let (main_roots, _, _, spatial_receipts) = spatial_parent.into_parts();
 

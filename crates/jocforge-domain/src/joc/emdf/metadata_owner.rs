@@ -539,6 +539,18 @@ pub struct MetadataSourceParentHandoff {
     parsed_container: Option<ParsedMetadataSourceContainer>,
 }
 
+/// Parts transferred from a validated metadata source handoff.
+pub type MetadataSourceParentHandoffParts = (
+    MetadataOwner,
+    MetadataSourceReceipt,
+    GtcOwnerReceipt,
+    MetadataOwnerStateReference,
+    MetadataOwnerStateReference,
+    Option<Vec<u8>>,
+    MetadataBodiesLineage,
+    Option<ParsedMetadataSourceContainer>,
+);
+
 impl MetadataSourceParentHandoff {
     pub const fn after_owner(&self) -> &MetadataOwner {
         &self.after_owner
@@ -572,18 +584,7 @@ impl MetadataSourceParentHandoff {
         self.parsed_container.as_ref()
     }
 
-    pub fn into_parts(
-        self,
-    ) -> (
-        MetadataOwner,
-        MetadataSourceReceipt,
-        GtcOwnerReceipt,
-        MetadataOwnerStateReference,
-        MetadataOwnerStateReference,
-        Option<Vec<u8>>,
-        MetadataBodiesLineage,
-        Option<ParsedMetadataSourceContainer>,
-    ) {
+    pub fn into_parts(self) -> MetadataSourceParentHandoffParts {
         (
             self.after_owner,
             self.source_receipt,
@@ -890,6 +891,10 @@ impl MetadataSourceProposal {
     /// The caller supplies the exact committed before-root and parent transaction token. This
     /// validates the source clock, F13 consumer token, actual before/after owner snapshots, and
     /// canonical state digests. It does not install metadata state or admit a 12-owner callback.
+    #[expect(
+        clippy::needless_pass_by_value,
+        reason = "This single-token entry consumes the identity for a parent-bound receipt"
+    )]
     pub fn gtc_owner_receipt(
         &self,
         before: &MetadataOwner,
@@ -1004,6 +1009,10 @@ impl MetadataSourceProposal {
     /// The method first validates the transition against the caller's committed before-owner
     /// and transaction token, then carries both canonical state references and the owner receipt
     /// beside the after-value. It does not install the owner or authorize a partial root swap.
+    #[expect(
+        clippy::needless_pass_by_value,
+        reason = "This single-token entry consumes the identity for a parent handoff"
+    )]
     pub fn into_parent_handoff(
         self,
         before: &MetadataOwner,
