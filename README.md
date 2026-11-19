@@ -4,9 +4,11 @@
 
 <h1 align="center">One scene. 965 ways to forge it.</h1>
 
+> The `main` branch is an early experiment. It can generate **965 ETSI-compliant immersive audio variants**, but that count measures bitstream compliance alone. The results sound poor because this branch relies on FFmpeg to encode the underlying E-AC-3 audio. For better audio quality, use [`experimental/independent-encoder`](https://github.com/chyinan/JOCForge/tree/experimental/independent-encoder). It encodes E-AC-3 JOC from start to finish without FFmpeg and produces audio that sounds as intended. As time allows, I’d like to bring more of those variants to the independent encoder. Contributions are welcome.
+
 <p align="center">
   <strong>965 legal immersive-audio variants. Before you even choose a bitrate.</strong><br>
-  Independent, clean-room ADM → E-AC-3/JOC encoding, built in Rust.
+  ADM → E-AC-3/JOC tooling, built in Rust.
 </p>
 
 <p align="center">
