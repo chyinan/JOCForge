@@ -61,7 +61,7 @@ fn wash_cli_vectors_select_or_reject_layout_before_source_admission() {
                 assert!(stderr.contains("encode requires absolute input and output file paths"));
             }
             (None, Some("reject before encoder execution")) => {
-                assert!(stderr.contains("joc-layout must be flat7x"));
+                assert!(stderr.contains("possible values: flat7x"));
             }
             (None, Some("reject as incompatible with approved profile row")) => {
                 assert!(

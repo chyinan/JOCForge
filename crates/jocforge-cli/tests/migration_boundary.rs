@@ -34,7 +34,7 @@ fn encode_cannot_modify_an_existing_destination() {
     assert!(
         String::from_utf8(output.stderr)
             .unwrap()
-            .contains("try 'jocforge --help'")
+            .contains("unexpected argument '--architecture'")
     );
     assert_eq!(
         std::fs::read(&destination).unwrap(),
@@ -55,7 +55,7 @@ fn encode_help_lists_supported_options_and_flat7x_output_contract() {
 
     assert!(output.status.success());
     let help = String::from_utf8(output.stdout).unwrap();
-    assert!(help.contains("USAGE"));
+    assert!(help.contains("Usage:"));
     assert!(help.contains("--data-rate <KBPS>"));
     assert!(help.contains("--joc-layout <LAYOUT>"));
     assert!(help.contains(".candidate.ec3"));
