@@ -10,11 +10,11 @@ fn help_and_version_are_available() {
             .output()
             .unwrap();
         assert!(output.status.success());
-        assert!(
-            String::from_utf8(output.stdout)
-                .unwrap()
-                .contains("jocforge")
-        );
+        let stdout = String::from_utf8(output.stdout).unwrap();
+        assert!(stdout.to_ascii_lowercase().contains("jocforge"));
+        if argument == "--help" {
+            assert!(stdout.contains("██╗"));
+        }
     }
 }
 
@@ -34,7 +34,7 @@ fn encode_cannot_modify_an_existing_destination() {
     assert!(
         String::from_utf8(output.stderr)
             .unwrap()
-            .contains("invalid command: use --help")
+            .contains("try 'jocforge --help'")
     );
     assert_eq!(
         std::fs::read(&destination).unwrap(),
@@ -44,6 +44,21 @@ fn encode_cannot_modify_an_existing_destination() {
     assert_eq!(names.len(), 1);
     std::fs::remove_file(destination).unwrap();
     std::fs::remove_dir(directory).unwrap();
+}
+
+#[test]
+fn encode_help_lists_supported_options_and_flat7x_output_contract() {
+    let output = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .args(["encode", "--help"])
+        .output()
+        .unwrap();
+
+    assert!(output.status.success());
+    let help = String::from_utf8(output.stdout).unwrap();
+    assert!(help.contains("USAGE"));
+    assert!(help.contains("--data-rate <KBPS>"));
+    assert!(help.contains("--joc-layout <LAYOUT>"));
+    assert!(help.contains(".candidate.ec3"));
 }
 
 #[test]
