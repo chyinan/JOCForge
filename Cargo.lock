@@ -70,7 +70,7 @@ checksum = "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682"
 
 [[package]]
 name = "jocforge"
-version = "0.1.0-dev.1"
+version = "1.0.0"
 dependencies = [
  "jocforge-application",
  "jocforge-domain",
@@ -80,7 +80,7 @@ dependencies = [
 
 [[package]]
 name = "jocforge-application"
-version = "0.1.0-dev.1"
+version = "1.0.0"
 dependencies = [
  "jocforge-domain",
  "serde_json",
@@ -89,7 +89,7 @@ dependencies = [
 
 [[package]]
 name = "jocforge-domain"
-version = "0.1.0-dev.1"
+version = "1.0.0"
 dependencies = [
  "num-bigint",
  "roxmltree",
@@ -99,7 +99,7 @@ dependencies = [
 
 [[package]]
 name = "jocforge-io"
-version = "0.1.0-dev.1"
+version = "1.0.0"
 dependencies = [
  "jocforge-application",
  "jocforge-domain",
@@ -110,7 +110,7 @@ dependencies = [
 
 [[package]]
 name = "jocforge-validation"
-version = "0.1.0-dev.1"
+version = "1.0.0"
 dependencies = [
  "jocforge-application",
  "jocforge-domain",
