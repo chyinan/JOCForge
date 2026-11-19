@@ -735,3 +735,11 @@ ID14 容量回退曾允许七行 Flat7x 拟合从全矩阵切换到稀疏模式�
 远端 `experimental/independent-encoder` 原有 Flat7x role map 仅接受 36/38 行。当前 22 轨输入需要 SelectedSourceRowDimensions 动态映射；synthetic 覆盖 10/22/36/38 行并通过。CLI 在 Meter 前复用同一映射进行预检。
 
 先前的 3m37 试听目录包含一个 250-AU、8 秒 EC3 片段及其 7.1 WAV，但目录内没有 encode log 或二进制版本信息。2026-11-18 的完整 4:53 Love Song 记录使用 encoder binary SHA-256 `1206e8217e43a74cf49892acb6beeec5b8fd6819da6e2edf2597917790c74809`；其中用户确认的是 Lo/Ro MKA 播放。该记录未绑定为完整的 7.1 LAV/PotPlayer 试听版本。
+
+## 2026-11-19 编码耗时与逐字节对照
+
+在 Windows 上从同一个工作树构建前后两个 release CLI，以 36 轨 `testADM.wav` 串行编码，每个版本、每种布局各取三次耗时的中位数。Flat7x 从 13.613 秒降至 9.817 秒，5.1 / 1024 kbps 从 4.444 秒降至 4.157 秒。长窗 MDCT 复用与输入无关的余弦表，系数拟合在同一频带的对象之间复用载体 Gram 矩阵。5.1 六档码率和 Flat7x 都通过新旧 EC3 的逐字节对照。
+
+复测命令为 `python scripts/compare_encode.py <旧版exe> <新版exe> <ADM.wav> --joc-layout flat7x`。省略布局参数可比较 5.1。
+
+全曲与各自留存的 EC3 逐字节比对通过。《高嶺の花子さん》Flat7x 共 9,185 AU、61,135,360 字节，SHA-256 为 `c002c15b16770b9b1ea3325b774bc3268ba12ec88347eaabb023ad742be43d6d`。《Love Song》5.1 / 1024 kbps 共 8,417 AU、34,476,032 字节，SHA-256 为 `bc01dcfc3b21cfefc4f20e522762e466d98d03375a14988d0b440d437f1db0a5`。本次基线可执行文件、输出和日志保存在 `D:/JOCForge-attempts/jocforge-speed-dx5uhfkf/`。

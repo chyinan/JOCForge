@@ -110,40 +110,19 @@ pub fn build_normal_equations_for_carriers<const CARRIER_COUNT: usize>(
         .iter()
         .map(|word| finite_word(*word))
         .collect::<Result<Vec<_>, _>>()?;
-    let mut equations = Vec::with_capacity(OBJECT_COUNT * BAND_COUNT);
+    let mut equations: Vec<CoefficientNormalEquation<CARRIER_COUNT>> =
+        Vec::with_capacity(OBJECT_COUNT * BAND_COUNT);
 
     for object in 0..OBJECT_COUNT {
         for band in 0..BAND_COUNT {
             let begin = BAND_BOUNDARIES[band];
             let end = BAND_BOUNDARIES[band + 1];
-            let mut gram_words = [[ZERO_BITS; CARRIER_COUNT]; CARRIER_COUNT];
-            for row in 0..CARRIER_COUNT {
-                for column in row..CARRIER_COUNT {
-                    let mut gram = finite_word(if row == column {
-                        GRAM_DIAGONAL_TINY_BITS
-                    } else {
-                        ZERO_BITS
-                    })?;
-                    for bin in begin..end {
-                        let mut sub = finite_word(ZERO_BITS)?;
-                        for slot in 0..SLOT_COUNT {
-                            let left =
-                                carrier_complex::<CARRIER_COUNT>(carrier_words, row, slot, bin)?;
-                            let right =
-                                carrier_complex::<CARRIER_COUNT>(carrier_words, column, slot, bin)?;
-                            let left_real = multiply(left[0], weights[slot])?;
-                            let right_real = multiply(right[0], weights[slot])?;
-                            let left_imaginary = multiply(left[1], weights[slot])?;
-                            let right_imaginary = multiply(right[1], weights[slot])?;
-                            sub = add(multiply(left_real, right_real)?, sub)?;
-                            sub = add(sub, multiply(left_imaginary, right_imaginary)?)?;
-                        }
-                        gram = add(gram, sub)?;
-                    }
-                    gram_words[row][column] = gram.to_bits();
-                    gram_words[column][row] = gram.to_bits();
-                }
-            }
+            // Carrier windows and temporal weights are shared by all objects.
+            let gram_words = if object == 0 {
+                carrier_gram::<CARRIER_COUNT>(carrier_words, &weights, begin, end)?
+            } else {
+                equations[band].gram_words
+            };
 
             let mut cross_words = [ZERO_BITS; CARRIER_COUNT];
             for carrier in 0..CARRIER_COUNT {
@@ -180,6 +159,42 @@ pub fn build_normal_equations_for_carriers<const CARRIER_COUNT: usize>(
         }
     }
     Ok(equations)
+}
+
+#[allow(clippy::needless_range_loop)] // Write both halves of the matrix in the original DSP index order.
+fn carrier_gram<const CARRIER_COUNT: usize>(
+    carrier_words: &[u32],
+    weights: &[FiniteF32],
+    begin: usize,
+    end: usize,
+) -> Result<[[u32; CARRIER_COUNT]; CARRIER_COUNT], CoefficientNormalEquationError> {
+    let mut gram_words = [[ZERO_BITS; CARRIER_COUNT]; CARRIER_COUNT];
+    for row in 0..CARRIER_COUNT {
+        for column in row..CARRIER_COUNT {
+            let mut gram = finite_word(if row == column {
+                GRAM_DIAGONAL_TINY_BITS
+            } else {
+                ZERO_BITS
+            })?;
+            for bin in begin..end {
+                let mut sub = finite_word(ZERO_BITS)?;
+                for slot in 0..SLOT_COUNT {
+                    let left = carrier_complex::<CARRIER_COUNT>(carrier_words, row, slot, bin)?;
+                    let right = carrier_complex::<CARRIER_COUNT>(carrier_words, column, slot, bin)?;
+                    let left_real = multiply(left[0], weights[slot])?;
+                    let right_real = multiply(right[0], weights[slot])?;
+                    let left_imaginary = multiply(left[1], weights[slot])?;
+                    let right_imaginary = multiply(right[1], weights[slot])?;
+                    sub = add(multiply(left_real, right_real)?, sub)?;
+                    sub = add(sub, multiply(left_imaginary, right_imaginary)?)?;
+                }
+                gram = add(gram, sub)?;
+            }
+            gram_words[row][column] = gram.to_bits();
+            gram_words[column][row] = gram.to_bits();
+        }
+    }
+    Ok(gram_words)
 }
 
 fn target_complex(
