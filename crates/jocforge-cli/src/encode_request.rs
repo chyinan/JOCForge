@@ -8,7 +8,9 @@ use std::{
     time::{SystemTime, UNIX_EPOCH},
 };
 
-use crate::meter_prepass::{SelectedMeterPrepassError, run_selected_meter_prepass_with_progress};
+use crate::meter_prepass::{
+    SelectedMeterPrepassError, provider_supplements_dir, run_selected_meter_prepass_with_progress,
+};
 use crate::output_publication::{
     OutputPublicationError, ProgrammeOutputStaging, capture_flat7x_experimental_candidate,
     finalize_output,
@@ -728,9 +730,7 @@ fn run_inner(
         metadata_owner.state_reference().generation(),
     );
 
-    let supplements = Path::new(env!("CARGO_MANIFEST_DIR"))
-        .join("../..")
-        .join("outputs/IMPLEMENTER_SUPPLEMENTS");
+    let supplements = provider_supplements_dir().map_err(EncodeRequestError::MeterPrepass)?;
     let spatial_profile = EncodingProfile::selected_with_rate_and_carriage(
         selected_profile.codec_rate(),
         selected_profile.carriage(),

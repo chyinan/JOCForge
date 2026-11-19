@@ -1,11 +1,7 @@
 // pattern: Imperative Shell
 //! Builds the selected sample's noncommitting Meter prepass and dependent-owner inputs.
 
-use std::{
-    error::Error,
-    fmt,
-    path::{Path, PathBuf},
-};
+use std::{error::Error, fmt, path::PathBuf};
 
 use jocforge_application::output_publication::AttemptId;
 use jocforge_application::{
@@ -84,11 +80,17 @@ fn error(label: &str, detail: impl fmt::Debug) -> SelectedMeterPrepassError {
     SelectedMeterPrepassError(format!("{label}: {detail:?}"))
 }
 
-fn repository_root() -> Result<PathBuf, SelectedMeterPrepassError> {
-    Path::new(env!("CARGO_MANIFEST_DIR"))
-        .join("../..")
-        .canonicalize()
-        .map_err(|source| error("repository root", source))
+pub(crate) fn provider_supplements_dir() -> Result<PathBuf, SelectedMeterPrepassError> {
+    let executable = std::env::current_exe().map_err(|source| error("executable path", source))?;
+    executable
+        .ancestors()
+        .skip(1)
+        .map(|directory| directory.join("outputs/IMPLEMENTER_SUPPLEMENTS"))
+        .find(|directory| directory.is_dir())
+        .ok_or_else(|| SelectedMeterPrepassError(format!(
+            "missing outputs/IMPLEMENTER_SUPPLEMENTS near {}; extract the entire JOCForge archive",
+            executable.display()
+        )))
 }
 
 /// Runs the approved full-file Meter source schedule over the parsed ADM BWF bytes.
@@ -110,8 +112,7 @@ pub fn run_selected_meter_prepass_with_progress<F>(
 where
     F: FnMut(u64, u64) + Send,
 {
-    let root = repository_root()?;
-    let supplements = root.join("outputs/IMPLEMENTER_SUPPLEMENTS");
+    let supplements = provider_supplements_dir()?;
     let spatial_provider_root = supplements.join("ADM-F03W-APPROVED-PROVIDER-BUNDLE-V1");
     let cold_state_root = supplements.join("F01B-F03W-COLD-STATE-ASSETS-V1");
     let direct_meter_root = supplements.join("METER-APPROVED-PARAMETER-ASSETS-V1");
