@@ -4,8 +4,8 @@
 use super::{
     k_matrix::KMatrixProvider,
     true_peak::{
-        TruePeakError, accumulate_normalized_energy, add_words, multiply_words,
-        normalize_energy_window, ordered_energy_reduction,
+        TruePeakError, accumulate_normalized_energy, normalize_energy_window,
+        ordered_energy_reduction,
     },
 };
 
@@ -327,61 +327,44 @@ fn process_k_filter_segment(
         return Err(EnergyWindowError::InputShape);
     }
 
-    let mut output_words = Vec::with_capacity(input_words.len());
-    for word in input_words {
-        output_words.push(multiply_words(*word, EIGHTH_WORD).map_err(map_energy_error)?);
-    }
+    let mut output: Vec<f32> = input_words
+        .iter()
+        .map(|&w| f32::from_bits(w) * f32::from_bits(EIGHTH_WORD))
+        .collect();
     let mut next_state_words = old_state_words;
     for stage in 0..STAGE_COUNT {
-        let mut previous = old_state_words[stage];
-        for offset in (0..output_words.len()).step_by(SIMD_LANES) {
-            let mut noisy_input = [ZERO_WORD; SIMD_LANES];
-            for lane in 0..SIMD_LANES {
-                noisy_input[lane] = add_words(output_words[offset + lane], parameters.noise_word)
-                    .map_err(map_energy_error)?;
-            }
-            let mut accumulator = [ZERO_WORD; SIMD_LANES];
-            for (lane, accumulator_word) in accumulator.iter_mut().enumerate() {
-                *accumulator_word =
-                    multiply_words(noisy_input[0], parameters.matrix_words[stage][0][lane])
-                        .map_err(map_energy_error)?;
-                for (row, word) in noisy_input.iter().enumerate().skip(1) {
-                    let product = multiply_words(*word, parameters.matrix_words[stage][row][lane])
-                        .map_err(map_energy_error)?;
-                    *accumulator_word =
-                        add_words(*accumulator_word, product).map_err(map_energy_error)?;
-                }
-                for (row, word) in previous.iter().enumerate() {
-                    let product = multiply_words(
-                        *word,
-                        parameters.matrix_words[stage][row + SIMD_LANES][lane],
-                    )
-                    .map_err(map_energy_error)?;
-                    *accumulator_word =
-                        add_words(*accumulator_word, product).map_err(map_energy_error)?;
+        let matrix = parameters.matrix_words[stage].map(|row| row.map(f32::from_bits));
+        let mut previous = old_state_words[stage].map(f32::from_bits);
+        for chunk in output.chunks_exact_mut(SIMD_LANES) {
+            let noisy: [f32; SIMD_LANES] =
+                std::array::from_fn(|i| chunk[i] + f32::from_bits(parameters.noise_word));
+            let mut accum = matrix[0].map(|coefficient| noisy[0] * coefficient);
+            // Four independent lanes use the same row order as the scalar matrix filter.
+            for (&value, row) in noisy[1..].iter().chain(&previous).zip(&matrix[1..]) {
+                for lane in 0..SIMD_LANES {
+                    accum[lane] += value * row[lane];
                 }
             }
-            output_words[offset..offset + SIMD_LANES].copy_from_slice(&accumulator);
-            previous = [
-                noisy_input[3],
-                noisy_input[2],
-                accumulator[3],
-                accumulator[2],
-            ];
+            chunk.copy_from_slice(&accum);
+            previous = [noisy[3], noisy[2], accum[3], accum[2]];
+        }
+        if output.iter().any(|v| !v.is_finite()) {
+            return Err(map_energy_error(TruePeakError::NumericFailure));
         }
         next_state_words[stage] = std::array::from_fn(|lane| {
             clamp_word(
-                previous[lane],
+                previous[lane].to_bits(),
                 parameters.lower_words[lane],
                 parameters.upper_words[lane],
             )
         });
     }
-
-    for word in &mut output_words {
-        *word = multiply_words(*word, ONE_THIRTY_SECOND_WORD).map_err(map_energy_error)?;
+    for v in &mut output {
+        *v *= f32::from_bits(ONE_THIRTY_SECOND_WORD);
     }
-    let power_sum_word = ordered_power_sum(&output_words)?;
+    let power_sum_word = ordered_power_sum(&output)?;
+    #[cfg(test)]
+    let output_words = output.into_iter().map(f32::to_bits).collect();
     Ok(KFilterSegment {
         #[cfg(test)]
         output_words,
@@ -390,29 +373,26 @@ fn process_k_filter_segment(
     })
 }
 
-fn ordered_power_sum(output_words: &[u32]) -> Result<u32, EnergyWindowError> {
-    if output_words.is_empty() || output_words.len() % SEGMENT_ALIGNMENT != 0 {
+fn ordered_power_sum(output: &[f32]) -> Result<u32, EnergyWindowError> {
+    if output.is_empty() || output.len() % SEGMENT_ALIGNMENT != 0 {
         return Err(EnergyWindowError::InputShape);
     }
-    let mut first = [ZERO_WORD; SIMD_LANES];
-    let mut second = [ZERO_WORD; SIMD_LANES];
-    for group in output_words.chunks_exact(SEGMENT_ALIGNMENT) {
+    let mut first = [0.0; SIMD_LANES];
+    let mut second = [0.0; SIMD_LANES];
+    for group in output.chunks_exact(SEGMENT_ALIGNMENT) {
         for lane in 0..SIMD_LANES {
-            let first_square =
-                multiply_words(group[lane], group[lane]).map_err(map_energy_error)?;
-            first[lane] = add_words(first[lane], first_square).map_err(map_energy_error)?;
-            let second_square = multiply_words(group[lane + SIMD_LANES], group[lane + SIMD_LANES])
-                .map_err(map_energy_error)?;
-            second[lane] = add_words(second[lane], second_square).map_err(map_energy_error)?;
+            let a = group[lane];
+            let b = group[lane + SIMD_LANES];
+            first[lane] += a * a;
+            second[lane] += b * b;
         }
     }
-    let mut total = [ZERO_WORD; SIMD_LANES];
-    for lane in 0..SIMD_LANES {
-        total[lane] = add_words(first[lane], second[lane]).map_err(map_energy_error)?;
+    let total: [f32; SIMD_LANES] = std::array::from_fn(|lane| first[lane] + second[lane]);
+    let sum = (total[0] + total[2]) + (total[1] + total[3]);
+    if !sum.is_finite() {
+        return Err(map_energy_error(TruePeakError::NumericFailure));
     }
-    let even = add_words(total[0], total[2]).map_err(map_energy_error)?;
-    let odd = add_words(total[1], total[3]).map_err(map_energy_error)?;
-    add_words(even, odd).map_err(map_energy_error)
+    Ok(sum.to_bits())
 }
 
 fn clamp_word(value: u32, lower: u32, upper: u32) -> u32 {

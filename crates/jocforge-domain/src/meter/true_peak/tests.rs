@@ -6,6 +6,37 @@ use super::{
     sample_peak_metric, selected_log_constants, true_peak_metric,
 };
 use crate::numeric::{FiniteF32, r32_mul};
+
+#[test]
+fn vector_fir_matches_checked_scalar_taps_and_tail_samples() {
+    let parameters = super::selected_parameters().unwrap();
+    let seed = [
+        0,
+        0x8000_0000,
+        1,
+        0x8080_0000,
+        0x3eaa_aaab,
+        0xbf00_0001,
+        0x3f7f_ffff,
+    ];
+    let data: Vec<_> = seed.into_iter().cycle().take(1040).collect();
+    for coeff in [parameters.stage_a_words(), parameters.stage_b_words()] {
+        for count in [1, 3, 4, 9, 31, 1024] {
+            let actual = super::fir(&data, count, coeff).unwrap();
+            for (i, &bits) in actual.iter().enumerate() {
+                let product = |tap: usize| multiply_words(data[i + tap], coeff[tap]).unwrap();
+                let add = |a, b| super::add_words(a, b).unwrap();
+                let lane = |n| add(add(product(n + 4), product(n)), product(n + 8));
+                assert_eq!(bits, add(add(lane(0), lane(2)), add(lane(1), lane(3))));
+            }
+        }
+    }
+    let huge = [f32::MAX.to_bits(); 12];
+    assert_eq!(
+        super::fir(&huge, 1, &huge),
+        Err(TruePeakError::NumericFailure)
+    );
+}
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 use std::path::PathBuf;

@@ -8,7 +8,7 @@ use std::sync::Arc;
 
 use super::bap::{
     BapError, BapFrameInput, BapParameters, BapProfileInput, FULLBAND_BIN_COUNT,
-    FULLBAND_CHANNEL_COUNT, LFE_BIN_COUNT, MAIN_FAST_GAIN_CODE, allocate_bap_frame_with_parameters,
+    FULLBAND_CHANNEL_COUNT, LFE_BIN_COUNT, MAIN_FAST_GAIN_CODE, PreparedBapFrame,
 };
 use super::bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError};
 use super::exponent_packing::{
@@ -306,6 +306,7 @@ pub struct SelectedFrameTrialPlan<'a> {
     source_identity: SharedAnalysisIdentity,
     frame_size: Eac3FrameSize,
     bap_parameters: Arc<BapParameters>,
+    bap_masks: std::sync::OnceLock<Result<PreparedBapFrame, BapError>>,
     coefficients_by_block: &'a [CoefficientBlockInput; BLOCK_COUNT],
     exponent_plan_by_block: &'a [BlockExponentPlan; BLOCK_COUNT],
     db_per_bit_codes: [u8; BLOCK_COUNT],
@@ -408,6 +409,7 @@ impl<'a> SelectedFrameTrialPlan<'a> {
             source_identity: source_identity.clone(),
             frame_size,
             bap_parameters: Arc::clone(&numeric_plan.bap_parameters),
+            bap_masks: std::sync::OnceLock::new(),
             coefficients_by_block: &numeric_plan.coefficients_by_block,
             exponent_plan_by_block: &numeric_plan.exponent_plan_by_block,
             db_per_bit_codes: numeric_plan.db_per_bit_codes,
@@ -529,8 +531,8 @@ pub enum SelectedFrameTrialOutcome {
 
 /// Builds a fresh rate-sized selected-profile frame candidate from one plan and one U10 q.
 ///
-/// BAP, block-local groupers, frame scratch, and the bit cursor are recreated
-/// for every call. BAP input failures are candidate-local after preflight;
+/// Each trial allocates its own BAP values and writer scratch. The immutable
+/// plan shares exponent-derived masking thresholds across q values. BAP input failures are candidate-local after preflight;
 /// provider failures remain fatal. Converter-plan production is an upstream
 /// input and is never converted into a main-trial retry result. All writes use
 /// private local scratch; a candidate is returned only after the complete body,
@@ -545,57 +547,59 @@ pub fn build_selected_frame_trial(
         ));
     }
 
-    let exponent_rows_by_block: [[&[u8]; 6]; BLOCK_COUNT] = std::array::from_fn(|block| {
-        std::array::from_fn(|channel| {
-            if channel < FULLBAND_LANE_COUNT {
-                plan.exponent_plan_by_block[block].fullband[channel]
-                    .decoded_exponents
-                    .as_slice()
-            } else {
-                plan.exponent_plan_by_block[block]
-                    .lfe
-                    .decoded_exponents
-                    .as_slice()
-            }
-        })
-    });
-    let fine_zero = q.trailing_zeros() >= 4;
-    let bap_input = BapFrameInput {
-        decoded_exponents_by_block: &exponent_rows_by_block,
-        end_exclusive_by_channel: [
-            FULLBAND_BIN_COUNT,
-            FULLBAND_BIN_COUNT,
-            FULLBAND_BIN_COUNT,
-            FULLBAND_BIN_COUNT,
-            FULLBAND_BIN_COUNT,
-            LFE_BIN_COUNT,
-        ],
-        candidate: q,
-        slow_decay_code: MAIN_SLOW_DECAY_CODE,
-        fast_decay_code: MAIN_FAST_DECAY_CODE,
-        slow_gain_code: MAIN_SLOW_GAIN_CODE,
-        db_per_bit_codes: plan.db_per_bit_codes,
-        floor_code: MAIN_FLOOR_CODE,
-        fast_gain_code: MAIN_FAST_GAIN_CODE,
-        caller_all_active_fine_zero_by_block: [fine_zero; BLOCK_COUNT],
-        profile: BapProfileInput::selected(),
-    };
-    let bap_frame =
-        match allocate_bap_frame_with_parameters(plan.bap_parameters.as_ref(), &bap_input) {
-            Ok(frame) => frame,
-            Err(BapError::InputError) => {
-                return Ok(SelectedFrameTrialOutcome::Infeasible(
-                    CandidateInfeasibleReason::BapInput,
-                ));
-            }
-            Err(
-                error @ (BapError::ParameterUnavailable
-                | BapError::ParameterError
-                | BapError::UnsupportedProfile),
-            ) => {
-                return Err(SelectedFrameTrialFatalError::BapProvider(error));
-            }
+    let masks = plan.bap_masks.get_or_init(|| {
+        let exponent_rows_by_block: [[&[u8]; 6]; BLOCK_COUNT] = std::array::from_fn(|block| {
+            std::array::from_fn(|channel| {
+                if channel < FULLBAND_LANE_COUNT {
+                    plan.exponent_plan_by_block[block].fullband[channel]
+                        .decoded_exponents
+                        .as_slice()
+                } else {
+                    plan.exponent_plan_by_block[block]
+                        .lfe
+                        .decoded_exponents
+                        .as_slice()
+                }
+            })
+        });
+        let fine_zero = q.trailing_zeros() >= 4;
+        let bap_input = BapFrameInput {
+            decoded_exponents_by_block: &exponent_rows_by_block,
+            end_exclusive_by_channel: [
+                FULLBAND_BIN_COUNT,
+                FULLBAND_BIN_COUNT,
+                FULLBAND_BIN_COUNT,
+                FULLBAND_BIN_COUNT,
+                FULLBAND_BIN_COUNT,
+                LFE_BIN_COUNT,
+            ],
+            candidate: q,
+            slow_decay_code: MAIN_SLOW_DECAY_CODE,
+            fast_decay_code: MAIN_FAST_DECAY_CODE,
+            slow_gain_code: MAIN_SLOW_GAIN_CODE,
+            db_per_bit_codes: plan.db_per_bit_codes,
+            floor_code: MAIN_FLOOR_CODE,
+            fast_gain_code: MAIN_FAST_GAIN_CODE,
+            caller_all_active_fine_zero_by_block: [fine_zero; BLOCK_COUNT],
+            profile: BapProfileInput::selected(),
         };
+        PreparedBapFrame::prepare(&plan.bap_parameters, &bap_input)
+    });
+    let bap_frame = match masks.as_ref().map_err(|e| *e) {
+        Ok(rows) => rows.allocate(&plan.bap_parameters, q),
+        Err(BapError::InputError) => {
+            return Ok(SelectedFrameTrialOutcome::Infeasible(
+                CandidateInfeasibleReason::BapInput,
+            ));
+        }
+        Err(
+            error @ (BapError::ParameterUnavailable
+            | BapError::ParameterError
+            | BapError::UnsupportedProfile),
+        ) => {
+            return Err(SelectedFrameTrialFatalError::BapProvider(error));
+        }
+    };
     if bap_frame.candidate_q() != q {
         return Err(SelectedFrameTrialFatalError::BapCandidateJoin {
             requested: q,

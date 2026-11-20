@@ -193,6 +193,42 @@ impl OwnerStateRef {
     }
 }
 
+/// Immutable serialized state and its SHA-256, computed together at creation.
+#[derive(Debug, Eq, PartialEq)]
+pub(crate) struct CanonicalStateBytes {
+    bytes: Box<[u8]>,
+    digest: [u8; 32],
+}
+
+impl CanonicalStateBytes {
+    pub(crate) fn new(bytes: Vec<u8>) -> Self {
+        Self {
+            digest: Sha256::digest(&bytes).into(),
+            bytes: bytes.into_boxed_slice(),
+        }
+    }
+    pub(crate) fn bytes(&self) -> &[u8] {
+        &self.bytes
+    }
+    pub(crate) const fn digest(&self) -> [u8; 32] {
+        self.digest
+    }
+    pub(crate) fn snapshot(
+        &self,
+        owner_id: GtcOwnerId,
+        generation: u64,
+        cold_sha256: [u8; 32],
+    ) -> Result<GtcOwnerStateSnapshot<'_>, GtcOwnerReceiptError> {
+        GtcOwnerStateSnapshot::with_digest(
+            owner_id,
+            generation,
+            cold_sha256,
+            &self.bytes,
+            self.digest,
+        )
+    }
+}
+
 /// Canonical bytes and identities for one registered owner at one committed or staged point.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct GtcOwnerStateSnapshot<'a> {
@@ -212,6 +248,22 @@ impl<'a> GtcOwnerStateSnapshot<'a> {
         cold_sha256: [u8; 32],
         canonical_bytes: &'a [u8],
     ) -> Result<Self, GtcOwnerReceiptError> {
+        Self::with_digest(
+            owner_id,
+            generation,
+            cold_sha256,
+            canonical_bytes,
+            Sha256::digest(canonical_bytes).into(),
+        )
+    }
+
+    fn with_digest(
+        owner_id: GtcOwnerId,
+        generation: u64,
+        cold_sha256: [u8; 32],
+        canonical_bytes: &'a [u8],
+        state_sha256: [u8; 32],
+    ) -> Result<Self, GtcOwnerReceiptError> {
         if canonical_bytes.is_empty() {
             return Err(GtcOwnerReceiptError::EmptyCanonicalState);
         }
@@ -219,7 +271,7 @@ impl<'a> GtcOwnerStateSnapshot<'a> {
             owner_id,
             state_ref: OwnerStateRef::from_owner(owner_id),
             generation,
-            state_sha256: Sha256::digest(canonical_bytes).into(),
+            state_sha256,
             cold_sha256,
             canonical_bytes,
         })

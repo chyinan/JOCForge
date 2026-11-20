@@ -9,15 +9,19 @@ pub const LONG_MDCT_COEFFICIENT_COUNT: usize = LONG_MDCT_BLOCK_SAMPLES;
 
 // Rows follow the original scalar transform's phase expression. Reducing the
 // angle modulo a period would change rounding before cos() for some bins.
-static COSINE_ROWS: LazyLock<Box<[[f64; LONG_MDCT_WINDOW_SAMPLES]]>> = LazyLock::new(|| {
-    (0..LONG_MDCT_COEFFICIENT_COUNT)
-        .map(|coefficient_index| {
-            std::array::from_fn(|sample_index| {
-                let phase = (std::f64::consts::PI / 1_024.0)
-                    * (2 * sample_index + 1) as f64
-                    * (2 * coefficient_index + 1) as f64
-                    + (std::f64::consts::PI / 4.0) * (2 * coefficient_index + 1) as f64;
-                phase.cos()
+const BIN_LANES: usize = 8;
+static COSINE_TILES: LazyLock<Box<[[f64; BIN_LANES]]>> = LazyLock::new(|| {
+    (0..LONG_MDCT_COEFFICIENT_COUNT / BIN_LANES)
+        .flat_map(|tile| {
+            (0..LONG_MDCT_WINDOW_SAMPLES).map(move |sample_index| {
+                std::array::from_fn(|lane| {
+                    let coefficient_index = tile * BIN_LANES + lane;
+                    let phase = (std::f64::consts::PI / 1_024.0)
+                        * (2 * sample_index + 1) as f64
+                        * (2 * coefficient_index + 1) as f64
+                        + (std::f64::consts::PI / 4.0) * (2 * coefficient_index + 1) as f64;
+                    phase.cos()
+                })
             })
         })
         .collect()
@@ -61,18 +65,25 @@ pub fn forward_long_mdct_512(
     }
 
     let mut output = [0.0_f32; LONG_MDCT_COEFFICIENT_COUNT];
-    for (output_value, row) in output.iter_mut().zip(COSINE_ROWS.iter()) {
-        let mut sum = 0.0_f64;
-        for (sample, cosine) in windowed.iter().zip(row) {
-            sum += sample * cosine;
+    for (bins, tile) in output
+        .chunks_exact_mut(BIN_LANES)
+        .zip(COSINE_TILES.chunks_exact(LONG_MDCT_WINDOW_SAMPLES))
+    {
+        // Each lane is an independent coefficient with the original sample order.
+        let mut sums = [0.0; BIN_LANES];
+        for (&sample, cosines) in windowed.iter().zip(tile) {
+            for lane in 0..BIN_LANES {
+                sums[lane] += sample * cosines[lane];
+            }
         }
-        let transformed = (-2.0 / LONG_MDCT_WINDOW_SAMPLES as f64) * sum;
-        #[allow(clippy::cast_possible_truncation)]
-        let transformed = transformed as f32;
-        if !transformed.is_finite() {
-            return Err(LongMdctError::NumericFailure);
+        for (out, sum) in bins.iter_mut().zip(sums) {
+            #[allow(clippy::cast_possible_truncation)]
+            let transformed = ((-2.0 / LONG_MDCT_WINDOW_SAMPLES as f64) * sum) as f32;
+            if !transformed.is_finite() {
+                return Err(LongMdctError::NumericFailure);
+            }
+            *out = transformed;
         }
-        *output_value = transformed;
     }
     Ok(output)
 }

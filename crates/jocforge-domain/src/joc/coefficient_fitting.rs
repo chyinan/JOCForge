@@ -9,8 +9,8 @@ use crate::{
             stage_geometry_from_qmf,
         },
         coefficient_normal_equations::{
-            CoefficientNormalEquationError, build_normal_equations_for_carriers,
-            build_selected_normal_equations,
+            CoefficientNormalEquation, CoefficientNormalEquationError,
+            build_normal_equations_for_carriers, build_selected_normal_equations,
         },
         coefficient_payload::{
             CoefficientPayloadInput, CoefficientPayloadObject, CoefficientPayloadPoint,
@@ -22,7 +22,7 @@ use crate::{
             write_fit_representation_with_resolved_profile, write_fit_representation_with_retry,
         },
         coefficient_search::{
-            CoefficientSearchError, search_coefficient_cell_for_carriers,
+            CoefficientFitResult, CoefficientSearchError, search_coefficient_cell_for_carriers,
             search_selected_coefficient_cell,
         },
         fit_score::FitScoreProvider,
@@ -323,10 +323,8 @@ pub fn fit_seven_carrier_window_set(
     let mut sparse_words = vec![ZERO_BITS; OBJECT_COUNT * BAND_COUNT];
     let mut selected_channels = vec![0_u16; OBJECT_COUNT * BAND_COUNT];
     let mut score_call_count = 0_u32;
-    for equation in &equations {
-        let object = usize::from(equation.object());
-        let band = usize::from(equation.band());
-        let result = search_coefficient_cell_for_carriers::<SEVEN_CHANNEL_COUNT>(
+    let cells = fit_independent_cells(&equations, |equation| {
+        search_coefficient_cell_for_carriers::<SEVEN_CHANNEL_COUNT>(
             score_provider,
             equation,
             target_windows,
@@ -334,7 +332,10 @@ pub fn fit_seven_carrier_window_set(
             weight_words,
             [true; SEVEN_CHANNEL_COUNT],
         )
-        .map_err(CoefficientFittingError::Search)?;
+    })?;
+    for (equation, result) in equations.iter().zip(cells) {
+        let object = usize::from(equation.object());
+        let band = usize::from(equation.band());
         for channel in 0..SEVEN_CHANNEL_COUNT {
             full_words[(object * SEVEN_CHANNEL_COUNT + channel) * BAND_COUNT + band] =
                 result.stored_words()[channel];
@@ -912,6 +913,47 @@ pub(crate) fn stage_coefficient_fit_with_geometry_inputs(
     )
 }
 
+/// Search cells independently; collect in original order, including error precedence.
+fn fit_independent_cells<const C: usize>(
+    equations: &[CoefficientNormalEquation<C>],
+    search: impl Fn(
+        &CoefficientNormalEquation<C>,
+    ) -> Result<CoefficientFitResult<C>, CoefficientSearchError>
+    + Sync,
+) -> Result<Vec<CoefficientFitResult<C>>, CoefficientFittingError> {
+    let workers = std::thread::available_parallelism().map_or(1, |n| n.get().min(4));
+    let fit = |batch: &[CoefficientNormalEquation<C>]| {
+        batch.iter().map(&search).collect::<Result<Vec<_>, _>>()
+    };
+    if workers == 1 {
+        return fit(equations).map_err(CoefficientFittingError::Search);
+    }
+    std::thread::scope(|scope| {
+        let mut batches = equations.chunks(equations.len().div_ceil(workers));
+        let first = batches.next().ok_or(CoefficientFittingError::Shape)?;
+        let pending = batches
+            .map(|batch| {
+                let fit = &fit;
+                let worker = std::thread::Builder::new()
+                    .spawn_scoped(scope, move || fit(batch))
+                    .ok();
+                (batch, worker)
+            })
+            .collect::<Vec<_>>();
+        let mut cells = fit(first).map_err(CoefficientFittingError::Search)?;
+        for (batch, worker) in pending {
+            let result = match worker {
+                Some(w) => w
+                    .join()
+                    .unwrap_or_else(|panic| std::panic::resume_unwind(panic)),
+                None => fit(batch),
+            };
+            cells.extend(result.map_err(CoefficientFittingError::Search)?);
+        }
+        Ok(cells)
+    })
+}
+
 fn assemble_fit(
     temporal: TemporalWeightProposal,
     geometry: CoefficientGeometryProposal,
@@ -939,18 +981,19 @@ fn assemble_fit(
     let mut sparse_words = vec![ZERO_BITS; OBJECT_COUNT * BAND_COUNT];
     let mut selected_channels = vec![0_u16; OBJECT_COUNT * BAND_COUNT];
     let mut score_call_count = 0_u32;
-    for equation in &equations {
-        let object = usize::from(equation.object());
-        let band = usize::from(equation.band());
-        let result = search_selected_coefficient_cell(
+    let cells = fit_independent_cells(&equations, |equation| {
+        search_selected_coefficient_cell(
             score_provider,
             equation,
             target_words,
             carrier_words,
             temporal.after().weight_words(),
-            geometry.eligibility()[object],
+            geometry.eligibility()[usize::from(equation.object())],
         )
-        .map_err(CoefficientFittingError::Search)?;
+    })?;
+    for (equation, result) in equations.iter().zip(cells) {
+        let object = usize::from(equation.object());
+        let band = usize::from(equation.band());
         for channel in 0..CHANNEL_COUNT {
             full_words[(object * CHANNEL_COUNT + channel) * BAND_COUNT + band] =
                 result.stored_words()[channel];

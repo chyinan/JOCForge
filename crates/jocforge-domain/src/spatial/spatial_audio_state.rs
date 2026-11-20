@@ -1,5 +1,6 @@
 // pattern: Functional Core
 //! Typed F04 cold state and staging capabilities. No DSP or local commit authority lives here.
+use crate::transaction::CanonicalStateBytes;
 use crate::{
     profile::{EncodingProfile, resolve_selected_profile},
     source_axis::SourceAxisBinding,
@@ -15,9 +16,10 @@ use crate::{
     timeline::{FrontendCallbackIndex, ReceiverCallbackCount},
     transaction::{
         CallbackLineageIdentity, CallbackTransactionId, GtcOwnerId, GtcOwnerReceipt,
-        GtcOwnerReceiptError, GtcOwnerStateSnapshot,
+        GtcOwnerReceiptError,
     },
 };
+#[cfg(test)]
 use sha2::{Digest, Sha256};
 use std::fmt::Write as FmtWrite;
 use std::sync::Arc;
@@ -655,6 +657,7 @@ impl SpatialAudioMachine {
 }
 
 impl SpatialAudioDigest {
+    #[cfg(test)]
     fn from_canonical_bytes(bytes: &[u8]) -> Self {
         let digest = Sha256::digest(bytes);
         let mut value = [0_u8; 32];
@@ -685,7 +688,7 @@ impl SpatialAudioDigest {
 #[derive(Debug, PartialEq)]
 pub struct SpatialAudioState {
     root: F04CompositionState,
-    canonical_bytes: Box<[u8]>,
+    canonical_bytes: std::sync::Arc<CanonicalStateBytes>,
     digest: SpatialAudioDigest,
 }
 
@@ -694,7 +697,7 @@ impl SpatialAudioState {
         let root = F04CompositionState::cold();
         root.validate_cold()?;
         let state = Self::from_root(root)?;
-        if state.canonical_bytes.len() != EXPECTED_COLD_BYTES {
+        if state.canonical_bytes().len() != EXPECTED_COLD_BYTES {
             return Err(SpatialAudioError::EncodedColdLengthMismatch);
         }
         Ok(state)
@@ -703,11 +706,11 @@ impl SpatialAudioState {
     fn from_root(root: F04CompositionState) -> Result<Self, SpatialAudioError> {
         let mut encoder = F04StateEncoder::with_capacity(EXPECTED_COLD_BYTES);
         root.encode(&mut encoder)?;
-        let canonical_bytes = encoder.finish();
-        let digest = SpatialAudioDigest::from_canonical_bytes(&canonical_bytes);
+        let canonical_bytes = CanonicalStateBytes::new(encoder.finish());
+        let digest = SpatialAudioDigest(canonical_bytes.digest());
         Ok(Self {
             root,
-            canonical_bytes: canonical_bytes.into_boxed_slice(),
+            canonical_bytes: Arc::new(canonical_bytes),
             digest,
         })
     }
@@ -721,7 +724,7 @@ impl SpatialAudioState {
     }
 
     pub fn canonical_bytes(&self) -> &[u8] {
-        &self.canonical_bytes
+        self.canonical_bytes.bytes()
     }
 
     pub const fn digest(&self) -> SpatialAudioDigest {
@@ -881,22 +884,24 @@ impl SpatialAudioMachine {
             cold_digest: self.cold_digest,
             profile_identity: self.profile_identity,
         };
-        let before_reference = self.state_reference();
-        let after_reference = next_machine.state_reference();
-        let before = GtcOwnerStateSnapshot::from_canonical_bytes(
-            GtcOwnerId::SpatialAudio,
-            before_reference.generation(),
-            before_reference.cold_sha256().0,
-            before_reference.canonical_bytes(),
-        )
-        .map_err(SpatialAudioError::GtcReceipt)?;
-        let after = GtcOwnerStateSnapshot::from_canonical_bytes(
-            GtcOwnerId::SpatialAudio,
-            after_reference.generation(),
-            after_reference.cold_sha256().0,
-            after_reference.canonical_bytes(),
-        )
-        .map_err(SpatialAudioError::GtcReceipt)?;
+        let before = self
+            .committed
+            .canonical_bytes
+            .snapshot(
+                GtcOwnerId::SpatialAudio,
+                self.generation,
+                self.cold_digest.0,
+            )
+            .map_err(SpatialAudioError::GtcReceipt)?;
+        let after = next_machine
+            .committed
+            .canonical_bytes
+            .snapshot(
+                GtcOwnerId::SpatialAudio,
+                after_generation,
+                self.cold_digest.0,
+            )
+            .map_err(SpatialAudioError::GtcReceipt)?;
         let receipt = GtcOwnerReceipt::from_transition(before, after, transaction_id)
             .map_err(SpatialAudioError::GtcReceipt)?;
         Ok(SpatialAudioReplacementCandidate {

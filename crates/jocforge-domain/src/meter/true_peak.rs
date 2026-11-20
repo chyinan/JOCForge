@@ -350,8 +350,7 @@ fn interpolate_channel(
         state[SECOND_STAGE_START + 10 + 2 * index] = state[6 + index];
     }
 
-    let first_history = state[1024..1035].to_vec();
-    state[..11].copy_from_slice(&first_history);
+    state.copy_within(1024..1035, 0);
 
     let second = fir(&state[SECOND_STAGE_START..], 2048, &parameters.b)?;
     let mut output = Vec::with_capacity(TRUE_PEAK_SAMPLES);
@@ -360,8 +359,10 @@ fn interpolate_channel(
         output.push(state[SECOND_STAGE_START + 5 + index]);
     }
 
-    let second_history = state[SECOND_STAGE_START + 2048..SECOND_STAGE_START + 2057].to_vec();
-    state[SECOND_STAGE_START..SECOND_STAGE_START + 9].copy_from_slice(&second_history);
+    state.copy_within(
+        SECOND_STAGE_START + 2048..SECOND_STAGE_START + 2057,
+        SECOND_STAGE_START,
+    );
     Ok((output, state))
 }
 
@@ -373,19 +374,27 @@ fn fir(
     if data.len() < output_count.saturating_add(FIR_TAPS - 1) {
         return Err(TruePeakError::Input);
     }
-    let mut output = Vec::with_capacity(output_count);
-    for index in 0..output_count {
-        let mut taps = [0; 4];
-        for lane in 0..4 {
-            let at_four = multiply_words(data[index + lane + 4], coefficients[lane + 4])?;
-            let at_zero = multiply_words(data[index + lane], coefficients[lane])?;
-            let first_sum = add_words(at_four, at_zero)?;
-            let at_eight = multiply_words(data[index + lane + 8], coefficients[lane + 8])?;
-            taps[lane] = add_words(first_sum, at_eight)?;
-        }
-        let even_lanes = add_words(taps[0], taps[2])?;
-        let odd_lanes = add_words(taps[1], taps[3])?;
-        output.push(add_words(even_lanes, odd_lanes)?);
+    let taps = coefficients.map(f32::from_bits);
+    // Independent outputs can run in SIMD lanes. Keep the scalar reduction tree
+    // within each sample, with separate binary32 multiplies and adds.
+    let filter = |w: &[u32]| {
+        let lane = |i: usize| {
+            let four = f32::from_bits(w[i + 4]) * taps[i + 4];
+            let zero = f32::from_bits(w[i]) * taps[i];
+            let eight = f32::from_bits(w[i + 8]) * taps[i + 8];
+            (four + zero) + eight
+        };
+        ((lane(0) + lane(2)) + (lane(1) + lane(3))).to_bits()
+    };
+    let output: Vec<_> = data
+        .windows(FIR_TAPS)
+        .take(output_count)
+        .map(filter)
+        .collect();
+    // All operations are products or sums: any non-finite intermediate
+    // propagates to a non-finite output, including infinity cancellation.
+    if output.iter().any(|&word| !f32::from_bits(word).is_finite()) {
+        return Err(TruePeakError::NumericFailure);
     }
     Ok(output)
 }

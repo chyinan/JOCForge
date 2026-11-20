@@ -65,10 +65,12 @@ use crate::spatial::installed48_source_map::Installed48SourceMap;
 use crate::timeline::{
     AdmSampleIndex, CodecSourceIndex, FrontendCallbackIndex, NormalCallbackCount,
 };
+use crate::transaction::CanonicalStateBytes;
 use crate::transaction::{
     CallbackLineageIdentity, CallbackTransactionId, GtcOwnerId, GtcOwnerReceipt,
-    GtcOwnerReceiptError, GtcOwnerStateSnapshot,
+    GtcOwnerReceiptError,
 };
+#[cfg(test)]
 use sha2::{Digest, Sha256};
 use std::fmt::Write as FmtWrite;
 use std::sync::Arc;
@@ -129,6 +131,7 @@ impl SpatialControlLfeIngressAuthority {
 pub struct SpatialControlDigest([u8; 32]);
 
 impl SpatialControlDigest {
+    #[cfg(test)]
     fn digest(bytes: &[u8]) -> Self {
         let digest = Sha256::digest(bytes);
         let mut value = [0; 32];
@@ -409,7 +412,7 @@ pub struct SpatialControlState {
     targets: TargetState,
     reader_targets: ReaderTargetState,
     matrix_assignment: MatrixAssignmentState,
-    canonical_bytes: Box<[u8]>,
+    canonical_bytes: Arc<CanonicalStateBytes>,
     digest: SpatialControlDigest,
 }
 
@@ -469,12 +472,10 @@ impl SpatialControlState {
                 matrix_f32_bits: vec![0; 15 * active_source_count].into_boxed_slice(),
                 writer_set: Box::new([]),
             },
-            canonical_bytes: Box::new([]),
+            canonical_bytes: Arc::new(CanonicalStateBytes::new(Vec::new())),
             digest: SpatialControlDigest([0; 32]),
         };
-        let canonical_bytes = state.serialize_canonical();
-        state.digest = SpatialControlDigest::digest(&canonical_bytes);
-        state.canonical_bytes = canonical_bytes.into_boxed_slice();
+        state.refresh_canonical();
         state
     }
 
@@ -802,17 +803,20 @@ impl SpatialControlState {
                 matrix_f32_bits: projection.matrix_f32_bits().to_vec().into_boxed_slice(),
                 writer_set: projection.writer_set().to_vec().into_boxed_slice(),
             },
-            canonical_bytes: Box::new([]),
+            canonical_bytes: Arc::new(CanonicalStateBytes::new(Vec::new())),
             digest: SpatialControlDigest([0; 32]),
         };
-        let canonical_bytes = state.serialize_canonical();
-        state.digest = SpatialControlDigest::digest(&canonical_bytes);
-        state.canonical_bytes = canonical_bytes.into_boxed_slice();
+        state.refresh_canonical();
         Ok(state)
     }
 
+    fn refresh_canonical(&mut self) {
+        let canonical = CanonicalStateBytes::new(self.serialize_canonical());
+        self.digest = SpatialControlDigest(canonical.digest());
+        self.canonical_bytes = std::sync::Arc::new(canonical);
+    }
     pub fn canonical_bytes(&self) -> &[u8] {
-        &self.canonical_bytes
+        self.canonical_bytes.bytes()
     }
 
     pub const fn digest(&self) -> SpatialControlDigest {
@@ -1462,22 +1466,24 @@ impl SpatialControlMachine {
             profile_identity: self.profile_identity,
             provider_lineage: self.provider_lineage,
         };
-        let before_reference = self.state_reference();
-        let after_reference = next_machine.state_reference();
-        let before = GtcOwnerStateSnapshot::from_canonical_bytes(
-            GtcOwnerId::SpatialControl,
-            before_reference.generation(),
-            before_reference.cold_sha256().0,
-            before_reference.canonical_bytes(),
-        )
-        .map_err(SpatialControlError::GtcReceipt)?;
-        let after = GtcOwnerStateSnapshot::from_canonical_bytes(
-            GtcOwnerId::SpatialControl,
-            after_reference.generation(),
-            after_reference.cold_sha256().0,
-            after_reference.canonical_bytes(),
-        )
-        .map_err(SpatialControlError::GtcReceipt)?;
+        let before = self
+            .committed
+            .canonical_bytes
+            .snapshot(
+                GtcOwnerId::SpatialControl,
+                self.generation,
+                self.cold_digest.0,
+            )
+            .map_err(SpatialControlError::GtcReceipt)?;
+        let after = next_machine
+            .committed
+            .canonical_bytes
+            .snapshot(
+                GtcOwnerId::SpatialControl,
+                after_generation,
+                self.cold_digest.0,
+            )
+            .map_err(SpatialControlError::GtcReceipt)?;
         let receipt = GtcOwnerReceipt::from_transition(before, after, transaction_id)
             .map_err(SpatialControlError::GtcReceipt)?;
         Ok(SpatialControlReplacementCandidate {
@@ -1544,9 +1550,7 @@ impl SpatialControlMachine {
     ) {
         self.committed.feature.source_vector_bits = source_vector_bits.to_vec().into_boxed_slice();
         self.committed.feature.source_scalar_bits = source_scalar_bits.to_vec().into_boxed_slice();
-        let canonical_bytes = self.committed.serialize_canonical();
-        self.committed.digest = SpatialControlDigest::digest(&canonical_bytes);
-        self.committed.canonical_bytes = canonical_bytes.into_boxed_slice();
+        self.committed.refresh_canonical();
     }
 
     pub const fn committed(&self) -> &SpatialControlState {
@@ -1685,6 +1689,7 @@ mod tests {
         PhysicalControlSnapshotRow, SpatialControlAfterStateParts, SpatialControlError,
         SpatialControlMachine, SpatialControlState,
     };
+    use crate::transaction::CanonicalStateBytes;
     use crate::{
         frontend::{
             PackageManifestEvidence, ProviderFileEvidence, ProviderSha256,
@@ -1852,7 +1857,7 @@ mod tests {
             before.render_audio.previous_pcm_bits = Arc::clone(&cached_pcm);
             let canonical = before.serialize_canonical();
             before.digest = super::SpatialControlDigest::digest(&canonical);
-            before.canonical_bytes = canonical.into_boxed_slice();
+            before.canonical_bytes = Arc::new(CanonicalStateBytes::new(canonical));
         }
 
         let programme_id = ProgrammeId::new("spatial-control-cached-test").unwrap();

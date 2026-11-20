@@ -61,10 +61,22 @@ impl<'a> FrameBitWriter<'a> {
             return Err(FrameBitWriterError::Value);
         }
         self.ensure_capacity(u32::from(width))?;
-        for index in 0..u32::from(width) {
-            let shift = u32::from(width) - index - 1;
-            self.write_one((value >> shift) & 1 != 0)?;
+        let start = self.cursor.0;
+        let end = start
+            .checked_add(u32::from(width))
+            .ok_or(FrameBitWriterError::CursorOverflow)?;
+        let mut at = start;
+        while at < end {
+            let free = 8 - (at % 8);
+            let take = free.min(end - at);
+            let shift = free - take;
+            let mask = ((1_u32 << take) - 1) << shift;
+            let bits = ((value >> (end - at - take)) << shift) & mask;
+            let byte = &mut self.storage[(at / 8) as usize];
+            *byte = (*byte & !mask.to_le_bytes()[0]) | bits.to_le_bytes()[0];
+            at += take;
         }
+        self.cursor = FrameBitCursor(end);
         Ok(())
     }
 
@@ -75,17 +87,37 @@ impl<'a> FrameBitWriter<'a> {
             .checked_mul(8)
             .ok_or(FrameBitWriterError::CursorOverflow)?;
         self.ensure_capacity(bit_count)?;
-        for byte in bytes {
-            self.write_unsigned(u32::from(*byte), 8)?;
+        let end = self
+            .cursor
+            .0
+            .checked_add(bit_count)
+            .ok_or(FrameBitWriterError::CursorOverflow)?;
+        if self.cursor.0 % 8 == 0 {
+            let start = (self.cursor.0 / 8) as usize;
+            self.storage[start..start + bytes.len()].copy_from_slice(bytes);
+            self.cursor = FrameBitCursor(end);
+        } else {
+            for byte in bytes {
+                self.write_unsigned(u32::from(*byte), 8)?;
+            }
         }
         Ok(())
     }
 
     pub fn skip_zeroes(&mut self, bit_count: u32) -> Result<(), FrameBitWriterError> {
         self.ensure_capacity(bit_count)?;
-        for _ in 0..bit_count {
-            self.write_one(false)?;
-        }
+        let end = self
+            .cursor
+            .0
+            .checked_add(bit_count)
+            .ok_or(FrameBitWriterError::CursorOverflow)?;
+        let head = (8 - self.cursor.0 % 8) % 8;
+        self.write_unsigned(0, head.min(bit_count) as u8)?;
+        let whole = (end - self.cursor.0) / 8;
+        let start = (self.cursor.0 / 8) as usize;
+        self.storage[start..start + whole as usize].fill(0);
+        self.cursor.0 += whole * 8;
+        self.write_unsigned(0, (end - self.cursor.0) as u8)?;
         Ok(())
     }
 
@@ -96,29 +128,6 @@ impl<'a> FrameBitWriter<'a> {
         if end > storage_bits(self.storage)? {
             return Err(FrameBitWriterError::BufferTooSmall);
         }
-        Ok(())
-    }
-
-    fn write_one(&mut self, value: bool) -> Result<(), FrameBitWriterError> {
-        let bit_offset = self.cursor.bit_offset();
-        let byte_index =
-            usize::try_from(bit_offset / 8).map_err(|_| FrameBitWriterError::CursorOverflow)?;
-        let shift = 7 - (bit_offset % 8);
-        let mask = 1_u8 << shift;
-        let destination = self
-            .storage
-            .get_mut(byte_index)
-            .ok_or(FrameBitWriterError::BufferTooSmall)?;
-        if value {
-            *destination |= mask;
-        } else {
-            *destination &= !mask;
-        }
-        self.cursor = FrameBitCursor(
-            bit_offset
-                .checked_add(1)
-                .ok_or(FrameBitWriterError::CursorOverflow)?,
-        );
         Ok(())
     }
 }
@@ -133,6 +142,39 @@ fn storage_bits(storage: &[u8]) -> Result<u64, FrameBitWriterError> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn byte_chunks_preserve_surrounding_bits_for_every_alignment_and_width() {
+        for offset in 0..8_u32 {
+            for width in 0..=32_u8 {
+                let mask = u32::MAX.checked_shr(32 - u32::from(width)).unwrap_or(0);
+                for value in [0, mask, 0xa45b_92de & mask] {
+                    let mut actual = [0xa5; 12];
+                    let mut expected = actual;
+                    let mut writer =
+                        FrameBitWriter::new(&mut actual, FrameBitCursor::new(offset)).unwrap();
+                    writer.write_unsigned(value, width).unwrap();
+                    writer.write_bytes(&[0x38, 0xa9]).unwrap();
+                    writer.skip_zeroes(21).unwrap();
+                    let mut position = offset;
+                    for (bits, n) in [(value, width), (0x38a9, 16), (0, 21)] {
+                        for shift in (0..n).rev() {
+                            let bit = 1 << (7 - position % 8);
+                            let byte = &mut expected[(position / 8) as usize];
+                            if bits >> shift & 1 != 0 {
+                                *byte |= bit;
+                            } else {
+                                *byte &= !bit;
+                            }
+                            position += 1;
+                        }
+                    }
+                    assert_eq!(writer.cursor().bit_offset(), position);
+                    assert_eq!(actual, expected);
+                }
+            }
+        }
+    }
     use serde_json::Value;
 
     const BOUNDARY: &[u8] = include_bytes!("../../tests/fixtures/frame_bit_writer/BOUNDARY.json");

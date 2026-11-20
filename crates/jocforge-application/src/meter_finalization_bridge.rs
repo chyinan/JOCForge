@@ -10,11 +10,10 @@ use jocforge_domain::meter::{
     measurement_dependents::{
         MeasurementDependentOwnerError, prepare_measurement_dependent_owner_inputs,
     },
+    owner::MeterOwnerStateReference,
     standalone_root::StandaloneMeterMeasurementProposal,
 };
-use jocforge_domain::transaction::{
-    GtcOwnerId, GtcOwnerReceipt, GtcOwnerReceiptError, GtcOwnerStateSnapshot,
-};
+use jocforge_domain::transaction::{GtcOwnerReceipt, GtcOwnerReceiptError};
 
 use crate::PreparedJobInput;
 
@@ -36,6 +35,8 @@ pub fn unchanged_meter_root_receipt(
     measurement: &ProgrammeMeasurementReceipt,
     transaction_id: jocforge_domain::transaction::CallbackTransactionId,
 ) -> Result<GtcOwnerReceipt, MeterFinalizationBridgeError> {
+    let reference = MeterOwnerStateReference::from_root(meter_root)
+        .map_err(|_| MeterFinalizationBridgeError::CanonicalState)?;
     let identity = meter_root.identity();
     if identity.programme_id() != prepared.programme_id()
         || measurement.programme_id() != prepared.programme_id()
@@ -44,10 +45,7 @@ pub fn unchanged_meter_root_receipt(
         || identity.config_sha256() != &prepared.config_sha256()
         || measurement.input_sha256() != identity.input_sha256()
         || measurement.config_sha256() != identity.config_sha256()
-        || measurement.meter_terminal_sha256()
-            != &meter_root
-                .canonical_sha256()
-                .map_err(|_| MeterFinalizationBridgeError::CanonicalState)?
+        || measurement.meter_terminal_sha256() != reference.state_sha256()
         || measurement
             .normal_callbacks()
             .checked_add(measurement.zero_drains())
@@ -55,28 +53,10 @@ pub fn unchanged_meter_root_receipt(
     {
         return Err(MeterFinalizationBridgeError::PreparedInputIdentityMismatch);
     }
-    let canonical = meter_root
-        .canonical_preimage()
-        .map_err(|_| MeterFinalizationBridgeError::CanonicalState)?;
-    let cold_sha256 = meter_root
-        .cold_canonical_sha256()
-        .map_err(|_| MeterFinalizationBridgeError::CanonicalState)?;
-    let generation = meter_root.meter_callback_index().value();
-    let before = GtcOwnerStateSnapshot::from_canonical_bytes(
-        GtcOwnerId::Meter,
-        generation,
-        cold_sha256,
-        &canonical,
-    )
-    .map_err(MeterFinalizationBridgeError::GtcReceipt)?;
-    let after = GtcOwnerStateSnapshot::from_canonical_bytes(
-        GtcOwnerId::Meter,
-        generation,
-        cold_sha256,
-        &canonical,
-    )
-    .map_err(MeterFinalizationBridgeError::GtcReceipt)?;
-    GtcOwnerReceipt::from_transition(before, after, transaction_id)
+    let snapshot = reference
+        .gtc_snapshot()
+        .map_err(MeterFinalizationBridgeError::GtcReceipt)?;
+    GtcOwnerReceipt::from_transition(snapshot, snapshot, transaction_id)
         .map_err(MeterFinalizationBridgeError::GtcReceipt)
 }
 

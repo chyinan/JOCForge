@@ -1,6 +1,8 @@
 // pattern: Functional Core
 //! Canonical GTC state references and noncommitting Meter callback receipts.
 
+use crate::transaction::CanonicalStateBytes;
+#[cfg(test)]
 use sha2::{Digest, Sha256};
 
 use crate::{
@@ -39,7 +41,7 @@ pub struct MeterOwnerStateReference {
     generation: MeterCallbackIndex,
     state_sha256: [u8; 32],
     cold_sha256: [u8; 32],
-    canonical_bytes: std::sync::Arc<[u8]>,
+    canonical_bytes: std::sync::Arc<CanonicalStateBytes>,
 }
 
 impl MeterOwnerStateReference {
@@ -54,7 +56,8 @@ impl MeterOwnerStateReference {
         let canonical_bytes = root
             .canonical_preimage()
             .map_err(MeterOwnerStateReferenceError::Root)?;
-        let state_sha256: [u8; 32] = Sha256::digest(&canonical_bytes).into();
+        let canonical_bytes = CanonicalStateBytes::new(canonical_bytes);
+        let state_sha256 = canonical_bytes.digest();
         let cold_sha256 = root
             .cold_canonical_sha256()
             .map_err(MeterOwnerStateReferenceError::Root)?;
@@ -88,17 +91,13 @@ impl MeterOwnerStateReference {
     }
 
     pub fn canonical_bytes(&self) -> &[u8] {
-        &self.canonical_bytes
+        self.canonical_bytes.bytes()
     }
 
     /// Adapts the full owner bytes to the registered GTC `owners.meter` slot.
     pub fn gtc_snapshot(&self) -> Result<GtcOwnerStateSnapshot<'_>, GtcOwnerReceiptError> {
-        GtcOwnerStateSnapshot::from_canonical_bytes(
-            GtcOwnerId::Meter,
-            self.generation.value(),
-            self.cold_sha256,
-            &self.canonical_bytes,
-        )
+        self.canonical_bytes
+            .snapshot(GtcOwnerId::Meter, self.generation.value(), self.cold_sha256)
     }
 }
 

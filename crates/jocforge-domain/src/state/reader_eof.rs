@@ -1,11 +1,12 @@
 // pattern: Functional Core
 //! Reader/EOF single-root lifecycle contracts.
 
+use crate::transaction::CanonicalStateBytes;
 use crate::transaction::{
     CallbackTransactionId, GtcOwnerId, GtcOwnerReceipt, GtcOwnerReceiptError, GtcOwnerStateSnapshot,
 };
 use sha2::{Digest, Sha256};
-use std::sync::Arc;
+use std::sync::{Arc, OnceLock};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ReaderEofDigest([u8; 32]);
@@ -97,8 +98,9 @@ pub enum ReaderEofPhase {
     CachedDrain = 2,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug)]
 pub struct ReaderEofState {
+    canonical: OnceLock<Arc<CanonicalStateBytes>>,
     callback_index: crate::timeline::FrontendCallbackIndex,
     source_cursor_samples: u64,
     normal_callbacks: crate::timeline::NormalCallbackCount,
@@ -108,9 +110,23 @@ pub struct ReaderEofState {
     phase: ReaderEofPhase,
 }
 
+// Memoizing the representation must not affect value equality (including signed zero in PCM).
+impl PartialEq for ReaderEofState {
+    fn eq(&self, other: &Self) -> bool {
+        self.callback_index == other.callback_index
+            && self.source_cursor_samples == other.source_cursor_samples
+            && self.normal_callbacks == other.normal_callbacks
+            && self.remaining_cached_drains == other.remaining_cached_drains
+            && self.last_normal_host_frame == other.last_normal_host_frame
+            && self.last_control_snapshot == other.last_control_snapshot
+            && self.phase == other.phase
+    }
+}
+
 impl ReaderEofState {
     pub const fn cold() -> Self {
         Self {
+            canonical: OnceLock::new(),
             callback_index: crate::timeline::FrontendCallbackIndex::new(0),
             source_cursor_samples: 0,
             normal_callbacks: crate::timeline::NormalCallbackCount::new(0),
@@ -141,6 +157,7 @@ impl ReaderEofState {
             return Err(ReaderEofError::CacheShape);
         }
         Ok(Self {
+            canonical: OnceLock::new(),
             callback_index,
             source_cursor_samples,
             normal_callbacks,
@@ -171,7 +188,14 @@ impl ReaderEofState {
     pub const fn phase(&self) -> ReaderEofPhase {
         self.phase
     }
+    fn canonical(&self) -> &Arc<CanonicalStateBytes> {
+        self.canonical
+            .get_or_init(|| Arc::new(CanonicalStateBytes::new(self.serialize())))
+    }
     pub fn canonical_bytes(&self) -> Vec<u8> {
+        self.canonical().bytes().to_vec()
+    }
+    fn serialize(&self) -> Vec<u8> {
         let mut out = Vec::new();
         // The canonical state schema fixes this clock field at U64LE even
         // though FrontendCallbackIndex uses a compact U32 representation.
@@ -212,7 +236,7 @@ impl ReaderEofState {
         out
     }
     pub fn digest(&self) -> ReaderEofDigest {
-        ReaderEofDigest::from_canonical_bytes(&self.canonical_bytes())
+        ReaderEofDigest(self.canonical().digest())
     }
 }
 
@@ -225,13 +249,13 @@ pub struct ReaderEofOwnerStateReference {
     generation: u64,
     state_sha256: ReaderEofDigest,
     cold_sha256: ReaderEofDigest,
-    canonical_bytes: Vec<u8>,
+    canonical_bytes: Arc<CanonicalStateBytes>,
 }
 
 impl ReaderEofOwnerStateReference {
     fn from_state(state: &ReaderEofState, generation: u64) -> Self {
-        let canonical_bytes = state.canonical_bytes();
-        let state_sha256 = ReaderEofDigest::from_canonical_bytes(&canonical_bytes);
+        let canonical_bytes = Arc::clone(state.canonical());
+        let state_sha256 = ReaderEofDigest(canonical_bytes.digest());
         let cold_sha256 = ReaderEofState::cold().digest();
         Self {
             generation,
@@ -262,16 +286,15 @@ impl ReaderEofOwnerStateReference {
     }
 
     pub fn canonical_bytes(&self) -> &[u8] {
-        &self.canonical_bytes
+        self.canonical_bytes.bytes()
     }
 
     /// Adapts the complete owner reference to the registered GTC state member.
     pub fn gtc_snapshot(&self) -> Result<GtcOwnerStateSnapshot<'_>, GtcOwnerReceiptError> {
-        GtcOwnerStateSnapshot::from_canonical_bytes(
+        self.canonical_bytes.snapshot(
             GtcOwnerId::ReaderEof,
             self.generation,
             self.cold_sha256.bytes(),
-            &self.canonical_bytes,
         )
     }
 }
@@ -503,20 +526,12 @@ impl ReaderEofMachine {
         };
         let before_reference = self.state_reference();
         let after_reference = next_machine.state_reference();
-        let before = GtcOwnerStateSnapshot::from_canonical_bytes(
-            GtcOwnerId::ReaderEof,
-            before_reference.generation(),
-            before_reference.cold_sha256().bytes(),
-            before_reference.canonical_bytes(),
-        )
-        .map_err(ReaderEofError::GtcReceipt)?;
-        let after = GtcOwnerStateSnapshot::from_canonical_bytes(
-            GtcOwnerId::ReaderEof,
-            after_reference.generation(),
-            after_reference.cold_sha256().bytes(),
-            after_reference.canonical_bytes(),
-        )
-        .map_err(ReaderEofError::GtcReceipt)?;
+        let before = before_reference
+            .gtc_snapshot()
+            .map_err(ReaderEofError::GtcReceipt)?;
+        let after = after_reference
+            .gtc_snapshot()
+            .map_err(ReaderEofError::GtcReceipt)?;
         let gtc_receipt = GtcOwnerReceipt::from_transition(before, after, gtc_transaction_id)
             .map_err(ReaderEofError::GtcReceipt)?;
         let changed = staged.before_digest != staged.after_digest;

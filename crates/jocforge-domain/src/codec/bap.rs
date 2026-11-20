@@ -289,83 +289,108 @@ pub fn allocate_bap_frame_with_parameters(
     parameters: &BapParameters,
     input: &BapFrameInput<'_>,
 ) -> Result<BapFrame, BapError> {
-    validate_sample_and_profile(input.profile)?;
+    Ok(PreparedBapFrame::prepare(parameters, input)?.allocate(parameters, input.candidate))
+}
 
-    for end_exclusive in input.end_exclusive_by_channel {
-        validate_row_extent(end_exclusive)?;
-    }
-    for (channel, end_exclusive) in input.end_exclusive_by_channel.iter().copied().enumerate() {
-        let expected_end = if channel < FULLBAND_CHANNEL_COUNT {
-            FULLBAND_BIN_COUNT
-        } else {
-            LFE_BIN_COUNT
-        };
-        if end_exclusive != expected_end {
-            return Err(BapError::InputError);
+/// Candidate-independent psychoacoustic masks for a single source frame.
+pub(crate) struct PreparedBapFrame {
+    rows: Vec<PreparedBapRow>,
+}
+impl PreparedBapFrame {
+    pub(crate) fn prepare(
+        parameters: &BapParameters,
+        input: &BapFrameInput<'_>,
+    ) -> Result<Self, BapError> {
+        validate_sample_and_profile(input.profile)?;
+
+        for end_exclusive in input.end_exclusive_by_channel {
+            validate_row_extent(end_exclusive)?;
         }
-    }
-
-    for block_rows in input.decoded_exponents_by_block {
-        for (channel, row) in block_rows.iter().enumerate() {
-            validate_exponent_row(row, input.end_exclusive_by_channel[channel])?;
-        }
-    }
-
-    validate_candidate_codes(
-        input.candidate,
-        input.slow_decay_code,
-        input.fast_decay_code,
-        input.slow_gain_code,
-        input.db_per_bit_codes[0],
-        input.floor_code,
-        input.fast_gain_code,
-    )?;
-    if input.db_per_bit_codes.iter().any(|code| *code > 3) {
-        return Err(BapError::InputError);
-    }
-    let expected_active_fine_zero = input.candidate.trailing_zeros() >= 4;
-    for context in input.caller_all_active_fine_zero_by_block {
-        if context != expected_active_fine_zero {
-            return Err(BapError::InputError);
-        }
-        validate_caller_context(input.candidate, context)?;
-    }
-
-    let mut blocks = [BapBlock {
-        fullband_rows: [[0_u8; FULLBAND_BIN_COUNT]; FULLBAND_CHANNEL_COUNT],
-        lfe_row: [0_u8; LFE_BIN_COUNT],
-    }; 6];
-    for (block_index, block) in blocks.iter_mut().enumerate() {
-        for (channel, decoded_exponents) in input.decoded_exponents_by_block[block_index]
-            .iter()
-            .enumerate()
-        {
-            let row_input = BapRowInput {
-                decoded_exponents,
-                end_exclusive: input.end_exclusive_by_channel[channel],
-                candidate: input.candidate,
-                slow_decay_code: input.slow_decay_code,
-                fast_decay_code: input.fast_decay_code,
-                slow_gain_code: input.slow_gain_code,
-                db_per_bit_code: input.db_per_bit_codes[block_index],
-                floor_code: input.floor_code,
-                fast_gain_code: input.fast_gain_code,
-                caller_all_active_fine_zero: input.caller_all_active_fine_zero_by_block
-                    [block_index],
-                profile: input.profile,
-            };
-            let codes = compute_bap_row(&row_input, parameters)?;
-            if channel < FULLBAND_CHANNEL_COUNT {
-                block.fullband_rows[channel].copy_from_slice(&codes);
+        for (channel, end_exclusive) in input.end_exclusive_by_channel.iter().copied().enumerate() {
+            let expected_end = if channel < FULLBAND_CHANNEL_COUNT {
+                FULLBAND_BIN_COUNT
             } else {
-                block.lfe_row.copy_from_slice(&codes);
+                LFE_BIN_COUNT
+            };
+            if end_exclusive != expected_end {
+                return Err(BapError::InputError);
             }
         }
+
+        for block_rows in input.decoded_exponents_by_block {
+            for (channel, row) in block_rows.iter().enumerate() {
+                validate_exponent_row(row, input.end_exclusive_by_channel[channel])?;
+            }
+        }
+
+        validate_candidate_codes(
+            input.candidate,
+            input.slow_decay_code,
+            input.fast_decay_code,
+            input.slow_gain_code,
+            input.db_per_bit_codes[0],
+            input.floor_code,
+            input.fast_gain_code,
+        )?;
+        if input.db_per_bit_codes.iter().any(|code| *code > 3) {
+            return Err(BapError::InputError);
+        }
+        let expected_active_fine_zero = input.candidate.trailing_zeros() >= 4;
+        for context in input.caller_all_active_fine_zero_by_block {
+            if context != expected_active_fine_zero {
+                return Err(BapError::InputError);
+            }
+            validate_caller_context(input.candidate, context)?;
+        }
+
+        let mut rows = Vec::with_capacity(6 * (FULLBAND_CHANNEL_COUNT + 1));
+        for block_index in 0..6 {
+            for (channel, decoded_exponents) in input.decoded_exponents_by_block[block_index]
+                .iter()
+                .enumerate()
+            {
+                let row_input = BapRowInput {
+                    decoded_exponents,
+                    end_exclusive: input.end_exclusive_by_channel[channel],
+                    candidate: input.candidate,
+                    slow_decay_code: input.slow_decay_code,
+                    fast_decay_code: input.fast_decay_code,
+                    slow_gain_code: input.slow_gain_code,
+                    db_per_bit_code: input.db_per_bit_codes[block_index],
+                    floor_code: input.floor_code,
+                    fast_gain_code: input.fast_gain_code,
+                    caller_all_active_fine_zero: input.caller_all_active_fine_zero_by_block
+                        [block_index],
+                    profile: input.profile,
+                };
+                rows.push(prepare_bap_row(&row_input, parameters)?);
+            }
+        }
+        Ok(Self { rows })
     }
-    Ok(BapFrame {
-        candidate_q: input.candidate,
-        blocks,
-    })
+
+    pub(crate) fn allocate(&self, parameters: &BapParameters, candidate: u16) -> BapFrame {
+        let mut blocks = [BapBlock {
+            fullband_rows: [[0_u8; FULLBAND_BIN_COUNT]; FULLBAND_CHANNEL_COUNT],
+            lfe_row: [0_u8; LFE_BIN_COUNT],
+        }; 6];
+        if candidate != 0 {
+            for (rows, block) in self
+                .rows
+                .chunks_exact(FULLBAND_CHANNEL_COUNT + 1)
+                .zip(&mut blocks)
+            {
+                for (row, dst) in rows.iter().zip(&mut block.fullband_rows) {
+                    row.allocate(candidate, parameters, dst);
+                }
+                rows[FULLBAND_CHANNEL_COUNT].allocate(candidate, parameters, &mut block.lfe_row);
+            }
+        }
+        BapFrame {
+            candidate_q: candidate,
+            blocks,
+        }
+    }
 }
 
 fn validate_sample_and_profile(profile: BapProfileInput) -> Result<(), BapError> {
