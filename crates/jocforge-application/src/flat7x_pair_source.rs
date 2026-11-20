@@ -41,9 +41,10 @@ pub use jocforge_domain::codec::{
 };
 
 pub use jocforge_domain::codec::ac3_audio_block::{
-    Ac3DeltaBitAllocationInput, Ac3MantissaQuantizerPolicy, I0AudioBlockControlPolicy,
-    I0AudioBlockSeriesBudget, I0AudioBlockSeriesError as Flat7xI0AudioBlockSeriesError,
-    I0AudioBlockSeriesPolicy, I0BapCandidateQ,
+    Ac3DeltaBitAllocationInput, Ac3MantissaQuantizerPolicy, I0AudioBlockBudgetProbe,
+    I0AudioBlockControlPolicy, I0AudioBlockSeriesBudget,
+    I0AudioBlockSeriesError as Flat7xI0AudioBlockSeriesError, I0AudioBlockSeriesPolicy,
+    I0BapCandidateQ,
 };
 pub use jocforge_domain::codec::bap::Flat7xD0BapParameters;
 pub use jocforge_domain::codec::flat7x_d0_pcm_source::{

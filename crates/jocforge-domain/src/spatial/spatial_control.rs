@@ -480,7 +480,16 @@ impl SpatialControlState {
     }
 
     fn serialize_canonical(&self) -> Vec<u8> {
-        let mut bytes = Vec::new();
+        let pcm_words = self
+            .source_cache
+            .last_normal_physical_pcm_rows_bits
+            .as_deref()
+            .map_or(0, <[u32]>::len)
+            + self.render_audio.regular_raw_history_bits.len()
+            + self.render_audio.previous_pcm_bits.len()
+            + self.render_audio.previous_current_rows_bits.len();
+        let mut bytes =
+            Vec::with_capacity(pcm_words * 4 + self.event_control_canonical_bytes.len());
         let selected_v6_canonical_shape = self.physical_host_count
             == V6_SELECTED_PHYSICAL_HOST_COUNT
             && self.regular_tail_count == V6_SELECTED_REGULAR_TAIL_COUNT
@@ -1678,8 +1687,10 @@ fn push_u64(bytes: &mut Vec<u8>, value: u64) {
 }
 
 fn push_u32_slice(bytes: &mut Vec<u8>, values: &[u32]) {
-    for value in values {
-        push_u32(bytes, *value);
+    let start = bytes.len();
+    bytes.resize(start + values.len() * 4, 0);
+    for (encoded, word) in bytes[start..].chunks_exact_mut(4).zip(values) {
+        encoded.copy_from_slice(&word.to_le_bytes());
     }
 }
 

@@ -2,7 +2,6 @@
 //! Stage-normalized F08 FFT64/FFT128 core over interleaved F32 complex words.
 
 use super::math_generated_parameters::MathGeneratedTransformParameters;
-use crate::numeric::{FiniteF32, r32_add, r32_mul, r32_sub};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(super) struct F08FftNumericFailure;
@@ -34,87 +33,55 @@ fn normalized_fft(
         let half = complex_count >> (stage + 1);
         let group_count = 1_usize << stage;
         for group in 0..group_count {
-            let rotation = if group >= 2 {
-                let cosine = f32::from_bits(parameters.butterfly_f32_bits()[group - 1]);
+            let begin = 4 * half * group;
+            let (a, b) = values[begin..begin + 4 * half].split_at_mut(2 * half);
+            let (cosine, sine) = if group >= 2 {
+                let table = parameters.butterfly_f32_bits();
                 let sine = if group % 2 == 1 {
-                    f32::from_bits(parameters.butterfly_f32_bits()[group - 2])
+                    f32::from_bits(table[group - 2])
                 } else {
-                    negate(f32::from_bits(parameters.butterfly_f32_bits()[group]))
+                    -f32::from_bits(table[group])
                 };
-                Some((cosine, sine))
+                (f32::from_bits(table[group - 1]), sine)
             } else {
-                None
+                (0.0, 0.0)
             };
-
-            for pair in 0..half {
-                let a_complex = 2 * half * group + pair;
-                let b_complex = a_complex + half;
-                let a = 2 * a_complex;
-                let b = 2 * b_complex;
-                let ar = values[a];
-                let ai = values[a + 1];
-                let br = values[b];
-                let bi = values[b + 1];
-
+            for (a, b) in a.chunks_exact_mut(2).zip(b.chunks_exact_mut(2)) {
+                let (ar, ai, br, bi) = (a[0], a[1], b[0], b[1]);
                 let (real, imaginary) = match group {
-                    0 => (multiply(add(ar, br)?, 0.5)?, multiply(add(ai, bi)?, 0.5)?),
-                    1 => (
-                        multiply(add(ar, bi)?, 0.5)?,
-                        multiply(subtract(ai, br)?, 0.5)?,
+                    0 => ((ar + br) * 0.5, (ai + bi) * 0.5),
+                    1 => ((ar + bi) * 0.5, (ai - br) * 0.5),
+                    _ => (
+                        ((ar - cosine * br) - sine * bi) * 0.5,
+                        ((ai - cosine * bi) + sine * br) * 0.5,
                     ),
-                    _ => {
-                        let (cosine, sine) = rotation.ok_or(F08FftNumericFailure)?;
-                        let cosine_real = multiply(cosine, br)?;
-                        let sine_imaginary = multiply(sine, bi)?;
-                        let real_before_scale =
-                            subtract(subtract(ar, cosine_real)?, sine_imaginary)?;
-                        let cosine_imaginary = multiply(cosine, bi)?;
-                        let sine_real = multiply(sine, br)?;
-                        let imaginary_before_scale =
-                            subtract(subtract(ai, cosine_imaginary)?, negate(sine_real))?;
-                        (
-                            multiply(real_before_scale, 0.5)?,
-                            multiply(imaginary_before_scale, 0.5)?,
-                        )
-                    }
                 };
-
-                let b_real = subtract(ar, real)?;
-                let b_imaginary = subtract(ai, imaginary)?;
-                values[a] = real;
-                values[a + 1] = imaginary;
-                values[b] = b_real;
-                values[b + 1] = b_imaginary;
+                a.copy_from_slice(&[real, imaginary]);
+                b.copy_from_slice(&[ar - real, ai - imaginary]);
             }
         }
+    }
+    // Every intermediate feeds an output through ordinary IEEE additions and products.
+    // Infinity or NaN therefore persists to the final stage.
+    if values.iter().any(|v| !v.is_finite()) {
+        return Err(F08FftNumericFailure);
     }
     Ok(())
 }
 
-fn multiply(left: f32, right: f32) -> Result<f32, F08FftNumericFailure> {
-    let left = FiniteF32::new(left).map_err(|_| F08FftNumericFailure)?;
-    let right = FiniteF32::new(right).map_err(|_| F08FftNumericFailure)?;
-    r32_mul(left, right)
-        .map(FiniteF32::value)
-        .map_err(|_| F08FftNumericFailure)
-}
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-fn add(left: f32, right: f32) -> Result<f32, F08FftNumericFailure> {
-    let left = FiniteF32::new(left).map_err(|_| F08FftNumericFailure)?;
-    let right = FiniteF32::new(right).map_err(|_| F08FftNumericFailure)?;
-    r32_add(left, right)
-        .map(FiniteF32::value)
-        .map_err(|_| F08FftNumericFailure)
-}
-
-fn subtract(left: f32, right: f32) -> Result<f32, F08FftNumericFailure> {
-    let left = FiniteF32::new(left).map_err(|_| F08FftNumericFailure)?;
-    let right = FiniteF32::new(right).map_err(|_| F08FftNumericFailure)?;
-    r32_sub(left, right)
-        .map(FiniteF32::value)
-        .map_err(|_| F08FftNumericFailure)
-}
-
-fn negate(value: f32) -> f32 {
-    f32::from_bits(value.to_bits() ^ 0x8000_0000)
+    #[test]
+    fn overflowing_butterfly_is_rejected_even_with_finite_inputs() {
+        let parameters = MathGeneratedTransformParameters::selected_math_generated_v1().unwrap();
+        let mut input = [0.0; 256];
+        input[0] = f32::MAX;
+        input[128] = f32::MAX;
+        assert_eq!(
+            normalized_fft128(&mut input, &parameters),
+            Err(F08FftNumericFailure)
+        );
+    }
 }

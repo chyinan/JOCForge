@@ -42,7 +42,7 @@ pub use jocforge_domain::joc::{
 };
 
 use crate::source_frame_bridge::Flat7xSevenCarrierCoefficientCandidate;
-use crate::{PreparedJobInput, spatial_callback::MainSpatialCallbackCandidate};
+use crate::{PreparedJobInput, spatial_callback::MainSpatialSource};
 
 /// Failures while deriving the F13 owner from a same-input Meter receipt.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -134,7 +134,7 @@ pub enum MetadataSourceBridgeError {
 pub struct MainMetadataBodiesInput<'a> {
     pub prepared: &'a PreparedJobInput,
     pub joc_profile: ResolvedEncodingProfile,
-    pub spatial_callback: &'a MainSpatialCallbackCandidate,
+    pub spatial_callback: &'a dyn MainSpatialSource,
     pub joc_before: &'a SelectedJocState,
     pub source_transaction_id: CallbackTransactionId,
     pub qmf_functional: &'a QmfReceiverFunctionalProvider,
@@ -433,22 +433,24 @@ fn prepare_main_metadata_bodies_for_callback_inner(
         flat7x_rows.is_some() || flat7x_fit_candidate.is_some(),
     )
     .map_err(MetadataSourceBridgeError::Joc)?;
-    if !spatial_callback.is_bound_to(prepared) {
+    let frame = spatial_callback.source_view();
+    if !std::sync::Arc::ptr_eq(
+        frame.prepared_identity,
+        &prepared.domain_identity_capability(),
+    ) {
         return Err(MetadataSourceBridgeError::SpatialCallbackIdentityMismatch);
     }
-    let proposal = spatial_callback.proposal();
-    if proposal.transaction_id().programme_id() != prepared.programme_id() {
+    if frame.lineage.programme_id() != prepared.programme_id() {
         return Err(MetadataSourceBridgeError::ProgrammeIdentityMismatch);
     }
-    let projection = match proposal.spatial_audio_outcome() {
+    let projection = match frame.outcome {
         SpatialAudioCallbackOutcome::Priming => {
             return Err(MetadataSourceBridgeError::SpatialAudioStillPriming);
         }
         SpatialAudioCallbackOutcome::Joc(projection) => projection,
     };
-    let reader_receipt = proposal
-        .spatial_control_after_proposal()
-        .reader_target_receipt()
+    let reader_receipt = frame
+        .reader_receipt
         .ok_or(MetadataSourceBridgeError::ReaderTargetReceiptMissing)?;
     let joc_after = match joc_source_route {
         MainMetadataJocSourceRoute::Flat7xRows => {
@@ -490,7 +492,7 @@ fn prepare_main_metadata_bodies_for_callback_inner(
     .map_err(MetadataSourceBridgeError::Joc)?;
     let producer_provenance = joc_after.id14_body().provenance();
     if producer_provenance.producer_transaction_id() != Some(&source_transaction_id) {
-        let identity = proposal.transaction_id();
+        let identity = frame.lineage;
         let attempt = identity.attempt_id();
         let generation_after = joc_after.after().generation();
         return Err(MetadataSourceBridgeError::JocProducerTransactionMismatch {

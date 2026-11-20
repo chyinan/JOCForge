@@ -4,7 +4,7 @@
 use std::num::NonZeroU64;
 
 use super::{
-    object_gain_mixer::{GainRow, ObjectGainMixError, PerTaskOutputFilter, stage_object_gain_mix},
+    object_gain_mixer::{GainRow, ObjectGainMixError, mix_gain_rows},
     object_render_metadata::{
         CanonicalRenderRecord, ControlPacket, MetadataAdmission, ObjectRenderValueError,
         SecondaryGeometry, canonical_record_from_source, direct_selector_from_coded_mask,
@@ -321,9 +321,22 @@ pub fn stage_object_render_callback_with_geometry(
             true,
         )
         .map_err(map_value_error)?;
-        let target = point_render_target(&record, geometry).map_err(map_value_error)?;
+        let task = &before.tasks[source_index / SOURCES_PER_TASK];
+        let local = source_index % SOURCES_PER_TASK;
+        // A render record completely determines its target in the validated secondary geometry.
+        let target = if task
+            .records
+            .as_ref()
+            .is_some_and(|previous| previous[local] == record)
+        {
+            *task.rows[local].target()
+        } else {
+            point_render_target(&record, geometry)
+                .map_err(map_value_error)?
+                .values()
+        };
         records.push(record);
-        targets.push(target.values());
+        targets.push(target);
     }
 
     let mut after = before.clone();
@@ -349,8 +362,6 @@ pub fn stage_object_render_callback_with_geometry(
                 .map_err(|error| map_mix_input_error(&error))?;
         }
 
-        let mut task_output: [Vec<f32>; OUTPUT_CHANNELS] =
-            std::array::from_fn(|_| vec![0.0_f32; CALLBACK_SAMPLES]);
         for block in 0..BLOCKS_PER_CALLBACK {
             let block_begin = block * BLOCK_SAMPLES;
             let source_blocks: [[f32; BLOCK_SAMPLES]; SOURCES_PER_TASK] =
@@ -361,41 +372,30 @@ pub fn stage_object_render_callback_with_geometry(
                         )
                     })
                 });
-            let staged = stage_object_gain_mix(
-                &rows,
+            let block_output = mix_gain_rows(
+                &mut rows,
                 &source_blocks,
                 u8::from(changed && block == 0),
                 INTERPOLATION_BLOCKS,
-                PerTaskOutputFilter::Disabled,
-            )
-            .map_err(|error| map_mix_input_error(&error))?;
-            let (block_output, rows_after, _) = staged.into_parts();
-            for channel in 0..OUTPUT_CHANNELS {
-                for sample in 0..BLOCK_SAMPLES {
-                    let value = block_output[channel][sample];
-                    if !value.is_finite() {
-                        return Err(ObjectRendererError::NumericFailure);
-                    }
-                    task_output[channel][block_begin + sample] = value;
+                |_| {},
+            );
+            for (channel, block_samples) in output.iter_mut().zip(block_output) {
+                for (sum, value) in channel[block_begin..block_begin + BLOCK_SAMPLES]
+                    .iter_mut()
+                    .zip(block_samples)
+                {
+                    *sum += value;
                 }
             }
-            rows = rows_after
-                .try_into()
-                .map_err(|_| ObjectRendererError::StateInvalid)?;
             validate_gain_rows(&rows).map_err(|_| ObjectRendererError::NumericFailure)?;
         }
 
         after.tasks[task_index].rows = rows;
         after.tasks[task_index].records = Some(task_records);
-        for channel in 0..OUTPUT_CHANNELS {
-            for sample in 0..CALLBACK_SAMPLES {
-                let sum = add_r32(output[channel][sample], task_output[channel][sample]);
-                if !sum.is_finite() {
-                    return Err(ObjectRendererError::NumericFailure);
-                }
-                output[channel][sample] = sum;
-            }
-        }
+    }
+    // Ordered addition cannot turn a nonfinite partial sum back into a finite value.
+    if output.iter().flatten().any(|value| !value.is_finite()) {
+        return Err(ObjectRendererError::NumericFailure);
     }
 
     after.callback_index = before.callback_index.checked_next()?;
@@ -547,11 +547,6 @@ fn map_mix_input_error(error: &ObjectGainMixError) -> ObjectRendererError {
             ObjectRendererError::ProfileUnsupported
         }
     }
-}
-
-#[inline(never)]
-fn add_r32(left: f32, right: f32) -> f32 {
-    left + right
 }
 
 #[cfg(test)]

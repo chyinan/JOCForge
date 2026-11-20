@@ -12,6 +12,7 @@ test-support = []
 workspace = true
 
 [dependencies]
+rayon = "=1.11.0"
 serde = { version = "=1.0.229", features = ["derive"] }
 num-bigint = { version = "=0.4.6", default-features = false, features = ["std"] }
 sha2 = { version = "=0.10.9", default-features = false }

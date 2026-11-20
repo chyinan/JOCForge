@@ -2,7 +2,7 @@
 //! F12S.8 selected main-q search over complete per-q scratch candidates.
 
 use super::selected_frame_trial::{
-    SelectedFrameTrialFatalError, SelectedFrameTrialOutcome, SelectedFrameTrialPlan,
+    MainQBudget, SelectedFrameTrialFatalError, SelectedFrameTrialOutcome, SelectedFrameTrialPlan,
     SelectedMainFrameCandidate, build_selected_frame_trial,
 };
 
@@ -51,12 +51,43 @@ pub enum SelectedMainQSearchError<E> {
 ///
 /// Pass the caller's plan-construction result directly. Its error type may wrap
 /// F11 converter production or other preflight failures, which are preserved as
-/// `Upstream`. Each q delegates to a fresh `build_selected_frame_trial` call;
-/// this function neither recomputes upstream plans nor commits the winner.
+/// `Upstream`. Trial feasibility uses the same grouped mantissa widths and reserved-code
+/// decisions as the frame writer. The winner is assembled and sealed before it is returned.
 pub fn search_selected_main_q<E>(
     upstream_result: Result<&SelectedFrameTrialPlan<'_>, E>,
 ) -> Result<SelectedMainQSearchResult, SelectedMainQSearchError<E>> {
     let plan = upstream_result.map_err(SelectedMainQSearchError::Upstream)?;
+    if !super::frame_seal_hook::requires_trial_frames() {
+        let budget = MainQBudget::for_plan(plan);
+        let decision = run_q_search(|q| {
+            budget
+                .fits(plan, q)
+                .map(|fits| fits.then_some(q))
+                .map_err(SelectedMainQSearchError::Trial)
+        })?;
+        let outcome = match decision.best {
+            None => SelectedMainQOutcome::NoBest,
+            Some(q) => match build_selected_frame_trial(plan, q)
+                .map_err(SelectedMainQSearchError::Trial)?
+            {
+                SelectedFrameTrialOutcome::Built(candidate) => {
+                    SelectedMainQOutcome::Best(candidate)
+                }
+                SelectedFrameTrialOutcome::Infeasible(_) => return search_with_trial_frames(plan),
+            },
+        };
+        return Ok(SelectedMainQSearchResult {
+            outcome,
+            attempted_qs: decision.attempted_qs,
+            midpoint_trials: decision.midpoint_trials,
+        });
+    }
+    search_with_trial_frames(plan)
+}
+
+pub(super) fn search_with_trial_frames<E>(
+    plan: &SelectedFrameTrialPlan<'_>,
+) -> Result<SelectedMainQSearchResult, SelectedMainQSearchError<E>> {
     let decision = run_q_search(|q| {
         let trial = build_selected_frame_trial(plan, q).map_err(SelectedMainQSearchError::Trial)?;
         Ok(match trial {

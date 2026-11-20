@@ -204,13 +204,19 @@ impl PostWindowRenderProposal {
         if payload.len() != expected_samples {
             return Err(PostWindowFanoutError::PayloadShape);
         }
-        let mut finite_payload = Vec::with_capacity(expected_samples);
         let mut hasher = Sha256::new();
-        for sample in payload {
-            let finite = FiniteF32::new(sample).map_err(map_finite_error)?;
-            hasher.update(finite.to_bits().to_le_bytes());
-            finite_payload.push(finite);
+        let mut bytes = [0; 1024];
+        for block in payload.chunks(bytes.len() / 4) {
+            for (sample, destination) in block.iter().zip(bytes.chunks_exact_mut(4)) {
+                destination.copy_from_slice(&sample.to_le_bytes());
+            }
+            hasher.update(&bytes[..block.len() * 4]);
         }
+        let finite_payload: Vec<_> = payload
+            .into_iter()
+            .map(FiniteF32::new)
+            .collect::<Result<_, _>>()
+            .map_err(map_finite_error)?;
         let digest = hasher.finalize();
         let mut payload_sha256 = [0; 32];
         payload_sha256.copy_from_slice(&digest);

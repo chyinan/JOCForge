@@ -4,7 +4,7 @@
 pub use super::flat7x_d0_exponents::FLAT7X_D0_D15_STRATEGY_CODE;
 
 use super::{
-    bap::{FLAT7X_D0_BAP_CHANNEL_COUNT, Flat7xD0BapFrame},
+    bap::{FLAT7X_D0_BAP_BIN_COUNT, FLAT7X_D0_BAP_CHANNEL_COUNT, Flat7xD0BapFrame},
     bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError},
     d0_frame_assembler::{
         D0Block2SkipFieldInput, D0BlockTwoAudioSpans, D0FrameAudioBlockInput, OpaqueD0AudioBitSpan,
@@ -49,6 +49,7 @@ pub struct Flat7xD0AudioBlockBitCost {
     bit_length: u32,
     prefix_before_skipfield_bits: u32,
     mantissa_bits: u32,
+    pub(super) grouping_padding_sixths: u32,
     nonzero_bap_bins: u16,
 }
 
@@ -338,16 +339,16 @@ pub fn measure_flat7x_d0_audio_block_bit_cost(
         .and_then(|value| value.checked_add(mantissa_bits))
         .ok_or(Flat7xD0AudioBlockError::BitCountOverflow)?;
     let nonzero_bap_bins = u16::try_from(
-        block
-            .rows()
-            .iter()
-            .flatten()
-            .filter(|bap| **bap != 0)
-            .count(),
+        FLAT7X_D0_BAP_CHANNEL_COUNT * FLAT7X_D0_BAP_BIN_COUNT - bap_counts[0] as usize,
     )
     .map_err(|_| Flat7xD0AudioBlockError::BitCountOverflow)?;
+    // A partially filled group costs the full field; measure the unused slots in sixths of a bit.
+    let grouping_padding_sixths = (3 - bap_counts[1] % 3) % 3 * 10
+        + (3 - bap_counts[2] % 3) % 3 * 14
+        + (bap_counts[4] % 2) * 21;
 
     Ok(Flat7xD0AudioBlockBitCost {
+        grouping_padding_sixths,
         bit_length,
         prefix_before_skipfield_bits: prefix_bits,
         mantissa_bits,
@@ -417,17 +418,9 @@ fn write_packed_mantissa_bits(
     writer: &mut FrameBitWriter<'_>,
     mantissas: &Flat7xD0MantissaBlock,
 ) -> Result<(), Flat7xD0AudioBlockError> {
-    let bytes = mantissas.packed_bytes();
-    for bit_offset in 0..mantissas.bit_count() {
-        let byte_index = usize::try_from(bit_offset / 8)
-            .map_err(|_| Flat7xD0AudioBlockError::BitCountOverflow)?;
-        let bit_in_byte =
-            u8::try_from(bit_offset % 8).map_err(|_| Flat7xD0AudioBlockError::BitCountOverflow)?;
-        let byte = *bytes
-            .get(byte_index)
-            .ok_or(Flat7xD0AudioBlockError::BitCountOverflow)?;
-        writer.write_bit(byte & (1_u8 << (7 - bit_in_byte)) != 0)?;
-    }
+    let bits = u32::try_from(mantissas.bit_count())
+        .map_err(|_| Flat7xD0AudioBlockError::BitCountOverflow)?;
+    writer.write_bit_slice(mantissas.packed_bytes(), 0, bits)?;
     Ok(())
 }
 

@@ -53,6 +53,12 @@ pub struct FrameLayout {
 
 /// External consumer that may patch one completed access unit.
 pub trait FrameSealHook: Send + Sync {
+    /// By default the hook sees every complete search trial in candidate order.
+    /// Return false if the hook only needs the final selected frame.
+    fn requires_trial_frames(&self) -> bool {
+        true
+    }
+
     /// Patch `frame` in place using `layout`. Runs before CRC2 is computed.
     fn apply(&self, frame: &mut [u8], layout: &FrameLayout);
 }
@@ -67,6 +73,10 @@ pub fn install(hook: Arc<dyn FrameSealHook>) -> bool {
 /// Returns whether a hook is installed.
 pub fn installed() -> bool {
     HOOK.get().is_some()
+}
+
+pub(crate) fn requires_trial_frames() -> bool {
+    HOOK.get().is_some_and(|hook| hook.requires_trial_frames())
 }
 
 /// Applies the installed hook, if any.

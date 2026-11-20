@@ -126,8 +126,8 @@ pub(super) struct CurrentFeaturesLineage {
 
 #[derive(Clone, Copy)]
 struct FftComplex32 {
-    real: FiniteF32,
-    imag: FiniteF32,
+    real: f32,
+    imag: f32,
 }
 
 pub(super) fn validate_source_count(source_count: usize) -> Result<(), CurrentFeaturesError> {
@@ -485,37 +485,37 @@ fn observed_features(
         .ok_or(CurrentFeaturesError::AudioShape)?;
     let mut fft_values = vec![
         FftComplex32 {
-            real: zero(),
-            imag: zero(),
+            real: 0.0,
+            imag: 0.0
         };
         FFT_LENGTH
-    ]
-    .into_boxed_slice();
-    for (index, sample) in samples.iter().copied().enumerate() {
-        fft_values[index].real = sample;
+    ];
+    for (index, sample) in samples.iter().enumerate() {
+        let reversed = index.reverse_bits() >> (usize::BITS - FFT_LENGTH.ilog2());
+        fft_values[reversed].real = sample.value();
     }
     fft4096(&mut fft_values, fft_provider)?;
 
-    let mut weighted = [zero(); FREQUENCY_BIN_COUNT];
-    for frequency_bin in 0..2048 {
-        let real = fft_values[frequency_bin].real;
-        let imag = fft_values[frequency_bin].imag;
-        let real_power = r32_mul(real, real).map_err(nonfinite)?;
-        let imag_power = r32_mul(imag, imag).map_err(nonfinite)?;
-        let power = r32_add(real_power, imag_power).map_err(nonfinite)?;
-        let coefficient = finite_provider_word(processor.coefficient_u32()[frequency_bin])?;
-        weighted[frequency_bin] = r32_mul(power, coefficient).map_err(nonfinite)?;
+    let mut weighted = [0.0_f32; FREQUENCY_BIN_COUNT];
+    for ((weight, value), coefficient) in weighted[..FFT_LENGTH / 2]
+        .iter_mut()
+        .zip(&fft_values)
+        .zip(processor.coefficient_u32())
+    {
+        let power = value.real * value.real + value.imag * value.imag;
+        *weight = power * f32::from_bits(*coefficient);
     }
 
     let mut grouped = [zero(); BAND_COUNT];
     let mut first_bin = 0;
     for (band_index, count) in processor.window_counts().iter().copied().enumerate() {
-        let mut grouped_value = zero();
+        let mut grouped_value = 0.0_f32;
         let group_end = first_bin + count as usize;
         for weighted_value in weighted[first_bin..group_end].iter().copied() {
-            grouped_value = r32_add(grouped_value, weighted_value).map_err(nonfinite)?;
+            grouped_value += weighted_value;
         }
-        grouped[band_index] = grouped_value;
+        grouped[band_index] = FiniteF32::new(grouped_value)
+            .map_err(|_| CurrentFeaturesError::NonFiniteIntermediate)?;
         first_bin = group_end;
     }
     if first_bin != FREQUENCY_BIN_COUNT {
@@ -531,68 +531,33 @@ fn fft4096(
     values: &mut [FftComplex32],
     fft_provider: &ValidatedFeatureFft4096MathProvider,
 ) -> Result<(), CurrentFeaturesError> {
-    if values.len() != FFT_LENGTH {
-        return Err(CurrentFeaturesError::AudioShape);
-    }
-    for index in 0..FFT_LENGTH {
-        let reversed = bit_reverse_12(index);
-        if reversed > index {
-            values.swap(index, reversed);
-        }
-    }
-
-    for stage_index in 0..12 {
-        let stage_length = 1_usize << (stage_index + 1);
-        let half_length = stage_length / 2;
-        let stage = fft_provider
-            .stages()
-            .get(stage_index)
-            .ok_or(CurrentFeaturesError::ProviderMismatch)?;
+    for stage in fft_provider.stages() {
         let roots = stage.roots_u32();
-        if roots.len() != half_length {
-            return Err(CurrentFeaturesError::ProviderMismatch);
-        }
-        for group_base in (0..FFT_LENGTH).step_by(stage_length) {
-            for (twiddle_index, root) in roots.iter().enumerate() {
-                let a_index = group_base + twiddle_index;
-                let b_index = a_index + half_length;
-                let a = values[a_index];
-                let b = values[b_index];
-                let root = *root;
-                let cosine = finite_provider_word(root[0])?;
-                let sine = finite_provider_word(root[1])?;
-                let cosine_real = r32_mul(cosine, b.real).map_err(nonfinite)?;
-                let sine_imag = r32_mul(sine, b.imag).map_err(nonfinite)?;
-                let tr = r32_sub(cosine_real, sine_imag).map_err(nonfinite)?;
-                let cosine_imag = r32_mul(cosine, b.imag).map_err(nonfinite)?;
-                let sine_real = r32_mul(sine, b.real).map_err(nonfinite)?;
-                let ti = r32_add(cosine_imag, sine_real).map_err(nonfinite)?;
-                let upper_real = r32_add(a.real, tr).map_err(nonfinite)?;
-                let upper_imag = r32_add(a.imag, ti).map_err(nonfinite)?;
-                let lower_real = r32_sub(a.real, tr).map_err(nonfinite)?;
-                let lower_imag = r32_sub(a.imag, ti).map_err(nonfinite)?;
-                values[a_index] = FftComplex32 {
-                    real: upper_real,
-                    imag: upper_imag,
+        let half = roots.len();
+        for group in values.chunks_exact_mut(half * 2) {
+            let (upper, lower) = group.split_at_mut(half);
+            for ((a, b), root) in upper.iter_mut().zip(lower).zip(roots) {
+                let cosine = f32::from_bits(root[0]);
+                let sine = f32::from_bits(root[1]);
+                let tr = cosine * b.real - sine * b.imag;
+                let ti = cosine * b.imag + sine * b.real;
+                *b = FftComplex32 {
+                    real: a.real - tr,
+                    imag: a.imag - ti,
                 };
-                values[b_index] = FftComplex32 {
-                    real: lower_real,
-                    imag: lower_imag,
-                };
+                a.real += tr;
+                a.imag += ti;
             }
         }
     }
-    Ok(())
-}
-
-fn bit_reverse_12(index: usize) -> usize {
-    let mut remaining = index;
-    let mut reversed = 0;
-    for _ in 0..12 {
-        reversed = (reversed << 1) | (remaining & 1);
-        remaining >>= 1;
+    // With finite twiddles, a non-finite intermediate propagates to an output.
+    if values
+        .iter()
+        .any(|v| !v.real.is_finite() || !v.imag.is_finite())
+    {
+        return Err(CurrentFeaturesError::NonFiniteIntermediate);
     }
-    reversed
+    Ok(())
 }
 
 fn forward_smooth(

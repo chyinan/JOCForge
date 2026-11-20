@@ -91,6 +91,56 @@ fn d0_frame_search_produces_one_complete_crc_valid_six_block_candidate() {
     })
     .unwrap();
 
+    // Independently enumerate all q values and count wire fields, including the
+    // last partial groups of each block. Equal costs select the larger q.
+    let receipt = candidate.receipt();
+    let budget = receipt.allocated_mantissa_bits() + receipt.frame_assembly().zero_filled_auxbits();
+    let decoded = exponent_rows_by_block
+        .each_ref()
+        .map(|channels| channels.each_ref().map(|row| *row.decoded_exponents()));
+    let mut best = (0, 0);
+    for q in 1_u16..=1023 {
+        let frame = allocate_flat7x_d0_bap_frame(
+            &bap_parameters,
+            &Flat7xD0BapFrameInput {
+                decoded_exponents_by_block: &decoded,
+                candidate: q,
+                slow_decay_code: 2,
+                fast_decay_code: 1,
+                slow_gain_code: 1,
+                db_per_bit_codes: [2; 6],
+                floor_code: 7,
+                fast_gain_code: 4,
+                caller_all_active_fine_zero_by_block: [q % 16 == 0; 6],
+            },
+        )
+        .unwrap();
+        let mut bits = 0;
+        for block in frame.blocks() {
+            let mut counts = [0_u32; 16];
+            for &bap in block.rows().iter().flatten() {
+                counts[usize::from(bap)] += 1;
+            }
+            counts[1] = counts[1].div_ceil(3);
+            counts[2] = counts[2].div_ceil(3);
+            counts[4] = counts[4].div_ceil(2);
+            bits += counts
+                .into_iter()
+                .zip([0, 5, 7, 3, 7, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16])
+                .map(|(count, width)| count * width)
+                .sum::<u32>();
+        }
+        if bits <= budget {
+            best = best.max((bits, q));
+        }
+    }
+    assert_eq!(
+        (
+            receipt.allocated_mantissa_bits(),
+            receipt.allocation_candidate().value()
+        ),
+        best
+    );
     assert_eq!(candidate.frame_bytes().len(), 4_096);
     assert!(candidate.receipt().allocation_candidate().value() > 0);
     assert_eq!(

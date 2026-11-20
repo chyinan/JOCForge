@@ -30,7 +30,7 @@ pub use jocforge_domain::analysis::{
     owner::AnalysisOwnerRoot, source_analysis::SourceAnalysisProviders,
 };
 
-use crate::{PreparedJobInput, spatial_callback::MainSpatialCallbackCandidate};
+use crate::{PreparedJobInput, spatial_callback::MainSpatialSource};
 
 const SOURCE_ANALYSIS_STACK_BYTES: usize = 16 * 1024 * 1024;
 const TRANSIENT_PARAMETERS: &[u8] = include_bytes!(
@@ -111,7 +111,7 @@ pub enum SourceAnalysisBridgeError {
 pub struct SpatialSourceAnalysisBridgeInput<'a> {
     pub prepared: &'a PreparedJobInput,
     pub analysis_before: &'a AnalysisOwnerRoot,
-    pub spatial_callback: &'a MainSpatialCallbackCandidate,
+    pub spatial_callback: &'a dyn MainSpatialSource,
     pub attempt_id: AttemptId,
     pub source_transaction_id: CallbackTransactionId,
     /// Before-source F07 dither flags in the selected fullband lane order.
@@ -140,7 +140,7 @@ pub fn prepare_source_analysis_from_spatial_callback_with_installed_audio(
             .name("jocforge-main-source-analysis".to_owned())
             .stack_size(SOURCE_ANALYSIS_STACK_BYTES)
             .spawn_scoped(scope, move || {
-                prepare_source_analysis_inner(input, installed_audio)
+                prepare_source_analysis_on_current_thread(input, installed_audio)
             })
             .map_err(|_| SourceAnalysisBridgeError::WorkerUnavailable)?;
         worker
@@ -149,7 +149,8 @@ pub fn prepare_source_analysis_from_spatial_callback_with_installed_audio(
     })
 }
 
-fn prepare_source_analysis_inner(
+/// Stages the analysis on an encoder worker that already owns a large DSP stack.
+pub fn prepare_source_analysis_on_current_thread(
     input: SpatialSourceAnalysisBridgeInput<'_>,
     installed_audio: Option<&SourcedInstalledAudioFrame>,
 ) -> Result<Box<AnalysisNumericPlanStage>, SourceAnalysisBridgeError> {
@@ -162,11 +163,14 @@ fn prepare_source_analysis_inner(
         previous_short,
         providers,
     } = input;
-    if !spatial_callback.is_bound_to(prepared) {
+    let frame = spatial_callback.source_view();
+    if !std::sync::Arc::ptr_eq(
+        frame.prepared_identity,
+        &prepared.domain_identity_capability(),
+    ) {
         return Err(SourceAnalysisBridgeError::SpatialCallbackIdentityMismatch);
     }
-    let proposal = spatial_callback.proposal();
-    let callback_identity = proposal.transaction_id();
+    let callback_identity = frame.lineage;
     if callback_identity.programme_id() != prepared.programme_id() {
         return Err(SourceAnalysisBridgeError::ProgrammeIdentityMismatch);
     }
@@ -180,7 +184,7 @@ fn prepare_source_analysis_inner(
     if !Arc::ptr_eq(owner_identity, &prepared_identity) {
         return Err(SourceAnalysisBridgeError::PreparedJobIdentityMismatch);
     }
-    let projection = match proposal.spatial_audio_outcome() {
+    let projection = match frame.outcome {
         SpatialAudioCallbackOutcome::Priming => {
             return Err(SourceAnalysisBridgeError::SpatialAudioStillPriming);
         }

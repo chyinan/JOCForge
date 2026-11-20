@@ -3,8 +3,8 @@
 
 use super::{
     bap::{
-        BapError, FLAT7X_D0_BAP_BLOCK_COUNT, FLAT7X_D0_BAP_CHANNEL_COUNT, Flat7xD0BapFrameInput,
-        Flat7xD0BapParameters, Flat7xD0BapSearch,
+        BapError, FLAT7X_D0_BAP_BLOCK_COUNT, FLAT7X_D0_BAP_CHANNEL_COUNT, Flat7xD0BapFrame,
+        Flat7xD0BapFrameInput, Flat7xD0BapParameters, Flat7xD0BapSearch,
     },
     bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError},
     d0_frame_assembler::{
@@ -159,10 +159,10 @@ impl From<FrameBitWriterError> for Flat7xD0AudioFrameError {
 /// Produces the maximum allocated-bit D0 frame candidate that fits the complete frame.
 ///
 /// The search binds `q` to the exact frame-level SNR codes, computes a fresh six-block BAP frame,
-/// measures exact grouped mantissa width for every q, then applies the actual mantissa quantizer
+/// bounds q with the unpadded cost, then applies the actual mantissa quantizer
 /// and frame writer only to candidates that can beat the current best. Candidate zero remains a
-/// valid raw syntax vector with zero BAP but is excluded from usable audio candidates. No monotonic
-/// q-to-cost assumption is used; equal bit costs keep the higher q encountered first. The D0 frame
+/// valid raw syntax vector with zero BAP but is excluded from usable audio candidates. Exact grouped costs
+/// are compared in descending q order, so equal costs keep the higher q. The D0 frame
 /// assembler validates BSI, audfrm, skip-field, zero-filled auxbits, exact extent, and CRC2. This
 /// producer has no source-history owner or F12/F13/F15 receipt and remains production-disabled.
 pub fn produce_flat7x_d0_audio_frame(
@@ -203,55 +203,42 @@ pub fn produce_flat7x_d0_audio_frame(
         },
     )?;
 
-    for raw_q in (1_u16..=1_023).rev() {
+    let fixed_frame_bits = bsi_bit_length + FLAT7X_D0_AUDIO_FRAME_CONTROL_BITS + skipfield_bits;
+    let monotone = search.allocations_are_monotone();
+    // The fractional cost of one BAP bin is monotone (0, 5/3, 7/3, 3, 7/2, ...).
+    // Search that lower bound; exact grouped costs can drop at group boundaries.
+    let mut largest_q = 1023_u16;
+    if monotone {
+        let mut low = 0;
+        while low < largest_q {
+            let q = low + (largest_q - low).div_ceil(2);
+            let cost = measure_candidate(input, &search.allocate(q), fixed_frame_bits)?;
+            if cost.unpadded_sixths <= maximum_content_bits * 6 {
+                low = q;
+            } else {
+                largest_q = q - 1;
+            }
+        }
+    }
+    for raw_q in (1..=largest_q).rev() {
         let candidate = Flat7xD0AllocationCandidateQ::new(raw_q)
             .ok_or(Flat7xD0AudioFrameError::NoFittingAllocationCandidate)?;
         let bap_frame = search.allocate(raw_q);
-        if bap_frame
-            .blocks()
-            .iter()
-            .all(|block| block.rows().iter().flatten().all(|bap| *bap == 0))
-        {
+        let cost = measure_candidate(input, &bap_frame, fixed_frame_bits)?;
+        // Per block, at most two empty BAP 1 slots, two BAP 2 slots, and one
+        // BAP 4 slot add 20 + 28 + 21 sixths to the unpadded cost.
+        if monotone && cost.unpadded_sixths + 6 * 69 <= best_content_bits * 6 {
+            break;
+        }
+        if cost.mantissa_bits == 0 {
             continue;
         }
-
         let frame_controls = Flat7xD0AudioFrameControlPolicy::with_strategy(
             candidate,
             super::flat7x_d0_exponents::D0ExponentStrategy::for_rate(input.target.d0().rate()),
         );
-        let mut block_audio_bits = 0_u32;
-        let mut allocated_mantissa_bits = 0_u32;
-        for block_index in 0..FLAT7X_D0_BAP_BLOCK_COUNT {
-            let index_value = u8::try_from(block_index)
-                .map_err(|_| Flat7xD0AudioFrameError::NoFittingAllocationCandidate)?;
-            let block_input = Flat7xD0AudioBlockInput {
-                block_index: Flat7xD0AudioBlockIndex::new(index_value)
-                    .ok_or(Flat7xD0AudioFrameError::NoFittingAllocationCandidate)?,
-                spectrum: &input.spectrum_by_block[usize::from(index_value)],
-                exponent_rows: &input.exponent_rows_by_block[usize::from(index_value)],
-                bap_frame: &bap_frame,
-                frame_control_policy: frame_controls,
-                dynamic_range_code: input.dynamic_range_codes[usize::from(index_value)],
-            };
-            let block_cost =
-                measure_flat7x_d0_audio_block_bit_cost(&block_input).map_err(|error| {
-                    Flat7xD0AudioFrameError::AudioBlock {
-                        block_index: index_value,
-                        error,
-                    }
-                })?;
-            block_audio_bits = block_audio_bits
-                .checked_add(block_cost.bit_length())
-                .ok_or(Flat7xD0AudioFrameError::NoFittingAllocationCandidate)?;
-            allocated_mantissa_bits = allocated_mantissa_bits
-                .checked_add(block_cost.mantissa_bits())
-                .ok_or(Flat7xD0AudioFrameError::NoFittingAllocationCandidate)?;
-        }
-        let candidate_content_bits = bsi_bit_length
-            .checked_add(FLAT7X_D0_AUDIO_FRAME_CONTROL_BITS)
-            .and_then(|bits| bits.checked_add(block_audio_bits))
-            .and_then(|bits| bits.checked_add(skipfield_bits))
-            .ok_or(Flat7xD0AudioFrameError::NoFittingAllocationCandidate)?;
+        let candidate_content_bits = cost.content_bits;
+        let allocated_mantissa_bits = cost.mantissa_bits;
         if candidate_content_bits > maximum_content_bits
             || candidate_content_bits <= best_content_bits
         {
@@ -330,10 +317,7 @@ pub fn produce_flat7x_d0_audio_frame(
                 .ok_or(Flat7xD0AudioFrameError::NoFittingAllocationCandidate)?,
         ];
         let frame_input = Flat7xD0FrameBitInput {
-            audio_frame_controls: Flat7xD0AudioFrameControlPolicy::with_strategy(
-                candidate,
-                super::flat7x_d0_exponents::D0ExponentStrategy::for_rate(input.target.d0().rate()),
-            ),
+            audio_frame_controls: frame_controls,
             audio_blocks,
         };
         let mut frame_bytes = vec![0_u8; usize::from(input.target.d0().frame_bytes())];
@@ -365,6 +349,60 @@ pub fn produce_flat7x_d0_audio_frame(
     }
 
     best_candidate.ok_or(Flat7xD0AudioFrameError::NoFittingAllocationCandidate)
+}
+
+struct FrameCandidateCost {
+    content_bits: u32,
+    mantissa_bits: u32,
+    unpadded_sixths: u32,
+}
+
+fn measure_candidate(
+    input: &Flat7xD0AudioFrameInput<'_>,
+    bap_frame: &Flat7xD0BapFrame,
+    fixed_frame_bits: u32,
+) -> Result<FrameCandidateCost, Flat7xD0AudioFrameError> {
+    let candidate = Flat7xD0AllocationCandidateQ::new(bap_frame.candidate())
+        .ok_or(Flat7xD0AudioFrameError::NoFittingAllocationCandidate)?;
+    let frame_controls = Flat7xD0AudioFrameControlPolicy::with_strategy(
+        candidate,
+        super::flat7x_d0_exponents::D0ExponentStrategy::for_rate(input.target.d0().rate()),
+    );
+    let mut grouping_padding_sixths = 0;
+    let mut block_audio_bits = 0_u32;
+    let mut allocated_mantissa_bits = 0_u32;
+    for block_index in 0..FLAT7X_D0_BAP_BLOCK_COUNT {
+        let index_value = u8::try_from(block_index)
+            .map_err(|_| Flat7xD0AudioFrameError::NoFittingAllocationCandidate)?;
+        let block_input = Flat7xD0AudioBlockInput {
+            block_index: Flat7xD0AudioBlockIndex::new(index_value)
+                .ok_or(Flat7xD0AudioFrameError::NoFittingAllocationCandidate)?,
+            spectrum: &input.spectrum_by_block[usize::from(index_value)],
+            exponent_rows: &input.exponent_rows_by_block[usize::from(index_value)],
+            bap_frame,
+            frame_control_policy: frame_controls,
+            dynamic_range_code: input.dynamic_range_codes[usize::from(index_value)],
+        };
+        let block_cost = measure_flat7x_d0_audio_block_bit_cost(&block_input).map_err(|error| {
+            Flat7xD0AudioFrameError::AudioBlock {
+                block_index: index_value,
+                error,
+            }
+        })?;
+        grouping_padding_sixths += block_cost.grouping_padding_sixths;
+        block_audio_bits = block_audio_bits
+            .checked_add(block_cost.bit_length())
+            .ok_or(Flat7xD0AudioFrameError::NoFittingAllocationCandidate)?;
+        allocated_mantissa_bits = allocated_mantissa_bits
+            .checked_add(block_cost.mantissa_bits())
+            .ok_or(Flat7xD0AudioFrameError::NoFittingAllocationCandidate)?;
+    }
+    let content_bits = fixed_frame_bits + block_audio_bits;
+    Ok(FrameCandidateCost {
+        content_bits,
+        mantissa_bits: allocated_mantissa_bits,
+        unpadded_sixths: content_bits * 6 - grouping_padding_sixths,
+    })
 }
 
 fn is_candidate_local_mantissa_error(error: Flat7xD0AudioBlockError) -> bool {

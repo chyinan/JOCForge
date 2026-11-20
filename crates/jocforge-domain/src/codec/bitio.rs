@@ -92,14 +92,57 @@ impl<'a> FrameBitWriter<'a> {
             .0
             .checked_add(bit_count)
             .ok_or(FrameBitWriterError::CursorOverflow)?;
-        if self.cursor.0 % 8 == 0 {
-            let start = (self.cursor.0 / 8) as usize;
+        if bytes.is_empty() {
+            return Ok(());
+        }
+        let start = (self.cursor.0 / 8) as usize;
+        let offset = self.cursor.0 % 8;
+        if offset == 0 {
             self.storage[start..start + bytes.len()].copy_from_slice(bytes);
-            self.cursor = FrameBitCursor(end);
         } else {
-            for byte in bytes {
-                self.write_unsigned(u32::from(*byte), 8)?;
+            let carry_shift = 8 - offset;
+            let destination = &mut self.storage[start..=start + bytes.len()];
+            let untouched = u8::MAX << carry_shift;
+            destination[0] = (destination[0] & untouched) | (bytes[0] >> offset);
+            for (dst, pair) in destination[1..bytes.len()].iter_mut().zip(bytes.windows(2)) {
+                *dst = (pair[0] << carry_shift) | (pair[1] >> offset);
             }
+            destination[bytes.len()] =
+                (bytes[bytes.len() - 1] << carry_shift) | (destination[bytes.len()] & !untouched);
+        }
+        self.cursor = FrameBitCursor(end);
+        Ok(())
+    }
+
+    /// Copies a packed MSB-first field, preserving bits outside the destination span.
+    pub fn write_bit_slice(
+        &mut self,
+        source: &[u8],
+        start_bit: u32,
+        length: u32,
+    ) -> Result<(), FrameBitWriterError> {
+        let end = start_bit
+            .checked_add(length)
+            .ok_or(FrameBitWriterError::CursorOverflow)?;
+        if end.div_ceil(8) as usize > source.len() {
+            return Err(FrameBitWriterError::BufferTooSmall);
+        }
+        self.ensure_capacity(length)?;
+        let offset = start_bit % 8;
+        let mut first = (start_bit / 8) as usize;
+        let mut remaining = length;
+        if offset != 0 && remaining != 0 {
+            let take = remaining.min(8 - offset);
+            let value = (source[first] >> (8 - offset - take)) & (u8::MAX >> (8 - take));
+            self.write_unsigned(u32::from(value), take as u8)?;
+            remaining -= take;
+            first += 1;
+        }
+        let whole = (remaining / 8) as usize;
+        self.write_bytes(&source[first..first + whole])?;
+        let tail = (remaining % 8) as u8;
+        if tail != 0 {
+            self.write_unsigned(u32::from(source[first + whole] >> (8 - tail)), tail)?;
         }
         Ok(())
     }
@@ -142,6 +185,31 @@ fn storage_bits(storage: &[u8]) -> Result<u64, FrameBitWriterError> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn bit_slices_copy_all_source_and_destination_alignments() {
+        let source = [0x29, 0xeb, 0x45, 0x83, 0xfc];
+        for start in 0..8 {
+            for dest in 0..8 {
+                for length in 0..=32 {
+                    let mut actual = [0x96; 5];
+                    let mut expected = actual;
+                    let mut reference =
+                        FrameBitWriter::new(&mut expected, FrameBitCursor::new(dest)).unwrap();
+                    for bit in start..start + length {
+                        reference
+                            .write_bit(source[(bit / 8) as usize] & (0x80 >> (bit % 8)) != 0)
+                            .unwrap();
+                    }
+                    let mut writer =
+                        FrameBitWriter::new(&mut actual, FrameBitCursor::new(dest)).unwrap();
+                    writer.write_bit_slice(&source, start, length).unwrap();
+                    assert_eq!(writer.cursor().bit_offset(), dest + length);
+                    assert_eq!(actual, expected);
+                }
+            }
+        }
+    }
 
     #[test]
     fn byte_chunks_preserve_surrounding_bits_for_every_alignment_and_width() {

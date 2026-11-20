@@ -64,6 +64,12 @@ pub fn forward_long_mdct_512(
             ));
     }
 
+    // A zero dot product starts at +0. The final negative scale produces -0
+    // for every bin, including windows containing both signs of zero.
+    if windowed.iter().all(|&sample| sample == 0.0) {
+        return Ok([-0.0; LONG_MDCT_COEFFICIENT_COUNT]);
+    }
+
     let mut output = [0.0_f32; LONG_MDCT_COEFFICIENT_COUNT];
     for (bins, tile) in output
         .chunks_exact_mut(BIN_LANES)
@@ -91,6 +97,24 @@ pub fn forward_long_mdct_512(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn silent_windows_preserve_negative_zero_and_validate_nonfinite_input() {
+        let previous = [0.0; LONG_MDCT_BLOCK_SAMPLES];
+        let current = [-0.0; LONG_MDCT_BLOCK_SAMPLES];
+        let mut window = [1.0_f32.to_bits(); LONG_MDCT_BLOCK_SAMPLES];
+        assert_eq!(
+            forward_long_mdct_512(&previous, &current, &window)
+                .unwrap()
+                .map(f32::to_bits),
+            [(-0.0_f32).to_bits(); LONG_MDCT_COEFFICIENT_COUNT]
+        );
+        window[0] = f32::NAN.to_bits();
+        assert_eq!(
+            forward_long_mdct_512(&previous, &current, &window),
+            Err(LongMdctError::NonFiniteInput)
+        );
+    }
 
     #[test]
     fn long_mdct_matches_scalar_bits_for_every_bin() {

@@ -838,10 +838,45 @@ fn equal_power_weights(ratio: FiniteF32) -> Result<(FiniteF32, FiniteF32), Point
         )?,
         finite_word(FOUR_BITS)?,
     )?;
-    let trig = exact_r64_to_r32(angle.value()).map_err(|_| PointResponseError::NumericFailure)?;
-    let cosine = FiniteF32::new(trig.cosine).map_err(|_| PointResponseError::NumericFailure)?;
-    let sine = FiniteF32::new(trig.sine).map_err(|_| PointResponseError::NumericFailure)?;
+    let (cosine, sine) = rounded_pan_weights(angle.value())?;
+    let cosine = FiniteF32::new(cosine).map_err(|_| PointResponseError::NumericFailure)?;
+    let sine = FiniteF32::new(sine).map_err(|_| PointResponseError::NumericFailure)?;
     Ok(if swap { (sine, cosine) } else { (cosine, sine) })
+}
+
+/// Return the same R64-then-R32 weights as the rational enclosure in the panner's
+/// [0, pi/4] domain. Keep the exact path for a rounding boundary or signed zero.
+fn rounded_pan_weights(angle: f32) -> Result<(f32, f32), PointResponseError> {
+    const BOUND: f64 = 512.0 * f64::EPSILON;
+    if angle > 0.0 && angle <= f32::from_bits(PI_OVER_FOUR_BITS) {
+        let x = f64::from(angle);
+        let negative_square = -(x * x);
+        let (mut cos_term, mut sin_term) = (1.0, x);
+        let (mut cosine, mut sine) = (cos_term, sin_term);
+        for k in 1..=9 {
+            let even = f64::from(2 * k);
+            cos_term *= negative_square / ((even - 1.0) * even);
+            sin_term *= negative_square / (even * (even + 1.0));
+            cosine += cos_term;
+            sine += sin_term;
+        }
+
+        // |x| < 1: omitted alternating terms are bounded by 1/20! and 1/21!.
+        // x*x is exact for a binary32 input. Each iteration adds at most two
+        // rounding errors to a decreasing term and one to a sum bounded by two.
+        // 512 eps comfortably encloses the nine iterations, the remainder and
+        // the reference's final binary64 rounding.
+        #[allow(clippy::cast_possible_truncation)]
+        let round_if_unique = |v: f64| {
+            let low = (v - BOUND) as f32;
+            (low.to_bits() == ((v + BOUND) as f32).to_bits()).then_some(low)
+        };
+        if let (Some(cosine), Some(sine)) = (round_if_unique(cosine), round_if_unique(sine)) {
+            return Ok((cosine, sine));
+        }
+    }
+    let pair = exact_r64_to_r32(angle).map_err(|_| PointResponseError::NumericFailure)?;
+    Ok((pair.cosine, pair.sine))
 }
 
 fn weighted_layer(layer_index: usize, weight: FiniteF32) -> WeightedLayerIndex {

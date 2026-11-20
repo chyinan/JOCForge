@@ -1,7 +1,6 @@
 // pattern: Imperative Shell
 //! Standalone selected Meter owner around the existing independent prepass leaves.
 
-use serde_json::Value;
 use sha2::{Digest, Sha256};
 
 use super::measurement_receipt::{
@@ -415,6 +414,36 @@ pub struct StandaloneMeterRoot {
     prepass: IndependentMeterPrepass,
 }
 
+#[derive(serde::Serialize)]
+struct LfeFrame<'a> {
+    origin: u64,
+    sample_words: &'a [u32],
+}
+
+// Only literal object keys and typed values are accepted. serde_json handles escaping of
+// arbitrary text; generated lowercase hex contains no JSON-escaped characters.
+macro_rules! write_canonical_json {
+    ($out:ident, { $($key:literal: $value:tt),+ $(,)? }) => {{
+        $out.push(b'{');
+        $(
+            $out.extend_from_slice(concat!('"', $key, "\":").as_bytes());
+            write_canonical_json!($out, $value);
+            $out.push(b',');
+        )+
+        $out.pop();
+        $out.push(b'}');
+    }};
+    ($out:ident, [hex $value:expr]) => {{
+        $out.push(b'"');
+        append_lowercase_hex(&mut $out, $value);
+        $out.push(b'"');
+    }};
+    ($out:ident, ($value:expr)) => {
+        serde_json::to_writer(&mut $out, &$value)
+            .map_err(|_| StandaloneMeterRootError::CanonicalState)?
+    };
+}
+
 impl StandaloneMeterRoot {
     /// Constructs the fixed selected standalone meter from admitted immutable values.
     pub fn cold_selected(
@@ -635,11 +664,11 @@ impl StandaloneMeterRoot {
                 self.prepass.lfe_state().slot_origin(slot),
                 self.prepass.lfe_state().slot_samples(slot),
             ) {
-                (None, None) => Value::Null,
+                (None, None) => None,
                 (Some(origin), Some(sample_words)) if sample_words.len() == 1_536 => {
-                    serde_json::json!({
-                        "origin": origin.callback_index().value(),
-                        "sample_words": sample_words,
+                    Some(LfeFrame {
+                        origin: origin.callback_index().value(),
+                        sample_words,
                     })
                 }
                 _ => return Err(StandaloneMeterRootError::CanonicalState),
@@ -659,116 +688,117 @@ impl StandaloneMeterRoot {
             })
             .collect::<Vec<_>>();
 
-        let root_value = serde_json::json!({
-            "schema": ROOT_SCHEMA,
+        // The wire contract requires lexicographically ordered keys in every object.
+        // Stream numeric arrays from their borrowed slices and write binary leaves as ASCII hex.
+        let mut output = Vec::with_capacity(
+            (fir_state_bytes.len() + integrated.len() + frontend_oar.len()) * 2 + 8192,
+        );
+        write_canonical_json!(output, {
             "binding": {
-                "programme_id": self.identity.programme_id().as_str(),
-                "attempt": self.identity.attempt().value(),
-                "input_sha256": lowercase_hex(self.identity.input_sha256()),
-                "config_sha256": lowercase_hex(self.identity.config_sha256()),
-                "source_samples": self.source_samples.value(),
-                "data_length_bytes": data_length_bytes,
-                "channels": source_channels,
-                "pcm_bits": SELECTED_PCM_BITS,
-                "sample_rate_hz": SELECTED_SAMPLE_RATE_HZ,
-                "callback_samples": SELECTED_CALLBACK_SAMPLES,
-                "normal_callbacks": self.schedule.normal_callbacks().value(),
-                "expected_published_samples": expected_published_samples,
-                "zero_input_drains": self.schedule.zero_drains().value(),
-                "provider_set_sha256": lowercase_hex(self.provider_set.sha256()),
-                "provider_ids_hash_sorted": provider_rows,
-            },
-            "input_cursor": {
-                "model_owner_key": self.source_owner_id.as_str(),
-                "duration_frames": self.source_samples.value(),
-                "source_cursor": self.source_cursor.source_cursor.value(),
-                "read_index": self.source_cursor.read_index.value(),
-                "data_length_bytes": data_length_bytes,
-                "channels": source_channels,
-                "pcm_bits": SELECTED_PCM_BITS,
-                "source_identity_sha256": lowercase_hex(self.identity.input_sha256()),
+                "attempt": (self.identity.attempt().value()),
+                "callback_samples": (SELECTED_CALLBACK_SAMPLES),
+                "channels": (source_channels),
+                "config_sha256": [hex self.identity.config_sha256()],
+                "data_length_bytes": (data_length_bytes),
+                "expected_published_samples": (expected_published_samples),
+                "input_sha256": [hex self.identity.input_sha256()],
+                "normal_callbacks": (self.schedule.normal_callbacks().value()),
+                "pcm_bits": (SELECTED_PCM_BITS),
+                "programme_id": (self.identity.programme_id().as_str()),
+                "provider_ids_hash_sorted": (provider_rows),
+                "provider_set_sha256": [hex self.provider_set.sha256()],
+                "sample_rate_hz": (SELECTED_SAMPLE_RATE_HZ),
+                "source_samples": (self.source_samples.value()),
+                "zero_input_drains": (self.schedule.zero_drains().value()),
             },
             "callback_clock": {
-                "committed_meter_callbacks": callback_index,
-                "next_meter_callback_index": callback_index,
-                "normal_callbacks": self.schedule.normal_callbacks().value(),
-                "zero_input_drains": self.schedule.zero_drains().value(),
-                "total_meter_callbacks": total_callbacks,
+                "committed_meter_callbacks": (callback_index),
+                "next_meter_callback_index": (callback_index),
+                "normal_callbacks": (self.schedule.normal_callbacks().value()),
+                "total_meter_callbacks": (total_callbacks),
+                "zero_input_drains": (self.schedule.zero_drains().value()),
+            },
+            "input_cursor": {
+                "channels": (source_channels),
+                "data_length_bytes": (data_length_bytes),
+                "duration_frames": (self.source_samples.value()),
+                "model_owner_key": (self.source_owner_id.as_str()),
+                "pcm_bits": (SELECTED_PCM_BITS),
+                "read_index": (self.source_cursor.read_index.value()),
+                "source_cursor": (self.source_cursor.source_cursor.value()),
+                "source_identity_sha256": [hex self.identity.input_sha256()],
             },
             "leaves": {
                 "frontend_oar": {
-                    "layout": OAR_STATE_LAYOUT,
-                    "bytes_le_hex": lowercase_hex(&frontend_oar),
-                },
-                "shared_dv32": {
-                    "layout": SHARED_DV32_STATE_LAYOUT,
-                    "bytes_le_hex": lowercase_hex(&shared_dv32),
-                },
-                "window_k_energy": {
-                    "schedule": {
-                        "source_samples": self.source_samples.value(),
-                        "normal_callbacks": self.schedule.normal_callbacks().value(),
-                        "drain_callbacks": self.schedule.zero_drains().value(),
-                        "total_callbacks": total_callbacks,
-                    },
-                    "window_clock": {
-                        "callback_index": window_clock.next_callback_index().value(),
-                        "startup_remaining": window_clock.startup_remaining().value(),
-                        "scheduler_pending": window_clock.scheduler_pending().value(),
-                        "processed": window_clock.processed_samples().value(),
-                    },
-                    "sample_block_queue": {
-                        "callback_index": queue.next_callback_index().value(),
-                        "startup_remaining": queue.startup_remaining().value(),
-                        "scheduler_pending": queue.scheduler_pending().value(),
-                        "published_samples": queue.published_samples().value(),
-                        "last_upstream_generation": queue
-                            .last_upstream_generation()
-                            .map(MeterUpstreamGeneration::value),
-                        "pcm_block_fill_cursor": u32::from(queue.block_fill_cursor().value()),
-                        "pcm_enqueued_samples": queue.pcm_enqueued_samples().value(),
-                        "pcm_consumed_samples": queue.pcm_consumed_samples().value(),
-                        "complete_block_count": queue.complete_block_count().value(),
-                        "pending_sample_words": pending_lanes,
-                    },
-                    "k_filter": {
-                        "state_f32_u32_by_channel_stage_lane": energy.k_state_words(),
-                        "exponents_i32_by_channel": self.k_filter_exponents.values(),
-                    },
-                    "energy_window_accumulator": {
-                        "completed_windows": self.completed_energy_windows.value(),
-                        "mantissa_f32_u32_by_channel": energy.accumulator_mantissa_words(),
-                        "exponent_i32_by_channel": energy.accumulator_exponents(),
-                        "samples_in_window": energy.samples_in_window(),
-                    },
-                },
-                "true_peak": {
-                    "fir_state_f32le_hex": lowercase_hex(&fir_state_bytes),
-                    "programme_true_max_f32_u32": true_peak.true_peak_internal_words(),
-                    "programme_sample_max_f32_u32": true_peak.sample_peak_internal_words(),
+                    "bytes_le_hex": [hex &frontend_oar],
+                    "layout": (OAR_STATE_LAYOUT),
                 },
                 "integrated": {
-                    "layout": INTEGRATED_STATE_LAYOUT,
-                    "bytes_le_hex": lowercase_hex(&integrated),
-                },
-                "ungated": {
-                    "layout": UNGATED_STATE_LAYOUT,
-                    "bytes_le_hex": lowercase_hex(&ungated),
+                    "bytes_le_hex": [hex &integrated],
+                    "layout": (INTEGRATED_STATE_LAYOUT),
                 },
                 "meter_lfe_delay_ring": {
-                    "source_samples": lfe_state.source_samples().value(),
-                    "normal_callbacks": lfe_state.normal_callbacks().value(),
-                    "callback_index": lfe_state.callback_index().value(),
-                    "samples_consumed": lfe_state.samples_consumed().value(),
-                    "write_index": lfe_state.write_index(),
-                    "read_index": lfe_state.read_index(),
-                    "frames": lfe_frames,
+                    "callback_index": (lfe_state.callback_index().value()),
+                    "frames": (lfe_frames),
+                    "normal_callbacks": (lfe_state.normal_callbacks().value()),
+                    "read_index": (lfe_state.read_index()),
+                    "samples_consumed": (lfe_state.samples_consumed().value()),
+                    "source_samples": (lfe_state.source_samples().value()),
+                    "write_index": (lfe_state.write_index()),
+                },
+                "shared_dv32": {
+                    "bytes_le_hex": [hex &shared_dv32],
+                    "layout": (SHARED_DV32_STATE_LAYOUT),
+                },
+                "true_peak": {
+                    "fir_state_f32le_hex": [hex &fir_state_bytes],
+                    "programme_sample_max_f32_u32": (true_peak.sample_peak_internal_words()),
+                    "programme_true_max_f32_u32": (true_peak.true_peak_internal_words()),
+                },
+                "ungated": {
+                    "bytes_le_hex": [hex &ungated],
+                    "layout": (UNGATED_STATE_LAYOUT),
+                },
+                "window_k_energy": {
+                    "energy_window_accumulator": {
+                        "completed_windows": (self.completed_energy_windows.value()),
+                        "exponent_i32_by_channel": (energy.accumulator_exponents()),
+                        "mantissa_f32_u32_by_channel": (energy.accumulator_mantissa_words()),
+                        "samples_in_window": (energy.samples_in_window()),
+                    },
+                    "k_filter": {
+                        "exponents_i32_by_channel": (self.k_filter_exponents.values()),
+                        "state_f32_u32_by_channel_stage_lane": (energy.k_state_words()),
+                    },
+                    "sample_block_queue": {
+                        "callback_index": (queue.next_callback_index().value()),
+                        "complete_block_count": (queue.complete_block_count().value()),
+                        "last_upstream_generation": (queue.last_upstream_generation().map(MeterUpstreamGeneration::value)),
+                        "pcm_block_fill_cursor": (u32::from(queue.block_fill_cursor().value())),
+                        "pcm_consumed_samples": (queue.pcm_consumed_samples().value()),
+                        "pcm_enqueued_samples": (queue.pcm_enqueued_samples().value()),
+                        "pending_sample_words": (pending_lanes),
+                        "published_samples": (queue.published_samples().value()),
+                        "scheduler_pending": (queue.scheduler_pending().value()),
+                        "startup_remaining": (queue.startup_remaining().value()),
+                    },
+                    "schedule": {
+                        "drain_callbacks": (self.schedule.zero_drains().value()),
+                        "normal_callbacks": (self.schedule.normal_callbacks().value()),
+                        "source_samples": (self.source_samples.value()),
+                        "total_callbacks": (total_callbacks),
+                    },
+                    "window_clock": {
+                        "callback_index": (window_clock.next_callback_index().value()),
+                        "processed": (window_clock.processed_samples().value()),
+                        "scheduler_pending": (window_clock.scheduler_pending().value()),
+                        "startup_remaining": (window_clock.startup_remaining().value()),
+                    },
                 },
             },
+            "schema": (ROOT_SCHEMA),
         });
-
-        serde_json::to_vec(&sort_canonical_json(root_value))
-            .map_err(|_| StandaloneMeterRootError::CanonicalState)
+        Ok(output)
     }
 
     pub fn canonical_sha256(&self) -> Result<[u8; 32], StandaloneMeterRootError> {
@@ -1191,19 +1221,20 @@ impl StandaloneMeterMeasurementProposal {
     }
 }
 
-fn lowercase_hex(bytes: &[u8]) -> String {
+fn append_lowercase_hex(out: &mut Vec<u8>, bytes: &[u8]) {
     const DIGITS: &[u8; 16] = b"0123456789abcdef";
-    let mut output = String::with_capacity(bytes.len() * 2);
-    for byte in bytes {
-        output.push(char::from(DIGITS[usize::from(byte >> 4)]));
-        output.push(char::from(DIGITS[usize::from(byte & 0x0f)]));
+    let offset = out.len();
+    out.resize(offset + 2 * bytes.len(), 0);
+    for (&byte, pair) in bytes.iter().zip(out[offset..].chunks_exact_mut(2)) {
+        pair[0] = DIGITS[usize::from(byte >> 4)];
+        pair[1] = DIGITS[usize::from(byte & 15)];
     }
-    output
 }
 
-fn sort_canonical_json(mut value: Value) -> Value {
-    value.sort_all_objects();
-    value
+fn lowercase_hex(bytes: &[u8]) -> String {
+    let mut encoded = Vec::with_capacity(bytes.len() * 2);
+    append_lowercase_hex(&mut encoded, bytes);
+    String::from_utf8(encoded).expect("hex digits are ASCII")
 }
 
 #[cfg(test)]

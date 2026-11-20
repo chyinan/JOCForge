@@ -1,8 +1,6 @@
 // pattern: Functional Core
 //! Weighted Gram and cross equations for the selected JOC coefficient fit.
 
-use crate::numeric::{FiniteF32, r32_add, r32_mul};
-
 const OBJECT_COUNT: usize = 15;
 const SELECTED_CARRIER_COUNT: usize = 5;
 const SLOT_COUNT: usize = 48;
@@ -106,100 +104,13 @@ pub fn build_normal_equations_for_carriers<const CARRIER_COUNT: usize>(
     {
         return Err(CoefficientNormalEquationError::InputShape);
     }
-    let weights = weight_words
-        .iter()
-        .map(|word| finite_word(*word))
-        .collect::<Result<Vec<_>, _>>()?;
-    let targets = weighted_bins(target_words, &weights)?;
-    let carriers = weighted_bins(carrier_words, &weights)?;
-    let mut equations: Vec<CoefficientNormalEquation<CARRIER_COUNT>> =
-        Vec::with_capacity(OBJECT_COUNT * BAND_COUNT);
-
-    for object in 0..OBJECT_COUNT {
-        for band in 0..BAND_COUNT {
-            let begin = BAND_BOUNDARIES[band];
-            let end = BAND_BOUNDARIES[band + 1];
-            // Carrier windows and temporal weights are shared by all objects.
-            let gram_words = if object == 0 {
-                carrier_gram::<CARRIER_COUNT>(&carriers, begin, end)?
-            } else {
-                equations[band].gram_words
-            };
-
-            let mut cross_words = [ZERO_BITS; CARRIER_COUNT];
-            for carrier in 0..CARRIER_COUNT {
-                cross_words[carrier] =
-                    band_dot(&targets, object, &carriers, carrier, begin..end, ZERO_BITS)?;
-            }
-
-            equations.push(CoefficientNormalEquation {
-                object: u8::try_from(object)
-                    .map_err(|_| CoefficientNormalEquationError::InputShape)?,
-                band: u8::try_from(band).map_err(|_| CoefficientNormalEquationError::InputShape)?,
-                begin_bin: u8::try_from(begin)
-                    .map_err(|_| CoefficientNormalEquationError::InputShape)?,
-                end_bin: u8::try_from(end)
-                    .map_err(|_| CoefficientNormalEquationError::InputShape)?,
-                gram_words,
-                cross_words,
-            });
-        }
+    let weights = weight_words.map(f32::from_bits);
+    if weights.iter().any(|weight| !weight.is_finite()) {
+        return Err(CoefficientNormalEquationError::InputNonFinite);
     }
-    Ok(equations)
-}
-
-// Store each bin's slots together in the same order used by the dot products.
-fn weighted_bins(
-    words: &[u32],
-    weights: &[FiniteF32],
-) -> Result<Vec<[FiniteF32; 2]>, CoefficientNormalEquationError> {
-    let mut bins = Vec::with_capacity(words.len() / COMPONENT_COUNT);
-    for row in words.chunks_exact(BIN_COUNT * SLOT_COUNT * COMPONENT_COUNT) {
-        for bin in 0..BIN_COUNT {
-            for (slot, &weight) in weights.iter().enumerate() {
-                let offset = (slot * BIN_COUNT + bin) * COMPONENT_COUNT;
-                bins.push([
-                    multiply(finite_word(row[offset])?, weight)?,
-                    multiply(finite_word(row[offset + 1])?, weight)?,
-                ]);
-            }
-        }
-    }
-    Ok(bins)
-}
-
-fn band_dot(
-    left: &[[FiniteF32; 2]],
-    left_row: usize,
-    right: &[[FiniteF32; 2]],
-    right_row: usize,
-    bins: std::ops::Range<usize>,
-    initial: u32,
-) -> Result<u32, CoefficientNormalEquationError> {
-    let mut sum = finite_word(initial)?;
-    for bin in bins {
-        let a = (left_row * BIN_COUNT + bin) * SLOT_COUNT;
-        let b = (right_row * BIN_COUNT + bin) * SLOT_COUNT;
-        let mut sub = finite_word(ZERO_BITS)?;
-        for (l, r) in left[a..a + SLOT_COUNT]
-            .iter()
-            .zip(&right[b..b + SLOT_COUNT])
-        {
-            sub = add(multiply(l[0], r[0])?, sub)?;
-            sub = add(sub, multiply(l[1], r[1])?)?;
-        }
-        sum = add(sum, sub)?;
-    }
-    Ok(sum.to_bits())
-}
-
-#[allow(clippy::needless_range_loop)] // Write both halves of the matrix in the original DSP index order.
-fn carrier_gram<const CARRIER_COUNT: usize>(
-    carriers: &[[FiniteF32; 2]],
-    begin: usize,
-    end: usize,
-) -> Result<[[u32; CARRIER_COUNT]; CARRIER_COUNT], CoefficientNormalEquationError> {
-    let mut gram = [[ZERO_BITS; CARRIER_COUNT]; CARRIER_COUNT];
+    let targets = weighted_slots(target_words, &weights)?;
+    let carriers = weighted_slots(carrier_words, &weights)?;
+    let mut gram = [[[ZERO_BITS; CARRIER_COUNT]; CARRIER_COUNT]; BAND_COUNT];
     for row in 0..CARRIER_COUNT {
         for column in row..CARRIER_COUNT {
             let initial = if row == column {
@@ -207,27 +118,114 @@ fn carrier_gram<const CARRIER_COUNT: usize>(
             } else {
                 ZERO_BITS
             };
-            let word = band_dot(carriers, row, carriers, column, begin..end, initial)?;
-            gram[row][column] = word;
-            gram[column][row] = word;
+            let dots = band_dots(&carriers, row, &carriers, column, initial)?;
+            for (matrix, dot) in gram.iter_mut().zip(dots) {
+                matrix[row][column] = dot;
+                matrix[column][row] = dot;
+            }
         }
     }
-    Ok(gram)
+
+    let mut equations = Vec::with_capacity(OBJECT_COUNT * BAND_COUNT);
+    for object in 0..OBJECT_COUNT {
+        let mut cross = [[ZERO_BITS; CARRIER_COUNT]; BAND_COUNT];
+        for carrier in 0..CARRIER_COUNT {
+            let dots = band_dots(&targets, object, &carriers, carrier, ZERO_BITS)?;
+            for (row, dot) in cross.iter_mut().zip(dots) {
+                row[carrier] = dot;
+            }
+        }
+        for band in 0..BAND_COUNT {
+            equations.push(CoefficientNormalEquation {
+                object: object as u8,
+                band: band as u8,
+                begin_bin: BAND_BOUNDARIES[band] as u8,
+                end_bin: BAND_BOUNDARIES[band + 1] as u8,
+                gram_words: gram[band],
+                cross_words: cross[band],
+            });
+        }
+    }
+    Ok(equations)
 }
 
-fn finite_word(word: u32) -> Result<FiniteF32, CoefficientNormalEquationError> {
-    FiniteF32::new(f32::from_bits(word)).map_err(|_| CoefficientNormalEquationError::InputNonFinite)
+struct WeightedSlot {
+    real: [f32; BIN_COUNT],
+    imaginary: [f32; BIN_COUNT],
 }
 
-fn multiply(
-    left: FiniteF32,
-    right: FiniteF32,
-) -> Result<FiniteF32, CoefficientNormalEquationError> {
-    r32_mul(left, right).map_err(|_| CoefficientNormalEquationError::NumericNonFinite)
+fn weighted_slots(
+    words: &[u32],
+    weights: &[f32; SLOT_COUNT],
+) -> Result<Vec<WeightedSlot>, CoefficientNormalEquationError> {
+    let mut slots = Vec::with_capacity(words.len() / (BIN_COUNT * COMPONENT_COUNT));
+    for row in words.chunks_exact(SLOT_COUNT * BIN_COUNT * COMPONENT_COUNT) {
+        let mut finite = true;
+        for (slot, &weight) in row.chunks_exact(BIN_COUNT * COMPONENT_COUNT).zip(weights) {
+            let mut result = WeightedSlot {
+                real: [0.0; BIN_COUNT],
+                imaginary: [0.0; BIN_COUNT],
+            };
+            for (bin, pair) in slot.chunks_exact(COMPONENT_COUNT).enumerate() {
+                let real = f32::from_bits(pair[0]) * weight;
+                let imaginary = f32::from_bits(pair[1]) * weight;
+                finite &= real.is_finite() & imaginary.is_finite();
+                result.real[bin] = real;
+                result.imaginary[bin] = imaginary;
+            }
+            slots.push(result);
+        }
+        if !finite {
+            // Match the original bin/slot/component error precedence on invalid input.
+            for bin in 0..BIN_COUNT {
+                for (slot, &weight) in weights.iter().enumerate() {
+                    let offset = (slot * BIN_COUNT + bin) * COMPONENT_COUNT;
+                    for &word in &row[offset..offset + COMPONENT_COUNT] {
+                        let value = f32::from_bits(word);
+                        if !value.is_finite() {
+                            return Err(CoefficientNormalEquationError::InputNonFinite);
+                        }
+                        if !(value * weight).is_finite() {
+                            return Err(CoefficientNormalEquationError::NumericNonFinite);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    Ok(slots)
 }
 
-fn add(left: FiniteF32, right: FiniteF32) -> Result<FiniteF32, CoefficientNormalEquationError> {
-    r32_add(left, right).map_err(|_| CoefficientNormalEquationError::NumericNonFinite)
+fn band_dots(
+    left: &[WeightedSlot],
+    left_row: usize,
+    right: &[WeightedSlot],
+    right_row: usize,
+    initial: u32,
+) -> Result<[u32; BAND_COUNT], CoefficientNormalEquationError> {
+    let left = &left[left_row * SLOT_COUNT..(left_row + 1) * SLOT_COUNT];
+    let right = &right[right_row * SLOT_COUNT..(right_row + 1) * SLOT_COUNT];
+    let mut dots = [0.0; BIN_COUNT];
+    for (a, b) in left.iter().zip(right) {
+        // Bins are independent SIMD lanes. Within a bin every slot contributes
+        // two separately rounded products, in real then imaginary order.
+        for (bin, dot) in dots.iter_mut().enumerate() {
+            *dot = (a.real[bin] * b.real[bin] + *dot) + a.imaginary[bin] * b.imaginary[bin];
+        }
+    }
+    let mut result = [ZERO_BITS; BAND_COUNT];
+    for (word, bounds) in result.iter_mut().zip(BAND_BOUNDARIES.windows(2)) {
+        let mut sum = f32::from_bits(initial);
+        for &dot in &dots[bounds[0]..bounds[1]] {
+            sum += dot;
+        }
+        // Only additions follow each product. Infinity and NaN cannot return to a finite sum.
+        if !sum.is_finite() {
+            return Err(CoefficientNormalEquationError::NumericNonFinite);
+        }
+        *word = sum.to_bits();
+    }
+    Ok(result)
 }
 
 #[cfg(test)]
@@ -240,6 +238,26 @@ mod tests {
         include_bytes!("../../tests/fixtures/synthetic_qmf_fit_checkpoints/INPUT-ONLY.json");
     const EXPECTED: &[u8] =
         include_bytes!("../../tests/fixtures/synthetic_qmf_fit_checkpoints/EXPECTED.json");
+
+    #[test]
+    fn weighting_errors_follow_bin_then_slot_order() {
+        let mut targets = vec![ZERO_BITS; OBJECT_COUNT * SLOT_COUNT * BIN_COUNT * COMPONENT_COUNT];
+        let carriers =
+            vec![ZERO_BITS; SELECTED_CARRIER_COUNT * SLOT_COUNT * BIN_COUNT * COMPONENT_COUNT];
+        let weights = [2.0_f32.to_bits(); SLOT_COUNT];
+        // Slot one, bin zero is admitted before slot zero, bin one.
+        targets[BIN_COUNT * COMPONENT_COUNT] = f32::MAX.to_bits();
+        targets[COMPONENT_COUNT] = f32::NAN.to_bits();
+        assert_eq!(
+            build_selected_normal_equations(&targets, &carriers, &weights),
+            Err(CoefficientNormalEquationError::NumericNonFinite)
+        );
+        targets.swap(BIN_COUNT * COMPONENT_COUNT, COMPONENT_COUNT);
+        assert_eq!(
+            build_selected_normal_equations(&targets, &carriers, &weights),
+            Err(CoefficientNormalEquationError::InputNonFinite)
+        );
+    }
 
     #[test]
     fn seven_carrier_normal_equations_have_seven_rows_and_columns() {

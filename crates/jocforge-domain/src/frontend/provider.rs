@@ -27,6 +27,9 @@ const COLD_SHA: [u8; 32] = [
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ProviderSha256([u8; 32]);
 impl ProviderSha256 {
+    pub(super) const fn from_digest(digest: [u8; 32]) -> Self {
+        Self(digest)
+    }
     pub fn digest(bytes: &[u8]) -> Self {
         let d = Sha256::digest(bytes);
         let mut v = [0; 32];

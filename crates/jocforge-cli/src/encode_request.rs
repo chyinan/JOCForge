@@ -54,8 +54,9 @@ use jocforge_application::{
         MainFrontendSnapshotError, MainHeldControlOutput, MainNormalControlOutput,
         MainSpatialCachedCallbackInput, MainSpatialCallbackCandidate, MainSpatialCallbackError,
         MainSpatialCallbackInput, MainSpatialColdRoots, MainSpatialColdRootsError,
-        stage_main_frontend_adm_input_snapshot, stage_main_spatial_cached_callback,
-        stage_main_spatial_callback,
+        MainSpatialFrame, stage_main_frontend_adm_input_snapshot,
+        stage_main_spatial_cached_callback_on_current_thread,
+        stage_main_spatial_callback_on_current_thread,
     },
 };
 use jocforge_io::pcm::{
@@ -1044,12 +1045,18 @@ fn run_inner(
     let mut flat7x_d0_block2_max_container_bytes = 0_u16;
     let mut flat7x_d0_block2_overflow_receipts = 0_u64;
     let mut flat7x_emdf_payload_sequence: Option<&'static str> = None;
-    let callback_result = (|| {
+    let spatial_frames = SpatialFrameProducer {
+        prepared: &prepared,
+        pcm: &parsed,
+        providers: &main_providers,
+        attempt: run_identity.attempt,
+        normal_count: roots.normal_callbacks(),
+        main: Arc::clone(roots.main()),
+        reader: Arc::clone(roots.reader_eof()),
+        flat7x_selected,
+    };
+    let callback_result = spatial_frames.run(cancelled, |frames, total_callbacks| {
         let mut roots = roots;
-        let normal_callbacks = roots.normal_callbacks().value();
-        let total_callbacks = normal_callbacks.checked_add(4).ok_or_else(|| {
-            EncodeRequestError::SourcePipeline("main callback count overflow".to_owned())
-        })?;
         let mut committed_callbacks = 0_u64;
         let mut callback_progress = ProgressBar::new("Programme callbacks");
         callback_progress.update(0, total_callbacks);
@@ -1061,27 +1068,11 @@ fn run_inner(
             let callback_value_u32 =
                 u32::try_from(callback_value).map_err(|_| EncodeRequestError::ClockMismatch)?;
             let callback_index = FrontendCallbackIndex::new(callback_value_u32);
-            let mut pending = if callback_value < normal_callbacks {
-                stage_main_callback_candidate(
-                    &prepared,
-                    &parsed,
-                    run_identity.attempt,
-                    callback_index,
-                    roots.main(),
-                    roots.reader_eof(),
-                    &main_providers,
-                    resolved_joc_profile.joc_reconstruction_layout()
-                        == JocReconstructionLayout::Flat7x,
-                )?
-            } else {
-                stage_main_cached_callback_candidate(
-                    &prepared,
-                    run_identity.attempt,
-                    callback_index,
-                    &roots,
-                    &main_providers,
-                )?
-            };
+            let mut pending = frames.recv().map_err(|_| {
+                if cancelled.load(std::sync::atomic::Ordering::Relaxed) {
+                    EncodeRequestError::Cancelled
+                } else { EncodeRequestError::WorkerPanicked }
+            })??;
             if pending.callback_index != callback_index {
                 return Err(EncodeRequestError::ClockMismatch);
             }
@@ -1134,11 +1125,7 @@ fn run_inner(
                     callback_index,
                     source_index,
                     callback_transaction_id.clone(),
-                    pending.frontend,
-                    pending.spatial,
-                    pending.reader_eof_candidate,
-                    roots.main(),
-                    roots.reader_eof(),
+                    pending,
                     roots.integrity(),
                     &main_providers,
                     roots.meter(),
@@ -1312,42 +1299,14 @@ fn run_inner(
                     ));
                 }
             } else {
-                let frontend = pending.frontend.ok_or(EncodeRequestError::ClockMismatch)?;
-                let spatial_parent = roots
-                    .main()
-                    .prepare_spatial_after_callback(
-                        &prepared,
-                        frontend,
-                        pending.spatial,
-                        callback_transaction_id.clone(),
-                    )
-                    .map_err(|error| {
-                        EncodeRequestError::SourcePipeline(format!(
-                            "callback-only F01E/F03W/F04 proposal: {error:?}"
-                        ))
-                    })?;
-                let (main_after, parent_transaction_id, parent_callback, spatial_receipts) =
-                    spatial_parent.into_parts();
-                if parent_transaction_id != callback_transaction_id
-                    || parent_callback != callback_index
-                {
-                    return Err(EncodeRequestError::ClockMismatch);
-                }
-                let (reader_after, _, reader_receipt) = pending.reader_eof_candidate.into_parts();
-                let changed_receipts = [
-                    spatial_receipts[0].clone(),
-                    spatial_receipts[1].clone(),
-                    spatial_receipts[2].clone(),
-                    reader_receipt,
-                ];
                 let (next_roots, receipt) = roots
                     .commit_callback_only(
                         &prepared,
                         callback_index,
                         callback_transaction_id,
-                        main_after,
-                        reader_after,
-                        changed_receipts,
+                        pending.main_roots,
+                        pending.reader_eof_root,
+                        pending.receipts,
                     )
                     .map_err(EncodeRequestError::SourcePipeline)?;
                 roots = next_roots;
@@ -1377,7 +1336,7 @@ fn run_inner(
             ));
         }
         Ok((roots, committed_callbacks))
-    })();
+    });
     let (mut roots, committed_callbacks) = match callback_result {
         Ok(value) => value,
         Err(error) => {
@@ -1514,6 +1473,105 @@ fn run_inner(
     Ok(())
 }
 
+struct SpatialFrameProducer<'a> {
+    prepared: &'a PreparedJobInput,
+    pcm: &'a jocforge_io::pcm::riff_pcm24::ParsedRiffPcm24<'a>,
+    providers: &'a crate::selected_spatial_callback_providers::SelectedMainSpatialCallbackProviders,
+    attempt: AttemptId,
+    normal_count: jocforge_io::pcm::frontend_pcm_source::NormalCallbackCount,
+    main: Arc<MainSpatialColdRoots>,
+    reader: Arc<ReaderEofMachine>,
+    flat7x_selected: bool,
+}
+
+type SpatialFrameResult = Result<SpatialFrameAdvance, EncodeRequestError>;
+
+impl SpatialFrameProducer<'_> {
+    fn run<T>(
+        mut self,
+        cancelled: &std::sync::atomic::AtomicBool,
+        consume: impl FnOnce(
+            std::sync::mpsc::Receiver<SpatialFrameResult>,
+            u64,
+        ) -> Result<T, EncodeRequestError>,
+    ) -> Result<T, EncodeRequestError> {
+        let total = self
+            .normal_count
+            .value()
+            .checked_add(4)
+            .ok_or(EncodeRequestError::ClockMismatch)?;
+        // A single lookahead slot keeps DSP memory bounded; only the consumer publishes and commits.
+        let (ready, frames) = std::sync::mpsc::sync_channel(1);
+        thread::scope(|scope| {
+            let worker = thread::Builder::new()
+                .name("jocforge-spatial-frames".into())
+                .stack_size(ENCODE_REQUEST_STACK_BYTES)
+                .spawn_scoped(scope, move || {
+                    for index in 0..total {
+                        if cancelled.load(std::sync::atomic::Ordering::Relaxed) {
+                            break;
+                        }
+                        let result = self.next(index);
+                        let failed = result.is_err();
+                        if ready.send(result).is_err() || failed {
+                            break;
+                        }
+                    }
+                })
+                .map_err(|_| EncodeRequestError::WorkerUnavailable)?;
+            // consume owns the receiver. All exits release a producer waiting on a full slot.
+            let result = consume(frames, total);
+            worker
+                .join()
+                .map_err(|_| EncodeRequestError::WorkerPanicked)?;
+            result
+        })
+    }
+
+    fn next(&mut self, index: u64) -> SpatialFrameResult {
+        let callback = FrontendCallbackIndex::new(
+            u32::try_from(index).map_err(|_| EncodeRequestError::ClockMismatch)?,
+        );
+        let pending = if index < self.normal_count.value() {
+            stage_main_callback_candidate(
+                self.prepared,
+                self.pcm,
+                self.attempt,
+                callback,
+                &self.main,
+                &self.reader,
+                self.providers,
+                self.flat7x_selected,
+            )?
+        } else {
+            stage_main_cached_callback_candidate(
+                self.prepared,
+                self.attempt,
+                callback,
+                &self.main,
+                &self.reader,
+                self.normal_count,
+                self.providers,
+            )?
+        };
+        let frame = pending.finish(self.prepared, &self.main, &self.reader)?;
+        self.main = Arc::clone(&frame.main_roots);
+        self.reader = Arc::clone(&frame.reader_eof_root);
+        Ok(frame)
+    }
+}
+
+pub(crate) struct SpatialFrameAdvance {
+    pub callback_index: FrontendCallbackIndex,
+    pub source_index: Option<CodecSourceIndex>,
+    flat7x_mix: Option<jocforge_application::source_frame_bridge::Flat7xSceneMix>,
+    pub spatial: MainSpatialFrame,
+    pub main_roots: Arc<MainSpatialColdRoots>,
+    pub reader_eof_root: Arc<ReaderEofMachine>,
+    pub receipts: [jocforge_application::independent_meter_callback::GtcOwnerReceipt; 4],
+    transaction_id: CallbackTransactionId,
+}
+
 struct PendingMainCallback {
     callback_index: FrontendCallbackIndex,
     source_index: Option<CodecSourceIndex>,
@@ -1522,6 +1580,62 @@ struct PendingMainCallback {
     spatial: MainSpatialCallbackCandidate,
     reader_eof_candidate: ReaderEofReplacementCandidate,
     transaction_id: CallbackTransactionId,
+}
+
+impl PendingMainCallback {
+    fn finish(
+        self,
+        prepared: &PreparedJobInput,
+        before: &MainSpatialColdRoots,
+        reader_before: &ReaderEofMachine,
+    ) -> Result<SpatialFrameAdvance, EncodeRequestError> {
+        let parent = if let Some(frontend) = self.frontend {
+            before.prepare_spatial_after_callback(
+                prepared,
+                frontend,
+                self.spatial,
+                self.transaction_id.clone(),
+            )
+        } else {
+            before.prepare_spatial_after_cached_callback(
+                prepared,
+                self.spatial,
+                self.transaction_id.clone(),
+            )
+        }
+        .map_err(|e| {
+            EncodeRequestError::SourcePipeline(format!(
+                "spatial callback {}: {e:?}",
+                self.callback_index.value()
+            ))
+        })?;
+        if parent.transaction_id() != &self.transaction_id
+            || parent.callback_index() != self.callback_index
+            || self.reader_eof_candidate.owner_receipt().transaction_id()
+                != self.transaction_id.as_str()
+            || self
+                .reader_eof_candidate
+                .owner_receipt()
+                .before_generation()
+                != reader_before.generation()
+            || self.reader_eof_candidate.gtc_receipt().owner_id()
+                != jocforge_application::reader_eof_callback::GtcOwnerId::ReaderEof
+        {
+            return Err(EncodeRequestError::ClockMismatch);
+        }
+        let (main, spatial, [frontend, control, audio]) = parent.into_frame_parts();
+        let (reader, _, reader_receipt) = self.reader_eof_candidate.into_parts();
+        Ok(SpatialFrameAdvance {
+            callback_index: self.callback_index,
+            source_index: self.source_index,
+            transaction_id: self.transaction_id,
+            flat7x_mix: self.flat7x_mix,
+            spatial,
+            main_roots: Arc::new(main),
+            reader_eof_root: Arc::new(reader),
+            receipts: [frontend, control, audio, reader_receipt],
+        })
+    }
 }
 
 #[expect(
@@ -1608,7 +1722,7 @@ fn stage_main_callback_candidate(
         None
     };
     let values = providers.callback_values().providers();
-    let spatial = stage_main_spatial_callback(MainSpatialCallbackInput {
+    let spatial = stage_main_spatial_callback_on_current_thread(MainSpatialCallbackInput {
         prepared,
         controls: MainNormalControlOutput::AdmInput(controls),
         physical_pcm_rows: frame.physical_pcm_rows(),
@@ -1642,7 +1756,9 @@ fn stage_main_cached_callback_candidate(
     prepared: &PreparedJobInput,
     attempt: AttemptId,
     callback_index: FrontendCallbackIndex,
-    roots: &ProgrammeOwnerRoots<'_>,
+    roots: &MainSpatialColdRoots,
+    reader_eof: &ReaderEofMachine,
+    normal_callbacks: jocforge_io::pcm::frontend_pcm_source::NormalCallbackCount,
     providers: &crate::selected_spatial_callback_providers::SelectedMainSpatialCallbackProviders,
 ) -> Result<PendingMainCallback, EncodeRequestError> {
     let source_index =
@@ -1654,7 +1770,7 @@ fn stage_main_cached_callback_candidate(
     .map_err(|_| EncodeRequestError::CallbackTransaction)?;
     let callback_lineage =
         CallbackLineageIdentity::new(prepared.programme_id().clone(), attempt, callback_index);
-    let frontend_control = roots.main().frontend_control();
+    let frontend_control = roots.frontend_control();
     let after = frontend_control
         .committed()
         .dynamic_after_state()
@@ -1667,9 +1783,9 @@ fn stage_main_cached_callback_candidate(
             EncodeRequestError::SourcePipeline(format!("MAIN cached F01E held controls: {error:?}"))
         })?;
     let reader_eof_candidate = stage_reader_eof_cached_drain(
-        roots.reader_eof(),
+        reader_eof,
         callback_index,
-        roots.normal_callbacks(),
+        normal_callbacks,
         transaction_id.clone(),
     )
     .map_err(|error| {
@@ -1677,21 +1793,22 @@ fn stage_main_cached_callback_candidate(
     })?;
 
     let values = providers.callback_values().providers();
-    let spatial = stage_main_spatial_cached_callback(MainSpatialCachedCallbackInput {
-        prepared,
-        controls: MainHeldControlOutput::AdmInput(held_controls),
-        spatial_control: roots.main().spatial_control(),
-        spatial_audio: roots.main().spatial_audio(),
-        p11_geometry: &values.p11_geometry,
-        p15_geometry: &values.p15_geometry,
-        diffusion_parameters: &values.diffusion,
-        feature_processor: &values.feature_processor,
-        feature_fft: &values.feature_fft,
-        window: &values.window,
-        component_parameters: &values.component_parameters,
-        spatial_audio_providers: Some(providers.spatial_audio()),
-    })
-    .map_err(EncodeRequestError::SpatialCallback)?;
+    let spatial =
+        stage_main_spatial_cached_callback_on_current_thread(MainSpatialCachedCallbackInput {
+            prepared,
+            controls: MainHeldControlOutput::AdmInput(held_controls),
+            spatial_control: roots.spatial_control(),
+            spatial_audio: roots.spatial_audio(),
+            p11_geometry: &values.p11_geometry,
+            p15_geometry: &values.p15_geometry,
+            diffusion_parameters: &values.diffusion,
+            feature_processor: &values.feature_processor,
+            feature_fft: &values.feature_fft,
+            window: &values.window,
+            component_parameters: &values.component_parameters,
+            spatial_audio_providers: Some(providers.spatial_audio()),
+        })
+        .map_err(EncodeRequestError::SpatialCallback)?;
     if spatial.callback_index() != callback_index {
         return Err(EncodeRequestError::ClockMismatch);
     }

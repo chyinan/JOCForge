@@ -6,7 +6,8 @@
 
 use super::{
     bap::{
-        BapError, BapProfileInput, BapRowInput, allocate_bap_row, allocate_bap_row_with_parameters,
+        BapError, BapFrameInput, BapParameters, BapProfileInput, BapRowInput, PreparedBapFrame,
+        allocate_bap_row, allocate_bap_row_with_parameters,
     },
     bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError},
     exponent_packing::{ExponentPackingError, pack_exponent_difference_group},
@@ -703,6 +704,118 @@ pub fn produce_ac3_audio_block(
     })
 }
 
+/// Counts the exact six-block cost for alternative q values on one immutable I0 source.
+pub struct I0AudioBlockBudgetProbe<'a> {
+    masks: PreparedBapFrame,
+    parameters: &'a BapParameters,
+    fixed_bits: u32,
+    available_bits: u32,
+}
+
+impl<'a> I0AudioBlockBudgetProbe<'a> {
+    /// Unsupported policies and exceptionally scaled coefficients retain the full trial path.
+    pub fn prepare(
+        numeric_plan: &'a NumericPlanReceipt<'_, SelectedSourceNumericPlan>,
+        mut policy: I0AudioBlockSeriesPolicy,
+        budget: I0AudioBlockSeriesBudget,
+    ) -> Option<Self> {
+        let plan = numeric_plan.plan();
+        let first = policy.blocks[0];
+        if policy.blocks.iter().any(|b| {
+            b.caller_all_active_fine_zero
+                || b.fast_gain_codes != [first.fast_gain_codes[0]; 6]
+                || (
+                    b.slow_decay_code,
+                    b.fast_decay_code,
+                    b.slow_gain_code,
+                    b.floor_code,
+                ) != (
+                    first.slow_decay_code,
+                    first.fast_decay_code,
+                    first.slow_gain_code,
+                    first.floor_code,
+                )
+        }) {
+            return None;
+        }
+        let exponents = std::array::from_fn(|b| {
+            let block = &plan.exponent_plan_by_block[b];
+            std::array::from_fn(|ch| {
+                if ch < FULLBAND_CHANNEL_COUNT {
+                    block.fullband[ch].decoded_exponents.as_slice()
+                } else {
+                    block.lfe.decoded_exponents.as_slice()
+                }
+            })
+        });
+        for (block, exponents) in plan.coefficients_by_block.iter().zip(&exponents) {
+            let coefficients = block
+                .fullband_words
+                .iter()
+                .flatten()
+                .chain(&block.lfe_words);
+            if coefficients
+                .zip(exponents.iter().flat_map(|row| row.iter()))
+                .any(|(&word, &exp)| {
+                    let scale = f64::from_bits((1023 + u64::from(exp)) << 52);
+                    !(-1.0..=1.0).contains(&(f64::from(f32::from_bits(word)) * scale))
+                })
+            {
+                return None;
+            }
+        }
+        let masks = PreparedBapFrame::prepare(
+            &plan.bap_parameters,
+            &BapFrameInput {
+                decoded_exponents_by_block: &exponents,
+                end_exclusive_by_channel: [
+                    FULLBAND_ENDMANT,
+                    FULLBAND_ENDMANT,
+                    FULLBAND_ENDMANT,
+                    FULLBAND_ENDMANT,
+                    FULLBAND_ENDMANT,
+                    LFE_ENDMANT,
+                ],
+                candidate: 0,
+                slow_decay_code: first.slow_decay_code,
+                fast_decay_code: first.fast_decay_code,
+                slow_gain_code: first.slow_gain_code,
+                db_per_bit_codes: plan.db_per_bit_codes,
+                floor_code: first.floor_code,
+                fast_gain_code: first.fast_gain_codes[0],
+                caller_all_active_fine_zero_by_block: [true; I0_AUDIO_BLOCK_COUNT],
+                profile: BapProfileInput::selected(),
+            },
+        )
+        .ok()?;
+        // Emit all syntax once with every BAP forced to zero. This validates reuse,
+        // bandwidth and block controls and gives their exact q-independent length.
+        for block in &mut policy.blocks {
+            block.candidate_q = I0BapCandidateQ::new(0)?;
+            block.caller_all_active_fine_zero = true;
+        }
+        let fixed = produce_i0_audio_block_series(numeric_plan, policy, budget).ok()?;
+        Some(Self {
+            masks,
+            parameters: &plan.bap_parameters,
+            fixed_bits: fixed.receipt().block_bit_lengths().iter().sum(),
+            available_bits: budget.available_bits(),
+        })
+    }
+
+    pub fn exceeds_budget(&self, q: I0BapCandidateQ) -> bool {
+        if q.value() == 0 {
+            return false;
+        }
+        let bap = self.masks.allocate(self.parameters, q.value());
+        let bits: i32 = super::converter_search::converter_mantissa_costs(bap.blocks())
+            .into_iter()
+            .map(i32::from)
+            .sum();
+        u32::try_from(bits).is_ok_and(|bits| self.fixed_bits + bits > self.available_bits)
+    }
+}
+
 /// Produces six candidate I0 `audblk` spans from one source-bound selected numeric plan.
 ///
 /// The selected F12 5.1 coefficient/exponent rows are reused as the I0 spectrum with source block-switch
@@ -1307,23 +1420,22 @@ fn quantize_ac3_mantissa(
     if bap == 0 {
         return Ok(0);
     }
-    let normalized = f64::from(coefficient) * 2.0_f64.powi(i32::from(exponent));
+    let scale = f64::from_bits((1023 + u64::from(exponent)) << 52);
+    let normalized = f64::from(coefficient) * scale;
     if !normalized.is_finite() || !(-1.0..=1.0).contains(&normalized) {
         return Err(Ac3AudioBlockError::CoefficientOutsideNormalizedRange);
     }
     match policy {
         Ac3MantissaQuantizerPolicy::NearestTiesEven => {
             if let Some(levels) = symmetric_quantizer_levels(bap) {
-                let mut code = 0_u16;
-                for boundary in 1..levels {
-                    let threshold = -1.0 + (2.0 * f64::from(boundary)) / f64::from(levels);
-                    match normalized.total_cmp(&threshold) {
-                        std::cmp::Ordering::Greater => code = boundary,
-                        std::cmp::Ordering::Equal if boundary % 2 == 0 => code = boundary,
-                        std::cmp::Ordering::Less | std::cmp::Ordering::Equal => break,
-                    }
-                }
-                return Ok(code);
+                // All admitted symmetric quantizers have an odd number of levels.
+                // Their interior boundaries are non-dyadic; a binary32 coefficient times
+                // a power of two cannot tie one. For 3..=15 levels, binary64 resolves even
+                // the adjacent binary32 values. Clamp the +1 endpoint to the last code.
+                let level_count = f64::from(levels);
+                #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
+                let code = ((normalized * level_count + level_count) * 0.5) as u16;
+                return Ok(code.min(levels - 1));
             }
             let width =
                 mantissa_width(bap).ok_or(Ac3AudioBlockError::CoefficientOutsideNormalizedRange)?;
@@ -1376,25 +1488,26 @@ fn mantissa_width(bap: u8) -> Option<u8> {
 fn pack_quantized_mantissas(
     items: &[QuantizedMantissa],
 ) -> Result<Vec<MantissaField>, Ac3AudioBlockError> {
-    let mut fields = vec![None; items.len()];
+    let mut fields = Vec::with_capacity(items.len());
     let mut groups = [PendingMantissaGroup::EMPTY; 3];
-    for (item_index, item) in items.iter().enumerate() {
+    for item in items {
         if let Some(group_index) = group_index(item.bap) {
             let group = &mut groups[group_index];
             if group.count == 0 {
-                group.first_index = item_index;
+                group.first_index = fields.len();
+                fields.push(MantissaField {
+                    value: 0,
+                    width: grouped_width(item.bap),
+                });
             }
             group.codes[group.count] = item.code;
             group.count += 1;
             if group.count == usize::from(group_size(item.bap)) {
-                fields[group.first_index] = Some(MantissaField {
-                    value: grouped_value(item.bap, group.codes),
-                    width: grouped_width(item.bap),
-                });
+                fields[group.first_index].value = grouped_value(item.bap, group.codes);
                 *group = PendingMantissaGroup::EMPTY;
             }
         } else if item.bap != 0 {
-            fields[item_index] = Some(MantissaField {
+            fields.push(MantissaField {
                 value: item.code,
                 width: mantissa_width(item.bap)
                     .ok_or(Ac3AudioBlockError::CoefficientOutsideNormalizedRange)?,
@@ -1421,13 +1534,10 @@ fn pack_quantized_mantissas(
         {
             *code = fill;
         }
-        fields[group.first_index] = Some(MantissaField {
-            value: grouped_value(bap, group.codes),
-            width: grouped_width(bap),
-        });
+        fields[group.first_index].value = grouped_value(bap, group.codes);
     }
 
-    Ok(fields.into_iter().flatten().collect())
+    Ok(fields)
 }
 
 fn group_index(bap: u8) -> Option<usize> {
@@ -1637,6 +1747,40 @@ mod tests {
         assert_eq!(quantize_ac3_mantissa(3.0 / 32.0, 0, 6, policy), Ok(2));
         assert_eq!(quantize_ac3_mantissa(1.0, 0, 3, policy), Ok(6));
         assert_eq!(quantize_ac3_mantissa(-1.0, 0, 3, policy), Ok(0));
+    }
+
+    #[test]
+    fn symmetric_quantization_agrees_with_each_legacy_boundary_and_its_neighbors() {
+        for bap in 1..=5 {
+            let levels = super::symmetric_quantizer_levels(bap).unwrap();
+            for step in 1..levels {
+                #[allow(clippy::cast_possible_truncation)]
+                let center = (-1.0 + 2.0 * f64::from(step) / f64::from(levels)) as f32;
+                for normalized in [center.next_down(), center, center.next_up(), -1.0, 0.0, 1.0] {
+                    let expected = (1..levels)
+                        .take_while(|&boundary| {
+                            let threshold = -1.0 + 2.0 * f64::from(boundary) / f64::from(levels);
+                            let value = f64::from(normalized);
+                            value > threshold
+                                || (value.total_cmp(&threshold).is_eq() && boundary % 2 == 0)
+                        })
+                        .last()
+                        .unwrap_or(0);
+                    for exponent in [0, 1, 9, 24] {
+                        let coefficient = normalized * 2.0_f32.powi(-i32::from(exponent));
+                        assert_eq!(
+                            quantize_ac3_mantissa(
+                                coefficient,
+                                exponent,
+                                bap,
+                                Ac3MantissaQuantizerPolicy::NearestTiesEven
+                            ),
+                            Ok(expected)
+                        );
+                    }
+                }
+            }
+        }
     }
 
     #[test]
@@ -2070,6 +2214,40 @@ mod i0_audio_block_series_tests {
                 spans[block].bit_length(),
                 candidate.blocks()[block].bit_length()
             );
+        }
+    }
+
+    #[test]
+    fn i0_budget_probe_matches_full_audio_trials() {
+        let mut transaction = source_transaction();
+        let receipt = transaction.prepare_numeric_plan(numeric_plan()).unwrap();
+        let mut policy = synthetic_policy();
+        for block in &mut policy.blocks {
+            block.caller_all_active_fine_zero = false;
+        }
+        for limit in [10000, 20480] {
+            let budget = I0AudioBlockSeriesBudget::new(limit);
+            let probe = super::I0AudioBlockBudgetProbe::prepare(&receipt, policy, budget).unwrap();
+            let mut fit = false;
+            let mut exceeded = false;
+            for value in (1..1024).step_by(13) {
+                let q = I0BapCandidateQ::new(value).unwrap();
+                for block in &mut policy.blocks {
+                    block.candidate_q = q;
+                }
+                match produce_i0_audio_block_series(&receipt, policy, budget) {
+                    Ok(_) => {
+                        fit = true;
+                        assert!(!probe.exceeds_budget(q));
+                    }
+                    Err(I0AudioBlockSeriesError::AudioBlockBudgetExceeded { .. }) => {
+                        exceeded = true;
+                        assert!(probe.exceeds_budget(q));
+                    }
+                    Err(err) => panic!("unexpected q={value}: {err:?}"),
+                }
+            }
+            assert!(fit && exceeded);
         }
     }
 

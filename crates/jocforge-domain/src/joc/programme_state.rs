@@ -31,6 +31,7 @@ use crate::{
     },
 };
 use sha2::{Digest, Sha256};
+use std::sync::{Arc, OnceLock};
 
 const HEADER: &[u8; 8] = b"JOCSEL01";
 const SEVEN_CARRIER_QMF_EXTENSION_HEADER: &[u8; 8] = b"J7QMF001";
@@ -60,17 +61,33 @@ pub enum JocSourceStageErrorKind {
     Flat7xCoefficientLineageMismatch,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug)]
 pub struct SelectedJocState {
     fit: CoefficientFitState,
     dispatch: JocDispatchState,
+    canonical: OnceLock<Result<CanonicalJocState, SelectedJocStateError>>,
 }
+
+#[derive(Clone, Debug)]
+struct CanonicalJocState {
+    bytes: Arc<[u8]>,
+    sha256: [u8; 32],
+}
+
+impl PartialEq for SelectedJocState {
+    fn eq(&self, other: &Self) -> bool {
+        self.fit == other.fit && self.dispatch == other.dispatch
+    }
+}
+
+impl Eq for SelectedJocState {}
 
 impl SelectedJocState {
     pub const fn cold() -> Self {
         Self {
             fit: CoefficientFitState::cold(),
             dispatch: JocDispatchState::cold(),
+            canonical: OnceLock::new(),
         }
     }
 
@@ -78,7 +95,11 @@ impl SelectedJocState {
         fit: CoefficientFitState,
         dispatch: JocDispatchState,
     ) -> Result<Self, SelectedJocStateError> {
-        let state = Self { fit, dispatch };
+        let state = Self {
+            fit,
+            dispatch,
+            canonical: OnceLock::new(),
+        };
         state.validate()?;
         Ok(state)
     }
@@ -96,6 +117,23 @@ impl SelectedJocState {
     }
 
     pub fn canonical_bytes(&self) -> Result<Vec<u8>, SelectedJocStateError> {
+        Ok(self.canonical_state()?.bytes.to_vec())
+    }
+
+    fn canonical_state(&self) -> Result<&CanonicalJocState, SelectedJocStateError> {
+        self.canonical
+            .get_or_init(|| {
+                let bytes = self.encode_canonical_bytes()?;
+                Ok(CanonicalJocState {
+                    sha256: Sha256::digest(&bytes).into(),
+                    bytes: bytes.into(),
+                })
+            })
+            .as_ref()
+            .map_err(|error| *error)
+    }
+
+    fn encode_canonical_bytes(&self) -> Result<Vec<u8>, SelectedJocStateError> {
         self.validate()?;
         let temporal = self.fit.temporal().canonical_payload_bytes();
         let geometry = self.fit.geometry().canonical_payload_bytes();
@@ -137,7 +175,7 @@ impl SelectedJocState {
     }
 
     pub fn state_sha256(&self) -> Result<[u8; 32], SelectedJocStateError> {
-        Ok(Sha256::digest(self.canonical_bytes()?).into())
+        Ok(self.canonical_state()?.sha256)
     }
 
     pub fn state_sha256_hex(&self) -> Result<String, SelectedJocStateError> {
@@ -149,8 +187,9 @@ impl SelectedJocState {
     /// The snapshot owns the canonical bytes so its borrowed `GtcOwnerStateSnapshot` can never
     /// outlive the preimage. It is a state view only; it carries no commit authority.
     pub fn gtc_owner_snapshot(&self) -> Result<SelectedJocGtcSnapshot, SelectedJocStateError> {
-        let canonical_bytes = self.canonical_bytes()?;
-        let cold_sha256 = Self::cold().state_sha256()?;
+        static COLD_DIGEST: OnceLock<Result<[u8; 32], SelectedJocStateError>> = OnceLock::new();
+        let cold_sha256 = (*COLD_DIGEST.get_or_init(|| Self::cold().state_sha256()))?;
+        let canonical_bytes = Arc::clone(&self.canonical_state()?.bytes);
         Ok(SelectedJocGtcSnapshot {
             generation: self.generation(),
             cold_sha256,
@@ -212,7 +251,7 @@ impl SelectedJocState {
 pub struct SelectedJocGtcSnapshot {
     generation: u64,
     cold_sha256: [u8; 32],
-    canonical_bytes: Vec<u8>,
+    canonical_bytes: Arc<[u8]>,
 }
 
 impl SelectedJocGtcSnapshot {

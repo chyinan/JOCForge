@@ -13,7 +13,7 @@ use crate::{
     codec::{
         bap::{
             BapError, BapFrameInput, BapParameters, BapProfileInput, FULLBAND_BIN_COUNT,
-            LFE_BIN_COUNT, allocate_bap_frame_with_parameters,
+            LFE_BIN_COUNT, PreparedBapFrame,
         },
         converter_header_cost::virtual_header_fixed_bit_cost,
         converter_search::{
@@ -401,29 +401,32 @@ pub fn prepare_f11_converter_source_result(
             block: u8::try_from(block).unwrap_or(u8::MAX),
         });
     }
+    let input = BapFrameInput {
+        decoded_exponents_by_block: &decoded_exponents_by_block,
+        end_exclusive_by_channel: [
+            FULLBAND_BIN_COUNT,
+            FULLBAND_BIN_COUNT,
+            FULLBAND_BIN_COUNT,
+            FULLBAND_BIN_COUNT,
+            FULLBAND_BIN_COUNT,
+            LFE_BIN_COUNT,
+        ],
+        candidate: 0,
+        slow_decay_code: CONVERTER_SLOW_DECAY_CODE,
+        fast_decay_code: CONVERTER_FAST_DECAY_CODE,
+        slow_gain_code: CONVERTER_SLOW_GAIN_CODE,
+        db_per_bit_codes,
+        floor_code: CONVERTER_FLOOR_CODE,
+        fast_gain_code: CONVERTER_FAST_GAIN_CODE,
+        caller_all_active_fine_zero_by_block: [true; BLOCK_COUNT],
+        profile: BapProfileInput::selected(),
+    };
+    let masks = PreparedBapFrame::prepare(bap_provider, &input).map_err(|error| {
+        ConverterSourcePlanError::ConverterSearch(ConverterFrameSearchError::CandidateBap(error))
+    })?;
     let search_result = search_converter_offset_from_bap_frame(&search_input, |candidate| {
         let candidate = u16::try_from(candidate).map_err(|_| BapError::InputError)?;
-        let input = BapFrameInput {
-            decoded_exponents_by_block: &decoded_exponents_by_block,
-            end_exclusive_by_channel: [
-                FULLBAND_BIN_COUNT,
-                FULLBAND_BIN_COUNT,
-                FULLBAND_BIN_COUNT,
-                FULLBAND_BIN_COUNT,
-                FULLBAND_BIN_COUNT,
-                LFE_BIN_COUNT,
-            ],
-            candidate,
-            slow_decay_code: CONVERTER_SLOW_DECAY_CODE,
-            fast_decay_code: CONVERTER_FAST_DECAY_CODE,
-            slow_gain_code: CONVERTER_SLOW_GAIN_CODE,
-            db_per_bit_codes,
-            floor_code: CONVERTER_FLOOR_CODE,
-            fast_gain_code: CONVERTER_FAST_GAIN_CODE,
-            caller_all_active_fine_zero_by_block: [candidate.trailing_zeros() >= 4; BLOCK_COUNT],
-            profile: BapProfileInput::selected(),
-        };
-        allocate_bap_frame_with_parameters(bap_provider, &input)
+        Ok(masks.allocate(bap_provider, candidate))
     })
     .map_err(ConverterSourcePlanError::ConverterSearch)?;
     let converter_snr_offset = search_result

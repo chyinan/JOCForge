@@ -426,6 +426,15 @@ pub fn score_trial_coefficients_for_carriers<const CARRIER_COUNT: usize>(
             target_energy = (old_real * old_real + target_energy) + old_imaginary * old_imaginary;
         }
     }
+    evaluate_fit_energies(provider, error, model_energy, target_energy)
+}
+
+pub(crate) fn evaluate_fit_energies(
+    provider: &FitScoreProvider,
+    error: f64,
+    model_energy: f64,
+    target_energy: f64,
+) -> Result<FitScoreEvaluation, FitScoreError> {
     let ratio = (model_energy + EPSILON) / (target_energy + EPSILON) + 1.0 / 20.0;
     let score = provider.score(error, model_energy, target_energy)?;
     Ok(FitScoreEvaluation {

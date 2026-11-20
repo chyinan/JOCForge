@@ -198,6 +198,18 @@ impl<'a> Flat7xD0BapSearch<'a> {
         }
         Ok(Self { parameters, rows })
     }
+    /// SNR increases with q. Within the 13-bit mask range, increasing SNR can
+    /// only lower the mask and raise each bin's bit-allocation pointer.
+    pub(crate) fn allocations_are_monotone(&self) -> bool {
+        self.rows.iter().all(|row| match row {
+            SearchRow::Fresh(row) => row
+                .band_mask
+                .iter()
+                .all(|&mask| mask + 956 - i32::from(row.floor) < 8192),
+            SearchRow::Repeat(_) => true,
+        })
+    }
+
     pub(crate) fn allocate(&self, candidate: u16) -> Flat7xD0BapFrame {
         let mut blocks = [Flat7xD0BapBlock {
             rows: [[0; FLAT7X_D0_BAP_BIN_COUNT]; FLAT7X_D0_BAP_CHANNEL_COUNT],

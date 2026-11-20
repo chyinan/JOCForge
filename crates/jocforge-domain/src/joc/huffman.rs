@@ -751,7 +751,7 @@ impl<'a> HuffmanBitReader<'a> {
         Ok(symbols)
     }
 
-    fn read_symbol_at(
+    pub(super) fn read_symbol_at(
         &self,
         table: &HuffmanTable,
         bit_cursor: &mut usize,

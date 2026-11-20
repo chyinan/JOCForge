@@ -910,6 +910,27 @@ impl MetadataSourceProposal {
         consumer_transaction_id: &CallbackTransactionId,
         parent_callback_transaction_id: CallbackTransactionId,
     ) -> Result<GtcOwnerReceipt, MetadataGtcReceiptError> {
+        self.transition_references(
+            before,
+            consumer_transaction_id,
+            parent_callback_transaction_id,
+        )
+        .map(|(receipt, _, _)| receipt)
+    }
+
+    fn transition_references(
+        &self,
+        before: &MetadataOwner,
+        consumer_transaction_id: &CallbackTransactionId,
+        parent_callback_transaction_id: CallbackTransactionId,
+    ) -> Result<
+        (
+            GtcOwnerReceipt,
+            MetadataOwnerStateReference,
+            MetadataOwnerStateReference,
+        ),
+        MetadataGtcReceiptError,
+    > {
         let receipt = &self.receipt;
         let source_index = receipt.source_index();
         let source_key_callback = receipt.transaction_id().callback_index();
@@ -996,12 +1017,13 @@ impl MetadataSourceProposal {
         let after_snapshot = after_reference
             .gtc_snapshot()
             .map_err(MetadataGtcReceiptError::GtcReceipt)?;
-        GtcOwnerReceipt::from_transition(
+        let receipt = GtcOwnerReceipt::from_transition(
             before_snapshot,
             after_snapshot,
             parent_callback_transaction_id,
         )
-        .map_err(MetadataGtcReceiptError::GtcReceipt)
+        .map_err(MetadataGtcReceiptError::GtcReceipt)?;
+        Ok((receipt, before_reference, after_reference))
     }
 
     /// Consumes this source proposal into the exact after-owner handoff for a programme parent.
@@ -1032,13 +1054,11 @@ impl MetadataSourceProposal {
         consumer_transaction_id: &CallbackTransactionId,
         parent_callback_transaction_id: CallbackTransactionId,
     ) -> Result<MetadataSourceParentHandoff, MetadataGtcReceiptError> {
-        let owner_receipt = self.gtc_owner_receipt_for_parent_callback(
+        let (owner_receipt, before_state, after_state) = self.transition_references(
             before,
             consumer_transaction_id,
             parent_callback_transaction_id,
         )?;
-        let before_state = before.state_reference();
-        let after_state = self.after_owner.state_reference();
         let Self {
             after_owner,
             receipt: source_receipt,
@@ -1689,6 +1709,7 @@ pub struct MetadataOwner {
     provider_file: Vec<u8>,
     wrapper_file: Vec<u8>,
     provider_sha256: [u8; 32],
+    cold_state_sha256: [u8; 32],
     wrapper_configuration: Value,
     wrapper_config_sha256: String,
     wrapper_profile: MetadataWrapperProfile,
@@ -1769,6 +1790,7 @@ impl MetadataOwner {
             provider.wrapper_config_sha256.clone()
         };
         let provider_sha256 = provider.provider_sha256;
+        let state = MetadataState::cold(provider_sha256);
         Ok(Self {
             programme_id: id1_configuration.programme_id().clone(),
             attempt: id1_configuration.attempt(),
@@ -1780,7 +1802,8 @@ impl MetadataOwner {
             wrapper_configuration,
             wrapper_config_sha256,
             wrapper_profile,
-            state: MetadataState::cold(provider_sha256),
+            cold_state_sha256: state.digest(),
+            state,
             retired: false,
         })
     }
@@ -1845,11 +1868,10 @@ impl MetadataOwner {
     /// Returns the complete current owner value under the approved logical GTC state_ref.
     pub fn state_reference(&self) -> MetadataOwnerStateReference {
         let canonical_bytes = self.state.canonical_bytes();
-        let cold_state = MetadataState::cold(self.provider_sha256);
         MetadataOwnerStateReference {
             generation: self.state.generation,
-            state_sha256: self.state.digest(),
-            cold_sha256: cold_state.digest(),
+            state_sha256: Sha256::digest(&canonical_bytes).into(),
+            cold_sha256: self.cold_state_sha256,
             canonical_bytes,
         }
     }
@@ -1922,6 +1944,7 @@ impl MetadataOwner {
             provider_file: self.provider_file.clone(),
             wrapper_file: self.wrapper_file.clone(),
             provider_sha256: self.provider_sha256,
+            cold_state_sha256: self.cold_state_sha256,
             wrapper_configuration: self.wrapper_configuration.clone(),
             wrapper_config_sha256: self.wrapper_config_sha256.clone(),
             wrapper_profile: self.wrapper_profile,
@@ -2696,6 +2719,7 @@ impl MetadataEofProposal {
             provider_file: before.provider_file.clone(),
             wrapper_file: before.wrapper_file.clone(),
             provider_sha256: before.provider_sha256,
+            cold_state_sha256: before.cold_state_sha256,
             wrapper_configuration: before.wrapper_configuration.clone(),
             wrapper_config_sha256: before.wrapper_config_sha256.clone(),
             wrapper_profile: before.wrapper_profile,

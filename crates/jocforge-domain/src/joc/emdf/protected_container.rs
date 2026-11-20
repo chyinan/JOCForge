@@ -1011,17 +1011,14 @@ fn read_huffman_symbol(
     reader: &mut BitReader<'_>,
     table: &HuffmanTable,
 ) -> Result<u16, CurrentEmdfParserError> {
-    let available_bits = reader.remaining();
-    let packed_bits = reader.remaining_packed_bits();
-    let valid_bits =
-        u64::try_from(available_bits).map_err(|_| CurrentEmdfParserError::TruncatedBitstream)?;
-    let mut huffman_reader = HuffmanBitReader::new(&packed_bits, HuffmanBitCount::new(valid_bits));
-    let symbol = huffman_reader
-        .read_symbol(table)
-        .map_err(CurrentEmdfParserError::Huffman)?;
-    let consumed_bits = usize::try_from(huffman_reader.bit_cursor().value())
+    let valid_bits = u64::try_from(reader.bytes.len().saturating_mul(8))
         .map_err(|_| CurrentEmdfParserError::TruncatedBitstream)?;
-    reader.skip_bits(consumed_bits)?;
+    let bits = HuffmanBitReader::new(reader.bytes, HuffmanBitCount::new(valid_bits));
+    let mut next = reader.position;
+    let symbol = bits
+        .read_symbol_at(table, &mut next)
+        .map_err(CurrentEmdfParserError::Huffman)?;
+    reader.position = next;
     Ok(symbol)
 }
 
@@ -1447,29 +1444,6 @@ impl<'a> BitReader<'a> {
             .len()
             .saturating_mul(8)
             .saturating_sub(self.position)
-    }
-
-    fn remaining_packed_bits(&self) -> Vec<u8> {
-        let remaining = self.remaining();
-        let mut packed = vec![0_u8; remaining.div_ceil(8)];
-        for offset in 0..remaining {
-            let absolute = self.position + offset;
-            let source = (self.bytes[absolute / 8] >> (7 - absolute % 8)) & 1;
-            packed[offset / 8] |= source << (7 - offset % 8);
-        }
-        packed
-    }
-
-    fn skip_bits(&mut self, count: usize) -> Result<(), CurrentEmdfParserError> {
-        let end = self
-            .position
-            .checked_add(count)
-            .ok_or(CurrentEmdfParserError::TruncatedBitstream)?;
-        if end > self.bytes.len().saturating_mul(8) {
-            return Err(CurrentEmdfParserError::TruncatedBitstream);
-        }
-        self.position = end;
-        Ok(())
     }
 }
 

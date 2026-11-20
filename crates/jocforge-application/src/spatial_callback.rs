@@ -15,6 +15,7 @@ use jocforge_domain::{
             propose_next_normal_control_adm_input, propose_normal_control_snapshot,
         },
     },
+    joc::oamd::reader_target::ReaderTargetUpdateReceipt,
     profile::EncodingProfile,
     profile::resolve_selected_profile,
     source_axis::{SourceAxisBinding, SourceAxisError, SourceAxisOwnerGeneration},
@@ -51,8 +52,9 @@ use jocforge_domain::{
             build_held_global_source_geometry_snapshot_from_adm_input,
         },
         spatial_control::{
-            SpatialControlInstalled48Callback, SpatialControlInstalled48Error,
-            SpatialControlInstalled48Input, stage_spatial_control_installed48,
+            SpatialControlAfterOutputs, SpatialControlInstalled48Callback,
+            SpatialControlInstalled48Error, SpatialControlInstalled48Input,
+            stage_spatial_control_installed48,
         },
     },
     timeline::FrontendCallbackIndex,
@@ -440,10 +442,71 @@ pub struct MainSpatialCallbackCandidate {
     proposal: SpatialProductionCallbackProposal,
 }
 
+/// Audio and object metadata consumed by the encoder while spatial processing advances.
+pub struct MainSpatialFrame {
+    prepared_identity: Arc<PreparedJobInputIdentity>,
+    lineage: CallbackLineageIdentity,
+    outcome: SpatialAudioCallbackOutcome,
+    control_outputs: SpatialControlAfterOutputs,
+}
+
+pub struct MainSpatialFrameView<'a> {
+    pub(crate) prepared_identity: &'a Arc<PreparedJobInputIdentity>,
+    pub(crate) lineage: &'a CallbackLineageIdentity,
+    pub(crate) outcome: &'a SpatialAudioCallbackOutcome,
+    pub(crate) reader_receipt: Option<&'a ReaderTargetUpdateReceipt>,
+}
+
+/// Both the original callback and its completed frame expose the same immutable source.
+pub trait MainSpatialSource: Sync {
+    fn source_view(&self) -> MainSpatialFrameView<'_>;
+}
+
+impl MainSpatialSource for MainSpatialFrame {
+    fn source_view(&self) -> MainSpatialFrameView<'_> {
+        MainSpatialFrameView {
+            prepared_identity: &self.prepared_identity,
+            lineage: &self.lineage,
+            outcome: &self.outcome,
+            reader_receipt: self.control_outputs.reader_target_receipt(),
+        }
+    }
+}
+
+impl MainSpatialSource for MainSpatialCallbackCandidate {
+    fn source_view(&self) -> MainSpatialFrameView<'_> {
+        MainSpatialFrameView {
+            prepared_identity: &self.prepared_identity,
+            lineage: self.proposal.transaction_id(),
+            outcome: self.proposal.spatial_audio_outcome(),
+            reader_receipt: self
+                .proposal
+                .spatial_control_after_proposal()
+                .reader_target_receipt(),
+        }
+    }
+}
+
+impl MainSpatialFrame {
+    pub const fn callback_index(&self) -> FrontendCallbackIndex {
+        self.lineage.callback_index()
+    }
+
+    pub fn joc_qmf_projection(
+        &self,
+    ) -> Option<&jocforge_domain::spatial::spatial_audio_state::SelectedJocQmfProjection> {
+        match &self.outcome {
+            SpatialAudioCallbackOutcome::Priming => None,
+            SpatialAudioCallbackOutcome::Joc(projection) => Some(projection),
+        }
+    }
+}
+
 /// The validated F01E/F03W/F04 after-roots for one callback. This is a partial owner proposal;
 /// ReaderEof and the remaining programme owners still belong to the enclosing parent.
 #[must_use]
 pub struct MainSpatialCallbackOwnerProposal {
+    frame: MainSpatialFrame,
     next_roots: MainSpatialColdRoots,
     transaction_id: CallbackTransactionId,
     callback_index: FrontendCallbackIndex,
@@ -465,6 +528,12 @@ impl MainSpatialCallbackOwnerProposal {
 
     pub const fn receipts(&self) -> &[GtcOwnerReceipt; 3] {
         &self.receipts
+    }
+
+    pub fn into_frame_parts(
+        self,
+    ) -> (MainSpatialColdRoots, MainSpatialFrame, [GtcOwnerReceipt; 3]) {
+        (self.next_roots, self.frame, self.receipts)
     }
 
     pub fn into_parts(
@@ -616,7 +685,8 @@ impl MainSpatialColdRoots {
         )
         .map_err(|_| MainSpatialCallbackParentError::ReceiptMismatch)?;
 
-        let (spatial_control, spatial_control_receipt, _) = spatial_control.into_parts();
+        let (spatial_control, spatial_control_receipt, control_outputs) =
+            spatial_control.into_parts();
         let (spatial_audio, spatial_audio_receipt) = spatial_audio.into_parts();
         let expected_callback = FrontendCallbackIndex::new(
             callback_index
@@ -672,6 +742,12 @@ impl MainSpatialColdRoots {
         }
 
         Ok(MainSpatialCallbackOwnerProposal {
+            frame: MainSpatialFrame {
+                prepared_identity,
+                lineage: spatial_parts.transaction_id,
+                outcome: spatial_parts.spatial_audio_outcome,
+                control_outputs,
+            },
             next_roots: MainSpatialColdRoots {
                 frontend_control: Arc::clone(&self.frontend_control),
                 spatial_control,
@@ -740,7 +816,8 @@ impl MainSpatialColdRoots {
             .map_err(MainSpatialCallbackParentError::SpatialAudio)?;
 
         let (frontend_control, frontend_receipt) = frontend.into_parts();
-        let (spatial_control, spatial_control_receipt, _) = spatial_control.into_parts();
+        let (spatial_control, spatial_control_receipt, control_outputs) =
+            spatial_control.into_parts();
         let (spatial_audio, spatial_audio_receipt) = spatial_audio.into_parts();
         let expected_callback = FrontendCallbackIndex::new(
             callback_index
@@ -790,6 +867,12 @@ impl MainSpatialColdRoots {
         }
 
         Ok(MainSpatialCallbackOwnerProposal {
+            frame: MainSpatialFrame {
+                prepared_identity,
+                lineage: spatial_parts.transaction_id,
+                outcome: spatial_parts.spatial_audio_outcome,
+                control_outputs,
+            },
             next_roots: MainSpatialColdRoots {
                 frontend_control: Arc::new(frontend_control),
                 spatial_control,
@@ -923,6 +1006,13 @@ impl Deref for MainSpatialCallbackCandidate {
 pub fn stage_main_spatial_callback(
     input: MainSpatialCallbackInput<'_>,
 ) -> Result<MainSpatialCallbackCandidate, MainSpatialCallbackError> {
+    on_spatial_worker(|| stage_main_spatial_callback_on_current_thread(input))
+}
+
+/// Stages the callback on a worker with at least a 16 MiB DSP stack.
+pub fn stage_main_spatial_callback_on_current_thread(
+    input: MainSpatialCallbackInput<'_>,
+) -> Result<MainSpatialCallbackCandidate, MainSpatialCallbackError> {
     let prepared_identity = input.prepared.domain_identity_capability();
     let MainSpatialCallbackInput {
         prepared,
@@ -949,7 +1039,7 @@ pub fn stage_main_spatial_callback(
             physical_pcm_rows,
         },
     };
-    let proposal = stage_main_spatial_callback_work(MainSpatialCallbackWork {
+    let proposal = stage_main_spatial_callback_inner(MainSpatialCallbackWork {
         prepared,
         callback,
         spatial_control,
@@ -971,6 +1061,13 @@ pub fn stage_main_spatial_callback(
 
 /// Stages one cached MAIN callback using the exact last-normal F01E controls and SpatialControl PCM cache.
 pub fn stage_main_spatial_cached_callback(
+    input: MainSpatialCachedCallbackInput<'_>,
+) -> Result<MainSpatialCallbackCandidate, MainSpatialCallbackError> {
+    on_spatial_worker(|| stage_main_spatial_cached_callback_on_current_thread(input))
+}
+
+/// Stages the callback on a worker with at least a 16 MiB DSP stack.
+pub fn stage_main_spatial_cached_callback_on_current_thread(
     input: MainSpatialCachedCallbackInput<'_>,
 ) -> Result<MainSpatialCallbackCandidate, MainSpatialCallbackError> {
     let prepared_identity = input.prepared.domain_identity_capability();
@@ -996,7 +1093,7 @@ pub fn stage_main_spatial_cached_callback(
             controls: Box::new(controls),
         },
     };
-    let proposal = stage_main_spatial_callback_work(MainSpatialCallbackWork {
+    let proposal = stage_main_spatial_callback_inner(MainSpatialCallbackWork {
         prepared,
         callback,
         spatial_control,
@@ -1016,14 +1113,14 @@ pub fn stage_main_spatial_cached_callback(
     })
 }
 
-fn stage_main_spatial_callback_work(
-    input: MainSpatialCallbackWork<'_>,
-) -> Result<SpatialProductionCallbackProposal, MainSpatialCallbackError> {
+fn on_spatial_worker<T: Send>(
+    work: impl FnOnce() -> Result<T, MainSpatialCallbackError> + Send,
+) -> Result<T, MainSpatialCallbackError> {
     std::thread::scope(|scope| {
         let worker = std::thread::Builder::new()
             .name("jocforge-main-spatial-callback".to_owned())
             .stack_size(MAIN_SPATIAL_CALLBACK_STACK_BYTES)
-            .spawn_scoped(scope, move || stage_main_spatial_callback_inner(input))
+            .spawn_scoped(scope, work)
             .map_err(|_| MainSpatialCallbackError::WorkerUnavailable)?;
         worker
             .join()

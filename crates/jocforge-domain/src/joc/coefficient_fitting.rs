@@ -921,37 +921,33 @@ fn fit_independent_cells<const C: usize>(
     ) -> Result<CoefficientFitResult<C>, CoefficientSearchError>
     + Sync,
 ) -> Result<Vec<CoefficientFitResult<C>>, CoefficientFittingError> {
-    let workers = std::thread::available_parallelism().map_or(1, |n| n.get().min(4));
-    let fit = |batch: &[CoefficientNormalEquation<C>]| {
-        batch.iter().map(&search).collect::<Result<Vec<_>, _>>()
+    use rayon::prelude::*;
+    // Concurrent programmes share the same bound on DSP workers.
+    static WORKERS: std::sync::LazyLock<Option<rayon::ThreadPool>> =
+        std::sync::LazyLock::new(|| {
+            let count = std::thread::available_parallelism().map_or(1, |n| n.get().min(4));
+            if count < 2 {
+                return None;
+            }
+            rayon::ThreadPoolBuilder::new()
+                .num_threads(count)
+                .thread_name(|i| format!("joc-fit-{i}"))
+                .build()
+                .ok()
+        });
+    let Some(pool) = &*WORKERS else {
+        return equations
+            .iter()
+            .map(search)
+            .collect::<Result<_, _>>()
+            .map_err(CoefficientFittingError::Search);
     };
-    if workers == 1 {
-        return fit(equations).map_err(CoefficientFittingError::Search);
-    }
-    std::thread::scope(|scope| {
-        let mut batches = equations.chunks(equations.len().div_ceil(workers));
-        let first = batches.next().ok_or(CoefficientFittingError::Shape)?;
-        let pending = batches
-            .map(|batch| {
-                let fit = &fit;
-                let worker = std::thread::Builder::new()
-                    .spawn_scoped(scope, move || fit(batch))
-                    .ok();
-                (batch, worker)
-            })
-            .collect::<Vec<_>>();
-        let mut cells = fit(first).map_err(CoefficientFittingError::Search)?;
-        for (batch, worker) in pending {
-            let result = match worker {
-                Some(w) => w
-                    .join()
-                    .unwrap_or_else(|panic| std::panic::resume_unwind(panic)),
-                None => fit(batch),
-            };
-            cells.extend(result.map_err(CoefficientFittingError::Search)?);
-        }
-        Ok(cells)
-    })
+    let results: Vec<_> =
+        pool.install(|| equations.par_iter().with_min_len(8).map(&search).collect());
+    results
+        .into_iter()
+        .collect::<Result<_, _>>()
+        .map_err(CoefficientFittingError::Search)
 }
 
 fn assemble_fit(

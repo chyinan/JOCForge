@@ -1,6 +1,8 @@
 // pattern: Imperative Shell
 //! Composes one real MAIN source callback through F07-F15 as a noncommitting root proposal.
 
+use std::sync::Arc;
+
 use crate::{
     output_publication::{
         ProgrammeOutputStaging, SourceFrameOutputStageError, stage_source_frame_output,
@@ -12,9 +14,9 @@ use crate::{
 use jocforge_application::flat7x_pair_source::{
     CallerOwnedI0CrcrsvSeed, D0Block2PlacementReceipt, Flat7xD0BapParameters, Flat7xD0BsiStructure,
     Flat7xD0PcmFrameSettings, Flat7xI0AudioBlockSeriesError, Flat7xI0FrameAssemblyError,
-    Flat7xPairSourceError, I0AudioBlockSeriesBudget, I0AuxDataInput, I0BapCandidateQ,
-    assemble_flat7x_i0_frame_candidate_from_binding, bind_flat7x_d0_block2_source_receipt,
-    bind_flat7x_pair_source, flat7x_i0_audio_block_policy_v1,
+    Flat7xPairSourceError, I0AudioBlockBudgetProbe, I0AudioBlockSeriesBudget, I0AuxDataInput,
+    I0BapCandidateQ, assemble_flat7x_i0_frame_candidate_from_binding,
+    bind_flat7x_d0_block2_source_receipt, bind_flat7x_pair_source, flat7x_i0_audio_block_policy_v1,
     produce_flat7x_pair_d0_pcm_frame_candidate, stage_flat7x_pair_d0_pcm_block_series,
 };
 use jocforge_application::{
@@ -46,11 +48,10 @@ use jocforge_application::{
         ProgrammeOutputBinding, prepare_output_source_for_flat7x_suppressed,
         prepare_output_source_from_candidate, prepare_output_source_from_flat7x_pair,
     },
-    reader_eof_callback::{GtcOwnerId, ReaderEofMachine, ReaderEofReplacementCandidate},
+    reader_eof_callback::ReaderEofMachine,
     source_analysis_bridge::{
         AnalysisOwnerRoot, SelectedSourceAnalysisProviders, SpatialSourceAnalysisBridgeInput,
-        prepare_source_analysis_from_spatial_callback,
-        prepare_source_analysis_from_spatial_callback_with_installed_audio,
+        prepare_source_analysis_on_current_thread,
     },
     source_frame_bridge::{
         CodecOwnerRoot, Flat7xD0PcmSourceExtent, Flat7xSceneMix, Flat7xSourcePcmProjection,
@@ -58,7 +59,7 @@ use jocforge_application::{
         prepare_admitted_source_frame, stage_codec_owner_after_flat7x_pair,
         stage_flat7x_seven_carrier_coefficient_fit, stage_flat7x_seven_carrier_windows,
     },
-    spatial_callback::{MainSpatialCallbackCandidate, MainSpatialColdRoots},
+    spatial_callback::MainSpatialColdRoots,
 };
 use jocforge_io::pcm::frontend_pcm_source::{CodecSourceIndex, FrontendCallbackIndex};
 
@@ -105,8 +106,8 @@ pub(crate) struct Flat7xCarrierFrame {
 pub(crate) struct SourceFrameAdvance<'pcm> {
     pub callback_index: FrontendCallbackIndex,
     pub source_transaction_id: CallbackTransactionId,
-    pub main_roots: MainSpatialColdRoots,
-    pub reader_eof_root: ReaderEofMachine,
+    pub main_roots: Arc<MainSpatialColdRoots>,
+    pub reader_eof_root: Arc<ReaderEofMachine>,
     pub integrity_root: IntegrityProgrammeOwner,
     pub analysis_root: AnalysisOwnerRoot,
     pub drc_root: NoneDrcOwnerRoot,
@@ -157,13 +158,7 @@ pub(crate) fn stage_source_frame<'pcm>(
     callback_index: FrontendCallbackIndex,
     source_index: CodecSourceIndex,
     main_callback_transaction: CallbackTransactionId,
-    frontend_candidate: Option<
-        jocforge_application::meter_source_bridge::FrontendControlReplacementCandidate,
-    >,
-    spatial_callback: MainSpatialCallbackCandidate,
-    reader_eof_candidate: ReaderEofReplacementCandidate,
-    main_roots_before: &MainSpatialColdRoots,
-    reader_eof_before: &ReaderEofMachine,
+    callback: crate::encode_request::SpatialFrameAdvance,
     integrity_before: &IntegrityProgrammeOwner,
     main_providers: &SelectedMainSpatialCallbackProviders,
     meter_root: &StandaloneMeterRoot,
@@ -179,6 +174,7 @@ pub(crate) fn stage_source_frame<'pcm>(
     staging: &mut ProgrammeOutputStaging,
     flat7x_carriers: Option<&'pcm Flat7xCarrierFrame>,
 ) -> Result<SourceFrameAdvance<'pcm>, SourceFrameStageError> {
+    let spatial_callback = &callback.spatial;
     if source_for_callback_clock(callback_index) != Some(source_index)
         || spatial_callback.callback_index() != callback_index
         || main_callback_transaction.as_str().is_empty()
@@ -228,21 +224,15 @@ pub(crate) fn stage_source_frame<'pcm>(
     let analysis_input = SpatialSourceAnalysisBridgeInput {
         prepared,
         analysis_before,
-        spatial_callback: &spatial_callback,
+        spatial_callback,
         attempt_id: attempt,
         source_transaction_id: source_transaction_id.clone(),
         previous_short: *codec_before.previous_short(),
         providers: analysis_providers.providers(),
     };
-    let analysis_box = if let Some((_, _, i0_analysis_input)) = flat7x_callback_pcm.as_ref() {
-        prepare_source_analysis_from_spatial_callback_with_installed_audio(
-            analysis_input,
-            Some(i0_analysis_input),
-        )
-    } else {
-        prepare_source_analysis_from_spatial_callback(analysis_input)
-    }
-    .map_err(|error| format!("F07-F10 source stage: {error:?}"))?;
+    let installed_audio = flat7x_callback_pcm.as_ref().map(|(_, _, audio)| audio);
+    let analysis_box = prepare_source_analysis_on_current_thread(analysis_input, installed_audio)
+        .map_err(|error| format!("F07-F10 source stage: {error:?}"))?;
     let mut analysis_stage = *analysis_box;
     let flat7x_source_pcm_projection =
         if let Some((pcm_source, source_extent, _)) = flat7x_callback_pcm.as_ref() {
@@ -350,7 +340,7 @@ pub(crate) fn stage_source_frame<'pcm>(
     let metadata_input = MainMetadataBodiesInput {
         prepared,
         joc_profile,
-        spatial_callback: &spatial_callback,
+        spatial_callback,
         joc_before,
         source_transaction_id: source_transaction_id.clone(),
         qmf_functional: main_providers.spatial_audio().qmf_receiver_functional(),
@@ -589,22 +579,40 @@ pub(crate) fn stage_source_frame<'pcm>(
             let all_q_candidates = q_candidates.clone();
             let mut rejected_q = Vec::new();
             let mut selected_i0_frame = None;
+            let mut template = flat7x_i0_audio_block_policy_v1(
+                I0BapCandidateQ::new(0).expect("zero is an I0 SNR code"),
+            )
+            .ok_or_else(|| {
+                SourceFrameStageError::Pipeline(
+                    "Flat7x I0 local block policy could not be constructed".to_owned(),
+                )
+            })?;
+            for (block, code) in template
+                .blocks
+                .iter_mut()
+                .zip(d0_bsi_inputs.dynamic_range_codes())
+            {
+                block.dynamic_range_code = code;
+            }
+            let budget_probe = I0AudioBlockBudgetProbe::prepare(
+                frame_candidate.numeric_plan_receipt(),
+                template,
+                i0_budget,
+            );
             for q_value in q_candidates {
                 let Some(candidate_q) = I0BapCandidateQ::new(q_value) else {
                     continue;
                 };
-                let mut i0_policy =
-                    flat7x_i0_audio_block_policy_v1(candidate_q).ok_or_else(|| {
-                        SourceFrameStageError::Pipeline(
-                            "Flat7x I0 local block policy could not be constructed".to_owned(),
-                        )
-                    })?;
-                for (block, code) in i0_policy
-                    .blocks
-                    .iter_mut()
-                    .zip(d0_bsi_inputs.dynamic_range_codes())
+                if budget_probe
+                    .as_ref()
+                    .is_some_and(|probe| probe.exceeds_budget(candidate_q))
                 {
-                    block.dynamic_range_code = code;
+                    rejected_q.push(q_value);
+                    continue;
+                }
+                let mut i0_policy = template;
+                for block in &mut i0_policy.blocks {
+                    block.candidate_q = candidate_q;
                 }
                 let candidate = match assemble_flat7x_i0_frame_candidate_from_binding(
                     &binding,
@@ -835,66 +843,6 @@ pub(crate) fn stage_source_frame<'pcm>(
     let append = output_after.durable_append_receipt().map(to_append_summary);
     drop(frame_candidate);
 
-    let spatial_parent = if let Some(frontend) = frontend_candidate {
-        main_roots_before
-            .prepare_spatial_after_callback(
-                prepared,
-                frontend,
-                spatial_callback,
-                main_callback_transaction.clone(),
-            )
-            .map_err(|error| format!("F01E/F03W/F04 parent proposal: {error:?}"))?
-    } else {
-        let candidate_callback_index = spatial_callback.callback_index().value();
-        let source_lineage_callback_index =
-            spatial_callback.transaction_id().callback_index().value();
-        let frontend_callback_index = main_roots_before
-            .frontend_control()
-            .committed()
-            .callback_index()
-            .value();
-        let spatial_control_callback_index = main_roots_before
-            .spatial_control()
-            .committed()
-            .callback_index()
-            .value();
-        let spatial_audio_callback_index = main_roots_before
-            .spatial_audio()
-            .committed()
-            .callback_index()
-            .value();
-        main_roots_before
-            .prepare_spatial_after_cached_callback(
-                prepared,
-                spatial_callback,
-                main_callback_transaction.clone(),
-            )
-            .map_err(|error| {
-                format!(
-                    "cached F01E/F03W/F04 parent proposal: {error:?}; phase=cached_drain callback_index={} candidate_callback_index={} source_lineage_callback_index={} frontend_callback_index={} spatial_control_callback_index={} spatial_audio_callback_index={} source_index={}",
-                    callback_index.value(),
-                    candidate_callback_index,
-                    source_lineage_callback_index,
-                    frontend_callback_index,
-                    spatial_control_callback_index,
-                    spatial_audio_callback_index,
-                    source_index.value(),
-                )
-            })?
-    };
-    let (main_roots, _, _, spatial_receipts) = spatial_parent.into_parts();
-
-    if reader_eof_candidate.owner_receipt().transaction_id() != main_callback_transaction.as_str()
-        || reader_eof_candidate.owner_receipt().before_generation()
-            != reader_eof_before.generation()
-        || reader_eof_candidate.gtc_receipt().owner_id() != GtcOwnerId::ReaderEof
-    {
-        return Err(SourceFrameStageError::Pipeline(
-            "ReaderEof receipt is not bound to the callback before-root".to_owned(),
-        ));
-    }
-    let (reader_eof_root, _, reader_eof_receipt) = reader_eof_candidate.into_parts();
-
     let analysis_shared = analysis_stage
         .shared_analysis()
         .ok_or_else(|| "Analysis parent proposal: SharedAnalysisMissing".to_owned())?;
@@ -992,7 +940,8 @@ pub(crate) fn stage_source_frame<'pcm>(
     let (metadata_owner, _, metadata_receipt, _, _, _, _, _) = metadata_parent.into_parts();
     let (joc_state, _, _) = joc_after.into_parts();
 
-    let mut owner_receipts = spatial_receipts.to_vec();
+    let [frontend, control, audio, reader_eof_receipt] = callback.receipts;
+    let mut owner_receipts = vec![frontend, control, audio];
     owner_receipts.extend([
         analysis_receipt,
         drc_receipt,
@@ -1007,8 +956,8 @@ pub(crate) fn stage_source_frame<'pcm>(
     Ok(SourceFrameAdvance {
         callback_index,
         source_transaction_id,
-        main_roots,
-        reader_eof_root,
+        main_roots: callback.main_roots,
+        reader_eof_root: callback.reader_eof_root,
         integrity_root,
         analysis_root,
         drc_root,

@@ -1,6 +1,8 @@
 // pattern: Imperative Shell
 //! Owns the selected CLI programme roots and installs complete callback proposals once.
 
+use std::sync::Arc;
+
 use crate::source_execution::{
     DurableAppendSummary, Flat7xD0FrameSyntaxSummary, SourceFrameAdvance,
 };
@@ -111,8 +113,8 @@ pub(crate) struct ProgrammeOwnerRoots<'a> {
     durable_bytes: u64,
     measurement: &'a ProgrammeMeasurementReceipt,
     meter: &'a StandaloneMeterRoot,
-    main: MainSpatialColdRoots,
-    reader_eof: ReaderEofMachine,
+    main: Arc<MainSpatialColdRoots>,
+    reader_eof: Arc<ReaderEofMachine>,
     integrity: IntegrityProgrammeOwner,
     analysis: AnalysisOwnerRoot,
     drc: NoneDrcOwnerRoot,
@@ -235,8 +237,8 @@ impl<'a> ProgrammeOwnerRoots<'a> {
             durable_bytes: 0,
             measurement,
             meter,
-            main,
-            reader_eof,
+            main: Arc::new(main),
+            reader_eof: Arc::new(reader_eof),
             integrity,
             analysis,
             drc,
@@ -287,11 +289,11 @@ impl<'a> ProgrammeOwnerRoots<'a> {
         self.status == ProgrammeRootStatus::Done
     }
 
-    pub const fn main(&self) -> &MainSpatialColdRoots {
+    pub const fn main(&self) -> &Arc<MainSpatialColdRoots> {
         &self.main
     }
 
-    pub const fn reader_eof(&self) -> &ReaderEofMachine {
+    pub const fn reader_eof(&self) -> &Arc<ReaderEofMachine> {
         &self.reader_eof
     }
 
@@ -336,8 +338,8 @@ impl<'a> ProgrammeOwnerRoots<'a> {
         prepared: &PreparedJobInput,
         callback_index: FrontendCallbackIndex,
         transaction_id: CallbackTransactionId,
-        main_roots: MainSpatialColdRoots,
-        reader_eof: ReaderEofMachine,
+        main_roots: Arc<MainSpatialColdRoots>,
+        reader_eof: Arc<ReaderEofMachine>,
         changed_receipts: [GtcOwnerReceipt; 4],
     ) -> Result<(Self, ProgrammeCallbackCommit), String> {
         if callback_index != self.callback_index

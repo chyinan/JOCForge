@@ -547,66 +547,11 @@ pub fn build_selected_frame_trial(
         ));
     }
 
-    let masks = plan.bap_masks.get_or_init(|| {
-        let exponent_rows_by_block: [[&[u8]; 6]; BLOCK_COUNT] = std::array::from_fn(|block| {
-            std::array::from_fn(|channel| {
-                if channel < FULLBAND_LANE_COUNT {
-                    plan.exponent_plan_by_block[block].fullband[channel]
-                        .decoded_exponents
-                        .as_slice()
-                } else {
-                    plan.exponent_plan_by_block[block]
-                        .lfe
-                        .decoded_exponents
-                        .as_slice()
-                }
-            })
-        });
-        let fine_zero = q.trailing_zeros() >= 4;
-        let bap_input = BapFrameInput {
-            decoded_exponents_by_block: &exponent_rows_by_block,
-            end_exclusive_by_channel: [
-                FULLBAND_BIN_COUNT,
-                FULLBAND_BIN_COUNT,
-                FULLBAND_BIN_COUNT,
-                FULLBAND_BIN_COUNT,
-                FULLBAND_BIN_COUNT,
-                LFE_BIN_COUNT,
-            ],
-            candidate: q,
-            slow_decay_code: MAIN_SLOW_DECAY_CODE,
-            fast_decay_code: MAIN_FAST_DECAY_CODE,
-            slow_gain_code: MAIN_SLOW_GAIN_CODE,
-            db_per_bit_codes: plan.db_per_bit_codes,
-            floor_code: MAIN_FLOOR_CODE,
-            fast_gain_code: MAIN_FAST_GAIN_CODE,
-            caller_all_active_fine_zero_by_block: [fine_zero; BLOCK_COUNT],
-            profile: BapProfileInput::selected(),
-        };
-        PreparedBapFrame::prepare(&plan.bap_parameters, &bap_input)
-    });
-    let bap_frame = match masks.as_ref().map_err(|e| *e) {
-        Ok(rows) => rows.allocate(&plan.bap_parameters, q),
-        Err(BapError::InputError) => {
-            return Ok(SelectedFrameTrialOutcome::Infeasible(
-                CandidateInfeasibleReason::BapInput,
-            ));
-        }
-        Err(
-            error @ (BapError::ParameterUnavailable
-            | BapError::ParameterError
-            | BapError::UnsupportedProfile),
-        ) => {
-            return Err(SelectedFrameTrialFatalError::BapProvider(error));
-        }
+    let Some(bap_frame) = trial_bap_frame(plan, q)? else {
+        return Ok(SelectedFrameTrialOutcome::Infeasible(
+            CandidateInfeasibleReason::BapInput,
+        ));
     };
-    if bap_frame.candidate_q() != q {
-        return Err(SelectedFrameTrialFatalError::BapCandidateJoin {
-            requested: q,
-            received: bap_frame.candidate_q(),
-        });
-    }
-
     let frame_bits = plan.frame_size.bits();
     let pre_tail_bit_limit = frame_bits - 34;
     let mut frame_bytes = vec![0_u8; plan.frame_size.bytes()];
@@ -624,7 +569,7 @@ pub fn build_selected_frame_trial(
                 CandidateInfeasibleReason::FrameField(error),
             ));
         }
-        let body = match write_frame_body(&mut writer, plan, q, &bap_frame) {
+        let body = match write_frame_body(&mut writer, plan, q, Some(&bap_frame)) {
             Ok(bits) => bits,
             Err(BuildError::Writer(error)) => {
                 return Ok(SelectedFrameTrialOutcome::Infeasible(
@@ -750,6 +695,157 @@ pub fn build_selected_frame_trial(
     )))
 }
 
+fn trial_bap_frame(
+    plan: &SelectedFrameTrialPlan<'_>,
+    q: u16,
+) -> Result<Option<super::bap::BapFrame>, SelectedFrameTrialFatalError> {
+    let masks = plan.bap_masks.get_or_init(|| {
+        let exponent_rows_by_block: [[&[u8]; 6]; BLOCK_COUNT] = std::array::from_fn(|block| {
+            std::array::from_fn(|channel| {
+                if channel < FULLBAND_LANE_COUNT {
+                    plan.exponent_plan_by_block[block].fullband[channel]
+                        .decoded_exponents
+                        .as_slice()
+                } else {
+                    plan.exponent_plan_by_block[block]
+                        .lfe
+                        .decoded_exponents
+                        .as_slice()
+                }
+            })
+        });
+        let fine_zero = q.trailing_zeros() >= 4;
+        let bap_input = BapFrameInput {
+            decoded_exponents_by_block: &exponent_rows_by_block,
+            end_exclusive_by_channel: [
+                FULLBAND_BIN_COUNT,
+                FULLBAND_BIN_COUNT,
+                FULLBAND_BIN_COUNT,
+                FULLBAND_BIN_COUNT,
+                FULLBAND_BIN_COUNT,
+                LFE_BIN_COUNT,
+            ],
+            candidate: q,
+            slow_decay_code: MAIN_SLOW_DECAY_CODE,
+            fast_decay_code: MAIN_FAST_DECAY_CODE,
+            slow_gain_code: MAIN_SLOW_GAIN_CODE,
+            db_per_bit_codes: plan.db_per_bit_codes,
+            floor_code: MAIN_FLOOR_CODE,
+            fast_gain_code: MAIN_FAST_GAIN_CODE,
+            caller_all_active_fine_zero_by_block: [fine_zero; BLOCK_COUNT],
+            profile: BapProfileInput::selected(),
+        };
+        PreparedBapFrame::prepare(&plan.bap_parameters, &bap_input)
+    });
+    let bap_frame = match masks.as_ref().map_err(|e| *e) {
+        Ok(rows) => rows.allocate(&plan.bap_parameters, q),
+        Err(BapError::InputError) => {
+            return Ok(None);
+        }
+        Err(
+            error @ (BapError::ParameterUnavailable
+            | BapError::ParameterError
+            | BapError::UnsupportedProfile),
+        ) => {
+            return Err(SelectedFrameTrialFatalError::BapProvider(error));
+        }
+    };
+    if bap_frame.candidate_q() != q {
+        return Err(SelectedFrameTrialFatalError::BapCandidateJoin {
+            requested: q,
+            received: bap_frame.candidate_q(),
+        });
+    }
+
+    Ok(Some(bap_frame))
+}
+
+/// Main-q changes the mantissa lengths and the value of a fixed-width SNR field.
+/// All other body fields, including the EMDF skip container, have fixed lengths.
+pub(super) struct MainQBudget {
+    available_bits: Option<u32>,
+    reserved_codes: Vec<(usize, usize, usize, u8)>,
+}
+
+impl MainQBudget {
+    pub(super) fn for_plan(plan: &SelectedFrameTrialPlan<'_>) -> Self {
+        let mut scratch = vec![0; plan.frame_size.bytes()];
+        let available_bits = FrameBitWriter::new(&mut scratch, FrameBitCursor::new(0))
+            .ok()
+            .and_then(|mut writer| {
+                write_frame_body(&mut writer, plan, 0, None).ok()?;
+                (plan.frame_size.bits() - 34).checked_sub(writer.cursor().bit_offset())
+            });
+
+        // Preflight already bounded the coefficients to [-1, 1] and exponents to
+        // 0..=24. Only the reserved BAP 3/5 codes can invalidate a quantization in
+        // that domain. Below the float immediately preceding normalized magnitude
+        // one, even rounding (x + 1) cannot reach the upper sentinel.
+        let mut reserved_codes = Vec::new();
+        for (block, (coefficients, exponents)) in plan
+            .coefficients_by_block
+            .iter()
+            .zip(plan.exponent_plan_by_block)
+            .enumerate()
+        {
+            let fullband = coefficients
+                .fullband_words
+                .iter()
+                .zip(&exponents.fullband)
+                .map(|(words, lane)| (words.as_slice(), lane.decoded_exponents.as_slice()));
+            let lfe = (
+                coefficients.lfe_words.as_slice(),
+                exponents.lfe.decoded_exponents.as_slice(),
+            );
+            for (channel, (words, exponents)) in fullband.chain(std::iter::once(lfe)).enumerate() {
+                for (bin, (&word, &exponent)) in words.iter().zip(exponents).enumerate() {
+                    let limit = ((127 - u32::from(exponent)) << 23) - 1;
+                    if (word & 0x7fff_ffff) >= limit {
+                        for bap in [3, 5] {
+                            if super::mantissa::quantize_mantissa(word, i16::from(exponent), bap)
+                                .is_err()
+                            {
+                                reserved_codes.push((block, channel, bin, bap));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        Self {
+            available_bits,
+            reserved_codes,
+        }
+    }
+
+    pub(super) fn fits(
+        &self,
+        plan: &SelectedFrameTrialPlan<'_>,
+        q: u16,
+    ) -> Result<bool, SelectedFrameTrialFatalError> {
+        let Some(frame) = trial_bap_frame(plan, q)? else {
+            return Ok(false);
+        };
+        let Some(available) = self.available_bits else {
+            return Ok(false);
+        };
+        for &(block, channel, bin, reserved) in &self.reserved_codes {
+            let row = &frame.blocks()[block];
+            let bap = if channel < FULLBAND_LANE_COUNT {
+                row.fullband_rows()[channel][bin]
+            } else {
+                row.lfe_row()[bin]
+            };
+            if bap == reserved {
+                return Ok(false);
+            }
+        }
+        let costs = super::converter_search::converter_mantissa_costs(frame.blocks());
+        Ok(costs.into_iter().map(i32::from).sum::<i32>()
+            <= i32::try_from(available).expect("frame bits fit i32"))
+    }
+}
+
 fn validate_bsi_input(input: &SelectedBsiInput) -> Result<(), SelectedFramePlanError> {
     if !(1..=31).contains(&input.dialnorm)
         || input.rf_compression_code.is_none()
@@ -873,7 +969,7 @@ fn write_frame_body(
     writer: &mut FrameBitWriter<'_>,
     plan: &SelectedFrameTrialPlan<'_>,
     q: u16,
-    bap_frame: &super::bap::BapFrame,
+    bap_frame: Option<&super::bap::BapFrame>,
 ) -> Result<FrameBodyBits, BuildError> {
     match write_selected_eac3_fixed_prefix(writer, plan.frame_size.code()) {
         Ok(_) => {}
@@ -907,6 +1003,9 @@ fn write_frame_body(
         }
         skip_ranges[block] = BitRange::new(skip_start_bit, writer.cursor().bit_offset());
 
+        let Some(bap_frame) = bap_frame else {
+            continue;
+        };
         let mantissas = pack_block_mantissas(&mantissa_items_for_block(plan, bap_frame, block)?)
             .map_err(|error| BuildError::Mantissa { block, error })?;
         *mantissa_bit_count = mantissas.bit_count();
@@ -1248,16 +1347,15 @@ fn append_mantissa_bits(
     writer: &mut FrameBitWriter<'_>,
     output: &super::grouped_quantizer::MantissaBlockOutput,
 ) -> Result<(), BuildError> {
-    for bit_index in 0..output.bit_count() {
-        let byte_index =
-            usize::try_from(bit_index / 8).map_err(|_| BuildError::MantissaBitStream)?;
-        let byte = *output
-            .packed_bytes()
-            .get(byte_index)
-            .ok_or(BuildError::MantissaBitStream)?;
-        let shift = u8::try_from(7 - (bit_index % 8)).map_err(|_| BuildError::MantissaBitStream)?;
+    let full_bytes =
+        usize::try_from(output.bit_count() / 8).map_err(|_| BuildError::MantissaBitStream)?;
+    let (whole, tail) = output.packed_bytes().split_at(full_bytes);
+    writer.write_bytes(whole).map_err(BuildError::Writer)?;
+    let remaining = (output.bit_count() % 8) as u8;
+    if remaining != 0 {
+        let byte = tail.first().ok_or(BuildError::MantissaBitStream)?;
         writer
-            .write_bit((byte >> shift) & 1 != 0)
+            .write_unsigned(u32::from(*byte >> (8 - remaining)), remaining)
             .map_err(BuildError::Writer)?;
     }
     Ok(())
@@ -1595,6 +1693,41 @@ mod tests {
                 1_024
             ))
         );
+
+        // An exactly full-scale coefficient and its lower float neighbor can
+        // both round to a reserved grouped code even when the bit cost fits.
+        // Compare every decision with the full writer, including the real q
+        // traversal and the final frame, for a deliberately saturated plan.
+        let mut saturated = coefficient_blocks;
+        saturated[0].fullband_words[0][0] = 1.0_f32.to_bits();
+        saturated[5].lfe_words[1] = 1.0_f32.to_bits() - 1;
+        let saturated_plan = SelectedFrameTrialPlan {
+            coefficients_by_block: &saturated,
+            ..plan
+        };
+        let budget = MainQBudget::for_plan(&saturated_plan);
+        assert!(!budget.reserved_codes.is_empty());
+        let mut saw_sentinel = false;
+        for q in (16..=784).step_by(3) {
+            let trial = build_selected_frame_trial(&saturated_plan, q).unwrap();
+            saw_sentinel |= matches!(
+                trial,
+                SelectedFrameTrialOutcome::Infeasible(CandidateInfeasibleReason::Mantissa { .. })
+            );
+            assert_eq!(
+                budget.fits(&saturated_plan, q).unwrap(),
+                matches!(trial, SelectedFrameTrialOutcome::Built(_)),
+                "q {q}"
+            );
+        }
+        assert!(saw_sentinel);
+        let search =
+            super::super::selected_main_q_search::search_selected_main_q::<()>(Ok(&saturated_plan))
+                .unwrap();
+        let exact =
+            super::super::selected_main_q_search::search_with_trial_frames::<()>(&saturated_plan)
+                .unwrap();
+        assert_eq!(search, exact);
 
         let rows = [
             (CodecRateProfile::Kbps384, 767, 1_536, 50_688),

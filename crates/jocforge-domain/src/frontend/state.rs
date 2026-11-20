@@ -11,8 +11,8 @@ use super::normal_control_snapshot::{
 use super::provider::{F01EProviderReceipt, NormalizedConfig, ValidatedF01EColdProvider};
 use crate::timeline::{FrontendCallbackIndex, NormalCallbackCount};
 use crate::transaction::{
-    AttemptId, CallbackLineageIdentity, CallbackTransactionId, GtcOwnerId, GtcOwnerReceipt,
-    GtcOwnerReceiptError, GtcOwnerStateSnapshot, ProgrammeId,
+    AttemptId, CallbackLineageIdentity, CallbackTransactionId, CanonicalStateBytes, GtcOwnerId,
+    GtcOwnerReceipt, GtcOwnerReceiptError, GtcOwnerStateSnapshot, ProgrammeId,
 };
 use serde_json::{Value, json};
 use std::sync::Arc;
@@ -189,7 +189,7 @@ pub struct FrontendControlState {
     prepared_identity: Option<Arc<NormalControlPreparedSnapshot>>,
     dynamic_prepared_identity: Option<Arc<NormalControlAdmInputSnapshot>>,
     dynamic_after_state: Option<Arc<NormalControlAdmInputAfterState>>,
-    canonical: Arc<[u8]>,
+    canonical: Arc<CanonicalStateBytes>,
     provider_receipt: F01EProviderReceipt,
 }
 impl FrontendControlState {
@@ -199,7 +199,8 @@ impl FrontendControlState {
         attempt_id: AttemptId,
     ) -> Result<Self, FrontendControlError> {
         let (cold, canonical, provider_receipt) = provider.into_parts();
-        if ProviderSha256::digest(&canonical) != provider_receipt.canonical_sha256() {
+        let canonical = Arc::new(CanonicalStateBytes::new(canonical.to_vec()));
+        if canonical.digest() != provider_receipt.canonical_sha256().to_bytes() {
             return Err(FrontendControlError::ProviderMismatch);
         }
         let objects = cold
@@ -278,11 +279,11 @@ impl FrontendControlState {
             prepared_identity: Some(parts.prepared_identity),
             dynamic_prepared_identity: None,
             dynamic_after_state: None,
-            canonical: Arc::from([]),
+            canonical: Arc::clone(&before.canonical),
             provider_receipt: before.provider_receipt.clone(),
         };
         let canonical = encode_frontend_control_after_state(&state)?;
-        state.canonical = Arc::from(canonical.into_boxed_slice());
+        state.canonical = Arc::new(CanonicalStateBytes::new(canonical));
         Ok(state)
     }
 
@@ -385,11 +386,11 @@ impl FrontendControlState {
             prepared_identity: None,
             dynamic_prepared_identity: Some(prepared),
             dynamic_after_state: Some(after_state),
-            canonical: Arc::from([]),
+            canonical: Arc::clone(&before.canonical),
             provider_receipt: before.provider_receipt.clone(),
         };
         let canonical = encode_frontend_control_after_state(&state)?;
-        state.canonical = Arc::from(canonical.into_boxed_slice());
+        state.canonical = Arc::new(CanonicalStateBytes::new(canonical));
         Ok(state)
     }
 
@@ -450,10 +451,10 @@ impl FrontendControlState {
         self.dynamic_after_state.as_ref()
     }
     pub fn canonical_bytes(&self) -> &[u8] {
-        &self.canonical
+        self.canonical.bytes()
     }
     pub fn digest(&self) -> FrontendControlDigest {
-        FrontendControlDigest(ProviderSha256::digest(&self.canonical))
+        FrontendControlDigest(ProviderSha256::from_digest(self.canonical.digest()))
     }
 }
 
@@ -501,11 +502,10 @@ impl FrontendControlOwnerStateReference<'_> {
 
     /// Adapts the complete owner reference to the registered GTC state member.
     pub fn gtc_snapshot(&self) -> Result<GtcOwnerStateSnapshot<'_>, GtcOwnerReceiptError> {
-        GtcOwnerStateSnapshot::from_canonical_bytes(
+        self.state.canonical.snapshot(
             GtcOwnerId::FrontendControl,
             self.generation,
             self.cold_sha256.to_bytes(),
-            self.canonical_bytes(),
         )
     }
 }
@@ -972,20 +972,12 @@ impl FrontendControlMachine {
         };
         let before_reference = self.state_reference();
         let after_reference = next_machine.state_reference();
-        let before = GtcOwnerStateSnapshot::from_canonical_bytes(
-            GtcOwnerId::FrontendControl,
-            before_reference.generation(),
-            before_reference.cold_sha256().to_bytes(),
-            before_reference.canonical_bytes(),
-        )
-        .map_err(FrontendControlError::GtcReceipt)?;
-        let after = GtcOwnerStateSnapshot::from_canonical_bytes(
-            GtcOwnerId::FrontendControl,
-            after_reference.generation(),
-            after_reference.cold_sha256().to_bytes(),
-            after_reference.canonical_bytes(),
-        )
-        .map_err(FrontendControlError::GtcReceipt)?;
+        let before = before_reference
+            .gtc_snapshot()
+            .map_err(FrontendControlError::GtcReceipt)?;
+        let after = after_reference
+            .gtc_snapshot()
+            .map_err(FrontendControlError::GtcReceipt)?;
         let receipt = GtcOwnerReceipt::from_transition(before, after, transaction_id)
             .map_err(FrontendControlError::GtcReceipt)?;
         Ok(FrontendControlReplacementCandidate {

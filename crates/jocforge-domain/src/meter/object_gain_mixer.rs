@@ -261,10 +261,32 @@ pub fn stage_object_gain_mix(
         output_filter,
     )?;
 
-    let mut output = [[0.0_f32; BLOCK_SAMPLES]; OUTPUT_CHANNELS];
     let mut rows_after = rows_before.to_vec();
     let mut proof = Vec::with_capacity(rows_before.len() * OUTPUT_CHANNELS);
+    let output = mix_gain_rows(
+        &mut rows_after,
+        source_blocks,
+        update_flag,
+        interpolation_blocks,
+        |item| proof.push(item),
+    );
+    Ok(StagedObjectGainMix {
+        output,
+        rows_after,
+        proof,
+    })
+}
 
+/// Mix caller-validated working rows in source order. Diagnostics are optional for
+/// the programme renderer, which consumes only the updated gains and sample block.
+pub(super) fn mix_gain_rows(
+    rows_after: &mut [GainRow],
+    source_blocks: &[[f32; BLOCK_SAMPLES]],
+    update_flag: u8,
+    interpolation_blocks: u32,
+    mut record: impl FnMut(GainMixProof),
+) -> [[f32; BLOCK_SAMPLES]; OUTPUT_CHANNELS] {
+    let mut output = [[0.0_f32; BLOCK_SAMPLES]; OUTPUT_CHANNELS];
     for (source, (row, samples)) in rows_after.iter_mut().zip(source_blocks.iter()).enumerate() {
         for (channel, output_channel) in output.iter_mut().enumerate() {
             let previous = row.current[channel];
@@ -298,7 +320,7 @@ pub fn stage_object_gain_mix(
                 }
                 row.current[channel] = add_r32(row.current[channel], row.step[channel]);
                 row.remaining[channel] -= 1;
-                proof.push(GainMixProof {
+                record(GainMixProof {
                     source: GainMixSourceIndex(source as u8),
                     channel: GainMixChannelIndex(channel as u8),
                     branch: GainMixBranch::Interpolated,
@@ -310,7 +332,7 @@ pub fn stage_object_gain_mix(
                     output_channel[sample] = add_r32(weighted_sample, output_channel[sample]);
                 }
                 row.current[channel] = target;
-                proof.push(GainMixProof {
+                record(GainMixProof {
                     source: GainMixSourceIndex(source as u8),
                     channel: GainMixChannelIndex(channel as u8),
                     branch: GainMixBranch::ConstantMultiplyAdd,
@@ -320,11 +342,7 @@ pub fn stage_object_gain_mix(
         }
     }
 
-    Ok(StagedObjectGainMix {
-        output,
-        rows_after,
-        proof,
-    })
+    output
 }
 
 /// Serializes complete gain rows using the approved canonical row-state layout.
@@ -465,22 +483,22 @@ fn validate_f32_values(
     Ok(())
 }
 
-#[inline(never)]
+#[inline]
 fn add_r32(left: f32, right: f32) -> f32 {
     left + right
 }
 
-#[inline(never)]
+#[inline]
 fn subtract_r32(left: f32, right: f32) -> f32 {
     left - right
 }
 
-#[inline(never)]
+#[inline]
 fn multiply_r32(left: f32, right: f32) -> f32 {
     left * right
 }
 
-#[inline(never)]
+#[inline]
 fn divide_r32(left: f32, right: f32) -> f32 {
     left / right
 }

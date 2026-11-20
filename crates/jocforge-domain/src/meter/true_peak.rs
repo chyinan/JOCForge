@@ -137,49 +137,65 @@ pub fn process_true_peak_block_with_parameters(
     input: &[Vec<u32>],
     parameters: &TruePeakParameters,
 ) -> Result<TruePeakBlockResult, TruePeakError> {
-    validate_state(state)?;
-    if input.len() != CHANNEL_COUNT
-        || input
-            .iter()
-            .any(|row| row.len() != SOURCE_SAMPLES || row.iter().any(|word| !is_finite(*word)))
-    {
-        return Err(TruePeakError::Input);
-    }
-
     let mut next_state = state.clone();
     let mut measurements = Vec::with_capacity(CHANNEL_COUNT);
     let mut lane_metrics = Vec::with_capacity(CHANNEL_COUNT);
-    for (channel, source_row) in input.iter().enumerate() {
-        let (measurement, next_history, factor) = if channel == 3 {
-            (source_row.clone(), None, 1_u8)
-        } else {
-            let (samples, history) =
-                interpolate_channel(&state.lanes[channel].words, source_row, parameters)?;
-            (samples, Some(history), 4_u8)
-        };
-        if let Some(history) = next_history {
-            next_state.lanes[channel].words = history;
-        }
-        let metrics = measure_channel(&measurement, source_row, factor, parameters)?;
-        if f32::from_bits(metrics.true_peak_internal_word)
-            > f32::from_bits(next_state.true_peak_internal_words[channel])
-        {
-            next_state.true_peak_internal_words[channel] = metrics.true_peak_internal_word;
-        }
-        if f32::from_bits(metrics.sample_peak_internal_word)
-            > f32::from_bits(next_state.sample_peak_internal_words[channel])
-        {
-            next_state.sample_peak_internal_words[channel] = metrics.sample_peak_internal_word;
-        }
-        measurements.push(measurement);
-        lane_metrics.push(metrics);
+    if input.len() != CHANNEL_COUNT {
+        return Err(TruePeakError::Input);
     }
-
+    let rows = std::array::from_fn(|channel| input[channel].as_slice());
+    advance_true_peak_block(&mut next_state, &rows, parameters, |row, metrics| {
+        measurements.push(row.into_owned());
+        lane_metrics.push(metrics);
+    })?;
     Ok(TruePeakBlockResult {
         measurements,
         lane_metrics,
         next_state,
     })
+}
+
+/// Advances an owned working copy. The caller decides which diagnostic rows to retain.
+pub(super) fn advance_true_peak_block(
+    state: &mut TruePeakState,
+    rows: &[&[u32]; CHANNEL_COUNT],
+    parameters: &TruePeakParameters,
+    mut collect: impl FnMut(std::borrow::Cow<'_, [u32]>, TruePeakLaneMetrics),
+) -> Result<(), TruePeakError> {
+    validate_state(state)?;
+    if rows
+        .iter()
+        .any(|row| row.len() != SOURCE_SAMPLES || row.iter().any(|word| !is_finite(*word)))
+    {
+        return Err(TruePeakError::Input);
+    }
+    for (channel, &source) in rows.iter().enumerate() {
+        let (measurement, factor) = if channel == 3 {
+            (std::borrow::Cow::Borrowed(source), 1)
+        } else {
+            (
+                std::borrow::Cow::Owned(interpolate_channel(
+                    &mut state.lanes[channel].words,
+                    source,
+                    parameters,
+                )?),
+                4,
+            )
+        };
+        let metrics = measure_channel(&measurement, source, factor, parameters)?;
+        if f32::from_bits(metrics.true_peak_internal_word)
+            > f32::from_bits(state.true_peak_internal_words[channel])
+        {
+            state.true_peak_internal_words[channel] = metrics.true_peak_internal_word;
+        }
+        if f32::from_bits(metrics.sample_peak_internal_word)
+            > f32::from_bits(state.sample_peak_internal_words[channel])
+        {
+            state.sample_peak_internal_words[channel] = metrics.sample_peak_internal_word;
+        }
+        collect(measurement, metrics);
+    }
+    Ok(())
 }
 
 /// Immutable typed selected parameters validated from the authorized true-peak and log assets.
@@ -331,20 +347,17 @@ fn is_finite(word: u32) -> bool {
 }
 
 fn interpolate_channel(
-    old_state: &[u32],
+    state: &mut [u32],
     source: &[u32],
     parameters: &TruePeakParameters,
-) -> Result<(Vec<u32>, Vec<u32>), TruePeakError> {
-    if old_state.len() != FIR_STATE_WORDS || source.len() != SOURCE_SAMPLES {
-        return Err(TruePeakError::Input);
+) -> Result<Vec<u32>, TruePeakError> {
+    // The input is finite and multiplication by 1/4 leaves room for the noise offset.
+    for (dst, &word) in state[11..11 + SOURCE_SAMPLES].iter_mut().zip(source) {
+        *dst = (f32::from_bits(word) * f32::from_bits(QUARTER_WORD)
+            + f32::from_bits(TRUE_PEAK_NOISE_WORD))
+        .to_bits();
     }
-    let mut state = old_state.to_vec();
-    for (index, source_word) in source.iter().enumerate() {
-        let quarter_scaled = multiply_words(*source_word, QUARTER_WORD)?;
-        state[11 + index] = add_words(quarter_scaled, TRUE_PEAK_NOISE_WORD)?;
-    }
-
-    let first = fir(&state, SOURCE_SAMPLES, &parameters.a)?;
+    let first = fir(state, SOURCE_SAMPLES, &parameters.a)?;
     for index in 0..SOURCE_SAMPLES {
         state[SECOND_STAGE_START + 9 + 2 * index] = first[index];
         state[SECOND_STAGE_START + 10 + 2 * index] = state[6 + index];
@@ -363,7 +376,7 @@ fn interpolate_channel(
         SECOND_STAGE_START + 2048..SECOND_STAGE_START + 2057,
         SECOND_STAGE_START,
     );
-    Ok((output, state))
+    Ok(output)
 }
 
 fn fir(
@@ -444,23 +457,22 @@ fn measure_channel(
 }
 
 fn first_absolute_maximum(words: &[u32]) -> Result<(u32, usize), TruePeakError> {
-    let first = *words.first().ok_or(TruePeakError::Input)?;
-    if !is_finite(first) {
+    // Masking the sign makes unsigned ordering match absolute IEEE-754 magnitude.
+    // The maximum also detects every infinity and NaN. Search separately for the
+    // first occurrence so ties keep their original index and the reduction can vectorize.
+    let maximum = words
+        .iter()
+        .map(|word| word & 0x7fff_ffff)
+        .max()
+        .ok_or(TruePeakError::Input)?;
+    if !is_finite(maximum) {
         return Err(TruePeakError::Input);
     }
-    let mut maximum = first & 0x7fff_ffff;
-    let mut maximum_index = 0;
-    for (index, word) in words.iter().enumerate().skip(1) {
-        if !is_finite(*word) {
-            return Err(TruePeakError::Input);
-        }
-        let candidate = *word & 0x7fff_ffff;
-        if f32::from_bits(candidate) > f32::from_bits(maximum) {
-            maximum = candidate;
-            maximum_index = index;
-        }
-    }
-    Ok((maximum, maximum_index))
+    let index = words
+        .iter()
+        .position(|word| word & 0x7fff_ffff == maximum)
+        .ok_or(TruePeakError::Input)?;
+    Ok((maximum, index))
 }
 
 fn sample_peak_metric(peak_word: u32, log_constants: &[u32; 11]) -> Result<u32, TruePeakError> {

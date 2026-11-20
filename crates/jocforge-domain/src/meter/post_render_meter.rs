@@ -28,9 +28,7 @@ use super::{
         SharedGainDelayError, SharedGainDelayParameters, SharedGainDelayState,
         stage_shared_gain_delay_callback,
     },
-    true_peak::{
-        TruePeakError, TruePeakParameters, TruePeakState, process_true_peak_block_with_parameters,
-    },
+    true_peak::{TruePeakError, TruePeakParameters, TruePeakState, advance_true_peak_block},
     ungated_mean::{
         UngatedMeanError, UngatedMeanInput, UngatedMeanParameters, UngatedMeanState,
         process_ungated_mean,
@@ -459,15 +457,14 @@ fn stage_post_render_numeric(
     let mut ungated_after = before.ungated_mean.clone();
     let mut energy_record_count = 0_u64;
     for block in complete_blocks {
-        let block_rows = block.lanes().map(<[u32]>::to_vec);
-        true_peak_after = process_true_peak_block_with_parameters(
-            &true_peak_after,
-            &block_rows,
+        let block_views = block.lanes();
+        advance_true_peak_block(
+            &mut true_peak_after,
+            &block_views,
             parameters.true_peak(),
+            |_, _| {},
         )
-        .map_err(PostRenderMeterError::TruePeak)?
-        .next_state;
-        let block_views = std::array::from_fn(|lane| block_rows[lane].as_slice());
+        .map_err(PostRenderMeterError::TruePeak)?;
         let energy_proposal = stage_energy_window_block(&energy_after, &block_views, k_matrix)
             .map_err(PostRenderMeterError::EnergyWindow)?;
         let (next_energy, records) = energy_proposal.into_parts();

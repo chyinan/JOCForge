@@ -1327,17 +1327,7 @@ fn copy_i0_span(
         .checked_add(source.bit_length())
         .ok_or(Flat7xI0FrameAssemblyError::SourceSpanOverflow { part })?;
     let mut writer = FrameBitWriter::new(output, FrameBitCursor::new(destination_start_bit))?;
-    writer.preflight_capacity(source.bit_length())?;
-    for offset in 0..source.bit_length() {
-        let source_bit = source
-            .source_start_bit()
-            .checked_add(offset)
-            .ok_or(Flat7xI0FrameAssemblyError::SourceSpanOverflow { part })?;
-        let source_byte = usize::try_from(source_bit / 8)
-            .map_err(|_| Flat7xI0FrameAssemblyError::SourceSpanOverflow { part })?;
-        let shift = 7 - source_bit % 8;
-        writer.write_bit(source.bytes[source_byte] & (1_u8 << shift) != 0)?;
-    }
+    writer.write_bit_slice(source.bytes, source.source_start_bit(), source.bit_length())?;
     Ok(I0FrameBitSpan {
         start_bit: destination_start_bit,
         bit_length: end_bit - destination_start_bit,

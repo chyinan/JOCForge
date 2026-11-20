@@ -97,17 +97,40 @@ pub fn solve_support_for_carriers<const CARRIER_COUNT: usize>(
     equation: &CoefficientNormalEquation<CARRIER_COUNT>,
     support: [bool; CARRIER_COUNT],
 ) -> Result<CoefficientSolution<CARRIER_COUNT>, CoefficientSolverError> {
-    let active = support
-        .iter()
-        .enumerate()
-        .filter_map(|(channel, enabled)| enabled.then_some(channel))
-        .collect::<Vec<_>>();
+    let mut channels = [0; CARRIER_COUNT];
+    let mut count = 0;
+    for (channel, &included) in support.iter().enumerate() {
+        if included {
+            channels[count] = channel;
+            count += 1;
+        }
+    }
+    let active = &channels[..count];
     if active.is_empty() {
         return Err(CoefficientSolverError::EmptySupport);
     }
     let zero = finite_word(ZERO_BITS)?;
     let one = finite_word(ONE_BITS)?;
     let tiny = finite_word(SOLVER_TINY_BITS)?;
+    if let &[channel] = active {
+        // The one-dimensional LDL solve has no off-diagonal terms or substitution steps.
+        let cross = finite_word(equation.cross_words()[channel])?;
+        let diagonal = finite_word(equation.gram_words()[channel][channel])?;
+        let trace = add(zero, diagonal)?;
+        let regularizer = multiply(trace, finite_word(REGULARIZER_SCALE_BITS)?)?;
+        let diagonal = add(add(diagonal, regularizer)?, tiny)?;
+        let pivot = if diagonal.value() < tiny.value() {
+            tiny
+        } else {
+            diagonal
+        };
+        let mut coefficient_words = [ZERO_BITS; CARRIER_COUNT];
+        coefficient_words[channel] = divide(cross, pivot)?.to_bits();
+        return Ok(CoefficientSolution {
+            support,
+            coefficient_words,
+        });
+    }
     let mut matrix = [[zero; CARRIER_COUNT]; CARRIER_COUNT];
     let mut cross = [zero; CARRIER_COUNT];
     let mut trace = zero;
@@ -174,7 +197,7 @@ pub fn solve_support_for_carriers<const CARRIER_COUNT: usize>(
     }
 
     let mut coefficient_words = [ZERO_BITS; CARRIER_COUNT];
-    for (active_index, channel) in active.into_iter().enumerate() {
+    for (active_index, channel) in active.iter().copied().enumerate() {
         coefficient_words[channel] = solved[active_index].to_bits();
     }
     Ok(CoefficientSolution {
@@ -258,6 +281,19 @@ pub fn normalize_solution_for_carriers<const CARRIER_COUNT: usize>(
         model_energy = add(model_energy, slot_model)?;
     }
 
+    normalize_solution_energy(solution, target_energy.value(), model_energy.value())
+}
+
+/// Scale the solved coefficients using the original binary32 energy and rounding sequence.
+pub(crate) fn normalize_solution_energy<const CARRIER_COUNT: usize>(
+    solution: &CoefficientSolution<CARRIER_COUNT>,
+    target_energy: f32,
+    model_energy: f32,
+) -> Result<NormalizedCoefficientSolution<CARRIER_COUNT>, CoefficientSolverError> {
+    let target_energy =
+        FiniteF32::new(target_energy).map_err(|_| CoefficientSolverError::NumericNonFinite)?;
+    let model_energy =
+        FiniteF32::new(model_energy).map_err(|_| CoefficientSolverError::NumericNonFinite)?;
     let denominator = add(model_energy, finite_word(SOLVER_TINY_BITS)?)?;
     let ratio = divide(target_energy, denominator)?;
     let scale = square_root(ratio)?;

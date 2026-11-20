@@ -1129,9 +1129,7 @@ fn write_zero_filled_frame_tail(
     span: D0FrameBitSpan,
 ) -> Result<(), Flat7xD0FrameAssemblyError> {
     let mut writer = FrameBitWriter::new(output, FrameBitCursor::new(span.start_bit()))?;
-    for _ in 0..span.bit_length() {
-        writer.write_bit(false)?;
-    }
+    writer.skip_zeroes(span.bit_length())?;
     Ok(())
 }
 
@@ -1191,18 +1189,7 @@ fn copy_opaque_audio_span(
     }
     validate_source_span(block_index, source)?;
     let mut writer = FrameBitWriter::new(output, FrameBitCursor::new(destination.start_bit()))?;
-    writer.preflight_capacity(destination.bit_length())?;
-    for offset in 0..source.bit_length() {
-        let source_bit = source
-            .source_start_bit()
-            .checked_add(offset)
-            .ok_or(Flat7xD0FrameAssemblyError::SourceSpanOverflow { block_index })?;
-        let source_byte = usize::try_from(source_bit / 8)
-            .map_err(|_| Flat7xD0FrameAssemblyError::SourceSpanOverflow { block_index })?;
-        let shift = 7 - source_bit % 8;
-        let value = source.bytes[source_byte] & (1_u8 << shift) != 0;
-        writer.write_bit(value)?;
-    }
+    writer.write_bit_slice(source.bytes, source.source_start_bit(), source.bit_length())?;
     Ok(())
 }
 
@@ -1219,17 +1206,6 @@ fn copy_opaque_frame_aux_data(
     }
     validate_frame_aux_data_source_span(source)?;
     let mut writer = FrameBitWriter::new(output, FrameBitCursor::new(destination.start_bit()))?;
-    writer.preflight_capacity(destination.bit_length())?;
-    for offset in 0..source.bit_length() {
-        let source_bit = source
-            .source_start_bit()
-            .checked_add(offset)
-            .ok_or(Flat7xD0FrameAssemblyError::FrameAuxDataSourceSpanOverflow)?;
-        let source_byte = usize::try_from(source_bit / 8)
-            .map_err(|_| Flat7xD0FrameAssemblyError::FrameAuxDataSourceSpanOverflow)?;
-        let shift = 7 - source_bit % 8;
-        let value = source.bytes[source_byte] & (1_u8 << shift) != 0;
-        writer.write_bit(value)?;
-    }
+    writer.write_bit_slice(source.bytes, source.source_start_bit(), source.bit_length())?;
     Ok(())
 }

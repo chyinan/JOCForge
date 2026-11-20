@@ -8,16 +8,17 @@ use crate::joc::{
         restore_trial_coefficient,
     },
     coefficient_solver::{
-        CoefficientSolverError, normalize_solution_for_carriers, solve_support_for_carriers,
+        CoefficientSolution, CoefficientSolverError, normalize_solution_energy,
+        normalize_solution_for_carriers, solve_support_for_carriers,
     },
     fit_score::{
-        FitScoreError, FitScoreEvaluation, FitScoreProvider, score_trial_coefficients_for_carriers,
+        FitScoreError, FitScoreEvaluation, FitScoreProvider, evaluate_fit_energies,
+        score_trial_coefficients_for_carriers,
     },
 };
 
 const CHANNEL_COUNT: usize = 5;
 const SLOT_COUNT: usize = 48;
-#[cfg(test)]
 const BIN_COUNT: usize = 64;
 const ZERO_BITS: u32 = 0x0000_0000;
 const PENALTY_F32_BITS: u32 = 0x3f8f_5c29; // R32(28/25)
@@ -179,7 +180,8 @@ pub fn search_coefficient_cell_for_carriers<const CARRIER_COUNT: usize>(
 
     // Both high-band stages visit single-channel supports for the same equation.
     let mut singletons = [None; CARRIER_COUNT];
-    let cell = FitCell {
+    let mut cell = FitCell {
+        band: WeightedFitBand::from_windows(equation, target_words, carrier_words, weight_words),
         provider,
         equation,
         target_words,
@@ -299,23 +301,29 @@ struct FitCell<'a, const CARRIER_COUNT: usize> {
     carrier_words: &'a [u32],
     weight_words: &'a [u32; SLOT_COUNT],
     precision: CoefficientPrecision,
+    band: Option<WeightedFitBand>,
 }
 
 impl<const CARRIER_COUNT: usize> FitCell<'_, CARRIER_COUNT> {
     fn evaluate(
-        &self,
+        &mut self,
         support: [bool; CARRIER_COUNT],
         scores: &mut Vec<([u32; CARRIER_COUNT], FitScoreEvaluation)>,
     ) -> Result<Candidate<CARRIER_COUNT>, CoefficientSearchError> {
         let solved = solve_support_for_carriers(self.equation, support)
             .map_err(CoefficientSearchError::Solver)?;
-        let normalized = normalize_solution_for_carriers(
-            self.equation,
-            &solved,
-            self.target_words,
-            self.carrier_words,
-            self.weight_words,
-        )
+        let normalized = if let Some(band) = &mut self.band {
+            let model_energy = band.model_energy(&solved);
+            normalize_solution_energy(&solved, band.target_energy, model_energy)
+        } else {
+            normalize_solution_for_carriers(
+                self.equation,
+                &solved,
+                self.target_words,
+                self.carrier_words,
+                self.weight_words,
+            )
+        }
         .map_err(CoefficientSearchError::Solver)?;
         let mut trial_words = [ZERO_BITS; CARRIER_COUNT];
         for (trial, stored) in trial_words
@@ -334,14 +342,18 @@ impl<const CARRIER_COUNT: usize> FitCell<'_, CARRIER_COUNT> {
         {
             *score
         } else {
-            let score = score_trial_coefficients_for_carriers(
-                self.provider,
-                self.equation,
-                self.target_words,
-                self.carrier_words,
-                self.weight_words,
-                &trial_words,
-            )
+            let score = if let Some(band) = &mut self.band {
+                band.score(self.provider, &trial_words)
+            } else {
+                score_trial_coefficients_for_carriers(
+                    self.provider,
+                    self.equation,
+                    self.target_words,
+                    self.carrier_words,
+                    self.weight_words,
+                    &trial_words,
+                )
+            }
             .map_err(CoefficientSearchError::Score)?;
             scores.push((trial_words, score));
             score
@@ -353,6 +365,149 @@ impl<const CARRIER_COUNT: usize> FitCell<'_, CARRIER_COUNT> {
             score,
         })
     }
+}
+
+/// Slot-major complex samples packed once per cell. All support candidates reuse
+/// the weighted inputs, both target energies, and the scratch for the predicted row.
+struct WeightedFitBand {
+    target: Vec<f32>,
+    carriers: Vec<f32>,
+    slot_width: usize,
+    target_energy: f32,
+    score_target_energy: f64,
+    model: Vec<f32>,
+    residual: Vec<f64>,
+}
+
+impl WeightedFitBand {
+    fn from_windows<const C: usize>(
+        equation: &CoefficientNormalEquation<C>,
+        target_words: &[u32],
+        carrier_words: &[u32],
+        weight_words: &[u32; SLOT_COUNT],
+    ) -> Option<Self> {
+        let row_stride = SLOT_COUNT * BIN_COUNT * 2;
+        if target_words.len() != 15 * row_stride || carrier_words.len() != C * row_stride {
+            return None;
+        }
+        let begin = usize::from(equation.begin_bin()) * 2;
+        let end = usize::from(equation.end_bin()) * 2;
+        let slot_width = end - begin;
+        let samples = SLOT_COUNT * slot_width;
+        let pack = |row: &[u32], result: &mut Vec<f32>| {
+            for (slot, &weight) in row.chunks_exact(BIN_COUNT * 2).zip(weight_words) {
+                let weight = f32::from_bits(weight);
+                result.extend(slot[begin..end].iter().map(|&w| f32::from_bits(w) * weight));
+            }
+        };
+        let object = usize::from(equation.object());
+        let mut target = Vec::with_capacity(samples);
+        pack(
+            &target_words[object * row_stride..(object + 1) * row_stride],
+            &mut target,
+        );
+        let mut carriers = Vec::with_capacity(samples * C);
+        for row in carrier_words.chunks_exact(row_stride) {
+            pack(row, &mut carriers);
+        }
+        // Standalone callers may supply different windows from those used to construct
+        // the equation. Keep the original per-support validation for invalid inputs.
+        if target.iter().chain(&carriers).any(|x| !x.is_finite()) {
+            return None;
+        }
+        let target_energy = normalization_energy(&target, slot_width);
+        let score_target_energy = target.iter().fold(0., |sum, &x| {
+            let x = f64::from(x);
+            sum + x * x
+        });
+        Some(Self {
+            target,
+            carriers,
+            slot_width,
+            target_energy,
+            score_target_energy,
+            model: vec![0.; samples],
+            residual: vec![0.; samples],
+        })
+    }
+
+    fn model_energy<const C: usize>(&mut self, solved: &CoefficientSolution<C>) -> f32 {
+        let mut empty = true;
+        for (&bits, carrier) in solved
+            .coefficient_words()
+            .iter()
+            .zip(self.carriers.chunks_exact(self.target.len()))
+        {
+            let a = f32::from_bits(bits);
+            if a == 0. {
+                continue;
+            }
+            if empty {
+                for (y, &x) in self.model.iter_mut().zip(carrier) {
+                    *y = 0. + a * x;
+                }
+                empty = false;
+            } else {
+                for (y, &x) in self.model.iter_mut().zip(carrier) {
+                    *y += a * x;
+                }
+            }
+        }
+        if empty {
+            0.
+        } else {
+            normalization_energy(&self.model, self.slot_width)
+        }
+    }
+
+    fn score<const C: usize>(
+        &mut self,
+        provider: &FitScoreProvider,
+        trial: &[u32; C],
+    ) -> Result<FitScoreEvaluation, FitScoreError> {
+        let mut empty = true;
+        for (&bits, carrier) in trial
+            .iter()
+            .zip(self.carriers.chunks_exact(self.target.len()))
+        {
+            let a = f64::from(f32::from_bits(bits));
+            if a == 0. {
+                continue;
+            }
+            if empty {
+                for ((y, &t), &x) in self.residual.iter_mut().zip(&self.target).zip(carrier) {
+                    *y = -f64::from(t) + f64::from(x) * a;
+                }
+                empty = false;
+            } else {
+                for (y, &x) in self.residual.iter_mut().zip(carrier) {
+                    *y += f64::from(x) * a;
+                }
+            }
+        }
+        if empty {
+            return evaluate_fit_energies(
+                provider,
+                self.score_target_energy,
+                0.,
+                self.score_target_energy,
+            );
+        }
+        let mut error = 0.;
+        let mut model_energy = 0.;
+        for (&r, &t) in self.residual.iter().zip(&self.target) {
+            let model = r - (-f64::from(t));
+            error += r * r;
+            model_energy += model * model;
+        }
+        evaluate_fit_energies(provider, error, model_energy, self.score_target_energy)
+    }
+}
+
+fn normalization_energy(samples: &[f32], slot_width: usize) -> f32 {
+    samples.chunks_exact(slot_width).fold(0., |total, slot| {
+        total + slot.iter().fold(0., |sum, &x| sum + x * x)
+    })
 }
 
 fn single_channel_supports<const CARRIER_COUNT: usize>(
