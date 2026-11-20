@@ -8,7 +8,7 @@ use super::{
         produce_flat7x_d0_audio_frame,
     },
     flat7x_d0_exponents::{
-        Flat7xD0ExponentError, Flat7xD0ExponentRow, prepare_flat7x_d0_d15_exponent_row,
+        D0ExponentStrategy, Flat7xD0ExponentError, Flat7xD0ExponentRow, prepare_d0_exponent_row,
     },
     flat7x_d0_spectrum::{
         D0_PCM_SAMPLES_PER_BLOCK, Flat7xD0PcmBlockInput, Flat7xD0PcmWindow, Flat7xD0SpectrumBlock,
@@ -317,10 +317,11 @@ pub fn produce_flat7x_d0_frame_from_pcm_source(
             });
         }
     }
-    let block_series = stage_flat7x_d0_pcm_block_series(
+    let block_series = stage_d0_blocks_with_strategy(
         input.pcm_rows,
         settings.before,
         settings.transform_parameters,
+        D0ExponentStrategy::for_rate(settings.target.d0().rate()),
     )?;
     let frame = produce_flat7x_d0_audio_frame(&Flat7xD0AudioFrameInput {
         target: settings.target,
@@ -349,6 +350,15 @@ pub fn stage_flat7x_d0_pcm_block_series(
     pcm_rows: [&[u32]; FLAT7X_D0_BAP_CHANNEL_COUNT],
     before: &Flat7xD0OverlapHistory,
     parameters: &MathGeneratedTransformParameters,
+) -> Result<Flat7xD0PcmBlockSeriesCandidate, Flat7xD0PcmSourceError> {
+    stage_d0_blocks_with_strategy(pcm_rows, before, parameters, D0ExponentStrategy::D15)
+}
+
+pub fn stage_d0_blocks_with_strategy(
+    pcm_rows: [&[u32]; FLAT7X_D0_BAP_CHANNEL_COUNT],
+    before: &Flat7xD0OverlapHistory,
+    parameters: &MathGeneratedTransformParameters,
+    strategy: D0ExponentStrategy,
 ) -> Result<Flat7xD0PcmBlockSeriesCandidate, Flat7xD0PcmSourceError> {
     for (channel, row) in pcm_rows.iter().enumerate() {
         if row.len() != SOURCE_SAMPLES {
@@ -388,28 +398,28 @@ pub fn stage_flat7x_d0_pcm_block_series(
                 })?;
         let coefficient_rows = spectrum.coefficient_bits_by_channel();
         let exponent_rows = [
-            prepare_flat7x_d0_d15_exponent_row(&coefficient_rows[0]).map_err(|source| {
+            prepare_d0_exponent_row(&coefficient_rows[0], strategy).map_err(|source| {
                 Flat7xD0PcmSourceError::Exponent {
                     block: block as u8,
                     channel: 0,
                     source,
                 }
             })?,
-            prepare_flat7x_d0_d15_exponent_row(&coefficient_rows[1]).map_err(|source| {
+            prepare_d0_exponent_row(&coefficient_rows[1], strategy).map_err(|source| {
                 Flat7xD0PcmSourceError::Exponent {
                     block: block as u8,
                     channel: 1,
                     source,
                 }
             })?,
-            prepare_flat7x_d0_d15_exponent_row(&coefficient_rows[2]).map_err(|source| {
+            prepare_d0_exponent_row(&coefficient_rows[2], strategy).map_err(|source| {
                 Flat7xD0PcmSourceError::Exponent {
                     block: block as u8,
                     channel: 2,
                     source,
                 }
             })?,
-            prepare_flat7x_d0_d15_exponent_row(&coefficient_rows[3]).map_err(|source| {
+            prepare_d0_exponent_row(&coefficient_rows[3], strategy).map_err(|source| {
                 Flat7xD0PcmSourceError::Exponent {
                     block: block as u8,
                     channel: 3,

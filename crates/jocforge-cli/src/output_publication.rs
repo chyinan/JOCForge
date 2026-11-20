@@ -10,7 +10,6 @@ use jocforge_application::{
         Flat7xOpaqueD0FrameInput, Flat7xPairAppendProposalError, Flat7xSourceGeneration,
         stage_receipted_i0_with_opaque_d0,
     },
-    meter_source_bridge::Flat7xI0D0TargetPlan,
     output_publication::{
         AdmittedProductionPlan, AttemptId, OutputConfiguration, OutputFinalizedProposal,
         OutputOwnerError, OutputRootBindingError, OutputSourceAfterProposal, OutputSourceProposal,
@@ -113,9 +112,12 @@ impl ProgrammeOutputStaging {
         if let Some(owner) = self.flat7x_pair_owner.take() {
             return Ok(owner);
         }
-        Flat7xAuOutputOwner::cold(
+        Flat7xAuOutputOwner::for_target(
             binding.output_configuration().attempt_id(),
             binding.output_configuration().expected_published_aus(),
+            binding.output_configuration().flat7x_target().ok_or(
+                OutputPublicationError::Flat7xPairOwner("invalid AU extent".into()),
+            )?,
         )
         .map_err(|error| OutputPublicationError::Flat7xPairOwner(format!("{error:?}")))
     }
@@ -352,7 +354,10 @@ impl ProgrammeOutputStaging {
             return Err(Flat7xOutputAppendRejection::SourceIdentityMismatch);
         }
 
-        let target = Flat7xI0D0TargetPlan::approved_contract();
+        let target = self
+            .configuration
+            .flat7x_target()
+            .ok_or(Flat7xOutputAppendRejection::FrameExtentMismatch)?;
         if ledger.frame_lengths() != (target.i0().frame_bytes(), target.d0().frame_bytes()) {
             return Err(Flat7xOutputAppendRejection::FrameExtentMismatch);
         }
@@ -701,9 +706,7 @@ pub fn finalize_output(
     binding
         .validate_finalize_proposal(&proposal)
         .map_err(OutputPublicationError::Binding)?;
-    if binding.output_configuration().frame_bytes()
-        == Flat7xI0D0TargetPlan::approved_contract().aggregate_frame_bytes()
-    {
+    if binding.output_configuration().flat7x_target().is_some() {
         return Err(OutputPublicationError::ExperimentalCandidateRequired);
     }
     let proposal = proposal.into_proposal();
@@ -773,7 +776,9 @@ fn capture_flat7x_candidate_inner(
     binding: &ProgrammeOutputBinding,
     output_proposal: ProgrammeOutputFinalizeProposal,
 ) -> Result<Flat7xExperimentalCandidateReceipt, OutputPublicationError> {
-    let target = Flat7xI0D0TargetPlan::approved_contract();
+    let target = binding.output_configuration().flat7x_target().ok_or(
+        OutputPublicationError::ExperimentalCandidate("invalid Flat7x extent".into()),
+    )?;
     if binding.output_configuration().frame_bytes() != target.aggregate_frame_bytes() {
         return Err(OutputPublicationError::ExperimentalCandidate(
             "candidate output binding is not the approved Flat7x aggregate".to_owned(),

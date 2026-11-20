@@ -10,9 +10,7 @@ use super::{
         D0Block2SkipFieldInput, D0BlockTwoAudioSpans, D0FrameAudioBlockInput, OpaqueD0AudioBitSpan,
     },
     exponent_packing::Eac3ExponentRowWriteError,
-    flat7x_d0_exponents::{
-        FLAT7X_D0_D15_GROUP_COUNT, Flat7xD0ExponentRow, write_flat7x_d0_d15_exponent_row,
-    },
+    flat7x_d0_exponents::{Flat7xD0ExponentRow, write_flat7x_d0_d15_exponent_row},
     flat7x_d0_frame_controls::Flat7xD0AudioFrameControlPolicy,
     flat7x_d0_mantissa::{
         Flat7xD0AudioBlockIndex, Flat7xD0MantissaBlock, Flat7xD0MantissaInput,
@@ -173,6 +171,7 @@ impl Flat7xD0AudioBlockCandidate {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Flat7xD0AudioBlockError {
+    ExponentStrategyMismatch,
     BapCandidateMismatch { frame_q: u16, control_q: u16 },
     Mantissa(MantissaBlockError),
     ExponentRow(Eac3ExponentRowWriteError),
@@ -284,6 +283,13 @@ pub fn write_flat7x_d0_audio_block(
 pub fn measure_flat7x_d0_audio_block_bit_cost(
     input: &Flat7xD0AudioBlockInput<'_>,
 ) -> Result<Flat7xD0AudioBlockBitCost, Flat7xD0AudioBlockError> {
+    if input
+        .exponent_rows
+        .iter()
+        .any(|row| row.strategy() != input.frame_control_policy.strategy())
+    {
+        return Err(Flat7xD0AudioBlockError::ExponentStrategyMismatch);
+    }
     let control_q = input.frame_control_policy.allocation_candidate().value();
     let frame_q = input.bap_frame.candidate();
     if frame_q != control_q {
@@ -357,7 +363,7 @@ fn measure_prefix_before_skipfield(
         .ok_or(Flat7xD0AudioBlockError::BitCountOverflow)?;
     let per_channel_exponent_and_gain_bits = 4_u32
         .checked_add(
-            u32::try_from(FLAT7X_D0_D15_GROUP_COUNT)
+            u32::try_from(input.exponent_rows[0].groups().len())
                 .map_err(|_| Flat7xD0AudioBlockError::BitCountOverflow)?
                 .checked_mul(7)
                 .ok_or(Flat7xD0AudioBlockError::BitCountOverflow)?,

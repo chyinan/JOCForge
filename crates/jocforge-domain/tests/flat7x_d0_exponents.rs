@@ -1,8 +1,39 @@
 use jocforge_domain::codec::bitio::{FrameBitCursor, FrameBitWriter};
 use jocforge_domain::codec::flat7x_d0_exponents::{
-    FLAT7X_D0_D15_EXPONENTS_PER_ROW, FLAT7X_D0_D15_GROUP_COUNT, FLAT7X_D0_D15_PREPROCESSOR_ID,
-    prepare_flat7x_d0_d15_exponent_row, write_flat7x_d0_d15_exponent_row,
+    D0ExponentStrategy, FLAT7X_D0_D15_EXPONENTS_PER_ROW, FLAT7X_D0_D15_GROUP_COUNT,
+    FLAT7X_D0_D15_PREPROCESSOR_ID, prepare_d0_exponent_row, prepare_flat7x_d0_d15_exponent_row,
+    write_flat7x_d0_d15_exponent_row,
 };
+
+#[test]
+fn grouped_exponents_reconstruct_the_bins_used_for_bit_allocation() {
+    let coefficients = std::array::from_fn(|i| {
+        coefficient_word_for_raw_exponent(u8::try_from((i / 9 + i % 5) % 25).unwrap())
+    });
+    for (strategy, width) in [
+        (D0ExponentStrategy::D15, 1),
+        (D0ExponentStrategy::D25, 2),
+        (D0ExponentStrategy::D45, 4),
+    ] {
+        let row = prepare_d0_exponent_row(&coefficients, strategy).unwrap();
+        let mut exponent = row.seed().value();
+        let mut decoded = vec![exponent];
+        for group in row.groups() {
+            let value = group.value();
+            for digit in [value / 25, value / 5 % 5, value % 5] {
+                exponent = exponent + digit - 2;
+                decoded.extend(std::iter::repeat_n(exponent, width));
+            }
+        }
+        assert_eq!(decoded, row.decoded_exponents().as_slice());
+        assert!(
+            decoded
+                .iter()
+                .zip(row.raw_exponents())
+                .all(|(decoded, raw)| decoded <= raw)
+        );
+    }
+}
 
 #[test]
 fn d15_row_caps_u4_seed_and_limits_decoded_differences_to_two() {

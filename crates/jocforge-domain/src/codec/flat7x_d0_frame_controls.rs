@@ -4,7 +4,7 @@
 use super::bitio::{FrameBitWriter, FrameBitWriterError};
 use super::{
     bap::{FLAT7X_D0_BAP_BLOCK_COUNT, FLAT7X_D0_BAP_CHANNEL_COUNT},
-    flat7x_d0_exponents::FLAT7X_D0_D15_STRATEGY_CODE,
+    flat7x_d0_exponents::D0ExponentStrategy,
 };
 
 const INITIAL_FRAME_CONTROL_BITS: u32 = 12;
@@ -52,14 +52,26 @@ impl Flat7xD0AllocationCandidateQ {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Flat7xD0AudioFrameControlPolicy {
+    strategy: D0ExponentStrategy,
     allocation_candidate: Flat7xD0AllocationCandidateQ,
 }
 
 impl Flat7xD0AudioFrameControlPolicy {
     pub const fn new(allocation_candidate: Flat7xD0AllocationCandidateQ) -> Self {
+        Self::with_strategy(allocation_candidate, D0ExponentStrategy::D15)
+    }
+    pub const fn with_strategy(
+        allocation_candidate: Flat7xD0AllocationCandidateQ,
+        strategy: D0ExponentStrategy,
+    ) -> Self {
         Self {
+            strategy,
             allocation_candidate,
         }
+    }
+
+    pub const fn strategy(self) -> D0ExponentStrategy {
+        self.strategy
     }
 
     pub const fn allocation_candidate(self) -> Flat7xD0AllocationCandidateQ {
@@ -165,7 +177,7 @@ pub fn write_flat7x_d0_audio_frame_controls(
     for _ in 0..FLAT7X_D0_BAP_BLOCK_COUNT {
         for _ in 0..FLAT7X_D0_BAP_CHANNEL_COUNT {
             writer.write_unsigned(
-                u32::from(FLAT7X_D0_D15_STRATEGY_CODE),
+                u32::from(policy.strategy.code()),
                 CHANNEL_EXPONENT_STRATEGY_WIDTH_BITS,
             )?;
         }

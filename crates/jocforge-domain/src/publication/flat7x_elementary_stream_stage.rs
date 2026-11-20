@@ -49,7 +49,7 @@ impl<'bytes, 'finalize> Flat7xElementaryStreamStageProposal<'bytes, 'finalize> {
         stream_bytes: &'bytes [u8],
         finalize_proposal: &'finalize Flat7xAuFinalizeProposal,
     ) -> Result<Self, Flat7xElementaryStreamStageProposalError> {
-        if target != Flat7xI0D0TargetPlan::approved_contract() {
+        if !target.is_supported() {
             return Err(Flat7xElementaryStreamStageProposalError::UnsupportedTargetContext);
         }
         if finalize_proposal.production_allowed() {

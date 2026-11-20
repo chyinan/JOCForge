@@ -8,7 +8,7 @@ use super::{
     },
     bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError},
     d0_frame_assembler::{
-        D0_CRC2_FIELD_BITS, D0_TARGET_FRAME_BITS, D0Block2SkipFieldInput, D0Block2SourceReceipt,
+        D0_CRC2_FIELD_BITS, D0Block2SkipFieldInput, D0Block2SourceReceipt,
         Flat7xD0FrameAssemblyError, Flat7xD0FrameAssemblyReceipt, Flat7xD0FrameBitInput,
         Flat7xD0FrameTailPolicy, assemble_flat7x_d0_frame_bits_with_tail_policy,
     },
@@ -182,7 +182,7 @@ pub fn produce_flat7x_d0_audio_frame(
         })
     });
 
-    let maximum_content_bits = D0_TARGET_FRAME_BITS
+    let maximum_content_bits = (u32::from(input.target.d0().frame_bytes()) * 8)
         .checked_sub(D0_CRC2_FIELD_BITS + 1)
         .ok_or(Flat7xD0AudioFrameError::NoFittingAllocationCandidate)?;
     let mut best_candidate = None;
@@ -215,7 +215,10 @@ pub fn produce_flat7x_d0_audio_frame(
             continue;
         }
 
-        let frame_controls = Flat7xD0AudioFrameControlPolicy::new(candidate);
+        let frame_controls = Flat7xD0AudioFrameControlPolicy::with_strategy(
+            candidate,
+            super::flat7x_d0_exponents::D0ExponentStrategy::for_rate(input.target.d0().rate()),
+        );
         let mut block_audio_bits = 0_u32;
         let mut allocated_mantissa_bits = 0_u32;
         for block_index in 0..FLAT7X_D0_BAP_BLOCK_COUNT {
@@ -327,7 +330,10 @@ pub fn produce_flat7x_d0_audio_frame(
                 .ok_or(Flat7xD0AudioFrameError::NoFittingAllocationCandidate)?,
         ];
         let frame_input = Flat7xD0FrameBitInput {
-            audio_frame_controls: Flat7xD0AudioFrameControlPolicy::new(candidate),
+            audio_frame_controls: Flat7xD0AudioFrameControlPolicy::with_strategy(
+                candidate,
+                super::flat7x_d0_exponents::D0ExponentStrategy::for_rate(input.target.d0().rate()),
+            ),
             audio_blocks,
         };
         let mut frame_bytes = vec![0_u8; usize::from(input.target.d0().frame_bytes())];

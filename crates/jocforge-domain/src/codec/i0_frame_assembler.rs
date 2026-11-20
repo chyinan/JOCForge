@@ -1282,15 +1282,13 @@ fn validate_target(target: Flat7xI0D0TargetPlan) -> Result<(), Flat7xI0FrameAsse
     if target.sample_rate_hz() != 48_000
         || target.audio_blocks_per_frame() != I0_AUDIO_BLOCK_COUNT as u8
         || target.samples_per_frame() != 1_536
-        || target.aggregate_rate_kbps() != Some(1_664)
+        || !target.is_supported()
         || i0.role() != Flat7xSubstreamRole::IndependentI0
         || i0.rate().kbps() != Some(640)
         || i0.substream_id().value() != 0
         || i0.acmod().value() != 7
         || !i0.lfeon()
         || i0.frame_bytes() as usize != I0_TARGET_FRAME_BYTES
-        || target.d0().rate().kbps() != Some(1_024)
-        || target.d0().frame_bytes() != 4_096
     {
         return Err(Flat7xI0FrameAssemblyError::UnsupportedTargetContext);
     }

@@ -15,7 +15,7 @@ use jocforge_domain::{
         d0_frame_layout::{D0AudioBlockIndex, D0FrameBitSpan},
         flat7x_d0_pcm_source::{
             Flat7xD0PcmFrameInput, Flat7xD0PcmSourceError, produce_flat7x_d0_frame_from_pcm_source,
-            stage_flat7x_d0_pcm_block_series,
+            stage_d0_blocks_with_strategy,
         },
         i0_frame_assembler::{
             Flat7xI0Ac3AudioSeriesFrameCandidate, Flat7xI0Ac3FrameHeaderFields,
@@ -25,8 +25,8 @@ use jocforge_domain::{
     },
     joc::emdf::protected_container::CurrentEmdfPayloadSequence,
     profile::{
-        CodecRateProfile, Flat7xD0PcmRows, Flat7xI0D0TargetPlan, Flat7xI0PcmRows,
-        JocReconstructionLayout, ResolvedEncodingProfile,
+        Flat7xD0PcmRows, Flat7xI0D0TargetPlan, Flat7xI0PcmRows, JocReconstructionLayout,
+        ResolvedEncodingProfile,
     },
     timeline::{CodecSourceIndex, FrontendCallbackIndex, PublishedAuIndex},
     transaction::{AttemptId, CallbackTransactionId, ProgrammeId},
@@ -458,8 +458,15 @@ pub fn stage_flat7x_pair_d0_pcm_block_series(
             ));
         }
     }
-    let block_series = stage_flat7x_d0_pcm_block_series(d0_rows, before, transform_parameters)
-        .map_err(Flat7xPairSourceError::D0PcmFrame)?;
+    let block_series = stage_d0_blocks_with_strategy(
+        d0_rows,
+        before,
+        transform_parameters,
+        jocforge_domain::codec::flat7x_d0_exponents::D0ExponentStrategy::for_rate(
+            binding.role_map_receipt().target().d0().rate(),
+        ),
+    )
+    .map_err(Flat7xPairSourceError::D0PcmFrame)?;
     Ok(Flat7xPairD0PcmBlockSeriesCandidate {
         source_identity: binding.d0_source_identity.clone(),
         source_role_map_receipt: binding.role_map_receipt.clone(),
@@ -759,7 +766,7 @@ fn assemble_flat7x_i0_frame_candidate_from_series(
 ) -> Result<Flat7xPairI0FrameCandidate, Flat7xPairSourceError> {
     if binding.target != binding.role_map_receipt.target()
         || binding.resolved_profile.joc_reconstruction_layout() != JocReconstructionLayout::Flat7x
-        || binding.resolved_profile.codec_rate() != CodecRateProfile::Kbps1024
+        || binding.resolved_profile.codec_rate() != binding.target.d0().rate()
         || binding.source_index != binding.role_map_receipt.source_index()
         || binding.source_index != i0_audio_blocks.receipt().source_identity().source_index()
     {
@@ -848,9 +855,7 @@ impl Flat7xPairAccessUnitCandidate {
         &self.access_unit
     }
 
-    pub const fn access_unit_bytes(
-        &self,
-    ) -> &[u8; jocforge_domain::codec::access_unit_composer::FLAT7X_AU_FRAME_BYTES] {
+    pub fn access_unit_bytes(&self) -> &[u8] {
         self.access_unit.access_unit_bytes()
     }
 
@@ -928,15 +933,13 @@ pub fn bind_flat7x_pair_source<'pcm>(
     projection: &Flat7xSourcePcmProjection<'pcm>,
     numeric_plan: &NumericPlanReceipt<'_, SelectedSourceNumericPlan>,
 ) -> Result<Flat7xPairSourceBinding<'pcm>, Flat7xPairSourceError> {
-    if profile.joc_reconstruction_layout() != JocReconstructionLayout::Flat7x
-        || profile.codec_rate() != CodecRateProfile::Kbps1024
-    {
+    if profile.joc_reconstruction_layout() != JocReconstructionLayout::Flat7x {
         return Err(Flat7xPairSourceError::UnsupportedProfile);
     }
 
-    let target = Flat7xI0D0TargetPlan::approved_contract();
+    let target = projection.role_map_receipt().target();
     let role_map_receipt = projection.role_map_receipt();
-    if role_map_receipt.target() != target || target.d0().rate() != profile.codec_rate() {
+    if !target.is_supported() || target.d0().rate() != profile.codec_rate() {
         return Err(Flat7xPairSourceError::ProfileTargetMismatch);
     }
     if role_map_receipt.shared_analysis_identity() != numeric_plan.identity()

@@ -218,8 +218,7 @@ pub fn write_id14_header_for_flat7x_target(
     writer: &mut Id14WriterState,
 ) -> Result<Id14WriterOutcome, Flat7xTargetId14HeaderError> {
     let target = target.ok_or(Flat7xTargetId14HeaderError::MissingTargetContract)?;
-    let approved = Flat7xI0D0TargetPlan::approved_contract();
-    if target != approved
+    if !target.is_supported()
         || target.joc_dmx_config_idx() != 1
         || target.joc_spatial_index().value() != 1
         || target.downmix_index().value() != 1

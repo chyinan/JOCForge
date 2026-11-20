@@ -89,7 +89,7 @@ pub fn measure_flat7x_elementary_stream(
     if access_unit_count == 0 {
         return Err(Flat7xElementaryStreamCompositionError::EmptyAccessUnitSequence);
     }
-    if target != Flat7xI0D0TargetPlan::approved_contract() {
+    if !target.is_supported() {
         return Err(Flat7xElementaryStreamCompositionError::UnsupportedTargetContext);
     }
 

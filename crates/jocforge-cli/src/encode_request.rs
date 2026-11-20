@@ -125,7 +125,7 @@ impl std::fmt::Display for EncodeRequestError {
                 "data_rate must be one explicit value: 384, 448, 576, 640, 768, or 1024",
             ),
             Self::UnsupportedJocLayout => {
-                formatter.write_str("joc-layout flat7x requires the selected 1024 kbps profile row")
+                formatter.write_str("joc-layout flat7x requires a supported D0 data rate")
             }
             Self::ExperimentalCandidatePathRequired => formatter.write_str(
                 "Flat7x output must use a .candidate.ec3 filename in a unique attempt directory",
@@ -263,7 +263,8 @@ fn resolve_encode_request_route(
             Ok(EncodeRequestRoute::SelectedFivePointOne(resolved))
         }
         CarrierCodecProfile::Flat7xAc3I0DependentEac3D0 => {
-            let target = Flat7xI0D0TargetPlan::approved_contract();
+            let target = Flat7xI0D0TargetPlan::for_d0_rate(codec_rate)
+                .ok_or(EncodeRequestError::UnsupportedJocLayout)?;
             if resolved.joc_reconstruction_layout() != JocReconstructionLayout::Flat7x
                 || resolved.substream_topology()
                     != SubstreamTopology::Flat7xIndependentI0DependentD0
@@ -589,6 +590,31 @@ pub const FILE_PRESETS: &[(JocReconstructionLayout, u16, CodecRateProfile)] = &[
     ),
     (
         JocReconstructionLayout::Flat7x,
+        1024,
+        CodecRateProfile::Kbps384,
+    ),
+    (
+        JocReconstructionLayout::Flat7x,
+        1088,
+        CodecRateProfile::Kbps448,
+    ),
+    (
+        JocReconstructionLayout::Flat7x,
+        1216,
+        CodecRateProfile::Kbps576,
+    ),
+    (
+        JocReconstructionLayout::Flat7x,
+        1280,
+        CodecRateProfile::Kbps640,
+    ),
+    (
+        JocReconstructionLayout::Flat7x,
+        1408,
+        CodecRateProfile::Kbps768,
+    ),
+    (
+        JocReconstructionLayout::Flat7x,
         1664,
         CodecRateProfile::Kbps1024,
     ),
@@ -774,7 +800,8 @@ fn run_inner(
     .map_err(|_| EncodeRequestError::UnsupportedJocLayout)?;
     let (frame_bytes, aggregate_rate_kbps) =
         if resolved_joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
-            let target = Flat7xI0D0TargetPlan::approved_contract();
+            let target = Flat7xI0D0TargetPlan::for_d0_rate(selected_profile.codec_rate())
+                .ok_or(EncodeRequestError::UnsupportedJocLayout)?;
             jocforge_application::source_frame_bridge::build_flat7x_provisional_source_role_map(
                 prepared.graph().graph(),
                 target,
@@ -1796,16 +1823,19 @@ mod tests {
     }
 
     #[test]
-    fn flat7x_rate_constraint_rejects_before_input_or_output_io() {
-        assert!(matches!(
-            run_with_data_rate_and_joc_layout(
-                Path::new("missing-input.wav"),
-                Path::new("unused-output.ec3"),
-                CodecRateProfile::Kbps448,
-                JocReconstructionLayout::Flat7x,
-            ),
-            Err(EncodeRequestError::UnsupportedJocLayout)
-        ));
+    fn flat7x_presets_bind_aggregate_and_d0_rate() {
+        for &(layout, total, rate) in super::FILE_PRESETS {
+            if layout != JocReconstructionLayout::Flat7x {
+                continue;
+            }
+            let EncodeRequestRoute::Flat7xI0D0Pair(target) =
+                resolve_encode_request_route(rate, layout).unwrap()
+            else {
+                panic!("expected pair");
+            };
+            assert_eq!(target.aggregate_rate_kbps(), Some(u32::from(total)));
+            assert_eq!(target.d0().rate(), rate);
+        }
     }
 
     #[test]

@@ -222,7 +222,7 @@ pub fn propose_flat7x_d0_six_block_layout(
     bsi_structure: Flat7xD0BsiStructure,
     input: D0SixBlockLayoutInput<'_>,
 ) -> Result<Flat7xD0SixBlockLayout, D0SixBlockLayoutError> {
-    if target != Flat7xI0D0TargetPlan::approved_contract() {
+    if !target.is_supported() {
         return Err(D0SixBlockLayoutError::UnsupportedTargetContext);
     }
 

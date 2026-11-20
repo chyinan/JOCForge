@@ -20,6 +20,40 @@ fn invocation_paths(case_number: usize) -> (PathBuf, PathBuf) {
 }
 
 #[test]
+fn aggregate_rate_requires_flat7x_and_excludes_a_second_rate() {
+    let (input, output) = invocation_paths(100);
+    for (args, expected) in [
+        (&["--total-rate", "1024"][..], "--joc-layout"),
+        (
+            &[
+                "--joc-layout",
+                "flat7x",
+                "--total-rate",
+                "1024",
+                "--data-rate",
+                "1024",
+            ],
+            "cannot be used with",
+        ),
+        (
+            &["--joc-layout", "flat7x", "--total-rate", "1200"],
+            "invalid value",
+        ),
+    ] {
+        let result = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+            .arg("encode")
+            .arg(&input)
+            .arg(&output)
+            .args(args)
+            .output()
+            .unwrap();
+        assert_eq!(result.status.code(), Some(2));
+        let message = String::from_utf8_lossy(&result.stderr);
+        assert!(message.contains(expected), "{args:?}: {message}");
+    }
+}
+
+#[test]
 fn wash_cli_vectors_select_or_reject_layout_before_source_admission() {
     let vectors: Value = serde_json::from_slice(CLI_SELECTOR_VECTORS).unwrap();
     assert!(!vectors["contains_media"].as_bool().unwrap());
@@ -64,10 +98,8 @@ fn wash_cli_vectors_select_or_reject_layout_before_source_admission() {
                 assert!(stderr.contains("possible values: flat7x"));
             }
             (None, Some("reject as incompatible with approved profile row")) => {
-                assert!(
-                    stderr
-                        .contains("joc-layout flat7x requires the selected 1024 kbps profile row")
-                );
+                // This frozen vector preceded the additional D0 rate presets.
+                assert!(stderr.contains("encode requires absolute input and output file paths"));
             }
             disposition => panic!("unexpected Wash CLI selector vector: {disposition:?}"),
         }

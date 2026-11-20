@@ -155,7 +155,11 @@ impl<'a> ProgrammeOwnerRoots<'a> {
         let selected_rate = profile.codec_rate();
         let selected_frame_bytes =
             if profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
-                u64::from(Flat7xI0D0TargetPlan::approved_contract().aggregate_frame_bytes())
+                u64::from(
+                    Flat7xI0D0TargetPlan::for_d0_rate(selected_rate)
+                        .ok_or("unsupported Flat7x D0 rate")?
+                        .aggregate_frame_bytes(),
+                )
             } else {
                 u64::try_from(
                     selected_rate.frame_bytes().ok_or_else(|| {
@@ -706,7 +710,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
                     || (flat7x_selected
                         && !advance.flat7x_integrity_pair_receipts.as_ref().is_some_and(|pair| {
                             flat7x_pair_receipts_match(
-                                pair,
+                                pair,self.codec.codec_rate(),
                                 &self.programme_id,
                                 self.attempt,
                                 &advance.source_transaction_id,
@@ -920,6 +924,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
 )]
 fn flat7x_pair_receipts_match(
     pair: &jocforge_application::flat7x_pair_integrity::Flat7xI0D0F12PairReceipts,
+    rate: jocforge_application::meter_source_bridge::CodecRateProfile,
     programme_id: &ProgrammeId,
     attempt: AttemptId,
     source_transaction_id: &CallbackTransactionId,
@@ -929,7 +934,9 @@ fn flat7x_pair_receipts_match(
     let Ok(expected_dispatch) = source_index.dispatch() else {
         return false;
     };
-    let target = Flat7xI0D0TargetPlan::approved_contract();
+    let Some(target) = Flat7xI0D0TargetPlan::for_d0_rate(rate) else {
+        return false;
+    };
     [
         (pair.i0(), target.i0().frame_bytes()),
         (pair.d0(), target.d0().frame_bytes()),

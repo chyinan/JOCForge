@@ -9,8 +9,8 @@ use jocforge_domain::{
     },
     profile::{
         D0EmdfSkipFieldExtent, D0FrameExtent, Flat7xAuByteSequenceError, Flat7xAuCandidate,
-        Flat7xAuPlanValidationError, Flat7xI0D0TargetPlan, I0FrameExtent,
-        compose_flat7x_au_byte_sequence, validate_flat7x_au_candidate,
+        Flat7xAuPlanValidationError, I0FrameExtent, compose_flat7x_au_byte_sequence,
+        validate_flat7x_au_candidate,
     },
     publication::{
         Flat7xAuAttemptRetirementReason, Flat7xAuIntegrityFrameReceipt, Flat7xAuOutputOwnerError,
@@ -35,6 +35,8 @@ use jocforge_domain::{
     transaction::CallbackLineageIdentity,
 };
 
+#[cfg(feature = "test-support")]
+use jocforge_domain::profile::Flat7xI0D0TargetPlan;
 #[cfg(feature = "test-support")]
 use sha2::{Digest, Sha256};
 
@@ -150,10 +152,9 @@ pub fn preflight_flat7x_pair_io_stage(
         return Err(Flat7xPairIoStageError::SourceRoleMapMismatch);
     }
 
-    let target = Flat7xI0D0TargetPlan::approved_contract();
+    let target = candidate.target();
     let access_unit = candidate.access_unit();
-    if candidate.target() != target || role_map.target() != target || access_unit.target() != target
-    {
+    if !target.is_supported() || role_map.target() != target || access_unit.target() != target {
         return Err(Flat7xPairIoStageError::UnsupportedTarget);
     }
 
@@ -316,15 +317,14 @@ pub fn stage_receipted_i0_with_opaque_d0<'a>(
     output_owner: Flat7xAuOutputOwner,
     receipt_input: Flat7xAuSourceReceiptInput<'a>,
 ) -> Result<Flat7xAuAppendProposal<'a>, Flat7xPairAppendProposalError> {
-    let target = Flat7xI0D0TargetPlan::approved_contract();
+    let target = i0_frame.target();
     let identity = i0_frame.source_identity();
     let role_map = i0_frame.source_role_map_receipt();
-    if i0_frame.target() != target
+    if !target.is_supported()
         || role_map.target() != target
         || i0_frame.resolved_profile().joc_reconstruction_layout()
             != jocforge_domain::profile::JocReconstructionLayout::Flat7x
-        || i0_frame.resolved_profile().codec_rate()
-            != jocforge_domain::profile::CodecRateProfile::Kbps1024
+        || i0_frame.resolved_profile().codec_rate() != target.d0().rate()
     {
         return Err(Flat7xPairAppendProposalError::UnsupportedTarget);
     }
@@ -492,7 +492,7 @@ pub fn stage_flat7x_pcm_pair_for_f15<'a>(
     {
         return Err(Flat7xPairAppendProposalError::D0Block2PlacementMismatch);
     }
-    let target = Flat7xI0D0TargetPlan::approved_contract();
+    let target = i0_frame.target();
     let skip = authoritative_skip;
     let skip_target = target.d0_emdf_skip_field();
     let skip_extent = D0EmdfSkipFieldExtent::new(
@@ -777,16 +777,15 @@ pub fn handoff_source_receipted_pair_for_io<'a>(
     {
         return Err(Flat7xPairIoHandoffError::SourceIdentityMismatch);
     }
+    let target = Flat7xI0D0TargetPlan::from_au_bytes(ledger.length())
+        .ok_or(Flat7xPairIoHandoffError::FrameExtentMismatch)?;
     let expected_offset = u64::from(binding.published_au_index().value())
-        .checked_mul(u64::from(
-            Flat7xI0D0TargetPlan::approved_contract().aggregate_frame_bytes(),
-        ))
+        .checked_mul(u64::from(target.aggregate_frame_bytes()))
         .ok_or(Flat7xPairIoHandoffError::OutputOffsetMismatch)?;
     if ledger.offset() != binding.byte_offset() || binding.byte_offset() != expected_offset {
         return Err(Flat7xPairIoHandoffError::OutputOffsetMismatch);
     }
 
-    let target = Flat7xI0D0TargetPlan::approved_contract();
     let expected_frames = (target.i0().frame_bytes(), target.d0().frame_bytes());
     let frame_lengths = ledger.frame_lengths();
     let expected_au_bytes = target.aggregate_frame_bytes();

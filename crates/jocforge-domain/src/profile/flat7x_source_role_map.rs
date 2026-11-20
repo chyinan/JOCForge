@@ -621,7 +621,7 @@ pub fn build_flat7x_provisional_source_role_map(
     graph: &SelectedAdmGraph,
     target: Flat7xI0D0TargetPlan,
 ) -> Result<Flat7xProvisionalSourceRoleMap, Flat7xSourceRoleMapError> {
-    if target != Flat7xI0D0TargetPlan::approved_contract() {
+    if !target.is_supported() {
         return Err(Flat7xSourceRoleMapError::UnsupportedTarget);
     }
 

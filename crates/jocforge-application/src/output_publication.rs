@@ -56,13 +56,17 @@ impl SelectedOutputProviderProjection {
         };
         let (frame_bytes, encoding_profile_id) =
             if profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
-                let target = Flat7xI0D0TargetPlan::approved_contract();
+                let target = Flat7xI0D0TargetPlan::for_d0_rate(profile.codec_rate())
+                    .ok_or(OutputRootBindingError::UnsupportedProfile)?;
                 let bit_rate_kbps = target
                     .aggregate_rate_kbps()
                     .ok_or(OutputRootBindingError::UnsupportedProfile)?;
                 (
                     target.aggregate_frame_bytes(),
-                    format!("flat7x-i0-640-d0-1024-48k-{bit_rate_kbps}k"),
+                    format!(
+                        "flat7x-i0-640-d0-{}-48k-{bit_rate_kbps}k",
+                        bit_rate_kbps - 640
+                    ),
                 )
             } else {
                 let frame_bytes = profile
@@ -251,11 +255,24 @@ pub mod test_support {
         attempt_id: AttemptId,
         staging_owner_id: OutputStagingOwnerId,
     ) -> Result<ProgrammeOutputBinding, OutputRootBindingError> {
-        let provider = SelectedOutputProviderProjection::project_selected_f15_output_provider(
+        bind_output_for_profile_for_test(
+            input,
+            attempt_id,
+            staging_owner_id,
             input.configuration().selected_profile(),
-        )?
-        .output_provider()
-        .clone();
+        )
+    }
+    /// Creates a test binding with the same projected provider as the selected layout.
+    pub fn bind_output_for_profile_for_test(
+        input: &PreparedJobInput,
+        attempt_id: AttemptId,
+        staging_owner_id: OutputStagingOwnerId,
+        profile: super::ResolvedEncodingProfile,
+    ) -> Result<ProgrammeOutputBinding, OutputRootBindingError> {
+        let provider =
+            SelectedOutputProviderProjection::project_selected_f15_output_provider(profile)?
+                .output_provider()
+                .clone();
         ProgrammeOutputBinding::for_test_from_prepared_input(
             input,
             attempt_id,

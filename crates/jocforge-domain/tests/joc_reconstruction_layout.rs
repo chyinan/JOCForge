@@ -423,11 +423,22 @@ fn profile_aware_payload_writer_keeps_payload_and_reconstruction_selectors_separ
 }
 
 #[test]
-fn flat7x_is_limited_to_the_existing_1024_kbps_core_row() {
-    let profile = EncodingProfile::selected_with_codec_rate(CodecRateProfile::Kbps768)
-        .with_joc_reconstruction_layout(JocReconstructionLayout::Flat7x);
-    assert_eq!(
-        resolve_selected_profile(&profile),
-        Err(ProfileError::UnsupportedProfile)
-    );
+fn flat7x_resolves_the_selected_dependent_rate() {
+    for rate in [384, 448, 576, 640, 768, 1024] {
+        let codec_rate = CodecRateProfile::from_kbps(rate).unwrap();
+        let profile = EncodingProfile::selected_with_codec_rate_and_joc_reconstruction_layout(
+            codec_rate,
+            JocReconstructionLayout::Flat7x,
+        );
+        assert_eq!(
+            resolve_selected_profile(&profile).unwrap().codec_rate(),
+            codec_rate
+        );
+        let target = Flat7xI0D0TargetPlan::for_d0_rate(codec_rate).unwrap();
+        assert_eq!(target.aggregate_rate_kbps(), Some(640 + rate));
+        assert_eq!(
+            Flat7xI0D0TargetPlan::from_au_bytes(target.aggregate_frame_bytes()),
+            Some(target)
+        );
+    }
 }

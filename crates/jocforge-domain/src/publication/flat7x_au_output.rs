@@ -203,6 +203,7 @@ pub struct Flat7xAuSourceReceipts<'a> {
 /// source-callback identity, or connection to the selected 5.1 sink.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Flat7xAuOutputOwner {
+    target: Flat7xI0D0TargetPlan,
     attempt_id: String,
     expected_access_units: u64,
     generation: u64,
@@ -216,6 +217,17 @@ impl Flat7xAuOutputOwner {
         attempt_id: &str,
         expected_access_units: u64,
     ) -> Result<Self, Flat7xAuOutputOwnerError> {
+        Self::for_target(
+            attempt_id,
+            expected_access_units,
+            Flat7xI0D0TargetPlan::approved_contract(),
+        )
+    }
+    pub fn for_target(
+        attempt_id: &str,
+        expected_access_units: u64,
+        target: Flat7xI0D0TargetPlan,
+    ) -> Result<Self, Flat7xAuOutputOwnerError> {
         if attempt_id.is_empty() {
             return Err(Flat7xAuOutputOwnerError::EmptyAttemptId);
         }
@@ -223,10 +235,11 @@ impl Flat7xAuOutputOwner {
             return Err(Flat7xAuOutputOwnerError::EmptyAccessUnitCount);
         }
         expected_access_units
-            .checked_mul(u64::from(access_unit_bytes()))
+            .checked_mul(u64::from(target.aggregate_frame_bytes()))
             .ok_or(Flat7xAuOutputOwnerError::AccessUnitCountOverflow)?;
 
         Ok(Self {
+            target,
             attempt_id: attempt_id.to_owned(),
             expected_access_units,
             generation: 0,
@@ -261,7 +274,7 @@ impl Flat7xAuOutputOwner {
     }
 
     pub const fn expected_product_bytes(&self) -> u64 {
-        self.expected_access_units * access_unit_bytes() as u64
+        self.expected_access_units * self.target.aggregate_frame_bytes() as u64
     }
 
     pub fn is_complete(&self) -> bool {
@@ -296,7 +309,7 @@ impl Flat7xAuOutputOwner {
         sequence: Flat7xAuByteSequenceCandidate,
         receipt_input: Flat7xAuSourceReceiptInput<'a>,
     ) -> Result<Flat7xAuAppendProposal<'a>, Flat7xAuOutputOwnerError> {
-        let plan = Flat7xI0D0TargetPlan::approved_contract();
+        let plan = self.target;
         let i0_frame_len = usize::from(plan.i0().frame_bytes());
         let d0_frame_extent = usize::from(plan.d0().frame_bytes());
         if sequence.i0_frame_bytes() != plan.i0().frame_bytes() {
@@ -354,7 +367,7 @@ impl Flat7xAuOutputOwner {
         let receipt_summary = validate_source_receipts(au_index, &sequence, source_receipts)?;
         let expected_offset = au_index
             .value()
-            .checked_mul(u64::from(access_unit_bytes()))
+            .checked_mul(u64::from(self.target.aggregate_frame_bytes()))
             .ok_or(Flat7xAuOutputOwnerError::AccessUnitCountOverflow)?;
         if expected_offset != self.durable_length {
             return Err(Flat7xAuOutputOwnerError::OutputOffsetMismatch);
@@ -370,7 +383,7 @@ impl Flat7xAuOutputOwner {
             metadata_dispatch: receipt_summary.metadata_dispatch,
             metadata_au_index: receipt_summary.metadata_au_index,
             offset: expected_offset,
-            length: access_unit_bytes(),
+            length: self.target.aggregate_frame_bytes(),
             i0_frame_bytes: plan.i0().frame_bytes(),
             d0_frame_bytes: plan.d0().frame_bytes(),
             i0_sha256,
@@ -397,9 +410,10 @@ impl Flat7xAuOutputOwner {
             .ok_or(Flat7xAuOutputOwnerError::AccessUnitCountOverflow)?;
         let next_length = self
             .durable_length
-            .checked_add(u64::from(access_unit_bytes()))
+            .checked_add(u64::from(self.target.aggregate_frame_bytes()))
             .ok_or(Flat7xAuOutputOwnerError::AccessUnitCountOverflow)?;
         let mut after_owner = Self {
+            target: self.target,
             attempt_id: self.attempt_id.clone(),
             expected_access_units: self.expected_access_units,
             generation: next_generation,
@@ -437,13 +451,15 @@ impl Flat7xAuOutputOwner {
                 ledger_valid = false;
                 break;
             };
-            let Some(expected_offset) = index.checked_mul(u64::from(access_unit_bytes())) else {
+            let Some(expected_offset) =
+                index.checked_mul(u64::from(self.target.aggregate_frame_bytes()))
+            else {
                 ledger_valid = false;
                 break;
             };
             if entry.au_index.value() != index
                 || entry.offset != expected_offset
-                || entry.length != access_unit_bytes()
+                || entry.length != self.target.aggregate_frame_bytes()
                 || entry.i0_crc_residual != 0
                 || entry.d0_crc_residual != 0
                 || entry.d0_emdf_container_bytes == 0
@@ -555,8 +571,7 @@ fn validate_source_receipts(
         return Err(Flat7xAuOutputOwnerError::IntegritySourceIdentityMismatch);
     }
 
-    let plan = Flat7xI0D0TargetPlan::approved_contract();
-    let i0_end = usize::from(plan.i0().frame_bytes());
+    let i0_end = usize::from(sequence.i0_frame_bytes());
     let bytes = sequence.bytes();
     let i0_bytes = &bytes[..i0_end];
     let d0_bytes = &bytes[i0_end..];
@@ -1007,6 +1022,7 @@ impl Flat7xAuOutputAfterProposal<'_> {
     }
 }
 
+#[cfg(test)]
 const fn access_unit_bytes() -> u32 {
     Flat7xI0D0TargetPlan::approved_contract().aggregate_frame_bytes()
 }

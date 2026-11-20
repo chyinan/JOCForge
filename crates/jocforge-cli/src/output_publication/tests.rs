@@ -191,7 +191,7 @@ fn flat7x_output_binding(
     attempt_id: AttemptId,
 ) -> jocforge_application::output_publication::ProgrammeOutputBinding {
     let prepared = prepared_job(programme_label);
-    jocforge_application::output_publication::test_support::bind_selected_output_for_test(
+    jocforge_application::output_publication::test_support::bind_output_for_profile_for_test(
         &prepared,
         attempt_id,
         OutputStagingOwnerId::new(&format!(
@@ -199,6 +199,7 @@ fn flat7x_output_binding(
             attempt_id.value()
         ))
         .unwrap(),
+        jocforge_application::meter_source_bridge::resolve_selected_profile(&jocforge_application::meter_source_bridge::EncodingProfile::selected_with_joc_reconstruction_layout(jocforge_application::meter_source_bridge::JocReconstructionLayout::Flat7x)).unwrap(),
     )
     .unwrap()
 }

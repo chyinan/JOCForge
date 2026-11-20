@@ -164,17 +164,19 @@ pub fn write_flat7x_i0_ac3_header_through_compression(
 }
 
 const FLAT7X_D0_FIXED_PREFIX_BITS: u32 = 45;
-const FLAT7X_D0_FIXED_PREFIX_FIELDS: [(u32, u8); 9] = [
-    (0x0b77, 16),
-    (1, 2),
-    (0, 3),
-    (2_047, 11),
-    (0, 2),
-    (3, 2),
-    (5, 3),
-    (0, 1),
-    (16, 5),
-];
+fn d0_fixed_prefix_fields(frame_bytes: u16) -> [(u32, u8); 9] {
+    [
+        (0x0b77, 16),
+        (1, 2),
+        (0, 3),
+        (u32::from(frame_bytes / 2 - 1), 11),
+        (0, 2),
+        (3, 2),
+        (5, 3),
+        (0, 1),
+        (16, 5),
+    ]
+}
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Flat7xD0FixedPrefixError {
@@ -196,12 +198,19 @@ impl From<FrameBitWriterError> for Flat7xD0FixedPrefixError {
 pub fn write_flat7x_d0_fixed_prefix(
     writer: &mut FrameBitWriter<'_>,
 ) -> Result<FrameBitCursor, Flat7xD0FixedPrefixError> {
+    write_flat7x_d0_fixed_prefix_for_size(writer, 4096)
+}
+
+fn write_flat7x_d0_fixed_prefix_for_size(
+    writer: &mut FrameBitWriter<'_>,
+    frame_bytes: u16,
+) -> Result<FrameBitCursor, Flat7xD0FixedPrefixError> {
     let actual = writer.cursor().bit_offset();
     if actual != 0 {
         return Err(Flat7xD0FixedPrefixError::CursorMismatch { actual });
     }
     writer.preflight_capacity(FLAT7X_D0_FIXED_PREFIX_BITS)?;
-    for (value, width) in FLAT7X_D0_FIXED_PREFIX_FIELDS {
+    for (value, width) in d0_fixed_prefix_fields(frame_bytes) {
         writer.write_unsigned(value, width)?;
     }
     Ok(writer.cursor())
@@ -244,6 +253,15 @@ pub fn write_flat7x_d0_bsi_through_chanmap(
     dialnorm: u8,
     compr: Option<u8>,
 ) -> Result<FrameBitCursor, Flat7xD0BsiSegmentError> {
+    write_flat7x_d0_bsi_through_chanmap_for_size(writer, dialnorm, compr, 4096)
+}
+
+fn write_flat7x_d0_bsi_through_chanmap_for_size(
+    writer: &mut FrameBitWriter<'_>,
+    dialnorm: u8,
+    compr: Option<u8>,
+    frame_bytes: u16,
+) -> Result<FrameBitCursor, Flat7xD0BsiSegmentError> {
     let actual = writer.cursor().bit_offset();
     if actual != 0 {
         return Err(Flat7xD0BsiSegmentError::CursorMismatch { actual });
@@ -262,7 +280,7 @@ pub fn write_flat7x_d0_bsi_through_chanmap(
     };
     writer.preflight_capacity(required_bits)?;
 
-    write_flat7x_d0_fixed_prefix(writer)?;
+    write_flat7x_d0_fixed_prefix_for_size(writer, frame_bytes)?;
     writer.write_unsigned(u32::from(dialnorm), D0_DIALNORM_WIDTH_BITS)?;
     writer.write_unsigned(u32::from(compr.is_some()), D0_COMPRE_WIDTH_BITS)?;
     if let Some(compr) = compr {
@@ -539,7 +557,7 @@ pub fn measure_flat7x_d0_bsi_structure(
     target: Flat7xI0D0TargetPlan,
     structure: &Flat7xD0BsiStructure,
 ) -> Result<D0BsiStructureBitLength, Flat7xD0BsiStructureError> {
-    if target != Flat7xI0D0TargetPlan::approved_contract() {
+    if !target.is_supported() {
         return Err(Flat7xD0BsiStructureError::UnsupportedTargetContext);
     }
     if !(1..=31).contains(&structure.dialnorm) {
@@ -829,10 +847,11 @@ pub fn write_flat7x_d0_bsi_structure(
     let end;
     {
         let mut staging_writer = FrameBitWriter::new(&mut staging, FrameBitCursor::new(0))?;
-        write_flat7x_d0_bsi_through_chanmap(
+        write_flat7x_d0_bsi_through_chanmap_for_size(
             &mut staging_writer,
             structure.dialnorm,
             structure.compr,
+            target.d0().frame_bytes(),
         )?;
         append_flat7x_d0_mixing_metadata_and_infomdate_inner(
             &mut staging_writer,

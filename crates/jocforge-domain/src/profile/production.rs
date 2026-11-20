@@ -411,7 +411,7 @@ impl ResolvedEncodingProfile {
     }
 }
 
-/// Accepts the existing selected row and the additive 1024 kbps Flat7x profile row.
+/// Accepts the existing selected row and Flat7x with one of the supported D0 rates.
 pub const fn resolve_selected_profile(
     profile: &EncodingProfile,
 ) -> Result<ResolvedEncodingProfile, ProfileError> {
@@ -432,7 +432,7 @@ pub const fn resolve_selected_profile(
             CarrierCodecProfile::Flat7xAc3I0DependentEac3D0,
             SubstreamTopology::Flat7xIndependentI0DependentD0,
             JocPayloadDownmixIndex::SevenChannel,
-        ) => matches!(profile.codec_rate, CodecRateProfile::Kbps1024),
+        ) => profile.codec_rate.kbps().is_some(),
         _ => false,
     };
     if !matches!(

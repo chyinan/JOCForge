@@ -251,7 +251,8 @@ pub(crate) fn stage_source_frame<'pcm>(
             })?;
             let receipt = bind_flat7x_source_role_map(
                 prepared,
-                Flat7xI0D0TargetPlan::approved_contract(),
+                Flat7xI0D0TargetPlan::for_d0_rate(joc_profile.codec_rate())
+                    .ok_or_else(|| "unsupported Flat7x rate".to_owned())?,
                 &callback_identity,
                 source_index,
                 &source_transaction_id,
@@ -280,7 +281,8 @@ pub(crate) fn stage_source_frame<'pcm>(
                 prepared,
                 shared_analysis,
                 drc_source.after_root(),
-                Flat7xI0D0TargetPlan::approved_contract(),
+                Flat7xI0D0TargetPlan::for_d0_rate(joc_profile.codec_rate())
+                    .ok_or_else(|| "unsupported Flat7x rate".to_owned())?,
             )
             .map_err(|error| {
                 SourceFrameStageError::Pipeline(format!(

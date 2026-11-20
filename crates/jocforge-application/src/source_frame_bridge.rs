@@ -692,7 +692,7 @@ pub fn stage_codec_owner_after_flat7x_pair(
         source_key.attempt_id(),
         i0_frame.i0_frame().frame_bytes(),
         d0_frame.frame_candidate().frame().frame_bytes(),
-        Flat7xI0D0TargetPlan::approved_contract(),
+        i0_frame.target(),
     )?;
     let proposal = codec_owner.stage_source_with_d0_overlap_history(
         &accepted_frame,

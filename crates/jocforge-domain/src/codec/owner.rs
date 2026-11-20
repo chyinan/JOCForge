@@ -464,8 +464,7 @@ impl AcceptedCodecFrame {
         d0_frame: &[u8],
         target: Flat7xI0D0TargetPlan,
     ) -> Result<Self, CodecOwnerStageError> {
-        let expected = Flat7xI0D0TargetPlan::approved_contract();
-        if target != expected
+        if !target.is_supported()
             || i0_frame.len() != usize::from(target.i0().frame_bytes())
             || d0_frame.len() != usize::from(target.d0().frame_bytes())
         {

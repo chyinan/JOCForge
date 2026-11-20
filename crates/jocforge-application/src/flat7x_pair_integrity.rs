@@ -10,7 +10,6 @@ use jocforge_domain::{
         },
     },
     joc::emdf::metadata_owner::MetadataSourceProposal,
-    profile::Flat7xI0D0TargetPlan,
     timeline::{PublicationDisposition, publication_for_source},
     transaction::CallbackLineageIdentity,
 };
@@ -58,7 +57,7 @@ pub struct Flat7xPairF12StageInput<'a> {
 pub fn stage_flat7x_pair_f12_integrity(
     input: Flat7xPairF12StageInput<'_>,
 ) -> Result<IntegrityGtcFlat7xF12PairProposal, Flat7xPairF12StageError> {
-    let target = Flat7xI0D0TargetPlan::approved_contract();
+    let target = input.i0_frame.target();
     let i0_role_map = input.i0_frame.source_role_map_receipt();
     let d0_role_map = input.d0_frame.source_role_map_receipt();
     let d0_identity = input.d0_frame.d0_source_identity();
@@ -180,7 +179,7 @@ pub fn stage_flat7x_pair_f12_integrity(
         .stage_flat7x_i0_d0_f12_pair_for_callback(
             Flat7xI0D0F12PairInput {
                 identity: integrity_identity,
-                rate_plan: Flat7xIntegrityPairRatePlan::flat7x_i0_640_d0_1024(),
+                rate_plan: Flat7xIntegrityPairRatePlan::from_target(target),
                 i0_frame: input.i0_frame.i0_frame().frame_bytes(),
                 d0_frame: input.d0_frame.frame_candidate().frame().frame_bytes(),
                 d0_emdf_container_start,

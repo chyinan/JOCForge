@@ -1121,6 +1121,23 @@ fn admit_validated_encoding_plan<
     .map_err(|error| {
         F15PlanAdmissionError::OutputConfiguration(OutputRootBindingError::OutputOwner(error))
     })?;
+    let output_configuration = if context.resolved_profile.joc_reconstruction_layout()
+        == jocforge_domain::profile::JocReconstructionLayout::Flat7x
+    {
+        let target = jocforge_domain::profile::Flat7xI0D0TargetPlan::for_d0_rate(
+            context.resolved_profile.codec_rate(),
+        )
+        .ok_or(F15PlanAdmissionError::OutputConfiguration(
+            OutputRootBindingError::UnsupportedProfile,
+        ))?;
+        output_configuration
+            .with_flat7x_target(target)
+            .map_err(|e| {
+                F15PlanAdmissionError::OutputConfiguration(OutputRootBindingError::OutputOwner(e))
+            })?
+    } else {
+        output_configuration
+    };
     let output_owner = super::OutputOwner::cold(output_configuration);
     let output_binding = super::ProgrammeOutputBinding {
         programme_id: context.programme_id.clone(),

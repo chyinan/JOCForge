@@ -126,7 +126,7 @@ pub fn bind_flat7x_d0_bsi_source_inputs(
     drc_after: &NoneDrcOwnerAfterProposal,
     target: Flat7xI0D0TargetPlan,
 ) -> Result<Flat7xD0BsiSourceInputs, CodecSourceBridgeError> {
-    if target != Flat7xI0D0TargetPlan::approved_contract() {
+    if !target.is_supported() {
         return Err(CodecSourceBridgeError::UnsupportedFlat7xTarget);
     }
     validate_source_identity(prepared, shared_analysis, drc_after)?;

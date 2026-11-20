@@ -94,6 +94,7 @@ pub struct OutputProvider {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct OutputConfiguration {
+    flat7x_target: Option<Flat7xI0D0TargetPlan>,
     profile_id: String,
     provider_sha256: [u8; 32],
     frame_bytes: u32,
@@ -233,6 +234,13 @@ impl OutputConfiguration {
         Ok(Self {
             profile_id,
             provider_sha256: provider.provider_sha256,
+            // Legacy callers can identify pair-only extents by size; 4096 is also
+            // a valid single-frame extent, so the production layout binds it explicitly.
+            flat7x_target: if provider.frame_bytes > 4096 {
+                Flat7xI0D0TargetPlan::from_au_bytes(provider.frame_bytes)
+            } else {
+                None
+            },
             frame_bytes: provider.frame_bytes,
             attempt_id: attempt_id.to_owned(),
             staging_name: staging_name.clone(),
@@ -253,6 +261,19 @@ impl OutputConfiguration {
         &self.provider_sha256
     }
 
+    pub fn with_flat7x_target(
+        mut self,
+        target: Flat7xI0D0TargetPlan,
+    ) -> Result<Self, OutputOwnerError> {
+        if !target.is_supported() || self.frame_bytes != target.aggregate_frame_bytes() {
+            return Err(OutputOwnerError::ProviderFrameSize);
+        }
+        self.flat7x_target = Some(target);
+        Ok(self)
+    }
+    pub const fn flat7x_target(&self) -> Option<Flat7xI0D0TargetPlan> {
+        self.flat7x_target
+    }
     pub const fn frame_bytes(&self) -> u32 {
         self.frame_bytes
     }
@@ -291,7 +312,7 @@ impl OutputConfiguration {
 }
 
 fn is_supported_output_extent(frame_bytes: u32) -> bool {
-    if frame_bytes == Flat7xI0D0TargetPlan::approved_contract().aggregate_frame_bytes() {
+    if Flat7xI0D0TargetPlan::from_au_bytes(frame_bytes).is_some() {
         return true;
     }
     usize::try_from(frame_bytes)
@@ -531,7 +552,10 @@ impl OutputOwner {
         &self,
         pair: &Flat7xAuAppendProposal<'_>,
     ) -> Result<OutputSourceProposal, OutputOwnerError> {
-        let target = Flat7xI0D0TargetPlan::approved_contract();
+        let target = self
+            .configuration
+            .flat7x_target()
+            .ok_or(OutputOwnerError::FrameLength)?;
         let (i0_identity, d0_identity) = pair.source_identities();
         let ledger = pair.ledger_entry();
         if pair.attempt_id() != self.configuration.attempt_id()
@@ -574,8 +598,7 @@ impl OutputOwner {
         identity: OutputSourceIdentity,
     ) -> Result<OutputSourceProposal, OutputOwnerError> {
         let source = identity.source_index.value();
-        if self.configuration.frame_bytes
-            != Flat7xI0D0TargetPlan::approved_contract().aggregate_frame_bytes()
+        if self.configuration.flat7x_target().is_none()
             || self.state.finalized
             || source >= SUPPRESSED_SOURCES
             || source != self.state.next_source_index.value()

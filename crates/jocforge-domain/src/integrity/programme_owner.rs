@@ -114,6 +114,12 @@ pub struct Flat7xIntegrityPairRatePlan {
 }
 
 impl Flat7xIntegrityPairRatePlan {
+    pub const fn from_target(target: crate::profile::Flat7xI0D0TargetPlan) -> Self {
+        Self {
+            independent_i0_rate: target.i0().rate(),
+            dependent_d0_rate: target.d0().rate(),
+        }
+    }
     pub const fn flat7x_i0_640_d0_1024() -> Self {
         Self {
             independent_i0_rate: crate::profile::CodecRateProfile::Kbps640,
@@ -1290,7 +1296,8 @@ impl IntegrityProgrammeOwner {
         {
             return Err(IntegrityError::new(IntegrityErrorCode::ProviderValues));
         }
-        let target = crate::profile::Flat7xI0D0TargetPlan::approved_contract();
+        let target = crate::profile::Flat7xI0D0TargetPlan::for_d0_rate(self.codec_rate)
+            .ok_or(IntegrityError::new(IntegrityErrorCode::UnsupportedProfile))?;
         let rate_plan = input.rate_plan;
         if rate_plan.independent_i0_rate() != target.i0().rate()
             || rate_plan.dependent_d0_rate() != target.d0().rate()

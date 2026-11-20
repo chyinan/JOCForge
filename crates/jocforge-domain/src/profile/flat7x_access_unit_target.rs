@@ -1,5 +1,5 @@
 // pattern: Functional Core
-//! Value-only 1664 kbps Flat7x I0/D0 target contract.
+//! Flat7x I0/D0 target geometry and per-substream rates.
 //!
 //! This type records the Wash-approved design target and remains outside
 //! `EncodingProfile` resolution. It has no frame writer, source-role mapper,
@@ -389,6 +389,24 @@ impl Flat7xI0D0TargetPlan {
             (Some(i0), Some(d0)) => Some(i0 + d0),
             _ => None,
         }
+    }
+
+    pub fn for_d0_rate(rate: CodecRateProfile) -> Option<Self> {
+        let mut plan = Self::approved_contract();
+        plan.d0.frame_bytes = u16::try_from(rate.frame_bytes()?).ok()?;
+        plan.d0.rate = rate;
+        Some(plan)
+    }
+    pub fn from_au_bytes(bytes: u32) -> Option<Self> {
+        let d0_bytes =
+            bytes.checked_sub(u32::from(Self::approved_contract().i0().frame_bytes()))?;
+        if d0_bytes % 4 != 0 {
+            return None;
+        }
+        Self::for_d0_rate(CodecRateProfile::from_kbps(d0_bytes / 4)?)
+    }
+    pub fn is_supported(self) -> bool {
+        Self::for_d0_rate(self.d0.rate) == Some(self)
     }
 
     pub const fn aggregate_frame_bytes(self) -> u32 {

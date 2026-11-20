@@ -39,7 +39,7 @@ struct Cli {
 enum Command {
     /// Encode one selected full-file ADM programme.
     #[command(
-        after_help = "Flat7x writes a 1,664 kbps I0+D0 stream. Use a .candidate.ec3 file in a new empty attempt directory. XML jobs support ADM BWF input and raw EC-3 output."
+        after_help = "Flat7x defaults to 1664 kbps (640 kbps I0 + 1024 kbps D0). Use a .candidate.ec3 file in a new empty attempt directory. XML jobs support ADM BWF input and raw EC-3 output."
     )]
     Encode(EncodeArgs),
     /// Generate a completion script for your shell.
@@ -54,9 +54,12 @@ struct EncodeArgs {
     /// Output EC-3 file.
     #[arg(value_name = "OUTPUT.ec3", required_unless_present = "job_xml")]
     output: Option<PathBuf>,
-    /// Bitrate for direct file input. Defaults to 1024 kbps.
+    /// Carrier bitrate (D0 for Flat7x). Defaults to 1024 kbps.
     #[arg(long, value_name = "KBPS", value_parser = ["384", "448", "576", "640", "768", "1024"])]
     data_rate: Option<String>,
+    /// Total Flat7x bitrate including the 640 kbps AC-3 core.
+    #[arg(long, value_name = "KBPS", requires = "joc_layout", conflicts_with = "data_rate", value_parser = ["1024", "1088", "1216", "1280", "1408", "1664"])]
+    total_rate: Option<String>,
     /// Select experimental Flat7x. Defaults to 5.1.
     #[arg(long, value_name = "LAYOUT", value_parser = ["flat7x"])]
     joc_layout: Option<String>,
@@ -105,9 +108,13 @@ fn main() -> ExitCode {
                     jocforge::encode_request::run_from_job_xml(&job_xml)
                 }
             } else {
-                let rate =
+                let rate = if let Some(total) = args.total_rate {
+                    let kbps = total.parse::<u32>().expect("validated total bitrate");
+                    CodecRateProfile::from_kbps(kbps - 640).expect("validated dependent bitrate")
+                } else {
                     CodecRateProfile::from_xml_token(args.data_rate.as_deref().unwrap_or("1024"))
-                        .expect("clap validates the bitrate");
+                        .expect("clap validates the bitrate")
+                };
                 let layout = if args.joc_layout.is_some() {
                     JocReconstructionLayout::Flat7x
                 } else {

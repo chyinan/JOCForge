@@ -4,9 +4,9 @@
 
 ## Flat 7.1 编码
 
-**JOCForge 已打通 Flat 7.1 的整曲编码与播放。** CLI 将 48 kHz ADM BWF 编码为 1,664 kbps 的 E-AC-3 JOC 码流。每个访问单元包含 640 kbps 的独立 AC-3 核心和 1,024 kbps 的依赖 E-AC-3 子流，使用 Flat 7.X 重建配置（索引 1）、七路载体和 15 个 JOC 对象。
+CLI 将 48 kHz ADM BWF 编码为 Flat 7.1 E-AC-3 JOC。可选总码率为 **1024、1088、1216、1280、1408 和 1664 kbps**，默认 1664 kbps。每档都保留 640 kbps 的独立 AC-3 核心，其余码率分配给依赖 E-AC-3 子流。六档共用 Flat 7.X 重建配置（索引 1）、七路载体和 15 个 JOC 对象。
 
-整曲实测使用方大同《Love Song》（4 分 29 秒）。OpenJOC 0.20.2 在兼容模式下接纳了全部 8,417 个访问单元并完成 7.1 渲染。最终码流无损封装为 MKA 后，已实测可在 Adobe Audition 中打开，并可用 Windows 媒体播放器播放。
+1664 kbps 档实测使用方大同《Love Song》（4 分 29 秒）。OpenJOC 0.20.2 在兼容模式下接纳了全部 8,417 个访问单元并完成 7.1 渲染。最终码流无损封装为 MKA 后，已实测可在 Adobe Audition 中打开，并可用 Windows 媒体播放器播放。
 
 ### 从 ADM 编码到 EC3
 
@@ -22,7 +22,7 @@ $adm = (Resolve-Path -LiteralPath "D:\Audio\input.adm.wav").Path
 $out = (New-Item -ItemType Directory -Path (Join-Path $PWD ("flat7x-" + [guid]::NewGuid()))).FullName
 $ec3 = Join-Path $out "output.candidate.ec3"
 
-.\target\release\jocforge.exe encode "$adm" "$ec3" --joc-layout flat7x
+.\target\release\jocforge.exe encode "$adm" "$ec3" --joc-layout flat7x --total-rate 1280
 if ($LASTEXITCODE -ne 0) { throw "Flat 7.1 编码失败" }
 ```
 
@@ -56,7 +56,7 @@ Rename-Item -LiteralPath $mp4 -NewName "output.m4a"
 
 生成的 `.m4a` 已实测可由 iOS 系统解码器打开。
 
-Flat7x 在 CLI 中仍标为实验性。
+Flat7x 在 CLI 中仍标为实验性。六档均已用一首含动态对象的 48 kHz 达芬奇 ADM 母版完成整曲编码、FFmpeg 解码和 OpenJOC 7.1 渲染。OpenJOC 的部署兼容检查通过，ETSI 严格检查仍报告载荷 11 和 14 的 `codecdatae` 标志差异。
 
 ## 5.1 编码
 

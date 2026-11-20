@@ -667,11 +667,11 @@ impl Flat7xD0FrameAssemblyReceipt {
     }
 
     pub const fn total_frame_span_bits(self) -> u32 {
-        D0_TARGET_FRAME_BITS
+        self.target_frame_bytes() as u32 * 8
     }
 
     pub const fn target_frame_bytes(self) -> u16 {
-        D0_TARGET_FRAME_BYTES as u16
+        self.layout.target_frame_bytes()
     }
 
     pub const fn production_allowed(self) -> bool {
@@ -907,12 +907,7 @@ fn assemble_flat7x_d0_frame_bits_inner(
         validate_frame_aux_data_source_span(frame_aux_data)?;
     }
     let frame_bytes = target.d0().frame_bytes();
-    let required_frame_bits = u32::from(frame_bytes).checked_mul(8).ok_or(
-        Flat7xD0FrameAssemblyError::FrameSpanMismatch {
-            actual_bits: layout.total_frame_span_bits(),
-            required_bits: D0_TARGET_FRAME_BITS,
-        },
-    )?;
+    let required_frame_bits = u32::from(frame_bytes) * 8;
     let required_crc2_start_bit = required_frame_bits.checked_sub(D0_CRC2_FIELD_BITS).ok_or(
         Flat7xD0FrameAssemblyError::FrameSpanMismatch {
             actual_bits: required_frame_bits,
@@ -947,15 +942,15 @@ fn assemble_flat7x_d0_frame_bits_inner(
             required_bits: required_frame_bits,
         },
     )?;
-    if required_frame_bits != D0_TARGET_FRAME_BITS || full_span_bits != required_frame_bits {
+    if full_span_bits != required_frame_bits {
         return Err(Flat7xD0FrameAssemblyError::FrameSpanMismatch {
             actual_bits: full_span_bits,
-            required_bits: D0_TARGET_FRAME_BITS,
+            required_bits: required_frame_bits,
         });
     }
     writer.preflight_capacity(required_frame_bits)?;
 
-    let mut staging = [0_u8; D0_TARGET_FRAME_BYTES];
+    let mut staging = vec![0_u8; usize::from(frame_bytes)];
     let bsi_end = {
         let mut staging_writer = FrameBitWriter::new(&mut staging, FrameBitCursor::new(0))?;
         write_flat7x_d0_bsi_structure(&mut staging_writer, target, bsi_structure)?.bit_offset()
