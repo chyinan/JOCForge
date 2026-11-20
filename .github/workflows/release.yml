@@ -114,6 +114,7 @@ jobs:
             jocforge.exe encode INPUT.adm.wav OUTPUT.candidate.ec3 --joc-layout flat7x
           "@ | Set-Content "$stage/USAGE.txt" -Encoding utf8
           Compress-Archive -Path "$stage/*" -DestinationPath "dist/$name.zip"
+          Remove-Item -Recurse -Force $stage
           $hash = (Get-FileHash "dist/$name.zip" -Algorithm SHA256).Hash.ToLower()
           "$hash  $name.zip" | Set-Content "dist/$name.zip.sha256" -Encoding ascii
 
@@ -144,5 +145,5 @@ jobs:
           gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 \
             || gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --generate-notes --title "$TAG"
           ls -l dist
-          gh release upload "$TAG" dist/* --repo "$GITHUB_REPOSITORY" --clobber
+          gh release upload "$TAG" dist/*.zip dist/*.tar.gz dist/*.sha256 --repo "$GITHUB_REPOSITORY" --clobber
           gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[] | "\(.name)  \(.size) bytes"'
