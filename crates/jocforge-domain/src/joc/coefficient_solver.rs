@@ -219,6 +219,15 @@ pub fn normalize_solution_for_carriers<const CARRIER_COUNT: usize>(
     let object = usize::from(equation.object());
     let begin = usize::from(equation.begin_bin());
     let end = usize::from(equation.end_bin());
+    let mut active = [(0, finite_word(ZERO_BITS)?); CARRIER_COUNT];
+    let mut active_count = 0;
+    for (channel, word) in solution.coefficient_words.iter().enumerate() {
+        let coefficient = finite_word(*word)?;
+        if solution.support[channel] && coefficient.value() != 0.0 {
+            active[active_count] = (channel, coefficient);
+            active_count += 1;
+        }
+    }
     let mut target_energy = finite_word(ZERO_BITS)?;
     let mut model_energy = finite_word(ZERO_BITS)?;
 
@@ -235,11 +244,7 @@ pub fn normalize_solution_for_carriers<const CARRIER_COUNT: usize>(
 
             let mut model_real = finite_word(ZERO_BITS)?;
             let mut model_imaginary = finite_word(ZERO_BITS)?;
-            for channel in 0..CARRIER_COUNT {
-                let coefficient = finite_word(solution.coefficient_words[channel])?;
-                if !solution.support[channel] || coefficient.value() == 0.0 {
-                    continue;
-                }
+            for &(channel, coefficient) in &active[..active_count] {
                 let carrier = complex(carrier_words, channel, CARRIER_COUNT, slot, bin)?;
                 let carrier_real = multiply(carrier[0], weight)?;
                 let carrier_imaginary = multiply(carrier[1], weight)?;

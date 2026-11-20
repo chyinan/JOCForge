@@ -4,7 +4,7 @@
 use super::{
     bap::{
         BapError, FLAT7X_D0_BAP_BLOCK_COUNT, FLAT7X_D0_BAP_CHANNEL_COUNT, Flat7xD0BapFrameInput,
-        Flat7xD0BapParameters, allocate_flat7x_d0_bap_frame,
+        Flat7xD0BapParameters, Flat7xD0BapSearch,
     },
     bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError},
     d0_frame_assembler::{
@@ -188,25 +188,25 @@ pub fn produce_flat7x_d0_audio_frame(
     let mut best_candidate = None;
     let mut best_content_bits = 0_u32;
 
+    let search = Flat7xD0BapSearch::prepare(
+        input.bap_parameters,
+        &Flat7xD0BapFrameInput {
+            decoded_exponents_by_block: &decoded_exponents_by_block,
+            candidate: 1023,
+            slow_decay_code: FLAT7X_D0_DEFAULT_SLOW_DECAY_CODE,
+            fast_decay_code: FLAT7X_D0_DEFAULT_FAST_DECAY_CODE,
+            slow_gain_code: FLAT7X_D0_DEFAULT_SLOW_GAIN_CODE,
+            db_per_bit_codes: [FLAT7X_D0_DEFAULT_DB_PER_BIT_CODE; FLAT7X_D0_BAP_BLOCK_COUNT],
+            floor_code: FLAT7X_D0_DEFAULT_FLOOR_CODE,
+            fast_gain_code: FLAT7X_D0_DEFAULT_FAST_GAIN_CODE,
+            caller_all_active_fine_zero_by_block: [false; FLAT7X_D0_BAP_BLOCK_COUNT],
+        },
+    )?;
+
     for raw_q in (1_u16..=1_023).rev() {
         let candidate = Flat7xD0AllocationCandidateQ::new(raw_q)
             .ok_or(Flat7xD0AudioFrameError::NoFittingAllocationCandidate)?;
-        let fine_zero = candidate.value().trailing_zeros() >= 4;
-        let bap_frame = allocate_flat7x_d0_bap_frame(
-            input.bap_parameters,
-            &Flat7xD0BapFrameInput {
-                decoded_exponents_by_block: &decoded_exponents_by_block,
-                candidate: candidate.value(),
-                slow_decay_code: FLAT7X_D0_DEFAULT_SLOW_DECAY_CODE,
-                fast_decay_code: FLAT7X_D0_DEFAULT_FAST_DECAY_CODE,
-                slow_gain_code: FLAT7X_D0_DEFAULT_SLOW_GAIN_CODE,
-                db_per_bit_codes: [FLAT7X_D0_DEFAULT_DB_PER_BIT_CODE; FLAT7X_D0_BAP_BLOCK_COUNT],
-                floor_code: FLAT7X_D0_DEFAULT_FLOOR_CODE,
-                fast_gain_code: FLAT7X_D0_DEFAULT_FAST_GAIN_CODE,
-                caller_all_active_fine_zero_by_block: [fine_zero; FLAT7X_D0_BAP_BLOCK_COUNT],
-            },
-        )?;
-
+        let bap_frame = search.allocate(raw_q);
         if bap_frame
             .blocks()
             .iter()

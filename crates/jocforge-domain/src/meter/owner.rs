@@ -39,22 +39,22 @@ pub struct MeterOwnerStateReference {
     generation: MeterCallbackIndex,
     state_sha256: [u8; 32],
     cold_sha256: [u8; 32],
-    canonical_bytes: Vec<u8>,
+    canonical_bytes: std::sync::Arc<[u8]>,
 }
 
 impl MeterOwnerStateReference {
     /// Serializes the root's complete V4 canonical member and rehashes those exact bytes.
     pub fn from_root(root: &StandaloneMeterRoot) -> Result<Self, MeterOwnerStateReferenceError> {
+        root.owner_reference
+            .get_or_init(|| Self::serialize(root))
+            .clone()
+    }
+
+    fn serialize(root: &StandaloneMeterRoot) -> Result<Self, MeterOwnerStateReferenceError> {
         let canonical_bytes = root
             .canonical_preimage()
             .map_err(MeterOwnerStateReferenceError::Root)?;
         let state_sha256: [u8; 32] = Sha256::digest(&canonical_bytes).into();
-        let root_sha256 = root
-            .canonical_sha256()
-            .map_err(MeterOwnerStateReferenceError::Root)?;
-        if state_sha256 != root_sha256 {
-            return Err(MeterOwnerStateReferenceError::CanonicalDigestMismatch);
-        }
         let cold_sha256 = root
             .cold_canonical_sha256()
             .map_err(MeterOwnerStateReferenceError::Root)?;
@@ -63,7 +63,7 @@ impl MeterOwnerStateReference {
             generation: root.meter_callback_index(),
             state_sha256,
             cold_sha256,
-            canonical_bytes,
+            canonical_bytes: canonical_bytes.into(),
         })
     }
 

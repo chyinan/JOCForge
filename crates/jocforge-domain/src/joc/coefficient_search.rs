@@ -177,6 +177,17 @@ pub fn search_coefficient_cell_for_carriers<const CARRIER_COUNT: usize>(
     let mut sparse_selected_channel = 0_u8;
     let mut sparse_stored_word = ZERO_BITS;
 
+    // Both high-band stages visit single-channel supports for the same equation.
+    let mut singletons = [None; CARRIER_COUNT];
+    let cell = FitCell {
+        provider,
+        equation,
+        target_words,
+        carrier_words,
+        weight_words,
+        precision,
+    };
+    let mut scores = Vec::new();
     for iteration in 0..iteration_limit {
         if candidate_supports.is_empty() {
             break;
@@ -184,15 +195,17 @@ pub fn search_coefficient_cell_for_carriers<const CARRIER_COUNT: usize>(
         let mut winner: Option<(usize, Candidate<CARRIER_COUNT>)> = None;
         let mut last_scaled_range_error = None;
         for (candidate_index, support) in candidate_supports.iter().copied().enumerate() {
-            let candidate = match evaluate_candidate::<CARRIER_COUNT>(
-                provider,
-                equation,
-                target_words,
-                carrier_words,
-                weight_words,
-                support,
-                precision,
-            ) {
+            let mut evaluate = || cell.evaluate(support, &mut scores);
+            let result = if high_band {
+                let channel = support
+                    .iter()
+                    .position(|active| *active)
+                    .ok_or(CoefficientSearchError::EmptyInitialEligibility)?;
+                *singletons[channel].get_or_insert_with(evaluate)
+            } else {
+                evaluate()
+            };
+            let candidate = match result {
                 Ok(candidate) => candidate,
                 Err(
                     error @ CoefficientSearchError::Quantization(
@@ -271,7 +284,7 @@ pub fn search_coefficient_cell_for_carriers<const CARRIER_COUNT: usize>(
     })
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Copy, Debug)]
 struct Candidate<const CARRIER_COUNT: usize> {
     support: [bool; CARRIER_COUNT],
     stored_words: [u32; CARRIER_COUNT],
@@ -279,51 +292,67 @@ struct Candidate<const CARRIER_COUNT: usize> {
     score: FitScoreEvaluation,
 }
 
-fn evaluate_candidate<const CARRIER_COUNT: usize>(
-    provider: &FitScoreProvider,
-    equation: &CoefficientNormalEquation<CARRIER_COUNT>,
-    target_words: &[u32],
-    carrier_words: &[u32],
-    weight_words: &[u32; SLOT_COUNT],
-    support: [bool; CARRIER_COUNT],
+struct FitCell<'a, const CARRIER_COUNT: usize> {
+    provider: &'a FitScoreProvider,
+    equation: &'a CoefficientNormalEquation<CARRIER_COUNT>,
+    target_words: &'a [u32],
+    carrier_words: &'a [u32],
+    weight_words: &'a [u32; SLOT_COUNT],
     precision: CoefficientPrecision,
-) -> Result<Candidate<CARRIER_COUNT>, CoefficientSearchError> {
-    let solved =
-        solve_support_for_carriers(equation, support).map_err(CoefficientSearchError::Solver)?;
-    let normalized = normalize_solution_for_carriers(
-        equation,
-        &solved,
-        target_words,
-        carrier_words,
-        weight_words,
-    )
-    .map_err(CoefficientSearchError::Solver)?;
-    let mut trial_words = [ZERO_BITS; CARRIER_COUNT];
-    for (trial, stored) in trial_words
-        .iter_mut()
-        .zip(normalized.stored_words().iter().copied())
-    {
-        let quantized = quantize_selected_coefficient(f32::from_bits(stored), precision)
-            .map_err(CoefficientSearchError::Quantization)?;
-        *trial = restore_trial_coefficient(quantized, precision)
-            .map_err(CoefficientSearchError::Quantization)?
-            .to_bits();
+}
+
+impl<const CARRIER_COUNT: usize> FitCell<'_, CARRIER_COUNT> {
+    fn evaluate(
+        &self,
+        support: [bool; CARRIER_COUNT],
+        scores: &mut Vec<([u32; CARRIER_COUNT], FitScoreEvaluation)>,
+    ) -> Result<Candidate<CARRIER_COUNT>, CoefficientSearchError> {
+        let solved = solve_support_for_carriers(self.equation, support)
+            .map_err(CoefficientSearchError::Solver)?;
+        let normalized = normalize_solution_for_carriers(
+            self.equation,
+            &solved,
+            self.target_words,
+            self.carrier_words,
+            self.weight_words,
+        )
+        .map_err(CoefficientSearchError::Solver)?;
+        let mut trial_words = [ZERO_BITS; CARRIER_COUNT];
+        for (trial, stored) in trial_words
+            .iter_mut()
+            .zip(normalized.stored_words().iter().copied())
+        {
+            let quantized = quantize_selected_coefficient(f32::from_bits(stored), self.precision)
+                .map_err(CoefficientSearchError::Quantization)?;
+            *trial = restore_trial_coefficient(quantized, self.precision)
+                .map_err(CoefficientSearchError::Quantization)?
+                .to_bits();
+        }
+        // Distinct supports can quantize to identical coefficients. Only the score
+        // is shared; the candidate's support and stored words still participate in selection.
+        let score = if let Some((_, score)) = scores.iter().find(|(words, _)| *words == trial_words)
+        {
+            *score
+        } else {
+            let score = score_trial_coefficients_for_carriers(
+                self.provider,
+                self.equation,
+                self.target_words,
+                self.carrier_words,
+                self.weight_words,
+                &trial_words,
+            )
+            .map_err(CoefficientSearchError::Score)?;
+            scores.push((trial_words, score));
+            score
+        };
+        Ok(Candidate {
+            support,
+            stored_words: *normalized.stored_words(),
+            trial_words,
+            score,
+        })
     }
-    let score = score_trial_coefficients_for_carriers(
-        provider,
-        equation,
-        target_words,
-        carrier_words,
-        weight_words,
-        &trial_words,
-    )
-    .map_err(CoefficientSearchError::Score)?;
-    Ok(Candidate {
-        support,
-        stored_words: *normalized.stored_words(),
-        trial_words,
-        score,
-    })
 }
 
 fn single_channel_supports<const CARRIER_COUNT: usize>(

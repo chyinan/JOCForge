@@ -110,6 +110,8 @@ pub fn build_normal_equations_for_carriers<const CARRIER_COUNT: usize>(
         .iter()
         .map(|word| finite_word(*word))
         .collect::<Result<Vec<_>, _>>()?;
+    let targets = weighted_bins(target_words, &weights)?;
+    let carriers = weighted_bins(carrier_words, &weights)?;
     let mut equations: Vec<CoefficientNormalEquation<CARRIER_COUNT>> =
         Vec::with_capacity(OBJECT_COUNT * BAND_COUNT);
 
@@ -119,30 +121,15 @@ pub fn build_normal_equations_for_carriers<const CARRIER_COUNT: usize>(
             let end = BAND_BOUNDARIES[band + 1];
             // Carrier windows and temporal weights are shared by all objects.
             let gram_words = if object == 0 {
-                carrier_gram::<CARRIER_COUNT>(carrier_words, &weights, begin, end)?
+                carrier_gram::<CARRIER_COUNT>(&carriers, begin, end)?
             } else {
                 equations[band].gram_words
             };
 
             let mut cross_words = [ZERO_BITS; CARRIER_COUNT];
             for carrier in 0..CARRIER_COUNT {
-                let mut cross = finite_word(ZERO_BITS)?;
-                for bin in begin..end {
-                    let mut sub = finite_word(ZERO_BITS)?;
-                    for slot in 0..SLOT_COUNT {
-                        let target = target_complex(target_words, object, slot, bin)?;
-                        let carrier_value =
-                            carrier_complex::<CARRIER_COUNT>(carrier_words, carrier, slot, bin)?;
-                        let target_real = multiply(target[0], weights[slot])?;
-                        let carrier_real = multiply(carrier_value[0], weights[slot])?;
-                        let target_imaginary = multiply(target[1], weights[slot])?;
-                        let carrier_imaginary = multiply(carrier_value[1], weights[slot])?;
-                        sub = add(multiply(target_real, carrier_real)?, sub)?;
-                        sub = add(sub, multiply(target_imaginary, carrier_imaginary)?)?;
-                    }
-                    cross = add(cross, sub)?;
-                }
-                cross_words[carrier] = cross.to_bits();
+                cross_words[carrier] =
+                    band_dot(&targets, object, &carriers, carrier, begin..end, ZERO_BITS)?;
             }
 
             equations.push(CoefficientNormalEquation {
@@ -161,72 +148,71 @@ pub fn build_normal_equations_for_carriers<const CARRIER_COUNT: usize>(
     Ok(equations)
 }
 
+// Store each bin's slots together in the same order used by the dot products.
+fn weighted_bins(
+    words: &[u32],
+    weights: &[FiniteF32],
+) -> Result<Vec<[FiniteF32; 2]>, CoefficientNormalEquationError> {
+    let mut bins = Vec::with_capacity(words.len() / COMPONENT_COUNT);
+    for row in words.chunks_exact(BIN_COUNT * SLOT_COUNT * COMPONENT_COUNT) {
+        for bin in 0..BIN_COUNT {
+            for (slot, &weight) in weights.iter().enumerate() {
+                let offset = (slot * BIN_COUNT + bin) * COMPONENT_COUNT;
+                bins.push([
+                    multiply(finite_word(row[offset])?, weight)?,
+                    multiply(finite_word(row[offset + 1])?, weight)?,
+                ]);
+            }
+        }
+    }
+    Ok(bins)
+}
+
+fn band_dot(
+    left: &[[FiniteF32; 2]],
+    left_row: usize,
+    right: &[[FiniteF32; 2]],
+    right_row: usize,
+    bins: std::ops::Range<usize>,
+    initial: u32,
+) -> Result<u32, CoefficientNormalEquationError> {
+    let mut sum = finite_word(initial)?;
+    for bin in bins {
+        let a = (left_row * BIN_COUNT + bin) * SLOT_COUNT;
+        let b = (right_row * BIN_COUNT + bin) * SLOT_COUNT;
+        let mut sub = finite_word(ZERO_BITS)?;
+        for (l, r) in left[a..a + SLOT_COUNT]
+            .iter()
+            .zip(&right[b..b + SLOT_COUNT])
+        {
+            sub = add(multiply(l[0], r[0])?, sub)?;
+            sub = add(sub, multiply(l[1], r[1])?)?;
+        }
+        sum = add(sum, sub)?;
+    }
+    Ok(sum.to_bits())
+}
+
 #[allow(clippy::needless_range_loop)] // Write both halves of the matrix in the original DSP index order.
 fn carrier_gram<const CARRIER_COUNT: usize>(
-    carrier_words: &[u32],
-    weights: &[FiniteF32],
+    carriers: &[[FiniteF32; 2]],
     begin: usize,
     end: usize,
 ) -> Result<[[u32; CARRIER_COUNT]; CARRIER_COUNT], CoefficientNormalEquationError> {
-    let mut gram_words = [[ZERO_BITS; CARRIER_COUNT]; CARRIER_COUNT];
+    let mut gram = [[ZERO_BITS; CARRIER_COUNT]; CARRIER_COUNT];
     for row in 0..CARRIER_COUNT {
         for column in row..CARRIER_COUNT {
-            let mut gram = finite_word(if row == column {
+            let initial = if row == column {
                 GRAM_DIAGONAL_TINY_BITS
             } else {
                 ZERO_BITS
-            })?;
-            for bin in begin..end {
-                let mut sub = finite_word(ZERO_BITS)?;
-                for slot in 0..SLOT_COUNT {
-                    let left = carrier_complex::<CARRIER_COUNT>(carrier_words, row, slot, bin)?;
-                    let right = carrier_complex::<CARRIER_COUNT>(carrier_words, column, slot, bin)?;
-                    let left_real = multiply(left[0], weights[slot])?;
-                    let right_real = multiply(right[0], weights[slot])?;
-                    let left_imaginary = multiply(left[1], weights[slot])?;
-                    let right_imaginary = multiply(right[1], weights[slot])?;
-                    sub = add(multiply(left_real, right_real)?, sub)?;
-                    sub = add(sub, multiply(left_imaginary, right_imaginary)?)?;
-                }
-                gram = add(gram, sub)?;
-            }
-            gram_words[row][column] = gram.to_bits();
-            gram_words[column][row] = gram.to_bits();
+            };
+            let word = band_dot(carriers, row, carriers, column, begin..end, initial)?;
+            gram[row][column] = word;
+            gram[column][row] = word;
         }
     }
-    Ok(gram_words)
-}
-
-fn target_complex(
-    words: &[u32],
-    object: usize,
-    slot: usize,
-    bin: usize,
-) -> Result<[FiniteF32; 2], CoefficientNormalEquationError> {
-    complex(words, object, slot, bin, OBJECT_COUNT)
-}
-
-fn carrier_complex<const CARRIER_COUNT: usize>(
-    words: &[u32],
-    carrier: usize,
-    slot: usize,
-    bin: usize,
-) -> Result<[FiniteF32; 2], CoefficientNormalEquationError> {
-    complex(words, carrier, slot, bin, CARRIER_COUNT)
-}
-
-fn complex(
-    words: &[u32],
-    row: usize,
-    slot: usize,
-    bin: usize,
-    row_count: usize,
-) -> Result<[FiniteF32; 2], CoefficientNormalEquationError> {
-    if row >= row_count || slot >= SLOT_COUNT || bin >= BIN_COUNT {
-        return Err(CoefficientNormalEquationError::InputShape);
-    }
-    let offset = ((row * SLOT_COUNT + slot) * BIN_COUNT + bin) * COMPONENT_COUNT;
-    Ok([finite_word(words[offset])?, finite_word(words[offset + 1])?])
+    Ok(gram)
 }
 
 fn finite_word(word: u32) -> Result<FiniteF32, CoefficientNormalEquationError> {

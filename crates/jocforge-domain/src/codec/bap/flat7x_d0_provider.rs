@@ -136,6 +136,97 @@ pub fn allocate_flat7x_d0_bap_row(
         .map_err(|_| BapError::ParameterError)
 }
 
+/// PSD and masking thresholds are invariant across the D0 frame's q search.
+pub(crate) struct Flat7xD0BapSearch<'a> {
+    parameters: &'a Flat7xD0BapParameters,
+    rows: Vec<SearchRow>,
+}
+
+enum SearchRow {
+    Fresh(super::PreparedBapRow),
+    Repeat(usize),
+}
+
+impl<'a> Flat7xD0BapSearch<'a> {
+    pub(crate) fn prepare(
+        parameters: &'a Flat7xD0BapParameters,
+        input: &Flat7xD0BapFrameInput<'_>,
+    ) -> Result<Self, BapError> {
+        let mut rows = Vec::with_capacity(FLAT7X_D0_BAP_BLOCK_COUNT * FLAT7X_D0_BAP_CHANNEL_COUNT);
+        let mut seen = Vec::with_capacity(rows.capacity());
+        for (block, channels) in input.decoded_exponents_by_block.iter().enumerate() {
+            validate_candidate_codes(
+                input.candidate,
+                input.slow_decay_code,
+                input.fast_decay_code,
+                input.slow_gain_code,
+                input.db_per_bit_codes[block],
+                input.floor_code,
+                input.fast_gain_code,
+            )?;
+            validate_caller_context(
+                input.candidate,
+                input.caller_all_active_fine_zero_by_block[block],
+            )?;
+            for exponents in channels {
+                let key = (input.db_per_bit_codes[block], exponents);
+                if let Some(index) = seen.iter().position(|previous| *previous == key) {
+                    rows.push(SearchRow::Repeat(index));
+                    seen.push(key);
+                    continue;
+                }
+                seen.push(key);
+                validate_exponent_row(exponents, FLAT7X_D0_BAP_BIN_COUNT)?;
+                let row = BapRowInput {
+                    decoded_exponents: exponents,
+                    end_exclusive: FLAT7X_D0_BAP_BIN_COUNT,
+                    candidate: input.candidate,
+                    slow_decay_code: input.slow_decay_code,
+                    fast_decay_code: input.fast_decay_code,
+                    slow_gain_code: input.slow_gain_code,
+                    db_per_bit_code: input.db_per_bit_codes[block],
+                    floor_code: input.floor_code,
+                    fast_gain_code: input.fast_gain_code,
+                    caller_all_active_fine_zero: input.caller_all_active_fine_zero_by_block[block],
+                    profile: BapProfileInput::selected(),
+                };
+                rows.push(SearchRow::Fresh(super::prepare_bap_row(
+                    &row,
+                    &parameters.tables,
+                )?));
+            }
+        }
+        Ok(Self { parameters, rows })
+    }
+    pub(crate) fn allocate(&self, candidate: u16) -> Flat7xD0BapFrame {
+        let mut blocks = [Flat7xD0BapBlock {
+            rows: [[0; FLAT7X_D0_BAP_BIN_COUNT]; FLAT7X_D0_BAP_CHANNEL_COUNT],
+        }; FLAT7X_D0_BAP_BLOCK_COUNT];
+        if candidate != 0 {
+            for (index, row) in self.rows.iter().enumerate() {
+                let block = index / FLAT7X_D0_BAP_CHANNEL_COUNT;
+                let channel = index % FLAT7X_D0_BAP_CHANNEL_COUNT;
+                match row {
+                    SearchRow::Fresh(prepared) => prepared.allocate(
+                        candidate,
+                        &self.parameters.tables,
+                        &mut blocks[block].rows[channel],
+                    ),
+                    SearchRow::Repeat(previous) => {
+                        blocks[block].rows[channel] = blocks
+                            [previous / FLAT7X_D0_BAP_CHANNEL_COUNT]
+                            .rows[previous % FLAT7X_D0_BAP_CHANNEL_COUNT];
+                    }
+                }
+            }
+        }
+        Flat7xD0BapFrame {
+            candidate,
+            table_set_sha256: self.parameters.table_set_sha256(),
+            blocks,
+        }
+    }
+}
 pub fn allocate_flat7x_d0_bap_frame(
     parameters: &Flat7xD0BapParameters,
     input: &Flat7xD0BapFrameInput<'_>,
@@ -215,36 +306,6 @@ fn table_set_sha256(parameters: &BapParameters) -> [u8; 32] {
     }
     digest.update(parameters.bap_pointer);
     digest.finalize().into()
-}
-
-#[cfg(test)]
-mod tests {
-    use super::{BapBand, Flat7xD0BapParameters};
-    use crate::codec::bap::validate_band_coverage;
-
-    #[test]
-    fn etsi_table_landmarks_and_253_bin_coverage_are_bound() {
-        let parameters = Flat7xD0BapParameters::etsi_ts_102_366_v1_4_1();
-        let tables = &parameters.tables;
-
-        assert_eq!(tables.slow_decay, [0x0f, 0x11, 0x13, 0x15]);
-        assert_eq!(tables.fast_decay, [0x3f, 0x53, 0x67, 0x7b]);
-        assert_eq!(tables.bands[0], BapBand { start: 0, size: 1 });
-        assert_eq!(
-            tables.bands[49],
-            BapBand {
-                start: 229,
-                size: 24
-            }
-        );
-        assert_eq!(tables.log_addition[0], 0x0040);
-        assert_eq!(tables.log_addition[255], 0);
-        assert_eq!(tables.hearing_48k[0], 0x04d0);
-        assert_eq!(tables.hearing_48k[49], 0x0840);
-        assert_eq!(tables.bap_pointer[0], 0);
-        assert_eq!(tables.bap_pointer[63], 15);
-        validate_band_coverage(&tables.bands).unwrap();
-    }
 }
 
 const D0_SLOW_DECAY: [i16; 4] = [0x000f, 0x0011, 0x0013, 0x0015];
@@ -372,3 +433,64 @@ const D0_BANDS: [BapBand; 50] = [
         size: 24,
     },
 ];
+
+#[cfg(test)]
+mod tests {
+    use super::{BapBand, Flat7xD0BapParameters};
+    use crate::codec::bap::validate_band_coverage;
+
+    #[test]
+    fn cached_search_matches_one_shot_allocation_for_every_q() {
+        use super::{Flat7xD0BapFrameInput, Flat7xD0BapSearch, allocate_flat7x_d0_bap_frame};
+        let parameters = Flat7xD0BapParameters::etsi_ts_102_366_v1_4_1();
+        let exponents = std::array::from_fn(|block| {
+            std::array::from_fn(|channel| {
+                std::array::from_fn(|bin| {
+                    u8::try_from((bin / 5 + block / 2 + channel % 2) % 25).unwrap()
+                })
+            })
+        });
+        let mut input = Flat7xD0BapFrameInput {
+            decoded_exponents_by_block: &exponents,
+            candidate: 1,
+            slow_decay_code: 2,
+            fast_decay_code: 1,
+            slow_gain_code: 1,
+            db_per_bit_codes: [2, 2, 1, 2, 3, 0],
+            floor_code: 7,
+            fast_gain_code: 4,
+            caller_all_active_fine_zero_by_block: [false; 6],
+        };
+        let cached = Flat7xD0BapSearch::prepare(&parameters, &input).unwrap();
+        for q in 0..=1023 {
+            input.candidate = q;
+            input.caller_all_active_fine_zero_by_block = [q.trailing_zeros() >= 4; 6];
+            let reference = allocate_flat7x_d0_bap_frame(&parameters, &input).unwrap();
+            assert_eq!(cached.allocate(q), reference, "q={q}");
+        }
+    }
+
+    #[test]
+    fn etsi_table_landmarks_and_253_bin_coverage_are_bound() {
+        let parameters = Flat7xD0BapParameters::etsi_ts_102_366_v1_4_1();
+        let tables = &parameters.tables;
+
+        assert_eq!(tables.slow_decay, [0x0f, 0x11, 0x13, 0x15]);
+        assert_eq!(tables.fast_decay, [0x3f, 0x53, 0x67, 0x7b]);
+        assert_eq!(tables.bands[0], BapBand { start: 0, size: 1 });
+        assert_eq!(
+            tables.bands[49],
+            BapBand {
+                start: 229,
+                size: 24
+            }
+        );
+        assert_eq!(tables.log_addition[0], 0x0040);
+        assert_eq!(tables.log_addition[255], 0);
+        assert_eq!(tables.hearing_48k[0], 0x04d0);
+        assert_eq!(tables.hearing_48k[49], 0x0840);
+        assert_eq!(tables.bap_pointer[0], 0);
+        assert_eq!(tables.bap_pointer[63], 15);
+        validate_band_coverage(&tables.bands).unwrap();
+    }
+}

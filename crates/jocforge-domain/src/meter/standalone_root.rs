@@ -1,8 +1,6 @@
 // pattern: Imperative Shell
 //! Standalone selected Meter owner around the existing independent prepass leaves.
 
-use std::collections::BTreeMap;
-
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 
@@ -397,6 +395,10 @@ impl StandaloneMeterSchedule {
 /// The standalone METER-phase numeric owner. MAIN owns a separate fresh state.
 #[derive(Debug)]
 pub struct StandaloneMeterRoot {
+    // Each immutable generation serves as both the previous after-state and the next before-state.
+    pub(super) owner_reference: std::sync::OnceLock<
+        Result<super::owner::MeterOwnerStateReference, super::owner::MeterOwnerStateReferenceError>,
+    >,
     identity: StandaloneMeterIdentity,
     source_samples: MeterSourceSampleCount,
     schedule: StandaloneMeterSchedule,
@@ -494,6 +496,7 @@ impl StandaloneMeterRoot {
             return Err(StandaloneMeterRootError::UnsupportedSourceExtent);
         }
         let mut root = Self {
+            owner_reference: std::sync::OnceLock::new(),
             identity,
             source_samples,
             schedule,
@@ -807,6 +810,7 @@ impl StandaloneMeterRoot {
         }
 
         let after = Self {
+            owner_reference: std::sync::OnceLock::new(),
             identity: self.identity.clone(),
             source_samples: self.source_samples,
             schedule: self.schedule,
@@ -1197,18 +1201,9 @@ fn lowercase_hex(bytes: &[u8]) -> String {
     output
 }
 
-fn sort_canonical_json(value: Value) -> Value {
-    match value {
-        Value::Array(values) => Value::Array(values.into_iter().map(sort_canonical_json).collect()),
-        Value::Object(values) => {
-            let sorted: BTreeMap<_, _> = values
-                .into_iter()
-                .map(|(key, value)| (key, sort_canonical_json(value)))
-                .collect();
-            Value::Object(sorted.into_iter().collect())
-        }
-        scalar => scalar,
-    }
+fn sort_canonical_json(mut value: Value) -> Value {
+    value.sort_all_objects();
+    value
 }
 
 #[cfg(test)]

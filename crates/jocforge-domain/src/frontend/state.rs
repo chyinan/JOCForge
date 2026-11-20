@@ -14,8 +14,7 @@ use crate::transaction::{
     AttemptId, CallbackLineageIdentity, CallbackTransactionId, GtcOwnerId, GtcOwnerReceipt,
     GtcOwnerReceiptError, GtcOwnerStateSnapshot, ProgrammeId,
 };
-use serde_json::{Map, Value, json};
-use std::collections::BTreeMap;
+use serde_json::{Value, json};
 use std::sync::Arc;
 
 const FRONTEND_CONTROL_OWNER_ID: &str = "frontend_control";
@@ -1203,16 +1202,7 @@ fn frontend_phase_name(phase: FrontendControlPhase) -> &'static str {
     }
 }
 
-fn canonicalize_json(value: Value) -> Value {
-    match value {
-        Value::Object(object) => {
-            let sorted: BTreeMap<_, _> = object
-                .into_iter()
-                .map(|(key, value)| (key, canonicalize_json(value)))
-                .collect();
-            Value::Object(sorted.into_iter().collect::<Map<_, _>>())
-        }
-        Value::Array(values) => Value::Array(values.into_iter().map(canonicalize_json).collect()),
-        scalar => scalar,
-    }
+fn canonicalize_json(mut value: Value) -> Value {
+    value.sort_all_objects();
+    value
 }

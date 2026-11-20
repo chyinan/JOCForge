@@ -6,6 +6,7 @@ use serde_json::{Map, Value};
 use sha2::{Digest, Sha256};
 
 mod flat7x_d0_provider;
+pub(crate) use flat7x_d0_provider::Flat7xD0BapSearch;
 
 pub use flat7x_d0_provider::{
     FLAT7X_D0_BAP_BIN_COUNT, FLAT7X_D0_BAP_BLOCK_COUNT, FLAT7X_D0_BAP_CHANNEL_COUNT,
@@ -591,11 +592,26 @@ fn compute_bap_row(
     parameters: &BapParameters,
 ) -> Result<Vec<u8>, BapError> {
     let coarse = input.candidate >> 4;
-    let fine = input.candidate & 15;
     if coarse == 0 && input.caller_all_active_fine_zero {
         return Ok(vec![0; input.end_exclusive]);
     }
 
+    let row = prepare_bap_row(input, parameters)?;
+    let mut bap = vec![0; input.end_exclusive];
+    row.allocate(input.candidate, parameters, &mut bap);
+    Ok(bap)
+}
+
+struct PreparedBapRow {
+    psd: Vec<i16>,
+    band_mask: Vec<i32>,
+    floor: i16,
+}
+
+fn prepare_bap_row(
+    input: &BapRowInput<'_>,
+    parameters: &BapParameters,
+) -> Result<PreparedBapRow, BapError> {
     let mut psd = Vec::with_capacity(input.end_exclusive);
     for exponent in input.decoded_exponents.iter().copied() {
         let value = 3_072_i32 - 128_i32 * i32::from(exponent);
@@ -672,11 +688,10 @@ fn compute_bap_row(
         excitation[band_index] = fast_leak.max(slow_leak);
     }
 
-    let snr = (i32::from(coarse) - 15) * 64 + i32::from(fine) * 4;
     let floor = parameters.floor[usize::from(input.floor_code)];
     let db_knee = parameters.db_knee[usize::from(input.db_per_bit_code)];
-    let mut bap = vec![0_u8; input.end_exclusive];
-    for (band_index, band) in parameters.bands.iter().take(active_band_count).enumerate() {
+    let mut band_mask = Vec::with_capacity(active_band_count);
+    for band_index in 0..active_band_count {
         let band_power = band_psd[band_index];
         let knee = if band_power < db_knee {
             (i32::from(db_knee) - i32::from(band_power)) / 4
@@ -687,17 +702,36 @@ fn compute_bap_row(
         let mask = masked_excitation
             .max(i32::from(parameters.hearing_48k[band_index]))
             .min(i32::from(i16::MAX));
-        let adjusted = (mask - snr - i32::from(floor)).max(0);
-        let adjusted = (adjusted & 0x1fe0) + i32::from(floor);
-        let start = usize::from(band.start);
-        let band_end = (start + usize::from(band.size)).min(input.end_exclusive);
-        for bin in start..band_end {
-            let address = ((i32::from(psd[bin]) - adjusted) >> 5).clamp(0, 63);
-            let address = usize::try_from(address).map_err(|_| BapError::ParameterError)?;
-            bap[bin] = parameters.bap_pointer[address];
+        band_mask.push(mask);
+    }
+    Ok(PreparedBapRow {
+        psd,
+        band_mask,
+        floor,
+    })
+}
+
+impl PreparedBapRow {
+    fn allocate(&self, candidate: u16, parameters: &BapParameters, bap: &mut [u8]) {
+        let coarse = candidate >> 4;
+        let fine = candidate & 15;
+        let floor = self.floor;
+        let snr = (i32::from(coarse) - 15) * 64 + i32::from(fine) * 4;
+        for (&mask, band) in self.band_mask.iter().zip(&parameters.bands) {
+            let adjusted = (mask - snr - i32::from(floor)).max(0);
+            let adjusted = (adjusted & 0x1fe0) + i32::from(floor);
+            let start = usize::from(band.start);
+            let band_end = (start + usize::from(band.size)).min(bap.len());
+            for (&power, code) in self.psd[start..band_end]
+                .iter()
+                .zip(&mut bap[start..band_end])
+            {
+                let address = ((i32::from(power) - adjusted) >> 5).clamp(0, 63);
+                let address = usize::try_from(address).expect("clamped nonnegative address");
+                *code = parameters.bap_pointer[address];
+            }
         }
     }
-    Ok(bap)
 }
 
 fn band_count_for_end(end_exclusive: usize, bands: &[BapBand; 50]) -> Result<usize, BapError> {

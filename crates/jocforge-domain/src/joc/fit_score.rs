@@ -391,6 +391,15 @@ pub fn score_trial_coefficients_for_carriers<const CARRIER_COUNT: usize>(
     {
         return Err(FitScoreError::InputShape);
     }
+    let mut active = [(0, 0.0_f64); CARRIER_COUNT];
+    let mut active_count = 0;
+    for (channel, word) in trial_coefficient_words.iter().enumerate() {
+        let coefficient = finite_f32(*word)?;
+        if coefficient != 0.0 {
+            active[active_count] = (channel, f64::from(coefficient));
+            active_count += 1;
+        }
+    }
     let object = usize::from(equation.object());
     let mut error = 0.0_f64;
     let mut model_energy = 0.0_f64;
@@ -403,15 +412,10 @@ pub fn score_trial_coefficients_for_carriers<const CARRIER_COUNT: usize>(
             let mut residual_imaginary = -f64::from(weighted(target[1], weight)?);
             let old_real = residual_real;
             let old_imaginary = residual_imaginary;
-            for channel in 0..CARRIER_COUNT {
-                let coefficient = finite_f32(trial_coefficient_words[channel])?;
-                if coefficient == 0.0 {
-                    continue;
-                }
+            for &(channel, coefficient) in &active[..active_count] {
                 let carrier = complex(carrier_words, channel, CARRIER_COUNT, slot, bin)?;
-                residual_real += f64::from(weighted(carrier[0], weight)?) * f64::from(coefficient);
-                residual_imaginary +=
-                    f64::from(weighted(carrier[1], weight)?) * f64::from(coefficient);
+                residual_real += f64::from(weighted(carrier[0], weight)?) * coefficient;
+                residual_imaginary += f64::from(weighted(carrier[1], weight)?) * coefficient;
             }
             error =
                 (residual_real * residual_real + error) + residual_imaginary * residual_imaginary;
