@@ -29,6 +29,7 @@ pub mod flat7x_d0_mantissa;
 pub mod flat7x_d0_pcm_source;
 pub mod flat7x_d0_spectrum;
 pub mod frame_builder;
+pub mod frame_seal_hook;
 pub mod frame_size;
 pub mod frame_syntax;
 pub mod grouped_quantizer;

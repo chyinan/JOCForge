@@ -18,6 +18,7 @@ use super::frame_builder::{
     SelectedBsiMixingInformationWriteError, SelectedEac3PrefixError,
     write_selected_bsi_mixing_information, write_selected_eac3_fixed_prefix,
 };
+use super::frame_seal_hook::{BitRange, FrameLayout};
 use super::frame_size::Eac3FrameSize;
 use super::frame_syntax::{
     CodecBlockIndex, SelectedBsiDrcFields, SelectedBsiMixingInformationValues,
@@ -469,6 +470,7 @@ pub struct SelectedMainFrameCandidate {
     pre_tail_body_bits: u32,
     mantissa_bits_by_block: [u64; BLOCK_COUNT],
     emdf_container_start: Option<FrameBitCursor>,
+    layout: FrameLayout,
 }
 
 impl SelectedMainFrameCandidate {
@@ -506,6 +508,16 @@ impl SelectedMainFrameCandidate {
     /// carrier position from a selected-profile constant or scan the completed frame.
     pub const fn emdf_container_start(&self) -> Option<FrameBitCursor> {
         self.emdf_container_start
+    }
+
+    /// Returns the layout facts captured for this candidate's access unit.
+    pub const fn layout(&self) -> &FrameLayout {
+        &self.layout
+    }
+
+    /// Returns the first bit of each block's skip field, in block order.
+    pub fn skip_field_bit_offsets(&self) -> [u32; BLOCK_COUNT] {
+        self.layout.skip_ranges.map(|range| range.start_bit)
     }
 }
 
@@ -594,7 +606,7 @@ pub fn build_selected_frame_trial(
     let frame_bits = plan.frame_size.bits();
     let pre_tail_bit_limit = frame_bits - 34;
     let mut frame_bytes = vec![0_u8; plan.frame_size.bytes()];
-    let (pre_tail_body_bits, mantissa_bits_by_block, emdf_container_start) = {
+    let (pre_tail_body_bits, mantissa_bits_by_block, emdf_container_start, layout) = {
         let mut writer = match FrameBitWriter::new(&mut frame_bytes, FrameBitCursor::new(0)) {
             Ok(writer) => writer,
             Err(error) => {
@@ -608,8 +620,7 @@ pub fn build_selected_frame_trial(
                 CandidateInfeasibleReason::FrameField(error),
             ));
         }
-        let (mantissa_bits_by_block, emdf_container_start) =
-            match write_frame_body(&mut writer, plan, q, &bap_frame) {
+        let body = match write_frame_body(&mut writer, plan, q, &bap_frame) {
                 Ok(bits) => bits,
                 Err(BuildError::Writer(error)) => {
                     return Ok(SelectedFrameTrialOutcome::Infeasible(
@@ -637,6 +648,11 @@ pub fn build_selected_frame_trial(
                     ));
                 }
             };
+        let FrameBodyBits {
+            mantissa_bits_by_block,
+            emdf_container_start,
+            layout,
+        } = body;
 
         let pre_tail_body_bits = writer.cursor().bit_offset();
         if pre_tail_body_bits > pre_tail_bit_limit {
@@ -668,12 +684,21 @@ pub fn build_selected_frame_trial(
                 CandidateInfeasibleReason::FrameField(FrameBitWriterError::CursorOverflow),
             ));
         }
+        let mut layout = layout;
+        layout.body_end_bit = pre_tail_body_bits;
+        if let EmdfFrameInput::Published(payload) = &plan.emdf {
+            layout.container_len_bytes = u16::try_from(payload.complete_container.len())
+                .unwrap_or(u16::MAX);
+        }
         (
             pre_tail_body_bits,
             mantissa_bits_by_block,
             emdf_container_start,
+            layout,
         )
     };
+
+    super::frame_seal_hook::apply(&mut frame_bytes, &layout);
 
     let crc_start_bit = frame_bits - 16;
     let crc_start_byte = frame_bytes.len() - 2;
@@ -716,6 +741,7 @@ pub fn build_selected_frame_trial(
             pre_tail_body_bits,
             mantissa_bits_by_block,
             emdf_container_start,
+            layout,
         },
     )))
 }
@@ -844,7 +870,7 @@ fn write_frame_body(
     plan: &SelectedFrameTrialPlan<'_>,
     q: u16,
     bap_frame: &super::bap::BapFrame,
-) -> Result<([u64; BLOCK_COUNT], Option<FrameBitCursor>), BuildError> {
+) -> Result<FrameBodyBits, BuildError> {
     match write_selected_eac3_fixed_prefix(writer, plan.frame_size.code()) {
         Ok(_) => {}
         Err(SelectedEac3PrefixError::BitWriter(error)) => return Err(BuildError::Writer(error)),
@@ -853,10 +879,11 @@ fn write_frame_body(
         }
     }
 
-    write_bsi_header(writer, plan)?;
-    write_frame_controls(writer, plan, q)?;
+    let (mixing_end_bit, bsi_end_bit) = write_bsi_header(writer, plan)?;
+    let controls_mask_start_bit = write_frame_controls(writer, plan, q)?;
     let mut mantissa_bits_by_block = [0_u64; BLOCK_COUNT];
     let mut emdf_container_start = None;
+    let mut skip_ranges = [BitRange::new(0, 0); BLOCK_COUNT];
     let tuples = plan
         .db_per_bit_codes
         .map(|db_per_bit| [2, 1, 1, db_per_bit, 7]);
@@ -870,22 +897,43 @@ fn write_frame_body(
         write_ba_update(writer, plan.ba_syntax, block, &tuples)?;
         write_fast_gain(writer)?;
         write_converter_snr(writer, plan.converter.snr_offset, block)?;
+        let skip_start_bit = writer.cursor().bit_offset();
         if let Some(start) = write_emdf_skip(writer, &plan.emdf, block)? {
             emdf_container_start = Some(start);
         }
+        skip_ranges[block] = BitRange::new(skip_start_bit, writer.cursor().bit_offset());
 
         let mantissas = pack_block_mantissas(&mantissa_items_for_block(plan, bap_frame, block)?)
             .map_err(|error| BuildError::Mantissa { block, error })?;
         *mantissa_bit_count = mantissas.bit_count();
         append_mantissa_bits(writer, &mantissas)?;
     }
-    Ok((mantissa_bits_by_block, emdf_container_start))
+    Ok(FrameBodyBits {
+        mantissa_bits_by_block,
+        emdf_container_start,
+        layout: FrameLayout {
+            bsi_end_bit,
+            mixing_end_bit,
+            controls_mask_start_bit,
+            skip_ranges,
+            container_start_bit: emdf_container_start.map(FrameBitCursor::bit_offset),
+            container_len_bytes: 0,
+            body_end_bit: writer.cursor().bit_offset(),
+        },
+    })
+}
+
+/// Bits and layout facts produced by one frame body.
+struct FrameBodyBits {
+    mantissa_bits_by_block: [u64; BLOCK_COUNT],
+    emdf_container_start: Option<FrameBitCursor>,
+    layout: FrameLayout,
 }
 
 fn write_bsi_header(
     writer: &mut FrameBitWriter<'_>,
     plan: &SelectedFrameTrialPlan<'_>,
-) -> Result<(), BuildError> {
+) -> Result<(u32, u32), BuildError> {
     let bsi = &plan.bsi;
     writer
         .write_unsigned(u32::from(bsi.dialnorm), 5)
@@ -915,6 +963,7 @@ fn write_bsi_header(
         },
     )
     .map_err(BuildError::BsiMixingInformation)?;
+    let mixing_end_bit = writer.cursor().bit_offset();
 
     match &plan.emdf {
         EmdfFrameInput::AbsentPublishedPayloadV1 => {
@@ -929,14 +978,14 @@ fn write_bsi_header(
                 .map_err(BuildError::Writer)?;
         }
     }
-    Ok(())
+    Ok((mixing_end_bit, writer.cursor().bit_offset()))
 }
 
 fn write_frame_controls(
     writer: &mut FrameBitWriter<'_>,
     plan: &SelectedFrameTrialPlan<'_>,
     q: u16,
-) -> Result<(), BuildError> {
+) -> Result<u32, BuildError> {
     let exponent_format = match plan.main_exponent_syntax {
         MainExponentSyntax::FrameCodes(_) => 0,
         MainExponentSyntax::BlockStrategies => 1,
@@ -954,6 +1003,7 @@ fn write_frame_controls(
         + u32::from(plan.ba_syntax) * 16
         + 8
         + u32::from(emdf_skip_syntax) * 2;
+    let controls_mask_start_bit = writer.cursor().bit_offset();
     writer
         .write_unsigned(syntax_mask, 7)
         .map_err(BuildError::Writer)?;
@@ -994,7 +1044,7 @@ fn write_frame_controls(
         .write_unsigned(u32::from(q & 0x0f), 4)
         .map_err(BuildError::Writer)?;
     writer.write_bit(false).map_err(BuildError::Writer)?;
-    Ok(())
+    Ok(controls_mask_start_bit)
 }
 
 fn write_block_short_and_dither(
