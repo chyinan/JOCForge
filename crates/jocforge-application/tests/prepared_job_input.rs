@@ -1,6 +1,6 @@
 // pattern: Functional Core
 use jocforge_application::{
-    EncodeError, PreparedJobInputError, SelectedAdmResourcePayloads,
+    PreparedJobInputError, SelectedAdmResourcePayloads,
     independent_meter_callback::{
         IndependentMeterG0Providers, MeterCallbackGtcBinding,
         stage_independent_meter_fresh_zero_drain_callback, stage_independent_meter_g0_callback,
@@ -400,9 +400,10 @@ fn value_preparation_binds_graph_and_identity_to_one_immutable_resource() {
             Arc::clone(&resource),
             metadata_payloads(&resource, &spans),
         );
-        // The local profile now admits 768 kbps, while this older source vector marks it rejected.
-        let accepted_status =
-            case["expected"]["status"] == "ACCEPT" || case["id"] == "reject_other_rate";
+        // The original vectors predate 768 kbps encoding and file-position cropping.
+        let accepted_status = case["expected"]["status"] == "ACCEPT"
+            || case["id"] == "reject_other_rate"
+            || case["id"] == "reject_nonzero_start";
         if accepted_status {
             let prepared = result.unwrap();
             assert_eq!(prepared.resource_identity().input_sha256(), expected_digest);
@@ -443,6 +444,11 @@ fn value_preparation_binds_graph_and_identity_to_one_immutable_resource() {
             assert_eq!(
                 prepared.configuration().source_samples(),
                 descriptor["source_samples"].as_u64().unwrap()
+                    - if case["id"] == "reject_nonzero_start" {
+                        48_000
+                    } else {
+                        0
+                    }
             );
             assert_eq!(prepared.admitted_object_events().events().len(), 28);
             assert_eq!(
@@ -497,7 +503,7 @@ fn value_preparation_binds_graph_and_identity_to_one_immutable_resource() {
             rejected += 1;
         }
     }
-    assert_eq!((accepted, rejected), (4, 7));
+    assert_eq!((accepted, rejected), (5, 6));
 
     let accepted_case = &vectors["config_cases"][0];
     let error = prepare_selected_job_input(
@@ -1471,7 +1477,7 @@ fn prepared_adm_input_preserves_each_washed_rate_through_profile_and_frame_size(
 }
 
 #[test]
-fn unsupported_authored_silence_effects_stop_before_meter_and_f15_admission() {
+fn silence_controls_share_the_rendered_extent_with_the_meter_and_output_plan() {
     let vectors: Value = serde_json::from_slice(include_bytes!(
         "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
     ))
@@ -1491,7 +1497,7 @@ fn unsupported_authored_silence_effects_stop_before_meter_and_f15_admission() {
         base_xml.replace("<append_silence_duration>0.0</append_silence_duration>", ""),
     ];
 
-    for xml in cases {
+    for (xml, rendered) in cases.into_iter().zip([188, 1, 1]) {
         let prepared = prepare_selected_job_input(
             test_programme_id(),
             xml.as_bytes(),
@@ -1502,24 +1508,23 @@ fn unsupported_authored_silence_effects_stop_before_meter_and_f15_admission() {
         )
         .expect("typed configuration remains inspectable before selected product admission");
 
-        assert_eq!(
-            admit_meter_source_owner(
-                &prepared,
-                AttemptId::new(0),
-                MeterSourceSampleCount::new(1).unwrap(),
-            )
-            .unwrap_err(),
-            MeterSourceAdmissionError::UnsupportedSilenceTimelineEffect
-        );
-        assert!(matches!(
-            admit_selected_f15_plan(
-                &prepared,
-                AttemptId::new(0),
-                &owner,
-                "C:\\temp\\silence-timeline-gate.ec3",
-            ),
-            Err(EncodeError::F15AdmissionRejected)
-        ));
+        assert_eq!(prepared.configuration().source_samples(), rendered);
+        admit_meter_source_owner(
+            &prepared,
+            AttemptId::new(0),
+            MeterSourceSampleCount::new(rendered).unwrap(),
+        )
+        .unwrap();
+        let plan = admit_selected_f15_plan(
+            &prepared,
+            AttemptId::new(0),
+            &owner,
+            &std::env::temp_dir()
+                .join("silence-extent.ec3")
+                .to_string_lossy(),
+        )
+        .unwrap();
+        assert!(plan.final_destination().ends_with("silence-extent.ec3"));
     }
 }
 

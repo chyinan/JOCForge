@@ -273,7 +273,7 @@ impl PrimaryInstalled48ActivityProducer {
         if source_samples == 0
             || block_align == 0
             || binding.data_bytes() % block_align != 0
-            || binding.data_bytes() / block_align != source_samples
+            || binding.data_bytes() / block_align != binding.file_samples()
             || usize::from(source_map.physical_host_count())
                 != usize::from(binding.wave().channels())
         {

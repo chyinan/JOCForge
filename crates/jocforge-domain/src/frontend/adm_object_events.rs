@@ -115,6 +115,7 @@ pub struct AdmittedSelectedObjectEvent {
     object_duration: AdmSampleIndex,
     block_duration: AdmSampleIndex,
     pub(crate) timeline: std::sync::Arc<[ObjectBlock]>,
+    pub(crate) render_timeline: Option<crate::timeline::RenderTimeline>,
     event: SelectedObjectEvent,
 }
 
@@ -229,6 +230,7 @@ fn interpolation_samples(
 pub(crate) fn admit_selected_object_events(
     tracks: &[Vec<RawAdmObjectEvent>],
     source_samples: AdmSampleCount,
+    edit: Option<crate::timeline::RenderTimeline>,
 ) -> Result<AdmittedSelectedObjectEvents, SelectedAdmObjectEventError> {
     let mut admitted = Vec::with_capacity(tracks.len());
     for blocks in tracks {
@@ -240,7 +242,12 @@ pub(crate) fn admit_selected_object_events(
         if object_start.value() != 0 {
             return Err(SelectedAdmObjectEventError::InvalidTimestamp);
         }
-        if object_duration.value() < source_samples.value() {
+        if object_duration.value()
+            < edit.map_or(
+                source_samples.value(),
+                crate::timeline::RenderTimeline::file_samples,
+            )
+        {
             return Err(SelectedAdmObjectEventError::ProgrammeNotCovered);
         }
         let mut timeline = Vec::with_capacity(blocks.len());
@@ -267,7 +274,10 @@ pub(crate) fn admit_selected_object_events(
             let target = SelectedObjectEvent::new(
                 block.physical_host,
                 object_start.value(),
-                object_duration.value(),
+                edit.map_or(
+                    object_duration.value(),
+                    crate::timeline::RenderTimeline::output_samples,
+                ),
                 source_samples.value(),
                 block.coordinates[0],
                 block.coordinates[1],
@@ -286,17 +296,25 @@ pub(crate) fn admit_selected_object_events(
         if end != object_duration.value() {
             return Err(SelectedAdmObjectEventError::DurationMismatch);
         }
-        let initial = timeline.remove(0);
+        let initial = timeline[0];
+        let control = if let Some(mapping) = edit {
+            sample_object_blocks(initial.target, &timeline, mapping.object_sample(0))
+        } else {
+            timeline.remove(0);
+            initial.target
+        };
         admitted.push(AdmittedSelectedObjectEvent {
             physical_host: first.physical_host,
             track_uid: first.track_uid.clone(),
             object_id: first.object_id.clone(),
             object_start,
             block_rtime: AdmSampleIndex::new(0),
-            object_duration,
+            object_duration: edit
+                .map_or(object_duration, |m| AdmSampleIndex::new(m.output_samples())),
             block_duration: timestamp_to_sample_index(&first.block_duration, SAMPLE_RATE_HZ)?,
             interpolation_length: AdmSampleIndex::new(initial.ramp_samples),
-            event: initial.target,
+            event: control,
+            render_timeline: edit,
             timeline: timeline.into(),
         });
     }
@@ -510,7 +528,7 @@ mod tests {
             .collect::<Vec<_>>();
         let samples = AdmSampleCount::new(4608).unwrap();
         let mut tracks = [blocks];
-        let admitted = admit_selected_object_events(&tracks, samples).unwrap();
+        let admitted = admit_selected_object_events(&tracks, samples, None).unwrap();
         let track = &admitted.events()[0];
         for (sample, x) in [
             (1535, -1.0),
@@ -525,7 +543,7 @@ mod tests {
         }
         tracks[0][1].block_rtime = "00:00:00.03100".into();
         assert_eq!(
-            admit_selected_object_events(&tracks, samples).unwrap_err(),
+            admit_selected_object_events(&tracks, samples, None).unwrap_err(),
             super::SelectedAdmObjectEventError::DurationMismatch
         );
     }
@@ -560,7 +578,8 @@ mod tests {
             })
             .collect();
         let admitted =
-            admit_selected_object_events(&raw_events, AdmSampleCount::new(1_537).unwrap()).unwrap();
+            admit_selected_object_events(&raw_events, AdmSampleCount::new(1_537).unwrap(), None)
+                .unwrap();
         let event = &admitted.events()[0];
         let control = event.control_event();
 

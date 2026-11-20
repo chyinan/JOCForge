@@ -244,6 +244,7 @@ impl SelectedAdmGraphReceipt {
 /// Selected valid-input graph projection. It does not parse event numerics or install control38.
 #[derive(Clone, Debug, PartialEq)]
 pub struct SelectedAdmGraph {
+    render_timeline: Option<crate::timeline::RenderTimeline>,
     tracks: Vec<SelectedPhysicalTrack>,
     object_events: Vec<Vec<RawAdmObjectEvent>>,
     object_sampler_owner_bindings: Vec<ObjectSamplerOwnerBinding>,
@@ -255,6 +256,12 @@ pub struct SelectedAdmGraph {
 }
 
 impl SelectedAdmGraph {
+    #[must_use]
+    pub fn with_render_timeline(mut self, timeline: crate::timeline::RenderTimeline) -> Self {
+        self.render_timeline = timeline.is_edited().then_some(timeline);
+        self
+    }
+
     pub fn tracks(&self) -> &[SelectedPhysicalTrack] {
         &self.tracks
     }
@@ -295,7 +302,15 @@ impl SelectedAdmGraph {
         &self,
         source_samples: AdmSampleCount,
     ) -> Result<AdmittedSelectedObjectEvents, SelectedAdmGraphError> {
-        admit_selected_object_events(&self.object_events, source_samples)
+        if self
+            .render_timeline
+            .is_some_and(|t| t.output_samples() != source_samples.value())
+        {
+            return Err(SelectedAdmGraphError::ObjectEvent(
+                SelectedAdmObjectEventError::DurationMismatch,
+            ));
+        }
+        admit_selected_object_events(&self.object_events, source_samples, self.render_timeline)
             .map_err(SelectedAdmGraphError::ObjectEvent)
     }
 
@@ -631,6 +646,7 @@ pub fn parse_selected_adm_graph(
     };
 
     Ok(SelectedAdmGraph {
+        render_timeline: None,
         tracks: rows,
         object_events,
         object_sampler_owner_bindings,

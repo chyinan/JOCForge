@@ -399,6 +399,7 @@ pub struct NormalControlObjectEvent {
     object_duration: u64,
     block_duration: u64,
     timeline: Arc<[super::adm_object_events::ObjectBlock]>,
+    render_timeline: Option<crate::timeline::RenderTimeline>,
     control_event: SelectedObjectEvent,
 }
 
@@ -414,6 +415,7 @@ impl NormalControlObjectEvent {
             object_duration: event.object_duration().value(),
             block_duration: event.block_duration().value(),
             timeline: Arc::clone(&event.timeline),
+            render_timeline: event.render_timeline,
             control_event: *event.control_event(),
         }
     }
@@ -3902,7 +3904,9 @@ fn calculate_normal_control_rows(
         let control = super::adm_object_events::sample_object_blocks(
             event.control_event,
             &event.timeline,
-            query_sample,
+            event
+                .render_timeline
+                .map_or(query_sample, |edit| edit.object_sample(query_sample)),
         );
         let normalized = NormalizedObjectControl {
             writer_xyz: writer_coordinates(&control)

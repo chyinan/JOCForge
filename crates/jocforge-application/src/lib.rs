@@ -1,6 +1,7 @@
 // pattern: Functional Core
 //! Selected input value preparation and the currently unavailable encode boundary.
 
+pub use jocforge_domain::frontend::job_configuration::FileRenderTiming;
 use jocforge_domain::frontend::job_configuration::{
     JobConfigurationError, PrimaryControlBindingError, PrimaryMetadataChunkHashes,
     SelectedJobConfiguration, SelectedPrimaryControlBinding, SelectedPrimaryRuntimeIdentity,
@@ -44,6 +45,7 @@ use jocforge_domain::spatial::{
     },
 };
 pub use jocforge_domain::state::EncodeError;
+pub use jocforge_domain::timeline::SourceTimeRangeError;
 use jocforge_domain::timeline::{AdmSampleCount, ClockError, FrontendCallbackIndex};
 pub use jocforge_domain::transaction::ProgrammeId;
 use jocforge_domain::transaction::{AttemptId, CallbackLineageIdentity};
@@ -635,6 +637,7 @@ impl PreparedJobInput {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum PreparedJobInputError {
+    RenderTimeline(jocforge_domain::timeline::SourceTimeRangeError),
     Configuration(JobConfigurationError),
     SampleCount(ClockError),
     GraphAdmission(SelectedAdmGraphError),
@@ -662,6 +665,7 @@ pub enum PreparedJobInputError {
 impl std::fmt::Display for PreparedJobInputError {
     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
+            Self::RenderTimeline(error) => write!(formatter, "invalid job render timeline: {error}"),
             Self::Configuration(error) => write!(formatter, "job configuration: {error:?}"),
             Self::SampleCount(error) => write!(formatter, "source sample count: {error:?}"),
             Self::GraphAdmission(error) => write!(formatter, "ADM graph admission: {error:?}"),
@@ -741,7 +745,9 @@ pub fn prepare_selected_job_input(
     metadata_payloads: SelectedAdmResourcePayloads<'_>,
 ) -> Result<PreparedJobInput, PreparedJobInputError> {
     let configuration = parse_selected_job_configuration(xml, wave, source_samples)
-        .map_err(PreparedJobInputError::Configuration)?;
+        .map_err(PreparedJobInputError::Configuration)?
+        .resolve_render_timeline()
+        .map_err(PreparedJobInputError::RenderTimeline)?;
     let resource_bytes =
         u64::try_from(resource.len()).map_err(|_| PreparedJobInputError::MetadataPayloadBinding)?;
     let input_sha256: [u8; 32] = Sha256::digest(resource.as_ref()).into();
@@ -753,7 +759,8 @@ pub fn prepare_selected_job_input(
     let chna_span = bind_resource_payload(&resource, *b"chna", metadata_payloads.chna)?;
     let dbmd_span = bind_resource_payload(&resource, *b"dbmd", metadata_payloads.dbmd)?;
     let graph = parse_selected_adm_graph(metadata_payloads.axml, metadata_payloads.chna)
-        .map_err(PreparedJobInputError::GraphParse)?;
+        .map_err(PreparedJobInputError::GraphParse)?
+        .with_render_timeline(configuration.render_timeline());
     if wave.channels() != graph.receipt().physical_track_count() {
         return Err(PreparedJobInputError::WaveTrackCountMismatch);
     }
@@ -846,22 +853,6 @@ pub fn prepare_selected_job_input(
         primary_control_binding: None,
         primary_metadata_controls: None,
     })
-}
-
-/// Functional Core: the selected product path only admits authored zero-duration
-/// silence controls until insertion, output-length, and timestamp effects are specified.
-pub(crate) fn selected_silence_timeline_supported(
-    configuration: &SelectedJobConfiguration,
-) -> bool {
-    fn authored_duration_is_zero(value: &str) -> bool {
-        matches!(value.parse::<f64>(), Ok(seconds) if seconds == 0.0)
-    }
-
-    configuration.append_silence_duration_explicit()
-        && configuration.prepend_silence_samples().value() == 0
-        && configuration.append_silence_samples().value() == 0
-        && authored_duration_is_zero(configuration.prepend_silence_duration())
-        && authored_duration_is_zero(configuration.append_silence_duration())
 }
 
 fn bind_resource_payload(

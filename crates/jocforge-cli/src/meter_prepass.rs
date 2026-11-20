@@ -119,10 +119,14 @@ pub fn run_selected_meter_prepass_with_progress<F>(
 where
     F: FnMut(u64, u64) + Send,
 {
+    let parsed = parsed_source
+        .clone()
+        .with_render_timeline(prepared.configuration().render_timeline())
+        .map_err(|e| error("render timeline", e))?;
     let assets = unpack_provider_supplements()?;
     run_meter_with_providers(
         prepared,
-        parsed_source,
+        &parsed,
         attempt,
         assets.path(),
         progress,

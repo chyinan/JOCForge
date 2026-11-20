@@ -917,7 +917,6 @@ impl SelectedF15Plan {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(super) enum F15PlanAdmissionError {
-    UnsupportedSilenceTimelineEffect,
     Profile(ProfileError),
     ResolvedProfileMismatch,
     MissingOwnerAdmission(F15ProviderRole),
@@ -1191,9 +1190,6 @@ pub(super) fn admit_selected_f15_plan_for_profile(
     staging_owner_id: &OutputStagingOwnerId,
     final_destination: &str,
 ) -> Result<SelectedF15Plan, F15PlanAdmissionError> {
-    if !crate::selected_silence_timeline_supported(input.configuration()) {
-        return Err(F15PlanAdmissionError::UnsupportedSilenceTimelineEffect);
-    }
     let context = F15PlanParentContext::from_prepared_input_with_profile(input, resolved_profile)?;
     let admissions = load_selected_owner_admissions(&context)?;
     let final_path = std::path::Path::new(final_destination);

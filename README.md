@@ -76,6 +76,22 @@ JOCForge 的命令行编码器支持将 48 kHz ADM BWF 编码为带 5.1 声道�
 
 XML 解析器可识别并保留 Line 和 RF 两种动态范围控制（DRC）设置中的六个预设名称。当前可编码的 Line/RF 组合为 `none/none` 和 `film_light/film_light`。其他组合会在编码前被拒绝，若传入下游接口则返回 `UnsupportedDrcEffect`。
 
+在 `filter/audio/encode_to_atmos_ddp` 中可以按文件位置截取 ADM，再添加片头和片尾静音。以下片段截取第 60 到 62 秒，前置 4 秒静音，后置 1 秒静音。节目长 7 秒。EC3 按 32 ms 整帧写入，本例成品长 7.008 秒。
+
+```xml
+<time_base>file_position</time_base>
+<timecode_frame_rate>25</timecode_frame_rate>
+<start>00:01:00:00</start>
+<end>00:01:02:00</end>
+<prepend_silence_duration>4</prepend_silence_duration>
+<append_silence_duration>1</append_silence_duration>
+```
+
+- `start` 和 `end` 可以单独设置，分别默认文件开头和文件末尾。时间码表示左闭右开区间，也可以写为 `00:01:00.250` 这样的十进制秒时间码。
+- 使用 `HH:MM:SS:FF` 时需提供帧率，编码端的 `timecode_frame_rate` 优先，其次使用输入端帧率。使用十进制秒时间码时可保留 `not_indicated`。纯整数帧号的结束帧包含在区间内。
+- 首尾静音均以秒计，支持小数，省略或留空均按零处理。响度测量、音频编码和动态对象位置使用同一条剪辑时间线。添加 `--preflight-only` 可查看原文件和剪辑后的每声道采样数。
+- XML 作业默认编码 5.1。使用 `jocforge encode --job-xml job.xml --joc-layout flat7x` 可编码 Flat 7.1。此时 XML 的 `data_rate` 指 D0 码率，例如 `640` 对应 1280 kbps 总码率，输出路径遵循上文的 Flat7x 文件命名要求。
+
 ### 开发与检查
 
 项目采用 Rust 2024 工作区，包含领域逻辑、应用、文件读写、命令行和独立验证五个模块。编码请使用 CLI，应用层的 `encode()` 接口目前返回 `SourcePipelineUnavailable`。命令参数和版本可通过 `jocforge --help` 和 `jocforge --version` 查看。[架构说明](docs/architecture/ARCHITECTURE.md)

@@ -141,6 +141,43 @@ mod tests {
         SELECTED_BLOCK_ALIGN, SELECTED_CHANNELS, parse_selected_riff_pcm24,
     };
 
+    #[test]
+    fn edited_pcm_and_callback_clock_agree_for_reads_crossing_both_cuts() {
+        let bytes = pcm24_wave(7000);
+        let source = parse_selected_riff_pcm24(&bytes, None).unwrap();
+        let original = source.read_pcm24_hop(AdmSampleIndex::new(96), 96).unwrap();
+        let timeline = jocforge_domain::timeline::RenderTimeline::from_file_position(
+            7000,
+            "00:00:00.002",
+            "00:00:00.004",
+            "not_indicated",
+            1500,
+            800,
+        )
+        .unwrap();
+        let source = source.with_render_timeline(timeline).unwrap();
+        for callback in 0..2 {
+            let frame = read_frontend_pcm_callback(
+                &source,
+                source.source_sha256(),
+                FrontendCallbackIndex::new(callback),
+            )
+            .unwrap();
+            for (channel, row) in frame.physical_pcm_rows().iter().enumerate() {
+                for (index, &value) in row.iter().enumerate() {
+                    let t = callback as usize * 1536 + index;
+                    let expected = t
+                        .checked_sub(1500)
+                        .and_then(|s| original[channel].get(s))
+                        .copied()
+                        .unwrap_or(0);
+                    assert_eq!(value, expected);
+                }
+            }
+        }
+        assert_eq!(source.total_samples(), 2396);
+    }
+
     fn put_u16(bytes: &mut Vec<u8>, value: u16) {
         bytes.extend_from_slice(&value.to_le_bytes());
     }

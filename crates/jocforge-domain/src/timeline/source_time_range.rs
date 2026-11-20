@@ -11,11 +11,31 @@ pub enum SourceTimeRangeError {
     UnsupportedSampleRate,
     UnsupportedFrameRate,
     InvalidFrameToken,
+    InvalidSilenceDuration,
     ZeroInclusiveEndUnsupported,
     EndBeforeStart,
     EmptyValidatedRange,
     SourceBounds,
     ArithmeticOverflow,
+}
+
+impl std::fmt::Display for SourceTimeRangeError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(match self {
+            Self::UnsupportedTimeBase => "start and end require file_position",
+            Self::UnsupportedSampleRate => "expected a 48 kHz source",
+            Self::UnsupportedFrameRate => "frame positions require a supported timecode_frame_rate",
+            Self::InvalidFrameToken => "expected HH:MM:SS.xx, HH:MM:SS:FF or a frame number",
+            Self::InvalidSilenceDuration => {
+                "silence duration must be a nonnegative number of seconds"
+            }
+            Self::ZeroInclusiveEndUnsupported => "zero is not an admitted inclusive end here",
+            Self::EndBeforeStart => "end precedes start",
+            Self::EmptyValidatedRange => "start and end select an empty interval",
+            Self::SourceBounds => "the selected interval exceeds the source",
+            Self::ArithmeticOverflow => "the selected timeline exceeds the supported length",
+        })
+    }
 }
 
 /// A selected numeric filter-rate override supported by the washed writer vectors.
@@ -301,6 +321,162 @@ fn parse_timecode_field(value: &str) -> Result<u64, SourceTimeRangeError> {
         .map_err(|_| SourceTimeRangeError::InvalidFrameToken)
 }
 
+/// The sample mapping shared by the PCM reader and the ADM object sampler.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct RenderTimeline {
+    file_samples: u64,
+    start: u64,
+    end: u64,
+    leading: u64,
+    output_samples: u64,
+}
+
+impl RenderTimeline {
+    pub const fn full(file_samples: u64) -> Self {
+        Self {
+            file_samples,
+            start: 0,
+            end: file_samples,
+            leading: 0,
+            output_samples: file_samples,
+        }
+    }
+
+    pub fn from_file_position(
+        file_samples: u64,
+        start: &str,
+        end: &str,
+        rate: &str,
+        leading: u64,
+        trailing: u64,
+    ) -> Result<Self, SourceTimeRangeError> {
+        let (start, end) = Self::endpoints(start, end, rate)?;
+        let end = end.unwrap_or(file_samples);
+        if start >= file_samples {
+            return Err(SourceTimeRangeError::SourceBounds);
+        }
+        if end > file_samples {
+            return Err(SourceTimeRangeError::SourceBounds);
+        }
+        let output_samples = (end - start)
+            .checked_add(leading)
+            .and_then(|n| n.checked_add(trailing))
+            .ok_or(SourceTimeRangeError::ArithmeticOverflow)?;
+        // Frontend callback indices include four drain callbacks and fit in a u32.
+        if output_samples.div_ceil(1536) > u64::from(u32::MAX - 4) {
+            return Err(SourceTimeRangeError::ArithmeticOverflow);
+        }
+        Ok(Self {
+            file_samples,
+            start,
+            end,
+            leading,
+            output_samples,
+        })
+    }
+    pub(crate) fn endpoints(
+        start: &str,
+        end: &str,
+        rate: &str,
+    ) -> Result<(u64, Option<u64>), SourceTimeRangeError> {
+        let start = if start.is_empty() {
+            0
+        } else {
+            endpoint_samples(start, rate, false)?
+        };
+        let end = if end.is_empty() || end == "end_of_file" {
+            None
+        } else {
+            Some(endpoint_samples(end, rate, true)?)
+        };
+        if end.is_some_and(|end| end < start) {
+            return Err(SourceTimeRangeError::EndBeforeStart);
+        }
+        if end == Some(start) {
+            return Err(SourceTimeRangeError::EmptyValidatedRange);
+        }
+        Ok((start, end))
+    }
+    pub const fn file_samples(self) -> u64 {
+        self.file_samples
+    }
+    pub const fn output_samples(self) -> u64 {
+        self.output_samples
+    }
+    pub const fn is_edited(self) -> bool {
+        self.start != 0
+            || self.end != self.file_samples
+            || self.leading != 0
+            || self.output_samples != self.file_samples
+    }
+    /// Holds the first/last retained object position during the adjacent silence.
+    pub fn object_sample(self, output: u64) -> u64 {
+        self.start
+            + output
+                .saturating_sub(self.leading)
+                .min((self.end - self.start).saturating_sub(1))
+    }
+    /// Returns (leading silent samples in this read, source offset, source sample count).
+    pub fn pcm_span(self, output: u64, count: u64) -> (u64, u64, u64) {
+        let skip = self.leading.saturating_sub(output).min(count);
+        let offset = output
+            .saturating_sub(self.leading)
+            .min(self.end - self.start);
+        (
+            skip,
+            self.start + offset,
+            (count - skip).min(self.end - self.start - offset),
+        )
+    }
+}
+
+fn endpoint_samples(
+    token: &str,
+    rate: &str,
+    inclusive_numeric_end: bool,
+) -> Result<u64, SourceTimeRangeError> {
+    use SourceTimeRangeError::{ArithmeticOverflow, InvalidFrameToken, UnsupportedFrameRate};
+    let digits = |s: &str| !s.is_empty() && s.bytes().all(|b| b.is_ascii_digit());
+    if token.matches(':').count() == 2 {
+        let (clock, fraction) = token.split_once('.').unwrap_or((token, "0"));
+        if !digits(fraction) || fraction.len() > 9 {
+            return Err(InvalidFrameToken);
+        }
+        let (h, m, s, _) = parse_timecode_components(&format!("{clock}:00"))?;
+        if m >= 60 || s >= 60 {
+            return Err(InvalidFrameToken);
+        }
+        let decimal = parse_timecode_field(fraction)?;
+        let scale = 10_u64.pow(u32::try_from(fraction.len()).map_err(|_| InvalidFrameToken)?);
+        return Ok(((h * 60 + m) * 60 + s) * 48000 + decimal * 48000 / scale);
+    }
+    let (nominal, numerator, denominator) = match rate {
+        "23.976" => (24, 24000, 1001),
+        "29.97" => (30, 30000, 1001),
+        "59.94" => (60, 60000, 1001),
+        "24" | "25" | "30" | "48" | "50" | "60" => {
+            let n = parse_timecode_field(rate)?;
+            (n, n, 1)
+        }
+        _ => return Err(UnsupportedFrameRate),
+    };
+    let frame = if digits(token) {
+        parse_timecode_field(token)?
+            .checked_add(u64::from(inclusive_numeric_end))
+            .ok_or(ArithmeticOverflow)?
+    } else if let Some(clock) = token.strip_suffix("df") {
+        parse_drop_frame_timecode(clock, SelectedNumericFrameRate::parse(rate)?)?
+    } else {
+        let (h, m, s, f) = parse_timecode_components(token)?;
+        if m >= 60 || s >= 60 || f >= nominal {
+            return Err(InvalidFrameToken);
+        }
+        ((h * 60 + m) * 60 + s) * nominal + f
+    };
+    let samples = u128::from(frame) * 48000 * denominator / u128::from(numerator);
+    u64::try_from(samples).map_err(|_| ArithmeticOverflow)
+}
+
 fn sample_product(
     frame: u64,
     frame_rate: SelectedNumericFrameRate,
@@ -338,6 +514,38 @@ mod tests {
         SelectedFilePositionRangeInput, SourceTimeRangeError,
         resolve_selected_file_position_sample_range,
     };
+
+    #[test]
+    fn edited_timeline_maps_pcm_and_objects_across_partial_frames() {
+        use super::RenderTimeline;
+        let edit =
+            RenderTimeline::from_file_position(96000, "00:00:00.125", "00:00:01:00", "25", 7, 11)
+                .unwrap();
+        assert_eq!(edit.output_samples(), 42018);
+        assert_eq!(edit.pcm_span(0, 12), (7, 6000, 5));
+        assert_eq!(edit.pcm_span(42005, 10), (0, 47998, 2));
+        assert_eq!(edit.pcm_span(42008, 10), (0, 48000, 0));
+        assert_eq!(edit.object_sample(0), 6000);
+        assert_eq!(edit.object_sample(8), 6001);
+        assert_eq!(edit.object_sample(42008), 47999);
+        let frames =
+            RenderTimeline::from_file_position(96000, "00:00:00:01", "", "23.976", 0, 0).unwrap();
+        assert_eq!(frames.object_sample(0), 2002);
+        let end_only =
+            RenderTimeline::from_file_position(96000, "", "00:00:00.25", "not_indicated", 0, 0)
+                .unwrap();
+        assert_eq!(end_only.output_samples(), 12000);
+        for (start, end, rate) in [
+            ("00:00:00:01", "", "not_indicated"),
+            ("00:00:00:25", "", "25"),
+            ("00:00:00.10", "00:00:00.09", "25"),
+            ("00:00:00", "00:00:00", "25"),
+            ("", "00:00:03.0", "25"),
+            ("00:60:00.0", "", "25"),
+        ] {
+            assert!(RenderTimeline::from_file_position(96000, start, end, rate, 0, 0).is_err());
+        }
+    }
 
     const SOURCE_SAMPLES: u64 = 6_522_906;
 

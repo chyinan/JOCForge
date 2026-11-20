@@ -8,7 +8,7 @@ use crate::profile::{
     CodecRateProfile, EncodingProfile, ProfileError, ResolvedEncodingProfile,
     resolve_selected_profile,
 };
-use crate::timeline::AdmSampleCount;
+use crate::timeline::{AdmSampleCount, RenderTimeline, SourceTimeRangeError};
 use roxmltree::{Document, Node};
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
@@ -372,6 +372,34 @@ impl SelectedDownmixConfiguration {
     }
 }
 
+/// Authored file-position time controls for a file encode or saved preset.
+#[derive(Clone, Debug, Default, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(default)]
+pub struct FileRenderTiming {
+    pub start: String,
+    pub end: String,
+    pub frame_rate: String,
+    pub prepend_silence: String,
+    pub append_silence: String,
+}
+
+impl FileRenderTiming {
+    /// Validate values common to a batch. Each file is bounds-checked during admission.
+    pub fn validate(&self) -> Result<(), SourceTimeRangeError> {
+        if !self.frame_rate.is_empty() && !is_admitted_timecode_frame_rate_token(&self.frame_rate) {
+            return Err(SourceTimeRangeError::UnsupportedFrameRate);
+        }
+        RenderTimeline::endpoints(self.start.trim(), self.end.trim(), &self.frame_rate)?;
+        for seconds in [&self.prepend_silence, &self.append_silence] {
+            if !seconds.trim().is_empty() {
+                silence_duration_samples(seconds.trim(), SELECTED_SAMPLE_RATE_HZ)
+                    .map_err(|_| SourceTimeRangeError::InvalidSilenceDuration)?;
+            }
+        }
+        Ok(())
+    }
+}
+
 /// Normalized selected F01E job configuration before ADM graph/DBMD/event work.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct SelectedJobConfiguration {
@@ -382,7 +410,7 @@ pub struct SelectedJobConfiguration {
     output_configuration: SelectedOutputConfiguration,
     temp_directory: Option<SelectedTempDirectoryConfiguration>,
     wave: SelectedWaveDescriptor,
-    source_samples: u64,
+    render_timeline: RenderTimeline,
     bit_rate_kbps: u32,
     bit_rate_enum: u8,
     layout_enum: u8,
@@ -444,7 +472,7 @@ impl SelectedJobConfiguration {
                 "channels": self.wave.channels(),
                 "pcm_bits": self.wave.pcm_bits()
             },
-            "source_samples": self.source_samples,
+            "source_samples": self.source_samples(),
             "bit_rate_kbps": self.bit_rate_kbps,
             "bit_rate_enum": self.bit_rate_enum,
             "layout_enum": self.layout_enum,
@@ -531,7 +559,32 @@ impl SelectedJobConfiguration {
     }
 
     pub const fn source_samples(&self) -> u64 {
-        self.source_samples
+        self.render_timeline.output_samples()
+    }
+
+    pub const fn render_timeline(&self) -> RenderTimeline {
+        self.render_timeline
+    }
+
+    /// Resolve authored time controls against the actual input extent before admitting the job.
+    pub fn resolve_render_timeline(mut self) -> Result<Self, SourceTimeRangeError> {
+        let rate = if self.encode_timecode_frame_rate == "not_indicated" {
+            &self.input_timecode_frame_rate
+        } else {
+            &self.encode_timecode_frame_rate
+        };
+        self.render_timeline = RenderTimeline::from_file_position(
+            self.render_timeline.file_samples(),
+            &self.start,
+            &self.end,
+            rate,
+            self.prepend_silence_samples.value(),
+            self.append_silence_samples.value(),
+        )?;
+        if self.render_timeline.is_edited() && self.time_base != "file_position" {
+            return Err(SourceTimeRangeError::UnsupportedTimeBase);
+        }
+        Ok(self)
     }
 
     pub const fn bit_rate_kbps(&self) -> u32 {
@@ -644,7 +697,7 @@ impl SelectedJobConfiguration {
             || self.input_kind != binding.input_kind
             || self.input_reference.file_name != binding.source_file_name
             || self.wave != binding.wave
-            || self.source_samples != binding.source_samples.value()
+            || self.source_samples() != binding.source_samples.value()
         {
             return Err(PrimaryControlBindingError::SelectedJobMismatch);
         }
@@ -746,6 +799,7 @@ pub struct SelectedPrimaryControlBinding {
     data_bytes: u64,
     wave: SelectedWaveDescriptor,
     source_samples: AdmSampleCount,
+    file_samples: u64,
     metadata_hashes: PrimaryMetadataChunkHashes,
     job_projection_sha256: [u8; 32],
     source_receipt_sha256: [u8; 32],
@@ -779,6 +833,10 @@ impl SelectedPrimaryControlBinding {
 
     pub const fn wave(&self) -> SelectedWaveDescriptor {
         self.wave
+    }
+
+    pub const fn file_samples(&self) -> u64 {
+        self.file_samples
     }
 
     pub const fn source_samples(&self) -> AdmSampleCount {
@@ -1014,6 +1072,7 @@ pub fn bind_selected_primary_control_projection(
         data_bytes,
         wave: SelectedWaveDescriptor::new(sample_rate, channels, pcm_bits),
         source_samples,
+        file_samples: source_samples.value(),
         metadata_hashes,
         job_projection_sha256,
         source_receipt_sha256,
@@ -1042,8 +1101,9 @@ pub fn bind_admitted_selected_input(
     let wave = configuration.wave();
     let source_samples = AdmSampleCount::new(configuration.source_samples())
         .map_err(|_| PrimaryControlBindingError::SourceExtent)?;
-    let expected_data_bytes = source_samples
-        .value()
+    let expected_data_bytes = configuration
+        .render_timeline
+        .file_samples()
         .checked_mul(u64::from(wave.channels()) * u64::from(wave.pcm_bits()) / 8)
         .ok_or(PrimaryControlBindingError::SourceExtent)?;
     if configuration.selected_profile() != selected_profile
@@ -1070,6 +1130,7 @@ pub fn bind_admitted_selected_input(
         data_bytes: identity.data_bytes,
         wave,
         source_samples,
+        file_samples: configuration.render_timeline.file_samples(),
         metadata_hashes: identity.metadata_hashes,
         job_projection_sha256: identity.config_sha256,
         source_receipt_sha256: identity.resource_sha256,
@@ -1314,14 +1375,14 @@ pub fn parse_selected_job_configuration(
     let height_trim_5_1 = SelectedHeightTrim::from_xml_value(&height_trim_value)
         .ok_or(JobConfigurationError::UnsupportedFieldValue)?;
 
-    let start = optional_authored_time_string(encoder, "start", "first_frame_of_action")?;
-    let end = optional_authored_time_string(encoder, "end", "end_of_file")?;
+    let start = optional_authored_time_string(encoder, "start")?;
+    let end = optional_authored_time_string(encoder, "end")?;
     let time_base = required_text(encoder, &["time_base"])?;
     if !is_admitted_time_base_token(&time_base) {
         return Err(JobConfigurationError::TimeDomain);
     }
-    let (prepend_silence_duration, prepend_silence_samples) =
-        required_silence_duration(encoder, "prepend_silence_duration", wave.sample_rate_hz())?;
+    let (prepend_silence_duration, prepend_silence_samples, _) =
+        optional_silence_duration(encoder, "prepend_silence_duration", wave.sample_rate_hz())?;
     let (append_silence_duration, append_silence_samples, append_silence_duration_explicit) =
         optional_silence_duration(encoder, "append_silence_duration", wave.sample_rate_hz())?;
     let temp_directory = parse_optional_temp_directory(root)?;
@@ -1347,7 +1408,7 @@ pub fn parse_selected_job_configuration(
         output_configuration,
         temp_directory,
         wave,
-        source_samples,
+        render_timeline: RenderTimeline::full(source_samples),
         bit_rate_kbps,
         bit_rate_enum,
         layout_enum: SELECTED_LAYOUT_ENUM,
@@ -1787,24 +1848,11 @@ fn parse_optional_temp_directory(
 fn optional_authored_time_string(
     root: Node<'_, '_>,
     name: &str,
-    allowed_value: &str,
 ) -> Result<String, JobConfigurationError> {
-    match path_text(root, &[name])? {
-        None => Ok(String::new()),
-        Some(value) if value.trim().is_empty() => Ok(String::new()),
-        Some(value) if value.trim() == allowed_value => Ok(allowed_value.to_owned()),
-        Some(_) => Err(JobConfigurationError::TimeDomain),
-    }
-}
-
-fn required_silence_duration(
-    root: Node<'_, '_>,
-    name: &str,
-    sample_rate_hz: u32,
-) -> Result<(String, SelectedSilenceSampleCount), JobConfigurationError> {
-    let value = required_text(root, &[name])?;
-    let samples = silence_duration_samples(&value, sample_rate_hz)?;
-    Ok((value, samples))
+    Ok(path_text(root, &[name])?
+        .unwrap_or_default()
+        .trim()
+        .to_owned())
 }
 
 fn optional_silence_duration(
@@ -1812,8 +1860,8 @@ fn optional_silence_duration(
     name: &str,
     sample_rate_hz: u32,
 ) -> Result<(String, SelectedSilenceSampleCount, bool), JobConfigurationError> {
-    match path_text(root, &[name])? {
-        None => Ok(("0.0".to_owned(), SelectedSilenceSampleCount(0), false)),
+    match path_text(root, &[name])?.map(str::trim) {
+        None | Some("") => Ok(("0.0".to_owned(), SelectedSilenceSampleCount(0), false)),
         Some(value) => Ok((
             value.to_owned(),
             silence_duration_samples(value, sample_rate_hz)?,

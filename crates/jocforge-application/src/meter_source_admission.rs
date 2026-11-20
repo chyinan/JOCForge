@@ -221,9 +221,6 @@ pub fn admit_meter_source_owner(
     if !configuration.input_kind().is_adm_bwf() {
         return Err(MeterSourceAdmissionError::SelectedInputKind);
     }
-    if !crate::selected_silence_timeline_supported(configuration) {
-        return Err(MeterSourceAdmissionError::UnsupportedSilenceTimelineEffect);
-    }
     let loudness = configuration.loudness();
     // Preserve admitted values in the config identity, but stop before source-owner creation
     // until the selected measurement consumer for these controls is implemented.

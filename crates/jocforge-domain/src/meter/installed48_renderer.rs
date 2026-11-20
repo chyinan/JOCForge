@@ -452,7 +452,7 @@ fn validate_input(
             != 0
         || input.source_map.source_binding().data_bytes()
             / u64::try_from(block_align).unwrap_or(u64::MAX)
-            != before.source_samples.value()
+            != input.source_map.source_binding().file_samples()
     {
         return Err(MeterInstalled48Error::SourceExtentMismatch);
     }

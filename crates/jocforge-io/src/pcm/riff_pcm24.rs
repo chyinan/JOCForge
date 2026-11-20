@@ -16,7 +16,6 @@ const RIFF_HEADER_BYTES: usize = 12;
 const CHUNK_HEADER_BYTES: usize = 8;
 const PCM24_SIGN_BIT: i32 = 0x0080_0000;
 const PCM24_MODULUS: i32 = 0x0100_0000;
-const PCM24_SCALE: f32 = 8_388_608.0;
 const PCM24_INT32_SCALE: f32 = 1.0 / 2_147_483_648.0;
 
 /// The selected model-reader failure projection.
@@ -109,7 +108,7 @@ pub struct ParsedRiffPcm24<'a> {
     sample_rate_hz: u32,
     channels: u16,
     block_align: u16,
-    total_samples: u64,
+    timeline: jocforge_domain::timeline::RenderTimeline,
     source_sha256: [u8; 32],
     data_offset: u64,
     data_payload: &'a [u8],
@@ -133,7 +132,18 @@ impl<'a> ParsedRiffPcm24<'a> {
     }
 
     pub const fn total_samples(&self) -> u64 {
-        self.total_samples
+        self.timeline.output_samples()
+    }
+
+    pub fn with_render_timeline(
+        mut self,
+        timeline: jocforge_domain::timeline::RenderTimeline,
+    ) -> Result<Self, RiffPcm24Error> {
+        if self.timeline.file_samples() != timeline.file_samples() {
+            return Err(RiffPcm24Error::InvalidInput);
+        }
+        self.timeline = timeline;
+        Ok(self)
     }
 
     /// Returns the exact PCM data-chunk payload length observed by the RIFF parser.
@@ -185,47 +195,12 @@ impl<'a> ParsedRiffPcm24<'a> {
             .value()
             .checked_add(sample_count)
             .ok_or(RiffPcm24Error::InvalidInput)?;
-        if sample_count == 0 || end_sample > self.total_samples {
+        if sample_count == 0 || end_sample > self.total_samples() {
             return Err(RiffPcm24Error::InvalidInput);
         }
-        let first_sample =
-            usize::try_from(first_sample.value()).map_err(|_| RiffPcm24Error::InvalidInput)?;
-        let end_sample = usize::try_from(end_sample).map_err(|_| RiffPcm24Error::InvalidInput)?;
-        let sample_count =
-            usize::try_from(sample_count).map_err(|_| RiffPcm24Error::InvalidInput)?;
-
-        let mut planar = (0..usize::from(self.channels))
-            .map(|_| Vec::with_capacity(sample_count))
-            .collect::<Vec<_>>();
-        for sample in first_sample..end_sample {
-            let frame_offset = sample
-                .checked_mul(usize::from(self.block_align))
-                .ok_or(RiffPcm24Error::InvalidInput)?;
-            for (channel, row) in planar.iter_mut().enumerate() {
-                let offset = frame_offset
-                    .checked_add(channel * 3)
-                    .ok_or(RiffPcm24Error::InvalidInput)?;
-                let sample_end = offset.checked_add(3).ok_or(RiffPcm24Error::InvalidInput)?;
-                let packed = self
-                    .data_payload
-                    .get(offset..sample_end)
-                    .ok_or(RiffPcm24Error::InvalidInput)?;
-                let unsigned = i32::from(packed[0])
-                    | (i32::from(packed[1]) << 8)
-                    | (i32::from(packed[2]) << 16);
-                let signed = if unsigned & PCM24_SIGN_BIT != 0 {
-                    unsigned - PCM24_MODULUS
-                } else {
-                    unsigned
-                };
-                let normalized = (signed as f32) / PCM24_SCALE;
-                if !normalized.is_finite() {
-                    return Err(RiffPcm24Error::InvalidInput);
-                }
-                row.push(normalized.to_bits());
-            }
-        }
-        Ok(planar)
+        Ok(self
+            .read_pcm24_chunk(first_sample, sample_count)?
+            .into_planar_f32_bits())
     }
 
     /// Reads one sample chunk, capping its request at this RIFF's sample extent.
@@ -237,7 +212,7 @@ impl<'a> ParsedRiffPcm24<'a> {
         first_sample: AdmSampleIndex,
         requested_frames: u64,
     ) -> Result<DecodedPcm24ReadChunk, RiffPcm24Error> {
-        let Some(remaining_frames) = self.total_samples.checked_sub(first_sample.value()) else {
+        let Some(remaining_frames) = self.total_samples().checked_sub(first_sample.value()) else {
             return decode_pcm24_read_chunk_with_layout(
                 &[],
                 0,
@@ -256,31 +231,49 @@ impl<'a> ParsedRiffPcm24<'a> {
         }
 
         let block_align = u64::from(self.block_align);
-        let relative_offset = first_sample
-            .value()
-            .checked_mul(block_align)
-            .ok_or(RiffPcm24Error::InvalidInput)?;
-        let requested_bytes = capped_frames
-            .checked_mul(block_align)
-            .and_then(|bytes| u32::try_from(bytes).ok())
-            .ok_or(RiffPcm24Error::InvalidInput)?;
-        let byte_start =
-            usize::try_from(relative_offset).map_err(|_| RiffPcm24Error::InvalidInput)?;
-        let byte_length =
-            usize::try_from(requested_bytes).map_err(|_| RiffPcm24Error::InvalidInput)?;
+        if capped_frames > u64::from(u32::MAX) / block_align {
+            return Err(RiffPcm24Error::InvalidInput);
+        }
+        let (leading, file_offset, file_count) =
+            self.timeline.pcm_span(first_sample.value(), capped_frames);
+        let byte_start = usize::try_from(
+            file_offset
+                .checked_mul(block_align)
+                .ok_or(RiffPcm24Error::InvalidInput)?,
+        )
+        .map_err(|_| RiffPcm24Error::InvalidInput)?;
+        let bytes = u32::try_from(
+            file_count
+                .checked_mul(block_align)
+                .ok_or(RiffPcm24Error::InvalidInput)?,
+        )
+        .map_err(|_| RiffPcm24Error::InvalidInput)?;
         let byte_end = byte_start
-            .checked_add(byte_length)
+            .checked_add(bytes as usize)
             .ok_or(RiffPcm24Error::InvalidInput)?;
-        let read_bytes = self
-            .data_payload
-            .get(byte_start..byte_end)
-            .ok_or(RiffPcm24Error::InvalidInput)?;
-        decode_pcm24_read_chunk_with_layout(
-            read_bytes,
-            requested_bytes,
+        let mut chunk = decode_pcm24_read_chunk_with_layout(
+            self.data_payload
+                .get(byte_start..byte_end)
+                .ok_or(RiffPcm24Error::InvalidInput)?,
+            bytes,
             usize::from(self.channels),
             usize::from(self.block_align),
-        )
+        )?;
+        if file_count != capped_frames {
+            let frames =
+                usize::try_from(capped_frames).map_err(|_| RiffPcm24Error::InvalidInput)?;
+            let leading = usize::try_from(leading).map_err(|_| RiffPcm24Error::InvalidInput)?;
+            for row in &mut chunk.planar_f32_bits {
+                let copied = row.len();
+                row.resize(frames, 0);
+                if leading != 0 {
+                    row.copy_within(..copied, leading);
+                    row[..leading].fill(0);
+                }
+            }
+            chunk.actual_frames = Pcm24FrameCount(capped_frames);
+        }
+        Ok(chunk)
     }
 }
 
@@ -496,8 +489,10 @@ pub fn parse_selected_riff_pcm24(
         sample_rate_hz: format.sample_rate_hz,
         channels: format.channels,
         block_align: format.block_align,
-        total_samples: u64::try_from(data_payload.len() / block_align)
-            .map_err(|_| RiffPcm24Error::InvalidInput)?,
+        timeline: jocforge_domain::timeline::RenderTimeline::full(
+            u64::try_from(data_payload.len() / block_align)
+                .map_err(|_| RiffPcm24Error::InvalidInput)?,
+        ),
         source_sha256: Sha256::digest(bytes).into(),
         data_offset: u64::try_from(data_offset).map_err(|_| RiffPcm24Error::InvalidInput)?,
         data_payload,

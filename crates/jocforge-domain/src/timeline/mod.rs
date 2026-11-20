@@ -15,7 +15,7 @@ pub use index::{
     NormalCallbackCount, OrdinaryPayloadWriterIndex, PublishedAuIndex, ReceiverCallbackCount,
 };
 pub use source_time_range::{
-    ActiveWriterSampleIndex, SelectedFilePositionRangeInput, SelectedFilePositionSampleRange,
-    SelectedNumericFrameRate, SourceTimeRangeError, ValidatedSampleIndex,
-    resolve_selected_file_position_sample_range,
+    ActiveWriterSampleIndex, RenderTimeline, SelectedFilePositionRangeInput,
+    SelectedFilePositionSampleRange, SelectedNumericFrameRate, SourceTimeRangeError,
+    ValidatedSampleIndex, resolve_selected_file_position_sample_range,
 };

@@ -996,7 +996,7 @@ fn validate_selected_source_binding(
     let sample_count = binding.data_bytes() / block_align;
     if binding.data_bytes() % block_align != 0
         || binding.data_bytes() > binding.source_file_bytes()
-        || sample_count != binding.source_samples().value()
+        || sample_count != binding.file_samples()
         || binding.wave().sample_rate_hz() != 48_000
         || binding.wave().pcm_bits() != 24
     {

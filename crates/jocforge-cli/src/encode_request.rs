@@ -1,6 +1,8 @@
 // pattern: Imperative Shell
 //! Reads one selected ADM BWF, prepares its input identity, and enters the application encode gate.
 
+pub use jocforge_application::{FileRenderTiming, SourceTimeRangeError};
+
 use std::{
     path::{Component, Path, PathBuf},
     sync::Arc,
@@ -292,25 +294,47 @@ fn resolve_encode_request_route(
 /// The XML remains authored input. Only its file references and the already admitted selected
 /// control row are accepted; unsupported or unclosed options fail before output is opened.
 pub fn run_from_job_xml(job_xml_path: &Path) -> Result<(), EncodeRequestError> {
-    let request = resolve_job_xml_request(job_xml_path)?;
-    run_worker(
-        &request.input_path,
-        &request.output_path,
-        None,
-        Some(request.job_xml),
+    encode_job_xml(
+        job_xml_path,
         JocReconstructionLayout::ExistingSelectedFivePointOne,
+        false,
     )
 }
 
 /// Validates an external job XML and its actual ADM BWF through PreparedJobInput, then stops
 /// before Meter prepass, output staging, source callbacks, or encoding.
 pub fn preflight_from_job_xml(job_xml_path: &Path) -> Result<(), EncodeRequestError> {
+    encode_job_xml(
+        job_xml_path,
+        JocReconstructionLayout::ExistingSelectedFivePointOne,
+        true,
+    )
+}
+
+/// Runs an XML job for the chosen output layout, or validates its timeline and output location.
+pub fn encode_job_xml(
+    job_xml_path: &Path,
+    layout: JocReconstructionLayout,
+    preflight_only: bool,
+) -> Result<(), EncodeRequestError> {
     let request = resolve_job_xml_request(job_xml_path)?;
+    if !preflight_only {
+        return run_worker(
+            &request.input_path,
+            &request.output_path,
+            None,
+            Some(request.job_xml),
+            layout,
+        );
+    }
+    if layout == JocReconstructionLayout::Flat7x {
+        validate_flat7x_experimental_candidate_path(&request.output_path)?;
+    }
     thread::scope(|scope| {
         let worker = thread::Builder::new()
             .name("jocforge-job-xml-preflight".to_owned())
             .stack_size(ENCODE_REQUEST_STACK_BYTES)
-            .spawn_scoped(scope, move || run_job_xml_preflight(&request))
+            .spawn_scoped(scope, move || run_job_xml_preflight(&request, layout))
             .map_err(|_| EncodeRequestError::WorkerUnavailable)?;
         worker
             .join()
@@ -358,7 +382,10 @@ fn resolve_job_xml_request(
     })
 }
 
-fn run_job_xml_preflight(request: &ResolvedJobXmlRequest) -> Result<(), EncodeRequestError> {
+fn run_job_xml_preflight(
+    request: &ResolvedJobXmlRequest,
+    layout: JocReconstructionLayout,
+) -> Result<(), EncodeRequestError> {
     if request.output_path.exists() {
         return Err(EncodeRequestError::OutputAlreadyExists);
     }
@@ -379,6 +406,9 @@ fn run_job_xml_preflight(request: &ResolvedJobXmlRequest) -> Result<(), EncodeRe
         SelectedAdmResourcePayloads::new(adm.axml(), adm.chna(), adm.dbmd()),
     )
     .map_err(EncodeRequestError::PreparedInput)?;
+    let parsed = parsed
+        .with_render_timeline(prepared.configuration().render_timeline())
+        .map_err(EncodeRequestError::Riff)?;
     let data_bytes =
         u64::try_from(parsed.data_payload_bytes()).map_err(|_| EncodeRequestError::InputExtent)?;
     let prepared = prepared
@@ -388,11 +418,32 @@ fn run_job_xml_preflight(request: &ResolvedJobXmlRequest) -> Result<(), EncodeRe
 
     let configuration = prepared.configuration();
     let codec_rate = configuration.selected_profile().codec_rate();
-    let frame_bytes = codec_rate
-        .frame_bytes()
-        .ok_or(EncodeRequestError::UnsupportedDataRate)?;
+    let (frame_bytes, total_kbps) = match resolve_encode_request_route(codec_rate, layout)? {
+        EncodeRequestRoute::SelectedFivePointOne(_) => (
+            codec_rate
+                .frame_bytes()
+                .ok_or(EncodeRequestError::UnsupportedDataRate)?,
+            configuration.bit_rate_kbps(),
+        ),
+        EncodeRequestRoute::Flat7xI0D0Pair(target) => {
+            jocforge_application::source_frame_bridge::build_flat7x_provisional_source_role_map(
+                prepared.graph().graph(),
+                target,
+            )
+            .map_err(|error| {
+                EncodeRequestError::SourcePipeline(format!("Flat7x input layout: {error:?}"))
+            })?;
+            (
+                usize::try_from(target.aggregate_frame_bytes())
+                    .map_err(|_| EncodeRequestError::UnsupportedDataRate)?,
+                target
+                    .aggregate_rate_kbps()
+                    .ok_or(EncodeRequestError::UnsupportedDataRate)?,
+            )
+        }
+    };
     println!(
-        "preflight_only=true\njob_xml_path={}\njob_xml_sha256={}\nconfig_sha256={}\ninput_kind={}\ninput_path={}\ninput_file_sha256={}\ninput_file_bytes={}\nsample_rate_hz={}\nchannels={}\npcm_bits={}\nsamples_per_channel={}\ndata_rate_kbps={}\nframe_bytes={}\noutput_path={}\noutput_exists=false\noutput_created=false\nmeter_started=false\nsource_callbacks_started=false",
+        "preflight_only=true\njob_xml_path={}\njob_xml_sha256={}\nconfig_sha256={}\ninput_kind={}\ninput_path={}\ninput_file_sha256={}\ninput_file_bytes={}\nsample_rate_hz={}\nchannels={}\npcm_bits={}\nsamples_per_channel={}\nrender_samples_per_channel={}\ndata_rate_kbps={}\naggregate_rate_kbps={}\nframe_bytes={}\noutput_path={}\noutput_exists=false\noutput_created=false\nmeter_started=false\nsource_callbacks_started=false",
         request.job_xml_path.display(),
         hex_lower(&prepared.job_xml_sha256()),
         hex_lower(&prepared.config_sha256()),
@@ -403,8 +454,10 @@ fn run_job_xml_preflight(request: &ResolvedJobXmlRequest) -> Result<(), EncodeRe
         parsed.sample_rate_hz(),
         parsed.channels(),
         24,
+        configuration.render_timeline().file_samples(),
         parsed.total_samples(),
         configuration.bit_rate_kbps(),
+        total_kbps,
         frame_bytes,
         request.output_path.display(),
     );
@@ -496,36 +549,12 @@ fn validate_external_job_configuration(
             "/filter/audio/encode_to_atmos_ddp/custom_trims",
         ));
     }
-    if !configuration.start().is_empty() || !configuration.end().is_empty() {
-        return Err(EncodeRequestError::UnsupportedJobXmlOption(
-            "/filter/audio/encode_to_atmos_ddp/start or end",
-        ));
-    }
     if configuration.input_offset() != "auto"
         || configuration.input_ffoa() != "auto"
         || configuration.time_base() != "file_position"
     {
         return Err(EncodeRequestError::UnsupportedJobXmlOption(
             "/input/audio/{adm,atmos_mezz}/offset or ffoa, or /filter/audio/encode_to_atmos_ddp/time_base",
-        ));
-    }
-
-    let prepend_is_zero = configuration
-        .prepend_silence_duration()
-        .parse::<f64>()
-        .is_ok_and(|seconds| seconds.is_finite() && seconds == 0.0);
-    let append_is_zero = configuration
-        .append_silence_duration()
-        .parse::<f64>()
-        .is_ok_and(|seconds| seconds.is_finite() && seconds == 0.0);
-    if !configuration.append_silence_duration_explicit()
-        || configuration.prepend_silence_samples().value() != 0
-        || configuration.append_silence_samples().value() != 0
-        || !prepend_is_zero
-        || !append_is_zero
-    {
-        return Err(EncodeRequestError::UnsupportedJobXmlOption(
-            "/filter/audio/encode_to_atmos_ddp/prepend_silence_duration or append_silence_duration",
         ));
     }
 
@@ -691,6 +720,36 @@ pub fn encode_staged_file(
     )
 }
 
+/// Encode a staged file with file-position trimming and silence on the shared XML timeline.
+pub fn encode_staged_file_with_timing(
+    input: &Path,
+    output: &Path,
+    rate: CodecRateProfile,
+    layout: JocReconstructionLayout,
+    timing: &FileRenderTiming,
+    progress: ProgressObserver<'_>,
+    cancelled: &std::sync::atomic::AtomicBool,
+) -> Result<(), EncodeRequestError> {
+    resolve_encode_request_route(rate, layout)?;
+    let input = normalize_existing_input(input)?;
+    let output = normalize_new_output(output)?;
+    let xml = file_job_xml(
+        &file_reference_parts(&input)?,
+        &file_reference_parts(&output)?,
+        rate.kbps().ok_or(EncodeRequestError::UnsupportedDataRate)?,
+        timing,
+    );
+    run_worker_with_progress(
+        &input,
+        &output,
+        Some(rate),
+        Some(xml.into_bytes()),
+        layout,
+        Some(progress),
+        cancelled,
+    )
+}
+
 fn run_worker_with_progress(
     input_path: &Path,
     output_path: &Path,
@@ -740,9 +799,6 @@ fn run_inner(
     if joc_layout == JocReconstructionLayout::Flat7x {
         validate_flat7x_experimental_candidate_path(&output_path)?;
     }
-    if joc_layout == JocReconstructionLayout::Flat7x {
-        validate_flat7x_experimental_candidate_path(&output_path)?;
-    }
 
     let is_external_job_xml = authored_job_xml.is_some();
     let generated_rate = codec_rate_override.unwrap_or(CodecRateProfile::Kbps1024);
@@ -784,6 +840,9 @@ fn run_inner(
         return Err(EncodeRequestError::UnsupportedDataRate);
     }
     let data_rate_kbps = prepared.configuration().bit_rate_kbps();
+    let parsed = parsed
+        .with_render_timeline(prepared.configuration().render_timeline())
+        .map_err(EncodeRequestError::Riff)?;
     let data_bytes =
         u64::try_from(parsed.data_payload_bytes()).map_err(|_| EncodeRequestError::InputExtent)?;
     let prepared = prepared
@@ -1715,8 +1774,29 @@ fn selected_full_file_job_xml(
     output: &FileReferenceParts,
     data_rate_kbps: u32,
 ) -> String {
+    file_job_xml(input, output, data_rate_kbps, &FileRenderTiming::default())
+}
+
+fn file_job_xml(
+    input: &FileReferenceParts,
+    output: &FileReferenceParts,
+    data_rate_kbps: u32,
+    timing: &FileRenderTiming,
+) -> String {
+    let field = |s: &str, default: &str| {
+        if s.trim().is_empty() {
+            default.to_string()
+        } else {
+            xml_escape(s.trim())
+        }
+    };
+    let rate = field(&timing.frame_rate, "not_indicated");
+    let start = field(&timing.start, "");
+    let end = field(&timing.end, "");
+    let prepend = field(&timing.prepend_silence, "0.0");
+    let append = field(&timing.append_silence, "0.0");
     format!(
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><job_config><input><audio><adm><file_name>{}</file_name><storage><local><path>{}</path></local></storage><timecode_frame_rate>not_indicated</timecode_frame_rate><offset>auto</offset><ffoa>auto</ffoa></adm></audio></input><filter><audio><encode_to_atmos_ddp><loudness><measure_only><metering_mode>1770-4</metering_mode><dialogue_intelligence>false</dialogue_intelligence><speech_threshold>100</speech_threshold></measure_only></loudness><data_rate>{}</data_rate><timecode_frame_rate>not_indicated</timecode_frame_rate><start></start><end></end><time_base>file_position</time_base><prepend_silence_duration>0.0</prepend_silence_duration><append_silence_duration>0.0</append_silence_duration><drc><line_mode_drc_profile>film_light</line_mode_drc_profile><rf_mode_drc_profile>film_light</rf_mode_drc_profile></drc><downmix><loro_center_mix_level>-3</loro_center_mix_level><loro_surround_mix_level>-3</loro_surround_mix_level><ltrt_center_mix_level>-3</ltrt_center_mix_level><ltrt_surround_mix_level>-3</ltrt_surround_mix_level><preferred_downmix_mode>loro</preferred_downmix_mode></downmix><custom_trims><surround_trim_5_1>auto</surround_trim_5_1><height_trim_5_1>auto</height_trim_5_1></custom_trims></encode_to_atmos_ddp></audio></filter><output><ec3><file_name>{}</file_name><storage><local><path>{}</path></local></storage></ec3></output></job_config>",
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><job_config><input><audio><adm><file_name>{}</file_name><storage><local><path>{}</path></local></storage><timecode_frame_rate>not_indicated</timecode_frame_rate><offset>auto</offset><ffoa>auto</ffoa></adm></audio></input><filter><audio><encode_to_atmos_ddp><loudness><measure_only><metering_mode>1770-4</metering_mode><dialogue_intelligence>false</dialogue_intelligence><speech_threshold>100</speech_threshold></measure_only></loudness><data_rate>{}</data_rate><timecode_frame_rate>{rate}</timecode_frame_rate><start>{start}</start><end>{end}</end><time_base>file_position</time_base><prepend_silence_duration>{prepend}</prepend_silence_duration><append_silence_duration>{append}</append_silence_duration><drc><line_mode_drc_profile>film_light</line_mode_drc_profile><rf_mode_drc_profile>film_light</rf_mode_drc_profile></drc><downmix><loro_center_mix_level>-3</loro_center_mix_level><loro_surround_mix_level>-3</loro_surround_mix_level><ltrt_center_mix_level>-3</ltrt_center_mix_level><ltrt_surround_mix_level>-3</ltrt_surround_mix_level><preferred_downmix_mode>loro</preferred_downmix_mode></downmix><custom_trims><surround_trim_5_1>auto</surround_trim_5_1><height_trim_5_1>auto</height_trim_5_1></custom_trims></encode_to_atmos_ddp></audio></filter><output><ec3><file_name>{}</file_name><storage><local><path>{}</path></local></storage></ec3></output></job_config>",
         input.file_name, input.local_path, data_rate_kbps, output.file_name, output.local_path
     )
 }

@@ -64,7 +64,7 @@ struct EncodeArgs {
     #[arg(long, value_name = "LAYOUT", value_parser = ["flat7x"])]
     joc_layout: Option<String>,
     /// Read input and output paths from an XML job.
-    #[arg(long, value_name = "JOB.xml", conflicts_with_all = ["input", "output", "data_rate", "joc_layout"])]
+    #[arg(long, value_name = "JOB.xml", conflicts_with_all = ["input", "output", "data_rate", "total_rate"])]
     job_xml: Option<PathBuf>,
     /// Validate the XML job and input metadata without starting the encoder.
     #[arg(long, requires = "job_xml")]
@@ -101,12 +101,13 @@ fn main() -> ExitCode {
             return ExitCode::SUCCESS;
         }
         Command::Encode(args) => {
+            let layout = if args.joc_layout.is_some() {
+                JocReconstructionLayout::Flat7x
+            } else {
+                JocReconstructionLayout::ExistingSelectedFivePointOne
+            };
             if let Some(job_xml) = args.job_xml {
-                if args.preflight_only {
-                    jocforge::encode_request::preflight_from_job_xml(&job_xml)
-                } else {
-                    jocforge::encode_request::run_from_job_xml(&job_xml)
-                }
+                jocforge::encode_request::encode_job_xml(&job_xml, layout, args.preflight_only)
             } else {
                 let rate = if let Some(total) = args.total_rate {
                     let kbps = total.parse::<u32>().expect("validated total bitrate");
@@ -114,11 +115,6 @@ fn main() -> ExitCode {
                 } else {
                     CodecRateProfile::from_xml_token(args.data_rate.as_deref().unwrap_or("1024"))
                         .expect("clap validates the bitrate")
-                };
-                let layout = if args.joc_layout.is_some() {
-                    JocReconstructionLayout::Flat7x
-                } else {
-                    JocReconstructionLayout::ExistingSelectedFivePointOne
                 };
                 jocforge::encode_request::run_with_data_rate_and_joc_layout(
                     &args.input.expect("clap requires an input path"),
