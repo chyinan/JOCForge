@@ -94,6 +94,8 @@ XML 解析器可识别并保留 Line 和 RF 两种动态范围控制（DRC）设
 
 ### 开发与检查
 
+Windows x64 Release 在 Ryzen 7 9800X3D 上编码一份 191.69 秒、26 声道的 48 kHz 动态 ADM，5.1 / 1024 kbps 实测 52.0 秒，Flat 7.1 / 1664 kbps 实测 74.8 秒。计时包含输入准备、整曲响度测量和写出 EC3。两份输出均与先前编码器的整曲文件逐字节一致。
+
 项目采用 Rust 2024 工作区，包含领域逻辑、应用、文件读写、命令行和独立验证五个模块。编码请使用 CLI，应用层的 `encode()` 接口目前返回 `SourcePipelineUnavailable`。命令参数和版本可通过 `jocforge --help` 和 `jocforge --version` 查看。[架构说明](docs/architecture/ARCHITECTURE.md)
 
 ```powershell

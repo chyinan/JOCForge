@@ -426,7 +426,9 @@ macro_rules! write_canonical_json {
     ($out:ident, { $($key:literal: $value:tt),+ $(,)? }) => {{
         $out.push(b'{');
         $(
-            $out.extend_from_slice(concat!('"', $key, "\":").as_bytes());
+            $out.push(b'"');
+            $out.extend_from_slice($key.as_bytes());
+            $out.extend_from_slice(b"\":");
             write_canonical_json!($out, $value);
             $out.push(b',');
         )+

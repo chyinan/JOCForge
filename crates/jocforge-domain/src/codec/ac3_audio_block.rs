@@ -1750,7 +1750,7 @@ mod tests {
     }
 
     #[test]
-    fn symmetric_quantization_agrees_with_each_legacy_boundary_and_its_neighbors() {
+    fn symmetric_quantization_matches_threshold_scan_at_boundaries_and_neighbors() {
         for bap in 1..=5 {
             let levels = super::symmetric_quantizer_levels(bap).unwrap();
             for step in 1..levels {

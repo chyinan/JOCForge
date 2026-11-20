@@ -12,6 +12,12 @@ Locked transitive Rust packages are listed below. Checksums are the crates.io ch
 
 | Package | Version | License | Checksum |
 |---|---:|---|---|
+| crossbeam-deque | 0.8.8 | MIT OR Apache-2.0 | `622f3fc73690be383c7214310406f28a90e6edeadc3cea882f9d71e495b9711a` |
+| crossbeam-epoch | 0.9.21 | MIT OR Apache-2.0 | `dc74980687109a3b14c72fd458107bf0baa1da1a1a805e178d15501ba9b86d9d` |
+| crossbeam-utils | 0.8.23 | MIT OR Apache-2.0 | `a31eee39dddec8330830986fcd7625edb5a24ec90ea038215273bbc3adb08ac6` |
+| either | 1.19.0 | MIT OR Apache-2.0 | `0e9c71c2167ca323c882b99918929403426e2373ea17242ff5653e0d5e1058be` |
+| rayon | 1.11.0 | MIT OR Apache-2.0 | `368f01d005bf8fd9b1206fb6fa653e6c4a81ceb1466406b81792d87c5677a58f` |
+| rayon-core | 1.13.0 | MIT OR Apache-2.0 | `22e18b0f0062d30d4230b2e85ff77fdfe4326feb054b9783a3460d8435c8ab91` |
 | roxmltree | 0.21.1 | MIT OR Apache-2.0 | `f1964b10c76125c36f8afe190065a4bf9a87bf324842c05701330bba9f1cacbb` |
 | autocfg | 1.5.1 | Apache-2.0 OR MIT | `f2032f911046de80f0a198e0901378627c33f59ea0ac00e363d481118bd70a53` |
 | block-buffer | 0.10.4 | MIT OR Apache-2.0 | `3078c7629b62d3f0439517fa394996acacc5cbc91c5a20d8c658e77abd503a71` |
