@@ -127,9 +127,9 @@ The full provider, state, clock, outcome, KAT, and implementation-scope record f
       "sha256": "1c4ced52c3a971696f3139c1cc17904744703d294117650c73684351e581f4e3"
     },
     {
-      "bytes": 64855,
+      "bytes": 64798,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "0f0c64923239e8a1ab087f3f29d75cef0d5e89c8627ba492268f335d68816dc2"
+      "sha256": "a0502920ee81f45ab24e64f3c74aa02a2a660b704fca349e0869c3ca5e86d7df"
     }
   ],
   "implementation_prohibitions": [

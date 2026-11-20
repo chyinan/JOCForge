@@ -13,7 +13,7 @@ fn meter_component_callback_returns_f03w_f04a_f05r56_without_receiver_advancemen
     let before_audio_generation = owners.spatial_audio.generation();
     let before_receiver_count = owners.spatial_audio.committed().receiver_callback_count();
 
-    let (activity, installed48) = stage_activity_and_installed48(&fixture);
+    let (activity, installed48, source_axis) = stage_activity_and_installed48(&fixture);
     let resolved_profile = resolve_selected_profile(&owners.spatial_control.profile()).unwrap();
     let source_projection = project_normal_control_snapshot_source_controls(
         &fixture.normal,
@@ -37,7 +37,8 @@ fn meter_component_callback_returns_f03w_f04a_f05r56_without_receiver_advancemen
         prefix_writers,
         parent,
     )
-    .unwrap();
+    .unwrap()
+    .with_source_axis(source_axis);
     let frontend = stage_frontend_features_from_installed48(
         &owners.spatial_control,
         transaction_id.clone(),

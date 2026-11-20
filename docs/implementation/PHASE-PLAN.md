@@ -586,9 +586,9 @@
     ],
     "implementation_inventory": [
       {
-        "bytes": 21713,
+        "bytes": 22357,
         "path": "crates/jocforge-domain/src/state/reader_eof.rs",
-        "sha256": "19100a61bc182306df36f01f5170ba632b8eab44b3229a82ab395794c9429a2b"
+        "sha256": "3631fd51eb2b7ccbd8993c04518273106ec5bb8395088d4599046b5ec5401246"
       },
       {
         "bytes": 1691,
@@ -1572,9 +1572,9 @@
     ],
     "implementation_inventory": [
       {
-        "bytes": 71522,
+        "bytes": 71325,
         "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-        "sha256": "940cf8b95c6a43ddfae1e909fd35d235e549e116bdcace51ae6a3f5ffff0e1a1"
+        "sha256": "b9e37367f0da9d4a0fbbabdca4a9d6d689fc0ffe9f5a00fd6b1a09d91807d337"
       },
       {
         "bytes": 58666,
@@ -1763,9 +1763,9 @@
         "sha256": "ed81e701f1b84c24a97f75b2bbf4560b52e9ca7eb7b1a211cb000e60f7e9810b"
       },
       {
-        "bytes": 71522,
+        "bytes": 71325,
         "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-        "sha256": "940cf8b95c6a43ddfae1e909fd35d235e549e116bdcace51ae6a3f5ffff0e1a1"
+        "sha256": "b9e37367f0da9d4a0fbbabdca4a9d6d689fc0ffe9f5a00fd6b1a09d91807d337"
       }
     ],
     "test_modules": [
@@ -6894,9 +6894,9 @@
       "sha256": "aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce"
     },
     {
-      "bytes": 64855,
+      "bytes": 64798,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "0f0c64923239e8a1ab087f3f29d75cef0d5e89c8627ba492268f335d68816dc2"
+      "sha256": "a0502920ee81f45ab24e64f3c74aa02a2a660b704fca349e0869c3ca5e86d7df"
     }
   ],
   "implementation_prohibitions": [
@@ -7409,9 +7409,9 @@
       "sha256": "1c4ced52c3a971696f3139c1cc17904744703d294117650c73684351e581f4e3"
     },
     {
-      "bytes": 64855,
+      "bytes": 64798,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "0f0c64923239e8a1ab087f3f29d75cef0d5e89c8627ba492268f335d68816dc2"
+      "sha256": "a0502920ee81f45ab24e64f3c74aa02a2a660b704fca349e0869c3ca5e86d7df"
     }
   ],
   "implementation_prohibitions": [
@@ -8892,14 +8892,14 @@
       "sha256": "93f15f67ea011a5c078dc78018d57d521a124f2b19a4f18985462c99a73312fa"
     },
     {
-      "bytes": 64855,
+      "bytes": 64798,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "0f0c64923239e8a1ab087f3f29d75cef0d5e89c8627ba492268f335d68816dc2"
+      "sha256": "a0502920ee81f45ab24e64f3c74aa02a2a660b704fca349e0869c3ca5e86d7df"
     },
     {
-      "bytes": 71522,
+      "bytes": 71325,
       "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-      "sha256": "940cf8b95c6a43ddfae1e909fd35d235e549e116bdcace51ae6a3f5ffff0e1a1"
+      "sha256": "b9e37367f0da9d4a0fbbabdca4a9d6d689fc0ffe9f5a00fd6b1a09d91807d337"
     }
   ],
   "implementation_prohibitions": [
@@ -9211,9 +9211,9 @@
       "sha256": "70cd0b70feee7f5bed86f5c2942fa163c007361a7679df6d4fc584439e625b05"
     },
     {
-      "bytes": 64855,
+      "bytes": 64798,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "0f0c64923239e8a1ab087f3f29d75cef0d5e89c8627ba492268f335d68816dc2"
+      "sha256": "a0502920ee81f45ab24e64f3c74aa02a2a660b704fca349e0869c3ca5e86d7df"
     },
     {
       "bytes": 52759,
@@ -9226,9 +9226,9 @@
       "sha256": "93f15f67ea011a5c078dc78018d57d521a124f2b19a4f18985462c99a73312fa"
     },
     {
-      "bytes": 71522,
+      "bytes": 71325,
       "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-      "sha256": "940cf8b95c6a43ddfae1e909fd35d235e549e116bdcace51ae6a3f5ffff0e1a1"
+      "sha256": "b9e37367f0da9d4a0fbbabdca4a9d6d689fc0ffe9f5a00fd6b1a09d91807d337"
     }
   ],
   "implementation_prohibitions": [

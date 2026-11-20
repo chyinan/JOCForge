@@ -197,7 +197,7 @@ impl SelectedJocQmfProjection {
     ///
     /// Window and spatial payload buffers are empty; this fixture must not be used for fitting,
     /// serialization, or audio behavior tests.
-    #[cfg(feature = "test-support")]
+    #[cfg(any(test, feature = "test-support"))]
     pub fn identity_only_for_test(
         programme_id: SourceFlagsProgrammeId,
         attempt: SourceFlagsAttempt,
@@ -245,7 +245,7 @@ impl SelectedJocQmfProjection {
         }
     }
 
-    #[cfg(feature = "test-support")]
+    #[cfg(any(test, feature = "test-support"))]
     #[must_use]
     pub fn with_target_object_windows_for_test(mut self, words: Vec<u32>) -> Self {
         self.target_object_windows48 = words.into_boxed_slice();

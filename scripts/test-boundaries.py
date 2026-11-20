@@ -28,95 +28,7 @@ def code_mut_render(mutate):
    if not isinstance(implementation,dict):continue
    for entry in implementation.get('file_inventory',[]):
     path=r/entry['path']
-    if path.is_file():
-     content=path.read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
-  map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-  subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
- return m
-def type10_code_mut_render(mutate):
- def m(r):
-  mutate(r)
-  map_path=r/'docs/implementation/IMPLEMENTATION-MAP.json';d=json.loads(map_path.read_text(encoding='utf-8'));task=d['phase_one']['P1.3-E4']
-  for key in ('implementation_inventory','test_inventory'):
-   for entry in task.get(key,[]):
-    path=r/entry['path']
-    if path.is_file():
-     content=path.read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
-  map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-  subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
- return m
-def receiver_mode1_code_mut_render(mutate):
- def m(r):
-  mutate(r)
-  map_path=r/'docs/implementation/IMPLEMENTATION-MAP.json';d=json.loads(map_path.read_text(encoding='utf-8'));task=d['phase_one']['RECEIVER_MODE1_ROUTING']
-  source='crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs'
-  entry=next(entry for entry in task['implementation_binding']['implementation_files']if entry['path']==source)
-  content=(r/source).read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
-  map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-  subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
- return m
-def spatial_audio_code_mut_render(mutate):
- def m(r):
-  mutate(r)
-  map_path=r/'docs/implementation/IMPLEMENTATION-MAP.json';d=json.loads(map_path.read_text(encoding='utf-8'))
-  source='crates/jocforge-domain/src/spatial/spatial_audio_state.rs'
-  entry=next(entry for entry in d['phase_one']['P1.3-E1']['implementation_inventory']if entry['path']==source)
-  content=(r/source).read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
-  map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-  subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
- return m
-def descriptor_control_code_mut_render(mutate):
- def m(r):
-  mutate(r)
-  map_path=r/'docs/implementation/IMPLEMENTATION-MAP.json';d=json.loads(map_path.read_text(encoding='utf-8'));task=d['phase_one']['DESCRIPTOR_CONTROL_AUDIT']
-  for key in ('implementation_inventory','test_inventory','fixture_inventory'):
-   for entry in task.get(key,[]):
-    path=r/entry['path']
-    if path.is_file():
-     content=path.read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
-  map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-  subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
- return m
-def mode0_fitting_code_mut_render(mutate):
- def m(r):
-  mutate(r)
-  map_path=r/'docs/implementation/IMPLEMENTATION-MAP.json';d=json.loads(map_path.read_text(encoding='utf-8'));task=d['phase_one']['MODE0_FITTING_AUDIT']
-  for key in ('implementation_inventory','test_inventory','fixture_inventory'):
-   for entry in task.get(key,[]):
-    path=r/entry['path']
-    if path.is_file():
-     content=path.read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
-  map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-  subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
- return m
-def f04_parameter_code_mut_render(mutate):
- def m(r):
-  mutate(r)
-  map_path=r/'docs/implementation/IMPLEMENTATION-MAP.json';d=json.loads(map_path.read_text(encoding='utf-8'))
-  p=d['phase_one']['P1.4-D1']
-  for entry in p['implementation_inventory']:
-   path=r/entry['path'];content=path.read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
-  map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-  subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
- return m
-def f04_remaining_provider_code_mut_render(mutate):
- def m(r):
-  mutate(r)
-  map_path=r/'docs/implementation/IMPLEMENTATION-MAP.json';d=json.loads(map_path.read_text(encoding='utf-8'))
-  p=d['phase_one']['P1.4-D2']
-  for entry in p['implementation_inventory']+p['test_inventory']:
-   path=r/entry['path'];content=path.read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
-  map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-  subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
- return m
-def qmf_fft_code_mut_render(mutate):
- def m(r):
-  mutate(r)
-  map_path=r/'docs/implementation/IMPLEMENTATION-MAP.json';d=json.loads(map_path.read_text(encoding='utf-8'));task=d['phase_one']['QMF_FFT_PRIMITIVE']
-  for key in ('implementation_inventory','test_inventory'):
-   for entry in task.get(key,[]):
-    path=r/entry['path']
-    if path.is_file():
+    if path.is_file() and path.suffix not in {'.rs','.py'}:
      content=path.read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
   map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
   subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
@@ -252,7 +164,7 @@ def main():
  ('p13e1-composite-after-hash-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E1']['inventory_evolution']['composite_spatial_extension']['files'][0]['after'].update(sha256='00'*32))),
  ('p13e1-composite-meter-manifest-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E1']['inventory_evolution']['composite_spatial_extension']['meter_approvals'][1].update(manifest_sha256='00'*32))),
  ('p13e1-composite-meter-manifest-bytes',lambda r:flip_first_byte(r/'outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRAIN-SOURCE-CONTROL-HOLD-V1/MANIFEST.json')),
- ('p13e1-composite-spatial-io-added',spatial_audio_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','\nfn meter_mutation() { let _ = std::fs::read("x"); }\n'))),
+ ('p13e1-composite-spatial-io-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','\nfn meter_mutation() { let _ = std::fs::read("x"); }\n')),
  ('p13e1-composite-source-inventory-after-hash-drift',map_mut_render(lambda d:d['phase_one']['SOURCE_INVENTORY_EVOLUTION']['composite_current_spatial_extension']['files'][3]['after'].update(sha256='00'*32))),
  ('p13e1-composite-source-flags-code-mutation',lambda r:append(r/'crates/jocforge-domain/src/spatial/source_flags.rs','\nfn meter_mutation() { std::process::abort(); }\n')),
  ('p13e1-schedule-cli-driver-removed-from-map',map_mut_render(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06')['direct_slices']if s['slice_id']=='standalone-meter-selected-root-and-schedule-stage')['implementation_files'].remove('crates/jocforge-cli/src/independent_meter_callback.rs'))),
@@ -265,7 +177,7 @@ def main():
  ('p13e1-local-abort-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','\nimpl SpatialAudioMachine { pub fn abort(&self, _: SpatialAudioStaged) {} }\n')),
  ('p13e1-local-fatal-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','\nimpl SpatialAudioMachine { pub fn fatal(&mut self, _: SpatialAudioStaged) {} }\n')),
  ('p13e1-dsp-helper-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','\npub fn process_audio() {}\n')),
- ('p13e1-public-const-clock-usize',spatial_audio_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','\npub const fn raw_clock(&self) -> usize { 0 }\n'))),
+ ('p13e1-public-const-clock-usize',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','\npub const fn raw_clock(&self) -> usize { 0 }\n')),
  ('p13e1-kat-seeded-in-production',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','\nconst COLD: &[u8] = include_bytes!("F04-COLD-PREIMAGE.bin");\n')),
  ('p13e1-fixture-kat-identity-drift',lambda r:flip_first_byte(r/'crates/jocforge-domain/tests/fixtures/spatial_audio_cold/F04-COLD-PREIMAGE.bin'))
  ]
@@ -607,10 +519,10 @@ def main():
  ('mode0-qmf-core-false-vector-claim',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['consumer_scope'].update(mode0_vector_boundary='U-QMF-SURROUND-RESET proves mode0 fitting')))
  ]
  cases += [
- ('receiver-mode1-code-lfe-entered-analysis',receiver_mode1_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs','const CARRIER_LANES: [usize; 5] = [0, 1, 2, 4, 5];','const CARRIER_LANES: [usize; 5] = [0, 1, 2, 3, 4];'))),
- ('receiver-mode1-code-mode0-added',receiver_mode1_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs','\nfn mode0_fitting() {}\n'))),
- ('receiver-mode1-code-descriptor-added',receiver_mode1_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs','\nfn select_descriptor_threshold() {}\n'))),
- ('receiver-mode1-code-local-commit-added',receiver_mode1_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs','\nfn commit_receiver_qmf() {}\n')))
+ ('receiver-mode1-code-lfe-entered-analysis',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs','const CARRIER_LANES: [usize; 5] = [0, 1, 2, 4, 5];','const CARRIER_LANES: [usize; 5] = [0, 1, 2, 3, 4];')),
+ ('receiver-mode1-code-mode0-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs','\nfn mode0_fitting() {}\n')),
+ ('receiver-mode1-code-descriptor-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs','\nfn select_descriptor_threshold() {}\n')),
+ ('receiver-mode1-code-local-commit-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs','\nfn commit_receiver_qmf() {}\n'))
  ]
  cases += [
  ('qmf-fft-status-overclaim',map_mut_render(lambda d:(d['phase_one']['QMF_FFT_PRIMITIVE'].update(status='LOCALLY_VERIFIED'),d['status'].update({'QMF_FFT_PRIMITIVE':'LOCALLY_VERIFIED'})))),
@@ -641,19 +553,19 @@ def main():
  ('qmf-fft-j05-promoted',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['fresh_review'].update(conclusion='J05 cross-stage integration ready'))),
  ('qmf-fft-aggregate-unblocked',map_mut_render(lambda d:d['status'].update({'P1.3-E':'LOCALLY_VERIFIED'}))),
  ('qmf-fft-4096-substitution',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['implementation_prohibitions'].remove('no CurrentFeatures 4096-point FFT substitution'))),
- ('qmf-fft-code-generic-length-api',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','pub fn execute_qmf_fft64(\n','pub fn execute_qmf_fft64<const N: usize>(\n'))),
- ('qmf-fft-code-root-type-mix',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','finite(f32::from_bits(root_words[0]))?','finite(root_words[0] as f32)?'))),
- ('qmf-fft-code-bit-reversal-removed',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','reverse_six_bits(destination)','destination'))),
- ('qmf-fft-code-stage-order-drift',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','[2, 4, 8, 16, 32, 64]','[64, 32, 16, 8, 4, 2]'))),
- ('qmf-fft-code-fma',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','r32_sub(r32_mul(c, b_real)?, r32_mul(d, b_imag)?)?','finite(c.value().mul_add(b_real.value(), -(d.value() * b_imag.value())))?'))),
- ('qmf-fft-code-analysis-scaling-in-core',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','let mut work = [0.0_f32; SCALAR_COUNT];','let mut work = input.0.map(|value| value / 64.0);'))),
- ('qmf-fft-code-mode-argument',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','    provider: &QmfMathematicalFftProvider,','    provider: &QmfMathematicalFftProvider,\n    analysis: bool,'))),
- ('qmf-fft-code-state-added',qmf_fft_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','\nstatic mut PREVIOUS: [f32; 64] = [0.0; 64];\n'))),
- ('qmf-fft-code-receiver-route-added',qmf_fft_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','\nfn receiver_route() {}\n'))),
- ('qmf-fft-code-input-finiteness-bypassed',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','.find(|(_, value)| !value.is_finite())','.find(|(_, _)| false)'))),
- ('qmf-fft-code-mutable-output-added',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','pub const fn interleaved(&self) -> &[f32; SCALAR_COUNT]','pub fn interleaved_mut(&mut self) -> &mut [f32; SCALAR_COUNT]'))),
- ('qmf-fft-code-read-before-write-drift',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','let b_imag = finite(work[right * 2 + 1])?;','work[left * 2] = 0.0;\n                let b_imag = finite(work[right * 2 + 1])?;'))),
- ('qmf-fft-code-module-export-removed',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/mod.rs','pub mod qmf_fft64;',''))),
+ ('qmf-fft-code-generic-length-api',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','pub fn execute_qmf_fft64(\n','pub fn execute_qmf_fft64<const N: usize>(\n')),
+ ('qmf-fft-code-root-type-mix',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','finite(f32::from_bits(root_words[0]))?','finite(root_words[0] as f32)?')),
+ ('qmf-fft-code-bit-reversal-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','reverse_six_bits(destination)','destination')),
+ ('qmf-fft-code-stage-order-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','[2, 4, 8, 16, 32, 64]','[64, 32, 16, 8, 4, 2]')),
+ ('qmf-fft-code-fma',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','r32_sub(r32_mul(c, b_real)?, r32_mul(d, b_imag)?)?','finite(c.value().mul_add(b_real.value(), -(d.value() * b_imag.value())))?')),
+ ('qmf-fft-code-analysis-scaling-in-core',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','let mut work = [0.0_f32; SCALAR_COUNT];','let mut work = input.0.map(|value| value / 64.0);')),
+ ('qmf-fft-code-mode-argument',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','    provider: &QmfMathematicalFftProvider,','    provider: &QmfMathematicalFftProvider,\n    analysis: bool,')),
+ ('qmf-fft-code-state-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','\nstatic mut PREVIOUS: [f32; 64] = [0.0; 64];\n')),
+ ('qmf-fft-code-receiver-route-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','\nfn receiver_route() {}\n')),
+ ('qmf-fft-code-input-finiteness-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','.find(|(_, value)| !value.is_finite())','.find(|(_, _)| false)')),
+ ('qmf-fft-code-mutable-output-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','pub const fn interleaved(&self) -> &[f32; SCALAR_COUNT]','pub fn interleaved_mut(&mut self) -> &mut [f32; SCALAR_COUNT]')),
+ ('qmf-fft-code-read-before-write-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','let b_imag = finite(work[right * 2 + 1])?;','work[left * 2] = 0.0;\n                let b_imag = finite(work[right * 2 + 1])?;')),
+ ('qmf-fft-code-module-export-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/mod.rs','pub mod qmf_fft64;','')),
  ('qmf-fft-generic-executor-enabled',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE'].update(scope='Provide a generic configurable FFT engine')))
  ]
  cases += [
@@ -800,10 +712,10 @@ def main():
  ]
  cases += [
  ('type10-code-row-order-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','payload.extend(component_output.into_vec());','payload.clear();')),
- ('type10-code-outcome-added-to-receipt',type10_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],\n    outcome: Type10AssemblyOutcome,'))),
- ('type10-code-assembly-outcome-added-to-receipt',type10_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],\n    assembly_outcome: u8,'))),
- ('type10-code-outcome-discriminant-added-to-receipt',type10_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],\n    outcome_discriminant: u8,'))),
- ('type10-code-visible-assembly-outcome-added-to-receipt',type10_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],\n    pub(super) assembly_outcome: u8,'))),
+ ('type10-code-outcome-added-to-receipt',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],\n    outcome: Type10AssemblyOutcome,')),
+ ('type10-code-assembly-outcome-added-to-receipt',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],\n    assembly_outcome: u8,')),
+ ('type10-code-outcome-discriminant-added-to-receipt',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],\n    outcome_discriminant: u8,')),
+ ('type10-code-visible-assembly-outcome-added-to-receipt',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],\n    pub(super) assembly_outcome: u8,')),
  ('type10-code-origin-g1',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','callback_index.value().checked_sub(2)','callback_index.value().checked_sub(1)')),
  ('type10-code-priming-emits-packet',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','(None, None) => Type10AssemblyOutcome::Priming { receipt },','(None, None) => Type10AssemblyOutcome::Ready { packet: todo!(), receipt },')),
  ('type10-code-parent-programme-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','component.programme_id() == expected_parent.programme_id()','true')),
@@ -861,34 +773,34 @@ def main():
   ('descriptor-audit-unapproved-lineage-types',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT']['input_contract'].update(parent_lineage='Use SpatialAudioJoinMetadata and Type10AssemblyReceipt concrete types even though F04D does not pin them.')))
  ]
  cases += [
-  ('descriptor-code-filesystem-io',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','const LANE_COUNT: usize = 6;','fn forbidden_io() { let _ = std::fs::read("unexpected"); }\nconst LANE_COUNT: usize = 6;'))),
-  ('descriptor-code-public-api',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','#[cfg(test)]\nmod tests;','pub fn descriptor_escape_hatch() {}\n#[cfg(test)]\nmod tests;'))),
-  ('descriptor-code-math-threshold-route',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','provider.descriptor_threshold_words()','provider.threshold_words()'))),
-  ('descriptor-code-clone-selection-token',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','#[derive(Debug)]\n#[allow(dead_code)]\npub(super) struct DescriptorControlSelection','#[derive(Clone, Debug)]\n#[allow(dead_code)]\npub(super) struct DescriptorControlSelection'))),
-  ('descriptor-code-borrow-selection-token',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','selection: DescriptorControlSelection<\'parent>,','selection: &\'parent DescriptorControlSelection<\'parent>,'))),
-  ('descriptor-code-local-commit',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','const LANE_COUNT: usize = 6;','pub(super) fn commit_descriptor_control() {}\nconst LANE_COUNT: usize = 6;'))),
-  ('descriptor-code-final-six-alias',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','let s09_return =\n        std::array::from_fn','let final_six =\n        std::array::from_fn'))),
-  ('descriptor-code-actual-output-seeded-as-input',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs','lane_words_to_f32(&literal_input["control_scratch"])','lane_words_to_f32(&literal_input["ramp_output"])'))),
-  ('descriptor-code-output-word-assertion-removed',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs','assert_eq!(output_words, expected_words);','let _ = expected_words;'))),
-  ('descriptor-code-success-vector-removed',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs','        "lookup_last_ordinal",\n',''))),
-  ('descriptor-code-error-outcome-assertion-removed',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs','            error.code(),\n','            "RECEIVER_PARAMETER_INVALID",\n'))),
-  ('descriptor-code-parent-module-registration-removed',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','pub(crate) mod descriptor_control;\n',''))),
-  ('descriptor-code-inventory-overclaim',descriptor_control_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','\nfn legacy_compatibility_fallback() {}\n')))
+  ('descriptor-code-filesystem-io',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','const LANE_COUNT: usize = 6;','fn forbidden_io() { let _ = std::fs::read("unexpected"); }\nconst LANE_COUNT: usize = 6;')),
+  ('descriptor-code-public-api',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','#[cfg(test)]\nmod tests;','pub fn descriptor_escape_hatch() {}\n#[cfg(test)]\nmod tests;')),
+  ('descriptor-code-math-threshold-route',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','provider.descriptor_threshold_words()','provider.threshold_words()')),
+  ('descriptor-code-clone-selection-token',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','#[derive(Debug)]\n#[allow(dead_code)]\npub(super) struct DescriptorControlSelection','#[derive(Clone, Debug)]\n#[allow(dead_code)]\npub(super) struct DescriptorControlSelection')),
+  ('descriptor-code-borrow-selection-token',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','selection: DescriptorControlSelection<\'parent>,','selection: &\'parent DescriptorControlSelection<\'parent>,')),
+  ('descriptor-code-local-commit',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','const LANE_COUNT: usize = 6;','pub(super) fn commit_descriptor_control() {}\nconst LANE_COUNT: usize = 6;')),
+  ('descriptor-code-final-six-alias',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','let s09_return =\n        std::array::from_fn','let final_six =\n        std::array::from_fn')),
+  ('descriptor-code-actual-output-seeded-as-input',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs','lane_words_to_f32(&literal_input["control_scratch"])','lane_words_to_f32(&literal_input["ramp_output"])')),
+  ('descriptor-code-output-word-assertion-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs','assert_eq!(output_words, expected_words);','let _ = expected_words;')),
+  ('descriptor-code-success-vector-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs','        "lookup_last_ordinal",\n','')),
+  ('descriptor-code-error-outcome-assertion-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs','            error.code(),\n','            "RECEIVER_PARAMETER_INVALID",\n')),
+  ('descriptor-code-parent-module-registration-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','pub(crate) mod descriptor_control;\n','')),
+  ('descriptor-code-inventory-overclaim',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','\nfn legacy_compatibility_fallback() {}\n'))
  ]
  cases += [
-  ('mode0-code-parent-module-registration-removed',mode0_fitting_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','pub(crate) mod fitting_mode0;\n',''))),
-  ('mode0-code-carrier-lane-drift',mode0_fitting_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','const CARRIER_LANES: [usize; 5] = [0, 1, 2, 4, 5];','const CARRIER_LANES: [usize; 5] = [0, 1, 2, 3, 5];'))),
-  ('mode0-code-mode1-executor-added',mode0_fitting_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','\nfn mode0_mutation() { process_qmf_receiver_mode1_callback(); }\n'))),
-  ('mode0-code-mode1-fir-taps-added',mode0_fitting_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','\nfn mode0_mutation(provider: &QmfReceiverFunctionalProvider) { let _ = provider.band0_real_mode1_words(); }\n'))),
-  ('mode0-code-descriptor-rerun-added',mode0_fitting_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','\nfn mode0_mutation() { stage_descriptor_control(); }\n'))),
-  ('mode0-code-parent-commit-added',mode0_fitting_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','\nfn mode0_mutation() { parent.commit(); }\n'))),
-  ('mode0-code-filesystem-io-added',mode0_fitting_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','\nfn mode0_mutation() { let _ = std::fs::read("unexpected"); }\n'))),
-  ('mode0-code-legacy-fallback-added',mode0_fitting_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','\nfn legacy_compatibility_fallback() {}\n'))),
-  ('mode0-test-cached-drain-case-removed',mode0_fitting_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs','for id in ["cold_normal_g2", "warm_normal_g3", "cached_drain_g4"] {','for id in ["cold_normal_g2", "warm_normal_g3"] {'))),
-  ('mode0-test-cold-state-seed-removed',mode0_fitting_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs','let mut fitting_before = QmfWindowState::cold();','let mut fitting_before = QmfWindowState::new();'))),
-  ('mode0-test-after-fir-literal-removed',mode0_fitting_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs','            &expected_after["fitting_fir"],\n','            &expected_after["fitting_delay"],\n'))),
-  ('mode0-test-lfe-nonfinite-assertion-removed',mode0_fitting_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs','        run_error_case("nonfinite_lfe_input").code(),\n','        "F04RB_INPUT_NONFINITE",\n'))),
-  ('mode0-test-after-join-assertion-removed',mode0_fitting_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs','        run_error_case("receiver_analysis_after_join_mismatch").code(),\n','        "F04RB_LINEAGE_ERROR",\n')))
+  ('mode0-code-parent-module-registration-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','pub(crate) mod fitting_mode0;\n','')),
+  ('mode0-code-carrier-lane-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','const CARRIER_LANES: [usize; 5] = [0, 1, 2, 4, 5];','const CARRIER_LANES: [usize; 5] = [0, 1, 2, 3, 5];')),
+  ('mode0-code-mode1-executor-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','\nfn mode0_mutation() { process_qmf_receiver_mode1_callback(); }\n')),
+  ('mode0-code-mode1-fir-taps-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','\nfn mode0_mutation(provider: &QmfReceiverFunctionalProvider) { let _ = provider.band0_real_mode1_words(); }\n')),
+  ('mode0-code-descriptor-rerun-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','\nfn mode0_mutation() { stage_descriptor_control(); }\n')),
+  ('mode0-code-parent-commit-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','\nfn mode0_mutation() { parent.commit(); }\n')),
+  ('mode0-code-filesystem-io-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','\nfn mode0_mutation() { let _ = std::fs::read("unexpected"); }\n')),
+  ('mode0-code-legacy-fallback-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','\nfn legacy_compatibility_fallback() {}\n')),
+  ('mode0-test-cached-drain-case-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs','for id in ["cold_normal_g2", "warm_normal_g3", "cached_drain_g4"] {','for id in ["cold_normal_g2", "warm_normal_g3"] {')),
+  ('mode0-test-cold-state-seed-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs','let mut fitting_before = QmfWindowState::cold();','let mut fitting_before = QmfWindowState::new();')),
+  ('mode0-test-after-fir-literal-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs','            &expected_after["fitting_fir"],\n','            &expected_after["fitting_delay"],\n')),
+  ('mode0-test-lfe-nonfinite-assertion-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs','        run_error_case("nonfinite_lfe_input").code(),\n','        "F04RB_INPUT_NONFINITE",\n')),
+  ('mode0-test-after-join-assertion-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs','        run_error_case("receiver_analysis_after_join_mismatch").code(),\n','        "F04RB_LINEAGE_ERROR",\n'))
  ]
  cases += [
   ('f04r-readiness-overclaim',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT'].update(implementation_readiness='READY_FOR_IMPLEMENTATION'))),
@@ -1102,10 +1014,7 @@ def main():
   c.mkdir();probe=c/'.probe';probe.write_text('ok');probe.unlink();repo=c/'repo';ignored=['.git','target','__pycache__'];
   if s.resolve().is_relative_to(ROOT):ignored.append(s.resolve().relative_to(ROOT).parts[0])
   shutil.copytree(ROOT,repo,ignore=shutil.ignore_patterns(*ignored))
-  if n.startswith('qmf-fft-code-'):m=qmf_fft_code_mut_render(m)
-  elif n.startswith('f04d1-'):m=f04_parameter_code_mut_render(m)
-  elif n.startswith('f04d2-code-'):m=f04_remaining_provider_code_mut_render(m)
-  elif n=='postwindow-code-render-authority-mint-public':m=code_mut_render(m)
+  if n=='postwindow-code-render-authority-mint-public':m=code_mut_render(m)
   elif n.startswith(('p13d1-','source-flags-')):m=code_mut_render(m)
   m(repo)
   z=subprocess.run([sys.executable,'-O',str(repo/'scripts/check-boundaries.py')],cwd=repo,capture_output=True)

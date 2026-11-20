@@ -117,9 +117,9 @@ This E4 slice only assembles the E2 component proposal with the E3 delayed LFE r
       "sha256": "70cd0b70feee7f5bed86f5c2942fa163c007361a7679df6d4fc584439e625b05"
     },
     {
-      "bytes": 64855,
+      "bytes": 64798,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "0f0c64923239e8a1ab087f3f29d75cef0d5e89c8627ba492268f335d68816dc2"
+      "sha256": "a0502920ee81f45ab24e64f3c74aa02a2a660b704fca349e0869c3ca5e86d7df"
     },
     {
       "bytes": 52759,
@@ -132,9 +132,9 @@ This E4 slice only assembles the E2 component proposal with the E3 delayed LFE r
       "sha256": "93f15f67ea011a5c078dc78018d57d521a124f2b19a4f18985462c99a73312fa"
     },
     {
-      "bytes": 71522,
+      "bytes": 71325,
       "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-      "sha256": "940cf8b95c6a43ddfae1e909fd35d235e549e116bdcace51ae6a3f5ffff0e1a1"
+      "sha256": "b9e37367f0da9d4a0fbbabdca4a9d6d689fc0ffe9f5a00fd6b1a09d91807d337"
     }
   ],
   "implementation_prohibitions": [

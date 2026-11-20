@@ -75,7 +75,7 @@ fn s49_capacity_vector_is_not_runtime_reader_support() {
         stage_reader_target(&ReaderTargetState::cold(), &input)
             .err()
             .unwrap(),
-        ReaderTargetError::SourceAxisMismatch
+        ReaderTargetError::SourceAxisCapacityExceeded
     );
 }
 
@@ -502,7 +502,8 @@ fn producer_rejections_return_no_proposal_and_leave_committed_state_unchanged() 
     );
 
     let short_axis_recipe = recipe_data_with_source_count(0, 45);
-    let snapshot_missing = short_axis_recipe.inputs(0);
+    let mut snapshot_missing = short_axis_recipe.inputs(0);
+    snapshot_missing.source_flags_axis = cold_recipe.inputs(0).source_flags_axis;
     assert_eq!(
         stage_reader_target(&committed, &snapshot_missing)
             .err()

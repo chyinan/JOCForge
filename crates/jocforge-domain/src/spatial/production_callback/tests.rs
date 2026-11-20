@@ -2,7 +2,7 @@ use super::*;
 use crate::source_axis::{SourceAxisBinding, SourceAxisOwnerGeneration};
 use crate::timeline::AdmSampleIndex;
 use crate::timeline::{CodecSourceIndex, FrontendCallbackIndex};
-use crate::transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId};
+use crate::transaction::CallbackLineageIdentity;
 use crate::{
     frontend::{
         PackageManifestEvidence, ProviderFileEvidence, ValidatedFeatureFft4096MathProvider,
@@ -208,7 +208,11 @@ fn selector_input_from_vector(value: &Value) -> CandidateSelectorInput {
 
 fn stage_activity_and_installed48(
     fixture: &super::super::source_geometry_outer::tests::F01bF01eFixture,
-) -> (PrimaryActivityProposal, MeterInstalled48Proposal) {
+) -> (
+    PrimaryActivityProposal,
+    MeterInstalled48Proposal,
+    Arc<SourceAxisBinding>,
+) {
     let producer = PrimaryInstalled48ActivityProducer::new(&fixture.source_map).unwrap();
     let before = producer.cold_state().unwrap();
     let raw_pcm = vec![vec![0_u32; 1_536]; 38];
@@ -230,11 +234,7 @@ fn stage_activity_and_installed48(
     let callback_index = FrontendCallbackIndex::new(0);
     let source_axis = source_axis_for(
         &fixture.source_map,
-        CallbackLineageIdentity::new(
-            ProgrammeId::new("meter-stage-test").unwrap(),
-            AttemptId::new(0),
-            callback_index,
-        ),
+        fixture.normal.transaction_id().clone(),
         SourceAxisOwnerGeneration::new(1),
         callback_index,
     );
@@ -256,7 +256,7 @@ fn stage_activity_and_installed48(
         },
     )
     .unwrap();
-    (activity, installed48)
+    (activity, installed48, source_axis)
 }
 
 fn run_callback(

@@ -1,4 +1,19 @@
 # Hash-bound washed fixtures must retain their delivered bytes across checkout.
+crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json text eol=lf
+crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-wrapper-config.json text eol=lf
+crates/jocforge-domain/tests/fixtures/joc_synthetic_seam/synthetic-seam-provider.json text eol=lf
+crates/jocforge-domain/tests/fixtures/primary_metadata_control/source_metadata.xml text eol=lf
+crates/jocforge-domain/tests/fixtures/reader_target/mode2_current_previous/*.json text eol=lf
+crates/jocforge-domain/tests/fixtures/reader_target/mode2_current_previous/CONTRACT.md text eol=lf
+crates/jocforge-domain/tests/fixtures/output_owner/*.json text eol=lf
+crates/jocforge-domain/tests/fixtures/output_owner/OUTPUT-OWNER-CONTRACT.md text eol=lf
+crates/jocforge-domain/tests/fixtures/output_owner/INDEPENDENT-CHECK.json text eol=crlf
+crates/jocforge-domain/tests/fixtures/output_owner/LOCAL-FILESYSTEM-PROBE.json text eol=crlf
+crates/jocforge-domain/tests/fixtures/output_owner/OUTPUT-OWNER-VECTORS.json text eol=crlf
+crates/jocforge-domain/tests/fixtures/synthetic_qmf_fit_checkpoints/CONTRACT.md text eol=lf
+crates/jocforge-domain/tests/fixtures/synthetic_qmf_fit_checkpoints/approved-huffman.json text eol=crlf
+crates/jocforge-domain/tests/fixtures/synthetic_qmf_fit_checkpoints/EXPECTED.json text eol=crlf
+crates/jocforge-domain/tests/fixtures/synthetic_qmf_fit_checkpoints/INPUT-ONLY.json text eol=crlf
 crates/jocforge-domain/tests/fixtures/spatial_control_cold_serializer_blocker/** -text whitespace=cr-at-eol
 crates/jocforge-domain/tests/fixtures/window_fold/** -text whitespace=cr-at-eol
 crates/jocforge-domain/src/meter/k_matrix_parameters.json -text whitespace=cr-at-eol
@@ -35,3 +50,31 @@ crates/jocforge-application/assets/providers/** -text whitespace=cr-at-eol
 crates/jocforge-application/assets/providers/live_joc_coordinator.json text eol=crlf whitespace=cr-at-eol
 crates/jocforge-application/assets/providers/public_bap_48k.json text eol=crlf whitespace=cr-at-eol
 outputs/IMPLEMENTER_SUPPLEMENTS/** -text whitespace=cr-at-eol
+# Keep the delivered CRLF bytes of the hashed metering, transform and spatial fixtures.
+crates/jocforge-domain/src/transform/secondary_fft_parameters.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/f04_parameters/descriptor-mathematical.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-mathematical-fft-v1.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-receiver-functional-v1.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/primary_metadata_control/FROZEN-JOB-BINDING.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/primary_metadata_control/JOB-FIELD-PROJECTION.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/primary_metadata_control/JOB-PROJECTION-RECEIPT.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/primary_metadata_control/PRIMARY-SOURCE-RECEIPT.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/qmf_direct/analysis/F04Q2-ANALYSIS-DIRECT-ACTUAL.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/qmf_direct/analysis/F04Q2-ANALYSIS-DIRECT-INPUTS.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/qmf_direct/synthesis/F04Q5-SYNTHESIS-DIRECT-LITERALS.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/reader_target/READER-TARGET-RECEIPT-VECTORS.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/reader_target/READER56-TARGET-UPDATES-VERIFICATION.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/reader_target/meter-oar-secondary8-math-v1.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/reader_target/oamd-coordinate-grid-q15.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/reader_target/reader56-main-panner-v1.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/reader_target/reader56-target-profile-v1.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/source_flags/INPUT-ONLY-VECTORS.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/metadata_owner/id1_timer/PRIMITIVE-*.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/metadata_owner/id1_timer/CONTINUOUS-*.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/meter_true_peak/*.md text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/meter_true_peak/*.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/meter_log/*.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/long_transform_refresh/FFT-CANARY-*.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/f13c_carrier_pipeline/*.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/f13c_carrier_pipeline/CARRIER-ADDENDUM.md text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/f13c_carrier_pipeline/PROVENANCE.json text eol=lf

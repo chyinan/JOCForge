@@ -634,10 +634,10 @@ mod tests {
         );
 
         let mut gain_range = synthetic_input();
-        gain_range.gain_range_codes[0] = 1;
+        gain_range.gain_range_codes[0] = 4; // gainrng is a two-bit field
         assert_eq!(
             produce_ac3_audio_block(gain_range, &transform, &[]),
-            Err(Ac3AudioBlockError::UnsupportedGainRange)
+            Err(Ac3AudioBlockError::InvalidGainRange)
         );
     }
 }

@@ -4,8 +4,8 @@ mod tests {
     use super::super::{
         ACTIVITY_EPSILON_BITS, BeforeRegularHistory, CurrentHostPcm, FRAME_SAMPLES, HostRole,
         HostRouteRecord, MAX_MAPPABLE_PHYSICAL_HOSTS, MAX_MAPPABLE_REGULAR_HOSTS,
-        PREFIX_SOURCE_COUNT, PrefixWriterSet, RegularControl, RegularControls, SOURCE_COUNT,
-        SelectedFeatureFlagsControl, SourceFlagsError, SourceFlagsHistoryGeneration,
+        MIN_PHYSICAL_HOSTS, PREFIX_SOURCE_COUNT, PrefixWriterSet, RegularControl, RegularControls,
+        SOURCE_COUNT, SelectedFeatureFlagsControl, SourceFlagsError, SourceFlagsHistoryGeneration,
         SourceFlagsInput, SourceFlagsParentLineage, SourceFlagsProducer, SourceFlagsProgrammeId,
         ValidatedSemanticRoute, WINDOW_WORDS, triangle_activity_witness,
     };
@@ -772,8 +772,15 @@ mod tests {
         };
         assert_eq!(multiple_lfe.unwrap_err().code(), "ROUTE_LFE_COUNT");
 
-        let missing_host =
-            ValidatedSemanticRoute::new(route_records(3, true, false)[..37].to_vec());
+        let duplicate_destination = ValidatedSemanticRoute::new(route_records(3, true, true));
+        assert_eq!(
+            duplicate_destination.unwrap_err().code(),
+            "ROUTE_NOT_BIJECTIVE"
+        );
+
+        let missing_host = ValidatedSemanticRoute::new(
+            route_records(3, true, false)[..MIN_PHYSICAL_HOSTS - 1].to_vec(),
+        );
         assert_eq!(missing_host.unwrap_err().code(), "ROUTE_HOST_COUNT");
     }
 
@@ -781,7 +788,7 @@ mod tests {
     fn all_input_shapes_and_regular_host_controls_are_exact() {
         let machine = selected_machine();
         assert_eq!(
-            CurrentHostPcm::new(zero_rows(HOST_CHANNELS - 1))
+            CurrentHostPcm::new(zero_rows(MIN_PHYSICAL_HOSTS - 1))
                 .unwrap_err()
                 .code(),
             "PCM_SHAPE"

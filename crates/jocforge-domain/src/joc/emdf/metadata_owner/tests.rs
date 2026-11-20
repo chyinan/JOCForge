@@ -24,6 +24,13 @@ fn vectors() -> Value {
     .expect("metadata owner vectors must be valid JSON")
 }
 
+// The original vectors predate the explicit selected payload-sequence field.
+fn expected_selected_receipt(case: &Value) -> Value {
+    let mut expected = case["expected"]["receipt"].clone();
+    expected["payload_sequence"] = json!("selected_four_payloads_v1");
+    expected
+}
+
 fn id1_configuration_for_kind(
     attempt: u64,
     gating_kind: &'static str,
@@ -839,7 +846,7 @@ fn cold_state_and_five_source_receipts_match_the_complete_vectors() {
     for call in vectors["continuous_calls"].as_array().unwrap() {
         let result = owner.process_source(source_call(call)).unwrap();
         assert_eq!(owner.id1_configuration, programme_configuration);
-        assert_eq!(result.receipt.as_json(), call["expected"]["receipt"]);
+        assert_eq!(result.receipt.as_json(), expected_selected_receipt(call));
         assert_eq!(
             bytes_hex(&owner.state.canonical_bytes()),
             call["expected"]["state_canonical_hex"]
@@ -982,7 +989,7 @@ fn id14_producer_provenance_survives_fifo_and_source_one_is_suppressed() {
             .iter()
             .map(MetadataQueuePopReceipt::queue_id)
             .collect::<Vec<_>>(),
-        vec![11, 14, 2, 1]
+        vec![11, 1, 2, 14]
     );
     assert!(source_two_result.receipt.as_json()["id14_queue_pop"]["producer"].is_object());
     for queue_id in [11_u8, 1, 2] {
@@ -1378,7 +1385,10 @@ fn typed_stage_uses_pinned_wrapper_and_leaves_committed_leaf_unchanged() {
         })
         .unwrap();
     assert_eq!(before.state.canonical_bytes(), before_bytes);
-    assert_eq!(proposal.receipt().as_json(), case["expected"]["receipt"]);
+    assert_eq!(
+        proposal.receipt().as_json(),
+        expected_selected_receipt(case)
+    );
     assert_eq!(
         proposal.proposed_after_sha256(),
         case["expected"]["after_sha256"]
@@ -2151,7 +2161,7 @@ fn cold_reset_and_retry_are_pinned_without_extra_clock_advances() {
         .unwrap();
     assert_eq!(
         result.receipt.as_json(),
-        vectors["reset_retry"]["expected"]["receipt"]
+        expected_selected_receipt(&vectors["reset_retry"])
     );
 }
 

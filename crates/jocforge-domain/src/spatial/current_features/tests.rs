@@ -573,8 +573,14 @@ fn current_features_rejects_parent_render_root_and_flags_lineage_mismatches() {
         match mismatch {
             "programme" => {
                 packet_programme = crate::transaction::test_programme_id("OTHERPROGRAMME01");
+                packet_transaction =
+                    transaction_id_for(packet_programme.clone(), packet_attempt, callback);
             }
-            "attempt" => packet_attempt = AttemptId::new(1),
+            "attempt" => {
+                packet_attempt = AttemptId::new(1);
+                packet_transaction =
+                    transaction_id_for(packet_programme.clone(), packet_attempt, callback);
+            }
             "transaction" => {
                 packet_transaction = transaction_id_for(
                     crate::transaction::test_programme_id("OTHERPROGRAMME01"),
@@ -582,7 +588,10 @@ fn current_features_rejects_parent_render_root_and_flags_lineage_mismatches() {
                     callback,
                 );
             }
-            "callback" => packet_callback = FrontendCallbackIndex::new(1),
+            "callback" => {
+                packet_callback = FrontendCallbackIndex::new(1);
+                packet_transaction = transaction_id(packet_callback);
+            }
             "profile" => {
                 packet_profile =
                     EncodingProfile::selected_with_carriage(EmdfCarriageProfile::EtsiEmdf);
@@ -612,8 +621,18 @@ fn current_features_rejects_parent_render_root_and_flags_lineage_mismatches() {
             spatial_control_join,
             CallbackPhase::Normal,
             vec![0.0; 48 * 3072],
-        )
-        .unwrap();
+        );
+        if mismatch == "transaction" {
+            assert!(
+                matches!(
+                    audio_view,
+                    Err(PostWindowFanoutError::CallbackIdentityMismatch)
+                ),
+                "{mismatch}"
+            );
+            continue;
+        }
+        let audio_view = audio_view.unwrap();
         let flags = flags_packet(
             &current_owner.machine,
             &flags_transaction,

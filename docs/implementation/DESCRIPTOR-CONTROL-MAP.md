@@ -175,9 +175,9 @@ The two-phase F04D stage is locally verified against six selected-provider direc
       "sha256": "aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce"
     },
     {
-      "bytes": 64855,
+      "bytes": 64798,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "0f0c64923239e8a1ab087f3f29d75cef0d5e89c8627ba492268f335d68816dc2"
+      "sha256": "a0502920ee81f45ab24e64f3c74aa02a2a660b704fca349e0869c3ca5e86d7df"
     }
   ],
   "implementation_prohibitions": [
