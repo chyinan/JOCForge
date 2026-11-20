@@ -40,6 +40,7 @@ pub enum IndependentMeterG0StageError {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum IndependentMeterPrepassError {
+    Cancelled,
     Input(IndependentMeterG0StageError),
     Callback {
         callback_index: MeterCallbackIndex,
@@ -305,6 +306,26 @@ pub fn stage_independent_meter_prepass_with_progress(
     providers: &IndependentMeterG0Providers,
     progress: &mut dyn FnMut(u64, u64),
 ) -> Result<IndependentMeterPrepassCandidate, IndependentMeterPrepassError> {
+    stage_independent_meter_prepass_controlled(
+        prepared,
+        source_cursor_before,
+        parsed_source,
+        meter_before,
+        providers,
+        progress,
+        &std::sync::atomic::AtomicBool::new(false),
+    )
+}
+
+pub(crate) fn stage_independent_meter_prepass_controlled(
+    prepared: &PreparedJobInput,
+    source_cursor_before: &MeterPcmSourceCursor,
+    parsed_source: &ParsedRiffPcm24<'_>,
+    meter_before: &StandaloneMeterRoot,
+    providers: &IndependentMeterG0Providers,
+    progress: &mut dyn FnMut(u64, u64),
+    cancelled: &std::sync::atomic::AtomicBool,
+) -> Result<IndependentMeterPrepassCandidate, IndependentMeterPrepassError> {
     let source_samples = prepared.configuration().source_samples();
     let normal_callbacks = source_samples.div_ceil(1_536);
     if normal_callbacks == 0
@@ -338,6 +359,9 @@ pub fn stage_independent_meter_prepass_with_progress(
     let capacity = usize::try_from(callback_total).map_err(|_| {
         IndependentMeterPrepassError::Input(IndependentMeterG0StageError::ScheduleClock)
     })?;
+    if cancelled.load(std::sync::atomic::Ordering::Relaxed) {
+        return Err(IndependentMeterPrepassError::Cancelled);
+    }
     progress(0, callback_total);
     let attempt = meter_before.identity().attempt();
     let mut candidate = stage_independent_meter_g0_callback(
@@ -358,6 +382,9 @@ pub fn stage_independent_meter_prepass_with_progress(
             error,
         }
     })?);
+    if cancelled.load(std::sync::atomic::Ordering::Relaxed) {
+        return Err(IndependentMeterPrepassError::Cancelled);
+    }
     progress(1, callback_total);
 
     for callback in 1..normal_callbacks {
@@ -390,6 +417,9 @@ pub fn stage_independent_meter_prepass_with_progress(
                 error,
             }
         })?);
+        if cancelled.load(std::sync::atomic::Ordering::Relaxed) {
+            return Err(IndependentMeterPrepassError::Cancelled);
+        }
         progress(callback + 1, callback_total);
     }
 
@@ -428,6 +458,9 @@ pub fn stage_independent_meter_prepass_with_progress(
                 error,
             }
         })?);
+        if cancelled.load(std::sync::atomic::Ordering::Relaxed) {
+            return Err(IndependentMeterPrepassError::Cancelled);
+        }
         progress(callback + 1, callback_total);
     }
 

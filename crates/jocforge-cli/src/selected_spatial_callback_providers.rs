@@ -23,7 +23,7 @@ use std::{error::Error, fmt, path::Path};
 
 use super::independent_meter_callback::{
     IndependentMeterPrepassCandidate, IndependentMeterPrepassError,
-    stage_independent_meter_prepass_with_progress,
+    stage_independent_meter_prepass_controlled,
 };
 
 const METER_PREPASS_STACK_BYTES: usize = 16 * 1024 * 1024;
@@ -170,7 +170,29 @@ impl SelectedIndependentMeterCallbackProviders {
         source_cursor_before: &MeterPcmSourceCursor,
         parsed_source: &ParsedRiffPcm24<'_>,
         meter_before: &StandaloneMeterRoot,
+        progress: F,
+    ) -> Result<IndependentMeterPrepassCandidate, IndependentMeterPrepassError>
+    where
+        F: FnMut(u64, u64) + Send,
+    {
+        self.stage_prepass_controlled(
+            prepared,
+            source_cursor_before,
+            parsed_source,
+            meter_before,
+            progress,
+            &std::sync::atomic::AtomicBool::new(false),
+        )
+    }
+
+    pub(crate) fn stage_prepass_controlled<F>(
+        &self,
+        prepared: &PreparedJobInput,
+        source_cursor_before: &MeterPcmSourceCursor,
+        parsed_source: &ParsedRiffPcm24<'_>,
+        meter_before: &StandaloneMeterRoot,
         mut progress: F,
+        cancelled: &std::sync::atomic::AtomicBool,
     ) -> Result<IndependentMeterPrepassCandidate, IndependentMeterPrepassError>
     where
         F: FnMut(u64, u64) + Send,
@@ -180,13 +202,14 @@ impl SelectedIndependentMeterCallbackProviders {
                 .name("jocforge-independent-meter-prepass".to_owned())
                 .stack_size(METER_PREPASS_STACK_BYTES)
                 .spawn_scoped(scope, || {
-                    stage_independent_meter_prepass_with_progress(
+                    stage_independent_meter_prepass_controlled(
                         prepared,
                         source_cursor_before,
                         parsed_source,
                         meter_before,
                         &self.providers,
                         &mut progress,
+                        cancelled,
                     )
                 })
                 .map_err(|_| IndependentMeterPrepassError::WorkerUnavailable)?;

@@ -120,7 +120,14 @@ where
     F: FnMut(u64, u64) + Send,
 {
     let assets = unpack_provider_supplements()?;
-    run_meter_with_providers(prepared, parsed_source, attempt, assets.path(), progress)
+    run_meter_with_providers(
+        prepared,
+        parsed_source,
+        attempt,
+        assets.path(),
+        progress,
+        &std::sync::atomic::AtomicBool::new(false),
+    )
 }
 
 pub(crate) fn run_meter_with_providers<F>(
@@ -129,6 +136,7 @@ pub(crate) fn run_meter_with_providers<F>(
     attempt: AttemptId,
     supplements: &std::path::Path,
     progress: F,
+    cancelled: &std::sync::atomic::AtomicBool,
 ) -> Result<SelectedMeterPrepass, SelectedMeterPrepassError>
 where
     F: FnMut(u64, u64) + Send,
@@ -212,7 +220,14 @@ where
     )
     .map_err(|failure| error("selected Meter PCM source cursor", failure))?;
     let candidate = providers
-        .stage_prepass_with_progress(prepared, &cursor, parsed_source, &meter_root, progress)
+        .stage_prepass_controlled(
+            prepared,
+            &cursor,
+            parsed_source,
+            &meter_root,
+            progress,
+            cancelled,
+        )
         .map_err(|failure| error("selected full-file Meter prepass", failure))?;
     let dependents = candidate.prepare_measurement_dependents(prepared).map_err(
         |failure: MeterFinalizationBridgeError| {

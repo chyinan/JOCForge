@@ -68,6 +68,7 @@ const ENCODE_REQUEST_STACK_BYTES: usize = 32 * 1024 * 1024;
 
 #[derive(Debug)]
 pub enum EncodeRequestError {
+    Cancelled,
     InvalidPath,
     JobXmlInput(std::io::Error),
     JobXmlIngress(JobXmlIngressError),
@@ -104,6 +105,7 @@ pub enum EncodeRequestError {
 impl std::fmt::Display for EncodeRequestError {
     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
+            Self::Cancelled => formatter.write_str("encoding cancelled"),
             Self::InvalidPath => {
                 formatter.write_str("encode requires absolute input and output file paths")
             }
@@ -536,6 +538,142 @@ fn run_worker(
     authored_job_xml: Option<Vec<u8>>,
     joc_layout: JocReconstructionLayout,
 ) -> Result<(), EncodeRequestError> {
+    run_worker_with_progress(
+        input_path,
+        output_path,
+        codec_rate,
+        authored_job_xml,
+        joc_layout,
+        None,
+        &std::sync::atomic::AtomicBool::new(false),
+    )
+}
+
+#[derive(Clone, Copy, Debug)]
+pub enum EncodePhase {
+    Metering,
+    Encoding,
+}
+
+/// Product layouts and aggregate bitrates accepted by the file encoder.
+pub const FILE_PRESETS: &[(JocReconstructionLayout, u16, CodecRateProfile)] = &[
+    (
+        JocReconstructionLayout::ExistingSelectedFivePointOne,
+        384,
+        CodecRateProfile::Kbps384,
+    ),
+    (
+        JocReconstructionLayout::ExistingSelectedFivePointOne,
+        448,
+        CodecRateProfile::Kbps448,
+    ),
+    (
+        JocReconstructionLayout::ExistingSelectedFivePointOne,
+        576,
+        CodecRateProfile::Kbps576,
+    ),
+    (
+        JocReconstructionLayout::ExistingSelectedFivePointOne,
+        640,
+        CodecRateProfile::Kbps640,
+    ),
+    (
+        JocReconstructionLayout::ExistingSelectedFivePointOne,
+        768,
+        CodecRateProfile::Kbps768,
+    ),
+    (
+        JocReconstructionLayout::ExistingSelectedFivePointOne,
+        1024,
+        CodecRateProfile::Kbps1024,
+    ),
+    (
+        JocReconstructionLayout::Flat7x,
+        1664,
+        CodecRateProfile::Kbps1024,
+    ),
+];
+
+type ProgressObserver<'a> = &'a (dyn Fn(EncodePhase, u64, u64) + Sync);
+
+/// Encodes an ADM to 5.1 JOC and reports the measured work of each stage.
+pub fn encode_five_one_file(
+    input: &Path,
+    output: &Path,
+    rate: CodecRateProfile,
+    progress: ProgressObserver<'_>,
+) -> Result<(), EncodeRequestError> {
+    let layout = JocReconstructionLayout::ExistingSelectedFivePointOne;
+    resolve_encode_request_route(rate, layout)?;
+    run_worker_with_progress(
+        input,
+        output,
+        Some(rate),
+        None,
+        layout,
+        Some(progress),
+        &std::sync::atomic::AtomicBool::new(false),
+    )
+}
+
+/// Encodes the experimental 640 + 1024 kbps pair in a private staging directory.
+pub fn encode_flat_seven_one_file(
+    input: &Path,
+    output: &Path,
+    progress: ProgressObserver<'_>,
+) -> Result<(), EncodeRequestError> {
+    let output = normalize_new_output(output)?;
+    if output.exists() {
+        return Err(EncodeRequestError::OutputAlreadyExists);
+    }
+    let stage = tempfile::tempdir_in(output.parent().ok_or(EncodeRequestError::InvalidPath)?)
+        .map_err(|error| EncodeRequestError::SourcePipeline(error.to_string()))?;
+    let candidate = stage.path().join("programme.candidate.ec3");
+    run_worker_with_progress(
+        input,
+        &candidate,
+        Some(CodecRateProfile::Kbps1024),
+        None,
+        JocReconstructionLayout::Flat7x,
+        Some(progress),
+        &std::sync::atomic::AtomicBool::new(false),
+    )?;
+    tempfile::TempPath::try_from_path(candidate)
+        .map_err(|error| EncodeRequestError::SourcePipeline(error.to_string()))?
+        .persist_noclobber(output)
+        .map_err(|error| EncodeRequestError::SourcePipeline(error.to_string()))
+}
+
+/// Runs the selected preset into a caller-owned staging directory.
+pub fn encode_staged_file(
+    input: &Path,
+    output: &Path,
+    rate: CodecRateProfile,
+    layout: JocReconstructionLayout,
+    progress: ProgressObserver<'_>,
+    cancelled: &std::sync::atomic::AtomicBool,
+) -> Result<(), EncodeRequestError> {
+    resolve_encode_request_route(rate, layout)?;
+    run_worker_with_progress(
+        input,
+        output,
+        Some(rate),
+        None,
+        layout,
+        Some(progress),
+        cancelled,
+    )
+}
+
+fn run_worker_with_progress(
+    input_path: &Path,
+    output_path: &Path,
+    codec_rate: Option<CodecRateProfile>,
+    authored_job_xml: Option<Vec<u8>>,
+    joc_layout: JocReconstructionLayout,
+    progress: Option<ProgressObserver<'_>>,
+    cancelled: &std::sync::atomic::AtomicBool,
+) -> Result<(), EncodeRequestError> {
     thread::scope(|scope| {
         let worker = thread::Builder::new()
             .name("jocforge-encode-request".to_owned())
@@ -547,6 +685,8 @@ fn run_worker(
                     codec_rate,
                     authored_job_xml,
                     joc_layout,
+                    progress,
+                    cancelled,
                 )
             })
             .map_err(|_| EncodeRequestError::WorkerUnavailable)?;
@@ -562,6 +702,8 @@ fn run_inner(
     codec_rate_override: Option<CodecRateProfile>,
     authored_job_xml: Option<Vec<u8>>,
     joc_layout: JocReconstructionLayout,
+    progress: Option<ProgressObserver<'_>>,
+    cancelled: &std::sync::atomic::AtomicBool,
 ) -> Result<(), EncodeRequestError> {
     eprintln!("Preparing selected ADM input and owner plan...");
     let input_path = normalize_existing_input(input_path)?;
@@ -704,9 +846,22 @@ fn run_inner(
         &parsed,
         run_identity.attempt,
         assets.path(),
-        |completed, total| meter_progress.update(completed, total),
+        |completed, total| {
+            if let Some(report) = progress {
+                report(EncodePhase::Metering, completed, total);
+            } else {
+                meter_progress.update(completed, total);
+            }
+        },
+        cancelled,
     )
-    .map_err(EncodeRequestError::MeterPrepass)?;
+    .map_err(|error| {
+        if cancelled.load(std::sync::atomic::Ordering::Relaxed) {
+            EncodeRequestError::Cancelled
+        } else {
+            EncodeRequestError::MeterPrepass(error)
+        }
+    })?;
     meter_progress.finish();
     let measurement = meter_prepass.dependents();
     let selected_lufs_word = measurement.receipt().selected_lufs_word();
@@ -814,6 +969,9 @@ fn run_inner(
         callback_progress.update(0, total_callbacks);
         let mut carrier_delay = std::collections::VecDeque::new();
         for callback_value in 0..total_callbacks {
+            if cancelled.load(std::sync::atomic::Ordering::Relaxed) {
+                return Err(EncodeRequestError::Cancelled);
+            }
             let callback_value_u32 =
                 u32::try_from(callback_value).map_err(|_| EncodeRequestError::ClockMismatch)?;
             let callback_index = FrontendCallbackIndex::new(callback_value_u32);
@@ -1119,7 +1277,11 @@ fn run_inner(
                     receipt.phase_generation_after,
                 );
             }
-            callback_progress.update(callback_value + 1, total_callbacks);
+            if let Some(report) = progress {
+                report(EncodePhase::Encoding, callback_value + 1, total_callbacks);
+            } else {
+                callback_progress.update(callback_value + 1, total_callbacks);
+            }
         }
         callback_progress.finish();
 
