@@ -621,33 +621,33 @@ pub fn build_selected_frame_trial(
             ));
         }
         let body = match write_frame_body(&mut writer, plan, q, &bap_frame) {
-                Ok(bits) => bits,
-                Err(BuildError::Writer(error)) => {
-                    return Ok(SelectedFrameTrialOutcome::Infeasible(
-                        CandidateInfeasibleReason::FrameField(error),
-                    ));
-                }
-                Err(BuildError::Mantissa { block, error }) => {
-                    return Ok(SelectedFrameTrialOutcome::Infeasible(
-                        CandidateInfeasibleReason::Mantissa { block, error },
-                    ));
-                }
-                Err(BuildError::MantissaBitStream) => {
-                    return Ok(SelectedFrameTrialOutcome::Infeasible(
-                        CandidateInfeasibleReason::MantissaBitStream,
-                    ));
-                }
-                Err(BuildError::PrefixCursorMismatch) => {
-                    return Ok(SelectedFrameTrialOutcome::Infeasible(
-                        CandidateInfeasibleReason::FrameField(FrameBitWriterError::CursorOverflow),
-                    ));
-                }
-                Err(BuildError::BsiMixingInformation(error)) => {
-                    return Ok(SelectedFrameTrialOutcome::Infeasible(
-                        CandidateInfeasibleReason::BsiMixingInformation(error),
-                    ));
-                }
-            };
+            Ok(bits) => bits,
+            Err(BuildError::Writer(error)) => {
+                return Ok(SelectedFrameTrialOutcome::Infeasible(
+                    CandidateInfeasibleReason::FrameField(error),
+                ));
+            }
+            Err(BuildError::Mantissa { block, error }) => {
+                return Ok(SelectedFrameTrialOutcome::Infeasible(
+                    CandidateInfeasibleReason::Mantissa { block, error },
+                ));
+            }
+            Err(BuildError::MantissaBitStream) => {
+                return Ok(SelectedFrameTrialOutcome::Infeasible(
+                    CandidateInfeasibleReason::MantissaBitStream,
+                ));
+            }
+            Err(BuildError::PrefixCursorMismatch) => {
+                return Ok(SelectedFrameTrialOutcome::Infeasible(
+                    CandidateInfeasibleReason::FrameField(FrameBitWriterError::CursorOverflow),
+                ));
+            }
+            Err(BuildError::BsiMixingInformation(error)) => {
+                return Ok(SelectedFrameTrialOutcome::Infeasible(
+                    CandidateInfeasibleReason::BsiMixingInformation(error),
+                ));
+            }
+        };
         let FrameBodyBits {
             mantissa_bits_by_block,
             emdf_container_start,
@@ -687,8 +687,8 @@ pub fn build_selected_frame_trial(
         let mut layout = layout;
         layout.body_end_bit = pre_tail_body_bits;
         if let EmdfFrameInput::Published(payload) = &plan.emdf {
-            layout.container_len_bytes = u16::try_from(payload.complete_container.len())
-                .unwrap_or(u16::MAX);
+            layout.container_len_bytes =
+                u16::try_from(payload.complete_container.len()).unwrap_or(u16::MAX);
         }
         (
             pre_tail_body_bits,
