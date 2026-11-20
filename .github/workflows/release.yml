@@ -1,0 +1,146 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing tag to build and attach assets to (for example v1.0.3)
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: windows-x86_64
+            os: windows-latest
+            target: x86_64-pc-windows-msvc
+            bin: jocforge.exe
+            archive: zip
+          - name: linux-x86_64
+            os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            bin: jocforge
+            archive: tar.gz
+          - name: macos-arm64
+            os: macos-14
+            target: aarch64-apple-darwin
+            bin: jocforge
+            archive: tar.gz
+          - name: macos-x86_64
+            os: macos-13
+            target: x86_64-apple-darwin
+            bin: jocforge
+            archive: tar.gz
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+
+      - name: Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Resolve version
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${{ inputs.tag || github.ref_name }}"
+          echo "VERSION=${tag#v}" >> "$GITHUB_ENV"
+          echo "TAG=$tag" >> "$GITHUB_ENV"
+
+      - name: Build
+        run: cargo build --release --locked -p jocforge --target ${{ matrix.target }}
+
+      - name: Smoke test
+        shell: bash
+        run: |
+          set -euo pipefail
+          "./target/${{ matrix.target }}/release/${{ matrix.bin }}" --version
+
+      - name: Package (unix)
+        if: matrix.archive == 'tar.gz'
+        shell: bash
+        run: |
+          set -euo pipefail
+          name="jocforge-${VERSION}-${{ matrix.name }}"
+          stage="dist/${name}"
+          mkdir -p "$stage"
+          cp "target/${{ matrix.target }}/release/${{ matrix.bin }}" "$stage/"
+          cp README.md LICENSE THIRD_PARTY_NOTICES.md "$stage/"
+          cat > "$stage/USAGE.txt" <<EOF
+          JOCForge ${VERSION} (${{ matrix.name }})
+          ==========================================
+          jocforge.exe / jocforge: selected ADM BWF -> E-AC-3 JOC encoder
+          Quick start
+            jocforge --help
+            jocforge encode INPUT.adm.wav OUTPUT.candidate.ec3 --data-rate 1024
+            jocforge encode INPUT.adm.wav OUTPUT.candidate.ec3 --joc-layout flat7x
+          EOF
+          tar -C dist -czf "dist/${name}.tar.gz" "${name}"
+          rm -rf "$stage"
+          (cd dist && sha256sum "${name}.tar.gz" > "${name}.tar.gz.sha256")
+
+      - name: Package (windows)
+        if: matrix.archive == 'zip'
+        shell: pwsh
+        run: |
+          $name = "jocforge-$env:VERSION-${{ matrix.name }}"
+          $stage = "dist/$name"
+          New-Item -ItemType Directory -Force -Path $stage | Out-Null
+          Copy-Item "target/${{ matrix.target }}/release/${{ matrix.bin }}" $stage
+          Copy-Item README.md, LICENSE, THIRD_PARTY_NOTICES.md $stage
+          @"
+          JOCForge $env:VERSION (${{ matrix.name }})
+          ==========================================
+          jocforge.exe: selected ADM BWF -> E-AC-3 JOC encoder
+          Quick start
+            jocforge.exe --help
+            jocforge.exe encode INPUT.adm.wav OUTPUT.candidate.ec3 --data-rate 1024
+            jocforge.exe encode INPUT.adm.wav OUTPUT.candidate.ec3 --joc-layout flat7x
+          "@ | Set-Content "$stage/USAGE.txt" -Encoding utf8
+          Compress-Archive -Path "$stage/*" -DestinationPath "dist/$name.zip"
+          $hash = (Get-FileHash "dist/$name.zip" -Algorithm SHA256).Hash.ToLower()
+          "$hash  $name.zip" | Set-Content "dist/$name.zip.sha256" -Encoding ascii
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.name }}
+          path: dist/*
+          if-no-files-found: error
+
+  release:
+    name: publish assets
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Create the release when missing, then attach assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag || github.ref_name }}
+        run: |
+          set -euo pipefail
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 \
+            || gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --generate-notes --title "$TAG"
+          ls -l dist
+          gh release upload "$TAG" dist/* --repo "$GITHUB_REPOSITORY" --clobber
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[] | "\(.name)  \(.size) bytes"'
