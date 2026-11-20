@@ -649,6 +649,7 @@ fn synthetic_prepared_snapshot() -> Arc<NormalControlPreparedSnapshot> {
                 .map(|value| i32::try_from(value).unwrap()),
         );
         object_events.push(NormalControlObjectEvent {
+            timeline: Arc::from([]),
             track_uid,
             object_id,
             physical_host: host,

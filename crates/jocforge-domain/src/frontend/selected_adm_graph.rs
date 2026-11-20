@@ -245,7 +245,7 @@ impl SelectedAdmGraphReceipt {
 #[derive(Clone, Debug, PartialEq)]
 pub struct SelectedAdmGraph {
     tracks: Vec<SelectedPhysicalTrack>,
-    object_events: Vec<RawAdmObjectEvent>,
+    object_events: Vec<Vec<RawAdmObjectEvent>>,
     object_sampler_owner_bindings: Vec<ObjectSamplerOwnerBinding>,
     bed_pack_channel_format_ids: [String; SELECTED_BED_COUNT],
     bed_join: SelectedBedChannelJoin,
@@ -295,7 +295,7 @@ impl SelectedAdmGraph {
         &self,
         source_samples: AdmSampleCount,
     ) -> Result<AdmittedSelectedObjectEvents, SelectedAdmGraphError> {
-        admit_selected_object_events(self.object_events.clone(), source_samples)
+        admit_selected_object_events(&self.object_events, source_samples)
             .map_err(SelectedAdmGraphError::ObjectEvent)
     }
 
@@ -444,6 +444,7 @@ pub fn parse_selected_adm_graph(
         let pack_type = required_attribute(pack_node, "typeDefinition")?;
         let physical_host = u8::try_from(record.track_index.value() - 1)
             .map_err(|_| SelectedAdmGraphError::SelectedTrackDomain)?;
+        let mut block_count = 1;
         let (kind, descriptor_semantic_key) = match (channel_type.as_str(), pack_type.as_str()) {
             ("DirectSpeakers", "DirectSpeakers") => {
                 let block = single_direct_block(channel_node, namespace)?;
@@ -471,18 +472,31 @@ pub fn parse_selected_adm_graph(
                 )
             }
             ("Objects", "Objects") => {
-                let block = single_direct_block(channel_node, namespace)?;
-                object_events.push(
-                    RawAdmObjectEvent::from_xml(
-                        physical_host,
-                        record.uid.clone(),
-                        object_id.clone(),
-                        object_node,
-                        block,
-                        namespace,
-                    )
-                    .map_err(SelectedAdmGraphError::ObjectEvent)?,
-                );
+                let blocks = channel_node
+                    .children()
+                    .filter(|node| {
+                        node.is_element()
+                            && node.tag_name().namespace() == namespace
+                            && node.tag_name().name() == "audioBlockFormat"
+                    })
+                    .map(|block| {
+                        RawAdmObjectEvent::from_xml(
+                            physical_host,
+                            record.uid.clone(),
+                            object_id.clone(),
+                            object_node,
+                            block,
+                            namespace,
+                        )
+                    })
+                    .collect::<Result<Vec<_>, _>>()
+                    .map_err(SelectedAdmGraphError::ObjectEvent)?;
+                if blocks.is_empty() {
+                    return Err(SelectedAdmGraphError::SelectedTrackDomain);
+                }
+                block_count = u16::try_from(blocks.len())
+                    .map_err(|_| SelectedAdmGraphError::SelectedTrackDomain)?;
+                object_events.push(blocks);
                 (
                     SelectedTrackKind::Object {
                         semantic_key: object_semantic_key,
@@ -508,7 +522,7 @@ pub fn parse_selected_adm_graph(
             object_id,
             descriptor_semantic_key,
             kind,
-            block_count: 1,
+            block_count,
             chna_reserved: record.reserved,
         });
     }

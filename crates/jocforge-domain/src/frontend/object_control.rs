@@ -57,6 +57,24 @@ impl SelectedObjectEvent {
         }
     }
 
+    pub(crate) fn interpolate_from(mut self, previous: Self, fraction: f64) -> Self {
+        let blend = |a: Option<f64>, b: Option<f64>| {
+            if a == b {
+                b
+            } else {
+                let a = a.unwrap_or(0.0);
+                Some(a + (b.unwrap_or(0.0) - a) * fraction)
+            }
+        };
+        self.x = blend(previous.x, self.x);
+        self.y = blend(previous.y, self.y);
+        self.z = blend(previous.z, self.z);
+        self.width = blend(previous.width, self.width);
+        self.depth = blend(previous.depth, self.depth);
+        self.height = blend(previous.height, self.height);
+        self
+    }
+
     pub const fn host_channel_index(&self) -> u8 {
         self.host_channel_index
     }

@@ -1,5 +1,5 @@
 // pattern: Functional Core
-//! Selected F01G/F01E single-block object event extraction and admission.
+//! Selected F01G/F01E object timeline extraction and admission.
 
 use roxmltree::Node;
 
@@ -114,6 +114,7 @@ pub struct AdmittedSelectedObjectEvent {
     interpolation_length: AdmSampleIndex,
     object_duration: AdmSampleIndex,
     block_duration: AdmSampleIndex,
+    pub(crate) timeline: std::sync::Arc<[ObjectBlock]>,
     event: SelectedObjectEvent,
 }
 
@@ -171,73 +172,132 @@ impl AdmittedSelectedObjectEvents {
     }
 }
 
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub(crate) struct ObjectBlock {
+    start: u64,
+    ramp_samples: u64,
+    target: SelectedObjectEvent,
+}
+
+pub(crate) fn sample_object_blocks(
+    initial: SelectedObjectEvent,
+    blocks: &[ObjectBlock],
+    sample: u64,
+) -> SelectedObjectEvent {
+    let count = blocks.partition_point(|b| b.start <= sample);
+    if count == 0 {
+        return initial;
+    }
+    let block = &blocks[count - 1];
+    let elapsed = sample - block.start;
+    if elapsed >= block.ramp_samples {
+        return block.target;
+    }
+    let previous = if count == 1 {
+        initial
+    } else {
+        blocks[count - 2].target
+    };
+    block
+        .target
+        .interpolate_from(previous, elapsed as f64 / block.ramp_samples as f64)
+}
+
+fn interpolation_samples(
+    raw: &RawAdmObjectEvent,
+    duration: u64,
+) -> Result<u64, SelectedAdmObjectEventError> {
+    match raw.jump_position.as_deref() {
+        None | Some("0") => Ok(duration),
+        Some("1") => {
+            let seconds = raw.interpolation_length.as_deref().unwrap_or("0");
+            let value = seconds
+                .parse::<f64>()
+                .map_err(|_| SelectedAdmObjectEventError::InvalidInterpolationLength)?;
+            if !value.is_finite() || value < 0.0 {
+                return Err(SelectedAdmObjectEventError::InvalidInterpolationLength);
+            }
+            // A transition cannot extend into the following block.
+            #[allow(clippy::cast_sign_loss)] // validated nonnegative above
+            let samples = (value * f64::from(SAMPLE_RATE_HZ)).round() as u64;
+            Ok(samples.min(duration))
+        }
+        _ => Err(SelectedAdmObjectEventError::InvalidJumpPosition),
+    }
+}
+
 pub(crate) fn admit_selected_object_events(
-    raw_events: Vec<RawAdmObjectEvent>,
+    tracks: &[Vec<RawAdmObjectEvent>],
     source_samples: AdmSampleCount,
 ) -> Result<AdmittedSelectedObjectEvents, SelectedAdmObjectEventError> {
-    let mut admitted = Vec::with_capacity(28);
-    let source_samples_u64 = source_samples.value();
-    for raw in raw_events {
-        let object_start = timestamp_to_sample_index(&raw.object_start, SAMPLE_RATE_HZ)?;
-        let block_rtime = timestamp_to_sample_index(&raw.block_rtime, SAMPLE_RATE_HZ)?;
-        let object_duration = timestamp_to_sample_index(&raw.object_duration, SAMPLE_RATE_HZ)?;
-        let block_duration = timestamp_to_sample_index(&raw.block_duration, SAMPLE_RATE_HZ)?;
-        let interpolation_length = match raw.interpolation_length.as_deref() {
-            Some("0") => AdmSampleIndex::new(0),
-            _ => return Err(SelectedAdmObjectEventError::InvalidInterpolationLength),
-        };
-
-        if object_start.value() != 0 || block_rtime.value() != 0 {
+    let mut admitted = Vec::with_capacity(tracks.len());
+    for blocks in tracks {
+        let first = blocks
+            .first()
+            .ok_or(SelectedAdmObjectEventError::MissingBlockField)?;
+        let object_start = timestamp_to_sample_index(&first.object_start, SAMPLE_RATE_HZ)?;
+        let object_duration = timestamp_to_sample_index(&first.object_duration, SAMPLE_RATE_HZ)?;
+        if object_start.value() != 0 {
             return Err(SelectedAdmObjectEventError::InvalidTimestamp);
         }
-        if raw.cartesian.as_deref() != Some("1") {
-            return Err(SelectedAdmObjectEventError::InvalidCartesianMode);
-        }
-        if raw.jump_position.as_deref() != Some("1") {
-            return Err(SelectedAdmObjectEventError::InvalidJumpPosition);
-        }
-        if object_duration.value() != block_duration.value() || object_duration.value() == 0 {
-            return Err(SelectedAdmObjectEventError::DurationMismatch);
-        }
-        if object_duration.value() < source_samples_u64 {
+        if object_duration.value() < source_samples.value() {
             return Err(SelectedAdmObjectEventError::ProgrammeNotCovered);
         }
-        if raw
-            .coordinates
-            .iter()
-            .flatten()
-            .any(|coordinate| !coordinate.is_finite())
-        {
-            return Err(SelectedAdmObjectEventError::NonFiniteCoordinate);
+        let mut timeline = Vec::with_capacity(blocks.len());
+        let mut end = 0;
+        for block in blocks {
+            let start = timestamp_to_sample_index(&block.block_rtime, SAMPLE_RATE_HZ)?.value();
+            let duration =
+                timestamp_to_sample_index(&block.block_duration, SAMPLE_RATE_HZ)?.value();
+            if start != end || duration == 0 {
+                return Err(SelectedAdmObjectEventError::DurationMismatch);
+            }
+            end = start
+                .checked_add(duration)
+                .ok_or(SelectedAdmObjectEventError::TimestampOutOfRange)?;
+            if block.cartesian.as_deref() != Some("1") {
+                return Err(SelectedAdmObjectEventError::InvalidCartesianMode);
+            }
+            if !spread_values_agree([block.width, block.depth, block.height]) {
+                return Err(SelectedAdmObjectEventError::SpreadMismatch);
+            }
+            if block.coordinates.iter().flatten().any(|x| !x.is_finite()) {
+                return Err(SelectedAdmObjectEventError::NonFiniteCoordinate);
+            }
+            let target = SelectedObjectEvent::new(
+                block.physical_host,
+                object_start.value(),
+                object_duration.value(),
+                source_samples.value(),
+                block.coordinates[0],
+                block.coordinates[1],
+                block.coordinates[2],
+                block.width,
+                block.depth,
+                block.height,
+                block.diffuse.map(|v| i32::from(v != 0.0)),
+            );
+            timeline.push(ObjectBlock {
+                start,
+                ramp_samples: interpolation_samples(block, duration)?,
+                target,
+            });
         }
-        if !spread_values_agree([raw.width, raw.depth, raw.height]) {
-            return Err(SelectedAdmObjectEventError::SpreadMismatch);
+        if end != object_duration.value() {
+            return Err(SelectedAdmObjectEventError::DurationMismatch);
         }
-
-        let diffuse = raw.diffuse.map(|value| i32::from(value != 0.0));
-        let event = SelectedObjectEvent::new(
-            raw.physical_host,
-            object_start.value(),
-            object_duration.value(),
-            source_samples_u64,
-            raw.coordinates[0],
-            raw.coordinates[1],
-            raw.coordinates[2],
-            raw.width,
-            raw.depth,
-            raw.height,
-            diffuse,
-        );
+        let initial = timeline.remove(0);
         admitted.push(AdmittedSelectedObjectEvent {
-            physical_host: raw.physical_host,
-            track_uid: raw.track_uid,
-            object_id: raw.object_id,
+            physical_host: first.physical_host,
+            track_uid: first.track_uid.clone(),
+            object_id: first.object_id.clone(),
             object_start,
-            block_rtime,
-            interpolation_length,
+            block_rtime: AdmSampleIndex::new(0),
             object_duration,
-            block_duration,
-            event,
+            block_duration: timestamp_to_sample_index(&first.block_duration, SAMPLE_RATE_HZ)?,
+            interpolation_length: AdmSampleIndex::new(initial.ramp_samples),
+            event: initial.target,
+            timeline: timeline.into(),
         });
     }
     Ok(AdmittedSelectedObjectEvents(admitted))
@@ -426,6 +486,51 @@ mod tests {
     use crate::timeline::AdmSampleCount;
 
     #[test]
+    fn samples_cartesian_motion_at_block_boundaries_and_inside_transitions() {
+        let document = roxmltree::Document::parse(r#"<audioObject start="00:00:00.00000" duration="00:00:00.09600">
+            <audioBlockFormat rtime="00:00:00.00000" duration="00:00:00.03200"><cartesian>1</cartesian><position coordinate="X">-1</position><jumpPosition interpolationLength="0.000000">1</jumpPosition></audioBlockFormat>
+            <audioBlockFormat rtime="00:00:00.03200" duration="00:00:00.03200"><cartesian>1</cartesian><position coordinate="X">1</position><jumpPosition interpolationLength="0.005208">1</jumpPosition></audioBlockFormat>
+            <audioBlockFormat rtime="00:00:00.06400" duration="00:00:00.03200"><cartesian>1</cartesian><position coordinate="X">0</position><jumpPosition>1</jumpPosition></audioBlockFormat>
+        </audioObject>"#).unwrap();
+        let object = document.root_element();
+        let blocks = object
+            .children()
+            .filter(roxmltree::Node::is_element)
+            .map(|block| {
+                RawAdmObjectEvent::from_xml(
+                    10,
+                    "track".into(),
+                    "object".into(),
+                    object,
+                    block,
+                    None,
+                )
+                .unwrap()
+            })
+            .collect::<Vec<_>>();
+        let samples = AdmSampleCount::new(4608).unwrap();
+        let mut tracks = [blocks];
+        let admitted = admit_selected_object_events(&tracks, samples).unwrap();
+        let track = &admitted.events()[0];
+        for (sample, x) in [
+            (1535, -1.0),
+            (1536, -1.0),
+            (1661, 0.0),
+            (1786, 1.0),
+            (3071, 1.0),
+            (3072, 0.0),
+        ] {
+            let event = super::sample_object_blocks(track.event, &track.timeline, sample);
+            assert_eq!(event.authored_coordinates()[0], Some(x));
+        }
+        tracks[0][1].block_rtime = "00:00:00.03100".into();
+        assert_eq!(
+            admit_selected_object_events(&tracks, samples).unwrap_err(),
+            super::SelectedAdmObjectEventError::DurationMismatch
+        );
+    }
+
+    #[test]
     fn admitted_event_accessors_preserve_authored_optional_control_values() {
         // Synthetic accessor recipe only; this does not exercise graph parsing or snapshots.
         let raw = RawAdmObjectEvent {
@@ -445,17 +550,17 @@ mod tests {
             height: Some(-0.0),
             diffuse: Some(0.0),
         };
-        let raw_events = (0..28)
+        let raw_events: Vec<_> = (0..28)
             .map(|index| {
                 let mut event = raw.clone();
                 if index == 1 {
                     event.diffuse = None;
                 }
-                event
+                vec![event]
             })
             .collect();
         let admitted =
-            admit_selected_object_events(raw_events, AdmSampleCount::new(1_537).unwrap()).unwrap();
+            admit_selected_object_events(&raw_events, AdmSampleCount::new(1_537).unwrap()).unwrap();
         let event = &admitted.events()[0];
         let control = event.control_event();
 

@@ -398,6 +398,7 @@ pub struct NormalControlObjectEvent {
     interpolation_length: u64,
     object_duration: u64,
     block_duration: u64,
+    timeline: Arc<[super::adm_object_events::ObjectBlock]>,
     control_event: SelectedObjectEvent,
 }
 
@@ -412,6 +413,7 @@ impl NormalControlObjectEvent {
             interpolation_length: event.interpolation_length().value(),
             object_duration: event.object_duration().value(),
             block_duration: event.block_duration().value(),
+            timeline: Arc::clone(&event.timeline),
             control_event: *event.control_event(),
         }
     }
@@ -1603,6 +1605,7 @@ pub fn propose_normal_control_adm_input(
         .map(NormalControlObjectState::from_frontend_state)
         .collect::<Vec<_>>();
     let rows = calculate_normal_control_rows(
+        query_sample,
         &prepared.physical_tracks,
         &prepared.owner_bindings,
         &prepared.object_events,
@@ -1756,6 +1759,7 @@ pub fn propose_next_normal_control_adm_input<'a>(
         u32::try_from((source_samples - query_sample).min(NORMAL_CALLBACK_SAMPLES))
             .map_err(|_| NormalControlSnapshotError::IndexOverflow)?;
     let rows = calculate_normal_control_rows(
+        query_sample,
         &prepared.physical_tracks,
         &prepared.owner_bindings,
         &prepared.object_events,
@@ -3596,8 +3600,7 @@ fn validate_prepared_snapshot(
             || control.start_sample() != 0
             || event.object_start != 0
             || event.block_rtime != 0
-            || event.interpolation_length != 0
-            || event.object_duration != event.block_duration
+            || (event.timeline.is_empty() && event.object_duration != event.block_duration)
             || event.object_duration < prepared.profile.source_samples
             || control.duration_samples() != event.object_duration
             || control.programme_samples() != prepared.profile.source_samples
@@ -3773,6 +3776,7 @@ pub fn propose_normal_control_snapshot(
         regular_words,
         next_objects,
     } = calculate_normal_control_rows(
+        query_sample,
         &prepared.physical_tracks,
         &prepared.owner_bindings,
         &prepared.object_events,
@@ -3870,6 +3874,7 @@ struct NormalControlRowsResult {
 /// Shared per-row NORMAL calculation used by the fixed38 view and the dynamic ADM view.
 /// The formulas and row encodings stay identical; callers supply their versioned row/route shape.
 fn calculate_normal_control_rows(
+    query_sample: u64,
     physical_tracks: &[NormalControlPhysicalTrack],
     owner_bindings: &[NormalControlObjectOwnerBinding],
     object_events: &[NormalControlObjectEvent],
@@ -3894,12 +3899,17 @@ fn calculate_normal_control_rows(
         if event.physical_host != binding.physical_host {
             return Err(NormalControlSnapshotError::ObjectEventMismatch);
         }
+        let control = super::adm_object_events::sample_object_blocks(
+            event.control_event,
+            &event.timeline,
+            query_sample,
+        );
         let normalized = NormalizedObjectControl {
-            writer_xyz: writer_coordinates(&event.control_event)
+            writer_xyz: writer_coordinates(&control)
                 .map_err(NormalControlSnapshotError::ObjectControl)?,
-            uniform_width: writer_uniform_width(&event.control_event)
+            uniform_width: writer_uniform_width(&control)
                 .map_err(NormalControlSnapshotError::ObjectControl)?,
-            diffuse: event.control_event.diffuse(),
+            diffuse: control.diffuse(),
         };
         normalized_by_owner[ordinal] = Some(normalized);
     }
