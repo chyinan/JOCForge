@@ -33,14 +33,14 @@ jobs:
             bin: jocforge
             archive: tar.gz
           - name: macos-arm64
-            os: macos-14
+            os: macos-15
             target: aarch64-apple-darwin
             bin: jocforge
             archive: tar.gz
-          # The Intel slice is cross-built on the arm64 runner: macos-13 runners
-          # are retired and jobs requesting them queue forever.
+          # Both slices build on the arm64 image: the macos-13 and macos-14 runners
+          # are retired, and a job that requests one is cancelled at queue time.
           - name: macos-x86_64
-            os: macos-14
+            os: macos-15
             target: x86_64-apple-darwin
             bin: jocforge
             archive: tar.gz
