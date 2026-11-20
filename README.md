@@ -1,5 +1,7 @@
 # JOCForge
 
+![JOCForge CLI：encode / completions 子命令与 --version 输出](docs/assets/cli-help.png)
+
 ## Flat 7.1 编码
 
 **JOCForge 已打通 Flat 7.1 的整曲编码与播放。** CLI 将 48 kHz ADM BWF 编码为 1,664 kbps 的 E-AC-3 JOC 码流。每个访问单元包含 640 kbps 的独立 AC-3 核心和 1,024 kbps 的依赖 E-AC-3 子流，使用 Flat 7.X 重建配置（索引 1）、七路载体和 15 个 JOC 对象。
