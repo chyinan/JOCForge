@@ -92,6 +92,12 @@ XML 解析器可识别并保留 Line 和 RF 两种动态范围控制（DRC）设
 - 首尾静音均以秒计，支持小数，省略或留空均按零处理。响度测量、音频编码和动态对象位置使用同一条剪辑时间线。添加 `--preflight-only` 可查看原文件和剪辑后的每声道采样数。
 - XML 作业默认编码 5.1。使用 `jocforge encode --job-xml job.xml --joc-layout flat7x` 可编码 Flat 7.1。此时 XML 的 `data_rate` 指 D0 码率，例如 `640` 对应 1280 kbps 总码率，输出路径遵循上文的 Flat7x 文件命名要求。
 
+### 响度缓存
+
+CLI 和 NERX Studio 共用当前用户的响度缓存。第一次编码时完整测量 ADM；再次编码同一内容时，只要实际裁剪位置、首尾静音和测量设置相同，就可以跨码率、跨 5.1 和 Flat 7.1 复用。命中时 CLI 会显示 `Loudness cache hit`。测量算法版本或内置参数变化会重新测量。
+
+缓存保存响度、峰值、门控方式等完整测量结果的精确数值及校验信息。Windows 默认目录为 `%LOCALAPPDATA%\JOCForge\adm-loudness-v1`，macOS 为 `~/Library/Caches/JOCForge/adm-loudness-v1`。可通过 `JOCFORGE_CACHE_DIR` 指定缓存根目录，或删除缓存以强制重新测量。目录不可写时，编码器照常完成当前导出。
+
 ### 开发与检查
 
 Windows x64 Release 在 Ryzen 7 9800X3D 上编码一份 191.69 秒、26 声道的 48 kHz 动态 ADM，5.1 / 1024 kbps 实测 52.0 秒，Flat 7.1 / 1664 kbps 实测 74.8 秒。计时包含输入准备、整曲响度测量和写出 EC3。两份输出均与先前编码器的整曲文件逐字节一致。

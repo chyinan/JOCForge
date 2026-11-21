@@ -3,6 +3,7 @@
 
 pub mod encode_request;
 pub mod independent_meter_callback;
+mod loudness_cache;
 pub mod meter_callback_stage;
 pub mod meter_prepass;
 pub mod meter_source_bridge;

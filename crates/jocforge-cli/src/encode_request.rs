@@ -10,9 +10,7 @@ use std::{
     time::{SystemTime, UNIX_EPOCH},
 };
 
-use crate::meter_prepass::{
-    SelectedMeterPrepassError, run_meter_with_providers, unpack_provider_supplements,
-};
+use crate::meter_prepass::{SelectedMeterPrepassError, unpack_provider_supplements};
 use crate::output_publication::{
     OutputPublicationError, ProgrammeOutputStaging, capture_flat7x_experimental_candidate,
     finalize_output,
@@ -586,6 +584,24 @@ pub enum EncodePhase {
     Encoding,
 }
 
+/// Status events for clients that also display loudness-cache activity.
+#[derive(Clone, Copy, Debug)]
+pub enum EncodeEvent {
+    Progress(EncodePhase, u64, u64),
+    CachedLoudness,
+    WaitingForLoudness,
+}
+
+pub(crate) type EventObserver<'a> = &'a (dyn Fn(EncodeEvent) + Sync);
+
+fn progress_events(progress: ProgressObserver<'_>) -> impl Fn(EncodeEvent) + Sync + '_ {
+    move |event| {
+        if let EncodeEvent::Progress(phase, done, total) = event {
+            progress(phase, done, total);
+        }
+    }
+}
+
 /// Product layouts and aggregate bitrates accepted by the file encoder.
 pub const FILE_PRESETS: &[(JocReconstructionLayout, u16, CodecRateProfile)] = &[
     (
@@ -667,7 +683,7 @@ pub fn encode_five_one_file(
         Some(rate),
         None,
         layout,
-        Some(progress),
+        Some(&progress_events(progress)),
         &std::sync::atomic::AtomicBool::new(false),
     )
 }
@@ -691,7 +707,7 @@ pub fn encode_flat_seven_one_file(
         Some(CodecRateProfile::Kbps1024),
         None,
         JocReconstructionLayout::Flat7x,
-        Some(progress),
+        Some(&progress_events(progress)),
         &std::sync::atomic::AtomicBool::new(false),
     )?;
     tempfile::TempPath::try_from_path(candidate)
@@ -716,7 +732,7 @@ pub fn encode_staged_file(
         Some(rate),
         None,
         layout,
-        Some(progress),
+        Some(&progress_events(progress)),
         cancelled,
     )
 }
@@ -729,6 +745,27 @@ pub fn encode_staged_file_with_timing(
     layout: JocReconstructionLayout,
     timing: &FileRenderTiming,
     progress: ProgressObserver<'_>,
+    cancelled: &std::sync::atomic::AtomicBool,
+) -> Result<(), EncodeRequestError> {
+    encode_staged_file_with_events(
+        input,
+        output,
+        rate,
+        layout,
+        timing,
+        &progress_events(progress),
+        cancelled,
+    )
+}
+
+/// Encodes a staged file and reports both phase progress and cache activity.
+pub fn encode_staged_file_with_events(
+    input: &Path,
+    output: &Path,
+    rate: CodecRateProfile,
+    layout: JocReconstructionLayout,
+    timing: &FileRenderTiming,
+    progress: EventObserver<'_>,
     cancelled: &std::sync::atomic::AtomicBool,
 ) -> Result<(), EncodeRequestError> {
     resolve_encode_request_route(rate, layout)?;
@@ -757,7 +794,7 @@ fn run_worker_with_progress(
     codec_rate: Option<CodecRateProfile>,
     authored_job_xml: Option<Vec<u8>>,
     joc_layout: JocReconstructionLayout,
-    progress: Option<ProgressObserver<'_>>,
+    progress: Option<EventObserver<'_>>,
     cancelled: &std::sync::atomic::AtomicBool,
 ) -> Result<(), EncodeRequestError> {
     thread::scope(|scope| {
@@ -788,7 +825,7 @@ fn run_inner(
     codec_rate_override: Option<CodecRateProfile>,
     authored_job_xml: Option<Vec<u8>>,
     joc_layout: JocReconstructionLayout,
-    progress: Option<ProgressObserver<'_>>,
+    progress: Option<EventObserver<'_>>,
     cancelled: &std::sync::atomic::AtomicBool,
 ) -> Result<(), EncodeRequestError> {
     eprintln!("Preparing selected ADM input and owner plan...");
@@ -925,32 +962,15 @@ fn run_inner(
             EncodeRequestError::OutputStaging(OutputPublicationError::Binding(error))
         })?;
 
-    eprintln!("Starting full-file Meter prepass...");
-    let mut meter_progress = ProgressBar::new("Meter prepass");
     let assets = unpack_provider_supplements().map_err(EncodeRequestError::MeterPrepass)?;
-    let meter_prepass = run_meter_with_providers(
+    let (meter_reference, measurement) = crate::loudness_cache::measure_for_encode(
         &prepared,
         &parsed,
         run_identity.attempt,
         assets.path(),
-        |completed, total| {
-            if let Some(report) = progress {
-                report(EncodePhase::Metering, completed, total);
-            } else {
-                meter_progress.update(completed, total);
-            }
-        },
+        progress,
         cancelled,
-    )
-    .map_err(|error| {
-        if cancelled.load(std::sync::atomic::Ordering::Relaxed) {
-            EncodeRequestError::Cancelled
-        } else {
-            EncodeRequestError::MeterPrepass(error)
-        }
-    })?;
-    meter_progress.finish();
-    let measurement = meter_prepass.dependents();
+    )?;
     let selected_lufs_word = measurement.receipt().selected_lufs_word();
     let selected_lufs = f32::from_bits(selected_lufs_word);
     let drc_root = cold_drc_owner_after_measurement(&prepared, measurement.receipt())
@@ -958,14 +978,14 @@ fn run_inner(
     let source_providers = plan.source_providers();
     let metadata_owner = prepare_metadata_owner_from_measurement(
         &prepared,
-        measurement,
+        &measurement,
         source_providers.metadata_owner().provider_file(),
         source_providers.metadata_owner().wrapper_file(),
         resolved_joc_profile,
     )
     .map_err(EncodeRequestError::MetadataOwner)?;
     eprintln!(
-        "meter prepass complete: callbacks={} zero_drains={} selected_lufs_f32={:.6} selected_lufs_bits=0x{selected_lufs_word:08x} selected_lufs_source=ProgrammeMeasurementReceipt.selected_lufs_word selected_lufs_unit=RUST_SELECTED_LUFS_DEE_NATIVE_UNIT_UNBOUND dialnorm={:?} metadata_generation={}",
+        "programme measurement ready: callbacks={} zero_drains={} selected_lufs_f32={:.6} selected_lufs_bits=0x{selected_lufs_word:08x} selected_lufs_source=ProgrammeMeasurementReceipt.selected_lufs_word selected_lufs_unit=RUST_SELECTED_LUFS_DEE_NATIVE_UNIT_UNBOUND dialnorm={:?} metadata_generation={}",
         measurement.receipt().normal_callbacks(),
         measurement.receipt().zero_drains(),
         selected_lufs,
@@ -1026,7 +1046,7 @@ fn run_inner(
         resolved_joc_profile,
         run_identity.attempt,
         measurement_receipt,
-        meter_prepass.terminal_meter_root(),
+        &meter_reference,
         cold_roots,
         reader_eof_root,
         integrity_root,
@@ -1323,7 +1343,7 @@ fn run_inner(
                 );
             }
             if let Some(report) = progress {
-                report(EncodePhase::Encoding, callback_value + 1, total_callbacks);
+                report(EncodeEvent::Progress(EncodePhase::Encoding, callback_value + 1, total_callbacks));
             } else {
                 callback_progress.update(callback_value + 1, total_callbacks);
             }
@@ -1954,7 +1974,7 @@ fn fresh_run_identity() -> Result<CliRunIdentity, EncodeRequestError> {
     })
 }
 
-fn hex_lower(bytes: &[u8]) -> String {
+pub(crate) fn hex_lower(bytes: &[u8]) -> String {
     const HEX: &[u8; 16] = b"0123456789abcdef";
     let mut output = String::with_capacity(bytes.len() * 2);
     for byte in bytes {

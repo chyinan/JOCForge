@@ -52,7 +52,7 @@ pub struct ProgrammeMeasurementProposal {
     measurement: ProgrammeMeasurementValue,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct ProgrammeMeasurementValue {
     dialogue_word: u32,
     speech_percentage_word: u32,
@@ -147,6 +147,25 @@ impl ProgrammeMeasurementValue {
             dialnorm,
             canonical_sha256: Sha256::digest(canonical_bytes).into(),
         })
+    }
+
+    /// Check the exact stored float words against the original finalized measurement.
+    pub(crate) fn validate_cached(&self) -> Result<(), ProgrammeMeasurementError> {
+        let checked = Self::from_words(
+            self.dialogue_word,
+            self.speech_percentage_word,
+            self.itu_word,
+            self.ungated_word,
+            self.true_peak_word,
+            self.sample_peak_word,
+            self.selected_word,
+            self.gating_kind,
+            self.dialnorm,
+        )?;
+        if checked != *self || dialnorm_from_selected_lufs(self.selected_word)? != self.dialnorm {
+            return Err(ProgrammeMeasurementError::Canonical);
+        }
+        Ok(())
     }
 
     pub const fn dialogue_word(&self) -> u32 {

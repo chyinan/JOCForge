@@ -397,6 +397,10 @@ impl RenderTimeline {
         }
         Ok((start, end))
     }
+    pub const fn source_range(self) -> std::ops::Range<u64> {
+        self.start..self.end
+    }
+
     pub const fn file_samples(self) -> u64 {
         self.file_samples
     }

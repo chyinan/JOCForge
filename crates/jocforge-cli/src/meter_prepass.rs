@@ -63,6 +63,10 @@ impl SelectedMeterPrepass {
     pub const fn dependents(&self) -> &MeasurementDependentOwnerInputs {
         &self.dependents
     }
+
+    pub(crate) fn into_dependents(self) -> MeasurementDependentOwnerInputs {
+        self.dependents
+    }
 }
 
 #[derive(Debug)]
@@ -80,14 +84,16 @@ fn error(label: &str, detail: impl fmt::Debug) -> SelectedMeterPrepassError {
     SelectedMeterPrepassError(format!("{label}: {detail:?}"))
 }
 
+pub(crate) const PROVIDER_ASSETS: &[(&str, &[u8])] =
+    include!(concat!(env!("OUT_DIR"), "/provider_assets.rs"));
+
 pub(crate) fn unpack_provider_supplements() -> Result<tempfile::TempDir, SelectedMeterPrepassError>
 {
-    const ASSETS: &[(&str, &[u8])] = include!(concat!(env!("OUT_DIR"), "/provider_assets.rs"));
     let unpack = || -> std::io::Result<tempfile::TempDir> {
         let directory = tempfile::Builder::new()
             .prefix("jocforge-providers-")
             .tempdir()?;
-        for (name, bytes) in ASSETS {
+        for (name, bytes) in PROVIDER_ASSETS {
             let file = directory.path().join(name);
             std::fs::create_dir_all(
                 file.parent()

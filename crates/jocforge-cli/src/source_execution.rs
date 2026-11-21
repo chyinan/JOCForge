@@ -40,7 +40,7 @@ use jocforge_application::{
         stage_main_metadata_source,
     },
     meter_finalization_bridge::{
-        ProgrammeMeasurementReceipt, StandaloneMeterRoot, unchanged_meter_root_receipt,
+        MeterOwnerStateReference, ProgrammeMeasurementReceipt, unchanged_meter_reference_receipt,
     },
     meter_source_bridge::{Flat7xI0D0TargetPlan, JocReconstructionLayout, ResolvedEncodingProfile},
     output_publication::{
@@ -161,7 +161,7 @@ pub(crate) fn stage_source_frame<'pcm>(
     callback: crate::encode_request::SpatialFrameAdvance,
     integrity_before: &IntegrityProgrammeOwner,
     main_providers: &SelectedMainSpatialCallbackProviders,
-    meter_root: &StandaloneMeterRoot,
+    meter_root: &MeterOwnerStateReference,
     measurement: &ProgrammeMeasurementReceipt,
     analysis_before: &AnalysisOwnerRoot,
     analysis_providers: &SelectedSourceAnalysisProviders,
@@ -188,7 +188,7 @@ pub(crate) fn stage_source_frame<'pcm>(
             .map_err(|error| format!("source transaction identity: {error:?}"))?;
     let callback_identity =
         CallbackLineageIdentity::new(prepared.programme_id().clone(), attempt, callback_index);
-    let meter_receipt = unchanged_meter_root_receipt(
+    let meter_receipt = unchanged_meter_reference_receipt(
         prepared,
         meter_root,
         measurement,

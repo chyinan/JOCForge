@@ -18,6 +18,10 @@ Locked transitive Rust packages are listed below. Checksums are the crates.io ch
 | either | 1.19.0 | MIT OR Apache-2.0 | `0e9c71c2167ca323c882b99918929403426e2373ea17242ff5653e0d5e1058be` |
 | rayon | 1.11.0 | MIT OR Apache-2.0 | `368f01d005bf8fd9b1206fb6fa653e6c4a81ceb1466406b81792d87c5677a58f` |
 | rayon-core | 1.13.0 | MIT OR Apache-2.0 | `22e18b0f0062d30d4230b2e85ff77fdfe4326feb054b9783a3460d8435c8ab91` |
+| fs2 | 0.4.3 | MIT/Apache-2.0 | `9564fc758e15025b46aa6643b1b77d047d1a56a1aea6e01002ac0c7026876213` |
+| winapi | 0.3.9 | MIT/Apache-2.0 | `5c839a674fcd7a98952e593242ea400abe93992746761e38641405d28b00f419` |
+| winapi-i686-pc-windows-gnu | 0.4.0 | MIT/Apache-2.0 | `ac3b87c63620426dd9b991e5ce0329eff545bccbbb34f3be09ff6fb6ab51b7b6` |
+| winapi-x86_64-pc-windows-gnu | 0.4.0 | MIT/Apache-2.0 | `712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f` |
 | roxmltree | 0.21.1 | MIT OR Apache-2.0 | `f1964b10c76125c36f8afe190065a4bf9a87bf324842c05701330bba9f1cacbb` |
 | autocfg | 1.5.1 | Apache-2.0 OR MIT | `f2032f911046de80f0a198e0901378627c33f59ea0ac00e363d481118bd70a53` |
 | block-buffer | 0.10.4 | MIT OR Apache-2.0 | `3078c7629b62d3f0439517fa394996acacc5cbc91c5a20d8c658e77abd503a71` |

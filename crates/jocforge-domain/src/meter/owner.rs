@@ -31,11 +31,11 @@ pub enum MeterOwnerStateReferenceError {
     CanonicalDigestMismatch,
 }
 
-/// Complete immutable canonical bytes and hashes for one Meter root.
+/// Immutable state for the meter owner. A fresh scan retains its full terminal state;
+/// reuse retains the measurement provenance and its binding to the current job.
 ///
 /// The GTC generation is the number of committed Meter callbacks, read from the
-/// root's callback clock. The state reference never includes a receipt or any
-/// terminal measurement value.
+/// completed schedule. MAIN carries this reference forward without advancing the meter.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct MeterOwnerStateReference {
     generation: MeterCallbackIndex,
@@ -68,6 +68,73 @@ impl MeterOwnerStateReference {
             cold_sha256,
             canonical_bytes: canonical_bytes.into(),
         })
+    }
+
+    /// Freeze a previously measured result for a new MAIN transaction. The cache
+    /// key identifies the rendered audio and meter policy; the original terminal
+    /// digest identifies the scan. Programme/attempt/config belong to the new job.
+    #[allow(clippy::too_many_arguments)]
+    pub fn bind_cached_measurement(
+        measured: &super::programme_measurement::ProgrammeMeasurementValue,
+        key: [u8; 32],
+        original_terminal: [u8; 32],
+        original_cold: [u8; 32],
+        programme: ProgrammeId,
+        attempt: AttemptId,
+        identity: &super::prepared_job_identity::PreparedJobInputIdentity,
+        schedule: super::standalone_root::StandaloneMeterSchedule,
+    ) -> Result<
+        (
+            Self,
+            super::measurement_receipt::ProgrammeMeasurementReceipt,
+        ),
+        MeterOwnerStateReferenceError,
+    > {
+        use super::measurement_receipt::{
+            ProgrammeMeasurementReceipt, ProgrammeMeasurementReceiptInput,
+        };
+        measured
+            .validate_cached()
+            .map_err(|_| MeterOwnerStateReferenceError::CanonicalDigestMismatch)?;
+        let input_sha256 = identity.resource().input_sha256();
+        let config_sha256 = identity.normalized_configuration().config_sha256();
+        let mut provenance = b"JOCForge reused programme measurement v1\0".to_vec();
+        provenance.extend_from_slice(&key);
+        provenance.extend_from_slice(&original_terminal);
+        provenance.extend_from_slice(&original_cold);
+        provenance.extend_from_slice(&measured.canonical_sha256());
+        provenance.extend_from_slice(&input_sha256);
+        provenance.extend_from_slice(&config_sha256);
+        provenance.extend_from_slice(&attempt.value().to_le_bytes());
+        provenance.extend_from_slice(programme.as_str().as_bytes());
+        let canonical_bytes = CanonicalStateBytes::new(provenance);
+        let state_sha256 = canonical_bytes.digest();
+        let receipt =
+            ProgrammeMeasurementReceipt::from_verified_prepass(ProgrammeMeasurementReceiptInput {
+                programme_id: programme,
+                attempt,
+                input_sha256,
+                config_sha256,
+                dialogue_word: measured.dialogue_word(),
+                itu_word: measured.itu_word(),
+                true_peak_word: measured.true_peak_word(),
+                selected_lufs_word: measured.selected_word(),
+                gating_kind: measured.gating_kind().as_str(),
+                meter_terminal_sha256: state_sha256,
+                normal_callbacks: schedule.normal_callbacks().value(),
+                zero_drains: schedule.zero_drains().value(),
+                energy_windows: schedule.energy_windows(),
+            })
+            .map_err(|_| MeterOwnerStateReferenceError::CanonicalDigestMismatch)?;
+        Ok((
+            Self {
+                generation: MeterCallbackIndex::new(schedule.meter_callbacks().value()),
+                state_sha256,
+                cold_sha256: original_cold,
+                canonical_bytes: canonical_bytes.into(),
+            },
+            receipt,
+        ))
     }
 
     pub const fn owner_id(&self) -> &'static str {

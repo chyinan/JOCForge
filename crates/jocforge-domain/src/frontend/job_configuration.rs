@@ -441,6 +441,26 @@ pub struct SelectedJobConfiguration {
 }
 
 impl SelectedJobConfiguration {
+    /// Values consumed when rendering the input and measuring its loudness. File identity
+    /// and meter revision are supplied separately by the persistent cache.
+    pub fn measurement_settings_identity(&self) -> Value {
+        let source = self.render_timeline.source_range();
+        json!({
+            "input_kind": self.input_kind.selected_label(),
+            "source_start": source.start,
+            "source_end": source.end,
+            "leading_samples": self.prepend_silence_samples.value(),
+            "trailing_samples": self.append_silence_samples.value(),
+            "metering_mode": self.loudness.metering_mode(),
+            "dialogue_intelligence": self.loudness.dialogue_intelligence(),
+            "speech_threshold": self.loudness.speech_threshold(),
+            "downmix_mode": self.downmix.preferred_mode(),
+            "mix_levels": self.downmix.mix_levels(),
+            "surround_trim": self.surround_trim_5_1.xml_value(),
+            "height_trim": self.height_trim_5_1.xml_value(),
+        })
+    }
+
     /// Returns every normalized selected F01E value used by job/config identity.
     pub fn normalized_identity_value(&self) -> Value {
         let carriage = match self.selected_profile.carriage() {

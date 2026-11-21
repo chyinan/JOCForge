@@ -5,12 +5,14 @@ pub use jocforge_domain::meter::{
     measurement_dependents::MeasurementDependentOwnerInputs,
     measurement_receipt::ProgrammeMeasurementReceipt, standalone_root::StandaloneMeterRoot,
 };
+pub use jocforge_domain::meter::{
+    owner::MeterOwnerStateReference, programme_measurement::ProgrammeMeasurementValue,
+};
 
 use jocforge_domain::meter::{
     measurement_dependents::{
         MeasurementDependentOwnerError, prepare_measurement_dependent_owner_inputs,
     },
-    owner::MeterOwnerStateReference,
     standalone_root::StandaloneMeterMeasurementProposal,
 };
 use jocforge_domain::transaction::{GtcOwnerReceipt, GtcOwnerReceiptError};
@@ -45,11 +47,27 @@ pub fn unchanged_meter_root_receipt(
         || identity.config_sha256() != &prepared.config_sha256()
         || measurement.input_sha256() != identity.input_sha256()
         || measurement.config_sha256() != identity.config_sha256()
+    {
+        return Err(MeterFinalizationBridgeError::PreparedInputIdentityMismatch);
+    }
+    unchanged_meter_reference_receipt(prepared, &reference, measurement, transaction_id)
+}
+
+/// MAIN keeps the accepted meter result immutable for the whole encode.
+pub fn unchanged_meter_reference_receipt(
+    prepared: &PreparedJobInput,
+    reference: &MeterOwnerStateReference,
+    measurement: &ProgrammeMeasurementReceipt,
+    transaction_id: jocforge_domain::transaction::CallbackTransactionId,
+) -> Result<GtcOwnerReceipt, MeterFinalizationBridgeError> {
+    if measurement.programme_id() != prepared.programme_id()
+        || measurement.input_sha256() != &prepared.resource_identity().input_sha256()
+        || measurement.config_sha256() != &prepared.config_sha256()
         || measurement.meter_terminal_sha256() != reference.state_sha256()
         || measurement
             .normal_callbacks()
             .checked_add(measurement.zero_drains())
-            != Some(meter_root.meter_callback_index().value())
+            != Some(reference.generation().value())
     {
         return Err(MeterFinalizationBridgeError::PreparedInputIdentityMismatch);
     }
@@ -104,4 +122,38 @@ pub fn prepare_meter_measurement_dependents(
     let prepared_identity = prepared.domain_identity_capability();
     prepare_measurement_dependent_owner_inputs(receipt, &prepared_identity)
         .map_err(MeterFinalizationBridgeError::DependentOwners)
+}
+
+/// Rebind a cached numeric measurement to the current input and encode settings.
+pub fn reuse_programme_measurement(
+    prepared: &PreparedJobInput,
+    attempt: jocforge_domain::transaction::AttemptId,
+    key: [u8; 32],
+    original_terminal: [u8; 32],
+    original_cold: [u8; 32],
+    measured: &ProgrammeMeasurementValue,
+) -> Result<(MeterOwnerStateReference, MeasurementDependentOwnerInputs), MeterFinalizationBridgeError>
+{
+    use jocforge_domain::meter::{
+        sample_block_queue::MeterSourceSampleCount, standalone_root::StandaloneMeterSchedule,
+    };
+    let samples = MeterSourceSampleCount::new(prepared.configuration().source_samples())
+        .map_err(|_| MeterFinalizationBridgeError::MeasurementScheduleMismatch)?;
+    let schedule = StandaloneMeterSchedule::for_source_samples(samples)
+        .map_err(|_| MeterFinalizationBridgeError::MeasurementScheduleMismatch)?;
+    let identity = prepared.domain_identity_capability();
+    let (reference, receipt) = MeterOwnerStateReference::bind_cached_measurement(
+        measured,
+        key,
+        original_terminal,
+        original_cold,
+        prepared.programme_id().clone(),
+        attempt,
+        &identity,
+        schedule,
+    )
+    .map_err(|_| MeterFinalizationBridgeError::CanonicalState)?;
+    let inputs = prepare_measurement_dependent_owner_inputs(&receipt, &identity)
+        .map_err(MeterFinalizationBridgeError::DependentOwners)?;
+    Ok((reference, inputs))
 }

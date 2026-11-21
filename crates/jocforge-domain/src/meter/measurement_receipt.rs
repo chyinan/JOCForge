@@ -15,7 +15,7 @@ pub enum MeasurementReceiptError {
 }
 
 /// Semantic kind stored by the final model measurement receipt.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, serde::Serialize, serde::Deserialize)]
 pub enum ProgrammeGatingKind {
     Ungated,
     Dialogue,

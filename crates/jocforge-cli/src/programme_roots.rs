@@ -14,7 +14,7 @@ use jocforge_application::{
     integrity_source_bridge::IntegrityProgrammeOwner,
     metadata_source_bridge::{MetadataEofProposal, MetadataOwner, SelectedJocState},
     meter_finalization_bridge::{
-        ProgrammeMeasurementReceipt, StandaloneMeterRoot, unchanged_meter_root_receipt,
+        MeterOwnerStateReference, ProgrammeMeasurementReceipt, unchanged_meter_reference_receipt,
     },
     meter_source_bridge::{Flat7xI0D0TargetPlan, JocReconstructionLayout, ResolvedEncodingProfile},
     output_publication::{
@@ -112,7 +112,7 @@ pub(crate) struct ProgrammeOwnerRoots<'a> {
     published_aus: u64,
     durable_bytes: u64,
     measurement: &'a ProgrammeMeasurementReceipt,
-    meter: &'a StandaloneMeterRoot,
+    meter: &'a MeterOwnerStateReference,
     main: Arc<MainSpatialColdRoots>,
     reader_eof: Arc<ReaderEofMachine>,
     integrity: IntegrityProgrammeOwner,
@@ -135,7 +135,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
         profile: ResolvedEncodingProfile,
         attempt: AttemptId,
         measurement: &'a ProgrammeMeasurementReceipt,
-        meter: &'a StandaloneMeterRoot,
+        meter: &'a MeterOwnerStateReference,
         main: MainSpatialColdRoots,
         reader_eof: ReaderEofMachine,
         integrity: IntegrityProgrammeOwner,
@@ -174,8 +174,11 @@ impl<'a> ProgrammeOwnerRoots<'a> {
             || measurement.attempt() != attempt
             || measurement.input_sha256() != &prepared.resource_identity().input_sha256()
             || measurement.config_sha256() != &prepared.config_sha256()
-            || meter.identity().programme_id() != prepared.programme_id()
-            || meter.identity().attempt() != attempt
+            || measurement.meter_terminal_sha256() != meter.state_sha256()
+            || measurement
+                .normal_callbacks()
+                .checked_add(measurement.zero_drains())
+                != Some(meter.generation().value())
             || output.programme_id() != prepared.programme_id()
             || output.attempt_id() != attempt
             || reader_eof.generation() != 0
@@ -325,7 +328,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
         &self.output
     }
 
-    pub const fn meter(&self) -> &StandaloneMeterRoot {
+    pub const fn meter(&self) -> &MeterOwnerStateReference {
         self.meter
     }
 
@@ -386,7 +389,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
 
         let mut receipts = changed_receipts.into_iter().collect::<Vec<_>>();
         receipts.push(
-            unchanged_meter_root_receipt(
+            unchanged_meter_reference_receipt(
                 prepared,
                 self.meter,
                 self.measurement,
@@ -1042,8 +1045,8 @@ fn validate_source_receipt_generations(
         ),
         (
             GtcOwnerId::Meter,
-            before.meter.meter_callback_index().value(),
-            before.meter.meter_callback_index().value(),
+            before.meter.generation().value(),
+            before.meter.generation().value(),
         ),
         (
             GtcOwnerId::Drc,

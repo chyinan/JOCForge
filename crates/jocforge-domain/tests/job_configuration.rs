@@ -1279,3 +1279,47 @@ fn selected_bed_pack_order_joins_by_channel_format_identity_to_physical_hosts() 
         }
     }
 }
+
+#[test]
+fn meter_identity_uses_effective_audio_range_and_policy_across_outputs() {
+    let fixtures = fixture_json("job-configuration-vectors.json");
+    let xml = fixtures["config_cases"][0]["input_xml"].as_str().unwrap();
+    let key = |xml: &str| {
+        parse_selected_job_configuration(
+            xml.as_bytes(),
+            SelectedWaveDescriptor::new(48_000, 38, 24),
+            192_000,
+        )
+        .unwrap()
+        .resolve_render_timeline()
+        .unwrap()
+        .measurement_settings_identity()
+    };
+    assert_eq!(
+        key(xml),
+        key(&xml
+            .replace("<data_rate>1024", "<data_rate>384")
+            .replace("out.ec3", "other.ec3"))
+    );
+    assert_eq!(
+        key(xml),
+        key(&xml.replace("<start></start>", "<start>00:00:00.000</start>"))
+    );
+    let cut = xml
+        .replace("<start></start>", "<start>00:00:01.0</start>")
+        .replace("<end></end>", "<end>00:00:02.0</end>");
+    let shifted = cut
+        .replace("00:00:02.0</end>", "00:00:03.0</end>")
+        .replace("00:00:01.0</start>", "00:00:02.0</start>");
+    assert_ne!(key(&cut), key(&shifted));
+    let head = xml.replace(
+        "<prepend_silence_duration>0.0",
+        "<prepend_silence_duration>0.5",
+    );
+    let tail = xml.replace(
+        "<append_silence_duration>0.0",
+        "<append_silence_duration>0.5",
+    );
+    assert_ne!(key(&head), key(&tail));
+    assert_ne!(key(xml), key(&xml.replace("1770-4", "1770-3")));
+}
