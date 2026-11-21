@@ -1134,9 +1134,6 @@ fn run_inner(
         .is_some_and(|plan| plan.ac3_core_lfe().is_some());
     if ac3_core {
         validate_ac3_core_rate(selected_profile.codec_rate())?;
-        if signalling != EmdfCarriageProfile::EtsiEmdf {
-            return Err(EncodeRequestError::UnsupportedJocLayout);
-        }
     }
     let config_sha256 = prepared.config_sha256();
 
