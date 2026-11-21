@@ -66,6 +66,12 @@ struct EncodeArgs {
     /// Write strict ETSI JOC/OAMD EMDF signalling for the selected stream.
     #[arg(long)]
     etsi_strict: bool,
+    /// EMDF carrier: audio-block skip field or final dependent frame-end auxdata (etsi).
+    #[arg(long,value_parser=["skipfld","auxdata","etsi"])]
+    carriage: Option<String>,
+    /// EMDF signalling, independent of the carrier location.
+    #[arg(long,value_parser=["etsi","strict","deployed"],conflicts_with="etsi_strict")]
+    emdf_profile: Option<String>,
     /// Split each 1536-sample programme interval into equal E-AC-3 syncframes.
     #[arg(long, value_name = "6|3+3|2+2+2|1x6")]
     block_partition: Option<jocforge::encode_request::BlockPartition>,
@@ -128,10 +134,15 @@ fn main() -> ExitCode {
             use jocforge::encode_request::BlockPartition;
             use jocforge_application::meter_source_bridge::EmdfCarriageProfile;
             let partition = args.block_partition.unwrap_or(BlockPartition::Six);
-            let compose = partition != BlockPartition::Six
+            let auxdata = matches!(args.carriage.as_deref(), Some("auxdata" | "etsi"));
+            let compose = auxdata
+                || partition != BlockPartition::Six
                 || args.dependent_count.is_some()
                 || args.lfe_owner.is_some();
-            let signalling = if args.etsi_strict
+            let signalling = if args.emdf_profile.as_deref() == Some("deployed") {
+                EmdfCarriageProfile::DeployedCompat
+            } else if args.emdf_profile.is_some()
+                || args.etsi_strict
                 || compose
                 || layout.uses_height_pair()
                 || layout == JocReconstructionLayout::FivePointOneWithoutPhase
@@ -151,11 +162,19 @@ fn main() -> ExitCode {
                 match SubstreamPlan::new(
                     layout,
                     args.dependent_count.unwrap_or(u8::from(
-                        layout.uses_seven_carriers()
+                        auxdata
+                            || layout.uses_seven_carriers()
                             || matches!(owner, LfeOwner::Dependent | LfeOwner::ReplaceIndependent),
                     )),
                     owner,
-                ) {
+                )
+                .and_then(|plan| {
+                    plan.with_emdf_location(if auxdata {
+                        jocforge::encode_request::EmdfLocation::FrameEnd
+                    } else {
+                        jocforge::encode_request::EmdfLocation::SkipField
+                    })
+                }) {
                     Ok(plan) => Some(plan.with_partition(partition)),
                     Err(e) => {
                         eprintln!("{e}");

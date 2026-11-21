@@ -97,6 +97,18 @@ mkdir height-short
 jocforge encode input.adm.wav height-short/song.candidate.ec3 --joc-layout idx4 --total-rate 1664 --block-partition 3+3 --dependent-count 2 --lfe-owner dependent
 ```
 
+### EMDF 承载位置与信令
+
+`--carriage auxdata`（主分支拼写为 `etsi`）将受保护的 EMDF 容器写入最后一个依赖子流的帧尾。短块划分时，每个 1536 采样区间只在最后一组写入一次。默认使用一个依赖子流；显式指定流数时，帧尾模式要求至少一个。音频块内的承载使用 `--carriage skipfld`。
+
+`--emdf-profile etsi` 和 `--emdf-profile deployed` 分别选择严格 ETSI 信令和部署兼容信令，两种承载都可以搭配任一信令。原有 `--etsi-strict` 仍可用。单独指定帧尾承载时，默认使用严格信令。文件输入和 XML 作业共用这些参数。
+
+```powershell
+mkdir aux-strict, aux-deployed
+jocforge encode input.adm.wav aux-strict/song.candidate.ec3 --joc-layout idx4 --dependent-count 2 --block-partition 3+3 --carriage auxdata --emdf-profile etsi
+jocforge encode input.adm.wav aux-deployed/song.candidate.ec3 --joc-layout idx4 --dependent-count 2 --block-partition 3+3 --carriage auxdata --emdf-profile deployed
+```
+
 ### 无损封装为 MKA 或 MP4
 
 在同一个 PowerShell 会话中任选一种容器。`-c:a copy` 直接复制 EC3 音轨并保留 JOC 元数据。

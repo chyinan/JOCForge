@@ -1,7 +1,9 @@
 // pattern: Imperative Shell
 //! Reads one selected ADM BWF, prepares its input identity, and enters the application encode gate.
 
-pub use jocforge_application::source_frame_bridge::{BlockPartition, LfeOwner, SubstreamPlan};
+pub use jocforge_application::source_frame_bridge::{
+    BlockPartition, EmdfLocation, LfeOwner, SubstreamPlan,
+};
 pub use jocforge_application::{FileRenderTiming, SourceTimeRangeError};
 
 use std::{

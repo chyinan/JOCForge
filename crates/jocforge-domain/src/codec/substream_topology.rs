@@ -40,6 +40,12 @@ impl BlockPartition {
     }
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum EmdfLocation {
+    SkipField,
+    FrameEnd,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum LfeOwner {
     None,
     Independent,
@@ -56,6 +62,7 @@ pub(super) struct FramePlan {
 
 #[derive(Clone, Debug)]
 pub struct SubstreamPlan {
+    pub(super) emdf_location: EmdfLocation,
     pub(super) frames: Vec<FramePlan>,
     pub(super) partition: BlockPartition,
     layout: JocReconstructionLayout,
@@ -124,8 +131,17 @@ impl SubstreamPlan {
         Ok(Self {
             frames,
             layout,
+            emdf_location: EmdfLocation::SkipField,
             partition: BlockPartition::Six,
         })
+    }
+
+    pub fn with_emdf_location(mut self, location: EmdfLocation) -> Result<Self, String> {
+        if location == EmdfLocation::FrameEnd && self.frames.len() < 2 {
+            return Err("ETSI frame-end carriage requires a dependent substream".into());
+        }
+        self.emdf_location = location;
+        Ok(self)
     }
 
     pub fn with_partition(mut self, partition: BlockPartition) -> Self {

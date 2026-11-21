@@ -10,7 +10,7 @@ use super::{
 };
 use crate::integrity::crc16::eac3_crc16;
 
-use super::substream_topology::{BlockPartition, FramePlan, SubstreamPlan};
+use super::substream_topology::{BlockPartition, EmdfLocation, FramePlan, SubstreamPlan};
 
 impl SubstreamPlan {
     pub fn encode(
@@ -81,7 +81,7 @@ impl SubstreamPlan {
                     rows,
                     bytes: sizes.get(index).map_or(4096, |words| words * 2),
                     metadata: &metadata,
-                    carry: index == last && start + blocks == 6,
+                    carrier: (index == last && start + blocks == 6).then_some(self.emdf_location),
                     start,
                     partition: self.partition,
                 };
@@ -95,7 +95,7 @@ impl SubstreamPlan {
             let mut minimum = 0usize;
             for component in &mut components {
                 let bits = component.write(&mut scratch, 0, None)? as usize;
-                component.bytes = (bits + 18).div_ceil(16) * 2;
+                component.bytes = (bits + component.tail_bits()).div_ceil(16) * 2;
                 minimum += component.bytes;
             }
             let mut words = bytes.checked_sub(minimum).ok_or_else(|| {
@@ -218,11 +218,19 @@ struct Syncframe<'a> {
     rows: Vec<SpectralRow<'a>>,
     bytes: usize,
     metadata: &'a FrameMetadata<'a>,
-    carry: bool,
+    carrier: Option<EmdfLocation>,
     start: usize,
     partition: BlockPartition,
 }
 impl Syncframe<'_> {
+    fn tail_bits(&self) -> usize {
+        if self.carrier == Some(EmdfLocation::FrameEnd) {
+            self.metadata.emdf.len() * 8 + 32
+        } else {
+            18
+        }
+    }
+
     fn encode(&self, tables: &BapParameters) -> Result<Vec<u8>, String> {
         let mut buffer = vec![0; self.bytes];
         let mut alloc: Vec<Vec<u8>> = self
@@ -231,13 +239,13 @@ impl Syncframe<'_> {
             .map(|r| vec![0; r.samples[0].len()])
             .collect();
         let syntax = self.write(&mut buffer, 0, None)? as usize;
-        if syntax + 18 > self.bytes * 8 {
+        if syntax + self.tail_bits() > self.bytes * 8 {
             return Err(format!(
                 "substream {} metadata exceeds {} bytes",
                 self.index, self.bytes
             ));
         }
-        let budget = (self.bytes * 8 - syntax - 18) / self.partition.blocks();
+        let budget = (self.bytes * 8 - syntax - self.tail_bits()) / self.partition.blocks();
         let mut lo = 0u16;
         let mut hi = 1024u16;
         while hi - lo > 1 {
@@ -260,8 +268,20 @@ impl Syncframe<'_> {
         }
         buffer.fill(0);
         let used = self.write(&mut buffer, lo, Some(&alloc))? as usize;
-        if used + 18 > self.bytes * 8 {
+        if used + self.tail_bits() > self.bytes * 8 {
             return Err("dependent frame overflow".into());
+        }
+        if self.carrier == Some(EmdfLocation::FrameEnd) {
+            let emdf = self.metadata.emdf;
+            let length_bits = u16::try_from(emdf.len() * 8)
+                .ok()
+                .filter(|n| *n < 1 << 14)
+                .ok_or("EMDF exceeds auxdatal field")?;
+            let length_pos = self.bytes - 4;
+            buffer[length_pos - emdf.len()..length_pos].copy_from_slice(emdf);
+            // auxdatal (14 bits), auxdatae=1, crcrsv=0 precede the CRC16.
+            buffer[length_pos..length_pos + 2]
+                .copy_from_slice(&((length_bits << 2) | 2).to_be_bytes());
         }
         let end = self.bytes - 2;
         let mut crc = eac3_crc16(&buffer[2..end]);
@@ -323,8 +343,8 @@ impl Syncframe<'_> {
         if self.index == 0 && self.partition != BlockPartition::Six {
             bits!(self.start == 0, 1);
         } // convsync
-        bits!(self.carry, 1);
-        if self.carry {
+        bits!(self.carrier.is_some(), 1);
+        if self.carrier.is_some() {
             bits!(1, 6);
             bits!(1, 8);
             bits!(16, 8);
@@ -341,7 +361,7 @@ impl Syncframe<'_> {
         bits!(0, 1); // standard bit allocation parameters
         bits!(0, 1); // standard fast gain
         bits!(0, 1); // no delta bit allocation
-        bits!(self.carry, 1); // only the metadata owner has skip fields
+        bits!(self.carrier == Some(EmdfLocation::SkipField), 1); // only the metadata owner has skip fields
         bits!(0, 1); // no spectral extension attenuation
         if n > 1 {
             bits!(0, blocks as u8);
@@ -408,7 +428,7 @@ impl Syncframe<'_> {
             if self.index == 0 {
                 bits!(0, 1);
             } // convsnroffste
-            if self.carry {
+            if self.carrier == Some(EmdfLocation::SkipField) {
                 let metadata_block = if blocks == 6 { 2 } else { blocks - 1 };
                 bits!(local == metadata_block, 1);
                 if local == metadata_block {
@@ -502,7 +522,7 @@ mod tests {
                     rows,
                     bytes: 1024,
                     metadata: &metadata,
-                    carry: false,
+                    carrier: None,
                     start,
                     partition,
                 }
@@ -515,5 +535,51 @@ mod tests {
             }
         }
         assert!("1+2+3".parse::<BlockPartition>().is_err());
+    }
+    #[test]
+    fn frame_end_writes_auxdatal_in_bits_and_protects_the_container_with_crc() {
+        let tables = super::super::bap::load_bap_parameters(Some(include_bytes!(
+            "../../../../outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-PUBLIC-BAP-PROVIDER-V1/public-bap-48k-v1.json"
+        ))).unwrap();
+        let emdf: Vec<u8> = (0..511).map(|i| (i % 251) as u8).collect();
+        let metadata = FrameMetadata {
+            emdf: &emdf,
+            dialnorm: 24,
+            compr: None,
+            dynrng: [None; 6],
+            mixing: Flat7xD0MixingMetadataValues {
+                mixmdo: 2,
+                ltrtcmixlev: 4,
+                lorocmixlev: 4,
+                ltrtsurmixlev: 4,
+                lorosurmixlev: 4,
+            },
+        };
+        let plan = FramePlan {
+            channels: vec![0],
+            map: 0x8000,
+            lfe: false,
+        };
+        let samples = [0u32; 217];
+        let row = SpectralRow::new([&samples; 6], [false; 6], false, 5..6, &tables).unwrap();
+        let mut syncframe = Syncframe {
+            index: 1,
+            plan: &plan,
+            rows: vec![row],
+            bytes: 1024,
+            metadata: &metadata,
+            carrier: Some(EmdfLocation::FrameEnd),
+            start: 5,
+            partition: BlockPartition::One,
+        };
+        let frame = syncframe.encode(&tables).unwrap();
+        let end = frame.len() - 4;
+        assert_eq!(&frame[end - emdf.len()..end], emdf.as_slice());
+        let trailer = u16::from_be_bytes([frame[end], frame[end + 1]]);
+        assert_eq!(usize::from(trailer >> 2), emdf.len() * 8);
+        assert_eq!(trailer & 2, 2);
+        assert_eq!(eac3_crc16(&frame[2..]), 0);
+        syncframe.bytes = 512;
+        assert!(syncframe.encode(&tables).is_err());
     }
 }

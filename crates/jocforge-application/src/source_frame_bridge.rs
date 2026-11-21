@@ -3,7 +3,7 @@
 
 pub use jocforge_domain::codec::{
     substream_composition::FrameMetadata,
-    substream_topology::{BlockPartition, LfeOwner, SubstreamPlan},
+    substream_topology::{BlockPartition, EmdfLocation, LfeOwner, SubstreamPlan},
 };
 use std::sync::Arc;
 
