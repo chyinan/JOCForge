@@ -308,7 +308,11 @@ pub fn fit_seven_carrier_window_set(
     weight_words: &[u32; 48],
     score_provider: &FitScoreProvider,
 ) -> Result<SevenCarrierFitRows, CoefficientFittingError> {
-    let carrier_words = carrier_windows.words_in_target_order();
+    // Match the reference level used to fit the seven-carrier reconstruction matrix.
+    let mut carrier_words = carrier_windows.words_in_target_order();
+    for word in &mut carrier_words {
+        *word = (f32::from_bits(*word) * 0.25).to_bits();
+    }
     let equations = build_normal_equations_for_carriers::<SEVEN_CHANNEL_COUNT>(
         target_windows,
         &carrier_words,

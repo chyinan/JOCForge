@@ -329,11 +329,27 @@ impl<const CARRIER_COUNT: usize> FitCell<'_, CARRIER_COUNT> {
             )
         }
         .map_err(CoefficientSearchError::Solver)?;
+        let mut stored_words = *normalized.stored_words();
+        if CARRIER_COUNT == 7 {
+            // Keep the gain ratios when a fitted vector exceeds the coarse wire range.
+            let upper = 47.0 * 410.0 / 32768.0;
+            let lower = -48.0 * 410.0 / 32768.0;
+            let excursion = stored_words.iter().fold(1.0_f32, |peak, &word| {
+                let value = f32::from_bits(word);
+                peak.max(if value < 0.0 {
+                    value / lower
+                } else {
+                    value / upper
+                })
+            });
+            if excursion > 1.0 {
+                for word in &mut stored_words {
+                    *word = (f32::from_bits(*word) / excursion).to_bits();
+                }
+            }
+        }
         let mut trial_words = [ZERO_BITS; CARRIER_COUNT];
-        for (trial, stored) in trial_words
-            .iter_mut()
-            .zip(normalized.stored_words().iter().copied())
-        {
+        for (trial, stored) in trial_words.iter_mut().zip(stored_words.iter().copied()) {
             let quantized = quantize_selected_coefficient(f32::from_bits(stored), self.precision)
                 .map_err(CoefficientSearchError::Quantization)?;
             *trial = restore_trial_coefficient(quantized, self.precision)
@@ -364,7 +380,7 @@ impl<const CARRIER_COUNT: usize> FitCell<'_, CARRIER_COUNT> {
         };
         Ok(Candidate {
             support,
-            stored_words: *normalized.stored_words(),
+            stored_words,
             trial_words,
             score,
         })
