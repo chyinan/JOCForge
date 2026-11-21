@@ -204,7 +204,7 @@ Line 与 RF 可独立设置为 `film_light`、`film_standard`、`music_standard`
 
 ### 响度缓存
 
-CLI 和 NERX Studio 共用当前用户的响度缓存。第一次编码时完整测量 ADM；再次编码同一内容时，只要实际裁剪位置、首尾静音和测量设置相同，就可以跨码率、跨 5.1 和 Flat 7.1 复用。命中时 CLI 会显示 `Loudness cache hit`。测量算法版本或内置参数变化会重新测量。
+JOCForge 为当前用户保存响度缓存。第一次编码时完整测量 ADM；再次编码同一内容时，只要实际裁剪位置、首尾静音和测量设置相同，就可以跨码率、跨 5.1 和 Flat 7.1 复用。命中时 CLI 会显示 `Loudness cache hit`。测量算法版本或内置参数变化会重新测量。
 
 缓存保存响度、峰值、门控方式等完整测量结果的精确数值及校验信息。Windows 默认目录为 `%LOCALAPPDATA%\JOCForge\adm-loudness-v1`，macOS 为 `~/Library/Caches/JOCForge/adm-loudness-v1`。可通过 `JOCFORGE_CACHE_DIR` 指定缓存根目录，或删除缓存以强制重新测量。目录不可写时，编码器照常完成当前导出。
 
