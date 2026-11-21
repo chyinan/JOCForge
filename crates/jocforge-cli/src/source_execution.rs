@@ -42,7 +42,7 @@ use jocforge_application::{
     meter_finalization_bridge::{
         MeterOwnerStateReference, ProgrammeMeasurementReceipt, unchanged_meter_reference_receipt,
     },
-    meter_source_bridge::{Flat7xI0D0TargetPlan, JocReconstructionLayout, ResolvedEncodingProfile},
+    meter_source_bridge::{Flat7xI0D0TargetPlan, ResolvedEncodingProfile},
     output_publication::{
         AdmittedProductionPlan, OutputDurableAppendReceipt, OutputSourceAfterProposal,
         ProgrammeOutputBinding, prepare_output_source_for_flat7x_suppressed,
@@ -196,30 +196,32 @@ pub(crate) fn stage_source_frame<'pcm>(
     )
     .map_err(|error| format!("Meter unchanged callback receipt: {error:?}"))?;
 
-    let flat7x_callback_pcm =
-        if joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
-            let pcm_source = flat7x_carriers.ok_or_else(|| {
-                "Flat7x source stage requires the callback's rendered carriers".to_owned()
-            })?;
-            let expected_input_sha = prepared.resource_identity().input_sha256();
-            let source_extent = pcm_source.source_extent;
-            if pcm_source.input_sha256 != expected_input_sha
-                || source_extent.callback_index() != callback_index
-                || source_extent.source_index() != source_index
-            {
-                return Err(SourceFrameStageError::Pipeline(
-                    "Flat7x programme window identity mismatch".to_owned(),
-                ));
-            }
-            let i0_analysis_input = installed_audio_from_flat7x_i0_rows(
-                source_index,
-                pcm_source.mix.pcm_view().i0().rows(),
-            )
-            .map_err(|error| format!("Flat7x I0 scene mix: {error:?}"))?;
-            Some((pcm_source, source_extent, i0_analysis_input))
-        } else {
-            None
-        };
+    let flat7x_callback_pcm = if joc_profile
+        .joc_reconstruction_layout()
+        .uses_seven_carriers()
+    {
+        let pcm_source = flat7x_carriers.ok_or_else(|| {
+            "Flat7x source stage requires the callback's rendered carriers".to_owned()
+        })?;
+        let expected_input_sha = prepared.resource_identity().input_sha256();
+        let source_extent = pcm_source.source_extent;
+        if pcm_source.input_sha256 != expected_input_sha
+            || source_extent.callback_index() != callback_index
+            || source_extent.source_index() != source_index
+        {
+            return Err(SourceFrameStageError::Pipeline(
+                "Flat7x programme window identity mismatch".to_owned(),
+            ));
+        }
+        let i0_analysis_input = installed_audio_from_flat7x_i0_rows(
+            source_index,
+            pcm_source.mix.pcm_view().i0().rows(),
+        )
+        .map_err(|error| format!("Flat7x I0 scene mix: {error:?}"))?;
+        Some((pcm_source, source_extent, i0_analysis_input))
+    } else {
+        None
+    };
 
     let analysis_input = SpatialSourceAnalysisBridgeInput {
         prepared,
@@ -241,8 +243,11 @@ pub(crate) fn stage_source_frame<'pcm>(
             })?;
             let receipt = bind_flat7x_source_role_map(
                 prepared,
-                Flat7xI0D0TargetPlan::for_d0_rate(joc_profile.codec_rate())
-                    .ok_or_else(|| "unsupported Flat7x rate".to_owned())?,
+                Flat7xI0D0TargetPlan::for_layout(
+                    joc_profile.codec_rate(),
+                    joc_profile.joc_reconstruction_layout(),
+                )
+                .ok_or_else(|| "unsupported Flat7x rate".to_owned())?,
                 &callback_identity,
                 source_index,
                 &source_transaction_id,
@@ -276,8 +281,11 @@ pub(crate) fn stage_source_frame<'pcm>(
                     prepared,
                     shared_analysis,
                     drc_source.after_root(),
-                    Flat7xI0D0TargetPlan::for_d0_rate(joc_profile.codec_rate())
-                        .ok_or_else(|| "unsupported Flat7x rate".to_owned())?,
+                    Flat7xI0D0TargetPlan::for_layout(
+                        joc_profile.codec_rate(),
+                        joc_profile.joc_reconstruction_layout(),
+                    )
+                    .ok_or_else(|| "unsupported Flat7x rate".to_owned())?,
                 )
                 .map_err(|error| {
                     SourceFrameStageError::Pipeline(format!(
@@ -814,24 +822,26 @@ pub(crate) fn stage_source_frame<'pcm>(
         .map_err(|error| format!("F14/F12 Integrity owner stage: {error:?}"))?;
         let (integrity_root, integrity_receipts, integrity_owner_receipt) =
             integrity_candidate.into_parts();
-        let output_proposal =
-            if joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
-                if source_index.value() >= 2 || flat7x_d0_history_after.is_none() {
-                    return Err(SourceFrameStageError::Pipeline(
-                        "Flat7x published source did not produce a paired F15 proposal".to_owned(),
-                    ));
-                }
-                prepare_output_source_for_flat7x_suppressed(output_binding_before, source_index)
-                    .map_err(|error| format!("Flat7x suppressed F15 output proposal: {error}"))?
-            } else {
-                prepare_output_source_from_candidate(
-                    prepared,
-                    output_binding_before,
-                    &metadata_source,
-                    &frame_candidate,
-                )
-                .map_err(|error| format!("F15 output proposal: {error}"))?
-            };
+        let output_proposal = if joc_profile
+            .joc_reconstruction_layout()
+            .uses_seven_carriers()
+        {
+            if source_index.value() >= 2 || flat7x_d0_history_after.is_none() {
+                return Err(SourceFrameStageError::Pipeline(
+                    "Flat7x published source did not produce a paired F15 proposal".to_owned(),
+                ));
+            }
+            prepare_output_source_for_flat7x_suppressed(output_binding_before, source_index)
+                .map_err(|error| format!("Flat7x suppressed F15 output proposal: {error}"))?
+        } else {
+            prepare_output_source_from_candidate(
+                prepared,
+                output_binding_before,
+                &metadata_source,
+                &frame_candidate,
+            )
+            .map_err(|error| format!("F15 output proposal: {error}"))?
+        };
         let staged_output = match flat7x_d0_history_after.as_ref() {
             Some(history_after) => stage_source_frame_output_with_d0_history(
                 staging,

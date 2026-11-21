@@ -322,8 +322,7 @@ pub fn stage_receipted_i0_with_opaque_d0<'a>(
     let role_map = i0_frame.source_role_map_receipt();
     if !target.is_supported()
         || role_map.target() != target
-        || i0_frame.resolved_profile().joc_reconstruction_layout()
-            != jocforge_domain::profile::JocReconstructionLayout::Flat7x
+        || i0_frame.resolved_profile().joc_reconstruction_layout() != target.reconstruction_layout()
         || i0_frame.resolved_profile().codec_rate() != target.d0().rate()
     {
         return Err(Flat7xPairAppendProposalError::UnsupportedTarget);

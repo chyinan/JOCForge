@@ -24,12 +24,14 @@ pub enum Flat7xFrameCodec {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum JocSpatialIndex {
     Flat7x,
+    FivePointOnePlusHeight,
 }
 
 impl JocSpatialIndex {
     pub const fn value(self) -> u8 {
         match self {
             Self::Flat7x => 1,
+            Self::FivePointOnePlusHeight => 2,
         }
     }
 }
@@ -38,18 +40,20 @@ impl JocSpatialIndex {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum DownmixIndex {
     SevenChannel,
+    HeightPair,
 }
 
 impl DownmixIndex {
     pub const fn value(self) -> u8 {
         match self {
             Self::SevenChannel => 1,
+            Self::HeightPair => 2,
         }
     }
 
     pub const fn coefficient_width(self) -> u8 {
         match self {
-            Self::SevenChannel => 7,
+            Self::SevenChannel | Self::HeightPair => 7,
         }
     }
 }
@@ -63,6 +67,8 @@ pub enum Eac3CodedChannel {
     RightSurround,
     LeftRearSurround,
     RightRearSurround,
+    TopFrontLeft,
+    TopFrontRight,
     LowFrequencyEffects,
 }
 
@@ -75,6 +81,8 @@ pub enum ReconstructionCarrierPosition {
     RightSurround,
     LeftRearSurround,
     RightRearSurround,
+    TopFrontLeft,
+    TopFrontRight,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -112,7 +120,7 @@ impl DependentChannelMap {
 
     /// Target numeric bit positions in MSB-indexed `chanmap` order.
     pub const fn msb_indexed_set_bits(self) -> [u8; 3] {
-        [3, 4, 6]
+        [3, 4, if self.0 == 0x1810 { 11 } else { 6 }]
     }
 }
 
@@ -397,6 +405,28 @@ impl Flat7xI0D0TargetPlan {
         plan.d0.rate = rate;
         Some(plan)
     }
+    pub fn for_layout(rate: CodecRateProfile, layout: JocReconstructionLayout) -> Option<Self> {
+        let mut plan = Self::for_d0_rate(rate)?;
+        match layout {
+            JocReconstructionLayout::Flat7x => {}
+            JocReconstructionLayout::FivePointOnePlusHeight => {
+                plan.reconstruction_layout = layout;
+                plan.joc_spatial_index = JocSpatialIndex::FivePointOnePlusHeight;
+                plan.downmix_index = DownmixIndex::HeightPair;
+                plan.d0.channel_map = Some(DependentChannelMap(0x1810));
+                plan.d0.coded_channels = &[
+                    Eac3CodedChannel::LeftSurround,
+                    Eac3CodedChannel::RightSurround,
+                    Eac3CodedChannel::TopFrontLeft,
+                    Eac3CodedChannel::TopFrontRight,
+                ];
+                plan.reconstruction_carriers[5] = ReconstructionCarrierPosition::TopFrontLeft;
+                plan.reconstruction_carriers[6] = ReconstructionCarrierPosition::TopFrontRight;
+            }
+            _ => return None,
+        }
+        Some(plan)
+    }
     pub fn from_au_bytes(bytes: u32) -> Option<Self> {
         let d0_bytes =
             bytes.checked_sub(u32::from(Self::approved_contract().i0().frame_bytes()))?;
@@ -406,7 +436,7 @@ impl Flat7xI0D0TargetPlan {
         Self::for_d0_rate(CodecRateProfile::from_kbps(d0_bytes / 4)?)
     }
     pub fn is_supported(self) -> bool {
-        Self::for_d0_rate(self.d0.rate) == Some(self)
+        Self::for_layout(self.d0.rate, self.reconstruction_layout) == Some(self)
     }
 
     pub const fn aggregate_frame_bytes(self) -> u32 {

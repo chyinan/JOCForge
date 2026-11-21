@@ -1120,8 +1120,10 @@ fn admit_validated_encoding_plan<
     .map_err(|error| {
         F15PlanAdmissionError::OutputConfiguration(OutputRootBindingError::OutputOwner(error))
     })?;
-    let output_configuration = if context.resolved_profile.joc_reconstruction_layout()
-        == jocforge_domain::profile::JocReconstructionLayout::Flat7x
+    let output_configuration = if context
+        .resolved_profile
+        .joc_reconstruction_layout()
+        .uses_seven_carriers()
     {
         let target = jocforge_domain::profile::Flat7xI0D0TargetPlan::for_d0_rate(
             context.resolved_profile.codec_rate(),

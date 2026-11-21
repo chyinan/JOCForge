@@ -34,13 +34,18 @@ pub enum JocDownmixProfile {
 pub enum JocPayloadDownmixIndex {
     FiveChannel,
     SevenChannel,
+    HeightPair,
 }
 
 impl JocPayloadDownmixIndex {
+    pub const fn uses_seven_carriers(self) -> bool {
+        matches!(self, Self::SevenChannel | Self::HeightPair)
+    }
     pub const fn value(self) -> u8 {
         match self {
             Self::FiveChannel => 3,
             Self::SevenChannel => 1,
+            Self::HeightPair => 2,
         }
     }
 }
@@ -52,14 +57,19 @@ pub enum JocReconstructionLayout {
     ExistingSelectedFivePointOne,
     /// ETSI 7.X Lb/Rb layout, serialized as `joc_dmx_config_idx=1`.
     Flat7x,
+    FivePointOnePlusHeight,
     Unsupported,
 }
 
 impl JocReconstructionLayout {
+    pub const fn uses_seven_carriers(self) -> bool {
+        matches!(self, Self::Flat7x | Self::FivePointOnePlusHeight)
+    }
     /// Maps an explicitly supplied ETSI layout index to the one additive row supported here.
     pub const fn from_joc_dmx_config_idx(value: u8) -> Option<Self> {
         match value {
             1 => Some(Self::Flat7x),
+            2 => Some(Self::FivePointOnePlusHeight),
             _ => None,
         }
     }
@@ -69,6 +79,7 @@ impl JocReconstructionLayout {
     pub const fn joc_dmx_config_idx(self) -> Option<u8> {
         match self {
             Self::Flat7x => Some(1),
+            Self::FivePointOnePlusHeight => Some(2),
             Self::ExistingSelectedFivePointOne | Self::Unsupported => None,
         }
     }
@@ -264,13 +275,22 @@ impl EncodingProfile {
                 joc_reconstruction_layout,
                 ..selected
             },
-            JocReconstructionLayout::Flat7x => Self {
-                carrier_codec: CarrierCodecProfile::Flat7xAc3I0DependentEac3D0,
-                joc_payload_downmix_index: JocPayloadDownmixIndex::SevenChannel,
-                joc_reconstruction_layout,
-                substream_topology: SubstreamTopology::Flat7xIndependentI0DependentD0,
-                ..selected
-            },
+            JocReconstructionLayout::Flat7x | JocReconstructionLayout::FivePointOnePlusHeight => {
+                Self {
+                    carrier_codec: CarrierCodecProfile::Flat7xAc3I0DependentEac3D0,
+                    joc_payload_downmix_index: if matches!(
+                        joc_reconstruction_layout,
+                        JocReconstructionLayout::FivePointOnePlusHeight
+                    ) {
+                        JocPayloadDownmixIndex::HeightPair
+                    } else {
+                        JocPayloadDownmixIndex::SevenChannel
+                    },
+                    joc_reconstruction_layout,
+                    substream_topology: SubstreamTopology::Flat7xIndependentI0DependentD0,
+                    ..selected
+                }
+            }
         }
     }
 
@@ -432,6 +452,12 @@ pub const fn resolve_selected_profile(
             CarrierCodecProfile::Flat7xAc3I0DependentEac3D0,
             SubstreamTopology::Flat7xIndependentI0DependentD0,
             JocPayloadDownmixIndex::SevenChannel,
+        )
+        | (
+            JocReconstructionLayout::FivePointOnePlusHeight,
+            CarrierCodecProfile::Flat7xAc3I0DependentEac3D0,
+            SubstreamTopology::Flat7xIndependentI0DependentD0,
+            JocPayloadDownmixIndex::HeightPair,
         ) => profile.codec_rate.kbps().is_some(),
         _ => false,
     };

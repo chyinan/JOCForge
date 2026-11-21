@@ -25,7 +25,7 @@ use super::{
 use crate::joc::id14_body::Id14ProducerProvenance;
 use crate::{
     joc::emdf::protected_container::CurrentEmdfPayloadSequence,
-    profile::{JocReconstructionLayout, ResolvedEncodingProfile},
+    profile::ResolvedEncodingProfile,
     spatial::source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
     timeline::{
         CodecSourceIndex, FrontendCallbackIndex, JocDispatchIndex, OrdinaryPayloadWriterIndex,
@@ -1760,18 +1760,17 @@ impl MetadataOwner {
         wrapper_file: &[u8],
         profile: ResolvedEncodingProfile,
     ) -> Result<Self, MetadataOwnerError> {
-        let wrapper_profile =
-            if profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
-                if profile.carriage() == crate::profile::EmdfCarriageProfile::EtsiEmdf {
-                    MetadataWrapperProfile::StrictFlat7x
-                } else {
-                    MetadataWrapperProfile::Flat7x
-                }
-            } else if profile.carriage() == crate::profile::EmdfCarriageProfile::EtsiEmdf {
-                MetadataWrapperProfile::StrictFiveOne
+        let wrapper_profile = if profile.joc_reconstruction_layout().uses_seven_carriers() {
+            if profile.carriage() == crate::profile::EmdfCarriageProfile::EtsiEmdf {
+                MetadataWrapperProfile::StrictFlat7x
             } else {
-                MetadataWrapperProfile::Selected
-            };
+                MetadataWrapperProfile::Flat7x
+            }
+        } else if profile.carriage() == crate::profile::EmdfCarriageProfile::EtsiEmdf {
+            MetadataWrapperProfile::StrictFiveOne
+        } else {
+            MetadataWrapperProfile::Selected
+        };
         Self::new_with_wrapper_profile(
             id1_configuration,
             expected_sources,

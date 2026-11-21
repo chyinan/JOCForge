@@ -31,7 +31,6 @@ use crate::{
         },
         temporal_weights::{TemporalWeightError, TemporalWeightProposal, TemporalWeightState},
     },
-    profile::JocReconstructionLayout,
     profile::{JocPayloadDownmixIndex, ResolvedEncodingProfile},
     spatial::{
         QmfReceiverFunctionalProvider,
@@ -152,6 +151,7 @@ pub struct CoefficientFitProposal {
 /// Diagnostic full/sparse coefficient rows from one seven-carrier QMF window set.
 #[derive(Clone, Debug, PartialEq)]
 pub struct SevenCarrierFitRows {
+    downmix_index: JocPayloadDownmixIndex,
     qmf_source_identity: SevenCarrierQmfSourceIdentity,
     full_words: Vec<u32>,
     sparse_words: Vec<u32>,
@@ -185,7 +185,7 @@ impl SevenCarrierFitRows {
     }
 
     pub const fn payload_downmix_index(&self) -> JocPayloadDownmixIndex {
-        JocPayloadDownmixIndex::SevenChannel
+        self.downmix_index
     }
 
     pub const fn production_allowed(&self) -> bool {
@@ -350,6 +350,13 @@ pub fn fit_seven_carrier_window_set(
     }
 
     Ok(SevenCarrierFitRows {
+        downmix_index: if carrier_windows.role_bindings()[5].role()
+            == crate::profile::Flat7xJocCarrierRole::TopFrontLeft
+        {
+            JocPayloadDownmixIndex::HeightPair
+        } else {
+            JocPayloadDownmixIndex::SevenChannel
+        },
         qmf_source_identity: carrier_windows.source_identity().clone(),
         full_words,
         sparse_words,
@@ -378,8 +385,8 @@ pub fn stage_seven_carrier_coefficient_fit_from_qmf(
         || projection.source_index().dispatch().ok() != Some(projection.dispatch())
         || source_identity.callback_lineage() != projection.transaction_id()
         || source_identity.source_index() != projection.source_index()
-        || profile.joc_reconstruction_layout() != JocReconstructionLayout::Flat7x
-        || profile.joc_payload_downmix_index() != JocPayloadDownmixIndex::SevenChannel
+        || !profile.joc_reconstruction_layout().uses_seven_carriers()
+        || !profile.joc_payload_downmix_index().uses_seven_carriers()
     {
         return Err(CoefficientFittingError::Lineage);
     }

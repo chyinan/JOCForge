@@ -379,7 +379,7 @@ pub fn stage_joc_payload_with_seven_carrier_fit(
         || source_identity.callback_lineage() != &input.transaction_id
         || source_identity.source_index() != input.source_index
         || source_identity.source_transaction_id() != producer_transaction_id
-        || fit.rows().payload_downmix_index() != JocPayloadDownmixIndex::SevenChannel
+        || fit.rows().payload_downmix_index() != profile.joc_payload_downmix_index()
         || fit.rows().row_layout()
             != crate::joc::coefficient_representation::JocCoefficientRowLayout::SevenChannel
     {
@@ -556,8 +556,8 @@ fn validate_fit_lineage(
 fn is_flat7x_profile(profile: ResolvedEncodingProfile) -> bool {
     profile.carrier_codec() == CarrierCodecProfile::Flat7xAc3I0DependentEac3D0
         && profile.substream_topology() == SubstreamTopology::Flat7xIndependentI0DependentD0
-        && profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x
-        && profile.joc_payload_downmix_index() == JocPayloadDownmixIndex::SevenChannel
+        && profile.joc_reconstruction_layout().uses_seven_carriers()
+        && profile.joc_payload_downmix_index().uses_seven_carriers()
 }
 
 fn is_selected_five_point_one_profile(profile: ResolvedEncodingProfile) -> bool {

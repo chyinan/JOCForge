@@ -34,8 +34,8 @@ use jocforge_application::{
     meter_source_bridge::{
         CarrierCodecProfile, CodecRateProfile, EmdfCarriageProfile, EncodingProfile,
         Flat7xFrameCodec, Flat7xI0D0TargetPlan, Flat7xSubstreamRole,
-        FrontendControlReplacementCandidate, JocPayloadDownmixIndex, JocReconstructionLayout,
-        ResolvedEncodingProfile, SubstreamTopology, resolve_selected_profile,
+        FrontendControlReplacementCandidate, JocReconstructionLayout, ResolvedEncodingProfile,
+        SubstreamTopology, resolve_selected_profile,
     },
     output_publication::{AttemptId, OutputStagingOwnerId},
     parse_selected_job_file_references, prepare_selected_job_input,
@@ -280,14 +280,14 @@ fn resolve_encode_request_route(
             Ok(EncodeRequestRoute::SelectedFivePointOne(resolved))
         }
         CarrierCodecProfile::Flat7xAc3I0DependentEac3D0 => {
-            let target = Flat7xI0D0TargetPlan::for_d0_rate(codec_rate)
+            let target = Flat7xI0D0TargetPlan::for_layout(codec_rate, joc_layout)
                 .ok_or(EncodeRequestError::UnsupportedJocLayout)?;
-            if resolved.joc_reconstruction_layout() != JocReconstructionLayout::Flat7x
+            if !resolved.joc_reconstruction_layout().uses_seven_carriers()
                 || resolved.substream_topology()
                     != SubstreamTopology::Flat7xIndependentI0DependentD0
-                || resolved.joc_dmx_config_idx() != Some(1)
-                || resolved.joc_payload_downmix_index() != JocPayloadDownmixIndex::SevenChannel
-                || target.reconstruction_layout() != JocReconstructionLayout::Flat7x
+                || resolved.joc_dmx_config_idx() != Some(target.joc_dmx_config_idx())
+                || !resolved.joc_payload_downmix_index().uses_seven_carriers()
+                || target.reconstruction_layout() != joc_layout
                 || target.i0().role() != Flat7xSubstreamRole::IndependentI0
                 || target.i0().codec() != Flat7xFrameCodec::Ac3
                 || target.i0().bsid() != 6
@@ -357,7 +357,7 @@ pub fn encode_job_xml_with_signalling(
             (layout, signalling),
         );
     }
-    if layout == JocReconstructionLayout::Flat7x {
+    if layout.uses_seven_carriers() {
         validate_flat7x_experimental_candidate_path(&request.output_path)?;
     }
     thread::scope(|scope| {
@@ -896,7 +896,9 @@ fn validate_signalling(
     if signalling == EmdfCarriageProfile::DeployedCompat
         || (matches!(
             layout,
-            JocReconstructionLayout::Flat7x | JocReconstructionLayout::ExistingSelectedFivePointOne
+            JocReconstructionLayout::Flat7x
+                | JocReconstructionLayout::FivePointOnePlusHeight
+                | JocReconstructionLayout::ExistingSelectedFivePointOne
         ) && signalling == EmdfCarriageProfile::EtsiEmdf)
     {
         Ok(())
@@ -922,7 +924,7 @@ fn run_inner(
     if output_path.exists() {
         return Err(EncodeRequestError::OutputAlreadyExists);
     }
-    if joc_layout == JocReconstructionLayout::Flat7x {
+    if joc_layout.uses_seven_carriers() {
         validate_flat7x_experimental_candidate_path(&output_path)?;
     }
 
@@ -983,33 +985,35 @@ fn run_inner(
         ),
     )
     .map_err(|_| EncodeRequestError::UnsupportedJocLayout)?;
-    let (frame_bytes, aggregate_rate_kbps) =
-        if resolved_joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
-            let target = Flat7xI0D0TargetPlan::for_d0_rate(selected_profile.codec_rate())
-                .ok_or(EncodeRequestError::UnsupportedJocLayout)?;
-            jocforge_application::source_frame_bridge::build_flat7x_provisional_source_role_map(
-                prepared.graph().graph(),
-                target,
-            )
-            .map_err(|error| {
-                EncodeRequestError::SourcePipeline(format!("Flat7x input layout: {error:?}"))
-            })?;
-            (
-                usize::try_from(target.aggregate_frame_bytes())
-                    .map_err(|_| EncodeRequestError::UnsupportedDataRate)?,
-                target
-                    .aggregate_rate_kbps()
-                    .ok_or(EncodeRequestError::UnsupportedDataRate)?,
-            )
-        } else {
-            (
-                selected_profile
-                    .codec_rate()
-                    .frame_bytes()
-                    .ok_or(EncodeRequestError::UnsupportedDataRate)?,
-                data_rate_kbps,
-            )
-        };
+    let (frame_bytes, aggregate_rate_kbps) = if resolved_joc_profile
+        .joc_reconstruction_layout()
+        .uses_seven_carriers()
+    {
+        let target = Flat7xI0D0TargetPlan::for_layout(selected_profile.codec_rate(), joc_layout)
+            .ok_or(EncodeRequestError::UnsupportedJocLayout)?;
+        jocforge_application::source_frame_bridge::build_flat7x_provisional_source_role_map(
+            prepared.graph().graph(),
+            target,
+        )
+        .map_err(|error| {
+            EncodeRequestError::SourcePipeline(format!("Flat7x input layout: {error:?}"))
+        })?;
+        (
+            usize::try_from(target.aggregate_frame_bytes())
+                .map_err(|_| EncodeRequestError::UnsupportedDataRate)?,
+            target
+                .aggregate_rate_kbps()
+                .ok_or(EncodeRequestError::UnsupportedDataRate)?,
+        )
+    } else {
+        (
+            selected_profile
+                .codec_rate()
+                .frame_bytes()
+                .ok_or(EncodeRequestError::UnsupportedDataRate)?,
+            data_rate_kbps,
+        )
+    };
     let config_sha256 = prepared.config_sha256();
 
     eprintln!(
@@ -1130,8 +1134,9 @@ fn run_inner(
         })?;
     let joc_state = SelectedJocState::cold();
     let codec_rate = prepared.configuration().selected_profile().codec_rate();
-    let codec_root = if resolved_joc_profile.joc_reconstruction_layout()
-        == JocReconstructionLayout::Flat7x
+    let codec_root = if resolved_joc_profile
+        .joc_reconstruction_layout()
+        .uses_seven_carriers()
     {
         CodecOwnerRoot::cold_for_flat7x(codec_rate)
     } else {
@@ -1158,8 +1163,9 @@ fn run_inner(
     )
     .map_err(EncodeRequestError::SourcePipeline)?;
 
-    let flat7x_selected =
-        resolved_joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x;
+    let flat7x_selected = resolved_joc_profile
+        .joc_reconstruction_layout()
+        .uses_seven_carriers();
     let mut flat7x_d0_block2_placement_receipts = 0_u64;
     let mut flat7x_d0_block2_max_container_bytes = 0_u16;
     let mut flat7x_d0_block2_overflow_receipts = 0_u64;
@@ -1172,7 +1178,7 @@ fn run_inner(
         normal_count: roots.normal_callbacks(),
         main: Arc::clone(roots.main()),
         reader: Arc::clone(roots.reader_eof()),
-        flat7x_selected,
+        carrier_layout: joc_layout,
     };
     let callback_result = spatial_frames.run(cancelled, |frames, total_callbacks| {
         let mut roots = roots;
@@ -1517,7 +1523,10 @@ fn run_inner(
         roots.metadata().state_reference().generation(),
         roots.phase_generation(),
     );
-    if resolved_joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
+    if resolved_joc_profile
+        .joc_reconstruction_layout()
+        .uses_seven_carriers()
+    {
         let payload_sequence = flat7x_emdf_payload_sequence.ok_or_else(|| {
             EncodeRequestError::SourcePipeline(
                 "Flat7x experimental candidate has no payload-sequence receipt".to_owned(),
@@ -1600,7 +1609,7 @@ struct SpatialFrameProducer<'a> {
     normal_count: jocforge_io::pcm::frontend_pcm_source::NormalCallbackCount,
     main: Arc<MainSpatialColdRoots>,
     reader: Arc<ReaderEofMachine>,
-    flat7x_selected: bool,
+    carrier_layout: JocReconstructionLayout,
 }
 
 type SpatialFrameResult = Result<SpatialFrameAdvance, EncodeRequestError>;
@@ -1660,7 +1669,7 @@ impl SpatialFrameProducer<'_> {
                 &self.main,
                 &self.reader,
                 self.providers,
-                self.flat7x_selected,
+                self.carrier_layout,
             )?
         } else {
             stage_main_cached_callback_candidate(
@@ -1769,7 +1778,7 @@ fn stage_main_callback_candidate(
     roots: &MainSpatialColdRoots,
     reader_eof_before: &ReaderEofMachine,
     providers: &crate::selected_spatial_callback_providers::SelectedMainSpatialCallbackProviders,
-    render_flat7x_carriers: bool,
+    carrier_layout: JocReconstructionLayout,
 ) -> Result<PendingMainCallback, EncodeRequestError> {
     let frame = read_frontend_pcm_callback(
         parsed,
@@ -1825,9 +1834,10 @@ fn stage_main_callback_candidate(
         EncodeRequestError::SourcePipeline(format!("ReaderEof callback stage: {error:?}"))
     })?;
     let source_index = frame.source_index();
-    let flat7x_mix = if render_flat7x_carriers {
+    let flat7x_mix = if carrier_layout.uses_seven_carriers() {
         let previous = roots.frontend_control().committed().dynamic_after_state();
-        let mix = jocforge_application::source_frame_bridge::Flat7xSceneMix::render(
+        let mix = jocforge_application::source_frame_bridge::Flat7xSceneMix::render_for_layout(
+            carrier_layout,
             prepared.graph().graph(),
             frame.physical_pcm_rows(),
             controls.physical_rows(),
@@ -2160,7 +2170,7 @@ mod tests {
     #[test]
     fn flat7x_presets_bind_aggregate_and_d0_rate() {
         for &(layout, total, rate) in super::FILE_PRESETS {
-            if layout != JocReconstructionLayout::Flat7x {
+            if !layout.uses_seven_carriers() {
                 continue;
             }
             let EncodeRequestRoute::Flat7xI0D0Pair(target) =

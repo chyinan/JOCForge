@@ -10,9 +10,7 @@ use crate::{
                 Id14PopDisposition, MetadataQueuePopReceipt, MetadataQueueProducerProvenance,
                 ParsedMetadataSourceContainer,
             },
-            protected_container::{
-                CurrentPayloadId, ParsedCurrentEmdfContainer,
-            },
+            protected_container::{CurrentPayloadId, ParsedCurrentEmdfContainer},
         },
         model_complexity::derive_model_joc_complexity,
     },
@@ -95,8 +93,7 @@ pub fn emdf_frame_input_for_source<'a>(
     }
 
     let parsed_container = parsed.parsed_container();
-    if parsed_container.carrier_block().value() != 2
-    {
+    if parsed_container.carrier_block().value() != 2 {
         return Err(PublishedEmdfBindingError::CarriageMismatch);
     }
     if parsed_container.id14_provenance() != parsed.id14_queue_pop().producer() {

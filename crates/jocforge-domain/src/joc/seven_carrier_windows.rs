@@ -171,6 +171,8 @@ const fn carrier_role_code(role: Flat7xJocCarrierRole) -> u8 {
         Flat7xJocCarrierRole::RightSurround => 4,
         Flat7xJocCarrierRole::LeftRearSurround => 5,
         Flat7xJocCarrierRole::RightRearSurround => 6,
+        Flat7xJocCarrierRole::TopFrontLeft => 7,
+        Flat7xJocCarrierRole::TopFrontRight => 8,
     }
 }
 

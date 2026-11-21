@@ -555,8 +555,8 @@ fn select_main_metadata_joc_source_route(
         && profile.joc_payload_downmix_index() == JocPayloadDownmixIndex::FiveChannel;
     let flat7x = profile.carrier_codec() == CarrierCodecProfile::Flat7xAc3I0DependentEac3D0
         && profile.substream_topology() == SubstreamTopology::Flat7xIndependentI0DependentD0
-        && profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x
-        && profile.joc_payload_downmix_index() == JocPayloadDownmixIndex::SevenChannel;
+        && profile.joc_reconstruction_layout().uses_seven_carriers()
+        && profile.joc_payload_downmix_index().uses_seven_carriers();
 
     if selected_five_point_one && !flat7x_rows_present {
         return Ok(MainMetadataJocSourceRoute::SelectedFivePointOneFit);

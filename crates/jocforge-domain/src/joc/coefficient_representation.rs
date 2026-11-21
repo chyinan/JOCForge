@@ -38,7 +38,9 @@ impl JocCoefficientRowLayout {
     pub const fn for_payload_downmix_index(index: JocPayloadDownmixIndex) -> Self {
         match index {
             JocPayloadDownmixIndex::FiveChannel => Self::FiveChannel,
-            JocPayloadDownmixIndex::SevenChannel => Self::SevenChannel,
+            JocPayloadDownmixIndex::SevenChannel | JocPayloadDownmixIndex::HeightPair => {
+                Self::SevenChannel
+            }
         }
     }
 
@@ -337,7 +339,7 @@ fn write_fit_representation_with_profile(
         if objects.iter().any(|object| object.band_enum > 0) {
             for object in objects.iter_mut().filter(|object| object.band_enum > 0) {
                 let map = provider.map(object.band_enum)?;
-                if payload_downmix_index == JocPayloadDownmixIndex::SevenChannel {
+                if payload_downmix_index.uses_seven_carriers() {
                     for row in &mut object.channel_rows {
                         *row = map.iter().map(|&source| row[source]).collect();
                     }

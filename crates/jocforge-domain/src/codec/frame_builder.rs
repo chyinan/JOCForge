@@ -253,14 +253,19 @@ pub fn write_flat7x_d0_bsi_through_chanmap(
     dialnorm: u8,
     compr: Option<u8>,
 ) -> Result<FrameBitCursor, Flat7xD0BsiSegmentError> {
-    write_flat7x_d0_bsi_through_chanmap_for_size(writer, dialnorm, compr, 4096)
+    write_d0_bsi_through_target_chanmap(
+        writer,
+        dialnorm,
+        compr,
+        Flat7xI0D0TargetPlan::approved_contract(),
+    )
 }
 
-fn write_flat7x_d0_bsi_through_chanmap_for_size(
+fn write_d0_bsi_through_target_chanmap(
     writer: &mut FrameBitWriter<'_>,
     dialnorm: u8,
     compr: Option<u8>,
-    frame_bytes: u16,
+    target: Flat7xI0D0TargetPlan,
 ) -> Result<FrameBitCursor, Flat7xD0BsiSegmentError> {
     let actual = writer.cursor().bit_offset();
     if actual != 0 {
@@ -269,7 +274,7 @@ fn write_flat7x_d0_bsi_through_chanmap_for_size(
     if !(1..=31).contains(&dialnorm) {
         return Err(Flat7xD0BsiSegmentError::DialnormOutOfRange { value: dialnorm });
     }
-    let channel_map = Flat7xI0D0TargetPlan::approved_contract()
+    let channel_map = target
         .d0()
         .channel_map()
         .ok_or(Flat7xD0BsiSegmentError::TargetChannelMapMissing)?;
@@ -280,7 +285,7 @@ fn write_flat7x_d0_bsi_through_chanmap_for_size(
     };
     writer.preflight_capacity(required_bits)?;
 
-    write_flat7x_d0_fixed_prefix_for_size(writer, frame_bytes)?;
+    write_flat7x_d0_fixed_prefix_for_size(writer, target.d0().frame_bytes())?;
     writer.write_unsigned(u32::from(dialnorm), D0_DIALNORM_WIDTH_BITS)?;
     writer.write_unsigned(u32::from(compr.is_some()), D0_COMPRE_WIDTH_BITS)?;
     if let Some(compr) = compr {
@@ -722,7 +727,10 @@ pub fn append_flat7x_d0_info_and_addbsi(
     if d0.role() != Flat7xSubstreamRole::DependentD0
         || d0.acmod().value() != 5
         || d0.lfeon()
-        || d0.channel_map() != Some(DependentChannelMap::from_numeric_value(0x1a00))
+        || !matches!(
+            d0.channel_map().map(DependentChannelMap::value),
+            Some(0x1a00 | 0x1810)
+        )
         || target.sample_rate_hz() != 48_000
         || target.audio_blocks_per_frame() != D0_BLOCK_MIX_COUNT
     {
@@ -847,11 +855,11 @@ pub fn write_flat7x_d0_bsi_structure(
     let end;
     {
         let mut staging_writer = FrameBitWriter::new(&mut staging, FrameBitCursor::new(0))?;
-        write_flat7x_d0_bsi_through_chanmap_for_size(
+        write_d0_bsi_through_target_chanmap(
             &mut staging_writer,
             structure.dialnorm,
             structure.compr,
-            target.d0().frame_bytes(),
+            target,
         )?;
         append_flat7x_d0_mixing_metadata_and_infomdate_inner(
             &mut staging_writer,

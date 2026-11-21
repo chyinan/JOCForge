@@ -24,10 +24,7 @@ use jocforge_domain::{
         selected_frame_trial::SelectedSourceNumericPlan,
     },
     joc::emdf::protected_container::CurrentEmdfPayloadSequence,
-    profile::{
-        Flat7xD0PcmRows, Flat7xI0D0TargetPlan, Flat7xI0PcmRows, JocReconstructionLayout,
-        ResolvedEncodingProfile,
-    },
+    profile::{Flat7xD0PcmRows, Flat7xI0D0TargetPlan, Flat7xI0PcmRows, ResolvedEncodingProfile},
     timeline::{CodecSourceIndex, FrontendCallbackIndex, PublishedAuIndex},
     transaction::{AttemptId, CallbackTransactionId, ProgrammeId},
     transform::fullband_exponent_pipeline::NumericPlanReceipt,
@@ -766,7 +763,8 @@ fn assemble_flat7x_i0_frame_candidate_from_series(
     crcrsv_seed: CallerOwnedI0CrcrsvSeed,
 ) -> Result<Flat7xPairI0FrameCandidate, Flat7xPairSourceError> {
     if binding.target != binding.role_map_receipt.target()
-        || binding.resolved_profile.joc_reconstruction_layout() != JocReconstructionLayout::Flat7x
+        || binding.resolved_profile.joc_reconstruction_layout()
+            != binding.target.reconstruction_layout()
         || binding.resolved_profile.codec_rate() != binding.target.d0().rate()
         || binding.source_index != binding.role_map_receipt.source_index()
         || binding.source_index != i0_audio_blocks.receipt().source_identity().source_index()
@@ -934,13 +932,16 @@ pub fn bind_flat7x_pair_source<'pcm>(
     projection: &Flat7xSourcePcmProjection<'pcm>,
     numeric_plan: &NumericPlanReceipt<'_, SelectedSourceNumericPlan>,
 ) -> Result<Flat7xPairSourceBinding<'pcm>, Flat7xPairSourceError> {
-    if profile.joc_reconstruction_layout() != JocReconstructionLayout::Flat7x {
+    if !profile.joc_reconstruction_layout().uses_seven_carriers() {
         return Err(Flat7xPairSourceError::UnsupportedProfile);
     }
 
     let target = projection.role_map_receipt().target();
     let role_map_receipt = projection.role_map_receipt();
-    if !target.is_supported() || target.d0().rate() != profile.codec_rate() {
+    if !target.is_supported()
+        || target.reconstruction_layout() != profile.joc_reconstruction_layout()
+        || target.d0().rate() != profile.codec_rate()
+    {
         return Err(Flat7xPairSourceError::ProfileTargetMismatch);
     }
     if role_map_receipt.shared_analysis_identity() != numeric_plan.identity()

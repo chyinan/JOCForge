@@ -176,7 +176,10 @@ fn wash_vectors_keep_layout_downmix_and_header_domains_separate() {
             }
             "tfl_tfr-distinguishing-index2" => {
                 assert_eq!(vector["input"]["joc_dmx_config_idx"], 2);
-                assert_eq!(JocReconstructionLayout::from_joc_dmx_config_idx(2), None);
+                assert_eq!(
+                    JocReconstructionLayout::from_joc_dmx_config_idx(2),
+                    Some(JocReconstructionLayout::FivePointOnePlusHeight)
+                );
                 assert_eq!(flat7x.joc_dmx_config_idx(), Some(1));
             }
             "reserved-index-rejection" => {

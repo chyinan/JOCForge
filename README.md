@@ -35,6 +35,18 @@ jocforge encode input.adm.wav output.ec3 --data-rate 1024 --etsi-strict
 jocforge encode --job-xml job.xml --etsi-strict
 ```
 
+### Flat 7.1 严格信令与 5.X+2 高度载体
+
+Flat 7.1 可选严格 ETSI 信令。idx2 使用两个前方高度载体 Tfl/Tfr，默认启用严格信令。两者均使用 640 kbps AC-3 兼容核心和 E-AC-3 依赖子流，默认总码率为 1664 kbps。每次输出使用单独的空目录。
+
+```powershell
+mkdir flat-strict, height-pair
+jocforge encode input.adm.wav flat-strict/song.candidate.ec3 --joc-layout flat7x --etsi-strict
+jocforge encode input.adm.wav height-pair/song.candidate.ec3 --joc-layout idx2
+```
+
+idx2 的七个重建输入为 L、R、C、Ls、Rs、Tfl、Tfr。编码器将高度床声道送入高度对，按动态对象坐标在地面和高度载体之间分配能量，再用这七路音频拟合 JOC 系数。依赖子流的通道映射为 `0x1810`，携带 Ls、Rs 和高度对；LFE 由兼容核心提供。
+
 ### 无损封装为 MKA 或 MP4
 
 在同一个 PowerShell 会话中任选一种容器。`-c:a copy` 直接复制 EC3 音轨并保留 JOC 元数据。

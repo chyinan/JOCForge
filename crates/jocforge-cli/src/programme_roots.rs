@@ -16,7 +16,7 @@ use jocforge_application::{
     meter_finalization_bridge::{
         MeterOwnerStateReference, ProgrammeMeasurementReceipt, unchanged_meter_reference_receipt,
     },
-    meter_source_bridge::{Flat7xI0D0TargetPlan, JocReconstructionLayout, ResolvedEncodingProfile},
+    meter_source_bridge::{Flat7xI0D0TargetPlan, ResolvedEncodingProfile},
     output_publication::{
         OutputFinalExposureReceipt, OutputFinalizedProposal, ProgrammeOutputBinding,
         ProgrammeOutputFinalizeProposal,
@@ -155,21 +155,20 @@ impl<'a> ProgrammeOwnerRoots<'a> {
         let expected_product_bytes = output.output_configuration().expected_product_bytes();
         let output_frame_bytes = u64::from(output.output_configuration().frame_bytes());
         let selected_rate = profile.codec_rate();
-        let selected_frame_bytes =
-            if profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
-                u64::from(
-                    Flat7xI0D0TargetPlan::for_d0_rate(selected_rate)
-                        .ok_or("unsupported Flat7x D0 rate")?
-                        .aggregate_frame_bytes(),
-                )
-            } else {
-                u64::try_from(
-                    selected_rate.frame_bytes().ok_or_else(|| {
-                        "prepared input has an unsupported carrier rate".to_owned()
-                    })?,
-                )
-                .map_err(|_| "selected frame extent does not fit programme accounting".to_owned())?
-            };
+        let selected_frame_bytes = if profile.joc_reconstruction_layout().uses_seven_carriers() {
+            u64::from(
+                Flat7xI0D0TargetPlan::for_d0_rate(selected_rate)
+                    .ok_or("unsupported Flat7x D0 rate")?
+                    .aggregate_frame_bytes(),
+            )
+        } else {
+            u64::try_from(
+                selected_rate
+                    .frame_bytes()
+                    .ok_or_else(|| "prepared input has an unsupported carrier rate".to_owned())?,
+            )
+            .map_err(|_| "selected frame extent does not fit programme accounting".to_owned())?
+        };
         if measurement.programme_id() != prepared.programme_id()
             || measurement.attempt() != attempt
             || measurement.input_sha256() != &prepared.resource_identity().input_sha256()
@@ -205,7 +204,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
             || metadata.state_reference().generation() != 0
             || codec.generation().value() != 0
             || codec.codec_rate() != selected_rate
-            || (profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x)
+            || (profile.joc_reconstruction_layout().uses_seven_carriers())
                 != codec.d0_overlap_history().is_some()
             || integrity.codec_rate() != selected_rate
             || output_frame_bytes != selected_frame_bytes

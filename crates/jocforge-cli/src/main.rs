@@ -39,7 +39,7 @@ struct Cli {
 enum Command {
     /// Encode one selected full-file ADM programme.
     #[command(
-        after_help = "Flat7x defaults to 1664 kbps (640 kbps I0 + 1024 kbps D0). Use a .candidate.ec3 file in a new empty attempt directory. XML jobs support ADM BWF input and raw EC-3 output."
+        after_help = "Flat7x and idx2 default to 1664 kbps (640 kbps I0 + 1024 kbps D0). Use a .candidate.ec3 file in a new empty attempt directory. XML jobs support ADM BWF input and raw EC-3 output."
     )]
     Encode(EncodeArgs),
     /// Generate a completion script for your shell.
@@ -54,14 +54,14 @@ struct EncodeArgs {
     /// Output EC-3 file.
     #[arg(value_name = "OUTPUT.ec3", required_unless_present = "job_xml")]
     output: Option<PathBuf>,
-    /// Carrier bitrate (D0 for Flat7x). Defaults to 1024 kbps.
+    /// Carrier bitrate (D0 for paired streams). Defaults to 1024 kbps.
     #[arg(long, value_name = "KBPS", value_parser = ["384", "448", "576", "640", "768", "1024"])]
     data_rate: Option<String>,
-    /// Total Flat7x bitrate including the 640 kbps AC-3 core.
+    /// Total paired-stream bitrate including the 640 kbps AC-3 core.
     #[arg(long, value_name = "KBPS", requires = "joc_layout", conflicts_with = "data_rate", value_parser = ["1024", "1088", "1216", "1280", "1408", "1664"])]
     total_rate: Option<String>,
-    /// Select experimental Flat7x. Defaults to 5.1.
-    #[arg(long, value_name = "LAYOUT", value_parser = ["flat7x"])]
+    /// Select flat7x (rear pair) or idx2 (front height pair, strict ETSI). Defaults to 5.1.
+    #[arg(long, value_name = "LAYOUT", value_parser = ["flat7x","idx2"])]
     joc_layout: Option<String>,
     /// Write strict ETSI JOC/OAMD EMDF signalling for the selected stream.
     #[arg(long)]
@@ -104,17 +104,20 @@ fn main() -> ExitCode {
             return ExitCode::SUCCESS;
         }
         Command::Encode(args) => {
-            let layout = if args.joc_layout.is_some() {
+            let layout = if args.joc_layout.as_deref() == Some("idx2") {
+                JocReconstructionLayout::FivePointOnePlusHeight
+            } else if args.joc_layout.is_some() {
                 JocReconstructionLayout::Flat7x
             } else {
                 JocReconstructionLayout::ExistingSelectedFivePointOne
             };
             use jocforge_application::meter_source_bridge::EmdfCarriageProfile;
-            let signalling = if args.etsi_strict {
-                EmdfCarriageProfile::EtsiEmdf
-            } else {
-                EmdfCarriageProfile::DeployedCompat
-            };
+            let signalling =
+                if args.etsi_strict || layout == JocReconstructionLayout::FivePointOnePlusHeight {
+                    EmdfCarriageProfile::EtsiEmdf
+                } else {
+                    EmdfCarriageProfile::DeployedCompat
+                };
             if let Some(job_xml) = args.job_xml {
                 jocforge::encode_request::encode_job_xml_with_signalling(
                     &job_xml,

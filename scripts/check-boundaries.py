@@ -11716,7 +11716,7 @@ def check_f12_d0_info_addbsi_slice(root, d):
                 "AddbsiLengthOutOfRange",
                 "Flat7xSubstreamRole::DependentD0",
                 "target.sample_rate_hz() != 48_000",
-                "d0.channel_map() != Some(DependentChannelMap::from_numeric_value(0x1a00))",
+                "Some(0x1a00 | 0x1810)",
             )
         )
         and no_production_call,
@@ -11823,7 +11823,7 @@ def check_f12_d0_bsi_structure_slice(root, d):
         and all(
             segment in function
             for segment in (
-                "write_flat7x_d0_bsi_through_chanmap_for_size(",
+                "write_d0_bsi_through_target_chanmap(",
                 "append_flat7x_d0_mixing_metadata_and_infomdate_inner(",
                 "append_flat7x_d0_info_and_addbsi(",
             )
@@ -12845,7 +12845,7 @@ def check_f12_flat7x_i0_typed_bsi_frame_assembly(root, d):
         and "pub fn assemble_flat7x_pair_i0_frame_candidate(" in pair_source
         and "pub fn assemble_flat7x_i0_frame_candidate_from_binding(" in pair_source
         and "resolved_profile: ResolvedEncodingProfile" in pair_source
-        and "binding.resolved_profile.joc_reconstruction_layout() != JocReconstructionLayout::Flat7x" in pair_source
+        and "binding.resolved_profile.joc_reconstruction_layout()!=binding.target.reconstruction_layout()" in re.sub(r"\s+", "", pair_source)
         and "resolved_profile: binding.resolved_profile" in pair_source
         and "binding.role_map_receipt.shared_analysis_identity()" in pair_source
         and "d0_rows: projection.d0_rows()" in pair_source
@@ -13356,7 +13356,7 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
     programme_roots_path = root / "crates/jocforge-cli/src/programme_roots.rs"
     programme_roots = rust_code_without_comments(programme_roots_path.read_text(encoding="utf-8"))
     flat7x_candidate_branch_start = cli.find(
-        "if resolved_joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x"
+        "let payload_sequence = flat7x_emdf_payload_sequence"
     )
     flat7x_candidate_branch_end = cli.find("let finalized =", flat7x_candidate_branch_start)
     flat7x_candidate_branch = (
@@ -14481,7 +14481,7 @@ def check_f15_flat7x_elementary_stream_stage(root, d):
         )
     ]
     candidate_branch_start = cli.find(
-        "if resolved_joc_profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x"
+        "let payload_sequence = flat7x_emdf_payload_sequence"
     )
     candidate_branch_end = cli.find("let finalized =", candidate_branch_start)
     candidate_branch = (

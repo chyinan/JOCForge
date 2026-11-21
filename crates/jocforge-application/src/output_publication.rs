@@ -2,9 +2,7 @@
 //! Joins the current metadata and complete-frame proposals into one output-owner proposal.
 
 pub use jocforge_domain::profile::EmdfCarriageProfile;
-use jocforge_domain::profile::{
-    Flat7xI0D0TargetPlan, JocReconstructionLayout, ResolvedEncodingProfile,
-};
+use jocforge_domain::profile::{Flat7xI0D0TargetPlan, ResolvedEncodingProfile};
 use jocforge_domain::publication::OutputProvider;
 use jocforge_domain::{
     codec::{
@@ -55,7 +53,7 @@ impl SelectedOutputProviderProjection {
             }
         };
         let (frame_bytes, encoding_profile_id) =
-            if profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
+            if profile.joc_reconstruction_layout().uses_seven_carriers() {
                 let target = Flat7xI0D0TargetPlan::for_d0_rate(profile.codec_rate())
                     .ok_or(OutputRootBindingError::UnsupportedProfile)?;
                 let bit_rate_kbps = target

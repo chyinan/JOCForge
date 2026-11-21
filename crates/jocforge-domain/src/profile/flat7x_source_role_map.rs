@@ -15,6 +15,7 @@ use crate::frontend::selected_adm_graph::{PhysicalHostIndex, SelectedAdmGraph, S
 
 use super::{DependentChannelMap, Flat7xI0D0TargetPlan};
 
+use super::JocReconstructionLayout;
 const D0_TARGET_CHANNEL_MAP: u16 = 0x1a00;
 const PCM_SAMPLES_PER_SOURCE: usize = 1_536;
 const I0_ROLE_ROWS: [(Flat7xI0CarrierRole, &str); 6] = [
@@ -74,6 +75,8 @@ pub enum Flat7xD0SourceRole {
     RightSurround,
     LeftRearSurround,
     RightRearSurround,
+    TopFrontLeft,
+    TopFrontRight,
 }
 
 /// One enabled D0 `chanmap` location, indexed in ETSI's MSB-first table order.
@@ -82,6 +85,7 @@ pub enum Flat7xD0ChannelMapLocation {
     LeftSurround,
     RightSurround,
     LeftRearRightRearPair,
+    TopFrontPair,
 }
 
 impl Flat7xD0ChannelMapLocation {
@@ -90,6 +94,7 @@ impl Flat7xD0ChannelMapLocation {
             Self::LeftSurround => 3,
             Self::RightSurround => 4,
             Self::LeftRearRightRearPair => 6,
+            Self::TopFrontPair => 11,
         }
     }
 
@@ -198,6 +203,8 @@ pub enum Flat7xJocCarrierRole {
     RightSurround,
     LeftRearSurround,
     RightRearSurround,
+    TopFrontLeft,
+    TopFrontRight,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -237,16 +244,14 @@ impl<'a> SevenCarrierPcmInput<'a> {
     }
 
     pub const fn row(self, role: Flat7xJocCarrierRole) -> &'a [u32] {
-        let index = match role {
-            Flat7xJocCarrierRole::Left => 0,
-            Flat7xJocCarrierRole::Right => 1,
-            Flat7xJocCarrierRole::Center => 2,
-            Flat7xJocCarrierRole::LeftSurround => 3,
-            Flat7xJocCarrierRole::RightSurround => 4,
-            Flat7xJocCarrierRole::LeftRearSurround => 5,
-            Flat7xJocCarrierRole::RightRearSurround => 6,
-        };
-        self.rows_in_target_order[index]
+        let mut index = 0;
+        while index < self.role_bindings.len() {
+            if self.role_bindings[index].role as u8 == role as u8 {
+                return self.rows_in_target_order[index];
+            }
+            index += 1;
+        }
+        &[]
     }
 }
 
@@ -354,9 +359,26 @@ impl Flat7xSceneMix {
         controls: &[NormalControlRow],
         previous: Option<&[NormalControlRow]>,
     ) -> Result<Self, Flat7xSourceRoleMapError> {
+        Self::render_for_layout(
+            JocReconstructionLayout::Flat7x,
+            graph,
+            pcm,
+            controls,
+            previous,
+        )
+    }
+    pub fn render_for_layout(
+        layout: JocReconstructionLayout,
+        graph: &SelectedAdmGraph,
+        pcm: &[Vec<u32>],
+        controls: &[NormalControlRow],
+        previous: Option<&[NormalControlRow]>,
+    ) -> Result<Self, Flat7xSourceRoleMapError> {
+        let heights = layout == JocReconstructionLayout::FivePointOnePlusHeight;
         let map = build_flat7x_provisional_source_role_map(
             graph,
-            Flat7xI0D0TargetPlan::approved_contract(),
+            Flat7xI0D0TargetPlan::for_layout(super::CodecRateProfile::Kbps1024, layout)
+                .ok_or(Flat7xSourceRoleMapError::ControlRowMismatch)?,
         )?;
         let beds = project_flat7x_source_pcm_rows(&map, pcm)?;
         if controls.len() != pcm.len() || previous.is_some_and(|rows| rows.len() != pcm.len()) {
@@ -370,12 +392,34 @@ impl Flat7xSceneMix {
             let host = usize::from(track.physical_host().value());
             let (start, end) = match track.kind() {
                 SelectedTrackKind::Object { .. } => {
-                    let end = object_pan(&controls[host], track.uid())?;
+                    let end = object_pan_for_layout(&controls[host], track.uid(), heights)?;
                     let start = match previous {
-                        Some(rows) => object_pan(&rows[host], track.uid())?,
+                        Some(rows) => object_pan_for_layout(&rows[host], track.uid(), heights)?,
                         None => end,
                     };
                     (start, end)
+                }
+                SelectedTrackKind::DirectSpeakersBed {
+                    role: "top_side_left" | "top_side_right",
+                    ..
+                } if heights => continue,
+                SelectedTrackKind::DirectSpeakersBed {
+                    role: "rear_left" | "rear_right",
+                    ..
+                } if heights => {
+                    let mut gains = [0.; 7];
+                    gains[if matches!(
+                        track.kind(),
+                        SelectedTrackKind::DirectSpeakersBed {
+                            role: "rear_left",
+                            ..
+                        }
+                    ) {
+                        3
+                    } else {
+                        4
+                    }] = 1.;
+                    (gains, gains)
                 }
                 SelectedTrackKind::DirectSpeakersBed {
                     role: "top_side_left",
@@ -494,7 +538,11 @@ impl Flat7xSceneMix {
 
 // Equal-power horizontal projection on the selected layout's front, side and rear lines.
 // The vertical coordinate stays with the object metadata for reconstruction.
-fn object_pan(row: &NormalControlRow, uid: &str) -> Result<[f32; 7], Flat7xSourceRoleMapError> {
+fn object_pan_for_layout(
+    row: &NormalControlRow,
+    uid: &str,
+    heights: bool,
+) -> Result<[f32; 7], Flat7xSourceRoleMapError> {
     let NormalControlRow::Object13 {
         control, track_uid, ..
     } = row
@@ -518,6 +566,24 @@ fn object_pan(row: &NormalControlRow, uid: &str) -> Result<[f32; 7], Flat7xSourc
     let side = 1.0 - front - rear;
     let left = (1.0 - 2.0 * x).max(0.0);
     let right = (2.0 * x - 1.0).max(0.0);
+    if heights {
+        let z = f32::from_bits(words[7]);
+        if !z.is_finite() {
+            return Err(Flat7xSourceRoleMapError::ControlRowMismatch);
+        }
+        let z = z.clamp(0.0, 1.0);
+        let floor = 1.0 - z;
+        return Ok([
+            floor * front * left,
+            floor * front * right,
+            floor * front * (1.0 - left - right),
+            floor * (side + rear) * (1.0 - x),
+            floor * (side + rear) * x,
+            z * (1.0 - x),
+            z * x,
+        ]
+        .map(f32::sqrt));
+    }
     Ok([
         front * left,
         front * right,
@@ -636,18 +702,27 @@ pub fn build_flat7x_provisional_source_role_map(
         .d0()
         .channel_map()
         .ok_or(Flat7xSourceRoleMapError::D0ChannelMapMismatch { actual: 0 })?;
-    if channel_map.value() != D0_TARGET_CHANNEL_MAP {
+    if !matches!(channel_map.value(), D0_TARGET_CHANNEL_MAP | 0x1810) {
         return Err(Flat7xSourceRoleMapError::D0ChannelMapMismatch {
             actual: channel_map.value(),
         });
     }
 
+    let heights = target.reconstruction_layout() == JocReconstructionLayout::FivePointOnePlusHeight;
+    let mut role_rows = JOC_CARRIER_ROLE_ROWS;
+    let mut required = REQUIRED_BED_ROLES;
+    if heights {
+        role_rows[5] = (Flat7xJocCarrierRole::TopFrontLeft, "top_side_left");
+        role_rows[6] = (Flat7xJocCarrierRole::TopFrontRight, "top_side_right");
+        required[6] = "top_side_left";
+        required[7] = "top_side_right";
+    }
     let mut rows_by_role = BTreeMap::new();
     for track in graph.tracks() {
         let SelectedTrackKind::DirectSpeakersBed { role, .. } = track.kind() else {
             continue;
         };
-        if !REQUIRED_BED_ROLES.contains(&role) {
+        if !required.contains(&role) {
             continue;
         }
         let row = AdmPcmRow(track.physical_host());
@@ -662,7 +737,7 @@ pub fn build_flat7x_provisional_source_role_map(
         }
     }
 
-    for role in REQUIRED_BED_ROLES {
+    for role in required {
         if !rows_by_role.contains_key(role) {
             return Err(Flat7xSourceRoleMapError::MissingBedRole(role));
         }
@@ -672,11 +747,10 @@ pub fn build_flat7x_provisional_source_role_map(
         role,
         row: rows_by_role[speaker_role],
     });
-    let joc_carrier_rows =
-        JOC_CARRIER_ROLE_ROWS.map(|(role, speaker_role)| Flat7xJocCarrierRowBinding {
-            role,
-            row: rows_by_role[speaker_role],
-        });
+    let joc_carrier_rows = role_rows.map(|(role, speaker_role)| Flat7xJocCarrierRowBinding {
+        role,
+        row: rows_by_role[speaker_role],
+    });
 
     // ETSI TS 102 366 V1.4.1 Table E.1.4 defines chanmap locations 3 and 4 as the
     // individual surround channels and location 6 as the Lrs/Rrs pair.
@@ -696,12 +770,24 @@ pub fn build_flat7x_provisional_source_role_map(
             },
         },
         Flat7xD0RowBinding {
-            location: Flat7xD0ChannelMapLocation::LeftRearRightRearPair,
+            location: if heights {
+                Flat7xD0ChannelMapLocation::TopFrontPair
+            } else {
+                Flat7xD0ChannelMapLocation::LeftRearRightRearPair
+            },
             source: Flat7xD0ChannelSource::StereoPair {
-                left_role: Flat7xD0SourceRole::LeftRearSurround,
-                left_row: rows_by_role["rear_left"],
-                right_role: Flat7xD0SourceRole::RightRearSurround,
-                right_row: rows_by_role["rear_right"],
+                left_role: if heights {
+                    Flat7xD0SourceRole::TopFrontLeft
+                } else {
+                    Flat7xD0SourceRole::LeftRearSurround
+                },
+                left_row: rows_by_role[required[6]],
+                right_role: if heights {
+                    Flat7xD0SourceRole::TopFrontRight
+                } else {
+                    Flat7xD0SourceRole::RightRearSurround
+                },
+                right_row: rows_by_role[required[7]],
             },
         },
     ];
@@ -895,6 +981,34 @@ mod tests {
         assert_eq!(
             one_hot_view.d0().rows().map(|row| row[0]),
             [16, 32, 64, 128]
+        );
+    }
+
+    #[test]
+    fn height_pair_routes_distinct_adm_top_rows_to_both_joc_and_d0() {
+        let graph = graph_with_track_prefix(10);
+        let target = Flat7xI0D0TargetPlan::for_layout(
+            crate::profile::CodecRateProfile::Kbps1024,
+            JocReconstructionLayout::FivePointOnePlusHeight,
+        )
+        .unwrap();
+        let map = build_flat7x_provisional_source_role_map(&graph, target).unwrap();
+        assert_eq!(map.d0_channel_map().value(), 0x1810);
+        let pcm: Vec<_> = (0..10)
+            .map(|row| vec![1u32 << row; PCM_SAMPLES_PER_SOURCE])
+            .collect();
+        let view = project_flat7x_source_pcm_rows(&map, &pcm).unwrap();
+        assert_eq!(view.d0().rows().map(|r| r[0]), [16, 32, 256, 512]);
+        assert_eq!(
+            view.seven_carrier_input()
+                .rows_in_target_order()
+                .map(|r| r[0]),
+            [1, 2, 4, 16, 32, 256, 512]
+        );
+        assert!(
+            view.seven_carrier_input()
+                .row(Flat7xJocCarrierRole::LeftRearSurround)
+                .is_empty()
         );
     }
 
