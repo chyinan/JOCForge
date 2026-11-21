@@ -898,6 +898,8 @@ fn validate_signalling(
             layout,
             JocReconstructionLayout::Flat7x
                 | JocReconstructionLayout::FivePointOnePlusHeight
+                | JocReconstructionLayout::FivePointOneWithoutPhase
+                | JocReconstructionLayout::HeightPairWithPhase
                 | JocReconstructionLayout::ExistingSelectedFivePointOne
         ) && signalling == EmdfCarriageProfile::EtsiEmdf)
     {

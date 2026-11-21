@@ -374,7 +374,7 @@ impl Flat7xSceneMix {
         controls: &[NormalControlRow],
         previous: Option<&[NormalControlRow]>,
     ) -> Result<Self, Flat7xSourceRoleMapError> {
-        let heights = layout == JocReconstructionLayout::FivePointOnePlusHeight;
+        let heights = layout.uses_height_pair();
         let map = build_flat7x_provisional_source_role_map(
             graph,
             Flat7xI0D0TargetPlan::for_layout(super::CodecRateProfile::Kbps1024, layout)
@@ -708,7 +708,7 @@ pub fn build_flat7x_provisional_source_role_map(
         });
     }
 
-    let heights = target.reconstruction_layout() == JocReconstructionLayout::FivePointOnePlusHeight;
+    let heights = target.reconstruction_layout().uses_height_pair();
     let mut role_rows = JOC_CARRIER_ROLE_ROWS;
     let mut required = REQUIRED_BED_ROLES;
     if heights {

@@ -402,12 +402,17 @@ pub fn stage_seven_carrier_coefficient_fit_from_qmf(
         qmf_provider,
     )
     .map_err(CoefficientFittingError::Geometry)?;
-    let rows = fit_seven_carrier_window_set(
+    let mut rows = fit_seven_carrier_window_set(
         target_words,
         carrier_windows,
         temporal.after().weight_words(),
         score_provider,
     )?;
+    if rows.downmix_index == JocPayloadDownmixIndex::HeightPair
+        && profile.joc_payload_downmix_index() == JocPayloadDownmixIndex::HeightPairWithPhase
+    {
+        rows.downmix_index = JocPayloadDownmixIndex::HeightPairWithPhase;
+    }
     let fit_generation = geometry.after().generation();
     let representation_offset = temporal
         .before_segment()

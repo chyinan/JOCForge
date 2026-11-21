@@ -23,6 +23,7 @@ pub enum Flat7xFrameCodec {
 /// JOC spatial-profile selector, distinct from coefficient downmix selection.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum JocSpatialIndex {
+    HeightPairWithPhase,
     Flat7x,
     FivePointOnePlusHeight,
 }
@@ -32,6 +33,7 @@ impl JocSpatialIndex {
         match self {
             Self::Flat7x => 1,
             Self::FivePointOnePlusHeight => 2,
+            Self::HeightPairWithPhase => 4,
         }
     }
 }
@@ -39,6 +41,7 @@ impl JocSpatialIndex {
 /// Coefficient downmix selector, distinct from the JOC spatial-profile selector.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum DownmixIndex {
+    HeightPairWithPhase,
     SevenChannel,
     HeightPair,
 }
@@ -48,12 +51,13 @@ impl DownmixIndex {
         match self {
             Self::SevenChannel => 1,
             Self::HeightPair => 2,
+            Self::HeightPairWithPhase => 4,
         }
     }
 
     pub const fn coefficient_width(self) -> u8 {
         match self {
-            Self::SevenChannel | Self::HeightPair => 7,
+            Self::SevenChannel | Self::HeightPair | Self::HeightPairWithPhase => 7,
         }
     }
 }
@@ -409,10 +413,16 @@ impl Flat7xI0D0TargetPlan {
         let mut plan = Self::for_d0_rate(rate)?;
         match layout {
             JocReconstructionLayout::Flat7x => {}
-            JocReconstructionLayout::FivePointOnePlusHeight => {
+            JocReconstructionLayout::FivePointOnePlusHeight
+            | JocReconstructionLayout::HeightPairWithPhase => {
                 plan.reconstruction_layout = layout;
                 plan.joc_spatial_index = JocSpatialIndex::FivePointOnePlusHeight;
                 plan.downmix_index = DownmixIndex::HeightPair;
+                if layout == JocReconstructionLayout::HeightPairWithPhase {
+                    plan.joc_spatial_index = JocSpatialIndex::HeightPairWithPhase;
+                    plan.downmix_index = DownmixIndex::HeightPairWithPhase;
+                    plan.joc_phase_signaling = true;
+                }
                 plan.d0.channel_map = Some(DependentChannelMap(0x1810));
                 plan.d0.coded_channels = &[
                     Eac3CodedChannel::LeftSurround,

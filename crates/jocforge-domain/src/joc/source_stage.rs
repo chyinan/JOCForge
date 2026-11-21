@@ -20,10 +20,7 @@ use crate::{
         id14_body::Id14BodyProposal,
         oamd::reader_target::ReaderTargetUpdateReceipt,
     },
-    profile::{
-        CarrierCodecProfile, JocPayloadDownmixIndex, JocReconstructionLayout,
-        ResolvedEncodingProfile, SubstreamTopology,
-    },
+    profile::{CarrierCodecProfile, ResolvedEncodingProfile, SubstreamTopology},
     spatial::{QmfReceiverFunctionalProvider, spatial_audio_state::SelectedJocQmfProjection},
     transaction::CallbackTransactionId,
 };
@@ -311,9 +308,8 @@ fn is_flat7x_profile(profile: ResolvedEncodingProfile) -> bool {
 fn is_selected_five_point_one_profile(profile: ResolvedEncodingProfile) -> bool {
     profile.carrier_codec() == CarrierCodecProfile::IndependentEac3
         && profile.substream_topology() == SubstreamTopology::SelectedSingleIndependentZeroDependent
-        && profile.joc_reconstruction_layout()
-            == JocReconstructionLayout::ExistingSelectedFivePointOne
-        && profile.joc_payload_downmix_index() == JocPayloadDownmixIndex::FiveChannel
+        && profile.joc_reconstruction_layout().uses_five_carriers()
+        && !profile.joc_payload_downmix_index().uses_seven_carriers()
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

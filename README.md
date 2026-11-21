@@ -47,6 +47,24 @@ jocforge encode input.adm.wav height-pair/song.candidate.ec3 --joc-layout idx2
 
 idx2 的七个重建输入为 L、R、C、Ls、Rs、Tfl、Tfr。编码器将高度床声道送入高度对，按动态对象坐标在地面和高度载体之间分配能量，再用这七路音频拟合 JOC 系数。依赖子流的通道映射为 `0x1810`，携带 Ls、Rs 和高度对；LFE 由兼容核心提供。
 
+### 五种 JOC profile
+
+| CLI 选项 | 重建载体 | 相位信令 | 默认总码率 |
+|---|---|---|---:|
+| `--joc-layout idx0` | 5.X | 关 | 1024 kbps |
+| `--joc-layout idx1` 或 `flat7x` | Flat 7.X | 关 | 1664 kbps |
+| `--joc-layout idx2` | 5.X+2 | 关 | 1664 kbps |
+| `--joc-layout idx3` 或省略布局 | 5.X | 开 | 1024 kbps |
+| `--joc-layout idx4` | 5.X+2 | 开 | 1664 kbps |
+
+idx0 和 idx4 默认使用严格 ETSI 信令。idx0 使用单独的 E-AC-3 I0，可直接指定输出文件；idx4 与 idx2 共用 Tfl/Tfr 高度载体、对象位置分配和系数拟合，以 profile 索引区分相位信令。两者沿用同一套音频处理。配对子流的总码率使用 `--total-rate`，单流码率使用 `--data-rate`。
+
+```powershell
+jocforge encode input.adm.wav music-idx0.ec3 --joc-layout idx0
+mkdir height-phase
+jocforge encode input.adm.wav height-phase/music.candidate.ec3 --joc-layout idx4
+```
+
 ### 无损封装为 MKA 或 MP4
 
 在同一个 PowerShell 会话中任选一种容器。`-c:a copy` 直接复制 EC3 音轨并保留 JOC 元数据。

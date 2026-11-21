@@ -445,3 +445,17 @@ fn flat7x_resolves_the_selected_dependent_rate() {
         );
     }
 }
+
+#[test]
+fn phase_pairs_keep_carrier_width_and_signal_distinct_wire_indices() {
+    for (index, carriers) in [(0, 5), (1, 7), (2, 7), (3, 5), (4, 7)] {
+        let layout = JocReconstructionLayout::from_joc_dmx_config_idx(index).unwrap();
+        let profile = resolve_selected_profile(
+            &EncodingProfile::selected_with_joc_reconstruction_layout(layout),
+        )
+        .unwrap();
+        assert_eq!(profile.joc_payload_downmix_index().value(), index);
+        assert_eq!(layout.uses_seven_carriers(), carriers == 7);
+        assert_eq!(layout.uses_height_pair(), matches!(index, 2 | 4));
+    }
+}

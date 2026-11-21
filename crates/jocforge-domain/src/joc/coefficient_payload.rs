@@ -399,8 +399,8 @@ pub(crate) fn selected_channel_count(
     downmix_index: u8,
 ) -> Result<u8, CoefficientPayloadWriterFailure> {
     match downmix_index {
-        1 | 2 => Ok(7),
-        3 => Ok(5),
+        1 | 2 | 4 => Ok(7),
+        0 | 3 => Ok(5),
         _ => Err(CoefficientPayloadWriterFailure::UnsupportedSelectedProfile),
     }
 }
@@ -413,7 +413,7 @@ fn is_full_mode(mode: u8) -> bool {
 fn validate_flat7x_coefficient_rows(
     input: &CoefficientPayloadInput,
 ) -> Result<(), CoefficientPayloadWriterFailure> {
-    if !matches!(input.downmix_index, 1 | 2) {
+    if !matches!(input.downmix_index, 1 | 2 | 4) {
         return Err(CoefficientPayloadWriterFailure::UnsupportedSelectedProfile);
     }
     if input.objects.len() != 15 {
@@ -460,7 +460,10 @@ fn validate_input(
         }
         // Wash's official Flat7x parser shape includes Full data points at selector 1 / 7 rows.
         // Other callers retain the existing fail-closed selector/mode gate.
-        if matches!(input.downmix_index, 1 | 2) && is_full_mode(object.mode) && !flat7x_full_shape {
+        if matches!(input.downmix_index, 1 | 2 | 4)
+            && is_full_mode(object.mode)
+            && !flat7x_full_shape
+        {
             return Err(CoefficientPayloadWriterFailure::UnsupportedSelectedProfile);
         }
         if let Some(offsets) = &object.offsets {
@@ -499,7 +502,7 @@ fn flat7x_full_data_point_shape_allowed(
     profile: Option<ResolvedEncodingProfile>,
     input: &CoefficientPayloadInput,
 ) -> bool {
-    matches!(input.downmix_index, 1 | 2)
+    matches!(input.downmix_index, 1 | 2 | 4)
         && input.objects.len() == 15
         && input
             .objects

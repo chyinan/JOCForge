@@ -37,10 +37,11 @@ pub enum JocCoefficientRowLayout {
 impl JocCoefficientRowLayout {
     pub const fn for_payload_downmix_index(index: JocPayloadDownmixIndex) -> Self {
         match index {
-            JocPayloadDownmixIndex::FiveChannel => Self::FiveChannel,
-            JocPayloadDownmixIndex::SevenChannel | JocPayloadDownmixIndex::HeightPair => {
-                Self::SevenChannel
-            }
+            JocPayloadDownmixIndex::FiveChannel
+            | JocPayloadDownmixIndex::FiveChannelWithoutPhase => Self::FiveChannel,
+            JocPayloadDownmixIndex::SevenChannel
+            | JocPayloadDownmixIndex::HeightPair
+            | JocPayloadDownmixIndex::HeightPairWithPhase => Self::SevenChannel,
         }
     }
 
@@ -324,7 +325,7 @@ fn write_fit_representation_with_profile(
         }
         // Preserve all seven channel gains when a Flat7x payload runs out of
         // space. Sparse coding changes the gain of every unselected channel.
-        if payload_downmix_index == JocPayloadDownmixIndex::FiveChannel
+        if !payload_downmix_index.uses_seven_carriers()
             && objects.iter().any(|object| object.mode == 0)
         {
             for object in objects.iter_mut().filter(|object| object.mode == 0) {

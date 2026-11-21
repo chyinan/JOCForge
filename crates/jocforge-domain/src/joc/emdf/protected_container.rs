@@ -29,7 +29,7 @@ const MAX_OAMD_PAYLOAD_BYTES: u32 = 160;
 const MAX_ID14_PAYLOAD_BYTES: u32 = 372;
 const MAX_ID2_PAYLOAD_BYTES: u32 = 8;
 const MAX_ID1_PAYLOAD_BYTES: u32 = 10;
-const SELECTED_JOC_DOWNMIX_INDEXES: [u8; 3] = [1, 2, 3];
+const SELECTED_JOC_DOWNMIX_INDEXES: [u8; 5] = [0, 1, 2, 3, 4];
 const SELECTED_FOUR_PAYLOAD_IDS: [CurrentPayloadId; 4] = [
     CurrentPayloadId::Oamd,
     CurrentPayloadId::Joc,
@@ -843,8 +843,8 @@ fn parse_joc_payload(
         clip_gain_index,
     )?;
     let coefficient_channel_count: u8 = match downmix_index {
-        1 | 2 => 7,
-        3 => 5,
+        1 | 2 | 4 => 7,
+        0 | 3 => 5,
         _ => return Err(CurrentEmdfParserError::JocSelectedHeader),
     };
     if sequence_count != provenance.sequence_count() {
@@ -1568,7 +1568,7 @@ mod tests {
             );
         }
         assert_eq!(
-            validate_selected_joc_header(0, 15, 0, 128),
+            validate_selected_joc_header(5, 15, 0, 128),
             Err(CurrentEmdfParserError::JocSelectedHeader)
         );
         assert_eq!(

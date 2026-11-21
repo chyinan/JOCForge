@@ -60,8 +60,8 @@ struct EncodeArgs {
     /// Total paired-stream bitrate including the 640 kbps AC-3 core.
     #[arg(long, value_name = "KBPS", requires = "joc_layout", conflicts_with = "data_rate", value_parser = ["1024", "1088", "1216", "1280", "1408", "1664"])]
     total_rate: Option<String>,
-    /// Select flat7x (rear pair) or idx2 (front height pair, strict ETSI). Defaults to 5.1.
-    #[arg(long, value_name = "LAYOUT", value_parser = ["flat7x","idx2"])]
+    /// Select idx0 through idx4; flat7x is an alias for idx1. Defaults to idx3.
+    #[arg(long, value_name = "LAYOUT", value_parser = ["flat7x","idx0","idx1","idx2","idx3","idx4"])]
     joc_layout: Option<String>,
     /// Write strict ETSI JOC/OAMD EMDF signalling for the selected stream.
     #[arg(long)]
@@ -104,20 +104,27 @@ fn main() -> ExitCode {
             return ExitCode::SUCCESS;
         }
         Command::Encode(args) => {
-            let layout = if args.joc_layout.as_deref() == Some("idx2") {
-                JocReconstructionLayout::FivePointOnePlusHeight
-            } else if args.joc_layout.is_some() {
-                JocReconstructionLayout::Flat7x
-            } else {
-                JocReconstructionLayout::ExistingSelectedFivePointOne
+            let layout = match args.joc_layout.as_deref() {
+                None | Some("idx3") => JocReconstructionLayout::ExistingSelectedFivePointOne,
+                Some("idx0") => JocReconstructionLayout::FivePointOneWithoutPhase,
+                Some("flat7x" | "idx1") => JocReconstructionLayout::Flat7x,
+                Some("idx2") => JocReconstructionLayout::FivePointOnePlusHeight,
+                Some("idx4") => JocReconstructionLayout::HeightPairWithPhase,
+                _ => unreachable!("clap validates the JOC layout"),
             };
+            if args.total_rate.is_some() && !layout.uses_seven_carriers() {
+                eprintln!("--total-rate requires a paired stream (idx1, idx2 or idx4)");
+                return ExitCode::from(2);
+            }
             use jocforge_application::meter_source_bridge::EmdfCarriageProfile;
-            let signalling =
-                if args.etsi_strict || layout == JocReconstructionLayout::FivePointOnePlusHeight {
-                    EmdfCarriageProfile::EtsiEmdf
-                } else {
-                    EmdfCarriageProfile::DeployedCompat
-                };
+            let signalling = if args.etsi_strict
+                || layout.uses_height_pair()
+                || layout == JocReconstructionLayout::FivePointOneWithoutPhase
+            {
+                EmdfCarriageProfile::EtsiEmdf
+            } else {
+                EmdfCarriageProfile::DeployedCompat
+            };
             if let Some(job_xml) = args.job_xml {
                 jocforge::encode_request::encode_job_xml_with_signalling(
                     &job_xml,

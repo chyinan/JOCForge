@@ -21,10 +21,7 @@ use jocforge_domain::{
         },
     },
     meter::measurement_dependents::MeasurementDependentOwnerInputs,
-    profile::{
-        CarrierCodecProfile, JocPayloadDownmixIndex, JocReconstructionLayout,
-        ResolvedEncodingProfile, SubstreamTopology,
-    },
+    profile::{CarrierCodecProfile, ResolvedEncodingProfile, SubstreamTopology},
     spatial::{
         QmfReceiverFunctionalProvider, SpatialAudioCallbackOutcome,
         spatial_audio_state::SelectedJocQmfProjection,
@@ -550,9 +547,8 @@ fn select_main_metadata_joc_source_route(
     let selected_five_point_one = profile.carrier_codec() == CarrierCodecProfile::IndependentEac3
         && profile.substream_topology()
             == SubstreamTopology::SelectedSingleIndependentZeroDependent
-        && profile.joc_reconstruction_layout()
-            == JocReconstructionLayout::ExistingSelectedFivePointOne
-        && profile.joc_payload_downmix_index() == JocPayloadDownmixIndex::FiveChannel;
+        && profile.joc_reconstruction_layout().uses_five_carriers()
+        && !profile.joc_payload_downmix_index().uses_seven_carriers();
     let flat7x = profile.carrier_codec() == CarrierCodecProfile::Flat7xAc3I0DependentEac3D0
         && profile.substream_topology() == SubstreamTopology::Flat7xIndependentI0DependentD0
         && profile.joc_reconstruction_layout().uses_seven_carriers()
