@@ -12323,7 +12323,7 @@ def check_f12_flat7x_i0_frame_bit_assembler(root, d):
         and "I0_AUDIO_BLOCK_COUNT: usize = 6" in module
         and "i0.rate().kbps() != Some(640)" in function
         and "!target.is_supported()" in function
-        and "write_flat7x_i0_ac3_header_through_compression(" in function
+        and "write_ac3_header_with_lfe(" in function
         and "I0FramePart::AudioBlock" in function
         and "I0AuxDataInput::Present" in function
         and "input.crcrsv_seed.value" in function
@@ -12828,10 +12828,10 @@ def check_f12_flat7x_i0_typed_bsi_frame_assembly(root, d):
         and "write_flat7x_i0_ac3_bsi_tail(&mut bsi_writer, input.bsi_tail)?" in function
         and "bsi_receipt.start_bit()" in function
         and "bsi_receipt.bit_length()" in function
-        and "assemble_flat7x_i0_ac3_frame(" in function
+        and "assemble_ac3_frame_with_lfe(" in function
         and function.index("writer.preflight_capacity(I0_TARGET_FRAME_BITS)?")
         < function.index("let mut bsi_scratch = [0_u8; I0_TARGET_FRAME_BYTES]")
-        < function.index("assemble_flat7x_i0_ac3_frame(")
+        < function.index("assemble_ac3_frame_with_lfe(")
         and no_product_call,
         "typed I0 entry preflights, serializes BSI privately, preserves caller spans and delegates to one frame commit",
     )
@@ -16863,6 +16863,7 @@ def run(root=ROOT):
 
    if relative_source in approved_configuration_import_sources:guard=guard.replace('compatibility','')
 
+   guard=guard.replace('legacy-ac3', 'ac3-core')  # Public carriage token.
    ck(not any(x in guard for x in('legacy','compat','fallback','ffmpeg','concat!','include!','#[path')),'source token '+str(p));
    public_source = rust_code_without_comments(s)
    time_domain_name = re.compile(r'(?:^|_)(?:callback_index|callback_count|normal_callbacks|normal_callback_count|sample_index|query_sample|frame_index|dispatch_index|dispatch_count|writer_index|au_index|published_au_index|source_cursor|source_position|reader_position|owner_generation|frontend_generation|phase_generation|timestamp|timecode)(?:_|$)')

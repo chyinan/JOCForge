@@ -62,6 +62,7 @@ pub(super) struct FramePlan {
 
 #[derive(Clone, Debug)]
 pub struct SubstreamPlan {
+    ac3_core: bool,
     pub(super) emdf_location: EmdfLocation,
     pub(super) frames: Vec<FramePlan>,
     pub(super) partition: BlockPartition,
@@ -131,11 +132,29 @@ impl SubstreamPlan {
         Ok(Self {
             frames,
             layout,
+            ac3_core: false,
             emdf_location: EmdfLocation::SkipField,
             partition: BlockPartition::Six,
         })
     }
 
+    pub fn with_ac3_core(mut self) -> Result<Self, String> {
+        if !self.layout.uses_five_carriers()
+            || self.frames.len() != 2
+            || self.partition != BlockPartition::Six
+            || self.emdf_location != EmdfLocation::FrameEnd
+        {
+            return Err(
+                "legacy-ac3 requires idx0 or idx3, six blocks, one D0 and frame-end EMDF".into(),
+            );
+        }
+        self.ac3_core = true;
+        Ok(self)
+    }
+
+    pub fn ac3_core_lfe(&self) -> Option<bool> {
+        self.ac3_core.then_some(self.frames[0].lfe)
+    }
     pub fn with_emdf_location(mut self, location: EmdfLocation) -> Result<Self, String> {
         if location == EmdfLocation::FrameEnd && self.frames.len() < 2 {
             return Err("ETSI frame-end carriage requires a dependent substream".into());
@@ -157,6 +176,27 @@ impl SubstreamPlan {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn ac3_core_requires_one_six_block_dependent_with_frame_end_metadata() {
+        for layout in [
+            JocReconstructionLayout::FivePointOneWithoutPhase,
+            JocReconstructionLayout::ExistingSelectedFivePointOne,
+        ] {
+            let plan = SubstreamPlan::new(layout, 1, LfeOwner::Independent).unwrap();
+            assert!(plan.clone().with_ac3_core().is_err());
+            let plan = plan.with_emdf_location(EmdfLocation::FrameEnd).unwrap();
+            assert!(
+                plan.clone()
+                    .with_partition(BlockPartition::Three)
+                    .with_ac3_core()
+                    .is_err()
+            );
+            let plan = plan.with_ac3_core().unwrap();
+            assert_eq!(plan.ac3_core_lfe(), Some(true));
+            assert_eq!(plan.frames[1].map, 0xc000);
+        }
+    }
 
     #[test]
     fn all_canonical_topologies_have_disjoint_dependent_maps_and_one_final_owner() {

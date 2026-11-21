@@ -54,6 +54,58 @@ pub use jocforge_domain::codec::i0_frame_assembler::{
     OpaqueI0Ac3BitSpan,
 };
 
+/// Encode the independent 640 kbps AC-3 bed from the same six blocks used for JOC fitting.
+pub fn encode_ac3_core(
+    numeric: &NumericPlanReceipt<'_, SelectedSourceNumericPlan>,
+    bsi: &crate::codec_source_bridge::Flat7xD0BsiSourceInputs,
+    include_lfe: bool,
+) -> Result<[u8; 2560], String> {
+    use jocforge_domain::codec::ac3_audio_block::produce_i0_audio_block_series_with_lfe;
+    let budget = I0AudioBlockSeriesBudget::new(20480);
+    let mut policy = flat7x_i0_audio_block_policy_v1(I0BapCandidateQ::new(0).unwrap()).unwrap();
+    for (block, code) in policy.blocks.iter_mut().zip(bsi.dynamic_range_codes()) {
+        block.dynamic_range_code = code;
+    }
+    let probe = I0AudioBlockBudgetProbe::prepare(numeric, policy, budget);
+    let header = Flat7xI0Ac3FrameHeaderFields {
+        dialnorm: bsi.dialnorm(),
+        compr: bsi.compr(),
+        ..Flat7xI0Ac3FrameHeaderFields::official_demo_sample_non_crc_fields()
+    };
+    for q in (0..=1008).rev().step_by(16) {
+        let q = I0BapCandidateQ::new(q).unwrap();
+        if probe.as_ref().is_some_and(|p| p.exceeds_budget(q)) {
+            continue;
+        }
+        for block in &mut policy.blocks {
+            block.candidate_q = q;
+        }
+        let series =
+            match produce_i0_audio_block_series_with_lfe(numeric, policy, budget, include_lfe) {
+                Ok(s) => s,
+                Err(I0AudioBlockSeriesError::AudioBlockBudgetExceeded { .. }) => continue,
+                Err(e) => return Err(format!("AC-3 audio blocks: {e:?}")),
+            };
+        match assemble_flat7x_i0_audio_with_header(
+            Flat7xI0D0TargetPlan::approved_contract(),
+            numeric.identity(),
+            &series,
+            I0AuxDataInput::PadToFrame,
+            CallerOwnedI0CrcrsvSeed { value: false },
+            header,
+            bsi.mixing().mixmdo,
+        ) {
+            Ok(frame) => return Ok(*frame.frame_bytes()),
+            Err(Flat7xI0FrameAssemblyError::FrameSpanMismatch {
+                actual_bits,
+                required_bits,
+            }) if actual_bits > required_bits => continue,
+            Err(e) => return Err(format!("AC-3 syncframe: {e:?}")),
+        }
+    }
+    Err("AC-3 core exceeds 640 kbps budget".into())
+}
+
 pub const FLAT7X_I0_AUDIO_BLOCK_POLICY_ID: &str = "JOCFORGE_FLAT7X_I0_AUDIO_POLICY_V1";
 
 use crate::source_frame_bridge::{Flat7xSourcePcmProjection, Flat7xSourceRoleMapReceipt};

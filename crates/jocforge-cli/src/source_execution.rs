@@ -472,18 +472,29 @@ pub(crate) fn stage_source_frame<'pcm>(
         let container = f14k_source
             .protected_container()
             .ok_or("missing composition EMDF".to_owned())?;
-        let au = plan.encode(
-            frame_candidate.numeric_plan_receipt().plan(),
-            spectral.as_ref().map(|series| series.spectra()),
-            FrameMetadata {
-                emdf: container.bytes(),
-                dialnorm: bsi.dialnorm(),
-                compr: bsi.compr(),
-                dynrng: bsi.dynamic_range_codes(),
-                mixing: bsi.mixing(),
-            },
-            frame_bytes,
-        )?;
+        let numeric = frame_candidate.numeric_plan_receipt();
+        let metadata = FrameMetadata {
+            emdf: container.bytes(),
+            dialnorm: bsi.dialnorm(),
+            compr: bsi.compr(),
+            dynrng: bsi.dynamic_range_codes(),
+            mixing: bsi.mixing(),
+        };
+        let au = if let Some(include_lfe) = plan.ac3_core_lfe() {
+            let core = jocforge_application::flat7x_pair_source::encode_ac3_core(
+                numeric,
+                &bsi,
+                include_lfe,
+            )?;
+            plan.encode_with_ac3_core(numeric.plan(), metadata, &core)?
+        } else {
+            plan.encode(
+                numeric.plan(),
+                spectral.as_ref().map(|series| series.spectra()),
+                metadata,
+                frame_bytes,
+            )?
+        };
         file.write_all(&au).map_err(|e| e.to_string())?;
     }
     let mut flat7x_d0_history_after = None;

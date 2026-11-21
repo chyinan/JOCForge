@@ -66,8 +66,8 @@ struct EncodeArgs {
     /// Write strict ETSI JOC/OAMD EMDF signalling for the selected stream.
     #[arg(long)]
     etsi_strict: bool,
-    /// EMDF carrier: audio-block skip field or final dependent frame-end auxdata (etsi).
-    #[arg(long,value_parser=["skipfld","auxdata","etsi"])]
+    /// EMDF carrier: audio-block skip field or dependent frame-end auxdata (etsi or legacy-ac3).
+    #[arg(long,value_parser=["skipfld","auxdata","etsi","legacy-ac3"])]
     carriage: Option<String>,
     /// EMDF signalling, independent of the carrier location.
     #[arg(long,value_parser=["etsi","strict","deployed"],conflicts_with="etsi_strict")]
@@ -127,14 +127,26 @@ fn main() -> ExitCode {
                 Some("idx4") => JocReconstructionLayout::HeightPairWithPhase,
                 _ => unreachable!("clap validates the JOC layout"),
             };
-            if args.total_rate.is_some() && !layout.uses_seven_carriers() {
+            let ac3_core = args.carriage.as_deref() == Some("legacy-ac3");
+            if ac3_core
+                && (!layout.uses_five_carriers()
+                    || args.total_rate.as_deref().is_some_and(|v| v != "1280")
+                    || args.data_rate.as_deref().is_some_and(|v| v != "640")
+                    || args.emdf_profile.as_deref() == Some("deployed"))
+            {
+                eprintln!(
+                    "legacy-ac3 requires idx0/idx3, strict EMDF, --total-rate 1280 or --data-rate 640"
+                );
+                return ExitCode::from(2);
+            }
+            if args.total_rate.is_some() && !layout.uses_seven_carriers() && !ac3_core {
                 eprintln!("--total-rate requires a paired stream (idx1, idx2 or idx4)");
                 return ExitCode::from(2);
             }
             use jocforge::encode_request::BlockPartition;
             use jocforge_application::meter_source_bridge::EmdfCarriageProfile;
             let partition = args.block_partition.unwrap_or(BlockPartition::Six);
-            let auxdata = matches!(args.carriage.as_deref(), Some("auxdata" | "etsi"));
+            let auxdata = ac3_core || matches!(args.carriage.as_deref(), Some("auxdata" | "etsi"));
             let compose = auxdata
                 || partition != BlockPartition::Six
                 || args.dependent_count.is_some()
@@ -174,8 +186,16 @@ fn main() -> ExitCode {
                     } else {
                         jocforge::encode_request::EmdfLocation::SkipField
                     })
+                })
+                .and_then(|plan| {
+                    let plan = plan.with_partition(partition);
+                    if ac3_core {
+                        plan.with_ac3_core()
+                    } else {
+                        Ok(plan)
+                    }
                 }) {
-                    Ok(plan) => Some(plan.with_partition(partition)),
+                    Ok(plan) => Some(plan),
                     Err(e) => {
                         eprintln!("{e}");
                         return ExitCode::from(2);
@@ -206,8 +226,12 @@ fn main() -> ExitCode {
                     let kbps = total.parse::<u32>().expect("validated total bitrate");
                     CodecRateProfile::from_kbps(kbps - 640).expect("validated dependent bitrate")
                 } else {
-                    CodecRateProfile::from_xml_token(args.data_rate.as_deref().unwrap_or("1024"))
-                        .expect("clap validates the bitrate")
+                    CodecRateProfile::from_xml_token(
+                        args.data_rate
+                            .as_deref()
+                            .unwrap_or(if ac3_core { "640" } else { "1024" }),
+                    )
+                    .expect("clap validates the bitrate")
                 };
                 if let Some(plan) = topology {
                     jocforge::encode_request::encode_substream_layout(

@@ -20,6 +20,38 @@ impl SubstreamPlan {
         metadata: FrameMetadata<'_>,
         bytes: usize,
     ) -> Result<Vec<u8>, String> {
+        if self.ac3_core_lfe().is_some() {
+            return Err("AC-3 core frame required".into());
+        }
+        self.encode_components(source, extended, metadata, bytes)
+    }
+
+    pub fn encode_with_ac3_core(
+        &self,
+        source: &SelectedSourceNumericPlan,
+        metadata: FrameMetadata<'_>,
+        core: &[u8; 2560],
+    ) -> Result<Vec<u8>, String> {
+        if self.ac3_core_lfe().is_none()
+            || self.partition != BlockPartition::Six
+            || self.emdf_location != EmdfLocation::FrameEnd
+        {
+            return Err("invalid AC-3 core composition".into());
+        }
+        let dependent = self.encode_components(source, None, metadata, 2560)?;
+        let mut au = Vec::with_capacity(core.len() + dependent.len());
+        au.extend_from_slice(core);
+        au.extend(dependent);
+        Ok(au)
+    }
+
+    fn encode_components(
+        &self,
+        source: &SelectedSourceNumericPlan,
+        extended: Option<&[Flat7xD0SpectrumBlock; 6]>,
+        metadata: FrameMetadata<'_>,
+        bytes: usize,
+    ) -> Result<Vec<u8>, String> {
         // The last dependent carries metadata. Every syncframe has an even size
         // and its own CRC. Share the remaining words in proportion to channel count.
         let weights: Vec<_> = self
@@ -40,6 +72,9 @@ impl SubstreamPlan {
         let mut components = Vec::with_capacity((6 / blocks) * self.frames.len());
         for start in (0..6).step_by(blocks) {
             for (index, frame) in self.frames.iter().enumerate() {
+                if self.ac3_core_lfe().is_some() && index == 0 {
+                    continue;
+                }
                 let mut rows = Vec::new();
                 for &lane in &frame.channels {
                     let replaced = self.frames[1..]
@@ -79,7 +114,11 @@ impl SubstreamPlan {
                     index,
                     plan: frame,
                     rows,
-                    bytes: sizes.get(index).map_or(4096, |words| words * 2),
+                    bytes: if self.ac3_core_lfe().is_some() {
+                        2560
+                    } else {
+                        sizes.get(index).map_or(4096, |words| words * 2)
+                    },
                     metadata: &metadata,
                     carrier: (index == last && start + blocks == 6).then_some(self.emdf_location),
                     start,

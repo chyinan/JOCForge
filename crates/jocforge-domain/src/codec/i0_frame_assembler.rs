@@ -11,10 +11,7 @@ use super::{
         I0_BSI_TAIL_MINIMUM_BITS, write_flat7x_i0_ac3_bsi_tail,
     },
     bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError},
-    frame_builder::{
-        Flat7xI0Ac3HeaderSegmentError, Flat7xI0Ac3HeaderValues,
-        write_flat7x_i0_ac3_header_through_compression,
-    },
+    frame_builder::{Flat7xI0Ac3HeaderSegmentError, Flat7xI0Ac3HeaderValues},
 };
 use crate::{
     analysis::source_frame::SharedAnalysisIdentity,
@@ -1021,7 +1018,7 @@ pub fn assemble_flat7x_i0_audio_with_header(
     let mut frame_bytes = [0_u8; I0_TARGET_FRAME_BYTES];
     let frame_receipt = {
         let mut frame_writer = FrameBitWriter::new(&mut frame_bytes, FrameBitCursor::new(0))?;
-        assemble_flat7x_i0_ac3_frame(
+        assemble_ac3_frame_with_lfe(
             target,
             Flat7xI0FrameBitInput {
                 header_fields,
@@ -1031,6 +1028,7 @@ pub fn assemble_flat7x_i0_audio_with_header(
                 crcrsv_seed,
             },
             &mut frame_writer,
+            audio_series.include_lfe,
         )?
     };
 
@@ -1047,6 +1045,14 @@ pub fn assemble_flat7x_i0_ac3_frame(
     target: Flat7xI0D0TargetPlan,
     input: Flat7xI0FrameBitInput<'_>,
     writer: &mut FrameBitWriter<'_>,
+) -> Result<Flat7xI0FrameAssemblyReceipt, Flat7xI0FrameAssemblyError> {
+    assemble_ac3_frame_with_lfe(target, input, writer, true)
+}
+fn assemble_ac3_frame_with_lfe(
+    target: Flat7xI0D0TargetPlan,
+    input: Flat7xI0FrameBitInput<'_>,
+    writer: &mut FrameBitWriter<'_>,
+    include_lfe: bool,
 ) -> Result<Flat7xI0FrameAssemblyReceipt, Flat7xI0FrameAssemblyError> {
     validate_target(target)?;
     let actual_cursor = writer.cursor().bit_offset();
@@ -1124,9 +1130,10 @@ pub fn assemble_flat7x_i0_ac3_frame(
     let mut staging = [0_u8; I0_TARGET_FRAME_BYTES];
     let header_end = {
         let mut header_writer = FrameBitWriter::new(&mut staging, FrameBitCursor::new(0))?;
-        write_flat7x_i0_ac3_header_through_compression(
+        super::frame_builder::write_ac3_header_with_lfe(
             &mut header_writer,
             input.header_fields.with_crc1_placeholder(),
+            include_lfe,
         )?
         .bit_offset()
     };

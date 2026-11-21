@@ -109,6 +109,14 @@ pub fn write_flat7x_i0_ac3_header_through_compression(
     writer: &mut FrameBitWriter<'_>,
     values: Flat7xI0Ac3HeaderValues,
 ) -> Result<FrameBitCursor, Flat7xI0Ac3HeaderSegmentError> {
+    write_ac3_header_with_lfe(writer, values, true)
+}
+
+pub(super) fn write_ac3_header_with_lfe(
+    writer: &mut FrameBitWriter<'_>,
+    values: Flat7xI0Ac3HeaderValues,
+    include_lfe: bool,
+) -> Result<FrameBitCursor, Flat7xI0Ac3HeaderSegmentError> {
     let Flat7xI0Ac3HeaderValues {
         crc1,
         frmsizecod,
@@ -154,7 +162,7 @@ pub fn write_flat7x_i0_ac3_header_through_compression(
     writer.write_unsigned(7, 3)?;
     writer.write_unsigned(u32::from(cmixlev), 2)?;
     writer.write_unsigned(u32::from(surmixlev), 2)?;
-    writer.write_bit(true)?;
+    writer.write_bit(include_lfe)?;
     writer.write_unsigned(u32::from(dialnorm), FLAT7X_I0_AC3_DIALNORM_WIDTH_BITS)?;
     writer.write_bit(compr.is_some())?;
     if let Some(compr) = compr {

@@ -349,6 +349,15 @@ pub fn encode_job_xml_with_signalling(
     preflight_only: bool,
     signalling: EmdfCarriageProfile,
 ) -> Result<(), EncodeRequestError> {
+    encode_xml_request(job_xml_path, layout, preflight_only, signalling, false)
+}
+fn encode_xml_request(
+    job_xml_path: &Path,
+    layout: JocReconstructionLayout,
+    preflight_only: bool,
+    signalling: EmdfCarriageProfile,
+    ac3_core: bool,
+) -> Result<(), EncodeRequestError> {
     validate_signalling(layout, signalling)?;
     let request = resolve_job_xml_request(job_xml_path)?;
     if !preflight_only {
@@ -367,7 +376,9 @@ pub fn encode_job_xml_with_signalling(
         let worker = thread::Builder::new()
             .name("jocforge-job-xml-preflight".to_owned())
             .stack_size(ENCODE_REQUEST_STACK_BYTES)
-            .spawn_scoped(scope, move || run_job_xml_preflight(&request, layout))
+            .spawn_scoped(scope, move || {
+                run_job_xml_preflight(&request, layout, ac3_core)
+            })
             .map_err(|_| EncodeRequestError::WorkerUnavailable)?;
         worker
             .join()
@@ -418,6 +429,7 @@ fn resolve_job_xml_request(
 fn run_job_xml_preflight(
     request: &ResolvedJobXmlRequest,
     layout: JocReconstructionLayout,
+    ac3_core: bool,
 ) -> Result<(), EncodeRequestError> {
     if request.output_path.exists() {
         return Err(EncodeRequestError::OutputAlreadyExists);
@@ -451,28 +463,33 @@ fn run_job_xml_preflight(
 
     let configuration = prepared.configuration();
     let codec_rate = configuration.selected_profile().codec_rate();
-    let (frame_bytes, total_kbps) = match resolve_encode_request_route(codec_rate, layout)? {
-        EncodeRequestRoute::SelectedFivePointOne(_) => (
-            codec_rate
-                .frame_bytes()
-                .ok_or(EncodeRequestError::UnsupportedDataRate)?,
-            configuration.bit_rate_kbps(),
-        ),
-        EncodeRequestRoute::Flat7xI0D0Pair(target) => {
-            jocforge_application::source_frame_bridge::build_flat7x_provisional_source_role_map(
+    let (frame_bytes, total_kbps) = if ac3_core {
+        validate_ac3_core_rate(codec_rate)?;
+        (5120, 1280)
+    } else {
+        match resolve_encode_request_route(codec_rate, layout)? {
+            EncodeRequestRoute::SelectedFivePointOne(_) => (
+                codec_rate
+                    .frame_bytes()
+                    .ok_or(EncodeRequestError::UnsupportedDataRate)?,
+                configuration.bit_rate_kbps(),
+            ),
+            EncodeRequestRoute::Flat7xI0D0Pair(target) => {
+                jocforge_application::source_frame_bridge::build_flat7x_provisional_source_role_map(
                 prepared.graph().graph(),
                 target,
             )
             .map_err(|error| {
                 EncodeRequestError::SourcePipeline(format!("Flat7x input layout: {error:?}"))
             })?;
-            (
-                usize::try_from(target.aggregate_frame_bytes())
-                    .map_err(|_| EncodeRequestError::UnsupportedDataRate)?,
-                target
-                    .aggregate_rate_kbps()
-                    .ok_or(EncodeRequestError::UnsupportedDataRate)?,
-            )
+                (
+                    usize::try_from(target.aggregate_frame_bytes())
+                        .map_err(|_| EncodeRequestError::UnsupportedDataRate)?,
+                    target
+                        .aggregate_rate_kbps()
+                        .ok_or(EncodeRequestError::UnsupportedDataRate)?,
+                )
+            }
         }
     };
     println!(
@@ -914,7 +931,13 @@ pub fn encode_xml_substream_layout(
         return Err(EncodeRequestError::UnsupportedJocLayout);
     }
     if preflight {
-        return encode_job_xml_with_signalling(path, layout, true, signalling);
+        return encode_xml_request(
+            path,
+            layout,
+            true,
+            signalling,
+            topology.ac3_core_lfe().is_some(),
+        );
     }
     let request = resolve_job_xml_request(path)?;
     run_worker_with_topology(
@@ -962,6 +985,15 @@ fn run_worker_with_topology(
     })
 }
 
+fn validate_ac3_core_rate(rate: CodecRateProfile) -> Result<(), EncodeRequestError> {
+    if rate == CodecRateProfile::Kbps640 {
+        Ok(())
+    } else {
+        Err(EncodeRequestError::SourcePipeline(
+            "legacy-ac3 needs a D0 data_rate of 640 kbps (1280 kbps total)".into(),
+        ))
+    }
+}
 fn validate_signalling(
     layout: JocReconstructionLayout,
     signalling: EmdfCarriageProfile,
@@ -1096,6 +1128,15 @@ fn run_inner(
             data_rate_kbps,
         )
     };
+    let ac3_core = topology
+        .as_ref()
+        .is_some_and(|plan| plan.ac3_core_lfe().is_some());
+    if ac3_core {
+        validate_ac3_core_rate(selected_profile.codec_rate())?;
+        if signalling != EmdfCarriageProfile::EtsiEmdf {
+            return Err(EncodeRequestError::UnsupportedJocLayout);
+        }
+    }
     let config_sha256 = prepared.config_sha256();
 
     eprintln!(
@@ -1108,8 +1149,8 @@ fn run_inner(
         parsed.channels(),
         parsed.total_samples(),
         data_rate_kbps,
-        aggregate_rate_kbps,
-        frame_bytes,
+        if ac3_core { 1280 } else { aggregate_rate_kbps },
+        if ac3_core { 5120 } else { frame_bytes },
         resolved_joc_profile.joc_reconstruction_layout(),
         resolved_joc_profile.joc_dmx_config_idx(),
         hex_lower(&config_sha256),
@@ -1649,7 +1690,11 @@ fn run_inner(
             .metadata()
             .map_err(|e| EncodeRequestError::SourcePipeline(e.to_string()))?
             .len()
-            != roots.durable_bytes()
+            != if ac3_core {
+                roots.published_aus() * 5120
+            } else {
+                roots.durable_bytes()
+            }
         {
             return Err(EncodeRequestError::SourcePipeline(
                 "composed output length mismatch".into(),

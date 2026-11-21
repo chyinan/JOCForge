@@ -109,6 +109,17 @@ jocforge encode input.adm.wav aux-strict/song.candidate.ec3 --joc-layout idx4 --
 jocforge encode input.adm.wav aux-deployed/song.candidate.ec3 --joc-layout idx4 --dependent-count 2 --block-partition 3+3 --carriage auxdata --emdf-profile deployed
 ```
 
+### idx0 / idx3 的 Legacy AC-3 核心
+
+`--carriage legacy-ac3` 为 idx0 和 idx3 生成固定 **1280 kbps** 的裸码流。每个 1536 采样区间先写 640 kbps 的 48 kHz AC-3 I0，再写 640 kbps 的 E-AC-3 D0，各 2560 字节。I0 提供可单独播放的 3/2 声床；D0 的通道映射包含 L、C，帧尾承载严格 ETSI JOC/OAMD。该模式固定六块、一个依赖子流，LFE 默认由 I0 携带，也支持既有的四种 `--lfe-owner` 取值。
+
+```powershell
+jocforge encode input.adm.wav idx0-legacy.ec3 --joc-layout idx0 --carriage legacy-ac3 --total-rate 1280
+jocforge encode input.adm.wav idx3-legacy.ec3 --joc-layout idx3 --carriage legacy-ac3 --total-rate 1280
+```
+
+XML 作业的 `data_rate` 填 D0 的 `640`。可用 `--job-xml job.xml --joc-layout idx0 --carriage legacy-ac3 --preflight-only` 核对总码率和每个访问单元的长度。
+
 ### 无损封装为 MKA 或 MP4
 
 在同一个 PowerShell 会话中任选一种容器。`-c:a copy` 直接复制 EC3 音轨并保留 JOC 元数据。

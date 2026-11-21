@@ -19,7 +19,7 @@ use super::{
 };
 use crate::{
     analysis::source_frame::SharedAnalysisIdentity,
-    codec::selected_frame_trial::{BlockExponentPlan, SelectedSourceNumericPlan},
+    codec::selected_frame_trial::SelectedSourceNumericPlan,
     transform::{
         fullband_exponent_pipeline::NumericPlanReceipt, long_mdct::forward_long_mdct_512,
         math_generated_parameters::MathGeneratedTransformParameters,
@@ -356,6 +356,7 @@ impl I0AudioBlockSeriesReceipt {
 pub struct I0AudioBlockSeriesCandidate {
     blocks: [Ac3AudioBlockCandidate; I0_AUDIO_BLOCK_COUNT],
     receipt: I0AudioBlockSeriesReceipt,
+    pub(super) include_lfe: bool,
 }
 
 impl I0AudioBlockSeriesCandidate {
@@ -678,7 +679,7 @@ pub fn produce_ac3_audio_block(
         &encoded_exponents,
         encoded_lfe_exponents,
     )?;
-    write_bit_allocation_syntax(&mut writer, input.allocation)?;
+    write_bit_allocation_syntax(&mut writer, input.allocation, true)?;
     writer.write_bit(false)?; // deltbaie=0 is the caller-selected block-zero allocation mode.
     if let Some(skip_field) = input.skip_field {
         writer.write_bit(true)?;
@@ -829,6 +830,15 @@ pub fn produce_i0_audio_block_series(
     numeric_plan: &NumericPlanReceipt<'_, SelectedSourceNumericPlan>,
     policy: I0AudioBlockSeriesPolicy,
     budget: I0AudioBlockSeriesBudget,
+) -> Result<I0AudioBlockSeriesCandidate, I0AudioBlockSeriesError> {
+    produce_i0_audio_block_series_with_lfe(numeric_plan, policy, budget, true)
+}
+
+pub fn produce_i0_audio_block_series_with_lfe(
+    numeric_plan: &NumericPlanReceipt<'_, SelectedSourceNumericPlan>,
+    policy: I0AudioBlockSeriesPolicy,
+    budget: I0AudioBlockSeriesBudget,
+    include_lfe: bool,
 ) -> Result<I0AudioBlockSeriesCandidate, I0AudioBlockSeriesError> {
     let plan = numeric_plan.plan();
     if plan.bap_provider_sha256 != plan.bap_parameters.provider_sha256() {
@@ -1090,7 +1100,11 @@ pub fn produce_i0_audio_block_series(
             &fullband_bap_rows,
             &lfe_coefficients,
             lfe_exponents,
-            lfe_bap,
+            if include_lfe {
+                lfe_bap
+            } else {
+                [0; LFE_ENDMANT]
+            },
             policy.quantizer_policy,
         )?;
 
@@ -1127,14 +1141,17 @@ pub fn produce_i0_audio_block_series(
                 )?;
             write_selected_plan_exponent_syntax(
                 &mut writer,
-                exponent_plan,
                 fullband_wire_strategy_codes,
                 current_bandwidth_codes,
                 current_gain_ranges,
                 &encoded_fullband,
-                encoded_lfe,
+                if include_lfe {
+                    Some((exponent_plan.lfe.strategy, encoded_lfe))
+                } else {
+                    None
+                },
             )?;
-            write_bit_allocation_syntax(&mut writer, allocation)?;
+            write_bit_allocation_syntax(&mut writer, allocation, include_lfe)?;
             writer.write_bit(false)?; // deltbaie=0 for this caller-selected block policy.
             writer.write_bit(false)?; // I0 uses no skip-field payload.
             for field in &mantissa_fields {
@@ -1194,22 +1211,27 @@ pub fn produce_i0_audio_block_series(
         ],
     };
 
-    Ok(I0AudioBlockSeriesCandidate { blocks, receipt })
+    Ok(I0AudioBlockSeriesCandidate {
+        blocks,
+        receipt,
+        include_lfe,
+    })
 }
 
 fn write_selected_plan_exponent_syntax(
     writer: &mut FrameBitWriter<'_>,
-    plan: &BlockExponentPlan,
     fullband_strategy_codes: [u8; FULLBAND_CHANNEL_COUNT],
     bandwidth_codes: [u8; FULLBAND_CHANNEL_COUNT],
     gain_range_codes: [u8; FULLBAND_CHANNEL_COUNT],
     fullband_rows: &[Option<EncodedExponentRow>; FULLBAND_CHANNEL_COUNT],
-    lfe_row: Option<EncodedLfeExponentRow>,
+    lfe_syntax: Option<(u8, Option<EncodedLfeExponentRow>)>,
 ) -> Result<(), I0AudioBlockSeriesError> {
     for strategy_code in &fullband_strategy_codes {
         writer.write_unsigned(u32::from(*strategy_code), 2)?;
     }
-    writer.write_bit(plan.lfe.strategy == 1)?;
+    if let Some((strategy, _)) = lfe_syntax {
+        writer.write_bit(strategy == 1)?;
+    }
 
     for (channel, strategy_code) in fullband_strategy_codes.iter().enumerate() {
         if *strategy_code != 0 {
@@ -1225,7 +1247,7 @@ fn write_selected_plan_exponent_syntax(
             writer.write_unsigned(u32::from(gain_range_codes[channel]), 2)?;
         }
     }
-    if let Some(row) = lfe_row {
+    if let Some((_, Some(row))) = lfe_syntax {
         writer.write_unsigned(u32::from(row.absolute), 4)?;
         for group in row.groups {
             writer.write_unsigned(u32::from(group), 7)?;
@@ -1659,6 +1681,7 @@ fn write_exponent_syntax(
 fn write_bit_allocation_syntax(
     writer: &mut FrameBitWriter<'_>,
     input: Ac3BlockAllocationControls,
+    include_lfe: bool,
 ) -> Result<(), Ac3AudioBlockError> {
     writer.write_bit(true)?; // baie is mandatory in block zero.
     writer.write_unsigned(u32::from(input.slow_decay_code), 2)?;
@@ -1673,8 +1696,10 @@ fn write_bit_allocation_syntax(
         writer.write_unsigned(u32::from(input.fullband_fine_snr_offsets[channel]), 4)?;
         writer.write_unsigned(u32::from(input.fullband_fast_gain_codes[channel]), 3)?;
     }
-    writer.write_unsigned(u32::from(input.lfe_fine_snr_offset), 4)?;
-    writer.write_unsigned(u32::from(input.lfe_fast_gain_code), 3)?;
+    if include_lfe {
+        writer.write_unsigned(u32::from(input.lfe_fine_snr_offset), 4)?;
+        writer.write_unsigned(u32::from(input.lfe_fast_gain_code), 3)?;
+    }
     Ok(())
 }
 
