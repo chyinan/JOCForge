@@ -1246,6 +1246,14 @@ pub struct SpatialControlMachine {
 }
 
 impl SpatialControlMachine {
+    pub fn with_manual_trim(
+        mut self,
+        trim: crate::frontend::job_configuration::SurroundHeightTrim,
+    ) -> Self {
+        self.committed.reader_targets.trim = trim;
+        self
+    }
+
     pub fn new_cold(
         profile_identity: EncodingProfile,
         f01e: &ValidatedF01EColdProvider,

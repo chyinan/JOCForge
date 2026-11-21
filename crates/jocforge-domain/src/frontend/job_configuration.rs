@@ -168,6 +168,29 @@ impl SelectedSurroundTrim {
     }
 }
 
+/// Maximum manual attenuation for a 5.1 render. Coordinates run from
+/// front to rear and floor to ceiling. Keep the combined loss within the
+/// larger of the two authored limits.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct SurroundHeightTrim {
+    surround: u8,
+    height: u8,
+}
+impl SurroundHeightTrim {
+    pub const UNITY: Self = Self {
+        surround: 0,
+        height: 0,
+    };
+    pub fn gain(self, depth: f32, height: f32) -> f32 {
+        if self == Self::default() {
+            return 1.0;
+        }
+        let loss = (f32::from(self.surround) * depth.clamp(0.0, 1.0)
+            + f32::from(self.height) * height.clamp(0.0, 1.0))
+        .min(f32::from(self.surround.max(self.height)));
+        10.0_f32.powf(-loss / 20.0)
+    }
+}
 /// One exact XML choice for the authored 5.1 height trim field.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum SelectedHeightTrim {
@@ -351,10 +374,10 @@ impl SelectedLoudnessConfiguration {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct SelectedDownmixConfiguration {
     preferred_mode: &'static str,
-    loro_center_mix_level: i8,
-    loro_surround_mix_level: i8,
-    ltrt_center_mix_level: i8,
-    ltrt_surround_mix_level: i8,
+    loro_center_mix_level: u8,
+    loro_surround_mix_level: u8,
+    ltrt_center_mix_level: u8,
+    ltrt_surround_mix_level: u8,
 }
 
 impl SelectedDownmixConfiguration {
@@ -362,13 +385,25 @@ impl SelectedDownmixConfiguration {
         self.preferred_mode
     }
 
-    pub const fn mix_levels(self) -> [i8; 4] {
+    pub const fn mix_codes(self) -> [u8; 4] {
         [
             self.loro_center_mix_level,
             self.loro_surround_mix_level,
             self.ltrt_center_mix_level,
             self.ltrt_surround_mix_level,
         ]
+    }
+    pub fn mix_levels(self) -> [serde_json::Value; 4] {
+        self.mix_codes().map(|code| match code {
+            0 => 3.into(),
+            1 => 1.5.into(),
+            2 => 0.into(),
+            3 => (-1.5).into(),
+            4 => (-3).into(),
+            5 => (-4.5).into(),
+            6 => (-6).into(),
+            _ => "-inf".into(),
+        })
     }
 }
 
@@ -657,6 +692,23 @@ impl SelectedJobConfiguration {
 
     pub const fn downmix(&self) -> SelectedDownmixConfiguration {
         self.downmix
+    }
+
+    pub fn manual_trim(&self) -> SurroundHeightTrim {
+        let surround = match self.surround_trim_5_1 {
+            SelectedSurroundTrim::Auto | SelectedSurroundTrim::ZeroDb => 0,
+            SelectedSurroundTrim::Minus3Db => 3,
+            SelectedSurroundTrim::Minus6Db => 6,
+            SelectedSurroundTrim::Minus9Db => 9,
+        };
+        let height = match self.height_trim_5_1 {
+            SelectedHeightTrim::Auto => 0,
+            SelectedHeightTrim::Minus3Db => 3,
+            SelectedHeightTrim::Minus6Db => 6,
+            SelectedHeightTrim::Minus9Db => 9,
+            SelectedHeightTrim::Minus12Db => 12,
+        };
+        SurroundHeightTrim { surround, height }
     }
 
     pub const fn surround_trim_5_1(&self) -> SelectedSurroundTrim {
@@ -1368,22 +1420,22 @@ pub fn parse_selected_job_configuration(
     };
     let downmix = SelectedDownmixConfiguration {
         preferred_mode,
-        loro_center_mix_level: parse_selected_mix_level(&required_text(
-            downmix_node,
-            &["loro_center_mix_level"],
-        )?)?,
-        loro_surround_mix_level: parse_selected_mix_level(&required_text(
-            downmix_node,
-            &["loro_surround_mix_level"],
-        )?)?,
-        ltrt_center_mix_level: parse_selected_mix_level(&required_text(
-            downmix_node,
-            &["ltrt_center_mix_level"],
-        )?)?,
-        ltrt_surround_mix_level: parse_selected_mix_level(&required_text(
-            downmix_node,
-            &["ltrt_surround_mix_level"],
-        )?)?,
+        loro_center_mix_level: parse_selected_mix_level(
+            &required_text(downmix_node, &["loro_center_mix_level"])?,
+            false,
+        )?,
+        loro_surround_mix_level: parse_selected_mix_level(
+            &required_text(downmix_node, &["loro_surround_mix_level"])?,
+            true,
+        )?,
+        ltrt_center_mix_level: parse_selected_mix_level(
+            &required_text(downmix_node, &["ltrt_center_mix_level"])?,
+            false,
+        )?,
+        ltrt_surround_mix_level: parse_selected_mix_level(
+            &required_text(downmix_node, &["ltrt_surround_mix_level"])?,
+            true,
+        )?,
     };
 
     let trims =
@@ -1934,10 +1986,20 @@ fn parse_decimal_u32(value: &str) -> Result<u32, JobConfigurationError> {
         .map_err(|_| JobConfigurationError::UnsupportedFieldValue)
 }
 
-fn parse_selected_mix_level(value: &str) -> Result<i8, JobConfigurationError> {
-    if value == "-3" {
-        Ok(-3)
-    } else {
-        Err(JobConfigurationError::UnsupportedFieldValue)
+fn parse_selected_mix_level(value: &str, surround: bool) -> Result<u8, JobConfigurationError> {
+    let code = match value {
+        "+3" | "3" => 0,
+        "+1.5" | "1.5" => 1,
+        "0" => 2,
+        "-1.5" => 3,
+        "-3" => 4,
+        "-4.5" => 5,
+        "-6" => 6,
+        "-inf" => 7,
+        _ => return Err(JobConfigurationError::UnsupportedFieldValue),
+    };
+    if surround && code < 3 {
+        return Err(JobConfigurationError::UnsupportedFieldValue);
     }
+    Ok(code)
 }

@@ -74,7 +74,7 @@ JOCForge 的命令行编码器支持将 48 kHz ADM BWF 编码为带 5.1 声道�
 
 除直接指定输入和输出文件外，也可以用 `jocforge encode --job-xml <job.xml>` 读取作业配置。当前支持 ADM BWF 输入和 EC-3 裸码流输出。`adm` 和 `atmos_mezz` 两种输入配置共用 BWF 读取器，解析后保留各自的输入类型。添加 `--preflight-only` 可只检查 XML 和输入文件。MP4 封装可在编码后按上文示例使用 FFmpeg 完成。CLI 的 XML 作业不支持直接输出 MP4 或 DASH。
 
-XML 解析器可识别并保留 Line 和 RF 两种动态范围控制（DRC）设置中的六个预设名称。当前可编码的 Line/RF 组合为 `none/none` 和 `film_light/film_light`。其他组合会在编码前被拒绝，若传入下游接口则返回 `UnsupportedDrcEffect`。
+Line 与 RF 可独立设置为 `film_light`、`film_standard`、`music_standard`、`music_light` 或 `none`。默认组合保留原有输出。下混的四个混合电平与优先模式写入码流。响度测量提供 BS.1770-1（无门限）以及 BS.1770-2、-3、-4（当前 5.1 测量布局共用门限算法），另可选 LeqA。启用对白检测时使用 Earshot 识别语音，语音占比达到阈值后采用对白响度，否则采用节目响度。5.1 环绕和高度修剪可独立选用 XML 声明的档位，手动值按位置衰减，组合衰减以上限较大的一项为限。
 
 在 `filter/audio/encode_to_atmos_ddp` 中可以按文件位置截取 ADM，再添加片头和片尾静音。以下片段截取第 60 到 62 秒，前置 4 秒静音，后置 1 秒静音。节目长 7 秒。EC3 按 32 ms 整帧写入，本例成品长 7.008 秒。
 

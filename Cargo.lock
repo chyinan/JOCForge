@@ -189,6 +189,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "earshot"
+version = "1.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "afea66474c4036a7e5fa4b072a3b0a09cd0b01f00134da3115d76b7cc5899f03"
+
+[[package]]
 name = "either"
 version = "1.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -288,6 +294,7 @@ dependencies = [
 name = "jocforge-domain"
 version = "1.0.3"
 dependencies = [
+ "earshot",
  "multiversion",
  "num-bigint",
  "rayon",

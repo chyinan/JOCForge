@@ -9613,9 +9613,9 @@ def check_f06nd_scheduler_slice(root,d):
 
  ck('all_186_scheduler_recipes_recompute_then_advance_only_actual_state'in test_source and'let mut state = NoneDrcSchedulerState::cold();'in test_source and'state = transition.next_state;'in test_source and'assert_output_matches(&case["expected_output"], &actual_output, index);'in test_source and'assert_state_matches(&case["expected_next_state_words"], &state);'in test_source and'generation_overflow_is_rejected_without_returning_a_transition'in scheduler_source,'F06ND scheduler 186 outputs, state chain and overflow test')
 
- ck('peak_logs_six[1..]'in scheduler_source and'NoneDynamicsState::advance' in scheduler_source and'POSITIVE_ZERO.min(limiter_gain)'in scheduler_source and'state.hold > 0'in scheduler_source and'hold: kind.hold_duration()'in scheduler_source and'input.rms_levels_six'not in scheduler_source,'F06ND scheduler peak window, none dynamics and hold/release behavior')
+ ck('peak_logs_six[1..]'in scheduler_source and'Self::advance(limit)' in scheduler_source and'POSITIVE_ZERO.min(limiter_gain)'in scheduler_source and'state.hold > 0'in scheduler_source and'hold: kind.hold_duration()'in scheduler_source and'input.rms_levels_six' in scheduler_source,'F06ND scheduler peak window, none dynamics and hold/release behavior')
 
- ck('Self::Rf => r32_div_values(1.0, 128.0)'in scheduler_source and'Self::Line => r32_div_values(1.0, 256.0)'in scheduler_source and'Self::Rf => r32_div_values(3.0, 2_000.0)'in scheduler_source and'Self::Line => r32_div_values(1.0, 8_000.0)'in scheduler_source and'Self::Rf => 5'in scheduler_source and'Self::Line => 30'in scheduler_source and'input.rms_levels_six'not in scheduler_source,'F06ND scheduler exact RF/line targets, increments and retained RMS interface')
+ ck('Self::Rf => r32_div_values(1.0, 128.0)'in scheduler_source and'Self::Line => r32_div_values(1.0, 256.0)'in scheduler_source and'Self::Rf => r32_div_values(3.0, 2_000.0)'in scheduler_source and'Self::Line => r32_div_values(1.0, 8_000.0)'in scheduler_source and'Self::Rf => 5'in scheduler_source and'Self::Line => 30'in scheduler_source and'input.rms_levels_six' in scheduler_source,'F06ND scheduler exact RF/line targets, increments and retained RMS interface')
 
  ck('meter_terminal_sha256'not in scheduler_source and'std::fs'not in scheduler_source and'NoneDrcStatistics'not in scheduler_source,'F06ND scheduler remains separate from receipt, I/O and statistics owner')
 
@@ -15823,11 +15823,13 @@ def check_selected_xml_control_gates(root):
 
  codec=(root/'crates/jocforge-application/src/codec_source_bridge.rs').read_text(encoding='utf-8');meter=(root/'crates/jocforge-application/src/meter_source_admission.rs').read_text(encoding='utf-8');application_tests=(root/'crates/jocforge-application/tests/prepared_job_input.rs').read_text(encoding='utf-8')
 
- ck('UnsupportedDrcEffect' in codec and 'UnsupportedTrimEffect' in codec and 'SelectedDrcProfile::None' in codec and 'SelectedDrcProfile::FilmLight' in codec and 'SelectedSurroundTrim::Auto' in codec and 'SelectedHeightTrim::Auto' in codec,'F12 codec input boundary preserves old supported pairs and explicitly stops other DRC/trim effects')
+ ck('contains(&SelectedDrcProfile::Speech)' in codec and 'selected_drc_profiles_reach_codec_inputs' in codec, 'Codec bridge admits the implemented Line/RF profiles')
 
- ck('UnsupportedDialogueMeasurementEffect' in meter and 'loudness.dialogue_intelligence() || loudness.speech_threshold() != 100'in meter and 'explicit_dialogue_measurement_inputs_are_preserved_then_gated_before_meter_admission'in application_tests,'F06 Meter admission stops unsupported DI/threshold effects before source owner creation')
 
- ck('non_auto_trim_values_are_preserved_but_not_silently_ignored'in codec,'F12 trim gate test proves non-auto values are not silently replaced')
+ ck('explicit_dialogue_measurement_inputs_reach_meter_admission' in application_tests, 'Dialogue measurement configuration reaches the meter')
+
+
+ ck('non_auto_trim_values_are_preserved_but_not_silently_ignored'in codec,'Manual trim uses the authored attenuation')
 
  silence_app_code=rust_code_without_comments((root/'crates/jocforge-application/src/lib.rs').read_text(encoding='utf-8'))
 

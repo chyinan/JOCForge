@@ -109,6 +109,8 @@ impl MainSpatialColdRoots {
             &source_map,
         )
         .map_err(MainSpatialColdRootsError::SpatialControl)?;
+        let spatial_control =
+            spatial_control.with_manual_trim(prepared.configuration().manual_trim());
         let frontend_control = cold_owner.into_machine();
         let spatial_audio = SpatialAudioMachine::new_cold(profile)
             .map_err(MainSpatialColdRootsError::SpatialAudio)?;

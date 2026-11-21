@@ -12,6 +12,7 @@ test-support = []
 workspace = true
 
 [dependencies]
+earshot = "=1.2.2"
 multiversion = "=0.8.1"
 rayon = "=1.11.0"
 serde = { version = "=1.0.229", features = ["derive"] }

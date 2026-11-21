@@ -482,7 +482,7 @@ fn resolve_job_xml_reference(
 }
 
 fn ensure_selected_metering_mode(value: &str) -> Result<(), EncodeRequestError> {
-    if value == "1770-4" {
+    if matches!(value, "1770-4" | "1770-3" | "1770-2" | "1770-1" | "LeqA") {
         Ok(())
     } else {
         Err(EncodeRequestError::UnsupportedJobXmlOption(
@@ -519,35 +519,14 @@ fn validate_external_job_configuration(
     ensure_no_temp_directory_configuration(configuration.temp_directory().is_some())?;
     let loudness = configuration.loudness();
     ensure_selected_metering_mode(loudness.metering_mode())?;
-    if loudness.dialogue_intelligence() || loudness.speech_threshold() != 100 {
-        return Err(EncodeRequestError::UnsupportedJobXmlOption(
-            "/filter/audio/encode_to_atmos_ddp/loudness/measure_only/dialogue_intelligence or speech_threshold",
-        ));
-    }
-
     let line_drc = configuration.line_drc_profile().xml_value();
     let rf_drc = configuration.rf_drc_profile().xml_value();
-    if !((line_drc == "film_light" && rf_drc == "film_light")
-        || (line_drc == "none" && rf_drc == "none"))
-    {
+    if [line_drc, rf_drc].contains(&"speech") {
         return Err(EncodeRequestError::UnsupportedJobXmlOption(
             "/filter/audio/encode_to_atmos_ddp/drc",
         ));
     }
 
-    let downmix = configuration.downmix();
-    if downmix.preferred_mode() != "loro" || downmix.mix_levels() != [-3; 4] {
-        return Err(EncodeRequestError::UnsupportedJobXmlOption(
-            "/filter/audio/encode_to_atmos_ddp/downmix",
-        ));
-    }
-    if configuration.surround_trim_5_1().xml_value() != "auto"
-        || configuration.height_trim_5_1().xml_value() != "auto"
-    {
-        return Err(EncodeRequestError::UnsupportedJobXmlOption(
-            "/filter/audio/encode_to_atmos_ddp/custom_trims",
-        ));
-    }
     if configuration.input_offset() != "auto"
         || configuration.input_ffoa() != "auto"
         || configuration.time_base() != "file_position"
@@ -768,6 +747,62 @@ pub fn encode_staged_file_with_events(
     progress: EventObserver<'_>,
     cancelled: &std::sync::atomic::AtomicBool,
 ) -> Result<(), EncodeRequestError> {
+    encode_staged_file_with_options(
+        input,
+        output,
+        rate,
+        layout,
+        (timing, &FileEncodeOptions::default()),
+        progress,
+        cancelled,
+    )
+}
+
+#[derive(Clone, Debug, serde::Serialize, serde::Deserialize)]
+#[serde(default)]
+pub struct FileEncodeOptions {
+    pub height_trim_5_1: String,
+    pub surround_trim_5_1: String,
+    pub metering_mode: String,
+    pub dialogue_intelligence: bool,
+    pub speech_threshold: u32,
+    pub line_mode_drc_profile: String,
+    pub rf_mode_drc_profile: String,
+    pub preferred_downmix_mode: String,
+    pub loro_center_mix_level: String,
+    pub loro_surround_mix_level: String,
+    pub ltrt_center_mix_level: String,
+    pub ltrt_surround_mix_level: String,
+}
+
+impl Default for FileEncodeOptions {
+    fn default() -> Self {
+        Self {
+            height_trim_5_1: "auto".into(),
+            surround_trim_5_1: "auto".into(),
+            metering_mode: "1770-4".into(),
+            dialogue_intelligence: false,
+            speech_threshold: 100,
+            line_mode_drc_profile: "film_light".into(),
+            rf_mode_drc_profile: "film_light".into(),
+            preferred_downmix_mode: "loro".into(),
+            loro_center_mix_level: "-3".into(),
+            loro_surround_mix_level: "-3".into(),
+            ltrt_center_mix_level: "-3".into(),
+            ltrt_surround_mix_level: "-3".into(),
+        }
+    }
+}
+/// Encodes a staged file and reports both phase progress and cache activity.
+pub fn encode_staged_file_with_options(
+    input: &Path,
+    output: &Path,
+    rate: CodecRateProfile,
+    layout: JocReconstructionLayout,
+    (timing, options): (&FileRenderTiming, &FileEncodeOptions),
+    progress: EventObserver<'_>,
+    cancelled: &std::sync::atomic::AtomicBool,
+) -> Result<(), EncodeRequestError> {
     resolve_encode_request_route(rate, layout)?;
     let input = normalize_existing_input(input)?;
     let output = normalize_new_output(output)?;
@@ -776,6 +811,7 @@ pub fn encode_staged_file_with_events(
         &file_reference_parts(&output)?,
         rate.kbps().ok_or(EncodeRequestError::UnsupportedDataRate)?,
         timing,
+        options,
     );
     run_worker_with_progress(
         &input,
@@ -1911,7 +1947,13 @@ fn selected_full_file_job_xml(
     output: &FileReferenceParts,
     data_rate_kbps: u32,
 ) -> String {
-    file_job_xml(input, output, data_rate_kbps, &FileRenderTiming::default())
+    file_job_xml(
+        input,
+        output,
+        data_rate_kbps,
+        &FileRenderTiming::default(),
+        &FileEncodeOptions::default(),
+    )
 }
 
 fn file_job_xml(
@@ -1919,6 +1961,7 @@ fn file_job_xml(
     output: &FileReferenceParts,
     data_rate_kbps: u32,
     timing: &FileRenderTiming,
+    options: &FileEncodeOptions,
 ) -> String {
     let field = |s: &str, default: &str| {
         if s.trim().is_empty() {
@@ -1932,8 +1975,20 @@ fn file_job_xml(
     let end = field(&timing.end, "");
     let prepend = field(&timing.prepend_silence, "0.0");
     let append = field(&timing.append_silence, "0.0");
+    let dialogue_intelligence = options.dialogue_intelligence;
+    let speech_threshold = options.speech_threshold;
+    let height_trim_5_1 = xml_escape(&options.height_trim_5_1);
+    let surround_trim_5_1 = xml_escape(&options.surround_trim_5_1);
+    let metering_mode = xml_escape(&options.metering_mode);
+    let line_mode_drc_profile = xml_escape(&options.line_mode_drc_profile);
+    let rf_mode_drc_profile = xml_escape(&options.rf_mode_drc_profile);
+    let preferred_downmix_mode = xml_escape(&options.preferred_downmix_mode);
+    let loro_center_mix_level = xml_escape(&options.loro_center_mix_level);
+    let loro_surround_mix_level = xml_escape(&options.loro_surround_mix_level);
+    let ltrt_center_mix_level = xml_escape(&options.ltrt_center_mix_level);
+    let ltrt_surround_mix_level = xml_escape(&options.ltrt_surround_mix_level);
     format!(
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><job_config><input><audio><adm><file_name>{}</file_name><storage><local><path>{}</path></local></storage><timecode_frame_rate>not_indicated</timecode_frame_rate><offset>auto</offset><ffoa>auto</ffoa></adm></audio></input><filter><audio><encode_to_atmos_ddp><loudness><measure_only><metering_mode>1770-4</metering_mode><dialogue_intelligence>false</dialogue_intelligence><speech_threshold>100</speech_threshold></measure_only></loudness><data_rate>{}</data_rate><timecode_frame_rate>{rate}</timecode_frame_rate><start>{start}</start><end>{end}</end><time_base>file_position</time_base><prepend_silence_duration>{prepend}</prepend_silence_duration><append_silence_duration>{append}</append_silence_duration><drc><line_mode_drc_profile>film_light</line_mode_drc_profile><rf_mode_drc_profile>film_light</rf_mode_drc_profile></drc><downmix><loro_center_mix_level>-3</loro_center_mix_level><loro_surround_mix_level>-3</loro_surround_mix_level><ltrt_center_mix_level>-3</ltrt_center_mix_level><ltrt_surround_mix_level>-3</ltrt_surround_mix_level><preferred_downmix_mode>loro</preferred_downmix_mode></downmix><custom_trims><surround_trim_5_1>auto</surround_trim_5_1><height_trim_5_1>auto</height_trim_5_1></custom_trims></encode_to_atmos_ddp></audio></filter><output><ec3><file_name>{}</file_name><storage><local><path>{}</path></local></storage></ec3></output></job_config>",
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><job_config><input><audio><adm><file_name>{}</file_name><storage><local><path>{}</path></local></storage><timecode_frame_rate>not_indicated</timecode_frame_rate><offset>auto</offset><ffoa>auto</ffoa></adm></audio></input><filter><audio><encode_to_atmos_ddp><loudness><measure_only><metering_mode>{metering_mode}</metering_mode><dialogue_intelligence>{dialogue_intelligence}</dialogue_intelligence><speech_threshold>{speech_threshold}</speech_threshold></measure_only></loudness><data_rate>{}</data_rate><timecode_frame_rate>{rate}</timecode_frame_rate><start>{start}</start><end>{end}</end><time_base>file_position</time_base><prepend_silence_duration>{prepend}</prepend_silence_duration><append_silence_duration>{append}</append_silence_duration><drc><line_mode_drc_profile>{line_mode_drc_profile}</line_mode_drc_profile><rf_mode_drc_profile>{rf_mode_drc_profile}</rf_mode_drc_profile></drc><downmix><loro_center_mix_level>{loro_center_mix_level}</loro_center_mix_level><loro_surround_mix_level>{loro_surround_mix_level}</loro_surround_mix_level><ltrt_center_mix_level>{ltrt_center_mix_level}</ltrt_center_mix_level><ltrt_surround_mix_level>{ltrt_surround_mix_level}</ltrt_surround_mix_level><preferred_downmix_mode>{preferred_downmix_mode}</preferred_downmix_mode></downmix><custom_trims><surround_trim_5_1>{surround_trim_5_1}</surround_trim_5_1><height_trim_5_1>{height_trim_5_1}</height_trim_5_1></custom_trims></encode_to_atmos_ddp></audio></filter><output><ec3><file_name>{}</file_name><storage><local><path>{}</path></local></storage></ec3></output></job_config>",
         input.file_name, input.local_path, data_rate_kbps, output.file_name, output.local_path
     )
 }
@@ -2140,6 +2195,9 @@ mod tests {
     fn selected_cli_gate_rejects_nondefault_metering_modes() {
         assert!(ensure_selected_metering_mode("1770-4").is_ok());
         for mode in ["1770-3", "1770-2", "1770-1", "LeqA"] {
+            assert!(ensure_selected_metering_mode(mode).is_ok());
+        }
+        for mode in ["", "unknown"] {
             assert!(matches!(
                 ensure_selected_metering_mode(mode),
                 Err(EncodeRequestError::UnsupportedJobXmlOption(

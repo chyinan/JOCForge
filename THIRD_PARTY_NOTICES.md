@@ -8,6 +8,8 @@ JOCForge uses `num-bigint` 0.4.6 only for the F05R56 selected panner's exact-rat
 
 JOCForge uses `roxmltree` 0.21.1 only to parse caller-supplied F01E.1 UTF-8 job XML into a read-only DOM. The selected license is Apache-2.0 from its `MIT OR Apache-2.0` offer; repository: https://github.com/RazrFalcon/roxmltree. The parser does not open files or perform network access; F01E rejects `DOCTYPE` and `ENTITY` declarations before DOM parsing. It is not used for general ADM graph parsing.
 
+Dialogue detection uses Earshot 1.2.2 by Carson M (https://github.com/pykeio/earshot) under Apache-2.0 from its MIT OR Apache-2.0 license offer. The Apache-2.0 text is included in LICENSE.
+
 Locked transitive Rust packages are listed below. Checksums are the crates.io checksums recorded by Cargo.lock.
 
 | Package | Version | License | Checksum |

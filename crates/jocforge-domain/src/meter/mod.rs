@@ -1,7 +1,9 @@
 // pattern: Functional Core
 //! Meter-domain boundaries. The selected K-matrix provider is a bounded direct slice.
 
+mod a_weighted_loudness;
 pub mod dialnorm;
+mod dialogue_loudness;
 pub mod direct_provider_inventory;
 pub mod energy_window;
 pub mod installed48_renderer;

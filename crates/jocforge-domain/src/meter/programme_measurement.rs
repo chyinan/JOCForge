@@ -203,7 +203,8 @@ pub(crate) fn finalize_selected_measurement(
     integrated: &IntegratedMeterState,
     ungated: &UngatedMeanState,
 ) -> Result<ProgrammeMeasurementProposal, ProgrammeMeasurementError> {
-    let measurement = compute_programme_measurement_values(true_peak, integrated, ungated)?;
+    let measurement =
+        compute_programme_measurement_values(true_peak, integrated, ungated, false, None, None)?;
     let receipt =
         ProgrammeMeasurementReceipt::from_verified_prepass(ProgrammeMeasurementReceiptInput {
             programme_id: identity.programme_id,
@@ -235,6 +236,9 @@ pub(crate) fn compute_programme_measurement_values(
     true_peak: &TruePeakState,
     integrated: &IntegratedMeterState,
     ungated: &UngatedMeanState,
+    use_ungated_loudness: bool,
+    a_weighted_level: Option<f32>,
+    speech: Option<(f32, f32, u32)>,
 ) -> Result<ProgrammeMeasurementValue, ProgrammeMeasurementError> {
     let true_peak_word = true_peak
         .final_true_peak_host_word()
@@ -248,23 +252,33 @@ pub(crate) fn compute_programme_measurement_values(
     let ungated_word =
         multiply_words(ungated_state_word, HOST_SCALE_WORD).map_err(map_peak_error)?;
     let getter = di_off_getter(
-        Some(itu_word),
+        (!use_ungated_loudness && a_weighted_level.is_none()).then_some(itu_word),
         ungated_state_word,
         "1770-4",
         false,
         100.0_f32.to_bits(),
     )
     .map_err(map_getter_error)?;
-    let gating_kind = match getter.public_gating_kind() {
+    let mut gating_kind = match getter.public_gating_kind() {
         0 => ProgrammeGatingKind::Ungated,
         2 => ProgrammeGatingKind::Level,
         _ => return Err(ProgrammeMeasurementError::Gating),
     };
-    let selected_word = getter.selected_host_word();
+    let mut selected_word = a_weighted_level.map_or(getter.selected_host_word(), f32::to_bits);
+    let mut speech_percentage_word = getter.speech_percentage_word();
+    let mut dialogue_word = getter.dialogue_word();
+    if let Some((percentage, level, threshold)) = speech {
+        speech_percentage_word = percentage.to_bits();
+        dialogue_word = level.to_bits();
+        if percentage > 0.0 && percentage >= threshold as f32 {
+            selected_word = dialogue_word;
+            gating_kind = ProgrammeGatingKind::Dialogue;
+        }
+    }
     let dialnorm = dialnorm_from_selected_lufs(selected_word)?;
     let measurement = ProgrammeMeasurementValue::from_words(
-        getter.dialogue_word(),
-        getter.speech_percentage_word(),
+        dialogue_word,
+        speech_percentage_word,
         itu_word,
         ungated_word,
         true_peak_word,

@@ -63,6 +63,9 @@ pub enum PostRenderMeterError {
 /// Owner-validated immutable parameters consumed by post-render meter leaves.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct PostRenderMeterParameters {
+    pub use_ungated_loudness: bool,
+    pub use_a_weighting: bool,
+    pub speech_threshold: Option<u32>,
     true_peak: TruePeakParameters,
     integrated: IntegratedMeterParameters,
     ungated: UngatedMeanParameters,
@@ -77,6 +80,9 @@ impl PostRenderMeterParameters {
         oar_geometry: SecondaryGeometry,
     ) -> Self {
         Self {
+            use_ungated_loudness: false,
+            use_a_weighting: false,
+            speech_threshold: None,
             true_peak,
             integrated,
             ungated,
@@ -112,6 +118,13 @@ impl PostRenderMeterParameters {
         &self.ungated
     }
 
+    pub fn set_manual_trim(
+        &mut self,
+        trim: crate::frontend::job_configuration::SurroundHeightTrim,
+    ) {
+        self.oar_geometry.trim = trim;
+    }
+
     pub const fn oar_geometry(&self) -> &SecondaryGeometry {
         &self.oar_geometry
     }
@@ -127,6 +140,9 @@ pub struct PostRenderMeterState {
     energy_window: EnergyWindowState,
     integrated_meter: Arc<IntegratedMeterState>,
     ungated_mean: UngatedMeanState,
+    dialogue: Option<Box<super::dialogue_loudness::DialogueLoudness>>,
+    dialogue_filter: super::a_weighted_loudness::AWeightedLoudness,
+    a_weighted: super::a_weighted_loudness::AWeightedLoudness,
 }
 
 impl PostRenderMeterState {
@@ -150,6 +166,9 @@ impl PostRenderMeterState {
                 .map_err(PostRenderMeterError::EnergyWindow)?,
             integrated_meter: Arc::new(IntegratedMeterState::cold()),
             ungated_mean: UngatedMeanState::cold(),
+            a_weighted: Default::default(),
+            dialogue: None,
+            dialogue_filter: Default::default(),
         })
     }
 
@@ -179,6 +198,17 @@ impl PostRenderMeterState {
 
     pub fn integrated_meter(&self) -> &IntegratedMeterState {
         self.integrated_meter.as_ref()
+    }
+
+    pub(super) fn dialogue_result(
+        &self,
+        settings: &PostRenderMeterParameters,
+    ) -> Option<(f32, f32, u32)> {
+        let (percent, level) = self.dialogue.as_ref()?.result(settings.use_a_weighting);
+        Some((percent, level, settings.speech_threshold?))
+    }
+    pub(super) fn a_weighted_level(&self) -> Option<f32> {
+        self.a_weighted.level()
     }
 
     pub const fn ungated_mean(&self) -> &UngatedMeanState {
@@ -232,6 +262,9 @@ struct PostRenderNumericAfter {
     energy_window: EnergyWindowState,
     integrated_meter: Arc<IntegratedMeterState>,
     ungated_mean: UngatedMeanState,
+    dialogue: Option<Box<super::dialogue_loudness::DialogueLoudness>>,
+    dialogue_filter: super::a_weighted_loudness::AWeightedLoudness,
+    a_weighted: super::a_weighted_loudness::AWeightedLoudness,
     energy_records: EnergyRecordCount,
 }
 
@@ -389,6 +422,9 @@ fn finish_post_render_schedule(
             energy_window: numeric.energy_window,
             integrated_meter: numeric.integrated_meter,
             ungated_mean: numeric.ungated_mean,
+            a_weighted: numeric.a_weighted,
+            dialogue: numeric.dialogue,
+            dialogue_filter: numeric.dialogue_filter,
         },
         receipt: PostRenderMeterReceipt {
             callback_index: queue_receipt.callback_index(),
@@ -454,10 +490,23 @@ fn stage_post_render_numeric(
     let mut true_peak_after = before.true_peak.clone();
     let mut energy_after = before.energy_window.clone();
     let mut integrated_after = Arc::clone(&before.integrated_meter);
+    let mut dialogue = before.dialogue.clone();
+    let mut dialogue_filter = before.dialogue_filter.clone();
+    let mut a_weighted = before.a_weighted.clone();
     let mut ungated_after = before.ungated_mean.clone();
     let mut energy_record_count = 0_u64;
     for block in complete_blocks {
         let block_views = block.lanes();
+        if parameters.speech_threshold.is_some() {
+            dialogue.get_or_insert_with(Default::default).accumulate(
+                block_views,
+                parameters.use_a_weighting,
+                &mut dialogue_filter,
+            );
+        }
+        if parameters.use_a_weighting {
+            a_weighted.accumulate(block_views);
+        }
         advance_true_peak_block(
             &mut true_peak_after,
             &block_views,
@@ -503,6 +552,9 @@ fn stage_post_render_numeric(
         energy_window: energy_after,
         integrated_meter: integrated_after,
         ungated_mean: ungated_after,
+        a_weighted,
+        dialogue,
+        dialogue_filter,
         energy_records: EnergyRecordCount(energy_record_count),
     })
 }

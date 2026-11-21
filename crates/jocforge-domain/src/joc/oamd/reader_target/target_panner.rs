@@ -29,10 +29,17 @@ pub(super) const fn selected_equal_power_words() -> [u32; 2] {
 
 pub(super) fn generate_targets(
     reader_records: &[[u8; RECORD_BYTES]; READER_ROWS],
+    trim: crate::frontend::job_configuration::SurroundHeightTrim,
 ) -> Result<[[u32; 6]; READER_ROWS], ReaderTargetError> {
     let mut targets = [[0_u32; 6]; READER_ROWS];
     for (row, record) in reader_records.iter().enumerate() {
         targets[row] = generate_target_row(row, record)?;
+        if row != 0 && trim != Default::default() {
+            let gain = trim.gain(coordinate(record, 2)?, coordinate(record, 3)?);
+            for word in &mut targets[row] {
+                *word = (f32::from_bits(*word) * gain).to_bits();
+            }
+        }
     }
     Ok(targets)
 }

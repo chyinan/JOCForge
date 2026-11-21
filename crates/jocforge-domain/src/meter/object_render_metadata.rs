@@ -772,12 +772,14 @@ const SELECTED_GEOMETRY_ROWS: [[i32; 4]; 8] = [
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct SecondaryGeometry {
+    pub(crate) trim: crate::frontend::job_configuration::SurroundHeightTrim,
     rows: [[i32; 4]; 8],
 }
 
 impl SecondaryGeometry {
     pub const fn selected() -> Self {
         Self {
+            trim: crate::frontend::job_configuration::SurroundHeightTrim::UNITY,
             rows: SELECTED_GEOMETRY_ROWS,
         }
     }
@@ -786,7 +788,10 @@ impl SecondaryGeometry {
         if rows != SELECTED_GEOMETRY_ROWS {
             return Err(ObjectRenderValueError::UnsupportedGeometry);
         }
-        Ok(Self { rows })
+        Ok(Self {
+            rows,
+            trim: Default::default(),
+        })
     }
 
     pub const fn rows(&self) -> &[[i32; 4]; 8] {
@@ -877,6 +882,7 @@ pub fn point_render_target(
     let lower_contribution = (1.0_f32 - vertical) * lower;
     let upper_contribution = upper * vertical;
     let warped_depth = lower_contribution + upper_contribution;
+    let gain = gain * geometry.trim.gain(depth, vertical);
 
     let output_codes = [0_usize, 1, 2, 4, 5, 6, 7];
     let compact_horizontal = output_codes.map(|code| geometry.rows[code][0] as f32 / 32768.0);

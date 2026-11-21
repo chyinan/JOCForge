@@ -241,22 +241,10 @@ fn selected_bsi_profile_inputs(
         .map_err(|_| CodecSourceBridgeError::UnsupportedSelectedProfile)?;
     let line_drc_profile = configuration.line_drc_profile();
     let rf_drc_profile = configuration.rf_drc_profile();
-    if !matches!(
-        (line_drc_profile, rf_drc_profile),
-        (SelectedDrcProfile::None, SelectedDrcProfile::None)
-            | (SelectedDrcProfile::FilmLight, SelectedDrcProfile::FilmLight)
-    ) {
+    if [line_drc_profile, rf_drc_profile].contains(&SelectedDrcProfile::Speech) {
         return Err(CodecSourceBridgeError::UnsupportedDrcEffect {
             line_profile: line_drc_profile,
             rf_profile: rf_drc_profile,
-        });
-    }
-    let surround_trim = configuration.surround_trim_5_1();
-    let height_trim = configuration.height_trim_5_1();
-    if surround_trim != SelectedSurroundTrim::Auto || height_trim != SelectedHeightTrim::Auto {
-        return Err(CodecSourceBridgeError::UnsupportedTrimEffect {
-            surround_trim,
-            height_trim,
         });
     }
     let wave = configuration.wave();
@@ -287,10 +275,6 @@ fn selected_bsi_profile_inputs(
     }
 
     let downmix = configuration.downmix();
-    if downmix.preferred_mode() != "loro" || downmix.mix_levels() != [-3; 4] {
-        return Err(CodecSourceBridgeError::UnsupportedSelectedMixing);
-    }
-
     let dbmd = prepared.dbmd();
     let surround_ex_mode = if dbmd.authored_source_mode_byte() == 3 {
         2
@@ -301,14 +285,24 @@ fn selected_bsi_profile_inputs(
         return Err(CodecSourceBridgeError::UnsupportedSelectedDbmd);
     }
 
-    // F06.4 maps selected Loro mode and each admitted -3 dB level to BSI codes 2 and 4.
-    // F12 S.7 fixes both metadata-presence bits to one for this selected profile.
+    let [
+        loro_center_mix_level,
+        loro_surround_mix_level,
+        ltrt_center_mix_level,
+        ltrt_surround_mix_level,
+    ] = downmix.mix_codes();
     let mixing = SelectedBsiMixingInput {
-        preferred_downmix_mode: 2,
-        ltrt_center_mix_level: 4,
-        loro_center_mix_level: 4,
-        ltrt_surround_mix_level: 4,
-        loro_surround_mix_level: 4,
+        preferred_downmix_mode: match downmix.preferred_mode() {
+            "not_indicated" => 0,
+            "ltrt" => 1,
+            "loro" => 2,
+            "ltrt-pl2" => 3,
+            _ => return Err(CodecSourceBridgeError::UnsupportedSelectedMixing),
+        },
+        loro_center_mix_level,
+        loro_surround_mix_level,
+        ltrt_center_mix_level,
+        ltrt_surround_mix_level,
     };
     // F06.4 supplies these selected information values; the sample-rate code is false at 48 kHz.
     let information = SelectedBsiInformationInput {
@@ -540,22 +534,10 @@ mod tests {
     }
 
     #[test]
-    fn admitted_music_profiles_are_preserved_but_dynamic_effect_is_gated() {
-        for line_name in ["music_standard", "music_light"] {
-            let prepared = selected_prepared_input_with_drc_profiles(line_name, "film_light");
-            let line_profile = SelectedDrcProfile::from_xml_value(line_name).unwrap();
-            assert_eq!(prepared.configuration().line_drc_profile(), line_profile);
-            assert_eq!(
-                prepared.configuration().rf_drc_profile(),
-                SelectedDrcProfile::FilmLight
-            );
-            assert_eq!(
-                selected_bsi_profile_inputs(&prepared).unwrap_err(),
-                CodecSourceBridgeError::UnsupportedDrcEffect {
-                    line_profile,
-                    rf_profile: SelectedDrcProfile::FilmLight,
-                }
-            );
+    fn selected_drc_profiles_reach_codec_inputs() {
+        for profile in ["film_standard", "music_standard", "music_light"] {
+            let prepared = selected_prepared_input_with_drc_profiles(profile, "film_light");
+            assert!(selected_bsi_profile_inputs(&prepared).is_ok());
         }
     }
 
@@ -579,13 +561,10 @@ mod tests {
             prepared.configuration().height_trim_5_1(),
             SelectedHeightTrim::Auto
         );
-        assert_eq!(
-            selected_bsi_profile_inputs(&prepared).unwrap_err(),
-            CodecSourceBridgeError::UnsupportedTrimEffect {
-                surround_trim: SelectedSurroundTrim::Minus3Db,
-                height_trim: SelectedHeightTrim::Auto,
-            }
-        );
+        assert!(selected_bsi_profile_inputs(&prepared).is_ok());
+        let trim = prepared.configuration().manual_trim();
+        assert_eq!(trim.gain(0.0, 0.0), 1.0);
+        assert!((trim.gain(1.0, 0.0) - 0.70795).abs() < 0.0001);
     }
 
     #[test]

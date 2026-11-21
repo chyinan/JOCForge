@@ -61,6 +61,12 @@ pub fn cold_drc_owner_after_measurement(
         receipt,
         prepared.domain_identity_capability(),
     )
+    .map(|root| {
+        root.with_profiles([
+            prepared.configuration().line_drc_profile(),
+            prepared.configuration().rf_drc_profile(),
+        ])
+    })
 }
 
 /// Validates the admitted identity and schedule for one analysis source receipt.

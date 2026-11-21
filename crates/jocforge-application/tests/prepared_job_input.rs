@@ -1352,7 +1352,7 @@ fn f01e_cold_provider_projects_adm_rows_and_selected_drc_profiles() {
 }
 
 #[test]
-fn explicit_dialogue_measurement_inputs_are_preserved_then_gated_before_meter_admission() {
+fn explicit_dialogue_measurement_inputs_reach_meter_admission() {
     let vectors: Value = serde_json::from_slice(include_bytes!(
         "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
     ))
@@ -1391,19 +1391,12 @@ fn explicit_dialogue_measurement_inputs_are_preserved_then_gated_before_meter_ad
             speech_threshold
         );
 
-        let error = admit_meter_source_owner(
+        admit_meter_source_owner(
             &prepared,
             AttemptId::new(0),
             MeterSourceSampleCount::new(1).unwrap(),
         )
-        .unwrap_err();
-        assert_eq!(
-            error,
-            MeterSourceAdmissionError::UnsupportedDialogueMeasurementEffect {
-                dialogue_intelligence,
-                speech_threshold,
-            }
-        );
+        .unwrap();
     }
 }
 

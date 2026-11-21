@@ -221,17 +221,6 @@ pub fn admit_meter_source_owner(
     if !configuration.input_kind().is_adm_bwf() {
         return Err(MeterSourceAdmissionError::SelectedInputKind);
     }
-    let loudness = configuration.loudness();
-    // Preserve admitted values in the config identity, but stop before source-owner creation
-    // until the selected measurement consumer for these controls is implemented.
-    if loudness.dialogue_intelligence() || loudness.speech_threshold() != 100 {
-        return Err(
-            MeterSourceAdmissionError::UnsupportedDialogueMeasurementEffect {
-                dialogue_intelligence: loudness.dialogue_intelligence(),
-                speech_threshold: loudness.speech_threshold(),
-            },
-        );
-    }
     let wave = configuration.wave();
     let physical_rows = usize::from(wave.channels());
     let source_channels = MeterSourceChannelCount::new(wave.channels());

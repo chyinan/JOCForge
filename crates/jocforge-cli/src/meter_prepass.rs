@@ -207,6 +207,16 @@ where
         &providers.providers().window,
     )
     .map_err(|failure| error("shared DV32 gain-delay parameters", failure))?;
+    let mut meter_parameters = direct.post_render_parameters();
+    meter_parameters.use_ungated_loudness =
+        prepared.configuration().loudness().metering_mode() == "1770-1";
+    meter_parameters.use_a_weighting =
+        prepared.configuration().loudness().metering_mode() == "LeqA";
+    meter_parameters.set_manual_trim(prepared.configuration().manual_trim());
+    let loudness = prepared.configuration().loudness();
+    meter_parameters.speech_threshold = loudness
+        .dialogue_intelligence()
+        .then_some(loudness.speech_threshold());
     let meter_root = StandaloneMeterRoot::cold_selected_with_post_render_parameters(
         bound_provider_set
             .source_admission()
@@ -217,7 +227,7 @@ where
         MeterKFilterExponentState::new(SELECTED_K_FILTER_COLD_WORDS),
         gain_parameters,
         direct.k_matrix().clone(),
-        direct.post_render_parameters(),
+        meter_parameters,
     )
     .map_err(|failure| error("selected StandaloneMeterRoot cold state", failure))?;
 

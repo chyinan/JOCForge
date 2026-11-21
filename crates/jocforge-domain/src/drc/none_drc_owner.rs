@@ -488,6 +488,18 @@ impl NoneDrcOwnerRoot {
         })
     }
 
+    pub fn with_profiles(
+        mut self,
+        profiles: [crate::frontend::job_configuration::SelectedDrcProfile; 2],
+    ) -> Self {
+        use crate::frontend::job_configuration::SelectedDrcProfile::FilmLight;
+        // Preserve the historical file-encode default exactly.
+        if profiles != [FilmLight; 2] {
+            self.state.scheduler.profiles = profiles;
+        }
+        self
+    }
+
     /// Validates one complete same-source DRC after-root for the enclosing callback parent.
     ///
     /// This returns the replacement value and its owner receipt without changing `self`. The

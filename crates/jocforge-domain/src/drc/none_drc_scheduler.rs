@@ -10,6 +10,8 @@ use crate::drc::none_drc_quantizer::{
 };
 use crate::numeric::{FiniteF32, R32Error, r32_add, r32_mul, r32_sub};
 
+use crate::frontend::job_configuration::SelectedDrcProfile;
+
 const BLOCK_COUNT: usize = 6;
 const POSITIVE_ZERO: f32 = f32::from_bits(0x0000_0000);
 const ONE: f32 = 1.0;
@@ -36,6 +38,47 @@ impl NoneDynamicsState {
             level: ONE,
             hold: 0,
             log_gain: POSITIVE_ZERO.min(limiter_gain),
+        }
+    }
+
+    fn advance_profile(
+        self,
+        profile: SelectedDrcProfile,
+        normalized_power: f32,
+        limit: f32,
+    ) -> Self {
+        // ETSI TS 103 190-1, E-AC-3 compressor profiles. Level is relative
+        // to dialogue after the statistics stage applies dialnorm.
+        let (boost, unity_low, unity_high, knee, max_cut, release_ms) = match profile {
+            SelectedDrcProfile::FilmStandard => (6.0, 0.0, 5.0, 15.0, 24.0, 3000.0),
+            SelectedDrcProfile::MusicStandard => (12.0, 0.0, 5.0, 15.0, 24.0, 10000.0),
+            SelectedDrcProfile::MusicLight => (12.0, -10.0, 10.0, 40.0, 15.0, 3000.0),
+            SelectedDrcProfile::FilmLight => (6.0, -10.0, 10.0, 20.0, 24.0, 3000.0),
+            _ => return Self::advance(limit),
+        };
+        let level = 31.0 - 144.0 * normalized_power;
+        let target = if level < unity_low {
+            ((unity_low - level) * 0.5).min(boost)
+        } else {
+            let initial_cut = (level.min(knee) - unity_high).max(0.0) * 0.5;
+            -(initial_cut + (level - knee).max(0.0) * 0.95).min(max_cut)
+        };
+        let previous = self.level - 1.0;
+        let delta = target - previous;
+        let time_ms = if delta < -15.0 {
+            10.0
+        } else if delta < 0.0 {
+            100.0
+        } else if delta > 20.0 {
+            1000.0
+        } else {
+            release_ms
+        };
+        let gain = previous + delta * -(-256000.0_f32 / (48000.0 * time_ms)).exp_m1();
+        Self {
+            level: gain + 1.0,
+            hold: 0,
+            log_gain: (gain / 48.0).min(limit),
         }
     }
 
@@ -66,6 +109,7 @@ impl LimiterState {
 /// Selected continuous scheduler state for one programme.
 #[derive(Debug, PartialEq)]
 pub struct NoneDrcSchedulerState {
+    pub(crate) profiles: [SelectedDrcProfile; 2],
     rf: NoneDynamicsState,
     line: NoneDynamicsState,
     rf_limiter: LimiterState,
@@ -77,6 +121,7 @@ pub struct NoneDrcSchedulerState {
 impl NoneDrcSchedulerState {
     pub const fn cold() -> Self {
         Self {
+            profiles: [SelectedDrcProfile::None; 2],
             rf: NoneDynamicsState::cold(),
             line: NoneDynamicsState::cold(),
             rf_limiter: LimiterState::cold(),
@@ -112,6 +157,7 @@ impl NoneDrcSchedulerState {
 
     fn staged_next_state(&self) -> Self {
         Self {
+            profiles: self.profiles,
             rf: self.rf,
             line: self.line,
             rf_limiter: self.rf_limiter,
@@ -209,8 +255,7 @@ pub fn transition_none_drc_scheduler_frame(
     state: &NoneDrcSchedulerState,
     input: &NoneDrcSchedulerFrameInput,
 ) -> Result<NoneDrcSchedulerFrameTransition, NoneDrcSchedulerError> {
-    // These finite RMS values belong to the preceding statistics producer.
-    // This selected none scheduler deliberately does not consume them.
+    // Statistics supplies one dialnorm-adjusted power level per audio block.
 
     let dialnorm_offset = f32::from_bits(none_drc_dialnorm_offset_word(input.dialnorm)?);
     let half_offset = r32_mul_values(dialnorm_offset, HALF)?;
@@ -240,7 +285,11 @@ pub fn transition_none_drc_scheduler_frame(
             peak_logs_six[block],
             LimiterKind::Line,
         )?;
-        next_state.line = NoneDynamicsState::advance(next_state.line_limiter.gain);
+        next_state.line = next_state.line.advance_profile(
+            state.profiles[0],
+            input.rms_levels_six[block].value(),
+            next_state.line_limiter.gain,
+        );
         let line_gain = next_state.line.log_gain;
         line_gain_words[block] = line_gain.to_bits();
 
@@ -254,8 +303,12 @@ pub fn transition_none_drc_scheduler_frame(
     }
 
     let mut rf_log_gain_minimum = ONE;
-    for _ in 0..BLOCK_COUNT {
-        next_state.rf = NoneDynamicsState::advance(next_state.rf_limiter.gain);
+    for rms in &input.rms_levels_six {
+        next_state.rf = next_state.rf.advance_profile(
+            state.profiles[1],
+            rms.value(),
+            next_state.rf_limiter.gain,
+        );
         rf_log_gain_minimum = rf_log_gain_minimum.min(next_state.rf.log_gain);
     }
 
