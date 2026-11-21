@@ -16931,6 +16931,7 @@ def run(root=ROOT):
     approved_joc_source_files.update(path for direct in next(e for e in es if e['functional_id']=='F13D2').get('direct_slices',[]) for path in direct.get('implementation_files',[]))
 
     approved_joc_source_files.add('crates/jocforge-domain/src/joc/emdf/configuration_writer.rs')
+    approved_joc_source_files.update({'crates/jocforge-domain/src/codec/substream_composition.rs','crates/jocforge-domain/src/codec/substream_topology.rs'})
 
     approved_joc_source_files.add('crates/jocforge-domain/src/joc/coefficient_payload.rs')
 

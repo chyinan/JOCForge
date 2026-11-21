@@ -627,13 +627,13 @@ fn compute_bap_row(
     Ok(bap)
 }
 
-struct PreparedBapRow {
+pub(super) struct PreparedBapRow {
     psd: Vec<i16>,
     band_mask: Vec<i32>,
     floor: i16,
 }
 
-fn prepare_bap_row(
+pub(super) fn prepare_bap_row(
     input: &BapRowInput<'_>,
     parameters: &BapParameters,
 ) -> Result<PreparedBapRow, BapError> {
@@ -737,7 +737,7 @@ fn prepare_bap_row(
 }
 
 impl PreparedBapRow {
-    fn allocate(&self, candidate: u16, parameters: &BapParameters, bap: &mut [u8]) {
+    pub(super) fn allocate(&self, candidate: u16, parameters: &BapParameters, bap: &mut [u8]) {
         let coarse = candidate >> 4;
         let fine = candidate & 15;
         let floor = self.floor;

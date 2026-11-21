@@ -417,6 +417,11 @@ pub struct Flat7xPairD0PcmBlockSeriesCandidate {
 }
 
 impl Flat7xPairD0PcmBlockSeriesCandidate {
+    pub fn spectra(
+        &self,
+    ) -> &[jocforge_domain::codec::flat7x_d0_spectrum::Flat7xD0SpectrumBlock; 6] {
+        self.block_series.spectra()
+    }
     pub const fn source_identity(&self) -> &Flat7xD0SourceIdentity {
         &self.source_identity
     }

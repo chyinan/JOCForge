@@ -65,6 +65,27 @@ mkdir height-phase
 jocforge encode input.adm.wav height-phase/music.candidate.ec3 --joc-layout idx4
 ```
 
+### 多依赖子流与 LFE 归属
+
+`--dependent-count N` 指定每个 1536 采样访问单元内的依赖子流数。idx0、idx3 可选 0–5，idx1、idx2、idx4 可选 1–6。显式指定流数或 LFE 归属时，JOCForge 使用原生 E-AC-3 I0 和连续编号的 D0…Dn，每帧 6 个音频块。最后一个依赖子流承载严格 ETSI JOC/OAMD，零依赖时由 I0 承载。节目总码率在这些子流之间分配。常规默认输出继续使用原来的编码路径。
+
+| `--lfe-owner` | I0 | D0 | 解码后的 LFE |
+|---|---|---|---|
+| `independent`（默认） | 有 | 无 | 取 I0 |
+| `dependent` | 无 | 有 | D0 补充 |
+| `replace-independent` | 有 | 有 | D0 替换 I0 |
+| `none` | 无 | 无 | 无 |
+
+单独指定 LFE 时，五载体布局默认使用零个依赖子流，七载体布局默认使用一个。需要 D0 承载 LFE 时至少使用一个。依赖声道映射按 profile 的规范组顺序分配，后环绕对或高度对保持成对。文件输入和 XML 作业使用相同选项；七载体布局的输出仍使用独立空目录中的 `.candidate.ec3`。
+
+```powershell
+# 5.X：五个依赖子流，D0 的 LFE 替换 I0，D4 承载 JOC。
+jocforge encode input.adm.wav mix.ec3 --joc-layout idx0 --dependent-count 5 --lfe-owner replace-independent
+# 5.X+2：六个依赖子流，D0 补充 LFE，D5 承载高度对和 JOC。
+mkdir height-multi
+jocforge encode input.adm.wav height-multi/mix.candidate.ec3 --joc-layout idx4 --total-rate 1664 --dependent-count 6 --lfe-owner dependent
+```
+
 ### 无损封装为 MKA 或 MP4
 
 在同一个 PowerShell 会话中任选一种容器。`-c:a copy` 直接复制 EC3 音轨并保留 JOC 元数据。

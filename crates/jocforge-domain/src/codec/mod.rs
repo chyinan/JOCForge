@@ -46,4 +46,5 @@ pub mod selected_frame_trial;
 pub mod selected_main_q_search;
 pub mod selected_source_plan;
 pub mod source_frame_writer;
+pub mod substream_composition;
 pub mod substream_topology;

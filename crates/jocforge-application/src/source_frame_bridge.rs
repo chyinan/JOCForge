@@ -1,6 +1,10 @@
 // pattern: Functional Core
 //! Binds admitted input, same-source F06ND/F13 proposals, and the selected F12 frame candidate.
 
+pub use jocforge_domain::codec::{
+    substream_composition::FrameMetadata,
+    substream_topology::{LfeOwner, SubstreamPlan},
+};
 use std::sync::Arc;
 
 pub use jocforge_domain::codec::flat7x_d0_pcm_source::{

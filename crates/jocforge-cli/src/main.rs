@@ -66,6 +66,12 @@ struct EncodeArgs {
     /// Write strict ETSI JOC/OAMD EMDF signalling for the selected stream.
     #[arg(long)]
     etsi_strict: bool,
+    /// Emit this many dependent E-AC-3 frames after each independent frame.
+    #[arg(long,value_parser=clap::value_parser!(u8).range(0..=6))]
+    dependent_count: Option<u8>,
+    /// Place programme LFE in I0, D0, both (D0 replaces I0), or neither.
+    #[arg(long,value_parser=["independent","dependent","replace-independent","none"])]
+    lfe_owner: Option<String>,
     /// Read input and output paths from an XML job.
     #[arg(long, value_name = "JOB.xml", conflicts_with_all = ["input", "output", "data_rate", "total_rate"])]
     job_xml: Option<PathBuf>,
@@ -118,6 +124,8 @@ fn main() -> ExitCode {
             }
             use jocforge_application::meter_source_bridge::EmdfCarriageProfile;
             let signalling = if args.etsi_strict
+                || args.dependent_count.is_some()
+                || args.lfe_owner.is_some()
                 || layout.uses_height_pair()
                 || layout == JocReconstructionLayout::FivePointOneWithoutPhase
             {
@@ -125,13 +133,48 @@ fn main() -> ExitCode {
             } else {
                 EmdfCarriageProfile::DeployedCompat
             };
-            if let Some(job_xml) = args.job_xml {
-                jocforge::encode_request::encode_job_xml_with_signalling(
-                    &job_xml,
+            use jocforge::encode_request::{LfeOwner, SubstreamPlan};
+            let topology = if args.dependent_count.is_some() || args.lfe_owner.is_some() {
+                let owner = match args.lfe_owner.as_deref() {
+                    Some("none") => LfeOwner::None,
+                    Some("dependent") => LfeOwner::Dependent,
+                    Some("replace-independent") => LfeOwner::ReplaceIndependent,
+                    _ => LfeOwner::Independent,
+                };
+                match SubstreamPlan::new(
                     layout,
-                    args.preflight_only,
-                    signalling,
-                )
+                    args.dependent_count.unwrap_or(u8::from(
+                        layout.uses_seven_carriers()
+                            || matches!(owner, LfeOwner::Dependent | LfeOwner::ReplaceIndependent),
+                    )),
+                    owner,
+                ) {
+                    Ok(p) => Some(p),
+                    Err(e) => {
+                        eprintln!("{e}");
+                        return ExitCode::from(2);
+                    }
+                }
+            } else {
+                None
+            };
+            if let Some(job_xml) = args.job_xml {
+                if let Some(plan) = topology {
+                    jocforge::encode_request::encode_xml_substream_layout(
+                        &job_xml,
+                        layout,
+                        signalling,
+                        args.preflight_only,
+                        plan,
+                    )
+                } else {
+                    jocforge::encode_request::encode_job_xml_with_signalling(
+                        &job_xml,
+                        layout,
+                        args.preflight_only,
+                        signalling,
+                    )
+                }
             } else {
                 let rate = if let Some(total) = args.total_rate {
                     let kbps = total.parse::<u32>().expect("validated total bitrate");
@@ -140,13 +183,24 @@ fn main() -> ExitCode {
                     CodecRateProfile::from_xml_token(args.data_rate.as_deref().unwrap_or("1024"))
                         .expect("clap validates the bitrate")
                 };
-                jocforge::encode_request::run_with_output_signalling(
-                    &args.input.expect("clap requires an input path"),
-                    &args.output.expect("clap requires an output path"),
-                    rate,
-                    layout,
-                    signalling,
-                )
+                if let Some(plan) = topology {
+                    jocforge::encode_request::encode_substream_layout(
+                        args.input.as_deref().unwrap(),
+                        args.output.as_deref().unwrap(),
+                        rate,
+                        layout,
+                        signalling,
+                        plan,
+                    )
+                } else {
+                    jocforge::encode_request::run_with_output_signalling(
+                        &args.input.expect("clap requires an input path"),
+                        &args.output.expect("clap requires an output path"),
+                        rate,
+                        layout,
+                        signalling,
+                    )
+                }
             }
         }
     };

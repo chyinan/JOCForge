@@ -173,6 +173,11 @@ pub(crate) fn stage_source_frame<'pcm>(
     admitted_plan: &AdmittedProductionPlan,
     staging: &mut ProgrammeOutputStaging,
     flat7x_carriers: Option<&'pcm Flat7xCarrierFrame>,
+    composition: Option<&mut (
+        jocforge_application::source_frame_bridge::SubstreamPlan,
+        tempfile::NamedTempFile,
+    )>,
+    frame_bytes: usize,
 ) -> Result<SourceFrameAdvance<'pcm>, SourceFrameStageError> {
     let spatial_callback = &callback.spatial;
     if source_for_callback_clock(callback_index) != Some(source_index)
@@ -441,6 +446,46 @@ pub(crate) fn stage_source_frame<'pcm>(
         ),
         None => None,
     };
+    if let Some((plan, file)) = composition.filter(|_| source_index.value() >= 2) {
+        use jocforge_application::source_frame_bridge::FrameMetadata;
+        use std::io::Write;
+        let spectral = flat7x_pair_source_binding
+            .as_ref()
+            .map(|binding| {
+                stage_flat7x_pair_d0_pcm_block_series(
+                    binding,
+                    codec_before
+                        .d0_overlap_history()
+                        .ok_or("missing dependent overlap")?,
+                    analysis_providers.providers().transform,
+                )
+                .map_err(|e| format!("{e:?}"))
+            })
+            .transpose()?;
+        let bsi = bind_flat7x_d0_bsi_source_inputs(
+            prepared,
+            frame_candidate.numeric_plan_receipt().shared_analysis(),
+            drc_source.after_root(),
+            Flat7xI0D0TargetPlan::approved_contract(),
+        )
+        .map_err(|e| format!("{e:?}"))?;
+        let container = f14k_source
+            .protected_container()
+            .ok_or("missing composition EMDF".to_owned())?;
+        let au = plan.encode(
+            frame_candidate.numeric_plan_receipt().plan(),
+            spectral.as_ref().map(|series| series.spectra()),
+            FrameMetadata {
+                emdf: container.bytes(),
+                dialnorm: bsi.dialnorm(),
+                compr: bsi.compr(),
+                dynrng: bsi.dynamic_range_codes(),
+                mixing: bsi.mixing(),
+            },
+            frame_bytes,
+        )?;
+        file.write_all(&au).map_err(|e| e.to_string())?;
+    }
     let mut flat7x_d0_history_after = None;
     let mut flat7x_pair_after = None;
     let mut flat7x_d0_frame_syntax = None;

@@ -1,6 +1,7 @@
 // pattern: Imperative Shell
 //! Reads one selected ADM BWF, prepares its input identity, and enters the application encode gate.
 
+pub use jocforge_application::source_frame_bridge::{LfeOwner, SubstreamPlan};
 pub use jocforge_application::{FileRenderTiming, SourceTimeRangeError};
 
 use std::{
@@ -867,6 +868,75 @@ fn run_worker_with_progress(
     progress: Option<EventObserver<'_>>,
     cancelled: &std::sync::atomic::AtomicBool,
 ) -> Result<(), EncodeRequestError> {
+    run_worker_with_topology(
+        input_path,
+        output_path,
+        codec_rate,
+        authored_job_xml,
+        structure,
+        progress,
+        cancelled,
+        None,
+    )
+}
+
+pub fn encode_substream_layout(
+    input: &Path,
+    output: &Path,
+    rate: CodecRateProfile,
+    layout: JocReconstructionLayout,
+    signalling: EmdfCarriageProfile,
+    topology: SubstreamPlan,
+) -> Result<(), EncodeRequestError> {
+    resolve_encode_request_route(rate, layout)?;
+    run_worker_with_topology(
+        input,
+        output,
+        Some(rate),
+        None,
+        (layout, signalling),
+        None,
+        &std::sync::atomic::AtomicBool::new(false),
+        Some(topology),
+    )
+}
+
+pub fn encode_xml_substream_layout(
+    path: &Path,
+    layout: JocReconstructionLayout,
+    signalling: EmdfCarriageProfile,
+    preflight: bool,
+    topology: SubstreamPlan,
+) -> Result<(), EncodeRequestError> {
+    if topology.layout() != layout {
+        return Err(EncodeRequestError::UnsupportedJocLayout);
+    }
+    if preflight {
+        return encode_job_xml_with_signalling(path, layout, true, signalling);
+    }
+    let request = resolve_job_xml_request(path)?;
+    run_worker_with_topology(
+        &request.input_path,
+        &request.output_path,
+        None,
+        Some(request.job_xml),
+        (layout, signalling),
+        None,
+        &std::sync::atomic::AtomicBool::new(false),
+        Some(topology),
+    )
+}
+
+fn run_worker_with_topology(
+    input_path: &Path,
+    output_path: &Path,
+    codec_rate: Option<CodecRateProfile>,
+    authored_job_xml: Option<Vec<u8>>,
+    structure: (JocReconstructionLayout, EmdfCarriageProfile),
+    progress: Option<EventObserver<'_>>,
+    cancelled: &std::sync::atomic::AtomicBool,
+    topology: Option<SubstreamPlan>,
+) -> Result<(), EncodeRequestError> {
     thread::scope(|scope| {
         let worker = thread::Builder::new()
             .name("jocforge-encode-request".to_owned())
@@ -880,6 +950,7 @@ fn run_worker_with_progress(
                     structure,
                     progress,
                     cancelled,
+                    topology,
                 )
             })
             .map_err(|_| EncodeRequestError::WorkerUnavailable)?;
@@ -917,9 +988,16 @@ fn run_inner(
     structure: (JocReconstructionLayout, EmdfCarriageProfile),
     progress: Option<EventObserver<'_>>,
     cancelled: &std::sync::atomic::AtomicBool,
+    topology: Option<SubstreamPlan>,
 ) -> Result<(), EncodeRequestError> {
     let (joc_layout, signalling) = structure;
     validate_signalling(joc_layout, signalling)?;
+    if topology
+        .as_ref()
+        .is_some_and(|plan| plan.layout() != joc_layout)
+    {
+        return Err(EncodeRequestError::UnsupportedJocLayout);
+    }
     eprintln!("Preparing selected ADM input and owner plan...");
     let input_path = normalize_existing_input(input_path)?;
     let output_path = normalize_new_output(output_path)?;
@@ -1036,7 +1114,28 @@ fn run_inner(
         output_path.display(),
     );
 
-    let final_destination = output_path
+    // The existing audio and metadata producers still advance as one transaction.
+    // Keep their intermediate elementary stream private when publishing a new topology.
+    let scratch = topology
+        .as_ref()
+        .map(|_| {
+            tempfile::tempdir_in(
+                output_path
+                    .parent()
+                    .ok_or(EncodeRequestError::InvalidPath)?,
+            )
+            .map_err(|e| EncodeRequestError::SourcePipeline(e.to_string()))
+        })
+        .transpose()?;
+    let carrier_path = match &scratch {
+        Some(dir) => dir.path().join(
+            output_path
+                .file_name()
+                .ok_or(EncodeRequestError::InvalidPath)?,
+        ),
+        None => output_path.clone(),
+    };
+    let final_destination = carrier_path
         .to_str()
         .ok_or(EncodeRequestError::InvalidPath)?;
     let plan = jocforge_application::output_publication::admit_selected_f15_plan_for_profile(
@@ -1047,6 +1146,17 @@ fn run_inner(
         final_destination,
     )
     .map_err(EncodeRequestError::ProductGate)?;
+    let mut composition = topology
+        .map(|plan| {
+            tempfile::NamedTempFile::new_in(
+                output_path
+                    .parent()
+                    .ok_or(EncodeRequestError::InvalidPath)?,
+            )
+            .map(|file| (plan, file))
+            .map_err(|e| EncodeRequestError::SourcePipeline(e.to_string()))
+        })
+        .transpose()?;
     let mut staging = ProgrammeOutputStaging::from_admitted_plan(&plan)
         .map_err(EncodeRequestError::OutputStaging)?;
     let output_binding = plan
@@ -1266,7 +1376,7 @@ fn run_inner(
                     roots.output(),
                     &plan,
                     &mut staging,
-                    carriers.as_ref(),
+                    carriers.as_ref(), composition.as_mut(),frame_bytes,
                 )
                 .map_err(map_source_frame_stage_error)?;
                 let (next_roots, receipt) = roots
@@ -1525,6 +1635,37 @@ fn run_inner(
         roots.metadata().state_reference().generation(),
         roots.phase_generation(),
     );
+    if let Some((_, file)) = composition {
+        roots
+            .output()
+            .validate_finalize_proposal(&finalize_proposal)
+            .map_err(|e| {
+                EncodeRequestError::SourcePipeline(format!("source finalization: {e:?}"))
+            })?;
+        if file
+            .as_file()
+            .metadata()
+            .map_err(|e| EncodeRequestError::SourcePipeline(e.to_string()))?
+            .len()
+            != roots.durable_bytes()
+        {
+            return Err(EncodeRequestError::SourcePipeline(
+                "composed output length mismatch".into(),
+            ));
+        }
+        file.as_file()
+            .sync_all()
+            .map_err(|e| EncodeRequestError::SourcePipeline(e.to_string()))?;
+        staging.abandon_attempt();
+        file.persist_noclobber(&output_path)
+            .map_err(|e| EncodeRequestError::SourcePipeline(e.to_string()))?;
+        eprintln!(
+            "composed {} access units: {}",
+            roots.published_aus(),
+            output_path.display()
+        );
+        return Ok(());
+    }
     if resolved_joc_profile
         .joc_reconstruction_layout()
         .uses_seven_carriers()
