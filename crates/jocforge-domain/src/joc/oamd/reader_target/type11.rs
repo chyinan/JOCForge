@@ -29,13 +29,17 @@ pub(super) struct DecodedOamdRow {
 
 pub(super) fn roundtrip(
     controls: &[[u32; 13]; 15],
+    strict_oamd: bool,
 ) -> Result<([DecodedOamdRow; ROW_COUNT], Vec<u8>), ReaderTargetError> {
-    let body = encode_body(controls)?;
+    let body = encode_body(controls, strict_oamd)?;
     let decoded = decode_body(&body)?;
     Ok((decoded, body))
 }
 
-fn encode_body(controls: &[[u32; 13]; 15]) -> Result<Vec<u8>, ReaderTargetError> {
+fn encode_body(
+    controls: &[[u32; 13]; 15],
+    strict_oamd: bool,
+) -> Result<Vec<u8>, ReaderTargetError> {
     let mut rowdata = BitWriter::default();
     rowdata.write(0, 1)?;
     rowdata.write(0, 2)?;
@@ -89,7 +93,7 @@ fn encode_body(controls: &[[u32; 13]; 15]) -> Result<Vec<u8>, ReaderTargetError>
         previous_unmuted = true;
     }
     let rowdata = rowdata.finish();
-    let trim = encode_trim();
+    let trim = encode_trim(strict_oamd);
     let mut body = BitWriter::default();
     body.write(0, 2)?;
     body.write(15, 5)?;
@@ -165,10 +169,11 @@ fn z_code(value: i32) -> Result<i32, ReaderTargetError> {
     })
 }
 
-fn encode_trim() -> Vec<u8> {
+fn encode_trim(strict_oamd: bool) -> Vec<u8> {
     let mut trim = BitWriter::default();
     trim.write(0, 1).expect("constant control fits");
-    trim.write(3, 2).expect("constant mode fits");
+    trim.write(if strict_oamd { 0 } else { 3 }, 2)
+        .expect("constant mode fits");
     trim.write(0, 2).expect("constant reserved field fits");
     trim.write(2, 2).expect("mixed selected flags use mode two");
     for flag in SELECTED_TRIM_FLAGS {
@@ -413,7 +418,7 @@ fn decode_trim(payload: &[u8], row_count: usize) -> Result<[u8; ROW_COUNT], Read
     if reader.read(1)? != 0 {
         return Err(ReaderTargetError::ProfileUnsupported);
     }
-    if reader.read(2)? != 3 || reader.read(2)? != 0 || reader.read(2)? != 2 {
+    if !matches!(reader.read(2)?, 0 | 3) || reader.read(2)? != 0 || reader.read(2)? != 2 {
         return Err(ReaderTargetError::ProfileUnsupported);
     }
     for expected in SELECTED_TRIM_FLAGS {

@@ -19,7 +19,7 @@ use jocforge_domain::{
     },
     joc::emdf::{
         metadata_owner::{MetadataOwnerError, MetadataSourceProposal},
-        protected_container::{CarrierBlock, CurrentEmdfCarriageMode, CurrentEmdfPayloadSequence},
+        protected_container::{CarrierBlock, CurrentEmdfPayloadSequence},
     },
     timeline::{
         AdmSampleCount, ClockError, CodecSourceIndex, JocDispatchIndex, PublicationDisposition,
@@ -236,7 +236,7 @@ pub fn protect_metadata_source_for_frame_with_source_generation(
                 .protected_container()
                 .ok_or(F14kSourceBridgeError::F13PayloadShape)?
                 .bytes(),
-            CurrentEmdfCarriageMode::DeployedCompat,
+            metadata.carriage_mode(),
             carrier_block,
         )
         .map_err(F14kSourceBridgeError::MetadataOwner)?;

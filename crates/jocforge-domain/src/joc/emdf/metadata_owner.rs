@@ -69,13 +69,16 @@ pub(crate) fn canonical_lf_fixture_bytes(bytes: &[u8]) -> Vec<u8> {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum MetadataWrapperProfile {
     Selected,
+    StrictFiveOne,
     Flat7x,
 }
 
 impl MetadataWrapperProfile {
     const fn payload_sequence(self) -> CurrentEmdfPayloadSequence {
         match self {
-            Self::Selected => CurrentEmdfPayloadSequence::SelectedFourPayloads,
+            Self::Selected | Self::StrictFiveOne => {
+                CurrentEmdfPayloadSequence::SelectedFourPayloads
+            }
             Self::Flat7x => CurrentEmdfPayloadSequence::Flat7xExperimentalJocPair,
         }
     }
@@ -736,6 +739,14 @@ impl MetadataId14QueueView {
 }
 
 impl MetadataSourceProposal {
+    pub fn carriage_mode(&self) -> super::protected_container::CurrentEmdfCarriageMode {
+        use super::protected_container::CurrentEmdfCarriageMode;
+        match self.after_owner.wrapper_profile {
+            MetadataWrapperProfile::StrictFiveOne => CurrentEmdfCarriageMode::EtsiEmdf,
+            _ => CurrentEmdfCarriageMode::DeployedCompat,
+        }
+    }
+
     pub const fn receipt(&self) -> &MetadataSourceReceipt {
         &self.receipt
     }
@@ -1747,6 +1758,8 @@ impl MetadataOwner {
         let wrapper_profile =
             if profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
                 MetadataWrapperProfile::Flat7x
+            } else if profile.carriage() == crate::profile::EmdfCarriageProfile::EtsiEmdf {
+                MetadataWrapperProfile::StrictFiveOne
             } else {
                 MetadataWrapperProfile::Selected
             };
@@ -1769,7 +1782,7 @@ impl MetadataOwner {
         let provider =
             ValidatedMetadataOwnerProvider::from_approved_bytes(provider_file, wrapper_file)?;
         let mut wrapper_configuration = provider.wrapper_configuration.clone();
-        if wrapper_profile == MetadataWrapperProfile::Flat7x {
+        if wrapper_profile != MetadataWrapperProfile::Selected {
             let id11 = wrapper_configuration
                 .get_mut("payloads")
                 .and_then(Value::as_object_mut)
@@ -1782,7 +1795,12 @@ impl MetadataOwner {
             id11.insert("priority".to_owned(), Value::from(0));
             id11.insert("processing_allowed".to_owned(), Value::from(0));
         }
-        let wrapper_config_sha256 = if wrapper_profile == MetadataWrapperProfile::Flat7x {
+        if wrapper_profile == MetadataWrapperProfile::StrictFiveOne {
+            for id in ["11", "14"] {
+                wrapper_configuration["payloads"][id]["codec_data_present"] = Value::Bool(true);
+            }
+        }
+        let wrapper_config_sha256 = if wrapper_profile != MetadataWrapperProfile::Selected {
             let canonical = serde_json::to_vec(&wrapper_configuration)
                 .map_err(|_| MetadataOwnerError::WrapperIdentity)?;
             sha256_hex(&canonical)
@@ -1790,7 +1808,10 @@ impl MetadataOwner {
             provider.wrapper_config_sha256.clone()
         };
         let provider_sha256 = provider.provider_sha256;
-        let state = MetadataState::cold(provider_sha256);
+        let mut state = MetadataState::cold(provider_sha256);
+        if wrapper_profile == MetadataWrapperProfile::StrictFiveOne {
+            state.carriage_mode = "etsi_emdf";
+        }
         Ok(Self {
             programme_id: id1_configuration.programme_id().clone(),
             attempt: id1_configuration.attempt(),
@@ -1891,7 +1912,7 @@ impl MetadataOwner {
         if callback_index.value() > 1 || source_for_callback(callback_index).is_some() {
             return Err(MetadataGtcReceiptError::CallbackHasSourceStage);
         }
-        if self.state != MetadataState::cold(self.provider_sha256) {
+        if self.state.digest() != self.cold_state_sha256 {
             return Err(MetadataGtcReceiptError::CallbackHasUnexpectedSource);
         }
 

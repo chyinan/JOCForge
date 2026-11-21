@@ -63,6 +63,9 @@ struct EncodeArgs {
     /// Select experimental Flat7x. Defaults to 5.1.
     #[arg(long, value_name = "LAYOUT", value_parser = ["flat7x"])]
     joc_layout: Option<String>,
+    /// Write strict ETSI JOC/OAMD EMDF signalling for the independent 5.1 stream.
+    #[arg(long, conflicts_with = "joc_layout")]
+    etsi_strict: bool,
     /// Read input and output paths from an XML job.
     #[arg(long, value_name = "JOB.xml", conflicts_with_all = ["input", "output", "data_rate", "total_rate"])]
     job_xml: Option<PathBuf>,
@@ -106,8 +109,19 @@ fn main() -> ExitCode {
             } else {
                 JocReconstructionLayout::ExistingSelectedFivePointOne
             };
+            use jocforge_application::meter_source_bridge::EmdfCarriageProfile;
+            let signalling = if args.etsi_strict {
+                EmdfCarriageProfile::EtsiEmdf
+            } else {
+                EmdfCarriageProfile::DeployedCompat
+            };
             if let Some(job_xml) = args.job_xml {
-                jocforge::encode_request::encode_job_xml(&job_xml, layout, args.preflight_only)
+                jocforge::encode_request::encode_job_xml_with_signalling(
+                    &job_xml,
+                    layout,
+                    args.preflight_only,
+                    signalling,
+                )
             } else {
                 let rate = if let Some(total) = args.total_rate {
                     let kbps = total.parse::<u32>().expect("validated total bitrate");
@@ -116,11 +130,12 @@ fn main() -> ExitCode {
                     CodecRateProfile::from_xml_token(args.data_rate.as_deref().unwrap_or("1024"))
                         .expect("clap validates the bitrate")
                 };
-                jocforge::encode_request::run_with_data_rate_and_joc_layout(
+                jocforge::encode_request::run_with_output_signalling(
                     &args.input.expect("clap requires an input path"),
                     &args.output.expect("clap requires an output path"),
                     rate,
                     layout,
+                    signalling,
                 )
             }
         }

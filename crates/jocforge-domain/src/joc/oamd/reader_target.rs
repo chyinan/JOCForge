@@ -81,6 +81,7 @@ struct CleanHistory {
 /// The exact nine-field persistent F05R56 state. Target payloads are callback-local receipt data.
 #[derive(Debug, Eq, PartialEq)]
 pub struct ReaderTargetState {
+    pub(crate) strict_oamd: bool,
     pub(crate) trim: crate::frontend::job_configuration::SurroundHeightTrim,
     callback_index: FrontendCallbackIndex,
     retired: bool,
@@ -329,6 +330,7 @@ impl ReaderTargetState {
             callback_index: FrontendCallbackIndex::new(0),
             retired: false,
             trim: Default::default(),
+            strict_oamd: false,
             history: CleanHistory {
                 slots,
                 initial_markers: [0; TARGET_ROWS],
@@ -368,6 +370,7 @@ impl ReaderTargetState {
             callback_index: self.callback_index,
             retired: self.retired,
             trim: self.trim,
+            strict_oamd: self.strict_oamd,
             history: self.history,
             previous_active: self.previous_active,
             current_xyz_words: self.current_xyz_words,
@@ -942,7 +945,7 @@ fn preview_reader_and_targets(
     input: &ReaderTargetCallbackInputs<'_>,
     controls: &[[u32; 13]; TARGET_ROWS],
 ) -> Result<ReaderTargetComputedRows, ReaderTargetError> {
-    let (decoded_rows, id11_body) = type11::roundtrip(controls)?;
+    let (decoded_rows, id11_body) = type11::roundtrip(controls, committed.strict_oamd)?;
     let reader_records = reader_records::materialize(&committed.reader_records, &decoded_rows)?;
     let targets = target_panner::generate_targets(&reader_records, committed.trim)?;
     let mut row_generations = [HistoryProducerGeneration::Cold; READER_ROWS];

@@ -26,6 +26,15 @@ $ec3 = Join-Path $out "output.candidate.ec3"
 if ($LASTEXITCODE -ne 0) { throw "Flat 7.1 编码失败" }
 ```
 
+### 5.1 严格 ETSI 信令
+
+`--etsi-strict` 为独立 5.1 EC-3 的 JOC 和 OAMD 写入严格 EMDF 描述符，并将 OAMD 的坐标变换模式设为无变换。省略该选项使用原有部署兼容格式。文件输入与 XML 作业都支持此选项。
+
+```powershell
+jocforge encode input.adm.wav output.ec3 --data-rate 1024 --etsi-strict
+jocforge encode --job-xml job.xml --etsi-strict
+```
+
 ### 无损封装为 MKA 或 MP4
 
 在同一个 PowerShell 会话中任选一种容器。`-c:a copy` 直接复制 EC3 音轨并保留 JOC 元数据。

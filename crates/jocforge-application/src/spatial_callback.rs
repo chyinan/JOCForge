@@ -77,6 +77,9 @@ pub struct MainSpatialColdRoots {
 }
 
 impl MainSpatialColdRoots {
+    pub fn enable_strict_oamd(&mut self) {
+        self.spatial_control.enable_strict_oamd();
+    }
     pub fn from_selected_providers(
         prepared: &PreparedJobInput,
         attempt: AttemptId,

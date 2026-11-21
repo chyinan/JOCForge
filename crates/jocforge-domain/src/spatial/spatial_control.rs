@@ -1246,6 +1246,10 @@ pub struct SpatialControlMachine {
 }
 
 impl SpatialControlMachine {
+    pub fn enable_strict_oamd(&mut self) {
+        self.committed.reader_targets.strict_oamd = true;
+    }
+
     pub fn with_manual_trim(
         mut self,
         trim: crate::frontend::job_configuration::SurroundHeightTrim,

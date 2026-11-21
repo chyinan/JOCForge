@@ -426,7 +426,18 @@ fn selected_callback_chain_matches_postcomputation_state_and_receipt_assertions(
                         )
                     })
                 });
-                let (decoded_rows, wire) = super::type11::roundtrip(&controls).unwrap();
+                let (decoded_rows, wire) = super::type11::roundtrip(&controls, false).unwrap();
+                let (strict_rows, strict_wire) = super::type11::roundtrip(&controls, true).unwrap();
+                assert_eq!(strict_rows, decoded_rows);
+                assert_eq!(strict_wire.len(), wire.len());
+                // Only the two warp bits change from the deployed 3 to the ETSI no-warp value 0.
+                assert_eq!(
+                    wire.iter()
+                        .zip(&strict_wire)
+                        .map(|(a, b)| (a ^ b).count_ones())
+                        .sum::<u32>(),
+                    2
+                );
                 assert_eq!(decoded_rows.len(), READER_ROWS);
                 assert_eq!(receipt.id11_body(), wire.as_slice());
                 assert_eq!(hex(&wire), expected_case["expected"]["type11_wire_hex"]);

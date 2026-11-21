@@ -110,6 +110,9 @@ fn write_configuration(
 
     let codec_data_present = required_boolean(configuration, "codec_data_present")?;
     writer.write(u64::from(codec_data_present), 1)?;
+    if codec_data_present {
+        writer.write(0, 8)?;
+    }
     let discard_unknown_payload = required_boolean(configuration, "discard_unknown_payload")?;
     writer.write(u64::from(discard_unknown_payload), 1)?;
 

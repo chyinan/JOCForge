@@ -32,10 +32,10 @@ use jocforge_application::{
         MetadataOwnerPreparationError, SelectedJocState, prepare_metadata_owner_from_measurement,
     },
     meter_source_bridge::{
-        CarrierCodecProfile, CodecRateProfile, EncodingProfile, Flat7xFrameCodec,
-        Flat7xI0D0TargetPlan, Flat7xSubstreamRole, FrontendControlReplacementCandidate,
-        JocPayloadDownmixIndex, JocReconstructionLayout, ResolvedEncodingProfile,
-        SubstreamTopology, resolve_selected_profile,
+        CarrierCodecProfile, CodecRateProfile, EmdfCarriageProfile, EncodingProfile,
+        Flat7xFrameCodec, Flat7xI0D0TargetPlan, Flat7xSubstreamRole,
+        FrontendControlReplacementCandidate, JocPayloadDownmixIndex, JocReconstructionLayout,
+        ResolvedEncodingProfile, SubstreamTopology, resolve_selected_profile,
     },
     output_publication::{AttemptId, OutputStagingOwnerId},
     parse_selected_job_file_references, prepare_selected_job_input,
@@ -222,20 +222,36 @@ pub fn run_with_data_rate_and_joc_layout(
     codec_rate: CodecRateProfile,
     joc_layout: JocReconstructionLayout,
 ) -> Result<(), EncodeRequestError> {
+    run_with_output_signalling(
+        input_path,
+        output_path,
+        codec_rate,
+        joc_layout,
+        EmdfCarriageProfile::DeployedCompat,
+    )
+}
+
+pub fn run_with_output_signalling(
+    input_path: &Path,
+    output_path: &Path,
+    codec_rate: CodecRateProfile,
+    joc_layout: JocReconstructionLayout,
+    signalling: EmdfCarriageProfile,
+) -> Result<(), EncodeRequestError> {
     match resolve_encode_request_route(codec_rate, joc_layout)? {
         EncodeRequestRoute::SelectedFivePointOne(profile) => run_worker(
             input_path,
             output_path,
             Some(profile.codec_rate()),
             None,
-            profile.joc_reconstruction_layout(),
+            (profile.joc_reconstruction_layout(), signalling),
         ),
         EncodeRequestRoute::Flat7xI0D0Pair(target) => run_worker(
             input_path,
             output_path,
             Some(target.d0().rate()),
             None,
-            target.reconstruction_layout(),
+            (target.reconstruction_layout(), signalling),
         ),
     }
 }
@@ -316,6 +332,21 @@ pub fn encode_job_xml(
     layout: JocReconstructionLayout,
     preflight_only: bool,
 ) -> Result<(), EncodeRequestError> {
+    encode_job_xml_with_signalling(
+        job_xml_path,
+        layout,
+        preflight_only,
+        EmdfCarriageProfile::DeployedCompat,
+    )
+}
+
+pub fn encode_job_xml_with_signalling(
+    job_xml_path: &Path,
+    layout: JocReconstructionLayout,
+    preflight_only: bool,
+    signalling: EmdfCarriageProfile,
+) -> Result<(), EncodeRequestError> {
+    validate_signalling(layout, signalling)?;
     let request = resolve_job_xml_request(job_xml_path)?;
     if !preflight_only {
         return run_worker(
@@ -323,7 +354,7 @@ pub fn encode_job_xml(
             &request.output_path,
             None,
             Some(request.job_xml),
-            layout,
+            (layout, signalling),
         );
     }
     if layout == JocReconstructionLayout::Flat7x {
@@ -544,14 +575,14 @@ fn run_worker(
     output_path: &Path,
     codec_rate: Option<CodecRateProfile>,
     authored_job_xml: Option<Vec<u8>>,
-    joc_layout: JocReconstructionLayout,
+    structure: (JocReconstructionLayout, EmdfCarriageProfile),
 ) -> Result<(), EncodeRequestError> {
     run_worker_with_progress(
         input_path,
         output_path,
         codec_rate,
         authored_job_xml,
-        joc_layout,
+        structure,
         None,
         &std::sync::atomic::AtomicBool::new(false),
     )
@@ -661,7 +692,7 @@ pub fn encode_five_one_file(
         output,
         Some(rate),
         None,
-        layout,
+        (layout, EmdfCarriageProfile::DeployedCompat),
         Some(&progress_events(progress)),
         &std::sync::atomic::AtomicBool::new(false),
     )
@@ -685,7 +716,10 @@ pub fn encode_flat_seven_one_file(
         &candidate,
         Some(CodecRateProfile::Kbps1024),
         None,
-        JocReconstructionLayout::Flat7x,
+        (
+            JocReconstructionLayout::Flat7x,
+            EmdfCarriageProfile::DeployedCompat,
+        ),
         Some(&progress_events(progress)),
         &std::sync::atomic::AtomicBool::new(false),
     )?;
@@ -710,7 +744,7 @@ pub fn encode_staged_file(
         output,
         Some(rate),
         None,
-        layout,
+        (layout, EmdfCarriageProfile::DeployedCompat),
         Some(&progress_events(progress)),
         cancelled,
     )
@@ -818,7 +852,7 @@ pub fn encode_staged_file_with_options(
         &output,
         Some(rate),
         Some(xml.into_bytes()),
-        layout,
+        (layout, EmdfCarriageProfile::DeployedCompat),
         Some(progress),
         cancelled,
     )
@@ -829,7 +863,7 @@ fn run_worker_with_progress(
     output_path: &Path,
     codec_rate: Option<CodecRateProfile>,
     authored_job_xml: Option<Vec<u8>>,
-    joc_layout: JocReconstructionLayout,
+    structure: (JocReconstructionLayout, EmdfCarriageProfile),
     progress: Option<EventObserver<'_>>,
     cancelled: &std::sync::atomic::AtomicBool,
 ) -> Result<(), EncodeRequestError> {
@@ -843,7 +877,7 @@ fn run_worker_with_progress(
                     output_path,
                     codec_rate,
                     authored_job_xml,
-                    joc_layout,
+                    structure,
                     progress,
                     cancelled,
                 )
@@ -855,15 +889,31 @@ fn run_worker_with_progress(
     })
 }
 
+fn validate_signalling(
+    layout: JocReconstructionLayout,
+    signalling: EmdfCarriageProfile,
+) -> Result<(), EncodeRequestError> {
+    if signalling == EmdfCarriageProfile::DeployedCompat
+        || (layout == JocReconstructionLayout::ExistingSelectedFivePointOne
+            && signalling == EmdfCarriageProfile::EtsiEmdf)
+    {
+        Ok(())
+    } else {
+        Err(EncodeRequestError::UnsupportedJocLayout)
+    }
+}
+
 fn run_inner(
     input_path: &Path,
     output_path: &Path,
     codec_rate_override: Option<CodecRateProfile>,
     authored_job_xml: Option<Vec<u8>>,
-    joc_layout: JocReconstructionLayout,
+    structure: (JocReconstructionLayout, EmdfCarriageProfile),
     progress: Option<EventObserver<'_>>,
     cancelled: &std::sync::atomic::AtomicBool,
 ) -> Result<(), EncodeRequestError> {
+    let (joc_layout, signalling) = structure;
+    validate_signalling(joc_layout, signalling)?;
     eprintln!("Preparing selected ADM input and owner plan...");
     let input_path = normalize_existing_input(input_path)?;
     let output_path = normalize_new_output(output_path)?;
@@ -1012,12 +1062,20 @@ fn run_inner(
     let drc_root = cold_drc_owner_after_measurement(&prepared, measurement.receipt())
         .map_err(EncodeRequestError::DrcRoot)?;
     let source_providers = plan.source_providers();
+    let metadata_profile = resolve_selected_profile(
+        &EncodingProfile::selected_with_rate_and_carriage_and_joc_reconstruction_layout(
+            selected_profile.codec_rate(),
+            signalling,
+            joc_layout,
+        ),
+    )
+    .map_err(|_| EncodeRequestError::UnsupportedJocLayout)?;
     let metadata_owner = prepare_metadata_owner_from_measurement(
         &prepared,
         &measurement,
         source_providers.metadata_owner().provider_file(),
         source_providers.metadata_owner().wrapper_file(),
-        resolved_joc_profile,
+        metadata_profile,
     )
     .map_err(EncodeRequestError::MetadataOwner)?;
     eprintln!(
@@ -1045,7 +1103,7 @@ fn run_inner(
     )
     .map_err(EncodeRequestError::SpatialProviders)?;
     let callback_values = main_providers.callback_values().providers();
-    let cold_roots = MainSpatialColdRoots::from_selected_providers(
+    let mut cold_roots = MainSpatialColdRoots::from_selected_providers(
         &prepared,
         run_identity.attempt,
         &callback_values.f01e,
@@ -1053,6 +1111,9 @@ fn run_inner(
         &callback_values.p11_geometry,
     )
     .map_err(EncodeRequestError::SpatialColdRoots)?;
+    if signalling == EmdfCarriageProfile::EtsiEmdf {
+        cold_roots.enable_strict_oamd();
+    }
     let reader_eof_root = ReaderEofMachine::cold();
     let source_analysis_providers =
         SelectedSourceAnalysisProviders::load_approved().map_err(|error| {
