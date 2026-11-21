@@ -60,7 +60,8 @@ fn selected_object_value_builder_checks_timing_and_accepts_variable_host_indices
     let event = event_with_values(input, 38, 0, duration, duration);
     assert_eq!(
         build_selected_object_control52(event).unwrap(),
-        build_selected_object_control52(event_with_values(input, 10, 0, duration, duration)).unwrap()
+        build_selected_object_control52(event_with_values(input, 10, 0, duration, duration))
+            .unwrap()
     );
 }
 
