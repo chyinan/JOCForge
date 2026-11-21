@@ -31,6 +31,7 @@ use jocforge_domain::frontend::{
     },
     selected_adm_graph::{SelectedAdmGraph, SelectedAdmGraphError, parse_selected_adm_graph},
 };
+pub use jocforge_domain::join_dsp_tasks;
 use jocforge_domain::meter::prepared_job_identity::{
     NormalizedJobConfigurationIdentity, PreparedAdmChunkSpan,
     PreparedAdmGraphProvenance as DomainAdmGraphProvenance, PreparedInputResourceIdentity,

@@ -10,6 +10,7 @@ pub mod current_features;
 pub mod descriptor_mathematical_provider;
 pub mod diffusion_filter;
 pub mod diffusion_tail;
+mod fft_butterflies;
 pub mod frontend_stages;
 pub mod installed48_activity;
 pub(crate) mod installed48_render;

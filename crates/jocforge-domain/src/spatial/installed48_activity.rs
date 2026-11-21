@@ -225,7 +225,7 @@ pub struct PrimaryInstalled48ActivityProducer {
     physical_host_count: usize,
     regular_source_count: usize,
     drain_policy: ActivityDrainPolicy,
-    activity_window: Box<[FiniteF32]>,
+    activity_window: &'static [FiniteF32],
     membership: PrefixMembershipProducer,
 }
 
@@ -458,7 +458,7 @@ impl PrimaryInstalled48ActivityProducer {
             source_map,
             &before.regular_history,
             &frame,
-            &self.activity_window,
+            self.activity_window,
         )?;
         let membership_route = source_map
             .produce_primary_prefix_route(&quiet_regular_rows, &self.membership)

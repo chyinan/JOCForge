@@ -21,6 +21,7 @@ use crate::codec::db_selector::{DbSelectorError, db_selector_from_means};
 use crate::codec::policy_parameters::{PolicyParameters, PolicyProfile};
 use crate::meter::prepared_job_identity::PreparedJobInputIdentity;
 use crate::timeline::{CodecSourceIndex, FrontendCallbackIndex, source_for_callback};
+use crate::transaction::CanonicalStateBytes;
 use crate::transaction::{
     AttemptId, CallbackTransactionId, GtcOwnerId, GtcOwnerReceipt, GtcOwnerReceiptError,
     GtcOwnerStateSnapshot, SourceTransaction, SourceTransactionStageError,
@@ -41,7 +42,7 @@ use crate::transform::window_fold::{F08WindowFoldError, f08_window_fold_block};
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 use std::collections::BTreeMap;
-use std::sync::Arc;
+use std::sync::{Arc, LazyLock, OnceLock};
 
 const EXTERNAL_AUDIO_LANES: usize = 6;
 const TRANSFORM_HISTORY_WORDS_PER_LANE: usize = 128;
@@ -81,7 +82,7 @@ pub enum AnalysisOwnerGtcReceiptError {
 pub struct AnalysisOwnerStateReference<'a> {
     root: &'a AnalysisOwnerRoot,
     generation: u64,
-    canonical_bytes: Vec<u8>,
+    canonical_bytes: &'a CanonicalStateBytes,
     state_sha256: [u8; 32],
     cold_sha256: [u8; 32],
 }
@@ -104,7 +105,7 @@ impl AnalysisOwnerStateReference<'_> {
     }
 
     pub fn canonical_bytes(&self) -> &[u8] {
-        &self.canonical_bytes
+        self.canonical_bytes.bytes()
     }
 
     pub const fn state_sha256(&self) -> &[u8; 32] {
@@ -119,12 +120,8 @@ impl AnalysisOwnerStateReference<'_> {
     ///
     /// The returned snapshot borrows these canonical bytes; it is not a parent commit token.
     pub fn gtc_snapshot(&self) -> Result<GtcOwnerStateSnapshot<'_>, GtcOwnerReceiptError> {
-        GtcOwnerStateSnapshot::from_canonical_bytes(
-            GtcOwnerId::Analysis,
-            self.generation,
-            self.cold_sha256,
-            &self.canonical_bytes,
-        )
+        self.canonical_bytes
+            .snapshot(GtcOwnerId::Analysis, self.generation, self.cold_sha256)
     }
 }
 
@@ -133,8 +130,9 @@ impl AnalysisOwnerStateReference<'_> {
 /// This root has no source lifecycle, commit, failure, EOF, previous-short, metadata,
 /// codec, DRC, payload, or publication state. The GTC parent supplies source identities
 /// and remains the sole owner of commit/discard authority.
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug)]
 pub struct AnalysisOwnerRoot {
+    canonical: OnceLock<Result<CanonicalStateBytes, AnalysisOwnerStateReferenceError>>,
     prepared_job_input_identity: Option<Arc<PreparedJobInputIdentity>>,
     input_history_generation: u64,
     input_histories: [InputHistory; EXTERNAL_AUDIO_LANES],
@@ -151,6 +149,29 @@ pub struct AnalysisOwnerRoot {
     db_per_bit_selector_u16: u16,
     db_per_bit_completed_blocks_u64: u64,
 }
+
+// Memoization is not part of the audio history.
+impl PartialEq for AnalysisOwnerRoot {
+    fn eq(&self, other: &Self) -> bool {
+        self.prepared_job_input_identity == other.prepared_job_input_identity
+            && self.input_history_generation == other.input_history_generation
+            && self.input_histories == other.input_histories
+            && self.transient_generation == other.transient_generation
+            && self.transient_states == other.transient_states
+            && self.transform_generation == other.transform_generation
+            && self.primary_fbw_history_u32_words == other.primary_fbw_history_u32_words
+            && self.companion_fbw_history_u32_words == other.companion_fbw_history_u32_words
+            && self.primary_lfe_history_u32_words == other.primary_lfe_history_u32_words
+            && self.companion_lfe_history_u32_words == other.companion_lfe_history_u32_words
+            && self.policy_generation == other.policy_generation
+            && self.gain_range_previous_peak_f32_bits_u32
+                == other.gain_range_previous_peak_f32_bits_u32
+            && self.gain_range_completed_blocks_u64 == other.gain_range_completed_blocks_u64
+            && self.db_per_bit_selector_u16 == other.db_per_bit_selector_u16
+            && self.db_per_bit_completed_blocks_u64 == other.db_per_bit_completed_blocks_u64
+    }
+}
+impl Eq for AnalysisOwnerRoot {}
 
 impl AnalysisOwnerRoot {
     /// Creates the exact cold analysis root: all generations and state words are zero.
@@ -176,6 +197,7 @@ impl AnalysisOwnerRoot {
         prepared_job_input_identity: Option<Arc<PreparedJobInputIdentity>>,
     ) -> Self {
         Self {
+            canonical: OnceLock::new(),
             prepared_job_input_identity,
             input_history_generation: 0,
             input_histories: std::array::from_fn(|_| InputHistory::cold()),
@@ -271,13 +293,20 @@ impl AnalysisOwnerRoot {
     pub fn state_reference(
         &self,
     ) -> Result<AnalysisOwnerStateReference<'_>, AnalysisOwnerStateReferenceError> {
+        static COLD: LazyLock<Result<[u8; 32], AnalysisOwnerStateReferenceError>> =
+            LazyLock::new(|| {
+                Ok(Sha256::digest(AnalysisOwnerRoot::cold().canonical_state_bytes()?).into())
+            });
         let generation = self
             .common_generation()
             .ok_or(AnalysisOwnerStateReferenceError::IncompleteRoot)?;
-        let canonical_bytes = self.canonical_state_bytes()?;
-        let state_sha256 = Sha256::digest(&canonical_bytes).into();
-        let cold_bytes = Self::cold().canonical_state_bytes()?;
-        let cold_sha256 = Sha256::digest(&cold_bytes).into();
+        let canonical_bytes = self
+            .canonical
+            .get_or_init(|| self.canonical_state_bytes().map(CanonicalStateBytes::new))
+            .as_ref()
+            .map_err(|e| *e)?;
+        let state_sha256 = canonical_bytes.digest();
+        let cold_sha256 = (*COLD)?;
         Ok(AnalysisOwnerStateReference {
             root: self,
             generation,
@@ -490,6 +519,7 @@ impl AnalysisOwnerRoot {
 
     fn staged_copy(&self) -> Self {
         Self {
+            canonical: OnceLock::new(),
             prepared_job_input_identity: self.prepared_job_input_identity.clone(),
             input_history_generation: self.input_history_generation,
             input_histories: std::array::from_fn(|lane| self.input_histories[lane].staged_copy()),

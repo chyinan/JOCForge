@@ -284,19 +284,21 @@ pub fn stage_seven_carrier_windows(
         vec![[0; QMF_ANALYSIS_SPECTRUM_WORDS]; WINDOW_SLOT_COUNT].into_boxed_slice()
     });
 
-    for carrier in 0..CARRIER_COUNT {
+    let analyzed = crate::dsp_workers::map_rows(CARRIER_COUNT, |carrier| {
         let source_samples = rows[carrier]
             .iter()
             .map(|word| f32::from_bits(*word))
             .collect::<Vec<_>>();
-        let analyzed = analyze_qmf_row(
+        analyze_qmf_row(
             &source_samples,
             &before.analysis_history_by_carrier[carrier],
             functional_provider,
             fft_provider,
         )
-        .map_err(SevenCarrierWindowError::QmfAnalysis)?;
-        let (current_slots, history_after) = analyzed.into_parts();
+        .map_err(SevenCarrierWindowError::QmfAnalysis)
+    })?;
+    for (carrier, row) in analyzed.into_iter().enumerate() {
+        let (current_slots, history_after) = row.into_parts();
         windows_by_carrier[carrier][..QMF_ANALYSIS_SLOTS_PER_SOURCE]
             .copy_from_slice(&before.previous_slots_by_carrier[carrier][..]);
         windows_by_carrier[carrier][QMF_ANALYSIS_SLOTS_PER_SOURCE..]

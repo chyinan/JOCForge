@@ -257,115 +257,133 @@ pub(crate) fn stage_source_frame<'pcm>(
             None
         };
 
-    let drc_source =
-        prepare_drc_source_from_analysis(prepared, drc_before, &analysis_stage, &callback_identity)
-            .map_err(|error| format!("F06ND/F06NR source stage: {error}"))?;
-    let flat7x_d0_bsi_inputs = if flat7x_source_pcm_projection.is_some() {
-        let shared_analysis = analysis_stage.shared_analysis().ok_or_else(|| {
-            SourceFrameStageError::Pipeline(
-                "Flat7x D0 BSI binding requires same-source shared analysis".to_owned(),
-            )
-        })?;
-        Some(
-            bind_flat7x_d0_bsi_source_inputs(
-                prepared,
-                shared_analysis,
-                drc_source.after_root(),
-                Flat7xI0D0TargetPlan::for_d0_rate(joc_profile.codec_rate())
-                    .ok_or_else(|| "unsupported Flat7x rate".to_owned())?,
-            )
-            .map_err(|error| {
-                SourceFrameStageError::Pipeline(format!(
-                    "Flat7x same-source D0 BSI controls: {error:?}"
-                ))
-            })?,
+    let make_dynamics = || {
+        let drc_source = prepare_drc_source_from_analysis(
+            prepared,
+            drc_before,
+            &analysis_stage,
+            &callback_identity,
         )
-    } else {
-        None
-    };
-    let flat7x_d0_source_generation_receipt =
-        if let Some(projection) = flat7x_source_pcm_projection.as_ref() {
+        .map_err(|error| format!("F06ND/F06NR source stage: {error}"))?;
+        let flat7x_d0_bsi_inputs = if flat7x_source_pcm_projection.is_some() {
+            let shared_analysis = analysis_stage.shared_analysis().ok_or_else(|| {
+                SourceFrameStageError::Pipeline(
+                    "Flat7x D0 BSI binding requires same-source shared analysis".to_owned(),
+                )
+            })?;
             Some(
-                codec_before
-                    .issue_flat7x_d0_source_generation_receipt(
-                        source_transaction_id.clone(),
-                        callback_identity.clone(),
-                        projection.role_map_receipt().shared_analysis_identity(),
-                    )
-                    .map_err(|error| format!("Flat7x source-generation receipt: {error:?}"))?,
+                bind_flat7x_d0_bsi_source_inputs(
+                    prepared,
+                    shared_analysis,
+                    drc_source.after_root(),
+                    Flat7xI0D0TargetPlan::for_d0_rate(joc_profile.codec_rate())
+                        .ok_or_else(|| "unsupported Flat7x rate".to_owned())?,
+                )
+                .map_err(|error| {
+                    SourceFrameStageError::Pipeline(format!(
+                        "Flat7x same-source D0 BSI controls: {error:?}"
+                    ))
+                })?,
             )
         } else {
             None
         };
-    let flat7x_seven_carrier_fit_candidate = if let Some(source_projection) =
-        flat7x_source_pcm_projection.as_ref()
-    {
-        let qmf_before = joc_before
-            .fit()
-            .seven_carrier_qmf_state()
-            .cloned()
-            .unwrap_or_else(SevenCarrierQmfState::cold);
-        let carrier_windows = stage_flat7x_seven_carrier_windows(
-            source_projection,
-            &qmf_before,
-            main_providers.spatial_audio().qmf_receiver_functional(),
-            main_providers.spatial_audio().qmf_mathematical_fft(),
-        )
-        .map_err(|error| {
-            SourceFrameStageError::Pipeline(format!("Flat7x seven-carrier QMF windows: {error:?}"))
-        })?;
-        let target_projection = spatial_callback.joc_qmf_projection().ok_or_else(|| {
-            SourceFrameStageError::Pipeline(
-                "Flat7x seven-carrier fit requires a ready spatial target projection".to_owned(),
-            )
-        })?;
-        Some(
-            stage_flat7x_seven_carrier_coefficient_fit(
-                joc_profile,
-                joc_before.fit(),
-                target_projection,
-                &carrier_windows,
-                main_providers.spatial_audio().qmf_receiver_functional(),
-                admitted_plan.source_providers().fit_score(),
-            )
-            .map_err(|error| {
-                SourceFrameStageError::Pipeline(format!(
-                    "Flat7x seven-carrier coefficient fit: {error:?}"
-                ))
-            })?,
-        )
-    } else {
-        None
+        Ok::<_, SourceFrameStageError>((drc_source, flat7x_d0_bsi_inputs))
     };
-    let metadata_input = MainMetadataBodiesInput {
-        prepared,
-        joc_profile,
-        spatial_callback,
-        joc_before,
-        source_transaction_id: source_transaction_id.clone(),
-        qmf_functional: main_providers.spatial_audio().qmf_receiver_functional(),
-        fit_score: admitted_plan.source_providers().fit_score(),
-        retry: admitted_plan.source_providers().representation_retry(),
-    };
-    let metadata_bodies = if let Some(fit_candidate) = flat7x_seven_carrier_fit_candidate {
-        let source_generation_receipt =
-            flat7x_d0_source_generation_receipt
+    let make_metadata = || {
+        let flat7x_d0_source_generation_receipt =
+            if let Some(projection) = flat7x_source_pcm_projection.as_ref() {
+                Some(
+                    codec_before
+                        .issue_flat7x_d0_source_generation_receipt(
+                            source_transaction_id.clone(),
+                            callback_identity.clone(),
+                            projection.role_map_receipt().shared_analysis_identity(),
+                        )
+                        .map_err(|error| format!("Flat7x source-generation receipt: {error:?}"))?,
+                )
+            } else {
+                None
+            };
+        let flat7x_seven_carrier_fit_candidate =
+            if let Some(source_projection) = flat7x_source_pcm_projection.as_ref() {
+                let qmf_before = joc_before
+                    .fit()
+                    .seven_carrier_qmf_state()
+                    .cloned()
+                    .unwrap_or_else(SevenCarrierQmfState::cold);
+                let carrier_windows = stage_flat7x_seven_carrier_windows(
+                    source_projection,
+                    &qmf_before,
+                    main_providers.spatial_audio().qmf_receiver_functional(),
+                    main_providers.spatial_audio().qmf_mathematical_fft(),
+                )
+                .map_err(|error| {
+                    SourceFrameStageError::Pipeline(format!(
+                        "Flat7x seven-carrier QMF windows: {error:?}"
+                    ))
+                })?;
+                let target_projection = spatial_callback.joc_qmf_projection().ok_or_else(|| {
+                    SourceFrameStageError::Pipeline(
+                        "Flat7x seven-carrier fit requires a ready spatial target projection"
+                            .to_owned(),
+                    )
+                })?;
+                Some(
+                    stage_flat7x_seven_carrier_coefficient_fit(
+                        joc_profile,
+                        joc_before.fit(),
+                        target_projection,
+                        &carrier_windows,
+                        main_providers.spatial_audio().qmf_receiver_functional(),
+                        admitted_plan.source_providers().fit_score(),
+                    )
+                    .map_err(|error| {
+                        SourceFrameStageError::Pipeline(format!(
+                            "Flat7x seven-carrier coefficient fit: {error:?}"
+                        ))
+                    })?,
+                )
+            } else {
+                None
+            };
+        let metadata_input = MainMetadataBodiesInput {
+            prepared,
+            joc_profile,
+            spatial_callback,
+            joc_before,
+            source_transaction_id: source_transaction_id.clone(),
+            qmf_functional: main_providers.spatial_audio().qmf_receiver_functional(),
+            fit_score: admitted_plan.source_providers().fit_score(),
+            retry: admitted_plan.source_providers().representation_retry(),
+        };
+        let metadata_bodies = if let Some(fit_candidate) = flat7x_seven_carrier_fit_candidate {
+            let source_generation_receipt = flat7x_d0_source_generation_receipt
                 .as_ref()
                 .ok_or_else(|| {
                     SourceFrameStageError::Pipeline(
                         "Flat7x source-generation receipt is required for the C=7 fit".to_owned(),
                     )
                 })?;
-        prepare_main_metadata_bodies_for_callback_with_seven_carrier_fit(
-            metadata_input,
-            main_callback_transaction.clone(),
-            fit_candidate,
-            source_generation_receipt,
-        )
-    } else {
-        prepare_main_metadata_bodies_for_callback(metadata_input, main_callback_transaction.clone())
-    }
-    .map_err(|error| format!("F05/F13 body stage: {error:?}"))?;
+            prepare_main_metadata_bodies_for_callback_with_seven_carrier_fit(
+                metadata_input,
+                main_callback_transaction.clone(),
+                fit_candidate,
+                source_generation_receipt,
+            )
+        } else {
+            prepare_main_metadata_bodies_for_callback(
+                metadata_input,
+                main_callback_transaction.clone(),
+            )
+        }
+        .map_err(|error| format!("F05/F13 body stage: {error:?}"))?;
+        Ok::<_, SourceFrameStageError>((metadata_bodies, flat7x_d0_source_generation_receipt))
+    };
+    // Both read this frame's analysis, but the programme DRC and object metadata have independent histories.
+    let (dynamics, metadata) = jocforge_application::join_dsp_tasks(make_dynamics, make_metadata);
+    let (drc_source, flat7x_d0_bsi_inputs) = dynamics?;
+    let (metadata_bodies, flat7x_d0_source_generation_receipt) = metadata?;
     let metadata_candidate = stage_main_metadata_source(
         metadata_before,
         metadata_bodies,
@@ -475,7 +493,8 @@ pub(crate) fn stage_source_frame<'pcm>(
                     "Flat7x D0 block-two source receipt: {error:?}"
                 ))
             })?;
-            let d0_frame_candidate = produce_flat7x_pair_d0_pcm_frame_candidate(
+            let make_dependent = || {
+                produce_flat7x_pair_d0_pcm_frame_candidate(
                 &binding,
                 Flat7xD0PcmFrameSettings {
                     source_extent: binding.source_extent(),
@@ -502,7 +521,105 @@ pub(crate) fn stage_source_frame<'pcm>(
                     "Flat7x D0 PCM frame candidate ({}, {FLAT7X_D0_OPTIONAL_FRAME_FIELDS_POLICY_ID}): {error:?}",
                     jocforge_application::codec_source_bridge::FLAT7X_D0_BSI_SOURCE_POLICY_ID,
                 ))
-            })?;
+            })
+            };
+            let make_core = || {
+                let i0_budget = I0AudioBlockSeriesBudget::new(20_480);
+                // The 5.1 search can skip the entire interval between its seed and its
+                // first midpoint. Try each coarse SNR offset against the smaller I0 frame.
+                let selected_core_q = frame_candidate.frame().q();
+                let mut q_candidates = frame_candidate
+                    .attempted_qs()
+                    .iter()
+                    .copied()
+                    .filter(|q| *q <= selected_core_q)
+                    .collect::<Vec<_>>();
+                q_candidates.extend((16..=selected_core_q).step_by(16));
+                q_candidates.sort_unstable_by(|left, right| right.cmp(left));
+                q_candidates.dedup();
+                let all_q_candidates = q_candidates.clone();
+                let mut rejected_q = Vec::new();
+                let mut selected_i0_frame = None;
+                let mut template = flat7x_i0_audio_block_policy_v1(
+                    I0BapCandidateQ::new(0).expect("zero is an I0 SNR code"),
+                )
+                .ok_or_else(|| {
+                    SourceFrameStageError::Pipeline(
+                        "Flat7x I0 local block policy could not be constructed".to_owned(),
+                    )
+                })?;
+                for (block, code) in template
+                    .blocks
+                    .iter_mut()
+                    .zip(d0_bsi_inputs.dynamic_range_codes())
+                {
+                    block.dynamic_range_code = code;
+                }
+                let budget_probe = I0AudioBlockBudgetProbe::prepare(
+                    frame_candidate.numeric_plan_receipt(),
+                    template,
+                    i0_budget,
+                );
+                for q_value in q_candidates {
+                    let Some(candidate_q) = I0BapCandidateQ::new(q_value) else {
+                        continue;
+                    };
+                    if budget_probe
+                        .as_ref()
+                        .is_some_and(|probe| probe.exceeds_budget(candidate_q))
+                    {
+                        rejected_q.push(q_value);
+                        continue;
+                    }
+                    let mut i0_policy = template;
+                    for block in &mut i0_policy.blocks {
+                        block.candidate_q = candidate_q;
+                    }
+                    let candidate = match assemble_flat7x_i0_frame_candidate_from_binding(
+                        &binding,
+                        frame_candidate.numeric_plan_receipt(),
+                        expected_source_generation_receipt,
+                        i0_policy,
+                        i0_budget,
+                        I0AuxDataInput::PadToFrame,
+                        CallerOwnedI0CrcrsvSeed { value: false },
+                    ) {
+                        Ok(candidate) => candidate,
+                        Err(Flat7xPairSourceError::I0AudioBlockSeries(
+                            Flat7xI0AudioBlockSeriesError::AudioBlockBudgetExceeded { .. },
+                        )) => {
+                            rejected_q.push(q_value);
+                            continue;
+                        }
+                        Err(Flat7xPairSourceError::I0FrameAssembly(
+                            Flat7xI0FrameAssemblyError::FrameSpanMismatch {
+                                actual_bits,
+                                required_bits,
+                            },
+                        )) if actual_bits > required_bits => {
+                            rejected_q.push(q_value);
+                            continue;
+                        }
+                        Err(error) => {
+                            return Err(SourceFrameStageError::Pipeline(format!(
+                            "Flat7x I0 frame candidate q={q_value} ({}): {error:?}",
+                            jocforge_application::flat7x_pair_source::FLAT7X_I0_AUDIO_BLOCK_POLICY_ID,
+                        )));
+                        }
+                    };
+                    selected_i0_frame = Some((q_value, candidate));
+                    break;
+                }
+                let Some((_selected_i0_q, i0_frame)) = selected_i0_frame else {
+                    return Err(SourceFrameStageError::Pipeline(format!(
+                        "Flat7x I0 bitrate-fit search found no candidate; attempted_qs={all_q_candidates:?} rejected_qs={rejected_q:?}"
+                    )));
+                };
+                Ok::<_, SourceFrameStageError>(i0_frame)
+            };
+            // The AC-3 core and dependent frame read the same validated binding. Their bytes are still published I0 first.
+            let (dependent, core) = jocforge_application::join_dsp_tasks(make_dependent, make_core);
+            let d0_frame_candidate = dependent?;
             let assembly = d0_frame_candidate
                 .frame_candidate()
                 .frame()
@@ -563,97 +680,7 @@ pub(crate) fn stage_source_frame<'pcm>(
                 crc2_start_bit: crc2.start_bit(),
                 crc2_end_bit: crc2.end_bit(),
             });
-            let i0_budget = I0AudioBlockSeriesBudget::new(20_480);
-            // The 5.1 search can skip the entire interval between its seed and its
-            // first midpoint. Try each coarse SNR offset against the smaller I0 frame.
-            let selected_core_q = frame_candidate.frame().q();
-            let mut q_candidates = frame_candidate
-                .attempted_qs()
-                .iter()
-                .copied()
-                .filter(|q| *q <= selected_core_q)
-                .collect::<Vec<_>>();
-            q_candidates.extend((16..=selected_core_q).step_by(16));
-            q_candidates.sort_unstable_by(|left, right| right.cmp(left));
-            q_candidates.dedup();
-            let all_q_candidates = q_candidates.clone();
-            let mut rejected_q = Vec::new();
-            let mut selected_i0_frame = None;
-            let mut template = flat7x_i0_audio_block_policy_v1(
-                I0BapCandidateQ::new(0).expect("zero is an I0 SNR code"),
-            )
-            .ok_or_else(|| {
-                SourceFrameStageError::Pipeline(
-                    "Flat7x I0 local block policy could not be constructed".to_owned(),
-                )
-            })?;
-            for (block, code) in template
-                .blocks
-                .iter_mut()
-                .zip(d0_bsi_inputs.dynamic_range_codes())
-            {
-                block.dynamic_range_code = code;
-            }
-            let budget_probe = I0AudioBlockBudgetProbe::prepare(
-                frame_candidate.numeric_plan_receipt(),
-                template,
-                i0_budget,
-            );
-            for q_value in q_candidates {
-                let Some(candidate_q) = I0BapCandidateQ::new(q_value) else {
-                    continue;
-                };
-                if budget_probe
-                    .as_ref()
-                    .is_some_and(|probe| probe.exceeds_budget(candidate_q))
-                {
-                    rejected_q.push(q_value);
-                    continue;
-                }
-                let mut i0_policy = template;
-                for block in &mut i0_policy.blocks {
-                    block.candidate_q = candidate_q;
-                }
-                let candidate = match assemble_flat7x_i0_frame_candidate_from_binding(
-                    &binding,
-                    frame_candidate.numeric_plan_receipt(),
-                    expected_source_generation_receipt,
-                    i0_policy,
-                    i0_budget,
-                    I0AuxDataInput::PadToFrame,
-                    CallerOwnedI0CrcrsvSeed { value: false },
-                ) {
-                    Ok(candidate) => candidate,
-                    Err(Flat7xPairSourceError::I0AudioBlockSeries(
-                        Flat7xI0AudioBlockSeriesError::AudioBlockBudgetExceeded { .. },
-                    )) => {
-                        rejected_q.push(q_value);
-                        continue;
-                    }
-                    Err(Flat7xPairSourceError::I0FrameAssembly(
-                        Flat7xI0FrameAssemblyError::FrameSpanMismatch {
-                            actual_bits,
-                            required_bits,
-                        },
-                    )) if actual_bits > required_bits => {
-                        rejected_q.push(q_value);
-                        continue;
-                    }
-                    Err(error) => {
-                        return Err(SourceFrameStageError::Pipeline(format!(
-                            "Flat7x I0 frame candidate q={q_value} ({}): {error:?}",
-                            jocforge_application::flat7x_pair_source::FLAT7X_I0_AUDIO_BLOCK_POLICY_ID,
-                        )));
-                    }
-                };
-                selected_i0_frame = Some((q_value, candidate));
-                break;
-            }
-            let Some((_selected_i0_q, i0_frame)) = selected_i0_frame else {
-                return Err(SourceFrameStageError::Pipeline(format!(
-                    "Flat7x I0 bitrate-fit search found no candidate; attempted_qs={all_q_candidates:?} rejected_qs={rejected_q:?}"
-                )));
-            };
+            let i0_frame = core?;
             let f12_pair = stage_flat7x_pair_f12_integrity(Flat7xPairF12StageInput {
                 integrity_before,
                 i0_frame: &i0_frame,

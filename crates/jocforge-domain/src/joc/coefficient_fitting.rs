@@ -922,20 +922,7 @@ fn fit_independent_cells<const C: usize>(
     + Sync,
 ) -> Result<Vec<CoefficientFitResult<C>>, CoefficientFittingError> {
     use rayon::prelude::*;
-    // Concurrent programmes share the same bound on DSP workers.
-    static WORKERS: std::sync::LazyLock<Option<rayon::ThreadPool>> =
-        std::sync::LazyLock::new(|| {
-            let count = std::thread::available_parallelism().map_or(1, |n| n.get().min(4));
-            if count < 2 {
-                return None;
-            }
-            rayon::ThreadPoolBuilder::new()
-                .num_threads(count)
-                .thread_name(|i| format!("joc-fit-{i}"))
-                .build()
-                .ok()
-        });
-    let Some(pool) = &*WORKERS else {
+    let Some(pool) = crate::dsp_workers::pool() else {
         return equations
             .iter()
             .map(search)

@@ -12,6 +12,7 @@ test-support = []
 workspace = true
 
 [dependencies]
+multiversion = "=0.8.1"
 rayon = "=1.11.0"
 serde = { version = "=1.0.229", features = ["derive"] }
 num-bigint = { version = "=0.4.6", default-features = false, features = ["std"] }

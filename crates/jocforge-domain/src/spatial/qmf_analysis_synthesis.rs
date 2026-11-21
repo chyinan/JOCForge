@@ -236,7 +236,9 @@ pub(crate) fn analyze_qmf_row(
     if source_samples.len() != QMF_ANALYSIS_SAMPLES_PER_SOURCE {
         return Err(QmfAnalysisSynthesisError::InvalidInput);
     }
-    let mut history = QmfAnalysisHistory::from_words(*history_before.rows())?;
+    let mut history = QmfAnalysisHistory {
+        rows: *history_before.rows(),
+    };
     let mut spectrum_by_slot = [[0_u32; SPECTRUM_WORD_COUNT]; QMF_ANALYSIS_SLOTS_PER_SOURCE];
     for slot in 0..QMF_ANALYSIS_SLOTS_PER_SOURCE {
         let slot_samples = std::array::from_fn(|sample| {
@@ -244,7 +246,7 @@ pub(crate) fn analyze_qmf_row(
         });
         let result = analyze_qmf_slot(&slot_samples, &history, functional_provider, fft_provider)?;
         spectrum_by_slot[slot] = *result.spectrum_words();
-        history = QmfAnalysisHistory::from_words(*result.history_after().rows())?;
+        history = result.history_after;
     }
     Ok(QmfAnalysisRowResult {
         spectrum_by_slot: Box::new(spectrum_by_slot),
@@ -258,90 +260,43 @@ fn analyze_qmf_slot_trace(
     functional_provider: &QmfReceiverFunctionalProvider,
     fft_provider: &QmfMathematicalFftProvider,
 ) -> Result<AnalysisTrace, QmfAnalysisSynthesisError> {
-    let mut samples = [positive_zero(); ANALYSIS_SAMPLE_COUNT];
-    for (index, sample) in current_samples.iter().copied().enumerate() {
-        samples[index] = finite_input(sample)?;
+    if current_samples.iter().any(|sample| !sample.is_finite()) {
+        return Err(QmfAnalysisSynthesisError::InvalidInput);
     }
-
     let mut fold128 = [0_u32; SPECTRUM_WORD_COUNT];
-    let qwin_synthesis = functional_provider.qwin_synthesis_words();
+    let window = functional_provider.qwin_synthesis_words();
     for k in 0..ANALYSIS_SAMPLE_COUNT {
-        let h6 = finite_word(history_before.rows[6][k])?;
-        let h8 = finite_word(history_before.rows[8][k])?;
-        let h4 = finite_word(history_before.rows[4][k])?;
-        let h2 = finite_word(history_before.rows[2][k])?;
-        let h0 = finite_word(history_before.rows[0][k])?;
-        let h5 = finite_word(history_before.rows[5][k])?;
-        let h7 = finite_word(history_before.rows[7][k])?;
-        let h3 = finite_word(history_before.rows[3][k])?;
-        let h1 = finite_word(history_before.rows[1][k])?;
-        let x = samples[k];
-
-        let p128 = analysis_prototype_word(qwin_synthesis, 128 + k)?;
-        let p0 = analysis_prototype_word(qwin_synthesis, k)?;
-        let mut even = r32_add(r32_mul(h6, p128)?, r32_mul(h8, p0)?)?;
-        even = r32_add(
-            even,
-            r32_mul(h4, analysis_prototype_word(qwin_synthesis, 256 + k)?)?,
-        )?;
-        even = r32_add(
-            even,
-            r32_mul(h2, analysis_prototype_word(qwin_synthesis, 384 + k)?)?,
-        )?;
-        even = r32_add(
-            even,
-            r32_mul(h0, analysis_prototype_word(qwin_synthesis, 512 + k)?)?,
-        )?;
-
-        let mut odd = r32_add(
-            r32_mul(h5, analysis_prototype_word(qwin_synthesis, 192 + k)?)?,
-            r32_mul(h7, analysis_prototype_word(qwin_synthesis, 64 + k)?)?,
-        )?;
-        odd = r32_add(
-            odd,
-            r32_mul(h3, analysis_prototype_word(qwin_synthesis, 320 + k)?)?,
-        )?;
-        odd = r32_add(
-            odd,
-            r32_mul(h1, analysis_prototype_word(qwin_synthesis, 448 + k)?)?,
-        )?;
-        odd = r32_add(
-            odd,
-            r32_mul(x, analysis_prototype_word(qwin_synthesis, 576 + k)?)?,
-        )?;
-
+        let h = |row: usize| f32::from_bits(history_before.rows[row][k]);
+        let w = |offset: usize| f32::from_bits(window[639 - offset - k]);
+        let mut even = h(6) * w(128) + h(8) * w(0);
+        even += h(4) * w(256);
+        even += h(2) * w(384);
+        even += h(0) * w(512);
+        let mut odd = h(5) * w(192) + h(7) * w(64);
+        odd += h(3) * w(320);
+        odd += h(1) * w(448);
+        odd += current_samples[k] * w(576);
         fold128[126 - 2 * k] = odd.to_bits();
         fold128[127 - 2 * k] = even.to_bits();
     }
-
     let rotation = fft_provider.rotation_words();
     let mut rotated128 = [0_u32; SPECTRUM_WORD_COUNT];
-    for complex_index in 0..ANALYSIS_SAMPLE_COUNT {
-        let r = finite_word(fold128[complex_index * 2])?;
-        let i = finite_word(fold128[complex_index * 2 + 1])?;
-        let a = finite_word(rotation[complex_index * 2])?;
-        let b = finite_word(rotation[complex_index * 2 + 1])?;
-
-        let real = r32_sub(r32_mul(i, a)?, r32_mul(r, b)?)?;
-        let imaginary = r32_add(r32_mul(i, b)?, r32_mul(r, a)?)?;
-        rotated128[complex_index * 2] = real.to_bits();
-        rotated128[complex_index * 2 + 1] = imaginary.to_bits();
+    for ((input, output), coefficients) in fold128
+        .chunks_exact(2)
+        .zip(rotated128.chunks_exact_mut(2))
+        .zip(rotation.chunks_exact(2))
+    {
+        let (r, i) = (f32::from_bits(input[0]), f32::from_bits(input[1]));
+        let (a, b) = (
+            f32::from_bits(coefficients[0]),
+            f32::from_bits(coefficients[1]),
+        );
+        output[0] = (i * a - r * b).to_bits();
+        output[1] = (i * b + r * a).to_bits();
     }
-
     #[cfg(test)]
-    let mut fft_provider_input128 = [0_u32; SPECTRUM_WORD_COUNT];
-    let mut scaled_fft_input128 = [0.0_f32; SPECTRUM_WORD_COUNT];
-    for index in 0..SPECTRUM_WORD_COUNT {
-        let rotated = finite_word(rotated128[index])?;
-        let scaled = FiniteF32::new(rotated.value() / 64.0)
-            .map_err(|_| QmfAnalysisSynthesisError::NumericFailure)?;
-        #[cfg(test)]
-        {
-            fft_provider_input128[index] = rotated.to_bits();
-        }
-        scaled_fft_input128[index] = scaled.value();
-    }
-
+    let fft_provider_input128 = rotated128;
+    let scaled_fft_input128 = rotated128.map(|word| f32::from_bits(word) / 64.0);
     #[cfg(test)]
     let mut bitrev_scaled_fft_input128 = [0_u32; SPECTRUM_WORD_COUNT];
     #[cfg(test)]
@@ -352,14 +307,16 @@ fn analyze_qmf_slot_trace(
             scaled_fft_input128[source * 2 + 1].to_bits();
     }
 
-    let fft_input = QmfFftInput::new(&scaled_fft_input128).map_err(map_fft_error)?;
+    // Source samples, history and the immutable provider are finite. A nonfinite FFT input here can only be arithmetic overflow.
+    let fft_input = QmfFftInput::new(&scaled_fft_input128)
+        .map_err(|_| QmfAnalysisSynthesisError::NumericFailure)?;
     let fft_output = execute_qmf_fft64(&fft_input, fft_provider).map_err(map_fft_error)?;
     let fft_output128 = fft_output.interleaved().map(f32::to_bits);
     let final_reorder_output128 = analysis_reorder(&fft_output128);
 
     let mut history_after_9x64 = [[0_u32; ANALYSIS_SAMPLE_COUNT]; ANALYSIS_HISTORY_ROWS];
     for sample in 0..ANALYSIS_SAMPLE_COUNT {
-        history_after_9x64[0][sample] = samples[sample].to_bits();
+        history_after_9x64[0][sample] = current_samples[sample].to_bits();
     }
     history_after_9x64[1..].copy_from_slice(&history_before.rows[..ANALYSIS_HISTORY_ROWS - 1]);
 
@@ -600,13 +557,6 @@ fn finite_input(value: f32) -> Result<FiniteF32, QmfAnalysisSynthesisError> {
 
 fn finite_word(word: u32) -> Result<FiniteF32, QmfAnalysisSynthesisError> {
     finite_input(f32::from_bits(word))
-}
-
-fn analysis_prototype_word(
-    qwin_synthesis: &[u32; 640],
-    index: usize,
-) -> Result<FiniteF32, QmfAnalysisSynthesisError> {
-    finite_word(qwin_synthesis[639 - index])
 }
 
 fn positive_zero() -> FiniteF32 {

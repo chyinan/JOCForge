@@ -124,12 +124,6 @@ pub(super) struct CurrentFeaturesLineage {
     pub(super) fft_receipt: FeatureFft4096MathProviderReceipt,
 }
 
-#[derive(Clone, Copy)]
-struct FftComplex32 {
-    real: f32,
-    imag: f32,
-}
-
 pub(super) fn validate_source_count(source_count: usize) -> Result<(), CurrentFeaturesError> {
     let supported = u16::try_from(source_count)
         .ok()
@@ -233,23 +227,23 @@ pub(super) fn produce_current_features(
     let fast_decay = finite_provider_word(processor.fast_decay_u32())?;
     let slow_retain = finite_provider_word(processor.slow_retain_u32())?;
     let accept = r32_sub(one(), slow_retain).map_err(nonfinite)?;
-    let mut after_vector = vec![[0_u32; BAND_COUNT]; source_count];
-    let mut after_scalar = vec![0_u32; source_count];
-
-    for (source, source_id) in source_axis.source_ids().iter().copied().enumerate() {
+    // Histories advance once per source. Each FFT uses the original slot order.
+    let compute = |(source, &source_id): (usize, &CodecSourceIndex)| {
+        let mut vector = [0_u32; BAND_COUNT];
+        let scalar;
         let [processing_inactive, selection_suppressed] = source_flags.payload()[source];
         if selection_suppressed == 1 {
-            after_vector[source] = [0; BAND_COUNT];
-            after_scalar[source] = 0;
+            vector = [0; BAND_COUNT];
+            scalar = 0;
         } else if processing_inactive == 1 {
             let mut next_scalar = zero();
             for band in 0..BAND_COUNT {
                 let decayed =
                     r32_mul(before_vector[source][band], fast_decay).map_err(nonfinite)?;
-                after_vector[source][band] = decayed.to_bits();
+                vector[band] = decayed.to_bits();
                 next_scalar = r32_add(next_scalar, decayed).map_err(nonfinite)?;
             }
-            after_scalar[source] = next_scalar.to_bits();
+            scalar = next_scalar.to_bits();
         } else {
             let audio_view = post_window_audio
                 .as_ref()
@@ -280,12 +274,30 @@ pub(super) fn produce_current_features(
                         r32_mul(before_vector[source][band], slow_retain).map_err(nonfinite)?;
                     r32_add(observed_part, retained_part).map_err(nonfinite)?
                 };
-                after_vector[source][band] = next.to_bits();
+                vector[band] = next.to_bits();
                 next_scalar = r32_add(next_scalar, next).map_err(nonfinite)?;
             }
-            after_scalar[source] = next_scalar.to_bits();
+            scalar = next_scalar.to_bits();
         }
-    }
+        Ok::<_, CurrentFeaturesError>((vector, scalar))
+    };
+    let sources = source_axis.source_ids();
+    let active = source_flags
+        .payload()
+        .iter()
+        .filter(|flags| **flags == [0, 0])
+        .count();
+    let rows: Vec<_> = if let Some(workers) = crate::dsp_workers::pool().filter(|_| active >= 3) {
+        use rayon::prelude::*;
+        workers.install(|| sources.par_iter().enumerate().map(compute).collect())
+    } else {
+        sources.iter().enumerate().map(compute).collect()
+    };
+    let (after_vector, after_scalar): (Vec<_>, Vec<_>) = rows
+        .into_iter()
+        .collect::<Result<Vec<_>, _>>()?
+        .into_iter()
+        .unzip();
 
     let features = (0..BAND_COUNT)
         .map(|band| {
@@ -483,16 +495,15 @@ fn observed_features(
     let samples = audio
         .source_samples(source)
         .ok_or(CurrentFeaturesError::AudioShape)?;
-    let mut fft_values = vec![
-        FftComplex32 {
-            real: 0.0,
-            imag: 0.0
-        };
-        FFT_LENGTH
-    ];
+    // Assigned virtual sources can still carry digital silence. Squaring either
+    // sign of zero and accumulating the bands from +0 yields +0 in every band.
+    if samples.iter().all(|sample| sample.value() == 0.0) {
+        return Ok([zero(); BAND_COUNT]);
+    }
+    let mut fft_values = vec![[0.0_f32; 2]; FFT_LENGTH];
     for (index, sample) in samples.iter().enumerate() {
         let reversed = index.reverse_bits() >> (usize::BITS - FFT_LENGTH.ilog2());
-        fft_values[reversed].real = sample.value();
+        fft_values[reversed][0] = sample.value();
     }
     fft4096(&mut fft_values, fft_provider)?;
 
@@ -502,7 +513,7 @@ fn observed_features(
         .zip(&fft_values)
         .zip(processor.coefficient_u32())
     {
-        let power = value.real * value.real + value.imag * value.imag;
+        let power = value[0] * value[0] + value[1] * value[1];
         *weight = power * f32::from_bits(*coefficient);
     }
 
@@ -528,33 +539,13 @@ fn observed_features(
 }
 
 fn fft4096(
-    values: &mut [FftComplex32],
+    values: &mut [[f32; 2]],
     fft_provider: &ValidatedFeatureFft4096MathProvider,
 ) -> Result<(), CurrentFeaturesError> {
     for stage in fft_provider.stages() {
-        let roots = stage.roots_u32();
-        let half = roots.len();
-        for group in values.chunks_exact_mut(half * 2) {
-            let (upper, lower) = group.split_at_mut(half);
-            for ((a, b), root) in upper.iter_mut().zip(lower).zip(roots) {
-                let cosine = f32::from_bits(root[0]);
-                let sine = f32::from_bits(root[1]);
-                let tr = cosine * b.real - sine * b.imag;
-                let ti = cosine * b.imag + sine * b.real;
-                *b = FftComplex32 {
-                    real: a.real - tr,
-                    imag: a.imag - ti,
-                };
-                a.real += tr;
-                a.imag += ti;
-            }
-        }
+        super::fft_butterflies::apply_stage(values.as_flattened_mut(), stage.roots_u32());
     }
-    // With finite twiddles, a non-finite intermediate propagates to an output.
-    if values
-        .iter()
-        .any(|v| !v.real.is_finite() || !v.imag.is_finite())
-    {
+    if values.as_flattened().iter().any(|x| !x.is_finite()) {
         return Err(CurrentFeaturesError::NonFiniteIntermediate);
     }
     Ok(())

@@ -150,10 +150,10 @@ struct ComponentStateView<'a> {
     filter_history: &'a [RawBytes; COMPONENT_ROW_COUNT],
 }
 
-struct ValidatedComponentPayload {
-    installed48: Box<[FiniteF32]>,
-    matrix: Box<[FiniteF32]>,
-    destinations: Box<[u8]>,
+struct ValidatedComponentPayload<'a> {
+    installed48: &'a [u32],
+    matrix: &'a [u32],
+    destinations: &'a [u8],
     matrix_rows: usize,
     source_count: usize,
 }
@@ -181,7 +181,7 @@ struct FilterStage {
 
 struct ComponentFilterBlock {
     // The F04A.8 primitive vector assertions consume this callback-local diagnostic.
-    #[allow(dead_code)]
+    #[cfg(test)]
     preclip: Box<[FiniteF32]>,
     samples: Box<[FiniteF32]>,
 }
@@ -640,7 +640,7 @@ pub(crate) fn produce_component_stage(
         spatial_control_join,
         spatial_control,
         expected_phase,
-        packet,
+        &packet,
         window,
         parameters,
         None,
@@ -654,10 +654,10 @@ pub(crate) fn produce_component_stage_with_preview(
     spatial_control_join: &SpatialControlJoinMetadata,
     spatial_control: &SpatialControlMachine,
     expected_phase: ComponentCallbackPhase,
-    packet: SpatialAudioInputPacket,
+    packet: &SpatialAudioInputPacket,
     window: &ValidatedWindowQ15Provider,
     parameters: &ValidatedComponentParameterProvider,
-    mixer_preview: Box<[FiniteF32]>,
+    mixer_preview: &[FiniteF32],
 ) -> Result<ComponentStageProposal, ComponentStageError> {
     produce_component_stage_impl(
         spatial_audio,
@@ -679,10 +679,10 @@ fn produce_component_stage_impl(
     spatial_control_join: &SpatialControlJoinMetadata,
     spatial_control: &SpatialControlMachine,
     expected_phase: ComponentCallbackPhase,
-    packet: SpatialAudioInputPacket,
+    packet: &SpatialAudioInputPacket,
     window: &ValidatedWindowQ15Provider,
     parameters: &ValidatedComponentParameterProvider,
-    mixer_preview: Option<Box<[FiniteF32]>>,
+    mixer_preview: Option<&[FiniteF32]>,
 ) -> Result<ComponentStageProposal, ComponentStageError> {
     let before = &spatial_audio.committed.root;
     if before.retired {
@@ -746,19 +746,20 @@ fn produce_component_stage_impl(
         return Err(ComponentStageError::Input);
     }
 
-    let payload = validate_packet_payload(&packet)?;
+    let payload = validate_packet_payload(packet)?;
     let controller = ComponentControllerParameters::from_provider(parameters)?;
     let kernel = component_kernel_from_provider(window)?;
-    let matrix = match mixer_preview {
-        Some(matrix) => {
-            if matrix.len() != COMPONENT_ROW_COUNT * INSTALLED_SAMPLES {
-                return Err(ComponentStageError::Input);
-            }
-            matrix
+    let computed;
+    let matrix = if let Some(matrix) = mixer_preview {
+        if matrix.len() != COMPONENT_ROW_COUNT * INSTALLED_SAMPLES {
+            return Err(ComponentStageError::Input);
         }
-        None => mix_matrix(&payload)?,
+        matrix
+    } else {
+        computed = mix_matrix(&payload)?;
+        &computed
     };
-    let overlap = make_overlap(before_state.component_state, &matrix)?;
+    let overlap = make_overlap(before_state.component_state, matrix)?;
     let filtered = filter_component(
         &overlap.samples,
         before_state.parameters,
@@ -773,9 +774,9 @@ fn produce_component_stage_impl(
     )?;
 
     let receipt = ComponentStageReceipt {
-        programme_id: packet.programme_id,
+        programme_id: packet.programme_id.clone(),
         attempt: packet.attempt,
-        transaction_id: packet.transaction_id,
+        transaction_id: packet.transaction_id.clone(),
         callback_index: packet.callback_index,
         phase: packet.phase,
         source_axis: std::sync::Arc::clone(&packet.source_axis),
@@ -851,7 +852,7 @@ fn validate_raw_row(row: &RawBytes, expected_bytes: usize) -> Result<(), Compone
 
 fn validate_packet_payload(
     packet: &SpatialAudioInputPacket,
-) -> Result<ValidatedComponentPayload, ComponentStageError> {
+) -> Result<ValidatedComponentPayload<'_>, ComponentStageError> {
     let rows = usize::from(packet.matrix_rows);
     let source_count = packet.source_axis.source_count();
     validate_source_axis_count(source_count)?;
@@ -872,23 +873,17 @@ fn validate_packet_payload(
         seen_destinations[destination] = true;
     }
 
-    let installed48 = finite_values_from_bits(&packet.installed48_f32_bits)?;
-    let matrix = finite_values_from_bits(&packet.matrix_f32_bits)?;
+    let finite = |words: &[u32]| words.iter().all(|&word| f32::from_bits(word).is_finite());
+    if !finite(&packet.installed48_f32_bits) || !finite(&packet.matrix_f32_bits) {
+        return Err(ComponentStageError::Input);
+    }
     Ok(ValidatedComponentPayload {
-        installed48,
-        matrix,
-        destinations: packet.destinations.clone(),
+        installed48: &packet.installed48_f32_bits,
+        matrix: &packet.matrix_f32_bits,
+        destinations: &packet.destinations,
         matrix_rows: rows,
         source_count,
     })
-}
-
-fn finite_values_from_bits(bits: &[u32]) -> Result<Box<[FiniteF32]>, ComponentStageError> {
-    bits.iter()
-        .copied()
-        .map(|word| FiniteF32::new(f32::from_bits(word)).map_err(|_| ComponentStageError::Input))
-        .collect::<Result<Vec<_>, _>>()
-        .map(Vec::into_boxed_slice)
 }
 
 fn provider_qualification_is_scoped(provider: &ValidatedComponentParameterProvider) -> bool {
@@ -945,29 +940,33 @@ fn finite_constant(value: f32) -> Result<FiniteF32, ComponentStageError> {
 }
 
 fn mix_matrix(
-    payload: &ValidatedComponentPayload,
+    payload: &ValidatedComponentPayload<'_>,
 ) -> Result<Box<[FiniteF32]>, ComponentStageError> {
-    let zero = finite_constant(0.0)?;
-    let mut mixer = vec![zero; COMPONENT_ROW_COUNT * INSTALLED_SAMPLES].into_boxed_slice();
+    let mut mixer = vec![0.0_f32; COMPONENT_ROW_COUNT * INSTALLED_SAMPLES];
     for logical_row in 0..payload.matrix_rows {
         let destination = usize::from(payload.destinations[logical_row]);
-        for source_row in 0..payload.source_count {
-            let coefficient = payload.matrix[logical_row * payload.source_count + source_row];
-            if coefficient.value() <= 0.0 {
-                continue;
-            }
-            let source_offset = source_row * INSTALLED_SAMPLES;
-            let destination_offset = destination * INSTALLED_SAMPLES;
-            for sample in 0..INSTALLED_SAMPLES {
-                let product = r32_mul(payload.installed48[source_offset + sample], coefficient)
-                    .map_err(map_numeric_error)?;
-                let output_index = destination_offset + sample;
-                mixer[output_index] =
-                    r32_add(mixer[output_index], product).map_err(map_numeric_error)?;
+        let output =
+            &mut mixer[destination * INSTALLED_SAMPLES..(destination + 1) * INSTALLED_SAMPLES];
+        let coefficients = &payload.matrix
+            [logical_row * payload.source_count..(logical_row + 1) * payload.source_count];
+        for (source, coefficient) in payload
+            .installed48
+            .chunks_exact(INSTALLED_SAMPLES)
+            .zip(coefficients)
+        {
+            let coefficient = f32::from_bits(*coefficient);
+            if coefficient > 0.0 {
+                for (out, sample) in output.iter_mut().zip(source) {
+                    *out += f32::from_bits(*sample) * coefficient;
+                }
             }
         }
     }
-    Ok(mixer)
+    // Products and ordered additions propagate nonfinite values to the destination.
+    mixer
+        .into_iter()
+        .map(|value| FiniteF32::new(value).map_err(|_| ComponentStageError::NumericFailure))
+        .collect()
 }
 
 pub(super) fn validate_source_axis_count(source_count: usize) -> Result<(), ComponentStageError> {
@@ -1057,20 +1056,21 @@ fn update_parameters(
     if block_input.len() != COMPONENT_ROW_COUNT * BLOCK_SAMPLES {
         return Err(ComponentStageError::State);
     }
-    let mut current_peak = finite_constant(0.0)?;
-    let mut peak_witness = None;
-    for row in 0..COMPONENT_ROW_COUNT {
-        for sample in 0..BLOCK_SAMPLES {
-            let value = block_input[row * BLOCK_SAMPLES + sample];
-            let magnitude = FiniteF32::new(f32::from_bits(value.to_bits() & 0x7fff_ffff))
-                .map_err(|_| ComponentStageError::NumericFailure)?;
-            if magnitude.value() > current_peak.value() {
-                current_peak = magnitude;
-                peak_witness = Some((row, sample));
-            }
-        }
-    }
-
+    let peak_bits = block_input
+        .iter()
+        .map(|sample| sample.to_bits() & 0x7fff_ffff)
+        .max()
+        .unwrap_or(0);
+    let current_peak = FiniteF32::new(f32::from_bits(peak_bits))
+        .map_err(|_| ComponentStageError::NumericFailure)?;
+    let peak_witness = if peak_bits == 0 {
+        None
+    } else {
+        block_input
+            .iter()
+            .position(|sample| sample.to_bits() & 0x7fff_ffff == peak_bits)
+            .map(|index| (index / BLOCK_SAMPLES, index % BLOCK_SAMPLES))
+    };
     let old_peak = finite_state(old.peak)?;
     let old_envelope = finite_state(old.envelope)?;
     let scaled_peak =
@@ -1213,14 +1213,6 @@ fn max_first(left: FiniteF32, right: FiniteF32) -> FiniteF32 {
     }
 }
 
-fn min_first(left: FiniteF32, right: FiniteF32) -> FiniteF32 {
-    if right.value() < left.value() {
-        right
-    } else {
-        left
-    }
-}
-
 fn filter_component(
     source: &[FiniteF32],
     old_parameters: &ComponentFilterParameterState,
@@ -1240,14 +1232,14 @@ fn filter_component(
     let mut history = history.into_boxed_slice();
     let mut output = vec![finite_constant(0.0)?; COMPONENT_WORDS].into_boxed_slice();
     let mut parameters = copy_parameter_state(old_parameters);
+    let mut block_input = vec![finite_constant(0.0)?; COMPONENT_ROW_COUNT * BLOCK_SAMPLES];
     for block in ComponentBlockIndex::all() {
         let offset = block.sample_offset();
-        let mut block_input = vec![finite_constant(0.0)?; COMPONENT_ROW_COUNT * BLOCK_SAMPLES];
-        for row in 0..COMPONENT_ROW_COUNT {
-            for sample in 0..BLOCK_SAMPLES {
-                block_input[row * BLOCK_SAMPLES + sample] =
-                    source[row * FRAME_SAMPLES + offset + sample];
-            }
+        for (block_row, input_row) in block_input
+            .chunks_exact_mut(BLOCK_SAMPLES)
+            .zip(source.chunks_exact(FRAME_SAMPLES))
+        {
+            block_row.copy_from_slice(&input_row[offset..offset + BLOCK_SAMPLES]);
         }
         let next_parameters = update_parameters(&parameters, &block_input, controller)?.after;
         let old_output_level = finite_state(parameters.output_level)?;
@@ -1306,30 +1298,41 @@ fn filter_component_block(
     let beta = r32_mul(settings.smoothed_gain, settings.gain_scale).map_err(map_numeric_error)?;
     let two_fifty_six = finite_constant(256.0)?;
     let scale = r32_mul(two_fifty_six, settings.gain_scale).map_err(map_numeric_error)?;
-    let negative_limit =
-        FiniteF32::new(-settings.clamp_limit.value()).map_err(|_| ComponentStageError::State)?;
-    let mut preclip = vec![finite_constant(0.0)?; block_words].into_boxed_slice();
-    let mut samples = vec![finite_constant(0.0)?; block_words].into_boxed_slice();
-
-    for row in 0..COMPONENT_ROW_COUNT {
-        for sample in 0..BLOCK_SAMPLES {
-            let index = row * BLOCK_SAMPLES + sample;
-            let old_history = history[index];
-            let history_beta = r32_mul(old_history, beta).map_err(map_numeric_error)?;
-            let a = r32_mul(settings.kernel[sample], history_beta).map_err(map_numeric_error)?;
-            let history_alpha = r32_mul(old_history, alpha).map_err(map_numeric_error)?;
-            let b = r32_mul(settings.kernel[BLOCK_SAMPLES - 1 - sample], history_alpha)
-                .map_err(map_numeric_error)?;
-            let sum = r32_add(a, b).map_err(map_numeric_error)?;
-            let intermediate = r32_mul(sum, two_fifty_six).map_err(map_numeric_error)?;
-            preclip[index] = intermediate;
-            let upper_clamped = min_first(settings.clamp_limit, intermediate);
-            let clamped = max_first(negative_limit, upper_clamped);
-            samples[index] = r32_mul(clamped, scale).map_err(map_numeric_error)?;
-            history[index] = source[index];
+    let limit = settings.clamp_limit.value();
+    let mut raw = vec![0.0_f32; block_words];
+    for (row, previous) in raw
+        .chunks_exact_mut(BLOCK_SAMPLES)
+        .zip(history.chunks_exact(BLOCK_SAMPLES))
+    {
+        for (i, (out, h)) in row.iter_mut().zip(previous).enumerate() {
+            let a = settings.kernel[i].value() * (h.value() * beta.value());
+            let b = settings.kernel[BLOCK_SAMPLES - 1 - i].value() * (h.value() * alpha.value());
+            *out = (a + b) * two_fifty_six.value();
         }
     }
-    Ok(ComponentFilterBlock { preclip, samples })
+    // Overflow is sticky through the sum above; check it before the clamp can hide it.
+    if raw.iter().any(|v| !v.is_finite()) {
+        return Err(ComponentStageError::NumericFailure);
+    }
+    #[cfg(test)]
+    let preclip = raw
+        .iter()
+        .map(|&v| finite_constant(v))
+        .collect::<Result<_, _>>()?;
+    let samples = raw
+        .into_iter()
+        .map(|v| {
+            let upper = if v < limit { v } else { limit };
+            let clamped = if upper > -limit { upper } else { -limit };
+            finite_constant(clamped * scale.value())
+        })
+        .collect::<Result<_, _>>()?;
+    history.copy_from_slice(source);
+    Ok(ComponentFilterBlock {
+        #[cfg(test)]
+        preclip,
+        samples,
+    })
 }
 
 fn copy_parameter_state(state: &ComponentFilterParameterState) -> ComponentFilterParameterState {

@@ -341,28 +341,21 @@ fn assert_rows_equal(actual: &[FiniteF32], expected: &Value, row_width: usize) {
     assert_eq!(row_probes(actual, row_width), expected_probes);
 }
 
-fn validated_payload(
-    installed48_bits: Vec<u32>,
+fn mix_payload(
+    installed48: &[u32],
     matrix_rows: usize,
     source_count: usize,
-    matrix_bits: Vec<u32>,
-    destinations: Vec<u8>,
-) -> ValidatedComponentPayload {
-    ValidatedComponentPayload {
-        installed48: installed48_bits
-            .into_iter()
-            .map(finite_from_bits)
-            .collect::<Vec<_>>()
-            .into_boxed_slice(),
-        matrix: matrix_bits
-            .into_iter()
-            .map(finite_from_bits)
-            .collect::<Vec<_>>()
-            .into_boxed_slice(),
-        destinations: destinations.into_boxed_slice(),
+    matrix: &[u32],
+    destinations: &[u8],
+) -> Box<[FiniteF32]> {
+    mix_matrix(&ValidatedComponentPayload {
+        installed48,
+        matrix,
+        destinations,
         matrix_rows,
         source_count,
-    }
+    })
+    .unwrap()
 }
 
 #[test]
@@ -388,14 +381,7 @@ fn matrix_stage_replays_u_front_matrix_case() {
         .map(|value| u8::try_from(value.as_u64().unwrap()).unwrap())
         .collect::<Vec<_>>();
 
-    let output = mix_matrix(&validated_payload(
-        installed48,
-        15,
-        SOURCE_ROW_COUNT,
-        matrix,
-        destinations,
-    ))
-    .unwrap();
+    let output = mix_payload(&installed48, 15, SOURCE_ROW_COUNT, &matrix, &destinations);
     assert_eq!(output.len(), COMPONENT_ROW_COUNT * INSTALLED_SAMPLES);
     assert_eq!(
         row_hashes(&output, INSTALLED_SAMPLES),
@@ -1060,14 +1046,13 @@ fn whole_chain_component_projection_replays_two_normal_and_four_drain_callbacks(
             digest_u32_words(&matrix_bits),
             case["input"]["matrix_u32le_sha256"].as_str().unwrap()
         );
-        let payload = validated_payload(
-            installed48,
+        let mixer = mix_payload(
+            &installed48,
             COMPONENT_ROW_COUNT,
             SOURCE_ROW_COUNT,
-            matrix_bits,
-            destinations,
+            &matrix_bits,
+            &destinations,
         );
-        let mixer = mix_matrix(&payload).unwrap();
         assert_eq!(
             digest_words(&mixer),
             case["expected"]["matrix15x3072_f32le_sha256"]
@@ -1763,14 +1748,13 @@ fn component_mixer_uses_only_the_ordered_46_source_axis_rows() {
     assert_eq!(target_source_matrix[3 * 46..4 * 46], matrix);
 
     let installed48 = installed_rows.clone();
-    let mixed = mix_matrix(&validated_payload(
-        installed_rows,
+    let mixed = mix_payload(
+        &installed_rows,
         1,
         source_axis.source_count(),
-        matrix,
-        vec![3],
-    ))
-    .unwrap();
+        &matrix,
+        &[3],
+    );
     assert_eq!(mixed.len(), COMPONENT_ROW_COUNT * INSTALLED_SAMPLES);
     assert!(
         mixed[..3 * INSTALLED_SAMPLES]
@@ -1817,14 +1801,13 @@ fn component_matrix_and_audio_rows_keep_only_present_s46_sources() {
     assert_eq!(target_source_matrix.len(), COMPONENT_ROW_COUNT * 46);
     assert_eq!(target_source_matrix[3 * 46..4 * 46], coefficients);
 
-    let mixed = mix_matrix(&validated_payload(
-        source_audio,
+    let mixed = mix_payload(
+        &source_audio,
         1,
         source_axis.source_count(),
-        coefficients,
-        vec![3],
-    ))
-    .unwrap();
+        &coefficients,
+        &[3],
+    );
     assert_eq!(mixed.len(), COMPONENT_ROW_COUNT * INSTALLED_SAMPLES);
     assert!(
         mixed[..3 * INSTALLED_SAMPLES]
@@ -1966,10 +1949,10 @@ fn pure_mixer_preview_matches_the_mixer_consumed_by_component_stage() {
         &control_join(&context, callback),
         &context.spatial_control,
         ComponentCallbackPhase::Normal,
-        preview_packet,
+        &preview_packet,
         &context.window,
         &context.parameters,
-        mixer_preview,
+        &mixer_preview,
     )
     .unwrap();
     let reference_stage = produce_component_stage(
@@ -2023,10 +2006,10 @@ fn all_zero_active_matrix_still_stages_component_state() {
         &control_join(&context, callback),
         &context.spatial_control,
         ComponentCallbackPhase::Normal,
-        packet,
+        &packet,
         &context.window,
         &context.parameters,
-        mixer_preview,
+        &mixer_preview,
     )
     .unwrap();
 

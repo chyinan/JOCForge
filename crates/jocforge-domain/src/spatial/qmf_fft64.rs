@@ -1,6 +1,6 @@
 // pattern: Functional Core
 use super::qmf_mathematical_fft_provider::QmfMathematicalFftProvider;
-use crate::numeric::{FiniteF32, FiniteF32Error, R32Error, r32_add, r32_mul, r32_sub};
+use crate::numeric::{FiniteF32Error, R32Error};
 
 const COMPLEX_POINT_COUNT: usize = 64;
 const SCALAR_COUNT: usize = 128;
@@ -61,32 +61,13 @@ pub fn execute_qmf_fft64(
             return Err(QmfFftError::NumericFailure);
         }
 
-        for base in (0..COMPLEX_POINT_COUNT).step_by(length) {
-            for (j, root_words) in roots.iter().enumerate() {
-                let left = base + j;
-                let right = left + half_length;
-
-                // Read both complex inputs before writing either butterfly destination.
-                let a_real = finite(work[left * 2])?;
-                let a_imag = finite(work[left * 2 + 1])?;
-                let b_real = finite(work[right * 2])?;
-                let b_imag = finite(work[right * 2 + 1])?;
-                let c = finite(f32::from_bits(root_words[0]))?;
-                let d = finite(f32::from_bits(root_words[1]))?;
-
-                let tr = r32_sub(r32_mul(c, b_real)?, r32_mul(d, b_imag)?)?;
-                let ti = r32_add(r32_mul(c, b_imag)?, r32_mul(d, b_real)?)?;
-                let sum = [r32_add(a_real, tr)?, r32_add(a_imag, ti)?];
-                let difference = [r32_sub(a_real, tr)?, r32_sub(a_imag, ti)?];
-
-                work[left * 2] = sum[0].value();
-                work[left * 2 + 1] = sum[1].value();
-                work[right * 2] = difference[0].value();
-                work[right * 2 + 1] = difference[1].value();
-            }
-        }
+        super::fft_butterflies::apply_stage(&mut work, roots);
     }
-
+    // Butterflies contain only products and sums. A nonfinite intermediate
+    // propagates to a final lane, including an infinity cancelled by another infinity.
+    if work.iter().any(|x| !x.is_finite()) {
+        return Err(QmfFftError::NumericFailure);
+    }
     Ok(QmfFftOutput(work))
 }
 
@@ -98,10 +79,6 @@ fn reverse_six_bits(value: usize) -> usize {
         remaining >>= 1;
     }
     reversed
-}
-
-fn finite(value: f32) -> Result<FiniteF32, QmfFftError> {
-    FiniteF32::new(value).map_err(Into::into)
 }
 
 impl From<FiniteF32Error> for QmfFftError {

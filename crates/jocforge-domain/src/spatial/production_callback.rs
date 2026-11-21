@@ -955,11 +955,25 @@ fn prepare_spatial_production_core(
         previous_overlap_rows,
         current_mixer_rows,
     };
-    let reader_target = stage_reader_target(
-        spatial_control.committed().reader_target_state(),
-        &reader_inputs,
-    )
-    .map_err(SpatialProductionCallbackError::ReaderTarget)?;
+    let (reader_target, component) = crate::join_dsp_tasks(
+        || {
+            stage_reader_target(
+                spatial_control.committed().reader_target_state(),
+                &reader_inputs,
+            )
+        },
+        || {
+            component_preview.render_component(
+                spatial_audio,
+                &spatial_audio_join,
+                &spatial_control_join,
+                spatial_control,
+                window,
+                parameters,
+            )
+        },
+    );
+    let reader_target = reader_target.map_err(SpatialProductionCallbackError::ReaderTarget)?;
     let spatial_control_projection = spatial_control_callback_projection(
         &installation,
         &matrix,
@@ -973,16 +987,7 @@ fn prepare_spatial_production_core(
         .target_source_matrix_f32_bits()
         .to_vec()
         .into_boxed_slice();
-    let component = component_preview
-        .execute(
-            spatial_audio,
-            &spatial_audio_join,
-            &spatial_control_join,
-            spatial_control,
-            window,
-            parameters,
-        )
-        .map_err(SpatialProductionCallbackError::Component)?;
+    let component = component.map_err(SpatialProductionCallbackError::Component)?;
 
     let component_blocks_processed = component.blocks_processed();
     let current_lineage = &frontend.frontend.current_features.lineage;
@@ -1205,56 +1210,62 @@ fn finish_meter_spatial_production_callback(
     if callback_phase == CallbackPhase::CachedDrain {
         return Err(SpatialProductionCallbackError::CallbackIdentity);
     }
-    let projection = installed48_after.spatial_control_projection();
-    let mut diffusion_by_host = projection.diffusion_states;
-    let mut diffusion_after = std::iter::repeat_with(|| None)
-        .take(source_map.physical_to_global_source().len())
-        .collect::<Vec<_>>();
-    for (tail, binding) in source_map.physical_to_global_source().iter().enumerate() {
-        diffusion_after[tail] = diffusion_by_host.remove(&binding.physical_host().value());
-    }
-    if !diffusion_by_host.is_empty() {
-        return Err(SpatialProductionCallbackError::CallbackIdentity);
-    }
-    let control38_rows = source_snapshot.control38_rows().to_vec();
-    let spatial_control_after = spatial_control
-        .propose_callback_after(
-            transaction_id.clone(),
-            SpatialControlAfterStateParts {
-                callback_index: transaction_id.callback_index(),
-                callback_phase,
-                source_cursor_samples: projection.source_cursor,
-                normal_callbacks: source_snapshot.normal_callbacks(),
-                source_pcm_rows: projection.previous_pcm_rows,
-                control38_rows,
-                regular_raw_history_bits: current_regular_raw_history(&frontend.frontend),
-                previous_current_rows_bits: projection
-                    .previous_current_rows
-                    .into_iter()
-                    .flatten()
-                    .collect::<Vec<_>>()
-                    .into_boxed_slice(),
-                diffusion_tails: diffusion_after,
-                reader_target_state,
-                projection: spatial_control_projection,
-            },
-            frontend.frontend.current_features,
-            reader_target_receipt,
-            reader_target_controls,
-        )
-        .map_err(SpatialProductionCallbackError::SpatialControl)?;
-    let provider_lineage = [
-        *window.receipt().validated_manifest_lineage(),
-        *parameters.receipt().validated_manifest_lineage(),
-    ];
-    let (spatial_audio_after, component_rows) = spatial_audio
-        .stage_meter_component_after(
-            &spatial_audio_join,
-            provider_lineage,
-            spatial_audio_component,
-        )
-        .map_err(SpatialProductionCallbackError::Component)?
-        .into_parts();
+    let make_control = || {
+        let projection = installed48_after.spatial_control_projection();
+        let mut diffusion_by_host = projection.diffusion_states;
+        let mut diffusion_after = std::iter::repeat_with(|| None)
+            .take(source_map.physical_to_global_source().len())
+            .collect::<Vec<_>>();
+        for (tail, binding) in source_map.physical_to_global_source().iter().enumerate() {
+            diffusion_after[tail] = diffusion_by_host.remove(&binding.physical_host().value());
+        }
+        if !diffusion_by_host.is_empty() {
+            return Err(SpatialProductionCallbackError::CallbackIdentity);
+        }
+        let control38_rows = source_snapshot.control38_rows().to_vec();
+        spatial_control
+            .propose_callback_after(
+                transaction_id.clone(),
+                SpatialControlAfterStateParts {
+                    callback_index: transaction_id.callback_index(),
+                    callback_phase,
+                    source_cursor_samples: projection.source_cursor,
+                    normal_callbacks: source_snapshot.normal_callbacks(),
+                    source_pcm_rows: projection.previous_pcm_rows,
+                    control38_rows,
+                    regular_raw_history_bits: current_regular_raw_history(&frontend.frontend),
+                    previous_current_rows_bits: projection
+                        .previous_current_rows
+                        .into_iter()
+                        .flatten()
+                        .collect::<Vec<_>>()
+                        .into_boxed_slice(),
+                    diffusion_tails: diffusion_after,
+                    reader_target_state,
+                    projection: spatial_control_projection,
+                },
+                frontend.frontend.current_features,
+                reader_target_receipt,
+                reader_target_controls,
+            )
+            .map_err(SpatialProductionCallbackError::SpatialControl)
+    };
+    let make_audio = || {
+        let provider_lineage = [
+            *window.receipt().validated_manifest_lineage(),
+            *parameters.receipt().validated_manifest_lineage(),
+        ];
+        spatial_audio
+            .stage_meter_component_after(
+                &spatial_audio_join,
+                provider_lineage,
+                spatial_audio_component,
+            )
+            .map_err(SpatialProductionCallbackError::Component)
+    };
+    let (control, audio) = crate::join_dsp_tasks(make_control, make_audio);
+    let spatial_control_after = control?;
+    let (spatial_audio_after, component_rows) = audio?.into_parts();
 
     Ok(MeterSpatialProductionCallbackProposal {
         transaction_id,

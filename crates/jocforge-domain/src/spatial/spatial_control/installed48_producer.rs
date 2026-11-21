@@ -727,7 +727,7 @@ fn produce_activity(
                     .map_err(|_| SpatialControlInstalled48Error::SourcePcmShape)
             })
             .collect::<Result<Vec<_>, _>>()?;
-        let witness = triangle_activity_witness(&before_frame, &current_frame, &window)
+        let witness = triangle_activity_witness(&before_frame, &current_frame, window)
             .map_err(SpatialControlInstalled48Error::Activity)?;
         let control = controls[tail];
         if control.mute > 1 {

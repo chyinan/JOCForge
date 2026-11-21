@@ -276,6 +276,26 @@ impl MeterComponentStagePreview {
         window: &ValidatedWindowQ15Provider,
         parameters: &ValidatedComponentParameterProvider,
     ) -> Result<MeterComponentStageProposal, component_stage::ComponentStageError> {
+        self.render_component(
+            spatial_audio,
+            spatial_audio_join,
+            spatial_control_join,
+            spatial_control,
+            window,
+            parameters,
+        )
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    pub(in crate::spatial) fn render_component(
+        &self,
+        spatial_audio: &SpatialAudioMachine,
+        spatial_audio_join: &SpatialAudioJoinMetadata,
+        spatial_control_join: &SpatialControlJoinMetadata,
+        spatial_control: &SpatialControlMachine,
+        window: &ValidatedWindowQ15Provider,
+        parameters: &ValidatedComponentParameterProvider,
+    ) -> Result<MeterComponentStageProposal, component_stage::ComponentStageError> {
         if spatial_audio.generation() != self.before_generation
             || spatial_audio.digest() != self.before_digest
             || spatial_audio_join.callback_index() != self.callback_index
@@ -291,10 +311,10 @@ impl MeterComponentStagePreview {
             spatial_control_join,
             spatial_control,
             self.phase,
-            self.packet,
+            &self.packet,
             window,
             parameters,
-            self.mixer_preview,
+            &self.mixer_preview,
         )?;
         let meter_rows = component_output_rows_for_meter(&component, &self.matrix)?;
         Ok(MeterComponentStageProposal {
@@ -460,13 +480,17 @@ impl SpatialAudioMachine {
             .map(FrontendCallbackIndex::new)
             .ok_or(ComponentStageError::CallbackOrder)?;
 
-        let mut state = self.committed.staged_copy();
-        state.root.callback_index = next_callback;
-        state.root.component_state = component_after.audio;
-        state.root.component_parameter_state = component_after.parameters;
-        state.root.component_filter_history = component_after.filter_history;
-        let state =
-            SpatialAudioState::from_root(state.root).map_err(|_| ComponentStageError::State)?;
+        let previous = &self.committed;
+        let root = previous.root.with_component(
+            next_callback,
+            component_after,
+            previous.root.lfe_state.clone(),
+        );
+        let state = SpatialAudioState::encode_root(
+            root,
+            Some(&previous.canonical_bytes()[previous.receiver_bytes_offset..]),
+        )
+        .map_err(|_| ComponentStageError::State)?;
 
         let parent = SpatialAudioJoinMetadata::new(
             receipt.programme_id().clone(),
@@ -688,6 +712,7 @@ impl SpatialAudioDigest {
 #[derive(Debug, PartialEq)]
 pub struct SpatialAudioState {
     root: F04CompositionState,
+    receiver_bytes_offset: usize,
     canonical_bytes: std::sync::Arc<CanonicalStateBytes>,
     digest: SpatialAudioDigest,
 }
@@ -704,23 +729,31 @@ impl SpatialAudioState {
     }
 
     fn from_root(root: F04CompositionState) -> Result<Self, SpatialAudioError> {
+        Self::encode_root(root, None)
+    }
+
+    /// Meter and priming callbacks preserve both receiver histories and their clock.
+    /// Copy their already encoded bytes while still hashing the complete new state.
+    fn encode_root(
+        root: F04CompositionState,
+        preserved_receiver: Option<&[u8]>,
+    ) -> Result<Self, SpatialAudioError> {
         let mut encoder = F04StateEncoder::with_capacity(EXPECTED_COLD_BYTES);
-        root.encode(&mut encoder)?;
+        root.encode_component_and_lfe(&mut encoder)?;
+        let receiver_bytes_offset = encoder.bytes.len();
+        if let Some(bytes) = preserved_receiver {
+            encoder.bytes.extend_from_slice(bytes);
+        } else {
+            root.encode_receiver(&mut encoder)?;
+        }
         let canonical_bytes = CanonicalStateBytes::new(encoder.finish());
         let digest = SpatialAudioDigest(canonical_bytes.digest());
         Ok(Self {
             root,
+            receiver_bytes_offset,
             canonical_bytes: Arc::new(canonical_bytes),
             digest,
         })
-    }
-
-    fn staged_copy(&self) -> Self {
-        Self {
-            root: self.root.clone(),
-            canonical_bytes: self.canonical_bytes.clone(),
-            digest: self.digest,
-        }
     }
 
     pub fn canonical_bytes(&self) -> &[u8] {
@@ -1124,8 +1157,8 @@ struct F04CompositionState {
     component_parameter_state: ComponentFilterParameterState,
     component_filter_history: [RawBytes; 15],
     lfe_state: LfeDelayRingState,
-    receiver_state: ModelState,
-    fitting_qmf_state: QmfWindowState,
+    receiver_state: Arc<ModelState>,
+    fitting_qmf_state: Arc<QmfWindowState>,
     receiver_callback_count: ReceiverCallbackCount,
 }
 
@@ -1277,6 +1310,24 @@ impl RawBytes {
 struct NoneSentinel;
 
 impl F04CompositionState {
+    fn with_component(
+        &self,
+        callback_index: FrontendCallbackIndex,
+        after: component_stage::ComponentAfterState,
+        lfe_state: LfeDelayRingState,
+    ) -> Self {
+        Self {
+            callback_index,
+            retired: self.retired,
+            component_state: after.audio,
+            component_parameter_state: after.parameters,
+            component_filter_history: after.filter_history,
+            lfe_state,
+            receiver_state: Arc::clone(&self.receiver_state),
+            fitting_qmf_state: Arc::clone(&self.fitting_qmf_state),
+            receiver_callback_count: self.receiver_callback_count,
+        }
+    }
     fn cold() -> Self {
         Self {
             callback_index: FrontendCallbackIndex::new(0),
@@ -1285,8 +1336,8 @@ impl F04CompositionState {
             component_parameter_state: ComponentFilterParameterState::cold(),
             component_filter_history: zero_raw_tuple::<15>(256),
             lfe_state: LfeDelayRingState::cold(),
-            receiver_state: ModelState::cold(),
-            fitting_qmf_state: QmfWindowState::cold(),
+            receiver_state: Arc::new(ModelState::cold()),
+            fitting_qmf_state: Arc::new(QmfWindowState::cold()),
             receiver_callback_count: ReceiverCallbackCount::new(0),
         }
     }
@@ -1340,7 +1391,10 @@ impl F04CompositionState {
         Ok(())
     }
 
-    fn encode(&self, encoder: &mut F04StateEncoder) -> Result<(), SpatialAudioError> {
+    fn encode_component_and_lfe(
+        &self,
+        encoder: &mut F04StateEncoder,
+    ) -> Result<(), SpatialAudioError> {
         encoder.begin_dataclass("F04CompositionState", 9)?;
         encoder.field("callback_index")?;
         encoder.encode_i64(i64::from(self.callback_index.value()));
@@ -1354,6 +1408,10 @@ impl F04CompositionState {
         encoder.encode_raw_tuple(&self.component_filter_history)?;
         encoder.field("lfe_state")?;
         self.lfe_state.encode(encoder)?;
+        Ok(())
+    }
+
+    fn encode_receiver(&self, encoder: &mut F04StateEncoder) -> Result<(), SpatialAudioError> {
         encoder.field("receiver_state")?;
         self.receiver_state.encode(encoder)?;
         encoder.field("fitting_qmf_state")?;

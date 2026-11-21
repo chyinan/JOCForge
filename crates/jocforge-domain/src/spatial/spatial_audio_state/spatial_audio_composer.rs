@@ -203,7 +203,7 @@ pub(in crate::spatial) fn stage_spatial_audio_callback(
                     .checked_add(1)
                     .ok_or(SpatialAudioCompositionError::State)?,
             );
-            let receiver_before = machine.committed.root.receiver_state.clone();
+            let receiver_before = machine.committed.root.receiver_state.as_ref();
             let receiver = stage_spatial_audio_receiver(SpatialAudioReceiverStageInput {
                 parent: &parent,
                 phase,
@@ -250,7 +250,7 @@ pub(in crate::spatial) fn stage_spatial_audio_callback(
             let fitting = stage_mode0_fitting_from_receiver(
                 &parent,
                 &machine.committed.root.fitting_qmf_state,
-                &receiver_before,
+                receiver_before,
                 &receiver,
                 Mode0FittingProviderInput::Ready {
                     functional: providers.functional,
@@ -259,13 +259,26 @@ pub(in crate::spatial) fn stage_spatial_audio_callback(
                 },
             )
             .map_err(SpatialAudioCompositionError::Fitting)?;
-            let selected = assemble_selected_joc_qmf(receiver, fitting)
+            let SelectedJocQmfProposal {
+                projection,
+                receiver_after,
+                fitting_after,
+            } = assemble_selected_joc_qmf(receiver, fitting)
                 .map_err(SpatialAudioCompositionError::Fitting)?;
-            let after =
-                materialize_after(machine, parent, component_after, lfe_after, Some(&selected))?;
+            let after = materialize_after(
+                machine,
+                parent,
+                component_after,
+                lfe_after,
+                Some((
+                    receiver_after,
+                    fitting_after,
+                    projection.receiver_generation_after(),
+                )),
+            )?;
             Ok(SpatialAudioCallbackProposal {
                 after,
-                outcome: SpatialAudioCallbackOutcome::Joc(Box::new(selected.projection)),
+                outcome: SpatialAudioCallbackOutcome::Joc(Box::new(projection)),
             })
         }
         _ => Err(SpatialAudioCompositionError::CallbackOrder),
@@ -358,25 +371,33 @@ fn materialize_after(
     parent: SpatialAudioJoinMetadata,
     component_after: super::component_stage::ComponentAfterState,
     lfe_after: super::LfeDelayRingState,
-    selected: Option<&SelectedJocQmfProposal>,
+    selected: Option<(
+        super::ModelState,
+        super::QmfWindowState,
+        ReceiverCallbackCount,
+    )>,
 ) -> Result<SpatialAudioAfterProposal, SpatialAudioCompositionError> {
-    let mut state = machine.committed.staged_copy();
-    state.root.callback_index = FrontendCallbackIndex::new(
+    let next_callback = FrontendCallbackIndex::new(
         parent
             .callback_index()
             .value()
             .checked_add(1)
             .ok_or(SpatialAudioCompositionError::State)?,
     );
-    state.root.component_state = component_after.audio;
-    state.root.component_parameter_state = component_after.parameters;
-    state.root.component_filter_history = component_after.filter_history;
-    state.root.lfe_state = lfe_after;
-    if let Some(selected) = selected {
-        state.root.receiver_state = selected.receiver_after.clone();
-        state.root.fitting_qmf_state = selected.fitting_after.clone();
-        state.root.receiver_callback_count = selected.projection.receiver_generation_after();
-    }
-    let state = SpatialAudioState::from_root(state.root)?;
+    let previous = &machine.committed;
+    let mut root = previous
+        .root
+        .with_component(next_callback, component_after, lfe_after);
+    let state = if let Some((receiver, fitting, generation)) = selected {
+        root.receiver_state = std::sync::Arc::new(receiver);
+        root.fitting_qmf_state = std::sync::Arc::new(fitting);
+        root.receiver_callback_count = generation;
+        SpatialAudioState::from_root(root)?
+    } else {
+        SpatialAudioState::encode_root(
+            root,
+            Some(&previous.canonical_bytes()[previous.receiver_bytes_offset..]),
+        )?
+    };
     Ok(SpatialAudioAfterProposal::new(state, parent))
 }

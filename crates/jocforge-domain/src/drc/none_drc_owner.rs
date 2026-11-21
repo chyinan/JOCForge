@@ -169,8 +169,11 @@ impl NoneDrcMeasurementBinding {
 /// It intentionally excludes ordinary F07 input history, which belongs to the
 /// shared Analysis owner. It does not implement a state-ref serializer or a
 /// top-level GTC owner receipt.
-#[derive(Debug, PartialEq)]
+#[derive(Debug)]
 pub struct NoneDrcOwnerState {
+    canonical: std::sync::OnceLock<
+        Result<Arc<crate::transaction::CanonicalStateBytes>, NoneDrcOwnerError>,
+    >,
     secondary: NoneDrcSecondaryState,
     statistics: NoneDrcStatisticsState,
     scheduler: NoneDrcSchedulerState,
@@ -178,9 +181,20 @@ pub struct NoneDrcOwnerState {
     programme_dialnorm: Option<u8>,
 }
 
+impl PartialEq for NoneDrcOwnerState {
+    fn eq(&self, other: &Self) -> bool {
+        self.secondary == other.secondary
+            && self.statistics == other.statistics
+            && self.scheduler == other.scheduler
+            && self.override_fifo == other.override_fifo
+            && self.programme_dialnorm == other.programme_dialnorm
+    }
+}
+
 impl NoneDrcOwnerState {
     fn cold(programme_dialnorm: Option<u8>) -> Self {
         Self {
+            canonical: std::sync::OnceLock::new(),
             secondary: NoneDrcSecondaryState::cold(),
             statistics: NoneDrcStatisticsState::cold(),
             scheduler: NoneDrcSchedulerState::cold(),
@@ -331,11 +345,21 @@ impl NoneDrcOwnerState {
 fn none_drc_state_reference(
     state: &NoneDrcOwnerState,
 ) -> Result<NoneDrcOwnerStateReference, NoneDrcOwnerError> {
+    static COLD: std::sync::LazyLock<Result<[u8; 32], NoneDrcOwnerError>> =
+        std::sync::LazyLock::new(|| {
+            Ok(Sha256::digest(NoneDrcOwnerState::cold(None).canonical_bytes()?).into())
+        });
     let generation = state.source_generation()?.value();
-    let canonical_bytes = state.canonical_bytes()?;
-    let state_sha256 = Sha256::digest(&canonical_bytes).into();
-    let cold_bytes = NoneDrcOwnerState::cold(None).canonical_bytes()?;
-    let cold_sha256 = Sha256::digest(&cold_bytes).into();
+    let canonical_bytes = state
+        .canonical
+        .get_or_init(|| {
+            state
+                .canonical_bytes()
+                .map(|bytes| Arc::new(crate::transaction::CanonicalStateBytes::new(bytes)))
+        })
+        .clone()?;
+    let state_sha256 = canonical_bytes.digest();
+    let cold_sha256 = (*COLD)?;
     Ok(NoneDrcOwnerStateReference {
         owner_id: DRC_OWNER_ID,
         state_ref: DRC_STATE_REF,
@@ -356,7 +380,7 @@ pub(crate) struct NoneDrcOwnerStateReference {
     generation: u64,
     state_sha256: [u8; 32],
     cold_sha256: [u8; 32],
-    canonical_bytes: Vec<u8>,
+    canonical_bytes: Arc<crate::transaction::CanonicalStateBytes>,
 }
 
 #[allow(dead_code)] // Consumed by the future MeasurementTransaction/GTC parent.
@@ -382,19 +406,15 @@ impl NoneDrcOwnerStateReference {
     }
 
     pub fn canonical_bytes(&self) -> &[u8] {
-        &self.canonical_bytes
+        self.canonical_bytes.bytes()
     }
 
     /// Projects the complete DRC owner preimage into the registered GTC owner slot.
     ///
     /// This is an owner snapshot only; it does not admit the receipt to a parent transaction.
     pub(crate) fn gtc_snapshot(&self) -> Result<GtcOwnerStateSnapshot<'_>, GtcOwnerReceiptError> {
-        GtcOwnerStateSnapshot::from_canonical_bytes(
-            GtcOwnerId::Drc,
-            self.generation,
-            self.cold_sha256,
-            &self.canonical_bytes,
-        )
+        self.canonical_bytes
+            .snapshot(GtcOwnerId::Drc, self.generation, self.cold_sha256)
     }
 }
 
@@ -728,6 +748,7 @@ impl NoneDrcF06ndStageProposal {
         }
 
         let state = NoneDrcOwnerState {
+            canonical: std::sync::OnceLock::new(),
             secondary: secondary_after,
             statistics: frame.next_statistics_state,
             scheduler: frame.next_scheduler_state,

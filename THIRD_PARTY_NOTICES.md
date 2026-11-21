@@ -16,6 +16,9 @@ Locked transitive Rust packages are listed below. Checksums are the crates.io ch
 | crossbeam-epoch | 0.9.21 | MIT OR Apache-2.0 | `dc74980687109a3b14c72fd458107bf0baa1da1a1a805e178d15501ba9b86d9d` |
 | crossbeam-utils | 0.8.23 | MIT OR Apache-2.0 | `a31eee39dddec8330830986fcd7625edb5a24ec90ea038215273bbc3adb08ac6` |
 | either | 1.19.0 | MIT OR Apache-2.0 | `0e9c71c2167ca323c882b99918929403426e2373ea17242ff5653e0d5e1058be` |
+| multiversion | 0.8.1 | MIT OR Apache-2.0 | `eb8a68be21d0755f83bfe47e79b896cc732687cf1903f0e50585e8d6ecc53076` |
+| multiversion-macros | 0.8.1 | MIT OR Apache-2.0 | `a05e0c3c3e4edaa21d87c645852ed0b0c3663752bcc6ec43353bd6189dce35e1` |
+| target-features | 0.1.6 | MIT OR Apache-2.0 | `c1bbb9f3c5c463a01705937a24fdabc5047929ac764b2d5b9cf681c1f5041ed5` |
 | rayon | 1.11.0 | MIT OR Apache-2.0 | `368f01d005bf8fd9b1206fb6fa653e6c4a81ceb1466406b81792d87c5677a58f` |
 | rayon-core | 1.13.0 | MIT OR Apache-2.0 | `22e18b0f0062d30d4230b2e85ff77fdfe4326feb054b9783a3460d8435c8ab91` |
 | fs2 | 0.4.3 | MIT/Apache-2.0 | `9564fc758e15025b46aa6643b1b77d047d1a56a1aea6e01002ac0c7026876213` |

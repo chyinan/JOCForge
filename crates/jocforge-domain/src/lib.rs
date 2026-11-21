@@ -4,6 +4,8 @@
 pub mod analysis;
 pub mod codec;
 pub mod drc;
+mod dsp_workers;
+pub use dsp_workers::join_dsp_tasks;
 pub mod frontend;
 pub mod integrity;
 pub mod joc;

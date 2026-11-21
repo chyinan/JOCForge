@@ -958,13 +958,14 @@ fn analyze_rows(
     let samples_per_row = SLOT_COUNT * SLOT_SAMPLES;
     let mut spectra = Vec::with_capacity(rows * SLOT_COUNT * SPECTRUM_WORDS);
     let mut histories_after = Vec::with_capacity(rows);
-    for row in 0..rows {
+    let analyzed = crate::dsp_workers::map_rows(rows, |row| {
         let samples = input_words[row * samples_per_row..(row + 1) * samples_per_row]
             .iter()
             .map(|word| f32::from_bits(*word))
             .collect::<Vec<_>>();
-        let (row_spectra, row_history_after) =
-            analyze_one_row(&samples, &histories_before[row], functional, fft)?;
+        analyze_one_row(&samples, &histories_before[row], functional, fft)
+    })?;
+    for (row_spectra, row_history_after) in analyzed {
         spectra.extend(row_spectra);
         histories_after.push(row_history_after);
     }

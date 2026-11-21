@@ -2,7 +2,7 @@
 //! Shared selected-profile F03W/F04A audio rendering from explicit owner snapshots.
 
 use crate::{
-    numeric::{FiniteF32, r32_add, r32_mul},
+    numeric::{FiniteF32, r32_mul},
     source_axis::{
         F03W_PREFIX_SOURCE_COUNT, F03W_SOURCE_AXIS_CAPACITY, SelectedSourceRowDimensions,
         SelectedSourceRowShapeError,
@@ -163,17 +163,13 @@ pub(crate) fn render_installed48(
         if previous.len() != FRAME_SAMPLES || current.len() != FRAME_SAMPLES {
             return Err(Installed48RenderError::InputShape);
         }
-        let mut row = Vec::with_capacity(RENDERED_SAMPLES);
-        for sample in 0..FRAME_SAMPLES {
-            row.push(multiply(previous[sample], window[sample].value())?);
-        }
-        for sample in 0..FRAME_SAMPLES {
-            row.push(multiply(
-                current[sample],
-                window[FRAME_SAMPLES + sample].value(),
-            )?);
-        }
-        postwindow_rows.push(row.into_iter().map(f32::to_bits).collect());
+        let row: Vec<_> = previous
+            .iter()
+            .chain(current)
+            .zip(window)
+            .map(|(&sample, weight)| (sample * weight.value()).to_bits())
+            .collect();
+        postwindow_rows.push(row);
     }
 
     Ok(Installed48RenderOutput {
@@ -377,38 +373,30 @@ fn produce_prefix_rows(
                     .physical_host()
                     .value(),
             );
-            for sample in 0..FRAME_SAMPLES {
-                let previous_input =
-                    f32::from_bits(input.previous_pcm_bits[host * FRAME_SAMPLES + sample]);
-                let current_input = f32::from_bits(input.current_pcm_rows[host][sample]);
-                if use_filter {
-                    let lane = output_lane.ok_or(Installed48RenderError::ControlDomain)?;
-                    let (previous_lanes, current_lanes) =
-                        lanes.ok_or(Installed48RenderError::DiffusionParametersUnavailable)?;
-                    previous_prefix[prefix][sample] = mix_filtered_prefix_sample(
-                        previous_prefix[prefix][sample],
-                        previous_input,
-                        previous_lanes[lane][sample],
-                        direct_scale,
-                        filter_scale,
-                    )?;
-                    current_prefix[prefix][sample] = mix_filtered_prefix_sample(
-                        current_prefix[prefix][sample],
-                        current_input,
-                        current_lanes[lane][sample],
-                        direct_scale,
-                        filter_scale,
-                    )?;
-                } else {
-                    previous_prefix[prefix][sample] = add(
-                        multiply(previous_input, gain)?,
-                        previous_prefix[prefix][sample],
-                    )?;
-                    current_prefix[prefix][sample] = add(
-                        multiply(current_input, gain)?,
-                        current_prefix[prefix][sample],
-                    )?;
-                }
+            let previous_input =
+                &input.previous_pcm_bits[host * FRAME_SAMPLES..(host + 1) * FRAME_SAMPLES];
+            let current_input = &input.current_pcm_rows[host];
+            if use_filter {
+                let lane = output_lane.ok_or(Installed48RenderError::ControlDomain)?;
+                let (previous_lanes, current_lanes) =
+                    lanes.ok_or(Installed48RenderError::DiffusionParametersUnavailable)?;
+                add_filtered_row(
+                    &mut previous_prefix[prefix],
+                    previous_input,
+                    &previous_lanes[lane],
+                    direct_scale,
+                    filter_scale,
+                )?;
+                add_filtered_row(
+                    &mut current_prefix[prefix],
+                    current_input,
+                    &current_lanes[lane],
+                    direct_scale,
+                    filter_scale,
+                )?;
+            } else {
+                add_scaled_row(&mut previous_prefix[prefix], previous_input, gain)?;
+                add_scaled_row(&mut current_prefix[prefix], current_input, gain)?;
             }
         }
     }
@@ -419,6 +407,40 @@ fn produce_prefix_rows(
     })
 }
 
+// Samples in a row are independent. Within a sample, keep the original product
+// and addition order; a nonfinite product or partial sum always propagates.
+fn add_scaled_row(
+    output: &mut [f32],
+    input: &[u32],
+    gain: f32,
+) -> Result<(), Installed48RenderError> {
+    for (sum, &sample) in output.iter_mut().zip(input) {
+        *sum += f32::from_bits(sample) * gain;
+    }
+    validate_sum(output)
+}
+
+fn add_filtered_row(
+    output: &mut [f32],
+    input: &[u32],
+    filtered: &[f32],
+    direct_scale: f32,
+    filter_scale: f32,
+) -> Result<(), Installed48RenderError> {
+    for ((sum, &sample), &filtered) in output.iter_mut().zip(input).zip(filtered) {
+        *sum = (f32::from_bits(sample) * direct_scale + *sum) + filtered * filter_scale;
+    }
+    validate_sum(output)
+}
+
+fn validate_sum(row: &[f32]) -> Result<(), Installed48RenderError> {
+    if row.iter().all(|v| v.is_finite()) {
+        Ok(())
+    } else {
+        Err(Installed48RenderError::NumericFailure)
+    }
+}
+
 fn scale_regular_half(
     row: &[u32],
     factor: f32,
@@ -427,16 +449,11 @@ fn scale_regular_half(
     if row.len() != FRAME_SAMPLES {
         return Err(Installed48RenderError::InputShape);
     }
-    row.iter()
-        .map(|word| {
-            let sample = if mute_reset {
-                0.0
-            } else {
-                f32::from_bits(*word)
-            };
-            multiply(sample, factor)
-        })
-        .collect()
+    // PCM was validated on admission. spread_factor is zero, one, or cosine squared.
+    if mute_reset {
+        return Ok(vec![0.0; row.len()]);
+    }
+    Ok(row.iter().map(|&w| f32::from_bits(w) * factor).collect())
 }
 
 fn spread_factor(spread: f32, quiet: u8) -> Result<f32, Installed48RenderError> {
@@ -472,6 +489,7 @@ pub(crate) fn filtered_prefix_scales(
     Ok((direct_scale, filter_scale))
 }
 
+#[cfg(test)]
 pub(crate) fn mix_filtered_prefix_sample(
     previous_output: f32,
     source: f32,
@@ -494,8 +512,9 @@ fn multiply(left: f32, right: f32) -> Result<f32, Installed48RenderError> {
     .map_err(|_| Installed48RenderError::NumericFailure)
 }
 
+#[cfg(test)]
 fn add(left: f32, right: f32) -> Result<f32, Installed48RenderError> {
-    r32_add(
+    crate::numeric::r32_add(
         FiniteF32::new(left).map_err(|_| Installed48RenderError::NumericFailure)?,
         FiniteF32::new(right).map_err(|_| Installed48RenderError::NumericFailure)?,
     )

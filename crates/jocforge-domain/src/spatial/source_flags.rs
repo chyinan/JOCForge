@@ -1883,7 +1883,7 @@ impl SourceFlagsProducer {
     pub(crate) fn window_sha256() -> Result<String, SourceFlagsError> {
         let window = triangle_window()?;
         let mut bytes = Vec::with_capacity(WINDOW_WORDS * 4);
-        for value in &window {
+        for value in window {
             bytes.extend_from_slice(&value.to_bits().to_le_bytes());
         }
         Ok(hex_encode(&Sha256::digest(bytes)))
@@ -1916,7 +1916,7 @@ fn compute_source_flags_values(
         let current = current_pcm.row(host);
         let before = &history_rows[row];
         let control = controls.for_host(host)?;
-        let witness = triangle_activity_witness(&before[..], &current[..], &window)?;
+        let witness = triangle_activity_witness(&before[..], &current[..], window)?;
 
         let activity = witness && !control.muted;
         let processing_inactive = !activity;
@@ -2022,7 +2022,13 @@ fn preflight_value_shapes(
     Ok(())
 }
 
-pub(crate) fn triangle_window() -> Result<Box<[FiniteF32]>, SourceFlagsError> {
+pub(crate) fn triangle_window() -> Result<&'static [FiniteF32], SourceFlagsError> {
+    static WINDOW: std::sync::LazyLock<Result<Box<[FiniteF32]>, SourceFlagsError>> =
+        std::sync::LazyLock::new(build_triangle_window);
+    WINDOW.as_deref().map_err(|error| *error)
+}
+
+fn build_triangle_window() -> Result<Box<[FiniteF32]>, SourceFlagsError> {
     let divisor =
         FiniteF32::new(1536.0).map_err(|_| SourceFlagsError::WindowKnownAnswerMismatch)?;
     let mut window = Vec::with_capacity(WINDOW_WORDS);
