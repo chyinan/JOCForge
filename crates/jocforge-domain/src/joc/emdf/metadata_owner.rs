@@ -70,6 +70,7 @@ pub(crate) fn canonical_lf_fixture_bytes(bytes: &[u8]) -> Vec<u8> {
 enum MetadataWrapperProfile {
     Selected,
     StrictFiveOne,
+    StrictFlat7x,
     Flat7x,
 }
 
@@ -79,7 +80,9 @@ impl MetadataWrapperProfile {
             Self::Selected | Self::StrictFiveOne => {
                 CurrentEmdfPayloadSequence::SelectedFourPayloads
             }
-            Self::Flat7x => CurrentEmdfPayloadSequence::Flat7xExperimentalJocPair,
+            Self::Flat7x | Self::StrictFlat7x => {
+                CurrentEmdfPayloadSequence::Flat7xExperimentalJocPair
+            }
         }
     }
 }
@@ -742,7 +745,9 @@ impl MetadataSourceProposal {
     pub fn carriage_mode(&self) -> super::protected_container::CurrentEmdfCarriageMode {
         use super::protected_container::CurrentEmdfCarriageMode;
         match self.after_owner.wrapper_profile {
-            MetadataWrapperProfile::StrictFiveOne => CurrentEmdfCarriageMode::EtsiEmdf,
+            MetadataWrapperProfile::StrictFiveOne | MetadataWrapperProfile::StrictFlat7x => {
+                CurrentEmdfCarriageMode::EtsiEmdf
+            }
             _ => CurrentEmdfCarriageMode::DeployedCompat,
         }
     }
@@ -1757,7 +1762,11 @@ impl MetadataOwner {
     ) -> Result<Self, MetadataOwnerError> {
         let wrapper_profile =
             if profile.joc_reconstruction_layout() == JocReconstructionLayout::Flat7x {
-                MetadataWrapperProfile::Flat7x
+                if profile.carriage() == crate::profile::EmdfCarriageProfile::EtsiEmdf {
+                    MetadataWrapperProfile::StrictFlat7x
+                } else {
+                    MetadataWrapperProfile::Flat7x
+                }
             } else if profile.carriage() == crate::profile::EmdfCarriageProfile::EtsiEmdf {
                 MetadataWrapperProfile::StrictFiveOne
             } else {
@@ -1795,7 +1804,10 @@ impl MetadataOwner {
             id11.insert("priority".to_owned(), Value::from(0));
             id11.insert("processing_allowed".to_owned(), Value::from(0));
         }
-        if wrapper_profile == MetadataWrapperProfile::StrictFiveOne {
+        if matches!(
+            wrapper_profile,
+            MetadataWrapperProfile::StrictFiveOne | MetadataWrapperProfile::StrictFlat7x
+        ) {
             for id in ["11", "14"] {
                 wrapper_configuration["payloads"][id]["codec_data_present"] = Value::Bool(true);
             }
@@ -1809,7 +1821,10 @@ impl MetadataOwner {
         };
         let provider_sha256 = provider.provider_sha256;
         let mut state = MetadataState::cold(provider_sha256);
-        if wrapper_profile == MetadataWrapperProfile::StrictFiveOne {
+        if matches!(
+            wrapper_profile,
+            MetadataWrapperProfile::StrictFiveOne | MetadataWrapperProfile::StrictFlat7x
+        ) {
             state.carriage_mode = "etsi_emdf";
         }
         Ok(Self {

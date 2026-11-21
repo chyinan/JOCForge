@@ -11,7 +11,7 @@ use crate::{
                 ParsedMetadataSourceContainer,
             },
             protected_container::{
-                CurrentEmdfCarriageMode, CurrentPayloadId, ParsedCurrentEmdfContainer,
+                CurrentPayloadId, ParsedCurrentEmdfContainer,
             },
         },
         model_complexity::derive_model_joc_complexity,
@@ -95,8 +95,7 @@ pub fn emdf_frame_input_for_source<'a>(
     }
 
     let parsed_container = parsed.parsed_container();
-    if (parsed_container.mode() == CurrentEmdfCarriageMode::EtsiEmdf && parsed_container.payload_sequence() != crate::joc::emdf::protected_container::CurrentEmdfPayloadSequence::SelectedFourPayloads)
-        || parsed_container.carrier_block().value() != 2
+    if parsed_container.carrier_block().value() != 2
     {
         return Err(PublishedEmdfBindingError::CarriageMismatch);
     }

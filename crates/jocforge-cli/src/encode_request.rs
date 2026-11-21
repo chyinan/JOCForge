@@ -894,8 +894,10 @@ fn validate_signalling(
     signalling: EmdfCarriageProfile,
 ) -> Result<(), EncodeRequestError> {
     if signalling == EmdfCarriageProfile::DeployedCompat
-        || (layout == JocReconstructionLayout::ExistingSelectedFivePointOne
-            && signalling == EmdfCarriageProfile::EtsiEmdf)
+        || (matches!(
+            layout,
+            JocReconstructionLayout::Flat7x | JocReconstructionLayout::ExistingSelectedFivePointOne
+        ) && signalling == EmdfCarriageProfile::EtsiEmdf)
     {
         Ok(())
     } else {

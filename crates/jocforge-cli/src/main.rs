@@ -63,8 +63,8 @@ struct EncodeArgs {
     /// Select experimental Flat7x. Defaults to 5.1.
     #[arg(long, value_name = "LAYOUT", value_parser = ["flat7x"])]
     joc_layout: Option<String>,
-    /// Write strict ETSI JOC/OAMD EMDF signalling for the independent 5.1 stream.
-    #[arg(long, conflicts_with = "joc_layout")]
+    /// Write strict ETSI JOC/OAMD EMDF signalling for the selected stream.
+    #[arg(long)]
     etsi_strict: bool,
     /// Read input and output paths from an XML job.
     #[arg(long, value_name = "JOB.xml", conflicts_with_all = ["input", "output", "data_rate", "total_rate"])]
