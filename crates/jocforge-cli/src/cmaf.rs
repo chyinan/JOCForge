@@ -38,18 +38,29 @@ fn bmff_full_box(kind: [u8; 4], flags: u32, payload: &[u8]) -> Vec<u8> {
 }
 
 fn dec3_box(profile: JocReconstructionLayout, bitrate_kbps: u32) -> Vec<u8> {
+    dec3_for_track(profile, bitrate_kbps, 16, 1, false, 0)
+}
+
+fn dec3_for_track(
+    profile: JocReconstructionLayout,
+    bitrate_kbps: u32,
+    bsid: u8,
+    dependents: u8,
+    lfe: bool,
+    bsmod: u8,
+) -> Vec<u8> {
     let mut bits = Bits::default();
     bits.push(u64::from(bitrate_kbps.min(0x1fff)), 13);
     bits.push(0, 3); // one independent substream
     bits.push(0, 2); // 48 kHz
-    bits.push(16, 5); // E-AC-3 bsid
+    bits.push(u64::from(bsid), 5); // E-AC-3 bsid
     bits.push(0, 1); // reserved
     bits.push(0, 1); // asvc
-    bits.push(0, 3); // bsmod
+    bits.push(u64::from(bsmod), 3); // bsmod
     bits.push(7, 3); // five full-band channels
-    bits.push(0, 1); // no LFE in the canonical CMAF path
+    bits.push(u64::from(lfe), 1);
     bits.push(0, 3); // reserved
-    bits.push(1, 4); // one dependent D0
+    bits.push(u64::from(dependents), 4);
     let chan_loc = if profile.uses_height_pair() {
         64
     } else if profile.uses_seven_carriers() {
@@ -57,7 +68,11 @@ fn dec3_box(profile: JocReconstructionLayout, bitrate_kbps: u32) -> Vec<u8> {
     } else {
         0
     };
-    bits.push(chan_loc, 9);
+    if dependents == 0 {
+        bits.push(0, 1);
+    } else {
+        bits.push(chan_loc, 9);
+    }
     bits.push(0, 7); // reserved
     bits.push(1, 1); // type-A JOC extension
     bits.push(16, 8); // complexity index
@@ -89,23 +104,57 @@ pub(crate) fn init_segment(layout: JocReconstructionLayout, rate: u32) -> Vec<u8
     .concat();
     let ftyp = bmff_box(*b"ftyp", &ftyp_payload);
 
+    let (movie_header, trak) = track_boxes(&dec3, None);
+    let trex_fields = [
+        1_u32.to_be_bytes().as_slice(),
+        1_u32.to_be_bytes().as_slice(),
+        CMAF_SAMPLE_DURATION.to_be_bytes().as_slice(),
+        0_u32.to_be_bytes().as_slice(),
+        0_u32.to_be_bytes().as_slice(),
+    ]
+    .concat();
+    let trex = bmff_full_box(*b"trex", 0, &trex_fields);
+    let mvex = bmff_box(*b"mvex", &trex);
+    let moov = bmff_box(*b"moov", &[movie_header, trak, mvex].concat());
+    [ftyp, moov].concat()
+}
+
+fn track_boxes(dec3: &[u8], samples: Option<(u32, u32, u64)>) -> (Vec<u8>, Vec<u8>) {
+    let header = |kind, flags, fields: &[u8], duration_offset: usize| {
+        if let Some((count, _, _)) = samples {
+            let duration = u64::from(count) * u64::from(CMAF_SAMPLE_DURATION);
+            bmff_full_box(
+                kind,
+                0x01000000 | flags,
+                &[
+                    &[0u8; 16][..],
+                    &fields[8..duration_offset],
+                    &duration.to_be_bytes(),
+                    &fields[duration_offset + 4..],
+                ]
+                .concat(),
+            )
+        } else {
+            bmff_full_box(kind, flags, fields)
+        }
+    };
     let mut movie_header_fields = vec![0_u8; 96];
     movie_header_fields[8..12].copy_from_slice(&48_000_u32.to_be_bytes());
     movie_header_fields[16..20].copy_from_slice(&0x10000_u32.to_be_bytes());
     movie_header_fields[20..22].copy_from_slice(&0x100_u16.to_be_bytes());
     identity_matrix(&mut movie_header_fields[32..68]);
     movie_header_fields[92..96].copy_from_slice(&2_u32.to_be_bytes());
-    let movie_header = bmff_full_box(*b"mvhd", 0, &movie_header_fields);
+    let movie_header = header(*b"mvhd", 0, &movie_header_fields, 12);
 
     let mut tkhd_fields = vec![0_u8; 80];
     tkhd_fields[8..12].copy_from_slice(&1_u32.to_be_bytes());
     tkhd_fields[32..34].copy_from_slice(&0x100_u16.to_be_bytes());
     identity_matrix(&mut tkhd_fields[36..72]);
-    let tkhd = bmff_full_box(*b"tkhd", 7, &tkhd_fields);
+    let tkhd = header(*b"tkhd", 7, &tkhd_fields, 16);
 
     let mut media_header_fields = vec![0_u8; 20];
     media_header_fields[8..12].copy_from_slice(&48_000_u32.to_be_bytes());
-    let media_header = bmff_full_box(*b"mdhd", 0, &media_header_fields);
+    let media_header = header(*b"mdhd", 0, &media_header_fields, 12);
 
     let mut hdlr_fields = vec![0_u8; 20];
     hdlr_fields[4..8].copy_from_slice(b"soun");
@@ -119,38 +168,131 @@ pub(crate) fn init_segment(layout: JocReconstructionLayout, rate: u32) -> Vec<u8
         &[1_u32.to_be_bytes().as_slice(), &url].concat(),
     );
     let dinf = bmff_box(*b"dinf", &dref);
-    let entry = audio_sample_entry(&dec3);
+    let entry = audio_sample_entry(dec3);
     let stsd = bmff_full_box(
         *b"stsd",
         0,
         &[1_u32.to_be_bytes().as_slice(), &entry].concat(),
     );
-    let stbl = bmff_box(
-        *b"stbl",
-        &[
-            stsd,
-            bmff_full_box(*b"stts", 0, &[0; 4]),
-            bmff_full_box(*b"stsc", 0, &[0; 4]),
-            bmff_full_box(*b"stsz", 0, &[0; 8]),
-            bmff_full_box(*b"stco", 0, &[0; 4]),
-        ]
-        .concat(),
-    );
+    let stbl = if let Some((count, size, offset)) = samples {
+        let stts = bmff_full_box(
+            *b"stts",
+            0,
+            &[
+                1u32.to_be_bytes(),
+                count.to_be_bytes(),
+                1536u32.to_be_bytes(),
+            ]
+            .concat(),
+        );
+        let stsc = bmff_full_box(
+            *b"stsc",
+            0,
+            &[
+                1u32.to_be_bytes(),
+                1u32.to_be_bytes(),
+                count.to_be_bytes(),
+                1u32.to_be_bytes(),
+            ]
+            .concat(),
+        );
+        let stsz = bmff_full_box(
+            *b"stsz",
+            0,
+            &[size.to_be_bytes(), count.to_be_bytes()].concat(),
+        );
+        let co64 = bmff_full_box(
+            *b"co64",
+            0,
+            &[1u32.to_be_bytes().as_slice(), &offset.to_be_bytes()].concat(),
+        );
+        bmff_box(*b"stbl", &[stsd, stts, stsc, stsz, co64].concat())
+    } else {
+        bmff_box(
+            *b"stbl",
+            &[
+                stsd,
+                bmff_full_box(*b"stts", 0, &[0; 4]),
+                bmff_full_box(*b"stsc", 0, &[0; 4]),
+                bmff_full_box(*b"stsz", 0, &[0; 8]),
+                bmff_full_box(*b"stco", 0, &[0; 4]),
+            ]
+            .concat(),
+        )
+    };
     let minf = bmff_box(*b"minf", &[smhd, dinf, stbl].concat());
     let mdia = bmff_box(*b"mdia", &[media_header, hdlr, minf].concat());
     let trak = bmff_box(*b"trak", &[tkhd, mdia].concat());
-    let trex_fields = [
-        1_u32.to_be_bytes().as_slice(),
-        1_u32.to_be_bytes().as_slice(),
-        CMAF_SAMPLE_DURATION.to_be_bytes().as_slice(),
-        0_u32.to_be_bytes().as_slice(),
-        0_u32.to_be_bytes().as_slice(),
-    ]
-    .concat();
-    let trex = bmff_full_box(*b"trex", 0, &trex_fields);
-    let mvex = bmff_box(*b"mvex", &trex);
-    let moov = bmff_box(*b"moov", &[movie_header, trak, mvex].concat());
-    [ftyp, moov].concat()
+    (movie_header, trak)
+}
+
+/// Wrap a native constant-rate JOC stream in a conventional MP4 audio track.
+/// Each sample retains the complete six-block interval and all dependent streams.
+pub fn write_composed_m4a(
+    input: &std::path::Path,
+    output: &std::path::Path,
+    layout: JocReconstructionLayout,
+    rate: u32,
+    dependents: u8,
+    cancelled: &std::sync::atomic::AtomicBool,
+) -> io::Result<()> {
+    use std::{
+        fs::File,
+        io::{BufReader, BufWriter, Seek},
+        sync::atomic::Ordering,
+    };
+    let mut raw = BufReader::new(File::open(input)?);
+    let len = raw.get_ref().metadata()?.len();
+    let size = rate
+        .checked_mul(4)
+        .filter(|s| *s > 0 && *s <= 8191 * 4)
+        .ok_or_else(|| io::Error::other("invalid JOC bitrate"))?;
+    if len == 0 || len % u64::from(size) != 0 || dependents > 6 {
+        return Err(io::Error::other("invalid JOC access unit extent"));
+    }
+    let count = u32::try_from(len / u64::from(size))
+        .map_err(|_| io::Error::other("too many MP4 samples"))?;
+    let mut first = [0u8; 7];
+    raw.read_exact(&mut first)?;
+    raw.rewind()?;
+    let bsid = first[5] >> 3;
+    if first[..2] != [0x0b, 0x77] || !matches!(bsid, 6 | 8 | 16) {
+        return Err(io::Error::other("invalid independent syncframe"));
+    }
+    let (lfe, bsmod) = if bsid == 16 {
+        (first[4] & 1 != 0, 0)
+    } else {
+        (first[6] & 1 != 0, first[5] & 7)
+    };
+    let dec3 = dec3_for_track(layout, rate, bsid, dependents, lfe, bsmod);
+    let ftyp = bmff_box(*b"ftyp", b"M4A \0\0\0\0M4A isomiso6");
+    let (mvhd, trak) = track_boxes(&dec3, Some((count, size, ftyp.len() as u64 + 16)));
+    let moov = bmff_box(*b"moov", &[mvhd, trak].concat());
+    let mut file = tempfile::NamedTempFile::new_in(
+        output
+            .parent()
+            .ok_or_else(|| io::Error::other("missing output directory"))?,
+    )?;
+    {
+        let mut out = BufWriter::new(file.as_file_mut());
+        out.write_all(&ftyp)?;
+        out.write_all(&1u32.to_be_bytes())?;
+        out.write_all(b"mdat")?;
+        out.write_all(&(len + 16).to_be_bytes())?;
+        let mut sample = vec![0; size as usize];
+        for _ in 0..count {
+            if cancelled.load(Ordering::Relaxed) {
+                return Err(io::Error::other("cancelled"));
+            }
+            raw.read_exact(&mut sample)?;
+            out.write_all(&sample)?;
+        }
+        out.write_all(&moov)?;
+        out.flush()?;
+    }
+    file.as_file().sync_all()?;
+    file.persist_noclobber(output)?;
+    Ok(())
 }
 
 fn identity_matrix(bytes: &mut [u8]) {
