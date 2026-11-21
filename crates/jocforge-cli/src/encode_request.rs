@@ -872,6 +872,31 @@ pub fn encode_staged_file_with_options(
     progress: EventObserver<'_>,
     cancelled: &std::sync::atomic::AtomicBool,
 ) -> Result<(), EncodeRequestError> {
+    encode_staged_file_with_structure(
+        input,
+        output,
+        rate,
+        (layout, EmdfCarriageProfile::DeployedCompat, None),
+        (timing, options),
+        progress,
+        cancelled,
+    )
+}
+
+/// Encode a staged ADM export with the selected wire structure and normal job events.
+pub fn encode_staged_file_with_structure(
+    input: &Path,
+    output: &Path,
+    rate: CodecRateProfile,
+    (layout, signalling, topology): (
+        JocReconstructionLayout,
+        EmdfCarriageProfile,
+        Option<SubstreamPlan>,
+    ),
+    (timing, options): (&FileRenderTiming, &FileEncodeOptions),
+    progress: EventObserver<'_>,
+    cancelled: &std::sync::atomic::AtomicBool,
+) -> Result<(), EncodeRequestError> {
     resolve_encode_request_route(rate, layout)?;
     let input = normalize_existing_input(input)?;
     let output = normalize_new_output(output)?;
@@ -882,14 +907,15 @@ pub fn encode_staged_file_with_options(
         timing,
         options,
     );
-    run_worker_with_progress(
+    run_worker_with_topology(
         &input,
         &output,
         Some(rate),
         Some(xml.into_bytes()),
-        (layout, EmdfCarriageProfile::DeployedCompat),
+        (layout, signalling),
         Some(progress),
         cancelled,
+        topology,
     )
 }
 
