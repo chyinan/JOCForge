@@ -109,13 +109,19 @@ jocforge encode input.adm.wav aux-strict/song.candidate.ec3 --joc-layout idx4 --
 jocforge encode input.adm.wav aux-deployed/song.candidate.ec3 --joc-layout idx4 --dependent-count 2 --block-partition 3+3 --carriage auxdata --emdf-profile deployed
 ```
 
-### idx0 / idx3 的 Legacy AC-3 核心
+### 五种 profile 的 Legacy AC-3 核心
 
-`--carriage legacy-ac3` 为 idx0 和 idx3 生成固定 **1280 kbps** 的裸码流。每个 1536 采样区间先写 640 kbps 的 48 kHz AC-3 I0，再写 640 kbps 的 E-AC-3 D0，各 2560 字节。I0 提供可单独播放的 3/2 声床；D0 的通道映射包含 L、C，帧尾承载严格 ETSI JOC/OAMD。该模式固定六块、一个依赖子流，LFE 默认由 I0 携带，也支持既有的四种 `--lfe-owner` 取值。
+`--carriage legacy-ac3` 为 idx0 至 idx4 生成固定 **1280 kbps** 的裸码流。每个 1536 采样区间先写 640 kbps 的 48 kHz AC-3 I0，再写 640 kbps 的 E-AC-3 D0，各 2560 字节。I0 提供可单独播放的 3/2 声床；D0 在帧尾承载严格 ETSI JOC/OAMD。idx0、idx3 的 D0 替换 L、C，idx1 的 D0 补充后环绕对（0x0200），idx2、idx4 的 D0 补充前高度对（0x0010）。LFE 由 D0 补充或替换时，通道映射另加 0x0001。该模式固定六块、一个依赖子流，LFE 默认由 I0 携带，也支持既有的四种 `--lfe-owner` 取值。
 
 ```powershell
 jocforge encode input.adm.wav idx0-legacy.ec3 --joc-layout idx0 --carriage legacy-ac3 --total-rate 1280
 jocforge encode input.adm.wav idx3-legacy.ec3 --joc-layout idx3 --carriage legacy-ac3 --total-rate 1280
+```
+
+七载体布局仍使用独立空目录中的 .candidate.ec3 输出。例如先创建 height-core 目录，再运行：
+
+```powershell
+jocforge encode input.adm.wav height-core/song.candidate.ec3 --joc-layout idx4 --carriage legacy-ac3 --total-rate 1280 --lfe-owner dependent
 ```
 
 XML 作业的 `data_rate` 填 D0 的 `640`。可用 `--job-xml job.xml --joc-layout idx0 --carriage legacy-ac3 --preflight-only` 核对总码率和每个访问单元的长度。

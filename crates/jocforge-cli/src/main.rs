@@ -129,14 +129,11 @@ fn main() -> ExitCode {
             };
             let ac3_core = args.carriage.as_deref() == Some("legacy-ac3");
             if ac3_core
-                && (!layout.uses_five_carriers()
-                    || args.total_rate.as_deref().is_some_and(|v| v != "1280")
+                && (args.total_rate.as_deref().is_some_and(|v| v != "1280")
                     || args.data_rate.as_deref().is_some_and(|v| v != "640")
                     || args.emdf_profile.as_deref() == Some("deployed"))
             {
-                eprintln!(
-                    "legacy-ac3 requires idx0/idx3, strict EMDF, --total-rate 1280 or --data-rate 640"
-                );
+                eprintln!("legacy-ac3 requires strict EMDF, --total-rate 1280 or --data-rate 640");
                 return ExitCode::from(2);
             }
             if args.total_rate.is_some() && !layout.uses_seven_carriers() && !ac3_core {

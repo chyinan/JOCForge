@@ -484,9 +484,25 @@ impl Flat7xSceneMix {
     /// I0 analysis adds four 256-sample blocks more latency than the D0 MDCT.
     /// Normalize the external PCM scale before the I0 transform.
     pub fn align_analysis_windows(&mut self, following: &Self, second: &Self) {
+        self.align_core_and_fit(following, second, false);
+    }
+
+    /// D0 only supplements the extra pair. The surviving I0 surrounds must
+    /// contain the discrete Ls/Rs used by the seven-carrier coefficient fit.
+    pub fn align_supplemental_pair_windows(&mut self, following: &Self, second: &Self) {
+        self.align_core_and_fit(following, second, true);
+    }
+
+    fn align_core_and_fit(&mut self, following: &Self, second: &Self, supplemental_pair: bool) {
         const OFFSET_IN_FOLLOWING: usize = 34 * 64 - PCM_SAMPLES_PER_SOURCE;
-        let current = self.pcm_view().i0().rows();
-        let next = following.pcm_view().i0().rows();
+        let mut current = self.pcm_view().i0().rows();
+        let mut next = following.pcm_view().i0().rows();
+        if supplemental_pair {
+            current[3] = &self.carriers[3];
+            current[4] = &self.carriers[4];
+            next[3] = &following.carriers[3];
+            next[4] = &following.carriers[4];
+        }
         self.aligned_core = Some(std::array::from_fn(|lane| {
             current[lane][1024..]
                 .iter()

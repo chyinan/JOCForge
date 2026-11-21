@@ -32,13 +32,23 @@ impl SubstreamPlan {
         metadata: FrameMetadata<'_>,
         core: &[u8; 2560],
     ) -> Result<Vec<u8>, String> {
+        self.encode_with_ac3_core_and_carriers(source, None, metadata, core)
+    }
+
+    pub fn encode_with_ac3_core_and_carriers(
+        &self,
+        source: &SelectedSourceNumericPlan,
+        extended: Option<&[Flat7xD0SpectrumBlock; 6]>,
+        metadata: FrameMetadata<'_>,
+        core: &[u8; 2560],
+    ) -> Result<Vec<u8>, String> {
         if self.ac3_core_lfe().is_none()
             || self.partition != BlockPartition::Six
             || self.emdf_location != EmdfLocation::FrameEnd
         {
             return Err("invalid AC-3 core composition".into());
         }
-        let dependent = self.encode_components(source, None, metadata, 2560)?;
+        let dependent = self.encode_components(source, extended, metadata, 2560)?;
         let mut au = Vec::with_capacity(core.len() + dependent.len());
         au.extend_from_slice(core);
         au.extend(dependent);

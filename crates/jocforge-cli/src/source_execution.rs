@@ -486,7 +486,12 @@ pub(crate) fn stage_source_frame<'pcm>(
                 &bsi,
                 include_lfe,
             )?;
-            plan.encode_with_ac3_core(numeric.plan(), metadata, &core)?
+            plan.encode_with_ac3_core_and_carriers(
+                numeric.plan(),
+                spectral.as_ref().map(|series| series.spectra()),
+                metadata,
+                &core,
+            )?
         } else {
             plan.encode(
                 numeric.plan(),

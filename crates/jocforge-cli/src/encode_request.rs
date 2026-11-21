@@ -463,34 +463,35 @@ fn run_job_xml_preflight(
 
     let configuration = prepared.configuration();
     let codec_rate = configuration.selected_profile().codec_rate();
-    let (frame_bytes, total_kbps) = if ac3_core {
-        validate_ac3_core_rate(codec_rate)?;
-        (5120, 1280)
-    } else {
-        match resolve_encode_request_route(codec_rate, layout)? {
-            EncodeRequestRoute::SelectedFivePointOne(_) => (
-                codec_rate
-                    .frame_bytes()
-                    .ok_or(EncodeRequestError::UnsupportedDataRate)?,
-                configuration.bit_rate_kbps(),
-            ),
-            EncodeRequestRoute::Flat7xI0D0Pair(target) => {
-                jocforge_application::source_frame_bridge::build_flat7x_provisional_source_role_map(
+    let (frame_bytes, total_kbps) = match resolve_encode_request_route(codec_rate, layout)? {
+        EncodeRequestRoute::SelectedFivePointOne(_) => (
+            codec_rate
+                .frame_bytes()
+                .ok_or(EncodeRequestError::UnsupportedDataRate)?,
+            configuration.bit_rate_kbps(),
+        ),
+        EncodeRequestRoute::Flat7xI0D0Pair(target) => {
+            jocforge_application::source_frame_bridge::build_flat7x_provisional_source_role_map(
                 prepared.graph().graph(),
                 target,
             )
             .map_err(|error| {
                 EncodeRequestError::SourcePipeline(format!("Flat7x input layout: {error:?}"))
             })?;
-                (
-                    usize::try_from(target.aggregate_frame_bytes())
-                        .map_err(|_| EncodeRequestError::UnsupportedDataRate)?,
-                    target
-                        .aggregate_rate_kbps()
-                        .ok_or(EncodeRequestError::UnsupportedDataRate)?,
-                )
-            }
+            (
+                usize::try_from(target.aggregate_frame_bytes())
+                    .map_err(|_| EncodeRequestError::UnsupportedDataRate)?,
+                target
+                    .aggregate_rate_kbps()
+                    .ok_or(EncodeRequestError::UnsupportedDataRate)?,
+            )
         }
+    };
+    let (frame_bytes, total_kbps) = if ac3_core {
+        validate_ac3_core_rate(codec_rate)?;
+        (5120, 1280)
+    } else {
+        (frame_bytes, total_kbps)
     };
     println!(
         "preflight_only=true\njob_xml_path={}\njob_xml_sha256={}\nconfig_sha256={}\ninput_kind={}\ninput_path={}\ninput_file_sha256={}\ninput_file_bytes={}\nsample_rate_hz={}\nchannels={}\npcm_bits={}\nsamples_per_channel={}\nrender_samples_per_channel={}\ndata_rate_kbps={}\naggregate_rate_kbps={}\nframe_bytes={}\noutput_path={}\noutput_exists=false\noutput_created=false\nmeter_started=false\nsource_callbacks_started=false",
@@ -1371,7 +1372,8 @@ fn run_inner(
                 let mut output = carrier_delay
                     .pop_front()
                     .ok_or(EncodeRequestError::ClockMismatch)?;
-                output.align_analysis_windows(&carrier_delay[0], &carrier_delay[1]);
+                if ac3_core {output.align_supplemental_pair_windows(&carrier_delay[0], &carrier_delay[1]);}
+                else {output.align_analysis_windows(&carrier_delay[0], &carrier_delay[1]);}
                 pending
                     .source_index
                     .map(|source_index| {

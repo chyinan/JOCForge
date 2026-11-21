@@ -139,14 +139,11 @@ impl SubstreamPlan {
     }
 
     pub fn with_ac3_core(mut self) -> Result<Self, String> {
-        if !self.layout.uses_five_carriers()
-            || self.frames.len() != 2
+        if self.frames.len() != 2
             || self.partition != BlockPartition::Six
             || self.emdf_location != EmdfLocation::FrameEnd
         {
-            return Err(
-                "legacy-ac3 requires idx0 or idx3, six blocks, one D0 and frame-end EMDF".into(),
-            );
+            return Err("legacy-ac3 requires six blocks, one D0 and frame-end EMDF".into());
         }
         self.ac3_core = true;
         Ok(self)
@@ -179,22 +176,48 @@ mod tests {
 
     #[test]
     fn ac3_core_requires_one_six_block_dependent_with_frame_end_metadata() {
-        for layout in [
-            JocReconstructionLayout::FivePointOneWithoutPhase,
-            JocReconstructionLayout::ExistingSelectedFivePointOne,
+        for (layout, channel_map) in [
+            (JocReconstructionLayout::FivePointOneWithoutPhase, 0xc000),
+            (
+                JocReconstructionLayout::ExistingSelectedFivePointOne,
+                0xc000,
+            ),
+            (JocReconstructionLayout::Flat7x, 0x0200),
+            (JocReconstructionLayout::FivePointOnePlusHeight, 0x0010),
+            (JocReconstructionLayout::HeightPairWithPhase, 0x0010),
         ] {
-            let plan = SubstreamPlan::new(layout, 1, LfeOwner::Independent).unwrap();
-            assert!(plan.clone().with_ac3_core().is_err());
-            let plan = plan.with_emdf_location(EmdfLocation::FrameEnd).unwrap();
-            assert!(
-                plan.clone()
-                    .with_partition(BlockPartition::Three)
-                    .with_ac3_core()
-                    .is_err()
-            );
-            let plan = plan.with_ac3_core().unwrap();
-            assert_eq!(plan.ac3_core_lfe(), Some(true));
-            assert_eq!(plan.frames[1].map, 0xc000);
+            for owner in [
+                LfeOwner::None,
+                LfeOwner::Independent,
+                LfeOwner::Dependent,
+                LfeOwner::ReplaceIndependent,
+            ] {
+                let plan = SubstreamPlan::new(layout, 1, owner).unwrap();
+                assert!(plan.clone().with_ac3_core().is_err());
+                let plan = plan.with_emdf_location(EmdfLocation::FrameEnd).unwrap();
+                assert!(
+                    plan.clone()
+                        .with_partition(BlockPartition::Three)
+                        .with_ac3_core()
+                        .is_err()
+                );
+                let plan = plan.with_ac3_core().unwrap();
+                assert_eq!(
+                    plan.ac3_core_lfe(),
+                    Some(matches!(
+                        owner,
+                        LfeOwner::Independent | LfeOwner::ReplaceIndependent
+                    ))
+                );
+                assert_eq!(
+                    plan.frames[1].map,
+                    channel_map
+                        | u16::from(matches!(
+                            owner,
+                            LfeOwner::Dependent | LfeOwner::ReplaceIndependent
+                        ))
+                );
+            }
         }
     }
 
