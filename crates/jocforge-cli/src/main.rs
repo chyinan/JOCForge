@@ -66,6 +66,9 @@ struct EncodeArgs {
     /// Write strict ETSI JOC/OAMD EMDF signalling for the selected stream.
     #[arg(long)]
     etsi_strict: bool,
+    /// Split each 1536-sample programme interval into equal E-AC-3 syncframes.
+    #[arg(long, value_name = "6|3+3|2+2+2|1x6")]
+    block_partition: Option<jocforge::encode_request::BlockPartition>,
     /// Emit this many dependent E-AC-3 frames after each independent frame.
     #[arg(long,value_parser=clap::value_parser!(u8).range(0..=6))]
     dependent_count: Option<u8>,
@@ -122,10 +125,14 @@ fn main() -> ExitCode {
                 eprintln!("--total-rate requires a paired stream (idx1, idx2 or idx4)");
                 return ExitCode::from(2);
             }
+            use jocforge::encode_request::BlockPartition;
             use jocforge_application::meter_source_bridge::EmdfCarriageProfile;
-            let signalling = if args.etsi_strict
+            let partition = args.block_partition.unwrap_or(BlockPartition::Six);
+            let compose = partition != BlockPartition::Six
                 || args.dependent_count.is_some()
-                || args.lfe_owner.is_some()
+                || args.lfe_owner.is_some();
+            let signalling = if args.etsi_strict
+                || compose
                 || layout.uses_height_pair()
                 || layout == JocReconstructionLayout::FivePointOneWithoutPhase
             {
@@ -134,7 +141,7 @@ fn main() -> ExitCode {
                 EmdfCarriageProfile::DeployedCompat
             };
             use jocforge::encode_request::{LfeOwner, SubstreamPlan};
-            let topology = if args.dependent_count.is_some() || args.lfe_owner.is_some() {
+            let topology = if compose {
                 let owner = match args.lfe_owner.as_deref() {
                     Some("none") => LfeOwner::None,
                     Some("dependent") => LfeOwner::Dependent,
@@ -149,7 +156,7 @@ fn main() -> ExitCode {
                     )),
                     owner,
                 ) {
-                    Ok(p) => Some(p),
+                    Ok(plan) => Some(plan.with_partition(partition)),
                     Err(e) => {
                         eprintln!("{e}");
                         return ExitCode::from(2);

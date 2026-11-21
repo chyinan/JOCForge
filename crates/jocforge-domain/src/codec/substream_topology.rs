@@ -1,6 +1,44 @@
 // pattern: Functional Core
 //! Channel ownership of six-block E-AC-3 access units.
 use crate::profile::JocReconstructionLayout;
+/// Number of audio blocks per syncframe within a six-block programme interval.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum BlockPartition {
+    Six,
+    Three,
+    Two,
+    One,
+}
+impl std::str::FromStr for BlockPartition {
+    type Err = &'static str;
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        match value {
+            "6" => Ok(Self::Six),
+            "3+3" => Ok(Self::Three),
+            "2+2+2" => Ok(Self::Two),
+            "1x6" | "1+1+1+1+1+1" => Ok(Self::One),
+            _ => Err("expected 6, 3+3, 2+2+2, or 1x6 (1+1+1+1+1+1)"),
+        }
+    }
+}
+impl BlockPartition {
+    pub(super) const fn blocks(self) -> usize {
+        match self {
+            Self::Six => 6,
+            Self::Three => 3,
+            Self::Two => 2,
+            Self::One => 1,
+        }
+    }
+    pub(super) const fn code(self) -> u8 {
+        match self {
+            Self::Six => 3,
+            Self::Three => 2,
+            Self::Two => 1,
+            Self::One => 0,
+        }
+    }
+}
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum LfeOwner {
     None,
@@ -19,6 +57,7 @@ pub(super) struct FramePlan {
 #[derive(Clone, Debug)]
 pub struct SubstreamPlan {
     pub(super) frames: Vec<FramePlan>,
+    pub(super) partition: BlockPartition,
     layout: JocReconstructionLayout,
 }
 
@@ -82,7 +121,16 @@ impl SubstreamPlan {
                 lfe: has_lfe,
             });
         }
-        Ok(Self { frames, layout })
+        Ok(Self {
+            frames,
+            layout,
+            partition: BlockPartition::Six,
+        })
+    }
+
+    pub fn with_partition(mut self, partition: BlockPartition) -> Self {
+        self.partition = partition;
+        self
     }
 
     pub fn layout(&self) -> JocReconstructionLayout {

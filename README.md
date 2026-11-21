@@ -86,6 +86,17 @@ mkdir height-multi
 jocforge encode input.adm.wav height-multi/mix.candidate.ec3 --joc-layout idx4 --total-rate 1664 --dependent-count 6 --lfe-owner dependent
 ```
 
+### 短块划分
+
+`--block-partition` 支持 `3+3`、`2+2+2` 和 `1x6`（也可写作 `1+1+1+1+1+1`）。默认值是 `6`。短块使用原生 E-AC-3，每个 1536 采样区间的总码率与时长按原参数计算。每个子区间先写 I0，随即写其 D0…Dn；同一组的块数一致。最后一个子区间的最后一条子流承载一次 JOC/OAMD。过低码率若容不下全部同步帧头、指数和元数据，会返回容量错误。
+
+文件输入和 XML 作业共用该选项，可与 `--dependent-count`、`--lfe-owner` 配合。例如：
+
+```powershell
+mkdir height-short
+jocforge encode input.adm.wav height-short/song.candidate.ec3 --joc-layout idx4 --total-rate 1664 --block-partition 3+3 --dependent-count 2 --lfe-owner dependent
+```
+
 ### 无损封装为 MKA 或 MP4
 
 在同一个 PowerShell 会话中任选一种容器。`-c:a copy` 直接复制 EC3 音轨并保留 JOC 元数据。

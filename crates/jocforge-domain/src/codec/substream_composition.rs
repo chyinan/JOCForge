@@ -1,4 +1,4 @@
-//! Six-block E-AC-3 access units with programme-owned channel maps.
+//! E-AC-3 syncframes grouped into six-block programme access units.
 use super::{
     bap::{BapParameters, BapProfileInput, BapRowInput, PreparedBapRow, prepare_bap_row},
     bitio::{FrameBitCursor, FrameBitWriter},
@@ -10,7 +10,7 @@ use super::{
 };
 use crate::integrity::crc16::eac3_crc16;
 
-use super::substream_topology::{FramePlan, SubstreamPlan};
+use super::substream_topology::{BlockPartition, FramePlan, SubstreamPlan};
 
 impl SubstreamPlan {
     pub fn encode(
@@ -30,78 +30,125 @@ impl SubstreamPlan {
         if self.frames.iter().any(|frame| frame.channels.contains(&6)) != extended.is_some() {
             return Err("spectral rows do not match the substream plan".into());
         }
-        let reserved = metadata.emdf.len().div_ceil(2) + 12;
-        let available = (bytes / 2)
-            .checked_sub(reserved)
-            .ok_or("insufficient access unit budget")?;
-        let total: usize = weights.iter().sum();
-        let mut sizes: Vec<usize> = weights
-            .iter()
-            .map(|w| (available * w / total).min(2048))
-            .collect();
-        let last = sizes.len() - 1;
-        sizes[last] = (sizes[last] + reserved).min(2048);
-        let mut left = bytes / 2 - sizes.iter().sum::<usize>();
-        while left > 0 {
-            let mut progress = false;
-            for size in &mut sizes {
-                if *size < 2048 && left > 0 {
-                    *size += 1;
-                    left -= 1;
-                    progress = true;
+        let last = self.frames.len() - 1;
+        let sizes = if self.partition == BlockPartition::Six {
+            six_block_sizes(&weights, metadata.emdf.len(), bytes)?
+        } else {
+            Vec::new()
+        };
+        let blocks = self.partition.blocks();
+        let mut components = Vec::with_capacity((6 / blocks) * self.frames.len());
+        for start in (0..6).step_by(blocks) {
+            for (index, frame) in self.frames.iter().enumerate() {
+                let mut rows = Vec::new();
+                for &lane in &frame.channels {
+                    let replaced = self.frames[1..]
+                        .iter()
+                        .any(|dependent| dependent.channels.contains(&lane));
+                    let use_extra = extended.is_some() && lane >= 3 && (index != 0 || !replaced);
+                    let samples: [&[u32]; 6] = std::array::from_fn(|block| {
+                        if use_extra {
+                            &extended.unwrap()[block].coefficient_bits_by_channel()[lane - 3][..]
+                        } else {
+                            &source.coefficients_by_block[block].fullband_words[lane][..]
+                        }
+                    });
+                    let switches =
+                        std::array::from_fn(|block| !use_extra && source.short_flags[block][lane]);
+                    rows.push(SpectralRow::new(
+                        samples,
+                        switches,
+                        false,
+                        start..start + blocks,
+                        &source.bap_parameters,
+                    )?);
                 }
+                if frame.lfe {
+                    let samples = std::array::from_fn(|block| {
+                        source.coefficients_by_block[block].lfe_words.as_slice()
+                    });
+                    rows.push(SpectralRow::new(
+                        samples,
+                        [false; 6],
+                        true,
+                        start..start + blocks,
+                        &source.bap_parameters,
+                    )?);
+                }
+                let config = Syncframe {
+                    index,
+                    plan: frame,
+                    rows,
+                    bytes: sizes.get(index).map_or(4096, |words| words * 2),
+                    metadata: &metadata,
+                    carry: index == last && start + blocks == 6,
+                    start,
+                    partition: self.partition,
+                };
+                components.push(config);
             }
-            if !progress {
-                return Err("access unit exceeds syncframe capacity".into());
+        }
+        if self.partition != BlockPartition::Six {
+            // Reserve each actual header, exponents, EMDF and CRC before sharing the
+            // remaining whole words. Metadata occurs once per programme interval.
+            let mut scratch = [0u8; 4096];
+            let mut minimum = 0usize;
+            for component in &mut components {
+                let bits = component.write(&mut scratch, 0, None)? as usize;
+                component.bytes = (bits + 18).div_ceil(16) * 2;
+                minimum += component.bytes;
+            }
+            let mut words = bytes.checked_sub(minimum).ok_or_else(|| {
+                format!("partition requires {minimum} syntax bytes, interval budget is {bytes}")
+            })? / 2;
+            let mut remaining_weight = weights.iter().sum::<usize>() * (6 / blocks);
+            for component in &mut components {
+                let weight = weights[component.index];
+                let extra = (words * weight / remaining_weight).min((4096 - component.bytes) / 2);
+                component.bytes += 2 * extra;
+                remaining_weight -= weight;
+                words -= extra;
+            }
+            if words != 0 {
+                return Err("short-frame size exceeds representable capacity".into());
             }
         }
         let mut output = Vec::with_capacity(bytes);
-        for (index, frame) in self.frames.iter().enumerate() {
-            let mut rows = Vec::new();
-            for &lane in &frame.channels {
-                let replaced = self.frames[1..]
-                    .iter()
-                    .any(|dependent| dependent.channels.contains(&lane));
-                let use_extra = extended.is_some() && lane >= 3 && (index != 0 || !replaced);
-                let samples: [&[u32]; 6] = std::array::from_fn(|block| {
-                    if use_extra {
-                        &extended.unwrap()[block].coefficient_bits_by_channel()[lane - 3][..]
-                    } else {
-                        &source.coefficients_by_block[block].fullband_words[lane][..]
-                    }
-                });
-                let switches =
-                    std::array::from_fn(|block| !use_extra && source.short_flags[block][lane]);
-                rows.push(SpectralRow::new(
-                    samples,
-                    switches,
-                    false,
-                    &source.bap_parameters,
-                )?);
-            }
-            if frame.lfe {
-                let samples = std::array::from_fn(|block| {
-                    source.coefficients_by_block[block].lfe_words.as_slice()
-                });
-                rows.push(SpectralRow::new(
-                    samples,
-                    [false; 6],
-                    true,
-                    &source.bap_parameters,
-                )?);
-            }
-            let config = Syncframe {
-                index,
-                plan: frame,
-                rows,
-                bytes: sizes[index] * 2,
-                metadata: &metadata,
-                carry: index == last,
-            };
-            output.extend(config.encode(&source.bap_parameters)?);
+        for component in components {
+            output.extend(component.encode(&source.bap_parameters)?);
         }
         Ok(output)
     }
+}
+
+// Preserve the six-block allocation policy and its rounding for existing encodes.
+fn six_block_sizes(weights: &[usize], emdf_len: usize, bytes: usize) -> Result<Vec<usize>, String> {
+    let reserved = emdf_len.div_ceil(2) + 12;
+    let available = (bytes / 2)
+        .checked_sub(reserved)
+        .ok_or("insufficient access unit budget")?;
+    let total: usize = weights.iter().sum();
+    let mut sizes: Vec<usize> = weights
+        .iter()
+        .map(|w| (available * w / total).min(2048))
+        .collect();
+    let last = sizes.len() - 1;
+    sizes[last] = (sizes[last] + reserved).min(2048);
+    let mut left = bytes / 2 - sizes.iter().sum::<usize>();
+    while left > 0 {
+        let mut progress = false;
+        for size in &mut sizes {
+            if *size < 2048 && left > 0 {
+                *size += 1;
+                left -= 1;
+                progress = true;
+            }
+        }
+        if !progress {
+            return Err("access unit exceeds syncframe capacity".into());
+        }
+    }
+    Ok(sizes)
 }
 
 pub struct FrameMetadata<'a> {
@@ -123,12 +170,13 @@ impl<'a> SpectralRow<'a> {
         samples: [&'a [u32]; 6],
         switches: [bool; 6],
         lfe: bool,
+        range: std::ops::Range<usize>,
         tables: &BapParameters,
     ) -> Result<Self, String> {
         let n = samples[0].len();
         let mut peak = [0u32; 253];
-        for block in samples {
-            for (p, &v) in peak.iter_mut().zip(block) {
+        for block in &samples[range] {
+            for (p, &v) in peak.iter_mut().zip(*block) {
                 *p = (*p).max(v & 0x7fff_ffff);
             }
         }
@@ -171,6 +219,8 @@ struct Syncframe<'a> {
     bytes: usize,
     metadata: &'a FrameMetadata<'a>,
     carry: bool,
+    start: usize,
+    partition: BlockPartition,
 }
 impl Syncframe<'_> {
     fn encode(&self, tables: &BapParameters) -> Result<Vec<u8>, String> {
@@ -187,7 +237,7 @@ impl Syncframe<'_> {
                 self.index, self.bytes
             ));
         }
-        let budget = (self.bytes * 8 - syntax - 18) / 6;
+        let budget = (self.bytes * 8 - syntax - 18) / self.partition.blocks();
         let mut lo = 0u16;
         let mut hi = 1024u16;
         while hi - lo > 1 {
@@ -243,7 +293,7 @@ impl Syncframe<'_> {
         bits!(self.index.saturating_sub(1), 3);
         bits!(self.bytes / 2 - 1, 11);
         bits!(0, 2);
-        bits!(3, 2);
+        bits!(self.partition.code(), 2);
         bits!(acmod, 3);
         bits!(self.plan.lfe, 1);
         bits!(16, 5);
@@ -270,14 +320,20 @@ impl Syncframe<'_> {
             bits!(0, 5); // pgmscle, extpgmscle, mixdef and frmmixcfginfoe
         }
         bits!(0, 1); // infomdate
+        if self.index == 0 && self.partition != BlockPartition::Six {
+            bits!(self.start == 0, 1);
+        } // convsync
         bits!(self.carry, 1);
         if self.carry {
             bits!(1, 6);
             bits!(1, 8);
             bits!(16, 8);
         }
-        bits!(1, 1); // explicit per-block exponent strategies
-        bits!(0, 1); // adaptive hybrid transform disabled
+        let blocks = self.partition.blocks();
+        if blocks == 6 {
+            bits!(1, 1);
+            bits!(0, 1);
+        } // implicit exponent strategies and no AHT on short frames
         bits!(0, 2); // shared frame-level SNR offset
         bits!(0, 1); // transient pre-noise processing disabled
         bits!(1, 1); // preserve the source block switches
@@ -288,23 +344,29 @@ impl Syncframe<'_> {
         bits!(self.carry, 1); // only the metadata owner has skip fields
         bits!(0, 1); // no spectral extension attenuation
         if n > 1 {
-            bits!(0, 6);
+            bits!(0, blocks as u8);
         }
-        for block in 0..6 {
+        for block in 0..blocks {
             for _ in 0..n {
                 bits!(if block == 0 { 3 } else { 0 }, 2);
             }
         }
         if self.plan.lfe {
-            bits!(32, 6);
+            bits!(1u32 << (blocks - 1), blocks as u8);
         }
         if self.index == 0 {
-            for _ in 0..n {
-                bits!(0, 5);
+            if blocks != 6 {
+                bits!(0, 1);
+            } else {
+                for _ in 0..n {
+                    bits!(0, 5);
+                }
             }
         } // independent six-block converter exponent strategies
         bits!(q, 10);
-        bits!(0, 1);
+        if blocks > 1 {
+            bits!(0, 1);
+        }
         let order = [
             MantissaChannel::Left,
             MantissaChannel::Center,
@@ -313,7 +375,8 @@ impl Syncframe<'_> {
             MantissaChannel::RightSurround,
             MantissaChannel::Lfe,
         ];
-        for block in 0..6 {
+        for local in 0..blocks {
+            let block = self.start + local;
             for r in &self.rows[..n] {
                 bits!(r.switches[block], 1);
             }
@@ -324,9 +387,9 @@ impl Syncframe<'_> {
             }
             bits!(0, 1); // SPX disabled
             if n == 2 {
-                bits!(0, if block == 0 { 4 } else { 1 });
+                bits!(0, if local == 0 { 4 } else { 1 });
             }
-            if block == 0 {
+            if local == 0 {
                 for row in &self.rows[..n] {
                     bits!((row.samples[0].len() - 73) / 3, 6);
                 }
@@ -346,8 +409,9 @@ impl Syncframe<'_> {
                 bits!(0, 1);
             } // convsnroffste
             if self.carry {
-                bits!(block == 2, 1);
-                if block == 2 {
+                let metadata_block = if blocks == 6 { 2 } else { blocks - 1 };
+                bits!(local == metadata_block, 1);
+                if local == metadata_block {
                     bits!(self.metadata.emdf.len(), 9);
                     w.write_bytes(self.metadata.emdf)
                         .map_err(|e| format!("{e:?}"))?;
@@ -387,4 +451,69 @@ fn mantissa_bits(rows: &[Vec<u8>]) -> usize {
         + counts[1].div_ceil(3) * 5
         + counts[2].div_ceil(3) * 7
         + counts[4].div_ceil(2) * 7
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn short_independent_frames_mark_only_the_first_interval_for_converter_sync() {
+        let tables = super::super::bap::load_bap_parameters(Some(include_bytes!(
+            "../../../../outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-PUBLIC-BAP-PROVIDER-V1/public-bap-48k-v1.json"
+        ))).unwrap();
+        let metadata = FrameMetadata {
+            emdf: &[],
+            dialnorm: 24,
+            compr: None,
+            dynrng: [None; 6],
+            mixing: Flat7xD0MixingMetadataValues {
+                mixmdo: 2,
+                ltrtcmixlev: 4,
+                lorocmixlev: 4,
+                ltrtsurmixlev: 4,
+                lorosurmixlev: 4,
+            },
+        };
+        let plan = FramePlan {
+            channels: vec![0, 1, 2, 3, 4],
+            map: 0,
+            lfe: false,
+        };
+        let samples = [0u32; 217];
+        for (token, code) in [("1x6", 0), ("1+1+1+1+1+1", 0), ("2+2+2", 1), ("3+3", 2)] {
+            let partition = token.parse::<BlockPartition>().unwrap();
+            let blocks = partition.blocks();
+            for start in (0..6).step_by(blocks) {
+                let rows = (0..5)
+                    .map(|_| {
+                        SpectralRow::new(
+                            [&samples[..]; 6],
+                            [false; 6],
+                            false,
+                            start..start + blocks,
+                            &tables,
+                        )
+                        .unwrap()
+                    })
+                    .collect();
+                let frame = Syncframe {
+                    index: 0,
+                    plan: &plan,
+                    rows,
+                    bytes: 1024,
+                    metadata: &metadata,
+                    carry: false,
+                    start,
+                    partition,
+                }
+                .encode(&tables)
+                .unwrap();
+                assert_eq!((frame[4] >> 4) & 3, code);
+                // Independent 3/2, no LFE or compr, with the programme mix metadata.
+                assert_eq!(frame[9] & 0x80 != 0, start == 0);
+                assert_eq!(eac3_crc16(&frame[2..]), 0);
+            }
+        }
+        assert!("1+2+3".parse::<BlockPartition>().is_err());
+    }
 }
