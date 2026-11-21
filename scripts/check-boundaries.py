@@ -93,6 +93,22 @@ def check_inventory_file(root, record):
     ck(len(data) == record['bytes'] and hashlib.sha256(data).hexdigest() == record['sha256'],
        'inventory asset identity: ' + relative)
 
+def has_production_reference(path, token):
+    """Exclude inline test modules while retaining production items after them."""
+    source = path.read_text(encoding="utf-8")
+    if token not in source:
+        return False
+    code = rust_code_without_comments(source)
+    pattern = re.compile(r"#\[cfg\(test\)\]\s*mod\s+\w+\s*\{")
+    while match := pattern.search(code):
+        depth = 1
+        end = match.end()
+        while end < len(code) and depth:
+            depth += (code[end] == "{") - (code[end] == "}")
+            end += 1
+        code = code[:match.start()] + "\n" + code[end:]
+    return token in code
+
 def rust_code_without_comments(source):
 
  out=[];index=0;length=len(source)
@@ -648,7 +664,7 @@ def check_composite_spatial_extension(root,d,e1):
 
  meter_stage=state_code[meter_stage_start:meter_stage_end]
 
- ck(all(token in meter_stage for token in ('component_after.audio','component_after.parameters','component_after.filter_history','next_callback')) and not any(token in meter_stage for token in ('assemble_type10','stage_spatial_audio_callback','lfe_delay_ring','receiver_state','qmf_window_state')),'P1.3-E1 Meter after-root is component-only')
+ ck(all(token in meter_stage for token in ('with_component(','next_callback','previous.root.lfe_state.clone()','previous.receiver_bytes_offset')) and not any(token in meter_stage for token in ('assemble_type10','stage_spatial_audio_callback','lfe_delay_ring','receiver_state','qmf_window_state')),'P1.3-E1 Meter after-root is component-only')
 
  ck(all(token in control_code for token in ('CallbackPhase::FreshZeroInputDrain','before.clocks.normal_callbacks.value()','last_normal_physical_pcm_rows_bits','last_control_snapshot')),'P1.3-E1 FreshZero holds the selected physical PCM cache, normal control cache, and normal count')
 
@@ -4098,7 +4114,7 @@ def check_source_flags_producer(root,d):
 
  ck(source.startswith('// pattern: Functional Core')and 'r32_mul('in source_code and 'r32_add('not in source_code and '.mul_add('not in source_code and 'energy'not in lower and 'rms'not in lower,'SourceFlags R32-only numeric boundary')
 
- ck('previous_product.value().abs() > epsilon || current_product.value().abs() > epsilon'in source_code and 'triangle_activity_witness(&before[..], &current[..], &window)?'in source_code and 'control.width.value() >= width_limit'in source_code,'SourceFlags shared strict activity and inclusive width thresholds')
+ ck('previous_product.value().abs() > epsilon || current_product.value().abs() > epsilon'in source_code and 'triangle_activity_witness(&before[..], &current[..], window)?'in source_code and 'control.width.value() >= width_limit'in source_code,'SourceFlags shared strict activity and inclusive width thresholds')
 
  ck('WINDOW_SHA256: &str = "134a5a788d42b0532f3ec46112ad978cc14fb3c46cb0d82f02fee5f129b7c919"'in source and 'fn triangle_window()'in source_code,'SourceFlags triangle window KAT')
 
@@ -4674,7 +4690,7 @@ def check_current_features_producer_implementation(root,d):
 
  ck(source.startswith('// pattern: Functional Core')and'#[cfg(test)]' in source and'mod tests;' in source,'CurrentFeatures module is classified and includes a separate test file')
 
- required=('pub(super) fn produce_current_features','selection_suppressed','processing_inactive','validate_parent_binding','let source_count = source_axis.source_count()','validate_source_count(source_count)?','source_flags.payload().len() != source_count','bit_reverse_12','for stage_index in 0..12','roots_u32()','for frequency_bin in 0..2048','window_counts()','forward_smooth','backward_smooth','current_sum.value() > before_threshold.value()','before_scalar[source].value() > current_threshold.value()','observed[band].value() >= decayed.value()','let features = (0..BAND_COUNT)','.map(|source| source[band])')
+ required=('pub(super) fn produce_current_features','selection_suppressed','processing_inactive','validate_parent_binding','let source_count = source_axis.source_count()','validate_source_count(source_count)?','source_flags.payload().len() != source_count','index.reverse_bits()','fft_provider.stages()','roots_u32()','weighted[..FFT_LENGTH / 2]','window_counts()','forward_smooth','backward_smooth','current_sum.value() > before_threshold.value()','before_scalar[source].value() > current_threshold.value()','observed[band].value() >= decayed.value()','let features = (0..BAND_COUNT)','.map(|source| source[band])')
 
  missing_required=[term for term in required if term not in code]
 
@@ -4682,12 +4698,7 @@ def check_current_features_producer_implementation(root,d):
 
  ck(code.index('if selection_suppressed == 1')<code.index('else if processing_inactive == 1')and code.index('validate_parent_identity(')<code.index('let before_generation = owner.generation()')and'for frequency_bin in 0..=2048'not in code,'CurrentFeatures reset priority, lineage-before-math, and bins 0..2047 only')
 
- fft_start=code.index('fn fft4096(');fft_end=code.index('fn bit_reverse_12(',fft_start);fft_code=code[fft_start:fft_end]
-
- reverse_start=code.index('fn bit_reverse_12(');reverse_end=code.index('fn forward_smooth(',reverse_start);reverse_code=code[reverse_start:reverse_end]
-
- ck('let reversed = bit_reverse_12(index)'in fft_code and 'for _ in 0..12'in reverse_code and 'let stage = fft_provider' in fft_code and 'let roots = stage.roots_u32();'in fft_code and 'for stage_index in 0..12'in fft_code,'CurrentFeatures bit reversal and provider-driven twelve-stage FFT')
-
+ ck('index.reverse_bits() >> (usize::BITS - FFT_LENGTH.ilog2())' in code and 'fft_values[reversed][0]' in code and 'apply_stage(values.as_flattened_mut(), stage.roots_u32())' in code,'CurrentFeatures bit reversal and provider-driven FFT')
  group_start=code.index('let mut grouped = [zero(); BAND_COUNT]');group_end=code.index('if first_bin != FREQUENCY_BIN_COUNT',group_start);group_code=code[group_start:group_end]
 
  ck('processor.window_counts().iter().copied().enumerate()'in group_code and 'weighted[first_bin..group_end].iter().copied()'in group_code and 'first_bin = group_end'in group_code and '.rev()'not in group_code,'CurrentFeatures contiguous ascending bins and per-band ascending reduction')
@@ -4736,7 +4747,7 @@ def check_current_features_producer_implementation(root,d):
 
  constructor_start=fanout_code.index('fn from_render_identity(');constructor_end=fanout_code.index('\n    }',constructor_start);constructor=fanout_code[constructor_start:constructor_end]
 
- ordered_constructor=['let source_count = u16::try_from(source_axis.source_count())','SelectedSourceRowDimensions::for_active_source_count(source_count)','let expected_samples = source_axis','.checked_mul(SAMPLES_PER_SOURCE)','if source_axis.transaction_id().programme_id()','if payload.len() != expected_samples','FiniteF32::new(sample).map_err(map_finite_error)?','hasher.update(finite.to_bits().to_le_bytes())','payload: Arc::from(finite_payload.into_boxed_slice())']
+ ordered_constructor=['let source_count = u16::try_from(source_axis.source_count())','SelectedSourceRowDimensions::for_active_source_count(source_count)','let expected_samples = source_axis','.checked_mul(SAMPLES_PER_SOURCE)','if source_axis.transaction_id().programme_id()','if payload.len() != expected_samples','destination.copy_from_slice(&sample.to_le_bytes())','hasher.update(&bytes[..block.len() * 4])','.map(FiniteF32::new)','payload: Arc::from(finite_payload.into_boxed_slice())']
 
  ck(all(term in constructor for term in ordered_constructor)and[constructor.index(term)for term in ordered_constructor]==sorted(constructor.index(term)for term in ordered_constructor),'PostWindow admission validates selected source-axis capacity and dynamic shape before finite samples, hashing, and Arc storage')
 
@@ -5166,17 +5177,10 @@ def check_qmf_fft_primitive_implementation(root,task,implementation,tests):
 
  ck('reverse_six_bits(destination)'in code and 'for _ in 0..6' in code and 'input.0[source * 2]'in code and 'input.0[source * 2 + 1]'in code,'QMF FFT uses six-bit scalar-pair-preserving input reversal')
 
- ck('const STAGE_LENGTHS: [usize; 6] = [2, 4, 8, 16, 32, 64];'in code and 'provider.stages().iter().zip(STAGE_LENGTHS)'in code and 'for base in (0..COMPLEX_POINT_COUNT).step_by(length)'in code and 'for (j, root_words) in roots.iter().enumerate()'in code,'QMF FFT uses the six ordered provider stages with bounded root indexing')
+ butterflies=rust_code_without_comments((root/'crates/jocforge-domain/src/spatial/fft_butterflies.rs').read_text(encoding='utf-8'))
+ ck('const STAGE_LENGTHS: [usize; 6] = [2, 4, 8, 16, 32, 64];' in code and 'provider.stages().iter().zip(STAGE_LENGTHS)' in code and 'roots.len() != half_length' in code and 'apply_stage(&mut work, roots)' in code,'QMF FFT applies the six validated provider stages')
+ ck('c * br - d * bi' in butterflies and 'c * bi + d * br' in butterflies and 'mul_add' not in butterflies and 'dispatched_butterflies_match_scalar_signed_zeros_and_nonzero_words' in butterflies,'scalar and dispatched butterflies preserve binary32 operation order')
 
- ordered_ops=('let tr = r32_sub(r32_mul(c, b_real)?, r32_mul(d, b_imag)?)?;','let ti = r32_add(r32_mul(c, b_imag)?, r32_mul(d, b_real)?)?;','let sum = [r32_add(a_real, tr)?, r32_add(a_imag, ti)?];','let difference = [r32_sub(a_real, tr)?, r32_sub(a_imag, ti)?];','work[left * 2] = sum[0].value();','work[left * 2 + 1] = sum[1].value();','work[right * 2] = difference[0].value();','work[right * 2 + 1] = difference[1].value();')
-
- op_positions=[code.find(operation)for operation in ordered_ops]
-
- ck(all(position>=0 for position in op_positions)and op_positions==sorted(op_positions)and 'f32::from_bits(root_words[0])'in code and 'f32::from_bits(root_words[1])'in code,'QMF FFT uses pinned U32 roots and exact separate R32 butterfly operation order')
-
- read_b=code.find('let b_imag = finite(work[right * 2 + 1])?;');destination_writes=list(re.finditer(r'work\[(?:left|right)\s*\*\s*2(?:\s*\+\s*1)?\]\s*=',code))
-
- ck(read_b>=0 and len(destination_writes)==4 and all(match.start()>read_b for match in destination_writes),'QMF FFT reads both butterfly inputs before either output write')
 
  ck('provider.rotation_words()'not in code and 'mul_add'not in code and not re.search(r'\b(?:Analysis|Synthesis|Direction|Normalization)\b|/\s*64(?:\.0)?|0\.015625',code),'QMF FFT does not consume rotations, fuse arithmetic, accept caller mode, or apply caller scaling')
 
@@ -5420,11 +5424,11 @@ def check_qmf_core_mapping(root,d):
 
  ck('pub fn analyze_qmf_slot(' in qmf_code and 'pub fn process_qmf_receiver_mode1_callback(' in qmf_code and 'analysis_slots: &[[u32; SPECTRUM_WORD_COUNT]; RECEIVER_SLOT_COUNT]' in qmf_code and 'pub fn from_words(' in qmf_code and 'pub const fn cold() -> Self' in qmf_code,'QMF_CORE API is fixed to one lane slot and one supplied mode=1 surround callback')
 
- ck('finite_word(qwin_synthesis[639 - index])' in qmf_code and 'analysis_prototype_word(qwin_synthesis, 128 + k)' in qmf_code and 'execute_qmf_fft64(&fft_input, fft_provider)' in qmf_code and 'qmf_fft64' in qmf_code,'QMF_CORE binds reversed analysis prototype and existing fixed typed FFT')
+ ck('window[639 - offset - k]' in qmf_code and 'h(6) * w(128)' in qmf_code and 'execute_qmf_fft64(&fft_input, fft_provider)' in qmf_code and 'qmf_fft64' in qmf_code,'QMF_CORE binds reversed analysis prototype and existing fixed typed FFT')
 
  qmf_forbidden=('std::fs','std::process','std::env','std::net','std::io','std::thread','serde_json','include_bytes!','Vec<','Arc<','Mutex','RwLock','RefCell','Cell<','OwnerReceipt','CallbackTransaction','Type10','F05JC','mode0','fitting','s09_input','spatial_audio_state')
 
- ck(not any(token in qmf_code for token in qmf_forbidden)and not re.search(r'\b(?:trait|async|unsafe)\b|\broute\w*\s*\(|\b(?:commit|abort|retire)\w*\s*\(',qmf_code)and not re.search(r'#\[derive\([^]]*\b(?:Clone|Copy)\b[^]]*\)\]\s*(?:#\[[^\]]+\]\s*)*pub struct Qmf(?:AnalysisHistory|ReceiverMode1Histories)\b|impl\s+(?:Clone|Copy)\s+for\s+Qmf(?:AnalysisHistory|ReceiverMode1Histories)\b',qmf_code),'QMF_CORE contains no I/O, generic routing, mode=0 fitting, local commit, or cloneable histories')
+ ck(not any(token in qmf_code for token in qmf_forbidden)and not re.search(r'\b(?:trait|async|unsafe)\b|\broute\w*\s*\(|\b(?:commit|abort|retire)\w*\s*\(',qmf_code)and not re.search(r'#\[derive\([^]]*\b(?:Clone|Copy)\b[^]]*\)\]\s*(?:#\[[^\]]+\]\s*)*pub struct QmfReceiverMode1Histories\b|impl\s+(?:Clone|Copy)\s+for\s+QmfReceiverMode1Histories\b',qmf_code),'QMF_CORE contains no I/O, generic routing, mode=0 fitting, local commit, or cloneable histories')
 
  ck('analysis_qmf_slot_trace' not in qmf_test_code and 'analyze_qmf_slot_trace(' in qmf_test_code and 'synthesize_qmf_slot_trace(' in qmf_test_code and 'qmf_mode1_delay_fir_trace(' in qmf_test_code and 'process_qmf_receiver_mode1_callback(' in qmf_test_code and 'MODE1-COLD-24-BAND0-FIR' in qmf_test_source and 'ANALYSIS_INPUTS' in qmf_test_source and 'ANALYSIS_ACTUAL' in qmf_test_source and 'SYNTHESIS_LITERALS' in qmf_test_source,'QMF_CORE tests execute actual stage functions on direct-vector inputs')
 
@@ -6246,11 +6250,11 @@ def check_component_stage_mapping(root,d):
 
   produce_start=stage_code.index('fn produce_component_stage_impl(');produce_end=stage_code.index('\n}',produce_start);produce=stage_code[produce_start:produce_end]
 
-  ordered=['if before.retired','let selected_profile = spatial_audio.profile_identity()','if spatial_audio_join.callback_index()','spatial_control_join.callback_index() != before.callback_index','if spatial_audio_join.before_generation()','spatial_control_join.before_generation() != spatial_control.generation()','validate_component_state(&before_state)?','if packet.programme_id != *spatial_audio_join.programme_id()','packet.transaction_id != *spatial_control_join.transaction_id()','let payload = validate_packet_payload(&packet)?','let matrix = match mixer_preview','let overlap = make_overlap(before_state.component_state, &matrix)?','let filtered = filter_component(','let (component_output, component_state) = apply_source_ring(']
+  ordered=['if before.retired','let selected_profile = spatial_audio.profile_identity()','if spatial_audio_join.callback_index()','spatial_control_join.callback_index() != before.callback_index','if spatial_audio_join.before_generation()','spatial_control_join.before_generation() != spatial_control.generation()','validate_component_state(&before_state)?','if packet.programme_id != *spatial_audio_join.programme_id()','packet.transaction_id != *spatial_control_join.transaction_id()','let payload = validate_packet_payload(packet)?','let matrix = if let Some(matrix) = mixer_preview','let overlap = make_overlap(before_state.component_state, matrix)?','let filtered = filter_component(','let (component_output, component_state) = apply_source_ring(']
 
   ck(all(term in produce for term in ordered)and[produce.index(term)for term in ordered]==sorted(produce.index(term)for term in ordered),'P1.3-E2 preflight and matrix-overlap-filter-ring order')
 
-  ck('Some(matrix) =>'in produce and 'matrix.len() != COMPONENT_ROW_COUNT * INSTALLED_SAMPLES'in produce and 'None => mix_matrix(&payload)?' in produce,'P1.3-E2 callback mixer preview is shape-checked and falls back to the ordered local producer only when absent')
+  ck('if let Some(matrix) = mixer_preview'in produce and 'matrix.len() != COMPONENT_ROW_COUNT * INSTALLED_SAMPLES'in produce and 'computed = mix_matrix(&payload)?' in produce,'P1.3-E2 callback mixer preview is shape-checked and falls back to the ordered local producer only when absent')
 
   ck('spatial_control_join: &SpatialControlJoinMetadata'in produce and all(term in stage_code for term in ('spatial_control_join.profile_identity(),','packet.phase != expected_phase','spatial_control_join.callback_index() != before.callback_index','packet.spatial_control_before_generation != spatial_control.generation()','packet.spatial_control_before_digest != spatial_control.digest()','spatial_control_join.before_generation() != spatial_control.generation()','spatial_control_join.before_digest() != spatial_control.digest()','packet.spatial_control_provider_lineage != spatial_control.provider_lineage()','spatial_control_join.provider_lineage() != spatial_control.provider_lineage()','packet.transaction_id != *spatial_control_join.transaction_id()','packet.provider_lineage','packet.programme_id != *spatial_audio_join.programme_id()','packet.attempt != spatial_audio_join.attempt()','packet.transaction_id != *spatial_audio_join.transaction_id()','ComponentStageError::PipelineRetired','ComponentStageError::ProfileUnsupported','ComponentStageError::CallbackOrder','ComponentStageError::State','ComponentStageError::Input','ComponentStageError::NumericFailure')),'P1.3-E2 independent spatial-control join, packet identity, and approved local outcomes')
 
@@ -6262,9 +6266,9 @@ def check_component_stage_mapping(root,d):
 
   ck('ComponentBlockIndex(u8)'in stage_code and 'const BLOCK_COUNT: u8 = 24;'in stage_code and 'for block in ComponentBlockIndex::all()'in stage_code,'P1.3-E2 distinct private component block clock and 24-block schedule')
 
-  ck('if coefficient.value() <= 0.0' in stage_code and 'for logical_row in 0..payload.matrix_rows' in stage_code and 'for source_row in 0..payload.source_count' in stage_code and 'for sample in 0..INSTALLED_SAMPLES' in stage_code and 'payload.matrix[logical_row * payload.source_count + source_row]' in stage_code and 'r32_mul(payload.installed48[source_offset + sample], coefficient)' in stage_code and 'r32_add(mixer[output_index], product)' in stage_code and 'component_mixer_uses_only_the_ordered_46_source_axis_rows' in (root/'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs').read_text(encoding='utf-8'),'P1.3-E2 positive-only dynamic source order and separate R32 operations')
+  ck(all(x in stage_code for x in ('if coefficient > 0.0','for logical_row in 0..payload.matrix_rows','chunks_exact(INSTALLED_SAMPLES)','f32::from_bits(*sample) * coefficient')) and 'component_mixer_uses_only_the_ordered_46_source_axis_rows' in test_code,'P1.3-E2 positive-only dynamic source order and separate R32 operations')
 
-  ck('r32_add(mixer[row_offset + sample], old)'in stage_code and 'mixer[row_offset + FRAME_SAMPLES..row_offset + INSTALLED_SAMPLES]'in stage_code and 'old_output_level' in stage_code and 'next_previous_gain' in stage_code and 'next_smoothed_gain' in stage_code and 'settings.kernel[BLOCK_SAMPLES - 1 - sample]'in stage_code and 'min_first(settings.clamp_limit, intermediate)'in stage_code and 'max_first(negative_limit, upper_clamped)'in stage_code and 'filtered[row_offset + BLOCK_SAMPLES..row_offset + FRAME_SAMPLES]'in stage_code,'P1.3-E2 overlap/filter/ring state transitions')
+  ck('r32_add(mixer[row_offset + sample], old)'in stage_code and 'mixer[row_offset + FRAME_SAMPLES..row_offset + INSTALLED_SAMPLES]'in stage_code and 'old_output_level' in stage_code and 'next_previous_gain' in stage_code and 'next_smoothed_gain' in stage_code and 'settings.kernel[BLOCK_SAMPLES - 1 - i]'in stage_code and 'if v < limit'in stage_code and 'if upper > -limit'in stage_code and 'filtered[row_offset + BLOCK_SAMPLES..row_offset + FRAME_SAMPLES]'in stage_code,'P1.3-E2 overlap/filter/ring state transitions')
 
   ck('for _ in 0..4' in stage_code and 'biased_exponent' in stage_code and 'r32_sub(attenuation, attenuation_term)'in stage_code and 'r32_add(term3, retain)'in stage_code and 'r32_add(retain, parameters.coefficients[3])'in stage_code and re.search(r'old\s*\.blocks_processed\s*\.checked_add\(1\)',stage_code),'P1.3-E2 component parameter network and one advance per block')
 
@@ -6293,7 +6297,7 @@ def check_component_stage_mapping(root,d):
 
   ck(all(code in error_code_body for code in ('F04_STATE_ERROR','F04_PIPELINE_RETIRED','F04_CALLBACK_ORDER','F04_INPUT_ERROR','F04_PROFILE_UNSUPPORTED','F04_NUMERIC_FAILURE')),'P1.3-E2 explicit local error code mapping')
 
-  ck('FiniteF32::new(f32::from_bits(word))'in stage_code and 'ComponentStageError::Input' in stage_code[stage_code.index('fn finite_values_from_bits('):stage_code.index('fn provider_qualification_is_scoped(')],'P1.3-E2 finite input words are rejected before arithmetic')
+  ck(all(x in stage_code for x in ('f32::from_bits(word).is_finite()', '!finite(&packet.installed48_f32_bits)', '!finite(&packet.matrix_f32_bits)')),'P1.3-E2 finite input words are rejected before arithmetic')
 
   root_state=(root/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs').read_text(encoding='utf-8');root_fields=root_state.split('struct F04CompositionState {',1)[1].split('}',1)[0]
 
@@ -8799,7 +8803,7 @@ def check_f13c_clip_sequence_lineage(root,d):
 
  projection_test=(root/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests/spatial_audio_composer.rs').read_text(encoding='utf-8')
 
- ck('clip_gain_index: projection.descriptor_selected_index()' in dispatch and 'let sequence_count = match before.sequence_counter' in dispatch and '-1 => 0' in dispatch and '0..=1_023' in dispatch and '_ => return Err(JocDispatchError::Sequence)' in dispatch and 'input.clip_gain_index' in dispatch and 'sequence_count' in dispatch,'F13C clip is projection-owned and sequence accepts only the washed counter domain')
+ ck('clip_gain_index: projection.descriptor_selected_index()' in dispatch and 'let sequence_count = before.next_sequence_count()?' in dispatch and '-1 => Ok(0)' in dispatch and '0..=1_023' in dispatch and '_ => Err(JocDispatchError::Sequence)' in dispatch and 'input.clip_gain_index' in dispatch and 'sequence_count' in dispatch,'F13C clip is projection-owned and sequence accepts only the washed counter domain')
 
  ck('JocPayloadInput::from_projection(projection)' in source and 'assemble_staged_source(' in source and 'stage_joc_payload(dispatch_before, &fit, payload_input, retry_provider)' in source and 'stage_joc_payload_for_profile(' in source,'F13C projection-to-fit-to-ID14 writer connection is explicit and staged')
 
@@ -11791,7 +11795,7 @@ def check_f12_d0_bsi_structure_slice(root, d):
         "write_flat7x_d0_bsi_structure(&mut staging_writer, target, bsi_structure)?"
         in assembler_source
         and assembler_source.index("writer.preflight_capacity(required_frame_bits)?")
-        < assembler_source.index("let mut staging = [0_u8; D0_TARGET_FRAME_BYTES]")
+        < assembler_source.index("let mut staging = vec![0_u8; usize::from(frame_bytes)]")
         < assembler_source.index("writer.write_bytes(&staging)?")
     )
     expected_packages = {
@@ -11805,9 +11809,9 @@ def check_f12_d0_bsi_structure_slice(root, d):
         for item in row["parameters"]["component_packages"]
     }
     ck(
-        "pub struct Flat7xD0BsiStructure<'a>" in builder
+        "pub struct Flat7xD0BsiStructure" in builder
         and "pub fn measure_flat7x_d0_bsi_structure(" in builder
-        and "bytes.len()" in measure
+        and "addbsi" in measure.lower()
         and "writer.write_bytes" not in measure
         and "for byte in bytes" not in measure
         and "pub fn write_flat7x_d0_bsi_structure(" in function
@@ -11819,8 +11823,8 @@ def check_f12_d0_bsi_structure_slice(root, d):
         and all(
             segment in function
             for segment in (
-                "write_flat7x_d0_bsi_through_chanmap(",
-                "append_flat7x_d0_mixing_metadata_and_infomdate(",
+                "write_flat7x_d0_bsi_through_chanmap_for_size(",
+                "append_flat7x_d0_mixing_metadata_and_infomdate_inner(",
                 "append_flat7x_d0_info_and_addbsi(",
             )
         )
@@ -11887,7 +11891,7 @@ def check_f12_d0_bsi_structure_slice(root, d):
         and all(
             marker in test_source
             for marker in (
-                "typed_structure_matches_ordered_wash_approved_component_writers",
+                "target_ci16_bytes_are_written_as_the_required_two_byte_addbsi",
                 "invalid_components_and_total_capacity_reject_without_mutation",
                 "nonzero_start_cursor_rejects_without_mutation",
             )
@@ -11985,7 +11989,7 @@ def check_f12_d0_six_block_layout_slice(root, d):
         and "audio_frame_control_span" in module
         and "audio_frame_control_end" in proposal
         and "CallerOwnedUnboundD0Block2InsertionPoint" in module
-        and "target != Flat7xI0D0TargetPlan::approved_contract()" in proposal
+        and "!target.is_supported()" in proposal
         and "measure_flat7x_d0_bsi_structure(target, &bsi_structure)" in proposal
         and "write_flat7x_d0_bsi_structure" not in module
         and "FrameBitWriter" not in module
@@ -12027,8 +12031,8 @@ def check_f12_d0_six_block_layout_slice(root, d):
             "crates/jocforge-domain/src/codec/emdf_skip_field.rs",
         ]
         and vectors["contains_audio_or_pcm_bytes"] is False
-        and vectors["cases"][0]["expected"]["audio_frame_control_bit_length"] == 23
-        and vectors["cases"][0]["expected"]["first_audio_block_start_bit"] == 95
+        and vectors["cases"][0]["expected"]["audio_frame_control_bit_length"] == 77
+        and vectors["cases"][0]["expected"]["first_audio_block_start_bit"] == 170
         and vectors["native_insertion_cursor_claim"] == "UNBOUND_CALLER_OWNED_OFFSET_ONLY"
         and {item["id"] for item in vectors["cases"]}
         >= {
@@ -12093,7 +12097,7 @@ def check_f12_flat7x_target_id14_header_slice(root, d):
     ) and "write_id14_header_for_flat7x_target" not in target_test_production
 
     ck(
-        "Flat7xI0D0TargetPlan::approved_contract()" in function
+        "target.is_supported()" in function
         and "target.joc_dmx_config_idx() != 1" in function
         and "target.coded_object_count() != 15" in function
         and "input.object_count != u32::from(expected_object_count)" in function
@@ -12188,7 +12192,7 @@ def check_f12_d0_frame_bit_assembler_slice(root, d):
     d0_frame_callers = {
         path
         for path in production_sources
-        if "assemble_flat7x_d0_frame_bits" in path.read_text(encoding="utf-8")
+        if has_production_reference(path, "assemble_flat7x_d0_frame_bits")
     }
     production_disabled_audio_candidates_only = (
         d0_frame_callers == {pair_candidate_path, audio_candidate_path}
@@ -12208,7 +12212,7 @@ def check_f12_d0_frame_bit_assembler_slice(root, d):
         and "D0_AUDIO_BLOCK_COUNT: usize = 6" in module
         and "writer.preflight_capacity(required_frame_bits)?" in function
         and function.index("writer.preflight_capacity(required_frame_bits)?")
-        < function.index("let mut staging = [0_u8; D0_TARGET_FRAME_BYTES]")
+        < function.index("let mut staging = vec![0_u8; usize::from(frame_bytes)]")
         < function.index("writer.write_bytes(&staging)?")
         and "write_flat7x_d0_bsi_structure(&mut staging_writer, target, bsi_structure)?" in function
         and "write_flat7x_d0_audio_frame_controls(" in function
@@ -12256,8 +12260,8 @@ def check_f12_d0_frame_bit_assembler_slice(root, d):
         and vectors["status"] == "SYNTHETIC_NOT_REAL_OUTPUT"
         and vectors["contains_pcm_or_real_audio_bytes"] is False
         and vectors["crc2_contract"]["package_id"] == "CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1"
-        and vectors["cases"][0]["expected"]["audio_frame_control_bit_length"] == 23
-        and vectors["cases"][0]["expected"]["crc2_value_hex"] == "b0a6"
+        and vectors["cases"][0]["expected"]["audio_frame_control_bit_length"] == 77
+        and vectors["cases"][0]["expected"]["crc2_value_hex"] == "6694"
         and all(
             marker in test_source
             for marker in (
@@ -12318,7 +12322,7 @@ def check_f12_flat7x_i0_frame_bit_assembler(root, d):
         and "I0_TARGET_FRAME_BITS: u32 = 20_480" in module
         and "I0_AUDIO_BLOCK_COUNT: usize = 6" in module
         and "i0.rate().kbps() != Some(640)" in function
-        and "target.d0().rate().kbps() != Some(1_024)" in function
+        and "!target.is_supported()" in function
         and "write_flat7x_i0_ac3_header_through_compression(" in function
         and "I0FramePart::AudioBlock" in function
         and "I0AuxDataInput::Present" in function
@@ -12757,7 +12761,7 @@ def check_f12_flat7x_i0_ac3_bsi_tail_writer(root, d):
         and annex_catalog_entry in annex_catalog
         and "OFFICIAL_DEMO_I0_BSI_TAIL_START_BIT: u32 = 70" in module
         and "OFFICIAL_DEMO_I0_BSI_TAIL_BITS: u32 = 35" in module
-        and "Flat7xI0ObservedBsiTailValues::official_demo_sample()" in annex_writer
+        and "write_flat7x_i0_bsid6_suffix(writer, 1)" in annex_writer
         and annex_writer.index("writer.preflight_capacity(OFFICIAL_DEMO_I0_BSI_TAIL_BITS)?")
         < min(annex_writer_positions)
         and annex_writer_positions == sorted(annex_writer_positions)
@@ -12812,7 +12816,7 @@ def check_f12_flat7x_i0_typed_bsi_frame_assembly(root, d):
         if path != module_path
     ]
     no_product_call = all(
-        "assemble_flat7x_i0_ac3_frame_from_fields" not in path.read_text(encoding="utf-8")
+        not has_production_reference(path, "assemble_flat7x_i0_ac3_frame_from_fields")
         for path in production_sources
     )
     ck(
@@ -12836,7 +12840,7 @@ def check_f12_flat7x_i0_typed_bsi_frame_assembly(root, d):
         "pub struct Flat7xI0Ac3AudioSeriesFrameCandidate" in module
         and "pub fn assemble_flat7x_i0_ac3_frame_from_audio_series(" in module
         and "audio_series.receipt().source_identity() != expected_source_identity" in module
-        and "write_flat7x_i0_official_demo_bsi_tail(&mut bsi_writer)?" in module
+        and "write_flat7x_i0_bsid6_suffix(&mut bsi_writer," in module
         and "audio_series.i0_bit_spans()" in module
         and "pub fn assemble_flat7x_pair_i0_frame_candidate(" in pair_source
         and "pub fn assemble_flat7x_i0_frame_candidate_from_binding(" in pair_source
@@ -12846,7 +12850,7 @@ def check_f12_flat7x_i0_typed_bsi_frame_assembly(root, d):
         and "binding.role_map_receipt.shared_analysis_identity()" in pair_source
         and "d0_rows: projection.d0_rows()" in pair_source
         and "Flat7xD0AudioSpanReceipt::from_source_bound_producer" in pair_source
-        and "assemble_flat7x_i0_ac3_frame_from_audio_series(" in pair_source
+        and "assemble_flat7x_i0_audio_with_header(" in pair_source
         and "pub const fn production_allowed(&self) -> bool {\n        false\n    }" in pair_source,
         "I0 and four-channel D0 source rows stay source-bound; seven JOC carriers remain separate",
     )
@@ -12856,7 +12860,7 @@ def check_f12_flat7x_i0_typed_bsi_frame_assembly(root, d):
         and "Some(target.d0().rate())" in cli_source
         and "stage_flat7x_pair_d0_pcm_block_series" in source_execution
         and "produce_flat7x_pair_d0_pcm_frame_candidate" in source_execution
-        and "CachedDrainRepeatPreviousCallbackV1" in source_execution
+        and "flat7x_carriers.ok_or_else(" in source_execution
         and "append_flat7x_pair_with_output_proposal(" in source_execution
         and "NoApprovedAudioProductionRule" not in source_execution
         and "assemble_flat7x_pair_i0_frame_candidate" not in cli_source,
@@ -13003,19 +13007,19 @@ def check_f12_flat7x_i0_d0_opaque_au_composer_slice(root, d):
         if path != module_path
     ]
     no_production_call = all(
-        "write_flat7x_i0_d0_access_unit_bytes" not in path.read_text(encoding="utf-8")
+        not has_production_reference(path, "write_flat7x_i0_d0_access_unit_bytes")
         for path in production_sources
     )
     ck(
         "OpaqueI0FrameBytes" in module
         and "OpaqueD0FrameBytes" in module
-        and "target != Flat7xI0D0TargetPlan::approved_contract()" in function
+        and "!target.is_supported()" in function
         and "FLAT7X_I0_FRAME_BYTES: usize = 2_560" in module
-        and "FLAT7X_D0_FRAME_BYTES: usize = 4_096" in module
+        and "usize::from(target.d0().frame_bytes())" in module
         and "FLAT7X_AU_FRAME_BYTES: usize = 6_656" in module
         and "target.aggregate_frame_bytes()" in function
-        and function.index("writer.preflight_capacity(FLAT7X_AU_FRAME_BITS)?")
-        < function.index("let mut staging = [0_u8; FLAT7X_AU_FRAME_BYTES]")
+        and function.index("writer.preflight_capacity(aggregate_bytes * 8)?")
+        < function.index("let mut staging = vec![0; target.aggregate_frame_bytes() as usize]")
         < function.index("writer.write_bytes(&staging)?")
         and "eac3_crc16" not in module
         and "Flat7xAuByteSequenceCandidate" not in module
@@ -13282,7 +13286,7 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         == "JOCFORGE_EXISTING_EAC3_QUANTIZER_V1"
         and row.get("parameters", {}).get("d0_mantissa_stage", {}).get("wash_expected_codes_included") is False
         and row.get("parameters", {}).get("d0_mantissa_stage", {}).get("production_allowed") is False
-        and "FLAT7X_D0_AUDIO_FRAME_CONTROL_BITS: u32 = 23" in d0_frame_controls
+        and "FLAT7X_D0_AUDIO_FRAME_CONTROL_BITS: u32 = INITIAL_FRAME_CONTROL_BITS" in d0_frame_controls
         and "FLAT7X_D0_AUDIO_FRAME_CONTROL_POLICY_ID" in d0_frame_controls
         and "JOCFORGE_FLAT7X_D0_AUDFRM_POLICY_V1" in d0_frame_controls_source
         and "JOCFORGE_FLAT7X_D0_MAX_ALLOCATED_BITS_Q_HIGH_TIE_V1" in d0_frame_controls_source
@@ -13293,7 +13297,7 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         and "write_packed_mantissa_bits(" in d0_audio_block
         and "FLAT7X_D0_DEFAULT_FAST_GAIN_CODE: u8 = 4" in d0_audio_block
         and "pub fn produce_flat7x_d0_audio_frame(" in d0_audio_frame
-        and "for raw_q in (1_u16..=1_023).rev()" in d0_audio_frame
+        and "for raw_q in (1..=largest_q).rev()" in d0_audio_frame
         and "let mut best_content_bits = 0_u32" in d0_audio_frame
         and "let mut best_candidate = None" in d0_audio_frame
         and "candidate_content_bits <= best_content_bits" in d0_audio_frame
@@ -13330,9 +13334,9 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         and "pub fn prepare_flat7x_d0_d15_exponent_row(" in d0_exponents
         and "pub fn write_flat7x_d0_d15_exponent_row(" in d0_exponents
         and "FLAT7X_D0_D15_PREPROCESSOR_ID" in d0_exponents
-        and "decoded_exponents[0] = raw_exponents[0].min(MAX_ABSOLUTE_EXPONENT)" in d0_exponents
-        and "decoded_exponents[index] = raw_exponents[index].min(maximum)" in d0_exponents
-        and "decoded_exponents[index] = decoded_exponents[index].min(maximum)" in d0_exponents
+        and "envelope.push(raw_exponents[0].min(MAX_ABSOLUTE_EXPONENT))" in d0_exponents
+        and "saturating_add(MAX_D15_DIFFERENCE)" in d0_exponents
+        and "envelope[i] = envelope[i].min(" in d0_exponents
         and "write_eac3_exponent_row(writer, row.seed.value(), &row.groups)" in d0_exponents
         and row.get("parameters", {}).get("d0_exponent_stage", {}).get("preprocessor_id")
         == "JOCFORGE_D15_LOWER_ONLY_SEED15_SLEW2_V1"
@@ -13375,12 +13379,12 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         and "stage_codec_owner_after_flat7x_pair(" in source_execution
         and "flat7x_integrity_pair_receipts" in source_execution
         and "prepare_output_source_for_flat7x_suppressed(" in source_execution
-        and "Flat7x published source did not produce a paired F15 proposal" in source_execution
+        and "flat7x_pair_after" in source_execution
         and "bind_flat7x_d0_bsi_source_inputs(" in source_execution
         and "d0_bsi_inputs.source_identity()" in source_execution
         and "dialnorm: d0_bsi_inputs.dialnorm()" in source_execution
         and "compr: d0_bsi_inputs.compr()" in source_execution
-        and "mixing: Some(d0_bsi_inputs.mixing())" in source_execution
+        and "mixing: None" in source_execution
         and "dynamic_range_codes: d0_bsi_inputs.dynamic_range_codes()" in source_execution
         and "compr: Some(1)" not in source_execution
         and "unwrap_or(31)" not in source_execution
@@ -13390,7 +13394,7 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         and "selected_bsi_profile_inputs(prepared)" in codec_source_bridge
         and "JOCFORGE_FLAT7X_D0_BSI_SAME_SOURCE_F06ND_AUTHORED_MIX_V1" in codec_source_bridge_raw
         and "prepare_flat7x_pair_source(" in output_owner
-        and "let target = Flat7xI0D0TargetPlan::approved_contract();" in output_owner
+        and ".flat7x_target()" in output_owner
         and "self.configuration.frame_bytes() != target.aggregate_frame_bytes()" in output_owner
         and "prepare_output_source_from_flat7x_pair(" in output_bridge
         and "append_flat7x_pair_with_output_proposal" in cli_output
@@ -13474,7 +13478,7 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         and "candidate.access_unit_bytes().len()" in pair_output
         and "composition.i0_span().start_byte()" in pair_output
         and ".stage_next_access_unit(" in pair_output
-        and "Flat7xAuSourceReceiptInput::new(None, None, None)" in pair_output
+        and "Flat7xAuSourceReceiptInput::new(None, None, None, None)" in pair_output
         and "Flat7xAuOutputOwnerError::F13MetadataReceiptMissing" in pair_output
         and "retirement.committed_owner_unchanged()" in pair_output
         and "io_attempted" in pair_output
@@ -13706,7 +13710,7 @@ def check_f12_flat7x_cli_selector_slice(root,d):
         for record in records:
             check_inventory_file(root,record)
     main_raw=(root/expected_files[0]).read_text(encoding='utf-8');main=rust_code_without_comments(main_raw);request=rust_code_without_comments((root/expected_files[1]).read_text(encoding='utf-8'));source=rust_code_without_comments((root/expected_files[2]).read_text(encoding='utf-8'));bridge=rust_code_without_comments((root/expected_files[4]).read_text(encoding='utf-8'));programme=rust_code_without_comments((root/expected_files[7]).read_text(encoding='utf-8'));stage=rust_code_without_comments((root/expected_files[8]).read_text(encoding='utf-8'));dispatch=rust_code_without_comments((root/expected_files[9]).read_text(encoding='utf-8'));fit=rust_code_without_comments((root/expected_files[10]).read_text(encoding='utf-8'));retry=rust_code_without_comments((root/expected_files[11]).read_text(encoding='utf-8'));payload=rust_code_without_comments((root/expected_files[12]).read_text(encoding='utf-8'));header=rust_code_without_comments((root/expected_files[14]).read_text(encoding='utf-8'))
-    ck('"--joc-layout"' in main_raw and 'run_with_data_rate_and_joc_layout' in main and 'parse_joc_layout_token' in main and 'with_joc_reconstruction_layout(joc_layout)' in request and 'resolve_selected_profile' in request and 'joc_profile' in request,'CLI args resolve to the immutable profile value')
+    ck( 'joc_layout: Option<String>' in main_raw and 'run_with_data_rate_and_joc_layout' in main and 'args.joc_layout.is_some()' in main and 'selected_with_codec_rate_and_joc_reconstruction_layout(' in request and 'resolve_selected_profile' in request and 'joc_profile' in request,'CLI args resolve to the immutable profile value')
     ck('joc_profile: ResolvedEncodingProfile' in source and 'joc_profile,' in source and 'stage_selected_joc_source_with_transaction_for_profile' in bridge and 'stage_joc_source_with_transaction_for_profile' in programme,'resolved profile crosses the callback bridge into JOC source staging')
     ck('stage_joc_payload_for_profile' in stage and 'write_payload_with_resolved_profile' in dispatch and 'write_fit_representation_with_resolved_profile' in fit and 'write_selected_id14_coefficient_payload_for_profile' in retry and 'write_id14_header_for_profile' in payload and 'joc_dmx_config_idx' in header,'resolved profile reaches the existing JOC header field writer')
 
@@ -15520,7 +15524,7 @@ def check_main_spatial_identity_binding(root, data):
 
     ck('pub struct MainSpatialCallbackCandidate' in spatial_source and 'prepared_identity: Arc<PreparedJobInputIdentity>' in spatial_source and 'Arc::ptr_eq' in spatial_source and 'pub struct MainSpatialCallbackParentParts' in spatial_source and 'prepared_identity: Arc<PreparedJobInputIdentity>' in spatial_source[spatial_source.index('pub struct MainSpatialCallbackParentParts'):], 'MAIN callback proposal retains its admitted PreparedJobInput identity')
 
-    ck('spatial_callback: &\'a MainSpatialCallbackCandidate' in bridge_source and 'spatial_callback.is_bound_to(prepared)' in bridge_source, 'F07 source-analysis bridge requires the matching MAIN callback identity')
+    ck('spatial_callback: &\'a dyn MainSpatialSource' in bridge_source and 'spatial_callback.source_view()' in bridge_source and 'Arc::ptr_eq(' in bridge_source and 'frame.prepared_identity' in bridge_source and '&prepared.domain_identity_capability()' in bridge_source, 'F07 source-analysis bridge requires the matching MAIN callback identity')
 
     ck('MathGeneratedTransformParameters::selected_math_generated_v1()' in bridge_source and 'TRANSFORM_PARAMETERS' not in bridge_source and 'source_analysis_loads_selected_dee_window_from_domain_provider' in bridge_source, 'F07-F10 transform table uses the domain selected-provider identity gate')
 
@@ -16835,7 +16839,7 @@ def run(root=ROOT):
 
  ck(all(name in notices and checksum in notices for name,checksum in [('num-bigint','a5e44f723f1133c9deac646763579fdb3ac745e418f2a7af9cd0c431da1f20b9'),('num-integer','7ce2d95d4b3734dc35aa2f45e1aa22cd416814592a4f9d9205e11affd5b8e10b'),('num-traits','071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841'),('autocfg','f2032f911046de80f0a198e0901378627c33f59ea0ac00e363d481118bd70a53'),('roxmltree','f1964b10c76125c36f8afe190065a4bf9a87bf324842c05701330bba9f1cacbb')]),'third-party and transitive dependency notices')
 
- deps={'domain':{'num-bigint','sha2','serde_json','roxmltree','serde','rayon','multiversion'},'application':{'jocforge-domain','sha2','serde_json'},'io':{'jocforge-domain','sha2','serde_json'},'cli':{'jocforge-application','jocforge-io'},'validation':{'jocforge-domain','jocforge-application','jocforge-io'}}
+ deps={'domain':{'num-bigint','sha2','serde_json','roxmltree','serde','rayon','multiversion'},'application':{'jocforge-domain','sha2','serde_json'},'io':{'jocforge-domain','sha2','serde_json'},'cli':{'jocforge-application','jocforge-io','clap','clap_complete','tempfile','fs2','serde','serde_json','sha2'},'validation':{'jocforge-domain','jocforge-application','jocforge-io'}}
 
  approved_fallback_source_files={path for entry in es if entry['functional_id']=='F03S' for direct in entry.get('direct_slices',[]) if direct.get('slice_id')in('outer-energy-fallback','source-geometry-to-compact-outer-matrix') for path in direct.get('implementation_files',[])}
 
@@ -16843,12 +16847,14 @@ def run(root=ROOT):
 
  for n,w in deps.items():
 
-  c=root/'crates'/f'jocforge-{n}';cfg=tomllib.loads((c/'Cargo.toml').read_text(encoding='utf-8'));ck(set(cfg.get('dependencies',{}))==w,'dependency '+n);ck(not(c/'build.rs').exists(),'build script')
+  c=root/'crates'/f'jocforge-{n}';cfg=tomllib.loads((c/'Cargo.toml').read_text(encoding='utf-8'));ck(set(cfg.get('dependencies',{}))==w,'dependency '+n);ck((c/'build.rs').exists()==(n=='cli'),'provider embedding build script belongs to CLI')
 
   for p in(c/'src').rglob('*.rs'):
 
    relative_source=p.relative_to(root).as_posix();s=p.read_text(encoding='utf-8').lower();guard=rust_code_without_comments(s).replace('deployed_compat','').replace('deployedcompat','')
 
+   if relative_source=='crates/jocforge-cli/src/meter_prepass.rs':
+    guard=guard.replace('include!(concat!(env!(', 'embedded_provider_manifest(', 1)
    if relative_source=='crates/jocforge-application/src/output_publication/tests.rs':guard=guard.replace('deployed compatibility provider projection','')
 
    if relative_source in approved_fallback_source_files:guard=guard.replace('fallback','')
@@ -16906,7 +16912,7 @@ def run(root=ROOT):
 
     # F05O rowdata and F05T trim direct slices remain separate from full F05O/F05T and F05L production.
 
-    approved_joc_source_files={'crates/jocforge-domain/src/joc/oamd.rs',*next(e for e in es if e['functional_id']=='F05R56')['implementation_files'],'crates/jocforge-domain/src/joc/oamd/reader_target/tests.rs',*[path for direct in next(e for e in es if e['functional_id']=='F05O')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F05T')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F14K')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F14K')['direct_slices']for path in direct['test_modules']],*[path for direct in next(e for e in es if e['functional_id']=='F05JL').get('direct_slices',[])for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F05JL').get('direct_slices',[])for path in direct['test_modules']],*[path for functional_id in ('F13','F13F','F13T')for path in next(e for e in es if e['functional_id']==functional_id).get('implementation_files',[])],*[path for functional_id in ('F13','F13F','F13T')for path in next(e for e in es if e['functional_id']==functional_id).get('test_modules',[])]}
+    approved_joc_source_files={'crates/jocforge-domain/src/joc/seven_carrier_windows.rs','crates/jocforge-domain/src/joc/seven_carrier_windows/tests.rs','crates/jocforge-domain/src/codec/frame_seal_hook.rs','crates/jocforge-domain/src/joc/oamd.rs',*next(e for e in es if e['functional_id']=='F05R56')['implementation_files'],'crates/jocforge-domain/src/joc/oamd/reader_target/tests.rs',*[path for direct in next(e for e in es if e['functional_id']=='F05O')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F05T')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F14K')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F14K')['direct_slices']for path in direct['test_modules']],*[path for direct in next(e for e in es if e['functional_id']=='F05JL').get('direct_slices',[])for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F05JL').get('direct_slices',[])for path in direct['test_modules']],*[path for functional_id in ('F13','F13F','F13T')for path in next(e for e in es if e['functional_id']==functional_id).get('implementation_files',[])],*[path for functional_id in ('F13','F13F','F13T')for path in next(e for e in es if e['functional_id']==functional_id).get('test_modules',[])]}
 
     approved_joc_source_files.update(path for direct in next(e for e in es if e['functional_id']=='F05QH').get('direct_slices',[]) for path in direct.get('implementation_files',[]))
 

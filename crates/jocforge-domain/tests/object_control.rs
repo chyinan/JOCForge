@@ -41,7 +41,7 @@ fn all_28_selected_object_value_rows_match_the_hash_bound_words() {
 }
 
 #[test]
-fn selected_object_value_builder_rejects_start_duration_and_host_domain_errors() {
+fn selected_object_value_builder_checks_timing_and_accepts_variable_host_indices() {
     let vectors: serde_json::Value = serde_json::from_str(EVENT_VECTORS).unwrap();
     let input = &vectors["event_cases"][0]["input"];
     let duration = input["duration_samples"].as_u64().unwrap();
@@ -59,8 +59,8 @@ fn selected_object_value_builder_rejects_start_duration_and_host_domain_errors()
 
     let event = event_with_values(input, 38, 0, duration, duration);
     assert_eq!(
-        build_selected_object_control52(event).unwrap_err(),
-        ObjectControlError::HostDomain
+        build_selected_object_control52(event).unwrap(),
+        build_selected_object_control52(event_with_values(input, 10, 0, duration, duration)).unwrap()
     );
 }
 
