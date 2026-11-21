@@ -213,7 +213,7 @@ pub fn search_coefficient_cell_for_carriers<const CARRIER_COUNT: usize>(
                     error @ CoefficientSearchError::Quantization(
                         CoefficientQuantizationError::ScaledI32Range,
                     ),
-                ) if CARRIER_COUNT == 7 => {
+                ) => {
                     last_scaled_range_error = Some(error);
                     continue;
                 }
@@ -227,6 +227,10 @@ pub fn search_coefficient_cell_for_carriers<const CARRIER_COUNT: usize>(
             }
         }
         let Some((winner_index, winner)) = winner else {
+            // A larger support can be unrepresentable even after a valid smaller fit.
+            if !stages.is_empty() && last_scaled_range_error.is_some() {
+                break;
+            }
             return Err(last_scaled_range_error.unwrap_or(CoefficientSearchError::InputShape));
         };
         if iteration == 0 {
