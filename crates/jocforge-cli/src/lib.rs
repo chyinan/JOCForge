@@ -1,6 +1,7 @@
 // pattern: Imperative Shell
 //! CLI composition helpers for the selected input adapters.
 
+mod cmaf;
 pub mod encode_request;
 pub mod independent_meter_callback;
 mod loudness_cache;

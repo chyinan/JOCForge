@@ -51,14 +51,14 @@ struct EncodeArgs {
     /// Input ADM BWF file.
     #[arg(value_name = "INPUT.adm.wav", required_unless_present = "job_xml")]
     input: Option<PathBuf>,
-    /// Output EC-3 file.
+    /// Output elementary EC-3 or fragmented CMAF file.
     #[arg(value_name = "OUTPUT.ec3", required_unless_present = "job_xml")]
     output: Option<PathBuf>,
     /// Carrier bitrate (D0 for paired streams). Defaults to 1024 kbps.
     #[arg(long, value_name = "KBPS", value_parser = ["384", "448", "576", "640", "768", "1024"])]
     data_rate: Option<String>,
-    /// Total paired-stream bitrate including the 640 kbps AC-3 core.
-    #[arg(long, value_name = "KBPS", requires = "joc_layout", conflicts_with = "data_rate", value_parser = ["1024", "1088", "1216", "1280", "1408", "1664"])]
+    /// Total bitrate for paired elementary streams or the CMAF track.
+    #[arg(long, value_name = "KBPS", conflicts_with = "data_rate", value_parser = ["1024", "1088", "1216", "1280", "1408", "1536", "1664"])]
     total_rate: Option<String>,
     /// Select idx0 through idx4; flat7x is an alias for idx1. Defaults to idx3.
     #[arg(long, value_name = "LAYOUT", value_parser = ["flat7x","idx0","idx1","idx2","idx3","idx4"])]
@@ -66,6 +66,9 @@ struct EncodeArgs {
     /// Write strict ETSI JOC/OAMD EMDF signalling for the selected stream.
     #[arg(long)]
     etsi_strict: bool,
+    /// Output container. CMAF writes a fragmented ec-3 track, default 1664 kbps.
+    #[arg(long,value_parser=["raw","cmaf"],default_value="raw")]
+    container: String,
     /// EMDF carrier: audio-block skip field or dependent frame-end auxdata (etsi or legacy-ac3).
     #[arg(long,value_parser=["skipfld","auxdata","etsi","legacy-ac3"])]
     carriage: Option<String>,
@@ -82,7 +85,7 @@ struct EncodeArgs {
     #[arg(long,value_parser=["independent","dependent","replace-independent","none"])]
     lfe_owner: Option<String>,
     /// Read input and output paths from an XML job.
-    #[arg(long, value_name = "JOB.xml", conflicts_with_all = ["input", "output", "data_rate", "total_rate"])]
+    #[arg(long, value_name = "JOB.xml", conflicts_with_all = ["input", "output", "data_rate"])]
     job_xml: Option<PathBuf>,
     /// Validate the XML job and input metadata without starting the encoder.
     #[arg(long, requires = "job_xml")]
@@ -135,7 +138,39 @@ fn main() -> ExitCode {
                 eprintln!("legacy-ac3 requires --total-rate 1280 or --data-rate 640");
                 return ExitCode::from(2);
             }
-            if args.total_rate.is_some() && !layout.uses_seven_carriers() && !ac3_core {
+            let cmaf = args.container == "cmaf";
+            if !cmaf
+                && args.total_rate.is_some()
+                && (args.joc_layout.is_none() || args.job_xml.is_some())
+            {
+                eprintln!(
+                    "raw --total-rate requires --joc-layout and cannot be used with --job-xml"
+                );
+                return ExitCode::from(2);
+            }
+            if cmaf
+                && (args.emdf_profile.as_deref() == Some("deployed")
+                    || args
+                        .carriage
+                        .as_deref()
+                        .is_some_and(|v| !matches!(v, "etsi" | "auxdata"))
+                    || args.dependent_count.is_some_and(|v| v != 1)
+                    || args.lfe_owner.as_deref().is_some_and(|v| v != "none")
+                    || args
+                        .block_partition
+                        .is_some_and(|v| v != jocforge::encode_request::BlockPartition::Six)
+                    || args.data_rate.as_deref().is_some_and(|v| v != "640"))
+            {
+                eprintln!(
+                    "CMAF requires strict EMDF, six blocks, one auxdata dependent at 640 kbps and no LFE"
+                );
+                return ExitCode::from(2);
+            }
+            if !cmaf && args.total_rate.as_deref() == Some("1536") {
+                eprintln!("1536 kbps is available for CMAF");
+                return ExitCode::from(2);
+            }
+            if args.total_rate.is_some() && !layout.uses_seven_carriers() && !ac3_core && !cmaf {
                 eprintln!("--total-rate requires a paired stream (idx1, idx2 or idx4)");
                 return ExitCode::from(2);
             }
@@ -143,7 +178,8 @@ fn main() -> ExitCode {
             use jocforge_application::meter_source_bridge::EmdfCarriageProfile;
             let partition = args.block_partition.unwrap_or(BlockPartition::Six);
             let auxdata = ac3_core || matches!(args.carriage.as_deref(), Some("auxdata" | "etsi"));
-            let compose = auxdata
+            let compose = cmaf
+                || auxdata
                 || partition != BlockPartition::Six
                 || args.dependent_count.is_some()
                 || args.lfe_owner.is_some();
@@ -160,7 +196,21 @@ fn main() -> ExitCode {
                 EmdfCarriageProfile::DeployedCompat
             };
             use jocforge::encode_request::{LfeOwner, SubstreamPlan};
-            let topology = if compose {
+            let topology = if cmaf {
+                let rate = args
+                    .total_rate
+                    .as_deref()
+                    .unwrap_or("1664")
+                    .parse()
+                    .expect("validated total bitrate");
+                match SubstreamPlan::cmaf(layout, rate) {
+                    Ok(plan) => Some(plan),
+                    Err(e) => {
+                        eprintln!("{e}");
+                        return ExitCode::from(2);
+                    }
+                }
+            } else if compose {
                 let owner = match args.lfe_owner.as_deref() {
                     Some("none") => LfeOwner::None,
                     Some("dependent") => LfeOwner::Dependent,
@@ -218,7 +268,9 @@ fn main() -> ExitCode {
                     )
                 }
             } else {
-                let rate = if let Some(total) = args.total_rate {
+                let rate = if cmaf {
+                    CodecRateProfile::Kbps640
+                } else if let Some(total) = args.total_rate {
                     let kbps = total.parse::<u32>().expect("validated total bitrate");
                     CodecRateProfile::from_kbps(kbps - 640).expect("validated dependent bitrate")
                 } else {

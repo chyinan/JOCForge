@@ -63,6 +63,7 @@ pub(super) struct FramePlan {
 #[derive(Clone, Debug)]
 pub struct SubstreamPlan {
     ac3_core: bool,
+    cmaf_rate: Option<u32>,
     pub(super) emdf_location: EmdfLocation,
     pub(super) frames: Vec<FramePlan>,
     pub(super) partition: BlockPartition,
@@ -133,13 +134,27 @@ impl SubstreamPlan {
             frames,
             layout,
             ac3_core: false,
+            cmaf_rate: None,
             emdf_location: EmdfLocation::SkipField,
             partition: BlockPartition::Six,
         })
     }
 
+    pub fn cmaf(layout: JocReconstructionLayout, rate: u32) -> Result<Self, String> {
+        if !matches!(rate, 1024 | 1280 | 1408 | 1536 | 1664) {
+            return Err("CMAF total rate must be 1024, 1280, 1408, 1536 or 1664 kbps".into());
+        }
+        let mut plan =
+            Self::new(layout, 1, LfeOwner::None)?.with_emdf_location(EmdfLocation::FrameEnd)?;
+        plan.cmaf_rate = Some(rate);
+        Ok(plan)
+    }
+    pub fn cmaf_rate(&self) -> Option<u32> {
+        self.cmaf_rate
+    }
     pub fn with_ac3_core(mut self) -> Result<Self, String> {
-        if self.frames.len() != 2
+        if self.cmaf_rate.is_some()
+            || self.frames.len() != 2
             || self.partition != BlockPartition::Six
             || self.emdf_location != EmdfLocation::FrameEnd
         {

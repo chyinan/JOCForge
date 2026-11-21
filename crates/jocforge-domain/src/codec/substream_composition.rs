@@ -73,7 +73,16 @@ impl SubstreamPlan {
             return Err("spectral rows do not match the substream plan".into());
         }
         let last = self.frames.len() - 1;
-        let sizes = if self.partition == BlockPartition::Six {
+        let sizes = if let Some(rate) = self.cmaf_rate() {
+            if self.partition != BlockPartition::Six
+                || self.frames.len() != 2
+                || self.emdf_location != EmdfLocation::FrameEnd
+                || self.ac3_core_lfe().is_some()
+            {
+                return Err("invalid CMAF composition".into());
+            }
+            vec![(rate as usize - 640) * 2, 1280]
+        } else if self.partition == BlockPartition::Six {
             six_block_sizes(&weights, metadata.emdf.len(), bytes)?
         } else {
             Vec::new()

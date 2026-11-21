@@ -126,6 +126,16 @@ jocforge encode input.adm.wav height-core/song.candidate.ec3 --joc-layout idx4 -
 
 XML 作业的 `data_rate` 填 D0 的 `640`。可用 `--job-xml job.xml --joc-layout idx0 --carriage legacy-ac3 --preflight-only` 核对总码率和每个访问单元的长度。
 
+### CMAF 分片输出
+
+`--container cmaf` 输出单文件分片 MP4。文件以 `ftyp + moov` 初始化，每个 `moof + mdat` 装一个完整的 1536 采样访问单元。五种 JOC profile 均使用严格 EMDF、六块 E-AC-3 I0+D0、无 LFE，D0 帧尾携带 JOC/OAMD。
+
+```powershell
+jocforge encode input.adm.wav height-phase.mp4 --container cmaf --joc-layout idx4 --total-rate 1664
+```
+
+CMAF 默认总码率 1664 kbps，可选 1024、1280、1408、1536、1664。D0 固定 640 kbps，其余码率分给 I0。显式指定的 LFE、依赖子流数、块划分、承载和信令必须符合上述条件。XML 作业仍通过 `output/ec3` 指定输出路径，文件名可填 `.mp4`，XML 的 `data_rate` 填 640；在 CLI 上选择 CMAF 容器和总码率。
+
 ### 无损封装为 MKA 或 MP4
 
 在同一个 PowerShell 会话中任选一种容器。`-c:a copy` 直接复制 EC3 音轨并保留 JOC 元数据。

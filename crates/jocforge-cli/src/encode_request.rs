@@ -349,7 +349,14 @@ pub fn encode_job_xml_with_signalling(
     preflight_only: bool,
     signalling: EmdfCarriageProfile,
 ) -> Result<(), EncodeRequestError> {
-    encode_xml_request(job_xml_path, layout, preflight_only, signalling, false)
+    encode_xml_request(
+        job_xml_path,
+        layout,
+        preflight_only,
+        signalling,
+        false,
+        None,
+    )
 }
 fn encode_xml_request(
     job_xml_path: &Path,
@@ -357,9 +364,10 @@ fn encode_xml_request(
     preflight_only: bool,
     signalling: EmdfCarriageProfile,
     ac3_core: bool,
+    cmaf_rate: Option<u32>,
 ) -> Result<(), EncodeRequestError> {
     validate_signalling(layout, signalling)?;
-    let request = resolve_job_xml_request(job_xml_path)?;
+    let request = resolve_job_xml_request(job_xml_path, cmaf_rate.is_some())?;
     if !preflight_only {
         return run_worker(
             &request.input_path,
@@ -369,7 +377,7 @@ fn encode_xml_request(
             (layout, signalling),
         );
     }
-    if layout.uses_seven_carriers() {
+    if cmaf_rate.is_none() && layout.uses_seven_carriers() {
         validate_flat7x_experimental_candidate_path(&request.output_path)?;
     }
     thread::scope(|scope| {
@@ -377,7 +385,7 @@ fn encode_xml_request(
             .name("jocforge-job-xml-preflight".to_owned())
             .stack_size(ENCODE_REQUEST_STACK_BYTES)
             .spawn_scoped(scope, move || {
-                run_job_xml_preflight(&request, layout, ac3_core)
+                run_job_xml_preflight(&request, layout, ac3_core, cmaf_rate)
             })
             .map_err(|_| EncodeRequestError::WorkerUnavailable)?;
         worker
@@ -395,6 +403,7 @@ struct ResolvedJobXmlRequest {
 
 fn resolve_job_xml_request(
     job_xml_path: &Path,
+    cmaf: bool,
 ) -> Result<ResolvedJobXmlRequest, EncodeRequestError> {
     let job_xml_path =
         std::fs::canonicalize(job_xml_path).map_err(EncodeRequestError::JobXmlInput)?;
@@ -408,10 +417,11 @@ fn resolve_job_xml_request(
     let output_reference = references.output_reference();
     let output_path =
         resolve_job_xml_reference(output_reference.file_name(), output_reference.local_path())?;
-    if !output_path
-        .extension()
-        .and_then(|extension| extension.to_str())
-        .is_some_and(|extension| extension.eq_ignore_ascii_case("ec3"))
+    if !cmaf
+        && !output_path
+            .extension()
+            .and_then(|extension| extension.to_str())
+            .is_some_and(|extension| extension.eq_ignore_ascii_case("ec3"))
     {
         return Err(EncodeRequestError::UnsupportedJobXmlOption(
             "/job_config/output/ec3/file_name (this CLI emits elementary .ec3 output)",
@@ -430,6 +440,7 @@ fn run_job_xml_preflight(
     request: &ResolvedJobXmlRequest,
     layout: JocReconstructionLayout,
     ac3_core: bool,
+    cmaf_rate: Option<u32>,
 ) -> Result<(), EncodeRequestError> {
     if request.output_path.exists() {
         return Err(EncodeRequestError::OutputAlreadyExists);
@@ -487,7 +498,10 @@ fn run_job_xml_preflight(
             )
         }
     };
-    let (frame_bytes, total_kbps) = if ac3_core {
+    let (frame_bytes, total_kbps) = if let Some(rate) = cmaf_rate {
+        validate_cmaf_source(codec_rate, EmdfCarriageProfile::EtsiEmdf)?;
+        ((rate * 4) as usize, rate)
+    } else if ac3_core {
         validate_ac3_core_rate(codec_rate)?;
         (5120, 1280)
     } else {
@@ -938,9 +952,10 @@ pub fn encode_xml_substream_layout(
             true,
             signalling,
             topology.ac3_core_lfe().is_some(),
+            topology.cmaf_rate(),
         );
     }
-    let request = resolve_job_xml_request(path)?;
+    let request = resolve_job_xml_request(path, topology.cmaf_rate().is_some())?;
     run_worker_with_topology(
         &request.input_path,
         &request.output_path,
@@ -984,6 +999,18 @@ fn run_worker_with_topology(
             .join()
             .map_err(|_| EncodeRequestError::WorkerPanicked)?
     })
+}
+
+fn validate_cmaf_source(
+    rate: CodecRateProfile,
+    signalling: EmdfCarriageProfile,
+) -> Result<(), EncodeRequestError> {
+    if rate != CodecRateProfile::Kbps640 || signalling != EmdfCarriageProfile::EtsiEmdf {
+        return Err(EncodeRequestError::SourcePipeline(
+            "CMAF requires strict EMDF and D0 data_rate 640".into(),
+        ));
+    }
+    Ok(())
 }
 
 fn validate_ac3_core_rate(rate: CodecRateProfile) -> Result<(), EncodeRequestError> {
@@ -1039,7 +1066,8 @@ fn run_inner(
     if output_path.exists() {
         return Err(EncodeRequestError::OutputAlreadyExists);
     }
-    if joc_layout.uses_seven_carriers() {
+    let cmaf_rate = topology.as_ref().and_then(SubstreamPlan::cmaf_rate);
+    if cmaf_rate.is_none() && joc_layout.uses_seven_carriers() {
         validate_flat7x_experimental_candidate_path(&output_path)?;
     }
 
@@ -1135,6 +1163,9 @@ fn run_inner(
     if ac3_core {
         validate_ac3_core_rate(selected_profile.codec_rate())?;
     }
+    if cmaf_rate.is_some() {
+        validate_cmaf_source(selected_profile.codec_rate(), signalling)?;
+    }
     let config_sha256 = prepared.config_sha256();
 
     eprintln!(
@@ -1147,8 +1178,9 @@ fn run_inner(
         parsed.channels(),
         parsed.total_samples(),
         data_rate_kbps,
-        if ac3_core { 1280 } else { aggregate_rate_kbps },
-        if ac3_core { 5120 } else { frame_bytes },
+        cmaf_rate.unwrap_or(if ac3_core { 1280 } else { aggregate_rate_kbps }),
+        cmaf_rate.map_or(if ac3_core { 5120 } else { frame_bytes }, |r| (r * 4)
+            as usize),
         resolved_joc_profile.joc_reconstruction_layout(),
         resolved_joc_profile.joc_dmx_config_idx(),
         hex_lower(&config_sha256),
@@ -1169,6 +1201,7 @@ fn run_inner(
         })
         .transpose()?;
     let carrier_path = match &scratch {
+        Some(dir) if cmaf_rate.is_some() => dir.path().join("audio.candidate.ec3"),
         Some(dir) => dir.path().join(
             output_path
                 .file_name()
@@ -1677,7 +1710,7 @@ fn run_inner(
         roots.metadata().state_reference().generation(),
         roots.phase_generation(),
     );
-    if let Some((_, file)) = composition {
+    if let Some((_, mut file)) = composition {
         roots
             .output()
             .validate_finalize_proposal(&finalize_proposal)
@@ -1689,7 +1722,9 @@ fn run_inner(
             .metadata()
             .map_err(|e| EncodeRequestError::SourcePipeline(e.to_string()))?
             .len()
-            != if ac3_core {
+            != if let Some(rate) = cmaf_rate {
+                roots.published_aus() * u64::from(rate) * 4
+            } else if ac3_core {
                 roots.published_aus() * 5120
             } else {
                 roots.durable_bytes()
@@ -1699,6 +1734,32 @@ fn run_inner(
                 "composed output length mismatch".into(),
             ));
         }
+        let file = if let Some(rate) = cmaf_rate {
+            use std::io::{BufReader, BufWriter, Seek};
+            let io_error = |e: std::io::Error| {
+                EncodeRequestError::SourcePipeline(format!("CMAF packaging: {e}"))
+            };
+            file.as_file_mut().rewind().map_err(io_error)?;
+            let mut packaged = tempfile::NamedTempFile::new_in(
+                output_path
+                    .parent()
+                    .ok_or(EncodeRequestError::InvalidPath)?,
+            )
+            .map_err(io_error)?;
+            let count = u32::try_from(roots.published_aus())
+                .map_err(|_| EncodeRequestError::ClockMismatch)?;
+            crate::cmaf::package(
+                BufReader::new(file.as_file_mut()),
+                BufWriter::new(packaged.as_file_mut()),
+                joc_layout,
+                rate,
+                count,
+            )
+            .map_err(io_error)?;
+            packaged
+        } else {
+            file
+        };
         file.as_file()
             .sync_all()
             .map_err(|e| EncodeRequestError::SourcePipeline(e.to_string()))?;
