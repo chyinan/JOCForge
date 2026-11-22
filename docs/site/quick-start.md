@@ -3,7 +3,7 @@
 Install Rust and Cargo, then build the independent encoder branch in PowerShell.
 
 ```powershell
-git clone --branch experimental/independent-encoder https://github.com/chyinan/JOCForge.git
+git clone --branch main https://github.com/chyinan/JOCForge.git
 cd JOCForge
 cargo build --release --locked -p jocforge
 ```

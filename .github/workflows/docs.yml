@@ -3,10 +3,10 @@ name: Documentation
 on:
   push:
     branches:
-      - experimental/independent-encoder
+      - main
   pull_request:
     branches:
-      - experimental/independent-encoder
+      - main
   workflow_dispatch:
 
 permissions:
@@ -49,7 +49,7 @@ jobs:
 
   deploy:
     name: Deploy documentation
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/experimental/independent-encoder'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-24.04
     permissions:

@@ -4,7 +4,7 @@ site_author: JOCForge contributors
 site_url: https://chyinan.github.io/JOCForge/
 repo_name: chyinan/JOCForge
 repo_url: https://github.com/chyinan/JOCForge
-edit_uri: edit/experimental/independent-encoder/docs/site/
+edit_uri: edit/main/docs/site/
 docs_dir: docs/site
 site_dir: site
 use_directory_urls: true

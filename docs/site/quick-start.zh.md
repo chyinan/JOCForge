@@ -3,7 +3,7 @@
 安装 Rust 和 Cargo 后，在 PowerShell 里构建独立编码分支。
 
 ```powershell
-git clone --branch experimental/independent-encoder https://github.com/chyinan/JOCForge.git
+git clone --branch main https://github.com/chyinan/JOCForge.git
 cd JOCForge
 cargo build --release --locked -p jocforge
 ```

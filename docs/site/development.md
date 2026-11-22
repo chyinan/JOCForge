@@ -1,6 +1,6 @@
 # Development and verification
 
-The Rust workspace separates domain logic, application orchestration, file I/O, the CLI and independent validation. Use the CLI to encode. See the [architecture guide](https://github.com/chyinan/JOCForge/blob/experimental/independent-encoder/docs/architecture/ARCHITECTURE.md).
+The Rust workspace separates domain logic, application orchestration, file I/O, the CLI and independent validation. Use the CLI to encode. See the [architecture guide](https://github.com/chyinan/JOCForge/blob/main/docs/architecture/ARCHITECTURE.md).
 
 ```sh
 cargo fmt --all -- --check

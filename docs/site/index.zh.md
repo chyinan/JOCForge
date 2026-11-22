@@ -1,9 +1,11 @@
+![JOCForge](assets/jocforge-logo.png){ .jocforge-logo }
+
 # JOCForge
 
 将 48 kHz ADM BWF 母版编码为 E-AC-3 JOC 音轨。独立 Rust 编码器读取声床、动态对象及其位置，写出音频载体、对象重建系数和空间元数据。
 
 [快速开始](quick-start.md){ .md-button .md-button--primary }
-[查看源码](https://github.com/chyinan/JOCForge/tree/experimental/independent-encoder){ .md-button }
+[查看源码](https://github.com/chyinan/JOCForge/tree/main){ .md-button }
 
 <div class="grid cards" markdown>
 

@@ -1,9 +1,11 @@
+![JOCForge](assets/jocforge-logo.png){ .jocforge-logo }
+
 # JOCForge
 
 Encode 48 kHz ADM BWF masters into E-AC-3 JOC soundtracks. The independent Rust encoder reads beds, moving objects and their positions to produce audio carriers, reconstruction coefficients and spatial metadata.
 
 [Quick start](quick-start.md){ .md-button .md-button--primary }
-[View source](https://github.com/chyinan/JOCForge/tree/experimental/independent-encoder){ .md-button }
+[View source](https://github.com/chyinan/JOCForge/tree/main){ .md-button }
 
 <div class="grid cards" markdown>
 

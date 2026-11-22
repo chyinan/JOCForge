@@ -12,6 +12,17 @@
   --md-accent-fg-color: #73c98a;
 }
 
+.jocforge-logo {
+  display: block;
+  width: min(100%, 14rem);
+  height: auto;
+  margin: 0 auto 1.5rem;
+}
+
+[data-md-color-scheme="slate"] .jocforge-logo {
+  filter: invert(1);
+}
+
 .jocforge-hero {
   display: block;
   width: min(100%, 54rem);
@@ -28,6 +39,11 @@
 .md-typeset .md-button--primary:hover {
   background: #247238;
   border-color: #247238;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .md-button:not(.md-button--primary) {
+  color: var(--md-typeset-color);
+  border-color: currentColor;
 }
 
 .md-typeset .grid.cards > ul > li {
