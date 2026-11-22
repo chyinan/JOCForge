@@ -902,12 +902,11 @@ pub fn encode_staged_file_with_structure(
 ) -> Result<(), EncodeRequestError> {
     if options.joc_objects != JocObjectCount::Fifteen
         && (rate != CodecRateProfile::Kbps1024
-            || layout != JocReconstructionLayout::ExistingSelectedFivePointOne
-            || signalling != EmdfCarriageProfile::DeployedCompat
+            || !layout.uses_five_carriers()
             || topology.is_some())
     {
         return Err(EncodeRequestError::SourcePipeline(
-            "8/12 objects require the native idx3 1024 kbps route with deployed signalling".into(),
+            "8/12 objects require the native idx0/idx3 1024 kbps route".into(),
         ));
     }
     resolve_encode_request_route(rate, layout)?;
@@ -1015,15 +1014,31 @@ pub fn encode_selected_object_count(
     output: &Path,
     object_count: JocObjectCount,
 ) -> Result<(), EncodeRequestError> {
+    encode_object_count_for_layout(
+        input,
+        output,
+        object_count,
+        JocReconstructionLayout::ExistingSelectedFivePointOne,
+        EmdfCarriageProfile::DeployedCompat,
+    )
+}
+
+pub fn encode_object_count_for_layout(
+    input: &Path,
+    output: &Path,
+    object_count: JocObjectCount,
+    layout: JocReconstructionLayout,
+    signalling: EmdfCarriageProfile,
+) -> Result<(), EncodeRequestError> {
+    if !layout.uses_five_carriers() {
+        return Err(EncodeRequestError::UnsupportedJocLayout);
+    }
     run_worker_with_object_count(
         input,
         output,
         Some(CodecRateProfile::Kbps1024),
         None,
-        (
-            JocReconstructionLayout::ExistingSelectedFivePointOne,
-            EmdfCarriageProfile::DeployedCompat,
-        ),
+        (layout, signalling),
         None,
         &std::sync::atomic::AtomicBool::new(false),
         None,

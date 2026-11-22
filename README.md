@@ -10,7 +10,7 @@ CLI 将 48 kHz ADM BWF 编码为 Flat 7.1 E-AC-3 JOC。可选总码率为 **1024
 
 ### 从 ADM 编码到 EC3
 
-直接编码默认 5.1（idx3）、1024 kbps EC-3 时，可通过 `--joc-objects 8` 或 `--joc-objects 12` 试用较少的 JOC 对象。默认值为 15，LFE 单独计数。实验档在系数拟合前归并相邻对象槽，并同步写出对应的动态位置。当前 OpenJOC 对实验档和默认档使用不同的 Stereo 渲染路径，试听时请匹配响度。
+直接编码原生 5.X（idx0）或默认 5.X Phase（idx3）的 1024 kbps EC-3 时，可通过 `--joc-objects 8` 或 `--joc-objects 12` 试用较少的 JOC 对象。默认值为 15，LFE 单独计数。实验档在系数拟合前归并相邻对象槽，并同步写出对应的动态位置。较早版本的 OpenJOC 对实验档和默认档使用不同的 Stereo 渲染路径。
 
 支持从节目起点开始、连续覆盖整段音频的笛卡尔对象自动化。每个对象可以包含多个 `audioBlockFormat`。编码器按每 1536 个采样（48 kHz 下为 32 ms）的控制回调读取对象位置，并根据 `jumpPosition` 和 `interpolationLength` 计算过渡。声床继续使用固定扬声器位置。
 

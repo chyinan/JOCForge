@@ -259,14 +259,13 @@ fn main() -> ExitCode {
                 None
             };
             if args.joc_objects != "15" {
-                if layout != JocReconstructionLayout::ExistingSelectedFivePointOne
+                if !layout.uses_five_carriers()
                     || topology.is_some()
                     || args.job_xml.is_some()
-                    || signalling != EmdfCarriageProfile::DeployedCompat
                     || args.data_rate.as_deref().is_some_and(|r| r != "1024")
                 {
                     eprintln!(
-                        "8/12 JOC objects currently require raw idx3 at 1024 kbps with default signalling and file input"
+                        "8/12 JOC objects currently require native raw idx0/idx3 at 1024 kbps and file input"
                     );
                     return ExitCode::from(2);
                 }
@@ -276,10 +275,12 @@ fn main() -> ExitCode {
                 } else {
                     JocObjectCount::Twelve
                 };
-                jocforge::encode_request::encode_selected_object_count(
+                jocforge::encode_request::encode_object_count_for_layout(
                     args.input.as_deref().unwrap(),
                     args.output.as_deref().unwrap(),
                     count,
+                    layout,
+                    signalling,
                 )
             } else if let Some(job_xml) = args.job_xml {
                 if let Some(plan) = topology {
