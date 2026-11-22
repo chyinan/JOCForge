@@ -323,6 +323,25 @@ fn reader_materializer_leaf_vectors_include_mute_and_previous_extra_edges() {
 }
 
 #[test]
+fn unconfigured_reader_keeps_the_unattenuated_rear_and_direct_lfe_words() {
+    let mut point = [0; RECORD_BYTES];
+    for (index, value) in [(0, 2), (1, 32767), (2, 32767), (3, 4369), (12, 4096)] {
+        super::write_record_word(&mut point, index, value);
+    }
+    assert_eq!(
+        super::target_panner::generate_target_for_test(1, &point).unwrap(),
+        [0, 0, 0, 0, 0, 1.0_f32.to_bits()]
+    );
+    for (index, value) in [(0, 1), (1, 4), (11, 1)] {
+        super::write_record_word(&mut point, index, value);
+    }
+    assert_eq!(
+        super::target_panner::generate_target_for_test(0, &point).unwrap(),
+        [0, 0, 0, 1.0_f32.to_bits(), 0, 0]
+    );
+}
+
+#[test]
 fn target_panner_leaf_vectors_and_rejections_match_the_selected_contract() {
     let vectors: Value = serde_json::from_str(CONTINUOUS_VECTORS).unwrap();
     for case in vectors["target_leaf_cases"].as_array().unwrap() {
@@ -605,6 +624,171 @@ fn state_after_priming() -> ReaderTargetState {
     stage_reader_target(&after_zero, &recipe.inputs(1))
         .unwrap()
         .next_state
+}
+
+#[test]
+fn default_auto_position_reaches_only_the_selected_main_receipt() {
+    use super::{ReaderTargetPass, stage_reader_target_for_pass};
+    use crate::frontend::job_configuration::{
+        SelectedWaveDescriptor, parse_selected_job_configuration,
+    };
+    use crate::joc::JocObjectCount;
+    use crate::profile::{
+        CodecRateProfile, EmdfCarriageProfile, EncodingProfile, JocReconstructionLayout,
+        resolve_selected_profile,
+    };
+
+    let xml = r"<job_config><input><audio><adm><file_name>in.wav</file_name><storage><local><path>.</path></local></storage><timecode_frame_rate>not_indicated</timecode_frame_rate></adm></audio></input><filter><audio><encode_to_atmos_ddp><loudness><measure_only><metering_mode>1770-4</metering_mode><dialogue_intelligence>false</dialogue_intelligence><speech_threshold>100</speech_threshold></measure_only></loudness><data_rate>1024</data_rate><timecode_frame_rate>not_indicated</timecode_frame_rate><time_base>file_position</time_base><drc><line_mode_drc_profile>none</line_mode_drc_profile><rf_mode_drc_profile>none</rf_mode_drc_profile></drc><downmix><loro_center_mix_level>-3</loro_center_mix_level><loro_surround_mix_level>-3</loro_surround_mix_level><ltrt_center_mix_level>-3</ltrt_center_mix_level><ltrt_surround_mix_level>-3</ltrt_surround_mix_level><preferred_downmix_mode>loro</preferred_downmix_mode></downmix><custom_trims><surround_trim_5_1>auto</surround_trim_5_1><height_trim_5_1>auto</height_trim_5_1></custom_trims></encode_to_atmos_ddp></audio></filter><output><ec3><file_name>out.ec3</file_name><storage><local><path>.</path></local></storage></ec3></output></job_config>";
+    let parse = |text: &str| {
+        parse_selected_job_configuration(
+            text.as_bytes(),
+            SelectedWaveDescriptor::new(48_000, 38, 24),
+            4608,
+        )
+    };
+    let job = parse(xml).unwrap();
+    let selected = Some(job.selected_profile());
+    let base = super::MainTargetTrim::UNCONFIGURED;
+    let primed = state_after_priming();
+    let mut at = recipe_data(2);
+    // -1 marker 立即交付当前行。相邻两行同为纯右侧，高度不同，对应 g11 / 满额。
+    for row in [3, 4] {
+        at.previous_overlap[row].fill(0.0);
+        at.current_mixer[row][0] = 1.0;
+        at.current_xyz_words[row * 3..row * 3 + 3].copy_from_slice(&[
+            1.0_f32.to_bits(),
+            0.5_f32.to_bits(),
+            (if row == 3 { 2.0_f32 / 15.0 } else { 1.0_f32 }).to_bits(),
+        ]);
+    }
+    // 走真实的 wire roundtrip、reader、receipt，不把比较向量当输入。
+    let input = at.inputs(2);
+    let baseline = stage_reader_target(&primed, &input).unwrap();
+    let before = baseline.pending_receipt().unwrap();
+    let run = |trim, pass, count, strict| {
+        let mut state = primed.staged_copy();
+        state.trim = trim;
+        state.strict_oamd = strict;
+        state.object_count = count;
+        stage_reader_target_for_pass(&state, &input, pass).unwrap()
+    };
+    let auto = job.main_target_trim(selected);
+    let mut unscoped = primed.staged_copy();
+    unscoped.trim = auto;
+    let unscoped = stage_reader_target(&unscoped, &input).unwrap();
+    assert_eq!(
+        unscoped.pending_receipt().unwrap().target_words(),
+        before.target_words()
+    );
+    let main = run(auto, ReaderTargetPass::Main, JocObjectCount::Fifteen, false);
+    let after = main.pending_receipt().unwrap();
+    let right = |r: &ReaderTargetUpdateReceipt, row: usize| r.target_words()[(row + 1) * 6 + 5];
+    assert_eq!(right(before, 3), 1.0_f32.to_bits());
+    assert_eq!(right(before, 4), 1.0_f32.to_bits());
+    assert_eq!(right(after, 3), 0.750_109_85_f32.to_bits());
+    assert_eq!(right(after, 4), 0.707_947_f32.to_bits());
+    assert_eq!(after.id11_body(), before.id11_body());
+    assert_eq!(after.reader_records_sha256, before.reader_records_sha256);
+    assert_eq!(after.state_after_sha256, before.state_after_sha256);
+    assert_eq!(
+        after.history_producer_generations,
+        before.history_producer_generations
+    );
+    assert_eq!(&after.target_words()[..6], &before.target_words()[..6]);
+
+    for (pass, count, strict) in [
+        (ReaderTargetPass::Meter, JocObjectCount::Fifteen, false),
+        (ReaderTargetPass::Main, JocObjectCount::Fifteen, true),
+        (ReaderTargetPass::Main, JocObjectCount::Eight, false),
+        (ReaderTargetPass::Main, JocObjectCount::Twelve, false),
+    ] {
+        let other = run(auto, pass, count, strict);
+        assert_eq!(
+            other.pending_receipt().unwrap().target_words(),
+            before.target_words()
+        );
+    }
+    let profile = |profile| Some(resolve_selected_profile(&profile).unwrap());
+    for route in [
+        None, // 未绑定或显式重组承载
+        profile(EncodingProfile::selected_with_carriage(
+            EmdfCarriageProfile::EtsiEmdf,
+        )),
+        profile(EncodingProfile::selected_with_codec_rate(
+            CodecRateProfile::Kbps768,
+        )),
+        profile(EncodingProfile::selected_with_joc_reconstruction_layout(
+            JocReconstructionLayout::FivePointOneWithoutPhase,
+        )),
+        profile(EncodingProfile::selected_with_joc_reconstruction_layout(
+            JocReconstructionLayout::Flat7x,
+        )),
+        profile(EncodingProfile::selected_with_joc_reconstruction_layout(
+            JocReconstructionLayout::FivePointOnePlusHeight,
+        )),
+        profile(EncodingProfile::selected_with_joc_reconstruction_layout(
+            JocReconstructionLayout::HeightPairWithPhase,
+        )),
+    ] {
+        assert_eq!(job.main_target_trim(route), base);
+    }
+    // 输出与作业码率冲突仍不准入；同一档原生 I0 作业的 MAIN 控制系数完全一致。
+    for rate in [384, 448, 576, 640, 768, 1024] {
+        let native = parse(&xml.replace(">1024<", &format!(">{rate}<"))).unwrap();
+        let result = run(
+            native.main_target_trim(Some(native.selected_profile())),
+            ReaderTargetPass::Main,
+            JocObjectCount::Fifteen,
+            false,
+        );
+        assert_eq!(
+            result.pending_receipt().unwrap().target_words(),
+            after.target_words(),
+            "{rate}"
+        );
+    }
+    let other = parse(
+        &xml.replace("<adm>", "<atmos_mezz>")
+            .replace("</adm>", "</atmos_mezz>"),
+    )
+    .unwrap();
+    assert_eq!(other.main_target_trim(Some(other.selected_profile())), base);
+    for (surround, height) in [
+        ("0", "auto"),
+        ("-3", "auto"),
+        ("auto", "-3"),
+        ("0", "-3"),
+        ("-6", "-9"),
+    ] {
+        let text = xml
+            .replace("auto</surround_trim", &format!("{surround}</surround_trim"))
+            .replace("auto</height_trim", &format!("{height}</height_trim"));
+        let other = parse(&text).unwrap();
+        let trim = other.manual_trim();
+        let manual = run(
+            other.main_target_trim(selected),
+            ReaderTargetPass::Main,
+            JocObjectCount::Fifteen,
+            false,
+        );
+        let words = manual.pending_receipt().unwrap().target_words();
+        let baseline_words = before.target_words();
+        for row in 1..READER_ROWS {
+            let record = &manual.next_state.reader_records[row];
+            let gain = trim.gain(
+                read_record_word(record, 2) as f32 / 32768.0,
+                read_record_word(record, 3) as f32 / 32768.0,
+            );
+            for lane in row * 6..row * 6 + 6 {
+                assert_eq!(
+                    words[lane],
+                    (f32::from_bits(baseline_words[lane]) * gain).to_bits()
+                );
+            }
+        }
+    }
+    assert!(parse(&xml.replace("auto</height_trim", "unresolved</height_trim")).is_err());
+    assert!(parse(&xml.replace("<height_trim_5_1>auto</height_trim_5_1>", "")).is_err());
 }
 
 struct RecipeData {

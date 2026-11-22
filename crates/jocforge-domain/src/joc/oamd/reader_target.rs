@@ -9,6 +9,7 @@ mod tests;
 mod type11;
 
 use crate::{
+    frontend::job_configuration::MainTargetTrim,
     joc::emdf::metadata_owner::MetadataPayloadBody,
     source_axis::{SelectedSourceRowDimensions, SelectedSourceRowShapeError, SourceAxisBinding},
     spatial::target_context::TargetSlotIndex,
@@ -83,7 +84,7 @@ struct CleanHistory {
 pub struct ReaderTargetState {
     pub(crate) object_count: crate::joc::JocObjectCount,
     pub(crate) strict_oamd: bool,
-    pub(crate) trim: crate::frontend::job_configuration::SurroundHeightTrim,
+    pub(crate) trim: MainTargetTrim,
     callback_index: FrontendCallbackIndex,
     retired: bool,
     history: CleanHistory,
@@ -330,7 +331,7 @@ impl ReaderTargetState {
         Self {
             callback_index: FrontendCallbackIndex::new(0),
             retired: false,
-            trim: Default::default(),
+            trim: MainTargetTrim::UNCONFIGURED,
             object_count: crate::joc::JocObjectCount::Fifteen,
             strict_oamd: false,
             history: CleanHistory {
@@ -401,6 +402,22 @@ pub fn stage_reader_target(
     committed: &ReaderTargetState,
     input: &ReaderTargetCallbackInputs<'_>,
 ) -> Result<ReaderTargetStageProposal, ReaderTargetError> {
+    // 无执行阶段的独立入口沿用原目标；生产调用显式传入 Main 或 Meter。
+    stage_reader_target_for_pass(committed, input, ReaderTargetPass::Unspecified)
+}
+
+#[derive(Clone, Copy, PartialEq, Eq)]
+pub(crate) enum ReaderTargetPass {
+    Main,
+    Meter,
+    Unspecified,
+}
+
+pub(crate) fn stage_reader_target_for_pass(
+    committed: &ReaderTargetState,
+    input: &ReaderTargetCallbackInputs<'_>,
+    pass: ReaderTargetPass,
+) -> Result<ReaderTargetStageProposal, ReaderTargetError> {
     if committed.retired {
         return Err(ReaderTargetError::PipelineRetired);
     }
@@ -440,7 +457,8 @@ pub fn stage_reader_target(
 
     let control_words = delivered_controls.control_words();
     delivered_controls.reader_invocation = Some(reader_invocation);
-    let computed = preview_reader_and_targets(committed, &staged.history, input, &control_words)?;
+    let computed =
+        preview_reader_and_targets(committed, &staged.history, input, &control_words, pass)?;
     staged.reader_records = computed.reader_records;
     staged.reader_invocations = ReaderInvocationIndex::new(
         reader_invocation
@@ -947,6 +965,7 @@ fn preview_reader_and_targets(
     history_after: &CleanHistory,
     input: &ReaderTargetCallbackInputs<'_>,
     controls: &[[u32; 13]; TARGET_ROWS],
+    pass: ReaderTargetPass,
 ) -> Result<ReaderTargetComputedRows, ReaderTargetError> {
     let (decoded_rows, id11_body) = type11::roundtrip(controls, committed.strict_oamd)?;
     let id11_body = if committed.object_count == crate::joc::JocObjectCount::Fifteen {
@@ -955,7 +974,10 @@ fn preview_reader_and_targets(
         type11::encode_grouped(controls, committed.object_count, committed.strict_oamd)?
     };
     let reader_records = reader_records::materialize(&committed.reader_records, &decoded_rows)?;
-    let targets = target_panner::generate_targets(&reader_records, committed.trim)?;
+    let trim = committed.trim_for_pass(pass);
+    // 此处的活动身份与解码位置来自同一行、同一代，不能使用当前回调的分配掩码。
+    let active_points = controls.each_ref().map(|control| control[0] == 0);
+    let targets = target_panner::generate_targets(&reader_records, trim, &active_points)?;
     let mut row_generations = [HistoryProducerGeneration::Cold; READER_ROWS];
     row_generations[0] = HistoryProducerGeneration::Callback(input.callback_index);
     for row in 0..TARGET_ROWS {
@@ -967,6 +989,21 @@ fn preview_reader_and_targets(
         history_producer_generations: row_generations,
         id11_body,
     })
+}
+
+impl ReaderTargetState {
+    fn trim_for_pass(&self, pass: ReaderTargetPass) -> MainTargetTrim {
+        match self.trim {
+            MainTargetTrim::DefaultAutoPosition
+                if pass != ReaderTargetPass::Main
+                    || self.strict_oamd
+                    || self.object_count != crate::joc::JocObjectCount::Fifteen =>
+            {
+                MainTargetTrim::UNCONFIGURED
+            }
+            trim => trim,
+        }
+    }
 }
 
 #[allow(clippy::too_many_arguments)] // Receipt binds all independently owned producer values.

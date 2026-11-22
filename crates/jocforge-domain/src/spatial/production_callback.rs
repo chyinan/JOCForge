@@ -56,8 +56,8 @@ use crate::{
         NormalControlSnapshotProposal,
     },
     joc::oamd::reader_target::{
-        ReaderTargetCallbackInputs, ReaderTargetControlRows, ReaderTargetError,
-        ReaderTargetStageProposal, SELECTED_PROFILE_ID, stage_reader_target,
+        ReaderTargetCallbackInputs, ReaderTargetControlRows, ReaderTargetError, ReaderTargetPass,
+        ReaderTargetStageProposal, SELECTED_PROFILE_ID, stage_reader_target_for_pass,
     },
     meter::installed48_renderer::MeterInstalled48State,
     source_axis::SourceAxisOwnerGeneration,
@@ -664,22 +664,25 @@ pub fn continue_spatial_production_callback(
         parameters,
     } = input;
     let (post_window, installed48_after) = frontend.into_parts();
-    let core = prepare_spatial_production_core(SpatialProductionCallbackCoreInput {
-        frontend: SpatialProductionFrontend {
-            frontend: post_window.frontend,
-            spatial_audio: post_window.spatial_audio,
+    let core = prepare_spatial_production_core(
+        SpatialProductionCallbackCoreInput {
+            frontend: SpatialProductionFrontend {
+                frontend: post_window.frontend,
+                spatial_audio: post_window.spatial_audio,
+            },
+            source_snapshot,
+            source_geometry,
+            source_control_clock,
+            source_map,
+            p15_geometry,
+            spatial_control,
+            spatial_audio,
+            spatial_audio_joc_providers,
+            window,
+            parameters,
         },
-        source_snapshot,
-        source_geometry,
-        source_control_clock,
-        source_map,
-        p15_geometry,
-        spatial_control,
-        spatial_audio,
-        spatial_audio_joc_providers,
-        window,
-        parameters,
-    })?;
+        ReaderTargetPass::Main,
+    )?;
     finish_spatial_production_callback(core, installed48_after)
 }
 
@@ -703,22 +706,25 @@ pub fn continue_meter_spatial_production_callback(
     let installed48_after = frontend
         .take_installed48_after()
         .ok_or(SpatialProductionCallbackError::CallbackIdentity)?;
-    let core = prepare_spatial_production_core(SpatialProductionCallbackCoreInput {
-        frontend: SpatialProductionFrontend {
-            frontend: frontend.frontend,
-            spatial_audio: frontend.spatial_audio,
+    let core = prepare_spatial_production_core(
+        SpatialProductionCallbackCoreInput {
+            frontend: SpatialProductionFrontend {
+                frontend: frontend.frontend,
+                spatial_audio: frontend.spatial_audio,
+            },
+            source_snapshot,
+            source_geometry,
+            source_control_clock,
+            source_map,
+            p15_geometry,
+            spatial_control,
+            spatial_audio,
+            spatial_audio_joc_providers: None,
+            window,
+            parameters,
         },
-        source_snapshot,
-        source_geometry,
-        source_control_clock,
-        source_map,
-        p15_geometry,
-        spatial_control,
-        spatial_audio,
-        spatial_audio_joc_providers: None,
-        window,
-        parameters,
-    })?;
+        ReaderTargetPass::Meter,
+    )?;
     finish_meter_spatial_production_callback(core, installed48_after)
 }
 
@@ -762,6 +768,7 @@ pub fn continue_spatial_production_callback_with_provider_bundle<'a>(
 
 fn prepare_spatial_production_core(
     input: SpatialProductionCallbackCoreInput<'_>,
+    reader_pass: ReaderTargetPass,
 ) -> Result<SpatialProductionCallbackCore<'_>, SpatialProductionCallbackError> {
     let SpatialProductionCallbackCoreInput {
         frontend,
@@ -957,9 +964,10 @@ fn prepare_spatial_production_core(
     };
     let (reader_target, component) = crate::join_dsp_tasks(
         || {
-            stage_reader_target(
+            stage_reader_target_for_pass(
                 spatial_control.committed().reader_target_state(),
                 &reader_inputs,
+                reader_pass,
             )
         },
         || {

@@ -56,6 +56,10 @@ F04C 的 E2 component stage 和 E3 Direct-LFE ring stage 分别消费同代受�
 
 F05R56 输入从 `spatial_control` 同代 committed-before root 和 callback inputs 开始。每个 callback 都预览 marker/history 与 target snapshot；`g=0,1` 只返回状态 proposal，不生成 reader invocation 或 receipt。`g>=2` 使用 `q=g-2`，同一次 Type11 encode→wire decode 产生 ID11 body、16 条 previous-aware reader56 records 与 16×6 finite target rows。reader records、targets 和 ID11 必须来自同一预览；target payload 不从 expected literals 或旧 receipt 取值。pending receipt admission 后，F04C 直接消费其实际 target words/逐行 generation，F13 body barrier 原样消费同一 ID11 bytes；两个消费者都不得重跑 reader。
 
+F05RT.6 的默认 MAIN 活动点行按 `JOC51-DEFAULT-AUTO-POSITION-GAIN-V1` 对七个非 LFE 槽逐一乘同一位置幅度，然后作同侧线性折叠。`JOC51-AUTO-POSITION-RATE-SCOPE-V2` 仅将原生 I0 的码率范围扩为 **384、448、576、640、768、1024 kbps**。六档均要求已解析的 48 kHz ADM、5.1/idx3、默认 15 对象、双 auto、六块单独立 E-AC-3、I0 LFE 和块内 skip 字段、部署兼容信令。384 仍输出本地 15 对象；1024 仍只施加一次。
+
+CLI 文件、XML 和公共文件导出共用 `run_inner`。原生自定义选项与预设按同一有效作业判定；源作业 profile 必须与实际原生输出 profile 一致。显式结构组合即使是零依赖、六块、独立 LFE 也没有原生路由身份。文件后缀不参与判定；无损再封装只复制已编码样本。MAIN/Meter 在进入共享 reader 前区分，手动 trim 保留折后顺序。
+
 J05 projection 进入 F05JL 值级链后，依次推进 temporal、geometry 和 180-cell fit。full/sparse/channel 只在本 callback 内作为 retry 输入，不成为 persistent coefficient seed。所有 retry 共用同一个 sequence 与同次 F04D selected index；完整 ID14 成功后才提出 next dispatch/sequence/writer state，失败不推进。temporal、geometry、fit-generation 和 dispatch state 仍等待 programme parent 的一次安装。
 
 F13 先用 `MetadataBodiesProposal` 校验 ID11/ID2/ID14 与同一 J05 source lineage；ID2 必须读取同代完整 ID11 header。`ProgrammeMeasurementReceipt` 只接受 case-sensitive `UNGATED`、`DIALOGUE`、`LEVEL`，对应 public semantic 0/1/2；ID1 config[2] 仅在 DIALOGUE 时为1。selected DI-off 只准入 UNGATED/LEVEL，不能用 false 掩盖 DIALOGUE receipt，也不能使用 internal enum顺序、job downmix字符串或裸数字。`MetadataOwner::stage_source` 使用 constructor-pinned wrapper，在 owned clone 内推进六 timer、生成 ID1，并按 ID11→ID1→ID2→ID14 push/pop，随后按 ID11→ID14→ID2→ID1 生成 source2+ EMDF。返回值保留 owned replacement owner、specialized receipt 和 bodies lineage；parent source transaction 在 F12/integrity/durable 条件全部成功后才可安装。

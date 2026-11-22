@@ -191,6 +191,18 @@ impl SurroundHeightTrim {
         10.0_f32.powf(-loss / 20.0)
     }
 }
+
+/// MAIN 的已解析行调节。手动 0 dB 和双 auto 不能从数值增益区分。
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) enum MainTargetTrim {
+    AfterFold(SurroundHeightTrim),
+    DefaultAutoPosition,
+}
+
+impl MainTargetTrim {
+    pub(crate) const UNCONFIGURED: Self = Self::AfterFold(SurroundHeightTrim::UNITY);
+}
+
 /// One exact XML choice for the authored 5.1 height trim field.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum SelectedHeightTrim {
@@ -709,6 +721,37 @@ impl SelectedJobConfiguration {
             SelectedHeightTrim::Minus12Db => 12,
         };
         SurroundHeightTrim { surround, height }
+    }
+
+    pub(crate) fn main_target_trim(
+        &self,
+        native_output: Option<ResolvedEncodingProfile>,
+    ) -> MainTargetTrim {
+        // 作业解析的 profile 不含输出覆盖项；同时核对实际的原生承载。
+        if self.input_kind == SelectedInputKind::Adm
+            && self.output_configuration.container().is_ec3()
+            && native_output.is_some_and(|output| {
+                output == self.selected_profile
+                    && matches!(
+                        output.codec_rate(),
+                        CodecRateProfile::Kbps384
+                            | CodecRateProfile::Kbps448
+                            | CodecRateProfile::Kbps576
+                            | CodecRateProfile::Kbps640
+                            | CodecRateProfile::Kbps768
+                            | CodecRateProfile::Kbps1024
+                    )
+                    && output.carriage() == crate::profile::EmdfCarriageProfile::DeployedCompat
+                    && output.joc_reconstruction_layout()
+                        == crate::profile::JocReconstructionLayout::ExistingSelectedFivePointOne
+            })
+            && self.surround_trim_5_1 == SelectedSurroundTrim::Auto
+            && self.height_trim_5_1 == SelectedHeightTrim::Auto
+        {
+            MainTargetTrim::DefaultAutoPosition
+        } else {
+            MainTargetTrim::AfterFold(self.manual_trim())
+        }
     }
 
     pub const fn surround_trim_5_1(&self) -> SelectedSurroundTrim {

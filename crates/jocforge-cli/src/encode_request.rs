@@ -1372,6 +1372,7 @@ fn run_inner(
         final_destination,
     )
     .map_err(EncodeRequestError::ProductGate)?;
+    let native_output = topology.is_none();
     let mut composition = topology
         .map(|plan| {
             tempfile::NamedTempFile::new_in(
@@ -1447,12 +1448,13 @@ fn run_inner(
     )
     .map_err(EncodeRequestError::SpatialProviders)?;
     let callback_values = main_providers.callback_values().providers();
-    let mut cold_roots = MainSpatialColdRoots::from_selected_providers(
+    let mut cold_roots = MainSpatialColdRoots::from_selected_providers_for_output(
         &prepared,
         run_identity.attempt,
         &callback_values.f01e,
         &callback_values.f03_target,
         &callback_values.p11_geometry,
+        native_output.then_some(metadata_profile),
     )
     .map_err(EncodeRequestError::SpatialColdRoots)?;
     cold_roots.set_joc_object_count(object_count);
@@ -2555,6 +2557,61 @@ mod tests {
                 "the CLI emits a single rate token"
             );
             assert_eq!(codec_rate.kbps(), Some(data_rate_kbps));
+        }
+    }
+
+    #[test]
+    fn default_cli_and_public_file_options_deliver_the_authored_trim_pair() {
+        use super::{FileEncodeOptions, FileRenderTiming, SelectedWaveDescriptor, file_job_xml};
+        use jocforge_domain::frontend::job_configuration::parse_selected_job_configuration;
+
+        let input = FileReferenceParts {
+            file_name: "in.wav".into(),
+            local_path: ".".into(),
+        };
+        let output = FileReferenceParts {
+            file_name: "out.ec3".into(),
+            local_path: ".".into(),
+        };
+        let parse = |xml: String| {
+            parse_selected_job_configuration(
+                xml.as_bytes(),
+                SelectedWaveDescriptor::new(48000, 12, 24),
+                4608,
+            )
+            .unwrap()
+        };
+        let cli = parse(selected_full_file_job_xml(&input, &output, 1024));
+        assert_eq!(cli.surround_trim_5_1().xml_value(), "auto");
+        assert_eq!(cli.height_trim_5_1().xml_value(), "auto");
+        let route = resolve_encode_request_route(
+            CodecRateProfile::Kbps1024,
+            JocReconstructionLayout::ExistingSelectedFivePointOne,
+        )
+        .unwrap();
+        assert_eq!(
+            route,
+            EncodeRequestRoute::SelectedFivePointOne(cli.selected_profile())
+        );
+        for (s, h) in [
+            ("auto", "auto"),
+            ("0", "auto"),
+            ("auto", "-3"),
+            ("-6", "-9"),
+        ] {
+            let options: FileEncodeOptions = serde_json::from_value(serde_json::json!({
+                "surround_trim_5_1": s, "height_trim_5_1": h
+            }))
+            .unwrap();
+            let job = parse(file_job_xml(
+                &input,
+                &output,
+                1024,
+                &FileRenderTiming::default(),
+                &options,
+            ));
+            assert_eq!(job.surround_trim_5_1().xml_value(), s);
+            assert_eq!(job.height_trim_5_1().xml_value(), h);
         }
     }
 

@@ -16936,6 +16936,10 @@ def run(root=ROOT):
 
     approved_joc_source_files.add('crates/jocforge-domain/src/joc/coefficient_payload.rs')
 
+    if relative == 'crates/jocforge-domain/src/joc/oamd/reader_target/target_panner/rate_scope_tests.rs':
+     ck(re.search(r'#\[cfg\(test\)\]\s*mod rate_scope_tests;', (p.parent.parent/'target_panner.rs').read_text(encoding='utf-8')), 'V2 rate route witnesses are test-only')
+     approved_joc_source_files.add(relative)
+
     approved_joc_source_files.add('crates/jocforge-domain/src/joc/id14_row_normalizer.rs')
 
     approved_joc_source_files.add('crates/jocforge-domain/src/joc/clip_producer.rs')

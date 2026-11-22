@@ -400,6 +400,58 @@ mod tests {
     use super::*;
 
     #[test]
+    fn washed_rate_route_rewrap_copies_the_elementary_stream() {
+        use sha2::{Digest, Sha256};
+        let routes: serde_json::Value = serde_json::from_str(include_str!(
+            "../../jocforge-domain/tests/fixtures/default_auto_position/routes.json"
+        ))
+        .unwrap();
+        let mut exercised = 0;
+        for case in routes["cases"].as_array().unwrap() {
+            let mut ctx = routes["base"].clone();
+            ctx.as_object_mut()
+                .unwrap()
+                .extend(case[1].as_object().unwrap().clone());
+            if ctx["operation"] != "copy_encoded_stream" {
+                continue;
+            }
+            let rate = ctx["kbps"].as_u64().unwrap() as u32;
+            let mut es = vec![0x5a; rate as usize * 4];
+            es[..7].copy_from_slice(&[0x0b, 0x77, 0x07, 0xff, 0x3f, 0x80, 0]);
+            let dir = tempfile::tempdir().unwrap();
+            let src = dir.path().join("in.ec3");
+            let dst = dir.path().join(ctx["output_label"].as_str().unwrap());
+            std::fs::write(&src, &es).unwrap();
+            write_composed_m4a(
+                &src,
+                &dst,
+                JocReconstructionLayout::ExistingSelectedFivePointOne,
+                rate,
+                0,
+                &std::sync::atomic::AtomicBool::new(false),
+            )
+            .unwrap();
+            let track = std::fs::read(dst).unwrap();
+            let start = u32::from_be_bytes(track[..4].try_into().unwrap()) as usize;
+            assert_eq!(&track[start + 4..start + 8], b"mdat");
+            let extent =
+                u64::from_be_bytes(track[start + 8..start + 16].try_into().unwrap()) as usize;
+            let payload = &track[start + 16..start + extent];
+            assert_eq!(payload, es);
+            println!(
+                "JOC51_ROUTE {}",
+                serde_json::json!([case[0], {
+                    "decision":"NO_RENDER", "calls":0, "before_es":format!("{:x}", Sha256::digest(&es)),
+                    "after_es":format!("{:x}", Sha256::digest(payload))
+                }])
+            );
+            assert_eq!(case[2], "NO_RENDER");
+            exercised += 1;
+        }
+        assert_eq!(exercised, 1);
+    }
+
+    #[test]
     fn track_specific_channel_locations_and_joc_extension() {
         for (layout, locations) in [
             (JocReconstructionLayout::FivePointOneWithoutPhase, 0),

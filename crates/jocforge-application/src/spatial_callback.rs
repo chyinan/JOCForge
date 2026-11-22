@@ -17,8 +17,8 @@ use jocforge_domain::{
         },
     },
     joc::oamd::reader_target::ReaderTargetUpdateReceipt,
-    profile::EncodingProfile,
     profile::resolve_selected_profile,
+    profile::{EncodingProfile, ResolvedEncodingProfile},
     source_axis::{SourceAxisBinding, SourceAxisError, SourceAxisOwnerGeneration},
     spatial::{
         SpatialAudioCallbackOutcome, SpatialAudioMachine, SpatialControlMachine,
@@ -91,6 +91,25 @@ impl MainSpatialColdRoots {
         f03_target: &ValidatedF03TargetColdProvider,
         p11_geometry: &SelectedP11Geometry,
     ) -> Result<Self, MainSpatialColdRootsError> {
+        Self::from_selected_providers_for_output(
+            prepared,
+            attempt,
+            f01e,
+            f03_target,
+            p11_geometry,
+            None, // 只给空间提供器时，作业的实际输出布局与承载尚未绑定。
+        )
+    }
+
+    /// `native_output` 是实际输出 profile；显式重组承载没有原生输出身份。
+    pub fn from_selected_providers_for_output(
+        prepared: &PreparedJobInput,
+        attempt: AttemptId,
+        f01e: &ValidatedF01EColdProvider,
+        f03_target: &ValidatedF03TargetColdProvider,
+        p11_geometry: &SelectedP11Geometry,
+        native_output: Option<ResolvedEncodingProfile>,
+    ) -> Result<Self, MainSpatialColdRootsError> {
         let selected_profile = prepared.configuration().selected_profile();
         let profile = EncodingProfile::selected_with_rate_and_carriage(
             selected_profile.codec_rate(),
@@ -117,7 +136,7 @@ impl MainSpatialColdRoots {
         )
         .map_err(MainSpatialColdRootsError::SpatialControl)?;
         let spatial_control =
-            spatial_control.with_manual_trim(prepared.configuration().manual_trim());
+            spatial_control.with_main_job_trim(prepared.configuration(), native_output);
         let frontend_control = cold_owner.into_machine();
         let spatial_audio = SpatialAudioMachine::new_cold(profile)
             .map_err(MainSpatialColdRootsError::SpatialAudio)?;

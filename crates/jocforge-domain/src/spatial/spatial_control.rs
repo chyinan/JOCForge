@@ -1257,7 +1257,17 @@ impl SpatialControlMachine {
         mut self,
         trim: crate::frontend::job_configuration::SurroundHeightTrim,
     ) -> Self {
-        self.committed.reader_targets.trim = trim;
+        self.committed.reader_targets.trim =
+            crate::frontend::job_configuration::MainTargetTrim::AfterFold(trim);
+        self
+    }
+
+    pub fn with_main_job_trim(
+        mut self,
+        job: &crate::frontend::job_configuration::SelectedJobConfiguration,
+        native_output: Option<crate::profile::ResolvedEncodingProfile>,
+    ) -> Self {
+        self.committed.reader_targets.trim = job.main_target_trim(native_output);
         self
     }
 

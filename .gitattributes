@@ -1,4 +1,5 @@
 # Hash-bound washed fixtures must retain their delivered bytes across checkout.
+crates/jocforge-domain/tests/fixtures/default_auto_position/*.json text eol=lf
 crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json text eol=lf
 crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-wrapper-config.json text eol=lf
 crates/jocforge-domain/tests/fixtures/joc_synthetic_seam/synthetic-seam-provider.json text eol=lf

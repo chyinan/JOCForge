@@ -3,7 +3,7 @@ status: current
 topic: washed-evidence-index
 spec: JOCForge
 confidence: package-hash-verified
-last_updated: 2026-11-15
+last_updated: 2026-11-23
 tags:
   - evidence
   - Wash
@@ -11,6 +11,10 @@ tags:
 ---
 
 # Sanitized evidence 索引
+
+2026-11-23 外部清洁包：`D:\CodexResearch\wash-out\JOC51-DEFAULT-AUTO-POSITION-GAIN-V1`。Manifest SHA-256 `bfb0db350fa417bf342bd47f30972b47c7ac26e3482dbf6eaa0cf91e8d6db9a0`，封签文件 SHA-256 `98ccb3b5f60e2a464545709e0bf335e767eebb2f3d5a561430541eea0f1f542c`。批准范围为默认 5.1 MAIN 活动点对象的位置增益；仓内两份封签合成向量位于 `crates/jocforge-domain/tests/fixtures/default_auto_position/`。
+
+`D:\CodexResearch\wash-out\JOC51-AUTO-POSITION-RATE-SCOPE-V2` 绑定上述 V1。Manifest SHA-256 `77db36f8bfd125696499da7c052b0c77adf7d2f0a921d8e2f8e9f5cd47fa6bf4`，封签文件 SHA-256 `b238a7aca23876d1dc14009b9f575ea5233b310f15fc4dca56c1ca6e9cf91ffb`。裁定 `APPROVED_RATE_SCOPE_LOCAL_MAIN_ONLY`，覆盖默认原生 I0 的六种码率；384 只批准本地 15 对象的共同点行消费者。仓内 `crates/jocforge-domain/tests/fixtures/default_auto_position/routes.json` 与包内同名文件逐字节相同。
 
 下表路径均指向隔离仓库中的 sanitized supplements。
 
