@@ -149,8 +149,8 @@ impl SubstreamPlan {
         rate: u32,
         lfe: LfeOwner,
     ) -> Result<Self, String> {
-        if !matches!(lfe, LfeOwner::None | LfeOwner::Independent) {
-            return Err("CMAF supports LFE in I0 only".into());
+        if lfe == LfeOwner::ReplaceIndependent {
+            return Err("CMAF supports absent, independent or supplemental dependent LFE".into());
         }
         if !matches!(rate, 1024 | 1280 | 1408 | 1536 | 1664) {
             return Err("CMAF total rate must be 1024, 1280, 1408, 1536 or 1664 kbps".into());
