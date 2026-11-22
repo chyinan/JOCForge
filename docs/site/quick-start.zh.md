@@ -28,3 +28,5 @@ jocforge encode "$PWD/input.adm.wav" "$PWD/flat7x/mix.candidate.ec3" --joc-layou
 ```
 
 ![JOCForge CLI](assets/cli-help.png){ .jocforge-hero }
+
+布局、子流、承载和容器参数写在编码指南里。`jocforge encode --help` 会列出这些参数。

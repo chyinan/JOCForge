@@ -1,38 +1,34 @@
 # 输出封装
 
-## CMAF 分片输出
+## CMAF 分片 MP4
 
-`--container cmaf` 输出单文件分片 MP4。文件以 `ftyp + moov` 初始化，每个 `moof + mdat` 装一个完整的 1536 采样访问单元。五种 JOC profile 均使用严格 EMDF、六块 E-AC-3 I0+D0。默认无 LFE，指定 `--lfe-owner independent` 时由 I0 携带 LFE，指定 `--lfe-owner dependent` 时由 D0 补充普通 LFE，指定 `--lfe-owner replace-independent` 时 D0 替换 I0 的同一 LFE，D0 帧尾携带 JOC/OAMD。
+`--container cmaf` 写出一个 MP4 文件。文件以初始化段 `ftyp` + `moov` 开头，每个 1536 采样访问单元对应一个 `moof` + `mdat` 分片。五种布局都使用严格 EMDF、六块，以及 I0+D0。D0 固定 640 kbps，总码率的其余部分分给 I0。
+
+`--total-rate` 可以是 1024、1280、1408、1536 和 1664 kbps，默认 1664。LFE 默认为 `none`。需要 I0 携带 LFE、D0 补充 LFE，或 D0 替换 LFE 时，把 `--lfe-owner` 设为 `independent`、`dependent` 或 `replace-independent`。另外指定的依赖子流数、块划分、承载位置和 EMDF 档位也必须满足这些 CMAF 限制。
+
+XML 作业仍由命令行选择容器和总码率。XML 里把 `data_rate` 填为 640，并把 `.mp4` 路径写在 `output/ec3` 下。
 
 ```sh
-jocforge encode "$PWD/input.adm.wav" "$PWD/height-phase.mp4" --container cmaf --joc-layout idx4 --total-rate 1664
+jocforge encode "$PWD/input.adm.wav" "$PWD/mix.mp4" --joc-layout idx4 --container cmaf --total-rate 1664
 ```
 
-CMAF 默认总码率 1664 kbps，可选 1024、1280、1408、1536、1664。D0 固定 640 kbps，其余码率分给 I0。显式指定的 LFE、依赖子流数、块划分、承载和信令必须符合上述条件。XML 作业仍通过 `output/ec3` 指定输出路径，文件名可填 `.mp4`，XML 的 `data_rate` 填 640；在 CLI 上选择 CMAF 容器和总码率。
+## MKA 和 MP4
 
-## 无损封装为 MKA 或 MP4
-
-把 `mix.ec3` 换成[布局与对象](layouts.md)里 Flat 7.1 的输出文件。`-c:a copy` 直接复制 EC3 音轨并保留 JOC 元数据。
-
-**MKA**（已实测可在 Audition 和 Windows 媒体播放器中打开）
+FFmpeg 可以只封装、不重编码已完成的 EC-3。`-c:a copy` 会保留 JOC 元数据。把 `mix.ec3` 换成[布局与对象](layouts.md)里生成的文件。
 
 ```sh
 ffmpeg -n -i mix.ec3 -map 0:a:0 -c:a copy -f matroska mix.mka
 ```
 
-![Adobe Audition 中打开的 MKA 编码结果，八条轨道依次为 L、R、C、LFE、Ls、Rs、Lsd、Rsd](assets/screenshot.png)
-
-上图是《Love Song》编码结果封装为 MKA 后在 Adobe Audition 中的波形与频谱视图。八条轨道依次为 L、R、C、LFE、Ls、Rs、Lsd、Rsd，时间轴总长 4 分 29 秒。
-
-**MP4**（可选用 `.m4a` 后缀）
-
-FFmpeg 看到 `.m4a` 后缀时默认选用 `ipod` 封装器。先写成 MP4，再改名为 `.m4a`，可以保留 MP4 封装和其中的 `ec-3` 音轨。
+后缀是 `.m4a` 时，FFmpeg 会选用 `ipod` 封装器。先写成 MP4，再改名，文件才能保留 MP4 封装和 `ec-3` 音轨：
 
 ```sh
 ffmpeg -n -i mix.ec3 -map 0:a:0 -c:a copy -f mp4 mix.mp4
 mv mix.mp4 mix.m4a
 ```
 
-生成的 `.m4a` 已实测可由 iOS 系统解码器打开。
+实测的 Flat 7.1 MKA 可以在 Adobe Audition 和 Windows 媒体播放器中打开。实测的 `.m4a` 可以由 iOS 系统解码器打开。
 
-Flat7x 在 CLI 中仍标为实验性。六档均已用一首含动态对象的 48 kHz 达芬奇 ADM 母版完成整曲编码、FFmpeg 解码和 OpenJOC 7.1 渲染。OpenJOC 的部署兼容检查通过，ETSI 严格检查仍报告载荷 11 和 14 的 `codecdatae` 标志差异。
+![Adobe Audition 中的 Flat 7.1 MKA，八条轨道为 L、R、C、LFE、Ls、Rs、Lsd 和 Rsd](assets/screenshot.png)
+
+图中的文件是 4 分 29 秒的《Love Song》MKA。八条轨道依次为 L、R、C、LFE、Ls、Rs、Lsd 和 Rsd。

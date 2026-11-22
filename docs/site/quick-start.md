@@ -28,3 +28,5 @@ jocforge encode "$PWD/input.adm.wav" "$PWD/flat7x/mix.candidate.ec3" --joc-layou
 ```
 
 ![JOCForge CLI](assets/cli-help.png){ .jocforge-hero }
+
+Layout, substream, carriage and container flags are in the encoding pages. `jocforge encode --help` lists them.
