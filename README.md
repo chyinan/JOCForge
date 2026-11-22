@@ -128,7 +128,7 @@ XML 作业的 `data_rate` 填 D0 的 `640`。可用 `--job-xml job.xml --joc-lay
 
 ### CMAF 分片输出
 
-`--container cmaf` 输出单文件分片 MP4。文件以 `ftyp + moov` 初始化，每个 `moof + mdat` 装一个完整的 1536 采样访问单元。五种 JOC profile 均使用严格 EMDF、六块 E-AC-3 I0+D0。默认无 LFE，指定 `--lfe-owner independent` 时由 I0 携带 LFE，指定 `--lfe-owner dependent` 时由 D0 补充普通 LFE，D0 帧尾携带 JOC/OAMD。
+`--container cmaf` 输出单文件分片 MP4。文件以 `ftyp + moov` 初始化，每个 `moof + mdat` 装一个完整的 1536 采样访问单元。五种 JOC profile 均使用严格 EMDF、六块 E-AC-3 I0+D0。默认无 LFE，指定 `--lfe-owner independent` 时由 I0 携带 LFE，指定 `--lfe-owner dependent` 时由 D0 补充普通 LFE，指定 `--lfe-owner replace-independent` 时 D0 替换 I0 的同一 LFE，D0 帧尾携带 JOC/OAMD。
 
 ```powershell
 jocforge encode input.adm.wav height-phase.mp4 --container cmaf --joc-layout idx4 --total-rate 1664

@@ -156,16 +156,12 @@ fn main() -> ExitCode {
                         .is_some_and(|v| !matches!(v, "etsi" | "auxdata"))
                     || args.dependent_count.is_some_and(|v| v != 1)
                     || args
-                        .lfe_owner
-                        .as_deref()
-                        .is_some_and(|v| !matches!(v, "none" | "independent" | "dependent"))
-                    || args
                         .block_partition
                         .is_some_and(|v| v != jocforge::encode_request::BlockPartition::Six)
                     || args.data_rate.as_deref().is_some_and(|v| v != "640"))
             {
                 eprintln!(
-                    "CMAF requires strict EMDF, six blocks, one auxdata dependent at 640 kbps and LFE owner none, independent or dependent"
+                    "CMAF requires strict EMDF, six blocks, one auxdata dependent at 640 kbps"
                 );
                 return ExitCode::from(2);
             }
@@ -208,6 +204,7 @@ fn main() -> ExitCode {
                     .expect("validated total bitrate");
                 let lfe = match args.lfe_owner.as_deref() {
                     Some("dependent") => LfeOwner::Dependent,
+                    Some("replace-independent") => LfeOwner::ReplaceIndependent,
                     Some("independent") => LfeOwner::Independent,
                     _ => LfeOwner::None,
                 };
