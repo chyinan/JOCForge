@@ -3,7 +3,7 @@ status: current
 topic: 7.1-flat7x-1664-handoff
 spec: JOCForge
 confidence: package-backed-target
-last_updated: 2026-11-15
+last_updated: 2026-11-23
 tags:
   - handoff
   - AU
@@ -11,7 +11,61 @@ tags:
   - D0
 ---
 
+## 2026-11-23：V2 原生 I0 六档码率
+
+`JOC51-AUTO-POSITION-RATE-SCOPE-V2`（见[证据索引](../shared/evidence-index.md)）只替换 V1 的单码率条件。原生 idx3 / 默认 15 对象 / 双 auto 的 384、448、576、640、768、1024 kbps 共用同一个 MAIN 点目标。作业与实际 I0 的码率必须一致；V1 的 `b12-other-rate` 在相符的 768 原生作业上由负例变为正例。显式结构组合、手动 trim、其他对象布局，以及 Meter 保留原行为。
+
+- **路由与系数。** 先在尚未放宽码率的 V1 源码上采集基线，再运行同一 Rust 验收入口。Wash `check.py --actual` 通过全部 60 例：13 条选中路由的两条见证行均各调用一次，46 条基线的目标或拒绝一致，1 条纯再封装的基本流摘要一致。前中高点的 C=`0.89182061`，左侧后交叠的 Ls=`1.00086629`。`r06` 的两行六路词摘要前后均为 `977f86ff354fe53e73eddcf7bd996489a6ff1334bc0477e21017ce00ddef5420`。不可绑定到现有固定形状或阶段的描述在无绑定边界验证；这些不是 60 次文件编码。完整基线和提交分别为 `target/auto-position-v2-before.json`、`target/auto-position-v2-actual.json`。
+- **实际作业。** `native_rate_job` 以同一合成短 ADM 比较显式默认值的 384 CLI 与公共自定义文件入口。后者输出名为 `.mp4` 的裸流；两份基本流逐字节相同。单独用 Release 生成 4 个 AU 并读回：全部是 1536 字节、六块、独立 E-AC-3 I0 / 3/2+LFE；MediaInfo 四帧均给出 idx3、`joc_num_objects_bits=14`（15 对象）。短流 SHA-256 `83f201291bcdc989a34058febd58dd107f9486bfac6b997b93345d94dbb02474`，明细在 `target/v2-header-630tmtvz/mediainfo.txt`。未运行桌面界面。
+- **交付。** Release 为 `target/release/jocforge.exe`，SHA-256 `0e030d4b0f71f10b1dc390dc62614a3a167bfe6622943235803265d8275c8db9`。`fmt`、workspace `check --locked`、全目标 Clippy（0 错误、108 警告）、workspace `test --locked`（1438 通过、5 忽略、37 被过滤）、边界检查均通过。本轮没有解码或比较成品音频；六档音频 A/B 交由协调者，W04 为 `NOT_RUN`。
+- **独立 Release 黑盒音频对照。** 已用 V1 发布版和 V2 发布版分别编码《苍白的骑行》，与 DEE 同码率参考比较；未传手动补偿。同轨九点正反扫最大偏差（旧→新）：384 `3.000→0.0046`、448 `3.001→0.00088`、576 `3.000→0.00030`、640 `3.000→0.00007`、768 `3.000→0.00006`、1024 `3.000→0.0000153` dB。整曲前后平衡差（旧→新）：384 `+1.389→−0.087`、448 `+1.474→−0.00030`、576 `+1.477→+0.00040`、640 `+1.477→+0.00001`、768 `+1.478→−0.00007`、1024 `+1.478→−0.00003` dB；0:45–1:00 为 384 `+0.241→−0.513`、其余五档 ≤`0.0013` dB；3:30–3:45 为 384 `+2.774→−0.0090`、其余五档 ≤`0.0011` dB。384 的 DEE 参考流为 11 对象、本地为 15，且 45–60 s 仍有 −0.513 dB 残差，因此只记录该档整曲与 210 s 窗口的改善，不声称逐段音频对等。明细在 `D:\CodexResearch\validation-51-auto\rate-a1\rate-summary.json`。
+- **发布路由反证。** 同一短 ADM 比较 V1、V2 两个发布版：默认 384、显式原生等价自定义、双 auto XML 三条改变字节；手动 `surround_trim_5_1=-3`、1024（避免 V2 重复施加）、Flat 7.1、idx2、idx4、idx0、8/12 对象、严格信令、显式标准形状和 CMAF 均逐字节不变。输出名改成 `.mp4` 不影响路由。记录在 `D:\CodexResearch\validation-51-auto\final-routes-qt9v125_\result.json`。
+
+## 2026-11-23：默认 5.1 双 auto 的 MAIN 点目标
+
+实现依据为 [证据索引](../shared/evidence-index.md) 登记的 `JOC51-DEFAULT-AUTO-POSITION-GAIN-V1`。文件 CLI、外部 XML 和公共 `encode_staged_file_with_structure` 在同一 `run_inner` 把解析后的 trim、实际原生输出 profile、对象数送入 MAIN。没有阶段或输出身份时保留原行为；Meter 的专用点渲染没有接入此增益。
+
+局部数值结果：变更前以合成纯右后点 `q=[32767,32767,4369]` 实测 Rs=1，直达 LFE=1；候选在选中作业给出 Rs=`0.707947016`，直达 LFE 仍为 1。`default_auto_position_matches_all_sealed_geometry_and_decoded_rows` 将 16 个几何出口、12 个解码网格用例的几何、标量、折前和折后结果与独立期望逐词比较，28/28 一致。`default_auto_position_reaches_only_the_selected_main_receipt` 的同一回调两条纯右侧活动行按各自高度得到 Rs=`0.750109851`、`0.707947016`；比较路径的 ID11、reader 记录、历史代和状态摘要相同。
+
+工程检查：`cargo fmt --all -- --check`、workspace `check --locked`、全目标 Clippy（0 错误、107 警告）、`scripts/check-boundaries.py` 均通过。workspace `test --locked --no-fail-fast`：1435 通过、5 忽略、37 被过滤。清洁包自检普通与 `-O` 均通过；23 个排除描述未作为完整的 `--actual` 双版本提交。
+
+交给协调者的 `target/release/jocforge.exe` SHA-256：`919ad842667f6b3a793719c370068d2117eed7fc66f9fb804d6a78663c66bb54`。本轮只验证实现侧控制系数与路由，未生成音频对照。独立验收下一步：同轨九点正反扫；短例通过后比较两个 15 秒窗口、完整节目与对照路径，登记同源和时移。W04 仍为 `NOT_RUN`。
+
+独立 Release 音频对照已执行，默认双 auto，没有传手动补偿。`D:\CodexResearch\validation-51-auto\acceptance-vl9rrlnz\metrics.json`：同轨九点正反扫相对前方最大偏差由 3.000008 降至 0.0000153 dB；1024《苍白的骑行》前后平衡差整曲/0:45–1:00/3:30–3:45 由 +1.477536/+0.764894/+2.781757 变为 −0.000034/−0.000014/+0.000032 dB。该结论针对默认 5.1 兼容层指标，非全部 JOC 数据等价或 W04 验收。试听 M4A 已复核音频载荷 SHA-256 `5e9649f5d5d82495610953f28b081c2e92f6bb38a095e32720e8ddec3c60194c`。
+
 ## 2026-11-14 candidate 状态
+
+对象行/定位/累加三边界复测（诊断工作树 `D:\Programs\JF51-gain-probe`，基线 `c79d8dafd`；统计在 `Downloads/dee-trim-8c73znyf/position-control-mg8bw8d_/result.json`）：同轨九点正反扫，码流与原无探针用例逐字节相同。有效活动行 1，元数据增益码始终 4096；每窗 48000 样本的 Type10 行能量与预处理能量相对正前均 0.0000 dB。Y=0 以及 -1 的 Rs 权重同为 1，累加相对正前均 0 dB；Y=-0.5 权重 1.41376，累加 +3.0075 dB。用对象行样本乘实际目标权重预测累加，18 个窗口的最大残差/信号能量比 6.52e-16。DEE 内部位置增益的首次出现边界仍需独立研究；此对照不是修改数值合同的授权。
+
+同轨测试音按直达波形核对时移为 0（`verify_control_ratios.py`）。在同时激发右前与右环绕的 Y=+0.75/+0.5/+0.25 三点，两声道各自的两端电平差分别同为 +0.641/+1.204/+1.850 dB（保留三位小数），并非固定的环绕输出通道偏置。
+
+同轨单变量对照：`Downloads/dee-trim-8c73znyf/validate_position_control.py --same-track` → `position-control-h7b2lz55`。只让第 38 轨发声，在一个 ADM 内复用同一测试音，X=+1 不动，按九个 Y 位置正序和反序重复。主导声道 JOCForge−DEE：Y=+1/+0.75/+0.5/+0.25/0 分别为 0/+0.641/+1.204/+1.850/+2.498 dB；-0.25/-0.5/-0.75/-1 均为 +3.000 dB。反向复现；即使纯侧、纯后没有侧后交叠，差异仍在。两端后区都在 Y=-0.5 比 Y=-1 高约 3.0 dB，不能把此前 hypot 实验收窄成品误差误判为线性相加本身违反规格。此数据是外部验收用例，不定义实现增益曲线。
+
+5.1 第 11–32 轨 / 33–52 轨互补分组（`target/tmpm_vlxow0`、`target/tmpto2b57qv`；外部 `dee-trim-8c73znyf/validate_group_sum.py`）：0:45–1:00 两端的环绕相对前置差，A/B 各 +0.158/+1.161 dB，按互相关零采样对齐后直接求和 +0.611 dB，实际合并编码 +0.620 dB。210 s 的波形和 / 合并编码则为 +2.9951/+2.9950 dB。相加不等于逐样本相同；只能排除跨这两组共同编码是上述平衡差的主要成因。
+
+固定同一测试音、反序复测（外部 `position-control-j6ouddwo`）：在同一对成品内比较主导声道，前方第 2/42 轨差约 0 dB，18/22/50 轨 +1.446/+1.527/+1.204 dB，后区第 38/8 轨 +3.000 dB，第 6 轨 +2.498 dB；两轮一致。位置/角色相关，不证明具体公式。已批准 F05RT.6 第 96 行要求两侧线性相加且不归一化；不得把试听拟合当作新实现依据。
+
+用户素材的临时导出设置验证（外部 `forge-trim-control-9cl2t3gf`）：JOCForge 原有 `surround_trim_5_1=-3` 单变量经整曲重编码，整曲/45 s/210 s 三个平衡差由 +1.478/+0.765/+2.782 缩至 +0.387/+0.269/+0.633 dB；-6 分别过补偿至 -0.622/-0.221/-1.459。前 225 秒的 15 个非重叠完整窗口均改善；试听 M4A 提取载荷与新 EC3 相同，SHA-256 `2673f022ed71b334694ad817b2d5b32f2da95901b52651a195b18e1493cf1493`。不等同于默认自动模式修复，未改生产源码。后续需要独立批准的位置/角色增益适用域、阶段与检验点。
+
+0:45–1:00 单对象定位负对照（`target/one_obj51.py`）：保留 52 轨元数据与时间轴，仅放行第 18 轨 cello R 或第 22 轨 double-bass R。两者各只有一个 ADM 位置块。JOCForge / DEE 的 Rs−FR 分别是 +2.25113/+2.25120 dB 和 +3.18044/+3.18056 dB；主要非静音声道分别整体差约 +1.45、+1.53 dB，而非环绕单独偏高。产物 `target/tmpp4y1wc58`、`target/tmpkovi740_`。不能据此修改单对象侧方增益；这两个试验不能排除其他对象、混合相关性或多对象映射。
+
+5.1 折叠单变量探针：`target/tmppd55u12w/trace.log` 有两个窗口的 14040 行目标权重、14976 行源能量；按行能量估算线性叠加相对平方和开根折叠，45 s 与 210 s 分别为 +0.000006/+2.174 dB。`target/tmp5jc57d7u` 的实际整曲 A/B：仅对象的 210 s 窗口改变量 -2.176 dB，45 s 无变化；完整混音 210 s 改变量 -1.168 dB，整曲仅 -0.149 dB。证明该运算只解释部分差异，不作为生产规范；实验代码已撤除。待区分另一路（含单侧非零时的映射）与声床折叠。
+
+仅对象 idx3/1024，`target/pre51_probe.py`、`target/probe_s09.py` 的临时能量探针（生产源码已撤除）：source 6563..7030，S09 入口 L/R/Ls/Rs 为 -43.39/-42.21/-41.44/-42.80 dBFS，S09 出口 -43.39/-42.21/-41.45/-42.81，F07 输入 -37.39/-36.19/-35.43/-36.80。source 1407..1874 同一顺序，S09 入口与出口均 -37.71/-36.35/-36.92/-35.83，F07 输入 -31.66/-30.31/-30.90/-29.81。每阶段每窗 468 帧，未保存中间 PCM。前后相对差在 S09 之前已存在；尚未区分空间目标生成与目标应用。F06OP 规则身份见 FUNCTIONAL-ID-GAPS.md，不能据成品电平反定规范系数。
+
+5.1 分轨验证：`target/isolate51.py`，产物 `target/tmpcwyddgfq`。按 CHNA 的 DirectSpeakers 1..10 与 Objects 11..52 静音互补副本、保留整曲时间轴，JOCForge idx3/1024 编码。用解码后的两组信号拟合 Audition 波形，210–225 s 环绕左右拟合解释能量均 >99.9%；JOCForge 两组系数均约 0.703，DEE 成品拟合声床约 0.598、对象约 0.56。45–60 s 系数不同。仅是外部输出投影，不是编码器内部参数；待核对导出 trim 和原始 ADM 中 5.1 trim 的实际语义，不以此拟合值作实现依据。
+
+5.1 独立对比（非 7.1 I0 问题）：`target/ab51window.py` 测 Downloads 两份 Audition WAV。以前左声道互相关校时，45 s、210 s 两个 15 s 窗口均零样本偏移；后者 JOCForge−DEE 的 FL/FR/C 为 -1.06/-1.07/-1.07 dB，Ls/Rs 均 +1.73 dB，前后相对差约 +2.80 dB；45 s 窗口约 +0.75 dB。尚不能定位到单个混音阶段。后续应隔离 bed 和对象贡献并检验自动 trim，而非按全曲 RMS 补偿。
+
+1024 修复复测：`target/q-ab/fixed1024/song.candidate.ec3` 完整 7361 AU。扩展 I0 粗量化候选后，前述 100 AU 的尾零中位数从 1777 降为 129.5 字节，D0 逐字节不变，核心 8–12 / 12–16 kHz 平均谱密度恢复到 -97.27 / -104.58 dB。Downloads 已生成同码率 M4A 供听感 A/B；尚待主观试听。
+
+同一 100 AU 样本（`target/tmpg4vm5un1/*.ac3`）：每 2560 字节 I0 帧排除尾部 3 字节后，连续尾零中位数在 1024/1088/1408/1664 档分别为 1777/1642/585.5/129.5 字节。`source_execution.rs` 的 `make_core` 固定预算 20480 bits，却把 I0 候选 q 上限设为上游 `frame_candidate.frame().q()`；下一步单变量解除该上限验证，尚未测定它对高频损失的解释比例。
+
+2026-11-22 苍白的骑行 1024 音质探针：Downloads 中四份 M4A 的 AU 1400..1499（44.8–48.0 秒），见 `target/tmpg4vm5un1`。单取每 AU 前 2560 字节的 640 kbps AC-3 核心，经 FFmpeg 双声道解码并排除开头 4096 samples，1024 对 1088 的 8–12/12–16 kHz Welch 平均谱密度分别低 6.1/8.2 dB；中频近乎相等。OpenJOC 7.1.4 渲染也出现同方向衰减。尚不能据此判定人为滤波、源分析带宽或比特分配的责任；下一步比较 I0 量化前的频谱及所选带宽。
+
+2026-11-22 显式 Surround EX：以 `target/ex-ab-z1h_yxac/0.wav` 做 native flat7x CLI 试验，`--surround-ex 0/1/2` 三次输出由 MediaInfo Details 逐帧读回，各 16/16 个 I0 的 `dsurexmod` 等于指定值。桌面 Pro 已构建，下一步可从界面手动导出并读回；此验证不涉及 EX 矩阵混音。
+
+2026-11-22 Surround EX 探针：`target/ex-ab-z1h_yxac`，同一 52 轨短 PCM，仅 section 9 模式低位（0/2）和校验字节不同。release CLI flat7x/1664 的两份 16 AU 输出逐字节相同，SHA-256 `da55e5ad2fcd796180b0cdd828d43c0a5c12e80d0cc39ad7b3dc6599330c648d`。MediaInfo Details 显示 I0 的 16 个 `dsurexmod` 均为 1，D0 无信息元数据。下一步定位最终 I0 帧头取值来源；未验证 DEE 或桌面 UI。
 
 Love Song 方大同.wav 已确认是 36 声道、48 kHz、PCM24 ADM BWF，带 `axml` 与 `chna`。同源 F06ND BSI 输入和 attempt-local `.candidate.ec3` 捕获路径已接入；写入采用 create-new、完整 F15 pair ledger、精确读回/hash、文件与目录同步。失败时保留部分候选并写 `.failure.txt`；候选保持 `production_allowed=false`，Programme DONE root 不安装。
 
@@ -755,6 +809,46 @@ Source: `cargo clippy --locked` initially reported 70 warnings. Mechanical fixes
 Verification: `cargo fmt --check`, `cargo check --locked --workspace`, and `cargo clippy --locked --workspace -- -D warnings` passed; strict Clippy reports zero issues. `cargo test --locked --workspace` completed with 649 passed, 10 failed, and 2 ignored. The failures are in metadata-owner, reader-target, current-features, source-flags, and meter-component test vectors; baseline comparison remains pending. `python scripts/check-boundaries.py` reports `integrity source identity tracks the additive role-rate pair API; test fixtures remain reachable only through non-default test-support dev dependencies`.
 
 Next: reproduce the ten failing tests on an unchanged worktree and locate the boundary rule producing the reported result before changing those contracts.
+
+## 2026-11-20 潜在的なアイ Flat7x 全曲 M4A
+
+Run authorization and paths are recorded in [`docs/user-command-timeline.md`](../user-command-timeline.md). Source `D:\潜在的なアイ.wav` is 36-channel PCM24 / 48 kHz / 206.322458 s, SHA-256 `96e34c167b552928fa9ef287d358c74dac3a2d135a86a0ef4d1529c7d51e8b82`. Release CLI was built from HEAD `b58979451bd3feda5dc61b88c3711372d6ae7e6b`, binary SHA-256 `8fc5e1cfa547f4deefaea4c86432e123a996346ae354195f26b6d30aae595590dc`.
+
+Attempt `1795103415197088700` completed 6,448 AUs / 42,917,888-byte EC-3 candidate, SHA-256 `7f086cedb7654d0506c588b353bbda5ed13d0d41f286be0804cca24c57089f56`. D0 block-two placement receipts were 6,448/6,448, max C=407, overflow=0. FFmpeg 8.1 copied the EC-3 track into MP4 and renamed the container `.m4a`; ffprobe confirms E-AC-3, 8 channels / 7.1, 48 kHz, 1,664,000 bps, 206.336 s, 42,918,793 bytes, SHA-256 `5337912bc0d7396610363f7d60113c928fca143306d2c07bf2fa8f3b80ab8a10`. Candidate and M4A are in `D:\JOCForge-attempts\potential-ai-flat7x-full-m4a-20261119-a132cb81755b\`; run log is under `D:\JOCForge-attempts\logs\`.
+
+The candidate remains `production_allowed=false`; OpenJOC inspect/render and user playback are `NOT_RUN`. Next: receive the user's playback feedback and use it to select any follow-up validation.
+
+## Bit-exact encoder performance check, 2026-11-21
+
+Release A/B against 845e8e8: 36-track 4.365 s input, all six 5.1 rates and Flat 7.1 matched complete EC3 bytes. At 1024 kbps the median of three runs changed from 4.19 to 3.90 s; Flat 7.1 changed from 9.92 to 5.29 s. An additional moving-object Flat 7.1 clip matched byte-for-byte. A 191.69 s moving-object programme at 5.1/1024 took 210.97 vs 172.44 s; both 24,539,136-byte outputs matched. Measurements are from this Windows host. Local benchmark logs: bitexact-20261121-003601 under target/.
+
+## Whole-programme SIMD and fit timing, 2026-11-21
+
+Release comparison on Ryzen 7 9800X3D, 26-channel dynamic ADM, 191.69 s, 21554dd vs 4b95d05: 5.1/1024 kbps 182.1 to 133.1 seconds, Flat 7.1/1664 kbps 309.9 to 242.0 seconds. Both complete streams matched byte-for-byte. The 5.1/1024 Studio Pro sealed files also matched (24,539,136 bytes). Full CLI logs and hashes: target/bitexact-simd-20261121-010355. ARM64 macOS cross-check and SSE/NEON code generation verified; ARM runtime timing remains open.
+
+## Six Flat 7.1 rates on a dynamic Resolve master, 2026-11-21
+
+Commit c9ca2536e encoded all six total rates (1024, 1088, 1216, 1280, 1408, 1664 kbps) on a 191.69 s programme. FFmpeg decoded every stream and OpenJOC rendered all six to 7.1. Each stream carried both OAMD and JOC across all 5991 access units. Deployed compatibility passed. Strict inspection flagged the existing payload 11 and 14 codecdatae difference at every rate. The 39,876,096-byte 1664 stream matched the older full-stream output (SHA-256 48fb04e0869f55d8724c6d0714255f5a56817c27beeb9f31c4d2f478b94d7b46). Local evidence: target/flat-rates-7_2ebl50/verification.json and inspect-*.txt. Device listening remains open.
+
+## XML render range and silence, 2026-11-21
+
+File-position ranges and zero-filled lead/tail are shared by the meter, PCM reader, and object sampler. At 5.1/1024 and Flat 7.1/1280, selecting 0.75 to 2.75 s inside an object ramp and adding 0.25/0.5 s silence produced identical EC3 bytes to a separately authored cropped/padded PCM and ADM reference. On a dynamic Resolve master the [60, 62) s excerpt with 4/1 s of silence yielded 336,000 programme samples and 219 AUs. Local comparisons and encode logs are in target/export-timeline-wsvmz3pb. Native DEE output was not used for these tests.
+
+## Encoding throughput on the 191.69 s Resolve master, 2026-11-21
+
+On a Windows x64 Ryzen 7 9800X3D, e0d5911 encoded the full 26-channel source at 5.1/1024 in 51.99 s and Flat 7.1/1664 in 74.80 s, vs the earlier 133.06/242.04 s measurements. Standalone EC3 outputs match the archived 5991-AU programmes byte-for-byte. Meter took 20.00/20.80 s respectively. The Windows Studio Pro package completed both jobs serially in 53.67 s and 65.22 s; the sealed 5.1 output matched the previous Pro file and the Flat 7.1 output matched the previous CLI. Evidence: target/encode-speed-f04nixe3 and Studio target/full-pro-speed-kr9dxogn. ARM64 macOS compile check passed, runtime timings are Windows measurements.
+
+Final upstream Windows Studio Pro build (c1d0eaa encoder): 58.60 s sealed 5.1 and 72.36 s Flat 7.1, both matching the archive byte-for-byte; both passed FFmpeg decoding. Evidence: full-pro-speed-sc1d9v6a/result.json in Studio target/.
+
+## Persistent programme measurement cache, 2026-11-21
+
+Windows Studio Pro measured the 191.69 s Resolve master once for 5.1/1024 (54.31 s end-to-end), reused that result for Flat 7.1/1664 (48.55 s), and after restarting exported 5.1/1024 in 34.99 s. All three complete audio streams matched their archived outputs byte-for-byte. Independent 5.1 and 7.1 CLI full encodes and all 12 short-preset outputs were also checked against prior streams. Changing the input bytes, source interval, or placement of silence generated new entries. Concurrent fresh encodes shared one measurement. Evidence: target/loudness-reuse-mzbe1lql and Studio target/pro-loudness-cache-dsa1qbez.
+
+## Shared DSP workers and first-pass timing, 2026-11-21
+
+495be452a, Ryzen 7 9800X3D Windows x64 Release, 191.69 s Resolve source. Fresh 5.1/1024 encoded in 41.42 s vs 52.00 s on 3bedcdcd4. The first measurement took 16.20 vs 20.03 s. Warm 5.1/1024 and 7.1/1664 took 25.22 and 37.76 s vs 33.62 and 49.03 s. Complete files and finalized meter words (including peak and gating) match. Four/eight/sixteen-worker comparison on a 32 s region supported eight workers on this host. Evidence: target/parallel-encode-qej49n_r. ARM64 macOS compile check only.
+
+Final packaged Studio test (fa6dcec26): 42.06 s first sealed 5.1, including 16.12 s for cold metering; 37.29 s for warm 7.1 and 28.65 s for warm sealed 5.1 after restart. All three complete outputs matched the archive, with a successful decode. Local evidence: Studio target/parallel-dsp-pro-zf8luu1j. All twelve separate short scans matched the previous finalized measurement words.
 
 ### Seven-carrier fit range and stereo level (2026-11-22)
 

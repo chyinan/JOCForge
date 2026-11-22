@@ -141,3 +141,15 @@
 - Attempt -04 inspect launch snapshot at 2026-11-15 19:54:19 +08:00: [] for dee/openjoc/mkvmerge/mkvextract; unique track 0 demux succeeded; full-stream inspect begins once.
 - Attempt -04 full-stream inspect launch snapshot at 2026-11-15 19:58:52 +08:00: [] for dee/openjoc/mkvmerge/mkvextract; full inspect begins once.
 - Attempt -04 full-stream inspect completed at 2026-11-15 19:59:17 +08:00: OpenJOC exit 0, aggregate-only metadata SHA-256 7b85a69aa112429eb8b7f07b6848ae2527a9e33091e5ea2e94914083ebd39afb, raw JSON not retained, temporary EC3 deleted true.
+
+## 2026-11-19 潜在的なアイ Flat7x full-song M4A
+
+- Fresh GO: the user's direct request in this conversation authorizes one full-song 7.1 encode and M4A remux for `D:\潜在的なアイ.wav`.
+- Launch boundary: 2026-11-19 23:48:16 +08:00; no active JOCForge or FFmpeg process was found before launch.
+- Input: `D:\潜在的なアイ.wav`, 1,069,656,356 bytes, PCM24, 36 channels, 48 kHz, 206.322458 seconds, SHA-256 `96E34C167B552928FA9EF287D358C74DAC3A2D135A86A0EF4D1529C7D51E8B82`.
+- Encoder: Release CLI built from HEAD `b58979451bd3feda5dc61b88c3711372d6ae7e6b`, binary SHA-256 `8FC5E1CFA547F4DEFEA4C86432E123A996346AE354195F26B6D30AAE595590DC`; command is `jocforge.exe encode <input> <output.candidate.ec3> --joc-layout flat7x`.
+- Unique output root: `D:\JOCForge-attempts\potential-ai-flat7x-full-m4a-20261119-a132cb81755b`; candidate `output.candidate.ec3`; final M4A `output.m4a`; unique temp root `D:\JOCForge-attempts\potential-ai-flat7x-full-m4a-20261119-a132cb81755b-temp`; run log `D:\JOCForge-attempts\logs\potential-ai-flat7x-full-m4a-20261119-a132cb81755b.log`.
+- Packaging: FFmpeg 8.1 copies the EC-3 audio into MP4 (`-c:a copy`), then names the MP4 container `.m4a`; no audio re-encode is performed. Flat7x remains an experimental candidate.
+- Completion: 2026-11-20 00:02:06 +08:00; JOCForge exit 0, attempt `1795103415197088700`, 6,448 published AUs / 42,917,888-byte EC-3 candidate, SHA-256 `7f086cedb7654d0506c588b353bbda5ed13d0d41f286be0804cca24c57089f56`; D0 block-two placement receipts 6,448/6,448, max C=407, overflow=0, `production_allowed=false`, `programme_done=false`.
+- Final M4A: FFmpeg remux exit 0; ffprobe reports MP4/M4A container, E-AC-3, 8 channels / 7.1, 48 kHz, 1,664,000 bps, duration 206.336 s, 42,918,793 bytes, SHA-256 `5337912bc0d7396610363f7d60113c928fca143306d2c07bf2fa8f3b80ab8a10`.
+- OpenJOC inspect/render and listening: `NOT_RUN`; user playback feedback pending.
