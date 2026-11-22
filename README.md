@@ -4,13 +4,13 @@
 
 ## Flat 7.1 编码
 
-CLI 将 48 kHz ADM BWF 编码为 Flat 7.1 E-AC-3 JOC。可选总码率为 **1024、1088、1216、1280、1408 和 1664 kbps**，默认 1664 kbps。每档都保留 640 kbps 的独立 AC-3 核心，其余码率分配给依赖 E-AC-3 子流。六档共用 Flat 7.X 重建配置（索引 1）、七路载体和 15 个 JOC 对象。
+CLI 将 48 kHz ADM BWF 编码为 Flat 7.1 E-AC-3 JOC。可选总码率为 **1024、1088、1216、1280、1408 和 1664 kbps**，默认 1664 kbps。每档都保留 640 kbps 的独立 AC-3 核心，其余码率分配给依赖 E-AC-3 子流。六档共用 Flat 7.X 重建配置（索引 1）和七路载体，默认 15 个 JOC 对象。
 
 1664 kbps 档实测使用方大同《Love Song》（4 分 29 秒）。OpenJOC 0.20.2 在兼容模式下接纳了全部 8,417 个访问单元并完成 7.1 渲染。最终码流无损封装为 MKA 后，已实测可在 Adobe Audition 中打开，并可用 Windows 媒体播放器播放。
 
 ### 从 ADM 编码到 EC3
 
-直接编码原生 5.X（idx0）或默认 5.X Phase（idx3）的 1024 kbps EC-3 时，可通过 `--joc-objects 8` 或 `--joc-objects 12` 试用较少的 JOC 对象。默认值为 15，LFE 单独计数。实验档在系数拟合前归并相邻对象槽，并同步写出对应的动态位置。较早版本的 OpenJOC 对实验档和默认档使用不同的 Stereo 渲染路径。
+直接编码 idx0 至 idx4 的原生 EC-3 时，各布局支持其全部六档码率，可通过 `--joc-objects 8` 或 `--joc-objects 12` 试用较少的 JOC 对象。默认值为 15，LFE 单独计数。实验档在系数拟合前归并相邻对象槽，并同步写出对应的动态位置。较早版本的 OpenJOC 对实验档和默认档使用不同的 Stereo 渲染路径。
 
 支持从节目起点开始、连续覆盖整段音频的笛卡尔对象自动化。每个对象可以包含多个 `audioBlockFormat`。编码器按每 1536 个采样（48 kHz 下为 32 ms）的控制回调读取对象位置，并根据 `jumpPosition` 和 `interpolationLength` 计算过渡。声床继续使用固定扬声器位置。
 

@@ -48,7 +48,7 @@ enum Command {
 
 #[derive(Args)]
 struct EncodeArgs {
-    /// Coded JOC objects; experimental 8/12 use the default 5.1 1024 kbps raw file route.
+    /// Coded JOC objects; experimental 8/12 support native raw output at all preset bitrates.
     #[arg(long,value_parser=["8","12","15"],default_value="15")]
     joc_objects: String,
     /// Input ADM BWF file.

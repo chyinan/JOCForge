@@ -1,4 +1,5 @@
 //! Fragmented EC-3 audio with one complete JOC access unit per CMAF sample.
+use crate::encode_request::JocObjectCount;
 use jocforge_application::meter_source_bridge::JocReconstructionLayout;
 use std::io::{self, Read, Write};
 const CMAF_SAMPLE_DURATION: u32 = 1536;
@@ -38,7 +39,15 @@ fn bmff_full_box(kind: [u8; 4], flags: u32, payload: &[u8]) -> Vec<u8> {
 }
 
 fn dec3_box(profile: JocReconstructionLayout, bitrate_kbps: u32, lfe: bool) -> Vec<u8> {
-    dec3_for_track(profile, bitrate_kbps, 16, 1, lfe, 0)
+    dec3_for_track(
+        profile,
+        bitrate_kbps,
+        16,
+        1,
+        lfe,
+        0,
+        JocObjectCount::Fifteen,
+    )
 }
 
 fn dec3_for_track(
@@ -48,6 +57,7 @@ fn dec3_for_track(
     dependents: u8,
     lfe: bool,
     bsmod: u8,
+    object_count: JocObjectCount,
 ) -> Vec<u8> {
     let mut bits = Bits::default();
     bits.push(u64::from(bitrate_kbps.min(0x1fff)), 13);
@@ -75,7 +85,7 @@ fn dec3_for_track(
     }
     bits.push(0, 7); // reserved
     bits.push(1, 1); // type-A JOC extension
-    bits.push(16, 8); // complexity index
+    bits.push(object_count as u64 + 1, 8); // Includes the separate LFE object.
     bmff_box(*b"dec3", &bits.bytes())
 }
 
@@ -236,6 +246,26 @@ pub fn write_composed_m4a(
     dependents: u8,
     cancelled: &std::sync::atomic::AtomicBool,
 ) -> io::Result<()> {
+    write_m4a_with_object_count(
+        input,
+        output,
+        layout,
+        rate,
+        dependents,
+        JocObjectCount::Fifteen,
+        cancelled,
+    )
+}
+
+pub fn write_m4a_with_object_count(
+    input: &std::path::Path,
+    output: &std::path::Path,
+    layout: JocReconstructionLayout,
+    rate: u32,
+    dependents: u8,
+    object_count: JocObjectCount,
+    cancelled: &std::sync::atomic::AtomicBool,
+) -> io::Result<()> {
     use std::{
         fs::File,
         io::{BufReader, BufWriter, Seek},
@@ -264,7 +294,7 @@ pub fn write_composed_m4a(
     } else {
         (first[6] & 1 != 0, first[5] & 7)
     };
-    let dec3 = dec3_for_track(layout, rate, bsid, dependents, lfe, bsmod);
+    let dec3 = dec3_for_track(layout, rate, bsid, dependents, lfe, bsmod, object_count);
     let ftyp = bmff_box(*b"ftyp", b"M4A \0\0\0\0M4A isomiso6");
     let (mvhd, trak) = track_boxes(&dec3, Some((count, size, ftyp.len() as u64 + 16)));
     let moov = bmff_box(*b"moov", &[mvhd, trak].concat());

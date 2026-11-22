@@ -1,7 +1,7 @@
 // pattern: Imperative Shell
 //! Reads one selected ADM BWF, prepares its input identity, and enters the application encode gate.
 
-pub use crate::cmaf::write_composed_m4a;
+pub use crate::cmaf::{write_composed_m4a, write_m4a_with_object_count};
 pub use jocforge_application::source_frame_bridge::{
     BlockPartition, EmdfLocation, LfeOwner, SubstreamPlan,
 };
