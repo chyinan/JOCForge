@@ -1246,6 +1246,9 @@ pub struct SpatialControlMachine {
 }
 
 impl SpatialControlMachine {
+    pub fn set_joc_object_count(&mut self, count: crate::joc::JocObjectCount) {
+        self.committed.reader_targets.object_count = count;
+    }
     pub fn enable_strict_oamd(&mut self) {
         self.committed.reader_targets.strict_oamd = true;
     }

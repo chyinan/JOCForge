@@ -81,6 +81,7 @@ struct CleanHistory {
 /// The exact nine-field persistent F05R56 state. Target payloads are callback-local receipt data.
 #[derive(Debug, Eq, PartialEq)]
 pub struct ReaderTargetState {
+    pub(crate) object_count: crate::joc::JocObjectCount,
     pub(crate) strict_oamd: bool,
     pub(crate) trim: crate::frontend::job_configuration::SurroundHeightTrim,
     callback_index: FrontendCallbackIndex,
@@ -330,6 +331,7 @@ impl ReaderTargetState {
             callback_index: FrontendCallbackIndex::new(0),
             retired: false,
             trim: Default::default(),
+            object_count: crate::joc::JocObjectCount::Fifteen,
             strict_oamd: false,
             history: CleanHistory {
                 slots,
@@ -370,6 +372,7 @@ impl ReaderTargetState {
             callback_index: self.callback_index,
             retired: self.retired,
             trim: self.trim,
+            object_count: self.object_count,
             strict_oamd: self.strict_oamd,
             history: self.history,
             previous_active: self.previous_active,
@@ -946,6 +949,11 @@ fn preview_reader_and_targets(
     controls: &[[u32; 13]; TARGET_ROWS],
 ) -> Result<ReaderTargetComputedRows, ReaderTargetError> {
     let (decoded_rows, id11_body) = type11::roundtrip(controls, committed.strict_oamd)?;
+    let id11_body = if committed.object_count == crate::joc::JocObjectCount::Fifteen {
+        id11_body
+    } else {
+        type11::encode_grouped(controls, committed.object_count, committed.strict_oamd)?
+    };
     let reader_records = reader_records::materialize(&committed.reader_records, &decoded_rows)?;
     let targets = target_panner::generate_targets(&reader_records, committed.trim)?;
     let mut row_generations = [HistoryProducerGeneration::Cold; READER_ROWS];

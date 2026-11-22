@@ -91,6 +91,12 @@ impl SelectedJocState {
         }
     }
 
+    pub fn cold_with_object_count(object_count: crate::joc::JocObjectCount) -> Self {
+        let mut state = Self::cold();
+        state.fit.object_count = object_count;
+        state
+    }
+
     pub fn from_staged(
         fit: CoefficientFitState,
         dispatch: JocDispatchState,

@@ -36,10 +36,28 @@ pub(super) fn roundtrip(
     Ok((decoded, body))
 }
 
-fn encode_body(
+pub(super) fn encode_grouped(
     controls: &[[u32; 13]; 15],
+    count: crate::joc::JocObjectCount,
     strict_oamd: bool,
 ) -> Result<Vec<u8>, ReaderTargetError> {
+    let mut groups = Vec::with_capacity(count as usize);
+    for object in 0..count as usize {
+        let pair = &controls[count.source_slots(object)];
+        let mut control = *pair.iter().find(|c| c[0] == 0).unwrap_or(&pair[0]);
+        if pair.len() == 2 && pair.iter().all(|c| c[0] == 0) {
+            for axis in 5..8 {
+                control[axis] =
+                    f32::midpoint(f32::from_bits(pair[0][axis]), f32::from_bits(pair[1][axis]))
+                        .to_bits();
+            }
+        }
+        groups.push(control);
+    }
+    encode_body(&groups, strict_oamd)
+}
+
+fn encode_body(controls: &[[u32; 13]], strict_oamd: bool) -> Result<Vec<u8>, ReaderTargetError> {
     let mut rowdata = BitWriter::default();
     rowdata.write(0, 1)?;
     rowdata.write(0, 2)?;
@@ -49,7 +67,7 @@ fn encode_body(
     rowdata.write(1, 1)?;
     let mut previous_gain = 0_u32;
     let mut previous_unmuted = false;
-    for row in 0..ROW_COUNT {
+    for row in 0..=controls.len() {
         let (kind, gain, coordinate, component, z_valid) = if row == 0 {
             (0_u8, 4096_u32, [0_i32; 3], 0_u32, false)
         } else {
@@ -96,7 +114,7 @@ fn encode_body(
     let trim = encode_trim(strict_oamd);
     let mut body = BitWriter::default();
     body.write(0, 2)?;
-    body.write(15, 5)?;
+    body.write(controls.len() as u32, 5)?;
     body.write(1, 1)?;
     body.write(1, 1)?;
     body.write(0, 1)?;
@@ -104,7 +122,7 @@ fn encode_body(
     write_section(&mut body, 1, &rowdata)?;
     write_section(&mut body, 2, &trim)?;
     let bytes = body.finish();
-    if bytes.len() != 69 || bytes.len() > 160 {
+    if (controls.len() == 15 && bytes.len() != 69) || bytes.len() > 160 {
         return Err(ReaderTargetError::ProfileUnsupported);
     }
     Ok(bytes)

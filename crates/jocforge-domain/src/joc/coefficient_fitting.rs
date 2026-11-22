@@ -65,6 +65,7 @@ use crate::{timeline::FrontendCallbackIndex, transaction::AttemptId};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct CoefficientFitState {
+    pub(super) object_count: crate::joc::JocObjectCount,
     temporal: TemporalWeightState,
     geometry: CoefficientGeometryState,
     fit_generation: u64,
@@ -76,6 +77,7 @@ impl CoefficientFitState {
         Self {
             temporal: TemporalWeightState::cold(),
             geometry: CoefficientGeometryState::cold(),
+            object_count: crate::joc::JocObjectCount::Fifteen,
             fit_generation: 0,
             seven_carrier_qmf: None,
         }
@@ -113,6 +115,7 @@ impl CoefficientFitState {
             geometry: self
                 .geometry
                 .with_generation_preserving_values(dispatch.value()),
+            object_count: self.object_count,
             fit_generation: dispatch.value(),
             seven_carrier_qmf: self.seven_carrier_qmf.clone(),
         })
@@ -123,6 +126,7 @@ impl CoefficientFitState {
         Self {
             temporal: TemporalWeightState::cold(),
             geometry: CoefficientGeometryState::with_generation_for_test(generation),
+            object_count: crate::joc::JocObjectCount::Fifteen,
             fit_generation: generation,
             seven_carrier_qmf: None,
         }
@@ -427,6 +431,7 @@ pub fn stage_seven_carrier_coefficient_fit_from_qmf(
             temporal: temporal.into_after(),
             geometry: geometry.into_after(),
             fit_generation,
+            object_count: before.object_count,
             seven_carrier_qmf: Some(carrier_after_state.clone()),
         },
         rows,
@@ -891,6 +896,7 @@ pub fn stage_coefficient_fit_from_qmf(
         projection.target_object_window_words(),
         projection.carrier_window_words(),
         score_provider,
+        before.object_count,
         before.seven_carrier_qmf.clone(),
         Some(FitSourceLineage::from_projection(projection)),
     )
@@ -924,6 +930,7 @@ pub(crate) fn stage_coefficient_fit_with_geometry_inputs(
         target_words,
         carrier_words,
         score_provider,
+        before.object_count,
         before.seven_carrier_qmf.clone(),
         None,
     )
@@ -959,6 +966,7 @@ fn assemble_fit(
     target_words: &[u32],
     carrier_words: &[u32],
     score_provider: &FitScoreProvider,
+    object_count: crate::joc::JocObjectCount,
     seven_carrier_qmf: Option<SevenCarrierQmfState>,
     source_lineage: Option<FitSourceLineage>,
 ) -> Result<CoefficientFitProposal, CoefficientFittingError> {
@@ -967,6 +975,26 @@ fn assemble_fit(
         .before_segment()
         .changed()
         .then_some(temporal.before_segment().start());
+    let grouped;
+    let target_words = if object_count == crate::joc::JocObjectCount::Fifteen {
+        target_words
+    } else {
+        let stride = target_words.len() / OBJECT_COUNT;
+        let mut merged = vec![0; target_words.len()];
+        for object in 0..object_count as usize {
+            let output = &mut merged[object * stride..(object + 1) * stride];
+            for slot in object_count.source_slots(object) {
+                for (dst, &src) in output
+                    .iter_mut()
+                    .zip(&target_words[slot * stride..(slot + 1) * stride])
+                {
+                    *dst = (f32::from_bits(*dst) + f32::from_bits(src)).to_bits();
+                }
+            }
+        }
+        grouped = merged;
+        &grouped
+    };
     let equations = build_selected_normal_equations(
         target_words,
         carrier_words,
@@ -976,20 +1004,27 @@ fn assemble_fit(
     if equations.len() != OBJECT_COUNT * BAND_COUNT {
         return Err(CoefficientFittingError::Shape);
     }
-    let mut full_words = vec![ZERO_BITS; OBJECT_COUNT * CHANNEL_COUNT * BAND_COUNT];
-    let mut sparse_words = vec![ZERO_BITS; OBJECT_COUNT * BAND_COUNT];
-    let mut selected_channels = vec![0_u16; OBJECT_COUNT * BAND_COUNT];
+    let mut full_words = vec![ZERO_BITS; object_count as usize * CHANNEL_COUNT * BAND_COUNT];
+    let mut sparse_words = vec![ZERO_BITS; object_count as usize * BAND_COUNT];
+    let mut selected_channels = vec![0_u16; object_count as usize * BAND_COUNT];
     let mut score_call_count = 0_u32;
-    let cells = fit_independent_cells(&equations, |equation| {
-        search_selected_coefficient_cell(
-            score_provider,
-            equation,
-            target_words,
-            carrier_words,
-            temporal.after().weight_words(),
-            geometry.eligibility()[usize::from(equation.object())],
-        )
-    })?;
+    let cells = fit_independent_cells(
+        &equations[..object_count as usize * BAND_COUNT],
+        |equation| {
+            search_selected_coefficient_cell(
+                score_provider,
+                equation,
+                target_words,
+                carrier_words,
+                temporal.after().weight_words(),
+                if object_count == crate::joc::JocObjectCount::Fifteen {
+                    geometry.eligibility()[usize::from(equation.object())]
+                } else {
+                    [true; CHANNEL_COUNT]
+                },
+            )
+        },
+    )?;
     for (equation, result) in equations.iter().zip(cells) {
         let object = usize::from(equation.object());
         let band = usize::from(equation.band());
@@ -1016,6 +1051,7 @@ fn assemble_fit(
             temporal: temporal.into_after(),
             geometry: geometry.into_after(),
             fit_generation,
+            object_count,
             seven_carrier_qmf,
         },
         #[cfg(test)]

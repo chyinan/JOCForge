@@ -117,7 +117,7 @@ pub fn emdf_frame_input_for_source<'a>(
     let id14_pop = parsed.id14_queue_pop();
     if joc.object_count() != id14_pop.producer().object_count().value()
         || joc.sequence_count() != id14_pop.producer().sequence_count()
-        || joc.object_count() != 15
+        || !matches!(joc.object_count(), 8 | 12 | 15)
     {
         return Err(PublishedEmdfBindingError::JocValidationMissing);
     }

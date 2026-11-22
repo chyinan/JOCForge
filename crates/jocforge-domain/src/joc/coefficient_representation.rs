@@ -19,7 +19,6 @@ use serde_json::Value;
 use sha2::{Digest, Sha256};
 
 const FUNCTIONAL_SHA256: &str = "af08ef531f8708ab81cd6af0bf8ae71504ffb19ba76d5fb8571b1ae8db53c747";
-const OBJECT_COUNT: usize = 15;
 const BAND_COUNT: usize = 12;
 const BAND_COUNTS: [usize; 8] = [1, 3, 5, 7, 9, 12, 15, 23];
 const MAX_ATTEMPTS: u8 = 16;
@@ -410,15 +409,18 @@ fn initial_objects(
     fit: FitRepresentationInput<'_>,
 ) -> Result<Vec<ObjectRepresentation>, RepresentationRetryError> {
     let channel_count = fit.row_layout.channel_count();
-    if fit.full_words.len() != OBJECT_COUNT * channel_count * BAND_COUNT
-        || fit.sparse_words.len() != OBJECT_COUNT * BAND_COUNT
-        || fit.selected_channels.len() != OBJECT_COUNT * BAND_COUNT
+    let count = fit.selected_channels.len() / BAND_COUNT;
+    if (channel_count == 7 && count != 15)
+        || !matches!(count, 8 | 12 | 15)
+        || fit.full_words.len() != count * channel_count * BAND_COUNT
+        || fit.sparse_words.len() != count * BAND_COUNT
+        || fit.selected_channels.len() != count * BAND_COUNT
         || fit.representation_offset.is_some_and(|offset| offset >= 24)
     {
         return Err(RepresentationRetryError::FitShape);
     }
-    let mut objects = Vec::with_capacity(OBJECT_COUNT);
-    for object in 0..OBJECT_COUNT {
+    let mut objects = Vec::with_capacity(count);
+    for object in 0..count {
         let channel_rows = (0..channel_count)
             .map(|channel| {
                 (0..BAND_COUNT)

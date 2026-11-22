@@ -218,7 +218,7 @@ pub fn assemble_metadata_bodies(
     if id14_provenance.producer_transaction_id().is_none() {
         return Err(MetadataBodiesError::TransactionIdentity);
     }
-    if id14_provenance.object_count().value() != 15 {
+    if !matches!(id14_provenance.object_count().value(), 8 | 12 | 15) {
         return Err(MetadataBodiesError::Id14ObjectCount);
     }
     let id11_bytes = reader_receipt.id11_body();

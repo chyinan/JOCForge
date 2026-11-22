@@ -1,6 +1,22 @@
 // pattern: Functional Core
 //! JOC exposes scoped pure algorithms and immutable boundaries; production-owner composition remains separate.
 
+/// Number of coded dynamic objects, excluding the bypass LFE.
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub enum JocObjectCount {
+    Eight = 8,
+    Twelve = 12,
+    #[default]
+    Fifteen = 15,
+}
+
+impl JocObjectCount {
+    pub(crate) fn source_slots(self, object: usize) -> std::ops::Range<usize> {
+        let count = self as usize;
+        (object * 15).div_ceil(count)..((object + 1) * 15).div_ceil(count)
+    }
+}
+
 pub mod additional_bsi;
 pub mod clip_producer;
 pub mod coefficient_delta;

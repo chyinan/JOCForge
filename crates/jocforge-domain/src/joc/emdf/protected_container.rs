@@ -668,7 +668,7 @@ fn validate_oamd_body(bytes: &[u8]) -> Result<OamdValidationSummary, CurrentEmdf
             OamdBodyAssemblyError::RowDomain,
         ));
     }
-    if row_count != 16 || !leading_lfe {
+    if !matches!(row_count, 9 | 13 | 16) || !leading_lfe {
         return Err(CurrentEmdfParserError::OamdSelectedSlots);
     }
 
@@ -746,7 +746,7 @@ fn validate_oamd_body(bytes: &[u8]) -> Result<OamdValidationSummary, CurrentEmdf
         &SELECTED_Z_TABLE,
     )
     .map_err(|error| CurrentEmdfParserError::OamdBodyAssembly(map_oamd_rowdata_error(error)))?;
-    if rows.len() != 16 {
+    if rows.len() != row_count {
         return Err(CurrentEmdfParserError::OamdSelectedSlots);
     }
     if let Some(payload) = trim_payload {
@@ -756,7 +756,7 @@ fn validate_oamd_body(bytes: &[u8]) -> Result<OamdValidationSummary, CurrentEmdf
             .map_err(CurrentEmdfParserError::OamdTrim)?;
     }
     Ok(OamdValidationSummary {
-        row_count: 16,
+        row_count: row_count as u8,
         leading_lfe,
         section_count,
     })
@@ -821,7 +821,7 @@ fn parse_joc_payload(
     if !provenance.matches_body(provenance.producer_generation(), bytes) {
         return Err(CurrentEmdfParserError::JocProducerBodyMismatch);
     }
-    if provenance.object_count().value() != 15 {
+    if !matches!(provenance.object_count().value(), 8 | 12 | 15) {
         return Err(CurrentEmdfParserError::JocSelectedHeader);
     }
 
@@ -847,6 +847,9 @@ fn parse_joc_payload(
         0 | 3 => 5,
         _ => return Err(CurrentEmdfParserError::JocSelectedHeader),
     };
+    if object_count != provenance.object_count().value() {
+        return Err(CurrentEmdfParserError::JocSelectedHeader);
+    }
     if sequence_count != provenance.sequence_count() {
         return Err(CurrentEmdfParserError::JocSequenceMismatch {
             expected: provenance.sequence_count(),
@@ -987,7 +990,7 @@ fn validate_selected_joc_header(
     clip_gain_index: u8,
 ) -> Result<(), CurrentEmdfParserError> {
     if !SELECTED_JOC_DOWNMIX_INDEXES.contains(&downmix_index)
-        || object_count != 15
+        || !matches!(object_count, 8 | 12 | 15)
         || extension_config != 0
         || !(128..=255).contains(&clip_gain_index)
     {
@@ -1159,7 +1162,11 @@ pub fn parse_current_emdf_container_with_sequence(
     for payload in &mut parsed_payloads {
         match payload.id {
             CurrentPayloadId::Oamd => {
-                payload.oamd_validation = Some(validate_oamd_body(&payload.bytes)?);
+                let oamd = validate_oamd_body(&payload.bytes)?;
+                if oamd.row_count != id14_provenance.object_count().value() + 1 {
+                    return Err(CurrentEmdfParserError::OamdSelectedSlots);
+                }
+                payload.oamd_validation = Some(oamd);
             }
             CurrentPayloadId::Joc => {
                 payload.joc_validation = Some(parse_joc_payload(&payload.bytes, id14_provenance)?);

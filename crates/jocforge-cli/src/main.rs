@@ -48,6 +48,9 @@ enum Command {
 
 #[derive(Args)]
 struct EncodeArgs {
+    /// Coded JOC objects; experimental 8/12 use the default 5.1 1024 kbps raw file route.
+    #[arg(long,value_parser=["8","12","15"],default_value="15")]
+    joc_objects: String,
     /// Input ADM BWF file.
     #[arg(value_name = "INPUT.adm.wav", required_unless_present = "job_xml")]
     input: Option<PathBuf>,
@@ -255,7 +258,30 @@ fn main() -> ExitCode {
             } else {
                 None
             };
-            if let Some(job_xml) = args.job_xml {
+            if args.joc_objects != "15" {
+                if layout != JocReconstructionLayout::ExistingSelectedFivePointOne
+                    || topology.is_some()
+                    || args.job_xml.is_some()
+                    || signalling != EmdfCarriageProfile::DeployedCompat
+                    || args.data_rate.as_deref().is_some_and(|r| r != "1024")
+                {
+                    eprintln!(
+                        "8/12 JOC objects currently require raw idx3 at 1024 kbps with default signalling and file input"
+                    );
+                    return ExitCode::from(2);
+                }
+                use jocforge::encode_request::JocObjectCount;
+                let count = if args.joc_objects == "8" {
+                    JocObjectCount::Eight
+                } else {
+                    JocObjectCount::Twelve
+                };
+                jocforge::encode_request::encode_selected_object_count(
+                    args.input.as_deref().unwrap(),
+                    args.output.as_deref().unwrap(),
+                    count,
+                )
+            } else if let Some(job_xml) = args.job_xml {
                 if let Some(plan) = topology {
                     jocforge::encode_request::encode_xml_substream_layout(
                         &job_xml,

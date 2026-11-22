@@ -995,6 +995,29 @@ pub fn encode_xml_substream_layout(
     )
 }
 
+pub use jocforge_application::spatial_callback::JocObjectCount;
+
+pub fn encode_selected_object_count(
+    input: &Path,
+    output: &Path,
+    object_count: JocObjectCount,
+) -> Result<(), EncodeRequestError> {
+    run_worker_with_object_count(
+        input,
+        output,
+        Some(CodecRateProfile::Kbps1024),
+        None,
+        (
+            JocReconstructionLayout::ExistingSelectedFivePointOne,
+            EmdfCarriageProfile::DeployedCompat,
+        ),
+        None,
+        &std::sync::atomic::AtomicBool::new(false),
+        None,
+        object_count,
+    )
+}
+
 fn run_worker_with_topology(
     input_path: &Path,
     output_path: &Path,
@@ -1004,6 +1027,30 @@ fn run_worker_with_topology(
     progress: Option<EventObserver<'_>>,
     cancelled: &std::sync::atomic::AtomicBool,
     topology: Option<SubstreamPlan>,
+) -> Result<(), EncodeRequestError> {
+    run_worker_with_object_count(
+        input_path,
+        output_path,
+        codec_rate,
+        authored_job_xml,
+        structure,
+        progress,
+        cancelled,
+        topology,
+        JocObjectCount::Fifteen,
+    )
+}
+
+fn run_worker_with_object_count(
+    input_path: &Path,
+    output_path: &Path,
+    codec_rate: Option<CodecRateProfile>,
+    authored_job_xml: Option<Vec<u8>>,
+    structure: (JocReconstructionLayout, EmdfCarriageProfile),
+    progress: Option<EventObserver<'_>>,
+    cancelled: &std::sync::atomic::AtomicBool,
+    topology: Option<SubstreamPlan>,
+    object_count: JocObjectCount,
 ) -> Result<(), EncodeRequestError> {
     thread::scope(|scope| {
         let worker = thread::Builder::new()
@@ -1019,6 +1066,7 @@ fn run_worker_with_topology(
                     progress,
                     cancelled,
                     topology,
+                    object_count,
                 )
             })
             .map_err(|_| EncodeRequestError::WorkerUnavailable)?;
@@ -1078,6 +1126,7 @@ fn run_inner(
     progress: Option<EventObserver<'_>>,
     cancelled: &std::sync::atomic::AtomicBool,
     topology: Option<SubstreamPlan>,
+    object_count: JocObjectCount,
 ) -> Result<(), EncodeRequestError> {
     let (joc_layout, signalling) = structure;
     validate_signalling(joc_layout, signalling)?;
@@ -1330,6 +1379,7 @@ fn run_inner(
         &callback_values.p11_geometry,
     )
     .map_err(EncodeRequestError::SpatialColdRoots)?;
+    cold_roots.set_joc_object_count(object_count);
     if signalling == EmdfCarriageProfile::EtsiEmdf {
         cold_roots.enable_strict_oamd();
     }
@@ -1345,7 +1395,7 @@ fn run_inner(
         .map_err(|error| {
             EncodeRequestError::SourcePipeline(format!("Integrity cold root: {error:?}"))
         })?;
-    let joc_state = SelectedJocState::cold();
+    let joc_state = SelectedJocState::cold_with_object_count(object_count);
     let codec_rate = prepared.configuration().selected_profile().codec_rate();
     let codec_root = if resolved_joc_profile
         .joc_reconstruction_layout()

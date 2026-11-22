@@ -2,6 +2,7 @@
 //! Production composition of one selected MAIN F03W/F04 callback from admitted input values.
 
 use crate::PreparedJobInput;
+pub use jocforge_domain::joc::JocObjectCount;
 use jocforge_domain::meter::prepared_job_identity::PreparedJobInputIdentity;
 use jocforge_domain::{
     frontend::{
@@ -77,6 +78,9 @@ pub struct MainSpatialColdRoots {
 }
 
 impl MainSpatialColdRoots {
+    pub fn set_joc_object_count(&mut self, count: JocObjectCount) {
+        self.spatial_control.set_joc_object_count(count);
+    }
     pub fn enable_strict_oamd(&mut self) {
         self.spatial_control.enable_strict_oamd();
     }
