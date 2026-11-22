@@ -141,11 +141,21 @@ impl SubstreamPlan {
     }
 
     pub fn cmaf(layout: JocReconstructionLayout, rate: u32) -> Result<Self, String> {
+        Self::cmaf_with_lfe(layout, rate, LfeOwner::None)
+    }
+
+    pub fn cmaf_with_lfe(
+        layout: JocReconstructionLayout,
+        rate: u32,
+        lfe: LfeOwner,
+    ) -> Result<Self, String> {
+        if !matches!(lfe, LfeOwner::None | LfeOwner::Independent) {
+            return Err("CMAF supports LFE in I0 only".into());
+        }
         if !matches!(rate, 1024 | 1280 | 1408 | 1536 | 1664) {
             return Err("CMAF total rate must be 1024, 1280, 1408, 1536 or 1664 kbps".into());
         }
-        let mut plan =
-            Self::new(layout, 1, LfeOwner::None)?.with_emdf_location(EmdfLocation::FrameEnd)?;
+        let mut plan = Self::new(layout, 1, lfe)?.with_emdf_location(EmdfLocation::FrameEnd)?;
         plan.cmaf_rate = Some(rate);
         Ok(plan)
     }

@@ -37,8 +37,8 @@ fn bmff_full_box(kind: [u8; 4], flags: u32, payload: &[u8]) -> Vec<u8> {
     bmff_box(kind, &[flags.to_be_bytes().as_slice(), payload].concat())
 }
 
-fn dec3_box(profile: JocReconstructionLayout, bitrate_kbps: u32) -> Vec<u8> {
-    dec3_for_track(profile, bitrate_kbps, 16, 1, false, 0)
+fn dec3_box(profile: JocReconstructionLayout, bitrate_kbps: u32, lfe: bool) -> Vec<u8> {
+    dec3_for_track(profile, bitrate_kbps, 16, 1, lfe, 0)
 }
 
 fn dec3_for_track(
@@ -91,8 +91,8 @@ fn audio_sample_entry(dec3: &[u8]) -> Vec<u8> {
     bmff_box(*b"ec-3", &payload)
 }
 
-pub(crate) fn init_segment(layout: JocReconstructionLayout, rate: u32) -> Vec<u8> {
-    let dec3 = dec3_box(layout, rate);
+pub(crate) fn init_segment(layout: JocReconstructionLayout, rate: u32, lfe: bool) -> Vec<u8> {
+    let dec3 = dec3_box(layout, rate, lfe);
     let ftyp_payload = [
         b"cmfc".as_slice(),
         &0_u32.to_be_bytes(),
@@ -344,10 +344,13 @@ pub(crate) fn package(
     }
     let size = rate * 4;
     let offset = movie_fragment(1, size, 0).len() as u32 + 8;
-    output.write_all(&init_segment(layout, rate))?;
+
     let mut sample = vec![0; size as usize];
     for sequence in 1..=count {
         raw.read_exact(&mut sample)?;
+        if sequence == 1 {
+            output.write_all(&init_segment(layout, rate, sample[4] & 1 != 0))?;
+        }
         output.write_all(&movie_fragment(sequence, size, offset))?;
         output.write_all(&(size + 8).to_be_bytes())?;
         output.write_all(b"mdat")?;
@@ -375,7 +378,7 @@ mod tests {
             (JocReconstructionLayout::ExistingSelectedFivePointOne, 0),
             (JocReconstructionLayout::HeightPairWithPhase, 64),
         ] {
-            let config = dec3_box(layout, 1664);
+            let config = dec3_box(layout, 1664, false);
             let bits = u64::from_be_bytes(config[8..].try_into().unwrap());
             assert_eq!(bits >> 51, 1664);
             assert_eq!((bits >> 32) & 1, 0);
@@ -394,7 +397,7 @@ mod tests {
         raw[size..].fill(0x5a);
         let mut track = Vec::new();
         package(&raw[..], &mut track, layout, rate, 2).unwrap();
-        let mut cursor = init_segment(layout, rate).len();
+        let mut cursor = init_segment(layout, rate, true).len();
         for (i, sample) in raw.chunks_exact(size).enumerate() {
             let moof_size =
                 u32::from_be_bytes(track[cursor..cursor + 4].try_into().unwrap()) as usize;
