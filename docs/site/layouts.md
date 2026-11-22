@@ -50,7 +50,7 @@ jocforge encode "$PWD/input.adm.wav" "$PWD/height-phase/music.candidate.ec3" --j
 
 ## Playback
 
-JOCForge 5.1 output is silent on the tested iOS system decoder because the HMAC key is missing. This repository does not include that key, so the decoder cannot finish verification.
+JOCForge 5.1 output is silent on the tested iOS system decoder because the HMAC key is missing. This repository does not include that key, so the decoder cannot finish verification. If you change this open-source repository yourself, you are responsible for the result.
 
 Flat 7.1 is experimental. A 4:29 encode of *Love Song* at 1664 kbps produced 8,417 access units. OpenJOC 0.20.2 accepted every unit in compatibility mode and rendered 7.1. The same six Flat 7.1 rates were also encoded from one 48 kHz DaVinci ADM master with moving objects, decoded with FFmpeg and rendered to 7.1 in OpenJOC. The deployed-compatibility check passed. The strict ETSI check still reports a `codecdatae` difference on payloads 11 and 14.
 

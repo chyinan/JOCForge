@@ -50,7 +50,7 @@ jocforge encode "$PWD/input.adm.wav" "$PWD/height-phase/music.candidate.ec3" --j
 
 ## 播放
 
-JOCForge 的 5.1 输出在实测的 iOS 系统解码器上为静音，原因是缺少 HMAC 密钥。本仓库不包含这把密钥，解码器完不成校验。
+JOCForge 的 5.1 输出在实测的 iOS 系统解码器上为静音，原因是缺少 HMAC 密钥。本仓库不包含这把密钥，解码器完不成校验。用户自行更改本开源仓库的后果，由用户自行承担。
 
 Flat 7.1 仍是实验档。4 分 29 秒的《Love Song》以 1664 kbps 编码后得到 8,417 个访问单元。OpenJOC 0.20.2 在兼容模式下接纳了全部访问单元，并完成 7.1 渲染。另一项实测用的是一首 48 kHz 达芬奇 ADM 母版，节目里有动态对象。六档 Flat 7.1 都完成了整曲编码、FFmpeg 解码和 OpenJOC 7.1 渲染。部署兼容检查通过。严格 ETSI 检查仍报告载荷 11 和载荷 14 的 `codecdatae` 标志差异。
 
