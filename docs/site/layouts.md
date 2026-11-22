@@ -14,10 +14,9 @@ Five-carrier audio accepts `--data-rate` values of 384, 448, 576, 640, 768 and 1
 
 Pass absolute paths. Raw seven-carrier exports require a fresh empty directory and the suffix `.candidate.ec3`.
 
-```powershell
-$adm = (Resolve-Path "D:/Audio/input.adm.wav").Path
-$out = (New-Item -ItemType Directory -Path (Join-Path $PWD ("flat-" + [guid]::NewGuid()))).FullName
-.\target\release\jocforge.exe encode "$adm" (Join-Path $out "mix.candidate.ec3") --joc-layout idx1 --total-rate 1280
+```sh
+mkdir flat7x
+jocforge encode "$PWD/input.adm.wav" "$PWD/flat7x/mix.candidate.ec3" --joc-layout idx1 --total-rate 1280
 ```
 
 ## Object motion and count

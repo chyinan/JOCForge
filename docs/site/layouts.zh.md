@@ -24,25 +24,18 @@ JOCForge 的命令行编码器支持将 48 kHz ADM BWF 编码为带 5.1 声道�
 
 ## 编码 Flat 7.1
 
-在仓库根目录运行以下 PowerShell 命令，将输入路径换成自己的 ADM BWF。需要 Rust 工具链和 FFmpeg。Flat7x CLI 要求输出到新的空目录，并使用 `.candidate.ec3` 后缀。
+把输入路径换成自己的 ADM BWF。Flat7x 要求输出放进新的空目录，文件名使用 `.candidate.ec3` 后缀。
 
-```powershell
-cargo build --release --locked -p jocforge
-if ($LASTEXITCODE -ne 0) { throw "构建失败" }
-
-$adm = (Resolve-Path -LiteralPath "D:\Audio\input.adm.wav").Path
-$out = (New-Item -ItemType Directory -Path (Join-Path $PWD ("flat7x-" + [guid]::NewGuid()))).FullName
-$ec3 = Join-Path $out "output.candidate.ec3"
-
-.\target\release\jocforge.exe encode "$adm" "$ec3" --joc-layout flat7x --total-rate 1280
-if ($LASTEXITCODE -ne 0) { throw "Flat 7.1 编码失败" }
+```sh
+mkdir flat7x
+jocforge encode "$PWD/input.adm.wav" "$PWD/flat7x/output.candidate.ec3" --joc-layout flat7x --total-rate 1280
 ```
 
 ## 5.1 严格 ETSI 信令
 
 `--etsi-strict` 为独立 5.1 EC-3 的 JOC 和 OAMD 写入严格 EMDF 描述符，并将 OAMD 的坐标变换模式设为无变换。省略该选项使用原有部署兼容格式。文件输入与 XML 作业都支持此选项。
 
-```powershell
+```sh
 jocforge encode "$PWD/input.adm.wav" "$PWD/output.ec3" --data-rate 1024 --etsi-strict
 jocforge encode --job-xml job.xml --etsi-strict
 ```
@@ -51,8 +44,9 @@ jocforge encode --job-xml job.xml --etsi-strict
 
 Flat 7.1 可选严格 ETSI 信令。idx2 使用两个前方高度载体 Tfl/Tfr，默认启用严格信令。两者均使用 640 kbps AC-3 兼容核心和 E-AC-3 依赖子流，默认总码率为 1664 kbps。每次输出使用单独的空目录。
 
-```powershell
-mkdir flat-strict, height-pair
+```sh
+mkdir flat-strict
+mkdir height-pair
 jocforge encode "$PWD/input.adm.wav" "$PWD/flat-strict/song.candidate.ec3" --joc-layout flat7x --etsi-strict
 jocforge encode "$PWD/input.adm.wav" "$PWD/height-pair/song.candidate.ec3" --joc-layout idx2
 ```
@@ -61,7 +55,7 @@ idx2 的七个重建输入为 L、R、C、Ls、Rs、Tfl、Tfr。编码器将高�
 
 idx0 和 idx4 默认使用严格 ETSI 信令。idx0 使用单独的 E-AC-3 I0，可直接指定输出文件；idx4 与 idx2 共用 Tfl/Tfr 高度载体、对象位置分配和系数拟合，以 profile 索引区分相位信令。两者沿用同一套音频处理。配对子流的总码率使用 `--total-rate`，单流码率使用 `--data-rate`。
 
-```powershell
+```sh
 jocforge encode "$PWD/input.adm.wav" "$PWD/music-idx0.ec3" --joc-layout idx0
 mkdir height-phase
 jocforge encode "$PWD/input.adm.wav" "$PWD/height-phase/music.candidate.ec3" --joc-layout idx4

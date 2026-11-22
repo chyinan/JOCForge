@@ -4,7 +4,7 @@ Windows x64 Release 在 Ryzen 7 9800X3D 上编码一份 191.69 秒、26 声道�
 
 项目采用 Rust 2024 工作区，包含领域逻辑、应用、文件读写、命令行和独立验证五个模块。编码请使用 CLI，应用层的 `encode()` 接口目前返回 `SourcePipelineUnavailable`。命令参数和版本可通过 `jocforge --help` 和 `jocforge --version` 查看。[架构说明](https://github.com/chyinan/JOCForge/blob/main/docs/architecture/ARCHITECTURE.md)
 
-```powershell
+```sh
 cargo fmt --all -- --check
 cargo check --workspace --locked
 cargo clippy --workspace --all-targets --locked

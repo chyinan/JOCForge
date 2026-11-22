@@ -4,7 +4,7 @@
 
 `--container cmaf` 输出单文件分片 MP4。文件以 `ftyp + moov` 初始化，每个 `moof + mdat` 装一个完整的 1536 采样访问单元。五种 JOC profile 均使用严格 EMDF、六块 E-AC-3 I0+D0。默认无 LFE，指定 `--lfe-owner independent` 时由 I0 携带 LFE，指定 `--lfe-owner dependent` 时由 D0 补充普通 LFE，指定 `--lfe-owner replace-independent` 时 D0 替换 I0 的同一 LFE，D0 帧尾携带 JOC/OAMD。
 
-```powershell
+```sh
 jocforge encode "$PWD/input.adm.wav" "$PWD/height-phase.mp4" --container cmaf --joc-layout idx4 --total-rate 1664
 ```
 
@@ -12,12 +12,12 @@ CMAF 默认总码率 1664 kbps，可选 1024、1280、1408、1536、1664。D0 �
 
 ## 无损封装为 MKA 或 MP4
 
-沿用[布局与对象](layouts.md)中 Flat 7.1 示例的 `$ec3` 和 `$out`。`-c:a copy` 直接复制 EC3 音轨并保留 JOC 元数据。
+把 `mix.ec3` 换成[布局与对象](layouts.md)里 Flat 7.1 的输出文件。`-c:a copy` 直接复制 EC3 音轨并保留 JOC 元数据。
 
 **MKA**（已实测可在 Audition 和 Windows 媒体播放器中打开）
 
-```powershell
-ffmpeg -n -i "$ec3" -map 0:a:0 -c:a copy -f matroska (Join-Path $out "output.mka")
+```sh
+ffmpeg -n -i mix.ec3 -map 0:a:0 -c:a copy -f matroska mix.mka
 ```
 
 ![Adobe Audition 中打开的 MKA 编码结果，八条轨道依次为 L、R、C、LFE、Ls、Rs、Lsd、Rsd](assets/screenshot.png)
@@ -26,16 +26,11 @@ ffmpeg -n -i "$ec3" -map 0:a:0 -c:a copy -f matroska (Join-Path $out "output.mka
 
 **MP4**（可选用 `.m4a` 后缀）
 
-```powershell
-$mp4 = Join-Path $out "output.mp4"
-ffmpeg -n -i "$ec3" -map 0:a:0 -c:a copy -f mp4 "$mp4"
-if ($LASTEXITCODE -ne 0) { throw "MP4 封装失败" }
-```
+FFmpeg 看到 `.m4a` 后缀时默认选用 `ipod` 封装器。先写成 MP4，再改名为 `.m4a`，可以保留 MP4 封装和其中的 `ec-3` 音轨。
 
-需要 `.m4a` 文件时，再运行下面的命令。FFmpeg 根据 `.m4a` 后缀默认选择 `ipod` 封装器；先生成 MP4 再改名，可以保留 MP4 封装和其中的 `ec-3` 音轨。
-
-```powershell
-Rename-Item -LiteralPath $mp4 -NewName "output.m4a"
+```sh
+ffmpeg -n -i mix.ec3 -map 0:a:0 -c:a copy -f mp4 mix.mp4
+mv mix.mp4 mix.m4a
 ```
 
 生成的 `.m4a` 已实测可由 iOS 系统解码器打开。

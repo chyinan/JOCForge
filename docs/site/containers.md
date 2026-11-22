@@ -4,8 +4,8 @@
 
 `--container cmaf` writes one initialization segment followed by a fragment for each 1536-sample access unit, all in a single MP4 file. All five profiles use strict EMDF, six blocks and I0+D0. Choose a total bitrate of 1024, 1280, 1408, 1536 or 1664 kbps (default). D0 receives 640 kbps. LFE defaults to `none`. Select `--lfe-owner independent`, `dependent` or `replace-independent` for I0, supplemental D0 or replacement D0.
 
-```powershell
-jocforge encode "D:/Audio/input.adm.wav" "D:/Audio/mix.mp4" --joc-layout idx4 --container cmaf --total-rate 1664
+```sh
+jocforge encode "$PWD/input.adm.wav" "$PWD/mix.mp4" --joc-layout idx4 --container cmaf --total-rate 1664
 ```
 
 ## MKA and conventional MP4

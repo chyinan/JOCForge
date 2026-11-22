@@ -67,22 +67,23 @@ cd JOCForge
 cargo install --path crates/jocforge-cli --locked
 ```
 
-The defaults are 5.1, 1024 kbps and 15 coded objects:
+The defaults are 5.1, 1024 kbps and 15 coded objects. JOCForge requires absolute paths; `$PWD` works in PowerShell and POSIX shells:
 
 ```sh
-jocforge encode input.adm.wav output.ec3
+jocforge encode "$PWD/input.adm.wav" "$PWD/output.ec3"
 ```
 
-Flat 7.1 defaults to 1664 kbps:
+Flat 7.1 defaults to 1664 kbps and writes an experimental candidate into a fresh empty directory:
 
 ```sh
-jocforge encode input.adm.wav output-7.1.ec3 --joc-layout flat7x
+mkdir flat7x
+jocforge encode "$PWD/input.adm.wav" "$PWD/flat7x/mix.candidate.ec3" --joc-layout flat7x
 ```
 
 Write a fragmented MP4 (CMAF):
 
 ```sh
-jocforge encode input.adm.wav output.mp4 --joc-layout idx4 --container cmaf
+jocforge encode "$PWD/input.adm.wav" "$PWD/output.mp4" --joc-layout idx4 --container cmaf
 ```
 
 Run `jocforge encode --help` for bitrate, substream, carriage and container controls.

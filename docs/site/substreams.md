@@ -16,6 +16,6 @@ Frame-tail carriage requires a dependent. The last dependent of the last group c
 
 All five profiles support a 1280 kbps elementary stream with six blocks, one 640 kbps AC-3 I0 and one 640 kbps E-AC-3 D0. Frame-tail JOC/OAMD lives in D0. Both signalling modes and all four LFE assignments are available. In XML jobs set D0 `data_rate` to 640.
 
-```powershell
-jocforge encode "D:/Audio/input.adm.wav" "D:/Audio/core.ec3" --joc-layout idx0 --carriage legacy-ac3 --total-rate 1280 --lfe-owner replace-independent
+```sh
+jocforge encode "$PWD/input.adm.wav" "$PWD/core.ec3" --joc-layout idx0 --carriage legacy-ac3 --total-rate 1280 --lfe-owner replace-independent
 ```
