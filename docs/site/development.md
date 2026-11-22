@@ -18,4 +18,4 @@ python -m mkdocs serve
 python -m mkdocs build --strict
 ```
 
-The Pages workflow builds both languages from the independent encoder branch.
+The Pages workflow builds both languages from `main`.
