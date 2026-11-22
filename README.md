@@ -100,4 +100,6 @@ Write fragmented MP4 (CMAF):
 
 Native 5.1 JOC is the most validated path. Flat 7.1 and the reduced 8/12-object modes are experimental. Playback compatibility depends on the decoder; the documentation records the tested paths, including a known silent-playback case on the iOS system decoder.
 
-[Apache License 2.0](LICENSE) · [Third-party notices](THIRD_PARTY_NOTICES.md)
+Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow.
+
+[Apache License 2.0](LICENSE) · [Security policy](SECURITY.md) · [Third-party notices](THIRD_PARTY_NOTICES.md)
