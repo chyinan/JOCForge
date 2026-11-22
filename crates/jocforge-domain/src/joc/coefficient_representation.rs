@@ -410,8 +410,7 @@ fn initial_objects(
 ) -> Result<Vec<ObjectRepresentation>, RepresentationRetryError> {
     let channel_count = fit.row_layout.channel_count();
     let count = fit.selected_channels.len() / BAND_COUNT;
-    if (channel_count == 7 && count != 15)
-        || !matches!(count, 8 | 12 | 15)
+    if !matches!(count, 8 | 12 | 15)
         || fit.full_words.len() != count * channel_count * BAND_COUNT
         || fit.sparse_words.len() != count * BAND_COUNT
         || fit.selected_channels.len() != count * BAND_COUNT

@@ -259,28 +259,33 @@ fn main() -> ExitCode {
                 None
             };
             if args.joc_objects != "15" {
-                if !layout.uses_five_carriers()
-                    || topology.is_some()
-                    || args.job_xml.is_some()
-                    || args.data_rate.as_deref().is_some_and(|r| r != "1024")
-                {
+                if topology.is_some() || args.job_xml.is_some() {
                     eprintln!(
-                        "8/12 JOC objects currently require native raw idx0/idx3 at 1024 kbps and file input"
+                        "8/12 JOC objects currently require native raw output and file input"
                     );
                     return ExitCode::from(2);
                 }
+                let rate = if let Some(total) = args.total_rate.as_deref() {
+                    CodecRateProfile::from_kbps(
+                        total.parse::<u32>().expect("validated total bitrate") - 640,
+                    )
+                } else {
+                    CodecRateProfile::from_xml_token(args.data_rate.as_deref().unwrap_or("1024"))
+                }
+                .expect("validated native bitrate");
                 use jocforge::encode_request::JocObjectCount;
                 let count = if args.joc_objects == "8" {
                     JocObjectCount::Eight
                 } else {
                     JocObjectCount::Twelve
                 };
-                jocforge::encode_request::encode_object_count_for_layout(
+                jocforge::encode_request::encode_native_object_count(
                     args.input.as_deref().unwrap(),
                     args.output.as_deref().unwrap(),
                     count,
                     layout,
                     signalling,
+                    rate,
                 )
             } else if let Some(job_xml) = args.job_xml {
                 if let Some(plan) = topology {

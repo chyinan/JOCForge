@@ -416,7 +416,7 @@ fn validate_flat7x_coefficient_rows(
     if !matches!(input.downmix_index, 1 | 2 | 4) {
         return Err(CoefficientPayloadWriterFailure::UnsupportedSelectedProfile);
     }
-    if input.objects.len() != 15 {
+    if !matches!(input.objects.len(), 8 | 12 | 15) {
         return Err(CoefficientPayloadWriterFailure::InputShape);
     }
 
@@ -503,7 +503,7 @@ fn flat7x_full_data_point_shape_allowed(
     input: &CoefficientPayloadInput,
 ) -> bool {
     matches!(input.downmix_index, 1 | 2 | 4)
-        && input.objects.len() == 15
+        && matches!(input.objects.len(), 8 | 12 | 15)
         && input
             .objects
             .iter()

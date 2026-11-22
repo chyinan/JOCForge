@@ -83,6 +83,10 @@ impl CoefficientFitState {
         }
     }
 
+    pub const fn object_count(&self) -> crate::joc::JocObjectCount {
+        self.object_count
+    }
+
     pub const fn temporal(&self) -> &TemporalWeightState {
         &self.temporal
     }
@@ -312,6 +316,47 @@ pub fn fit_seven_carrier_window_set(
     weight_words: &[u32; 48],
     score_provider: &FitScoreProvider,
 ) -> Result<SevenCarrierFitRows, CoefficientFittingError> {
+    fit_seven_carrier_objects(
+        target_windows,
+        carrier_windows,
+        weight_words,
+        score_provider,
+        crate::joc::JocObjectCount::Fifteen,
+    )
+}
+
+fn grouped_target_windows(
+    target_words: &[u32],
+    object_count: crate::joc::JocObjectCount,
+) -> std::borrow::Cow<'_, [u32]> {
+    if object_count == crate::joc::JocObjectCount::Fifteen {
+        return std::borrow::Cow::Borrowed(target_words);
+    }
+    let stride = target_words.len() / OBJECT_COUNT;
+    let mut merged = vec![0; target_words.len()];
+    for object in 0..object_count as usize {
+        let output = &mut merged[object * stride..(object + 1) * stride];
+        for slot in object_count.source_slots(object) {
+            for (dst, &src) in output
+                .iter_mut()
+                .zip(&target_words[slot * stride..(slot + 1) * stride])
+            {
+                *dst = (f32::from_bits(*dst) + f32::from_bits(src)).to_bits();
+            }
+        }
+    }
+    std::borrow::Cow::Owned(merged)
+}
+
+fn fit_seven_carrier_objects(
+    target_windows: &[u32],
+    carrier_windows: &SevenCarrierWindowSet,
+    weight_words: &[u32; 48],
+    score_provider: &FitScoreProvider,
+    object_count: crate::joc::JocObjectCount,
+) -> Result<SevenCarrierFitRows, CoefficientFittingError> {
+    let grouped = grouped_target_windows(target_windows, object_count);
+    let target_windows = grouped.as_ref();
     // Match the reference level used to fit the seven-carrier reconstruction matrix.
     let mut carrier_words = carrier_windows.words_in_target_order();
     for word in &mut carrier_words {
@@ -327,20 +372,23 @@ pub fn fit_seven_carrier_window_set(
         return Err(CoefficientFittingError::Shape);
     }
 
-    let mut full_words = vec![ZERO_BITS; OBJECT_COUNT * SEVEN_CHANNEL_COUNT * BAND_COUNT];
-    let mut sparse_words = vec![ZERO_BITS; OBJECT_COUNT * BAND_COUNT];
-    let mut selected_channels = vec![0_u16; OBJECT_COUNT * BAND_COUNT];
+    let mut full_words = vec![ZERO_BITS; object_count as usize * SEVEN_CHANNEL_COUNT * BAND_COUNT];
+    let mut sparse_words = vec![ZERO_BITS; object_count as usize * BAND_COUNT];
+    let mut selected_channels = vec![0_u16; object_count as usize * BAND_COUNT];
     let mut score_call_count = 0_u32;
-    let cells = fit_independent_cells(&equations, |equation| {
-        search_coefficient_cell_for_carriers::<SEVEN_CHANNEL_COUNT>(
-            score_provider,
-            equation,
-            target_windows,
-            &carrier_words,
-            weight_words,
-            [true; SEVEN_CHANNEL_COUNT],
-        )
-    })?;
+    let cells = fit_independent_cells(
+        &equations[..object_count as usize * BAND_COUNT],
+        |equation| {
+            search_coefficient_cell_for_carriers::<SEVEN_CHANNEL_COUNT>(
+                score_provider,
+                equation,
+                target_windows,
+                &carrier_words,
+                weight_words,
+                [true; SEVEN_CHANNEL_COUNT],
+            )
+        },
+    )?;
     for (equation, result) in equations.iter().zip(cells) {
         let object = usize::from(equation.object());
         let band = usize::from(equation.band());
@@ -410,11 +458,12 @@ pub fn stage_seven_carrier_coefficient_fit_from_qmf(
         qmf_provider,
     )
     .map_err(CoefficientFittingError::Geometry)?;
-    let mut rows = fit_seven_carrier_window_set(
+    let mut rows = fit_seven_carrier_objects(
         target_words,
         carrier_windows,
         temporal.after().weight_words(),
         score_provider,
+        before.object_count,
     )?;
     if rows.downmix_index == JocPayloadDownmixIndex::HeightPair
         && profile.joc_payload_downmix_index() == JocPayloadDownmixIndex::HeightPairWithPhase
@@ -975,26 +1024,8 @@ fn assemble_fit(
         .before_segment()
         .changed()
         .then_some(temporal.before_segment().start());
-    let grouped;
-    let target_words = if object_count == crate::joc::JocObjectCount::Fifteen {
-        target_words
-    } else {
-        let stride = target_words.len() / OBJECT_COUNT;
-        let mut merged = vec![0; target_words.len()];
-        for object in 0..object_count as usize {
-            let output = &mut merged[object * stride..(object + 1) * stride];
-            for slot in object_count.source_slots(object) {
-                for (dst, &src) in output
-                    .iter_mut()
-                    .zip(&target_words[slot * stride..(slot + 1) * stride])
-                {
-                    *dst = (f32::from_bits(*dst) + f32::from_bits(src)).to_bits();
-                }
-            }
-        }
-        grouped = merged;
-        &grouped
-    };
+    let grouped = grouped_target_windows(target_words, object_count);
+    let target_words = grouped.as_ref();
     let equations = build_selected_normal_equations(
         target_words,
         carrier_words,

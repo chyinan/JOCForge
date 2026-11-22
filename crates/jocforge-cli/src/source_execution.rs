@@ -577,7 +577,7 @@ pub(crate) fn stage_source_frame<'pcm>(
                         mixing: None,
                         block_mix: [None; 6],
                         information: None,
-                        addbsi: d0_bsi_inputs.ci16_addbsi(),
+                        addbsi: jocforge_application::flat7x_pair_source::Flat7xD0Ci16Addbsi::new([d0_bsi_inputs.ci16_addbsi().bytes()[0], joc_before.fit().object_count() as u8 + 1]),
                     },
                     source_generation_receipt: expected_source_generation_receipt,
                     block2_source_receipt: &d0_block2_source_receipt,

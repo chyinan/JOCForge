@@ -900,13 +900,9 @@ pub fn encode_staged_file_with_structure(
     progress: EventObserver<'_>,
     cancelled: &std::sync::atomic::AtomicBool,
 ) -> Result<(), EncodeRequestError> {
-    if options.joc_objects != JocObjectCount::Fifteen
-        && (rate != CodecRateProfile::Kbps1024
-            || !layout.uses_five_carriers()
-            || topology.is_some())
-    {
+    if options.joc_objects != JocObjectCount::Fifteen && topology.is_some() {
         return Err(EncodeRequestError::SourcePipeline(
-            "8/12 objects require the native idx0/idx3 1024 kbps route".into(),
+            "Reduced object counts require native stream output".into(),
         ));
     }
     resolve_encode_request_route(rate, layout)?;
@@ -1030,13 +1026,29 @@ pub fn encode_object_count_for_layout(
     layout: JocReconstructionLayout,
     signalling: EmdfCarriageProfile,
 ) -> Result<(), EncodeRequestError> {
-    if !layout.uses_five_carriers() {
-        return Err(EncodeRequestError::UnsupportedJocLayout);
-    }
+    encode_native_object_count(
+        input,
+        output,
+        object_count,
+        layout,
+        signalling,
+        CodecRateProfile::Kbps1024,
+    )
+}
+
+pub fn encode_native_object_count(
+    input: &Path,
+    output: &Path,
+    object_count: JocObjectCount,
+    layout: JocReconstructionLayout,
+    signalling: EmdfCarriageProfile,
+    rate: CodecRateProfile,
+) -> Result<(), EncodeRequestError> {
+    resolve_encode_request_route(rate, layout)?;
     run_worker_with_object_count(
         input,
         output,
-        Some(CodecRateProfile::Kbps1024),
+        Some(rate),
         None,
         (layout, signalling),
         None,
