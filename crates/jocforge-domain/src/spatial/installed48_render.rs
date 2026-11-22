@@ -4,8 +4,7 @@
 use crate::{
     numeric::{FiniteF32, r32_mul},
     source_axis::{
-        F03W_PREFIX_SOURCE_COUNT, F03W_SOURCE_AXIS_CAPACITY, SelectedSourceRowDimensions,
-        SelectedSourceRowShapeError,
+        F03W_PREFIX_SOURCE_COUNT, SelectedSourceRowDimensions, SelectedSourceRowShapeError,
     },
     spatial::{
         diffusion_filter::DiffusionFilterParameters,
@@ -17,7 +16,6 @@ use crate::{
     },
 };
 
-const SOURCE_COUNT: usize = F03W_SOURCE_AXIS_CAPACITY as usize;
 const FRAME_SAMPLES: usize = 1_536;
 const RENDERED_SAMPLES: usize = FRAME_SAMPLES * 2;
 const PREFIX_ROWS: usize = F03W_PREFIX_SOURCE_COUNT as usize;
@@ -202,7 +200,7 @@ fn validate_render_input(input: &Installed48RenderInput<'_>) -> Result<(), Insta
     })?;
     if regular_count != usize::from(dimensions.regular_row_count())
         || active_source_count != usize::from(dimensions.active_source_count())
-        || active_source_count > SOURCE_COUNT
+        || active_source_count > usize::from(crate::source_axis::MAX_ACTIVE_SOURCE_COUNT)
         || input.current_pcm_rows.len() != host_count
         || input
             .current_pcm_rows

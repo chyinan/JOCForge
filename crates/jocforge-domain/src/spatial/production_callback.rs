@@ -60,7 +60,7 @@ use crate::{
         ReaderTargetStageProposal, SELECTED_PROFILE_ID, stage_reader_target,
     },
     meter::installed48_renderer::MeterInstalled48State,
-    source_axis::{F03W_SOURCE_AXIS_CAPACITY, SourceAxisOwnerGeneration},
+    source_axis::SourceAxisOwnerGeneration,
     spatial::installed48_source_map::Installed48SourceMap,
     timeline::{CodecSourceIndex, FrontendCallbackIndex, NormalCallbackCount},
     transaction::CallbackLineageIdentity,
@@ -1309,7 +1309,7 @@ fn spatial_control_callback_projection(
             .iter()
             .zip(source_geometry.rows())
             .any(|(source, row)| *source != row.source_index())
-        || active_source_ids.len() > usize::from(F03W_SOURCE_AXIS_CAPACITY)
+        || active_source_ids.len() > usize::from(crate::source_axis::MAX_ACTIVE_SOURCE_COUNT)
         || matrix
             .c_rows_u32()
             .iter()

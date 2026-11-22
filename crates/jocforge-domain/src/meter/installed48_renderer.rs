@@ -149,10 +149,13 @@ impl MeterInstalled48State {
             .collect::<Vec<_>>()
             .into();
         let active_source_count = active_source_ids.len();
-        if !(10..=METER_INSTALLED48_HOST_ROWS).contains(&physical_row_count)
+        if !(10..=usize::from(
+            crate::source_axis::SelectedSourceRowDimensions::maximum_mappable_physical_rows(),
+        ))
+            .contains(&physical_row_count)
             || source_map.physical_to_global_source().len() + 1 != physical_row_count
             || source_map.rows().len() != active_source_count
-            || active_source_count > METER_INSTALLED48_ROWS
+            || active_source_count > usize::from(crate::source_axis::MAX_ACTIVE_SOURCE_COUNT)
         {
             return Err(MeterInstalled48Error::SourceMapBinding);
         }
@@ -393,8 +396,7 @@ fn validate_input(
             .iter()
             .any(|contribution| {
                 contribution.source_index().value() < METER_INSTALLED48_PREFIX_ROWS as u64
-                    || contribution.source_index().value()
-                        >= (METER_INSTALLED48_PREFIX_ROWS + METER_INSTALLED48_REGULAR_ROWS) as u64
+                    || contribution.source_index().value() >= before.active_source_ids.len() as u64
             })
     {
         return Err(MeterInstalled48Error::CallbackOrder);

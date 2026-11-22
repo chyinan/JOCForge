@@ -9,7 +9,7 @@ use crate::spatial::{
 };
 
 const FEATURE_BANDS: usize = 24;
-const MAX_SOURCE_COUNT: usize = 48;
+const MAX_SOURCE_COUNT: usize = crate::source_axis::MAX_ACTIVE_SOURCE_COUNT as usize;
 const MAX_TARGET_COUNT: usize = 15;
 const ZERO_F64: f64 = 0.0;
 const ONE_F64: f64 = 1.0;
@@ -198,7 +198,10 @@ fn validate_inputs(
             .any(|band| band.len() != source_count)
         || selected_targets.ids_u32.len() != target_count
         || selected_targets.attributes_u32.len() != target_count
-        || candidates.candidate_ids.iter().any(|id| *id >= 48)
+        || candidates
+            .candidate_ids
+            .iter()
+            .any(|id| *id >= u32::from(crate::source_axis::MAX_ACTIVE_SOURCE_COUNT))
         || candidates
             .candidate_ids
             .windows(2)

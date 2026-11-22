@@ -3,11 +3,11 @@
 mod tests {
     use super::super::{
         ACTIVITY_EPSILON_BITS, BeforeRegularHistory, CurrentHostPcm, FRAME_SAMPLES, HostRole,
-        HostRouteRecord, MAX_MAPPABLE_PHYSICAL_HOSTS, MAX_MAPPABLE_REGULAR_HOSTS,
-        MIN_PHYSICAL_HOSTS, PREFIX_SOURCE_COUNT, PrefixWriterSet, RegularControl, RegularControls,
-        SOURCE_COUNT, SelectedFeatureFlagsControl, SourceFlagsError, SourceFlagsHistoryGeneration,
-        SourceFlagsInput, SourceFlagsParentLineage, SourceFlagsProducer, SourceFlagsProgrammeId,
-        ValidatedSemanticRoute, WINDOW_WORDS, triangle_activity_witness,
+        HostRouteRecord, MIN_PHYSICAL_HOSTS, PREFIX_SOURCE_COUNT, PrefixWriterSet, RegularControl,
+        RegularControls, SOURCE_COUNT, SelectedFeatureFlagsControl, SourceFlagsError,
+        SourceFlagsHistoryGeneration, SourceFlagsInput, SourceFlagsParentLineage,
+        SourceFlagsProducer, SourceFlagsProgrammeId, ValidatedSemanticRoute, WINDOW_WORDS,
+        triangle_activity_witness,
     };
     use crate::{
         frontend::{
@@ -36,8 +36,8 @@ mod tests {
         sync::Arc,
     };
 
-    const HOST_CHANNELS: usize = MAX_MAPPABLE_PHYSICAL_HOSTS;
-    const REGULAR_HOSTS: usize = MAX_MAPPABLE_REGULAR_HOSTS;
+    const HOST_CHANNELS: usize = 38;
+    const REGULAR_HOSTS: usize = HOST_CHANNELS - 1;
 
     const MANIFEST_BYTES: &[u8] =
         include_bytes!("../../../tests/fixtures/f01e_provider/MANIFEST.json");

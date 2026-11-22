@@ -10,6 +10,7 @@ use std::sync::Arc;
 pub const SELECTED_PROFILE_BED_ROW_COUNT: u16 = 10;
 pub const F03W_PREFIX_SOURCE_COUNT: u16 = 11;
 pub const F03W_SOURCE_AXIS_CAPACITY: u16 = 48;
+pub const MAX_ACTIVE_SOURCE_COUNT: u16 = 64;
 const MAX_PHYSICAL_ROW_COUNT: u16 = u8::MAX as u16 + 1;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -39,10 +40,10 @@ impl SelectedSourceRowDimensions {
         let active_source_count = F03W_PREFIX_SOURCE_COUNT
             .checked_add(regular_row_count)
             .ok_or(SelectedSourceRowShapeError::PhysicalRowCountOutsideSelectedProfile)?;
-        if active_source_count > F03W_SOURCE_AXIS_CAPACITY {
+        if active_source_count > MAX_ACTIVE_SOURCE_COUNT {
             return Err(SelectedSourceRowShapeError::SourceAxisCapacityExceeded {
                 required: active_source_count,
-                capacity: F03W_SOURCE_AXIS_CAPACITY,
+                capacity: MAX_ACTIVE_SOURCE_COUNT,
             });
         }
         Ok(Self {
@@ -81,7 +82,7 @@ impl SelectedSourceRowDimensions {
     }
 
     pub const fn maximum_mappable_physical_rows() -> u16 {
-        F03W_SOURCE_AXIS_CAPACITY - F03W_PREFIX_SOURCE_COUNT + 1
+        MAX_ACTIVE_SOURCE_COUNT - F03W_PREFIX_SOURCE_COUNT + 1
     }
 }
 
@@ -274,6 +275,8 @@ mod tests {
             (36, 35, 46),
             (37, 36, 47),
             (38, 37, 48),
+            (52, 51, 62),
+            (54, 53, 64),
         ] {
             let shape = SelectedSourceRowDimensions::for_physical_rows(physical).unwrap();
             assert_eq!(shape.physical_row_count(), physical);
@@ -282,10 +285,10 @@ mod tests {
         }
 
         assert_eq!(
-            SelectedSourceRowDimensions::for_physical_rows(39),
+            SelectedSourceRowDimensions::for_physical_rows(55),
             Err(SelectedSourceRowShapeError::SourceAxisCapacityExceeded {
-                required: 49,
-                capacity: 48,
+                required: 65,
+                capacity: 64,
             })
         );
         assert_eq!(
@@ -303,10 +306,10 @@ mod tests {
             10
         );
         assert_eq!(
-            SelectedSourceRowDimensions::for_active_source_count(49),
+            SelectedSourceRowDimensions::for_active_source_count(65),
             Err(SelectedSourceRowShapeError::SourceAxisCapacityExceeded {
-                required: 49,
-                capacity: 48,
+                required: 65,
+                capacity: 64,
             })
         );
     }

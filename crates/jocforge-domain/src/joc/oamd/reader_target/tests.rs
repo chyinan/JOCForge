@@ -68,8 +68,8 @@ fn compact_s46_axis_keeps_absent_ids_out_of_reader_matrix() {
 }
 
 #[test]
-fn s49_capacity_vector_is_not_runtime_reader_support() {
-    let recipe = recipe_data_with_source_count(0, 49);
+fn reader_rejects_sources_beyond_runtime_capacity() {
+    let recipe = recipe_data_with_source_count(0, 65);
     let input = recipe.inputs(0);
     assert_eq!(
         stage_reader_target(&ReaderTargetState::cold(), &input)

@@ -6,7 +6,7 @@ use crate::numeric::{FiniteF32, r32_add, r32_mul, r32_sub};
 const FEATURE_BANDS: usize = 24;
 const RESPONSE_SLOTS: usize = 15;
 const SELECTOR_CAPACITY: usize = 15;
-const MAX_CANDIDATES: usize = 48;
+const MAX_CANDIDATES: usize = crate::source_axis::MAX_ACTIVE_SOURCE_COUNT as usize;
 const ONE_WORD: u32 = 0x3f80_0000;
 const TWO_WORD: u32 = 0x4000_0000;
 const HALF_WORD: u32 = 0x3f00_0000;
@@ -498,7 +498,9 @@ fn validate_input(input: &CandidateSelectorInput) -> Result<(), SelectorError> {
     }
     let mut previous_id = None;
     for candidate_id in &input.candidate_ids {
-        if *candidate_id > 47 || previous_id.is_some_and(|previous| *candidate_id <= previous) {
+        if *candidate_id >= u32::from(crate::source_axis::MAX_ACTIVE_SOURCE_COUNT)
+            || previous_id.is_some_and(|previous| *candidate_id <= previous)
+        {
             return Err(SelectorError::InvalidInput);
         }
         previous_id = Some(*candidate_id);
@@ -522,10 +524,9 @@ fn validate_input(input: &CandidateSelectorInput) -> Result<(), SelectorError> {
             .width_u32
             .iter()
             .any(|word| !is_finite(*word) || f32::from_bits(*word) < 0.0)
-        || input
-            .previous_ids
-            .iter()
-            .any(|id| *id != u32::MAX && *id > 47)
+        || input.previous_ids.iter().any(|id| {
+            *id != u32::MAX && *id >= u32::from(crate::source_axis::MAX_ACTIVE_SOURCE_COUNT)
+        })
     {
         return Err(SelectorError::InvalidInput);
     }

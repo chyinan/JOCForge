@@ -2324,10 +2324,10 @@ fn main_dynamic_row_shapes_share_f01e_spatial_and_reader_eof_owners() {
         main_dynamic_schedule_for_channels(channels, 3_072);
     }
     assert_eq!(
-        SelectedSourceRowDimensions::for_physical_rows(39),
+        SelectedSourceRowDimensions::for_physical_rows(55),
         Err(SelectedSourceRowShapeError::SourceAxisCapacityExceeded {
-            required: 49,
-            capacity: 48,
+            required: 65,
+            capacity: 64,
         })
     );
 }

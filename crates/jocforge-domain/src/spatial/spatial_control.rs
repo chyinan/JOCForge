@@ -1324,7 +1324,7 @@ impl SpatialControlMachine {
             || f01e.remaining_cached_drains() != CACHED_DRAINS_COLD
             || active_source_ids.len() != usize::from(dimensions.active_source_count())
             || active_source_ids.len() != usize::from(source_map.source_count())
-            || active_source_ids.len() > SOURCE_AXIS_COUNT
+            || active_source_ids.len() > usize::from(crate::source_axis::MAX_ACTIVE_SOURCE_COUNT)
             || active_source_ids
                 .iter()
                 .enumerate()

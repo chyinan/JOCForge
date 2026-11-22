@@ -23,8 +23,8 @@ use crate::{
     numeric::{FiniteF32, R32Error, r32_mul},
     profile::{EncodingProfile, ResolvedEncodingProfile, resolve_selected_profile},
     source_axis::{
-        F03W_PREFIX_SOURCE_COUNT, F03W_SOURCE_AXIS_CAPACITY, SELECTED_PROFILE_BED_ROW_COUNT,
-        SelectedSourceRowDimensions, SelectedSourceRowShapeError, SourceAxisBinding,
+        F03W_PREFIX_SOURCE_COUNT, SELECTED_PROFILE_BED_ROW_COUNT, SelectedSourceRowDimensions,
+        SelectedSourceRowShapeError, SourceAxisBinding,
     },
     timeline::{CodecSourceIndex, FrontendCallbackIndex, NormalCallbackCount},
     transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId},
@@ -36,7 +36,8 @@ const MAX_MAPPABLE_PHYSICAL_HOSTS: usize =
     SelectedSourceRowDimensions::maximum_mappable_physical_rows() as usize;
 const MAX_MAPPABLE_REGULAR_HOSTS: usize = MAX_MAPPABLE_PHYSICAL_HOSTS - 1;
 const MIN_PHYSICAL_HOSTS: usize = SELECTED_PROFILE_BED_ROW_COUNT as usize;
-const SOURCE_COUNT: usize = F03W_SOURCE_AXIS_CAPACITY as usize;
+#[cfg(test)]
+const SOURCE_COUNT: usize = crate::source_axis::F03W_SOURCE_AXIS_CAPACITY as usize;
 const PREFIX_SOURCE_COUNT: usize = F03W_PREFIX_SOURCE_COUNT as usize;
 const FRAME_SAMPLES: usize = 1536;
 const WINDOW_WORDS: usize = FRAME_SAMPLES * 2;
@@ -311,7 +312,9 @@ impl HostRouteRecord {
         enabled: bool,
         destination: Option<u8>,
     ) -> Result<Self, SourceFlagsError> {
-        if destination.is_some_and(|value| usize::from(value) >= SOURCE_COUNT) {
+        if destination.is_some_and(|value| {
+            usize::from(value) >= usize::from(crate::source_axis::MAX_ACTIVE_SOURCE_COUNT)
+        }) {
             return Err(SourceFlagsError::InvalidRouteRecord);
         }
         Ok(Self {
@@ -1135,7 +1138,7 @@ fn project_normal_control_rows<P: NormalControlProjectionIdentity>(
         || regular_hosts.len() != regular_count
         || regular_bindings.len() != regular_count
         || usize::from(direct_lfe_host) >= host_count
-        || source_end > SOURCE_COUNT
+        || source_end > usize::from(crate::source_axis::MAX_ACTIVE_SOURCE_COUNT)
     {
         return Err(SourceFlagsError::PrimaryControlRowMismatch);
     }
@@ -2014,7 +2017,8 @@ fn preflight_value_shapes(
         route.destination(host)?;
     }
     if regular_count + 1 != host_count
-        || regular_count + PREFIX_SOURCE_COUNT > SOURCE_COUNT
+        || regular_count + PREFIX_SOURCE_COUNT
+            > usize::from(crate::source_axis::MAX_ACTIVE_SOURCE_COUNT)
         || route.destination(route.lfe_host).is_ok()
     {
         return Err(SourceFlagsError::RouteNotBijective);
