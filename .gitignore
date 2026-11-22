@@ -15,3 +15,6 @@ debug.log
 # Local intake staging and held-back packages
 /outputs/INCOMING_WASH/
 /outputs/quarantine/
+
+# Generated documentation
+/site/

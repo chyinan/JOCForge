@@ -1,0 +1,92 @@
+site_name: JOCForge documentation
+site_description: Encode ADM BWF programmes to E-AC-3 JOC.
+site_author: JOCForge contributors
+site_url: https://chyinan.github.io/JOCForge/
+repo_name: chyinan/JOCForge
+repo_url: https://github.com/chyinan/JOCForge
+edit_uri: edit/experimental/independent-encoder/docs/site/
+docs_dir: docs/site
+site_dir: site
+use_directory_urls: true
+
+theme:
+  name: material
+  language: en
+  icon:
+    logo: material/surround-sound
+    repo: fontawesome/brands/github
+  features:
+    - content.code.copy
+    - navigation.top
+    - search.highlight
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+
+plugins:
+  - search
+  - i18n:
+      docs_structure: suffix
+      fallback_to_default: true
+      reconfigure_material: true
+      reconfigure_search: true
+      languages:
+        - locale: en
+          name: English
+          default: true
+          build: true
+        - locale: zh
+          name: 简体中文
+          build: true
+          site_name: JOCForge 文档
+          site_description: 将 ADM BWF 母版编码为 E-AC-3 JOC 音轨。
+          theme:
+            language: zh
+          nav_translations:
+            Home: 首页
+            Quick start: 快速开始
+            Encoding: 编码指南
+            Layouts and objects: 布局与对象
+            Substreams and signalling: 子流与信令
+            Containers: 输出封装
+            XML jobs and loudness: XML 作业与响度
+            Development: 开发与验证
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+extra_css:
+  - assets/stylesheets/extra.css
+
+copyright: JOCForge contributors · Apache-2.0
+nav:
+  - Home: index.md
+  - Quick start: quick-start.md
+  - Encoding:
+      - Layouts and objects: layouts.md
+      - Substreams and signalling: substreams.md
+      - Containers: containers.md
+      - XML jobs and loudness: jobs.md
+  - Development: development.md
