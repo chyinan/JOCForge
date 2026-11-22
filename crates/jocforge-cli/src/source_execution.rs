@@ -596,8 +596,8 @@ pub(crate) fn stage_source_frame<'pcm>(
             };
             let make_core = || {
                 let i0_budget = I0AudioBlockSeriesBudget::new(20_480);
-                // The 5.1 search can skip the entire interval between its seed and its
-                // first midpoint. Try each coarse SNR offset against the smaller I0 frame.
+                // I0 has a fixed 640 kbps budget, independent of the selected source rate.
+                // Keep the previous candidates as fallbacks but allow the full coarse range.
                 let selected_core_q = frame_candidate.frame().q();
                 let mut q_candidates = frame_candidate
                     .attempted_qs()
@@ -605,7 +605,7 @@ pub(crate) fn stage_source_frame<'pcm>(
                     .copied()
                     .filter(|q| *q <= selected_core_q)
                     .collect::<Vec<_>>();
-                q_candidates.extend((16..=selected_core_q).step_by(16));
+                q_candidates.extend((0..=1008).step_by(16));
                 q_candidates.sort_unstable_by(|left, right| right.cmp(left));
                 q_candidates.dedup();
                 let all_q_candidates = q_candidates.clone();
