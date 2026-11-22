@@ -2,11 +2,14 @@
 //! JOC exposes scoped pure algorithms and immutable boundaries; production-owner composition remains separate.
 
 /// Number of coded dynamic objects, excluding the bypass LFE.
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, serde::Serialize, serde::Deserialize)]
 pub enum JocObjectCount {
+    #[serde(rename = "8")]
     Eight = 8,
+    #[serde(rename = "12")]
     Twelve = 12,
     #[default]
+    #[serde(rename = "15")]
     Fifteen = 15,
 }
 

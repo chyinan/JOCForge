@@ -831,6 +831,7 @@ pub fn encode_staged_file_with_events(
 #[derive(Clone, Debug, serde::Serialize, serde::Deserialize)]
 #[serde(default)]
 pub struct FileEncodeOptions {
+    pub joc_objects: JocObjectCount,
     pub height_trim_5_1: String,
     pub surround_trim_5_1: String,
     pub metering_mode: String,
@@ -848,6 +849,7 @@ pub struct FileEncodeOptions {
 impl Default for FileEncodeOptions {
     fn default() -> Self {
         Self {
+            joc_objects: JocObjectCount::Fifteen,
             height_trim_5_1: "auto".into(),
             surround_trim_5_1: "auto".into(),
             metering_mode: "1770-4".into(),
@@ -898,6 +900,16 @@ pub fn encode_staged_file_with_structure(
     progress: EventObserver<'_>,
     cancelled: &std::sync::atomic::AtomicBool,
 ) -> Result<(), EncodeRequestError> {
+    if options.joc_objects != JocObjectCount::Fifteen
+        && (rate != CodecRateProfile::Kbps1024
+            || layout != JocReconstructionLayout::ExistingSelectedFivePointOne
+            || signalling != EmdfCarriageProfile::DeployedCompat
+            || topology.is_some())
+    {
+        return Err(EncodeRequestError::SourcePipeline(
+            "8/12 objects require the native idx3 1024 kbps route with deployed signalling".into(),
+        ));
+    }
     resolve_encode_request_route(rate, layout)?;
     let input = normalize_existing_input(input)?;
     let output = normalize_new_output(output)?;
@@ -908,7 +920,7 @@ pub fn encode_staged_file_with_structure(
         timing,
         options,
     );
-    run_worker_with_topology(
+    run_worker_with_object_count(
         &input,
         &output,
         Some(rate),
@@ -917,6 +929,7 @@ pub fn encode_staged_file_with_structure(
         Some(progress),
         cancelled,
         topology,
+        options.joc_objects,
     )
 }
 
