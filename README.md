@@ -6,7 +6,7 @@
 
 JOCForge 是一个用 Rust 编写的独立 E-AC-3 JOC 编码器，可将 48 kHz ADM BWF 母版编码为带空间元数据的音轨。支持 5.1、Flat 7.1 和前高度载体布局，可从文件或 XML 作业读取输入。
 
-**[简体中文文档](https://chyinan.github.io/JOCForge/zh/)** · **[English documentation](https://chyinan.github.io/JOCForge/)** · [在仓库中阅读](docs/site/index.zh.md)
+**[简体中文文档](https://chyinan.github.io/JOCForge/zh/)** · **[English documentation](https://chyinan.github.io/JOCForge/)**
 
 ## 快速开始
 
