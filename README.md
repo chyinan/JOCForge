@@ -30,7 +30,7 @@ Most workflows treat the JOC layer as a black box. JOCForge implements it direct
 - **Bitstream control most tools hide.** Dependent substreams, four LFE ownership modes, four block partitions, three carriage modes (audio-block skip field, frame-tail auxdata, legacy AC-3 core), and strict ETSI or deployed-compatible signalling.
 - **Delivery-ready output.** Raw EC-3, fragmented MP4/CMAF, and MKA/M4A through FFmpeg stream copy.
 - **Mastering workflow.** XML jobs, partial renders, lead/tail silence, DRC, downmix, surround/height trims, and BS.1770 loudness metering with a reusable cache.
-- **Cross-platform.** Prebuilt Windows, Linux and macOS binaries, or build the CLI from source.
+- **Cross-platform.** Prebuilt Windows, Linux and macOS binaries, or install the CLI from source.
 
 ## Pipeline
 
@@ -59,31 +59,33 @@ Five-carrier profiles use `--data-rate`; seven-carrier profiles use `--total-rat
 
 ## Quick start
 
-Download a prebuilt binary from [Releases](https://github.com/chyinan/JOCForge/releases/latest), or build the CLI from source:
+Download a prebuilt binary from [Releases](https://github.com/chyinan/JOCForge/releases/latest), or install the CLI from source:
 
-```powershell
+```sh
 git clone https://github.com/chyinan/JOCForge.git
 cd JOCForge
-cargo build --release --locked -p jocforge
+cargo install --path crates/jocforge-cli --locked
 ```
 
-Encode a default 5.1 track at 1024 kbps:
+The defaults are 5.1, 1024 kbps and 15 coded objects:
 
-```powershell
-.\target\release\jocforge.exe encode "D:/Audio/input.adm.wav" "D:/Audio/mix.ec3" --data-rate 1024
+```sh
+jocforge encode input.adm.wav output.ec3
 ```
 
-Encode Flat 7.1 at 1664 kbps:
+Flat 7.1 defaults to 1664 kbps:
 
-```powershell
-.\target\release\jocforge.exe encode "D:/Audio/input.adm.wav" "D:/Audio/mix-7.1.ec3" --joc-layout flat7x --total-rate 1664
+```sh
+jocforge encode input.adm.wav output-7.1.ec3 --joc-layout flat7x
 ```
 
-Write fragmented MP4 (CMAF):
+Write a fragmented MP4 (CMAF):
 
-```powershell
-.\target\release\jocforge.exe encode "D:/Audio/input.adm.wav" "D:/Audio/mix.mp4" --joc-layout idx4 --container cmaf --total-rate 1664
+```sh
+jocforge encode input.adm.wav output.mp4 --joc-layout idx4 --container cmaf
 ```
+
+Run `jocforge encode --help` for bitrate, substream, carriage and container controls.
 
 ## Verified end to end
 

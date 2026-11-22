@@ -1,21 +1,29 @@
 # Quick start
 
-Install Rust and Cargo, then build the independent encoder branch in PowerShell.
+Install Rust and Cargo, then install the CLI:
 
-```powershell
-git clone --branch main https://github.com/chyinan/JOCForge.git
+```sh
+git clone https://github.com/chyinan/JOCForge.git
 cd JOCForge
-cargo build --release --locked -p jocforge
+cargo install --path crates/jocforge-cli --locked
 ```
 
-Choose an ADM BWF and a new output filename. This produces a 1024 kbps 5.1 track with 15 coded objects.
+Encode a 48 kHz ADM BWF to 5.1 at the default 1024 kbps:
 
-```powershell
-$adm = (Resolve-Path -LiteralPath "D:/Audio/input.adm.wav").Path
-$ec3 = Join-Path $PWD "mix.ec3"
-.\target\release\jocforge.exe encode "$adm" "$ec3" --data-rate 1024
+```sh
+jocforge encode input.adm.wav output.ec3
 ```
 
-With OpenJOC installed, run `openjoc inspect "$ec3" --emdf` to check the object count, bitrate and metadata.
+With OpenJOC installed, inspect the result:
+
+```sh
+openjoc inspect output.ec3 --emdf
+```
+
+For Flat 7.1 at the default 1664 kbps, add `--joc-layout flat7x`:
+
+```sh
+jocforge encode input.adm.wav output-7.1.ec3 --joc-layout flat7x
+```
 
 ![JOCForge CLI](assets/cli-help.png){ .jocforge-hero }
