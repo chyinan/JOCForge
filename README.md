@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/jocforge-logo.png" alt="JOCForge" width="360">
+</p>
+
 # JOCForge
 
 JOCForge 是一个用 Rust 编写的独立 E-AC-3 JOC 编码器，可将 48 kHz ADM BWF 母版编码为带空间元数据的音轨。支持 5.1、Flat 7.1 和前高度载体布局，可从文件或 XML 作业读取输入。
@@ -6,7 +10,7 @@ JOCForge 是一个用 Rust 编写的独立 E-AC-3 JOC 编码器，可将 48 kHz 
 
 ## 快速开始
 
-在 `experimental/independent-encoder` 分支构建 CLI，然后导出默认 5.1、1024 kbps 的 EC-3 音轨：
+在本仓库构建 CLI，然后导出默认 5.1、1024 kbps 的 EC-3 音轨：
 
 ```powershell
 cargo build --release --locked -p jocforge
