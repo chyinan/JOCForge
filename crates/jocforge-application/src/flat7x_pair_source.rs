@@ -43,6 +43,7 @@ pub use jocforge_domain::codec::ac3_audio_block::{
     I0AudioBlockSeriesError as Flat7xI0AudioBlockSeriesError, I0AudioBlockSeriesPolicy,
     I0BapCandidateQ,
 };
+pub use jocforge_domain::codec::ac3_bsi_tail::SurroundExMode;
 pub use jocforge_domain::codec::bap::Flat7xD0BapParameters;
 pub use jocforge_domain::codec::flat7x_d0_pcm_source::{
     Flat7xD0OverlapHistory, Flat7xD0PcmBlockSeriesCandidate, Flat7xD0PcmFrameCandidate,
@@ -391,6 +392,7 @@ pub fn require_flat7x_d0_frame_input<'a>(
 #[must_use]
 #[derive(Clone)]
 pub struct Flat7xPairSourceBinding<'pcm> {
+    surround_ex: SurroundExMode,
     i0_header: Flat7xI0Ac3FrameHeaderFields,
     resolved_profile: ResolvedEncodingProfile,
     target: Flat7xI0D0TargetPlan,
@@ -403,6 +405,10 @@ pub struct Flat7xPairSourceBinding<'pcm> {
 }
 
 impl Flat7xPairSourceBinding<'_> {
+    pub fn with_surround_ex(mut self, mode: SurroundExMode) -> Self {
+        self.surround_ex = mode;
+        self
+    }
     pub fn with_programme_levels(mut self, dialnorm: u8, compr: Option<u8>) -> Self {
         self.i0_header.dialnorm = dialnorm;
         self.i0_header.compr = compr;
@@ -837,16 +843,18 @@ fn assemble_flat7x_i0_frame_candidate_from_series(
         return Err(Flat7xPairSourceError::D0Block2SourceIdentityMismatch);
     }
 
-    let i0_frame = assemble_flat7x_i0_audio_with_header(
-        binding.target,
-        binding.role_map_receipt.shared_analysis_identity(),
-        i0_audio_blocks,
-        auxdata,
-        crcrsv_seed,
-        binding.i0_header,
-        2, // Lo/Ro for the horizontal programme mix.
-    )
-    .map_err(Flat7xPairSourceError::I0FrameAssembly)?;
+    let i0_frame =
+        jocforge_domain::codec::i0_frame_assembler::assemble_flat7x_i0_audio_with_surround_ex(
+            binding.target,
+            binding.role_map_receipt.shared_analysis_identity(),
+            i0_audio_blocks,
+            auxdata,
+            crcrsv_seed,
+            binding.i0_header,
+            2, // Lo/Ro for the horizontal programme mix.
+            binding.surround_ex,
+        )
+        .map_err(Flat7xPairSourceError::I0FrameAssembly)?;
 
     Ok(Flat7xPairI0FrameCandidate {
         resolved_profile: binding.resolved_profile,
@@ -1007,6 +1015,7 @@ pub fn bind_flat7x_pair_source<'pcm>(
         return Err(Flat7xPairSourceError::SourceIdentityMismatch);
     }
     Ok(Flat7xPairSourceBinding {
+        surround_ex: SurroundExMode::default(),
         i0_header: Flat7xI0Ac3FrameHeaderFields::official_demo_sample_non_crc_fields(),
         resolved_profile: profile,
         target,

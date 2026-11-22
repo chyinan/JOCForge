@@ -831,6 +831,7 @@ pub fn encode_staged_file_with_events(
 #[derive(Clone, Debug, serde::Serialize, serde::Deserialize)]
 #[serde(default)]
 pub struct FileEncodeOptions {
+    pub surround_ex: u8,
     pub joc_objects: JocObjectCount,
     pub height_trim_5_1: String,
     pub surround_trim_5_1: String,
@@ -850,6 +851,7 @@ impl Default for FileEncodeOptions {
     fn default() -> Self {
         Self {
             joc_objects: JocObjectCount::Fifteen,
+            surround_ex: 1,
             height_trim_5_1: "auto".into(),
             surround_trim_5_1: "auto".into(),
             metering_mode: "1770-4".into(),
@@ -925,6 +927,7 @@ pub fn encode_staged_file_with_structure(
         cancelled,
         topology,
         options.joc_objects,
+        options.surround_ex,
     )
 }
 
@@ -1044,6 +1047,18 @@ pub fn encode_native_object_count(
     signalling: EmdfCarriageProfile,
     rate: CodecRateProfile,
 ) -> Result<(), EncodeRequestError> {
+    encode_native_with_ex(input, output, object_count, layout, signalling, rate, 1)
+}
+
+pub fn encode_native_with_ex(
+    input: &Path,
+    output: &Path,
+    object_count: JocObjectCount,
+    layout: JocReconstructionLayout,
+    signalling: EmdfCarriageProfile,
+    rate: CodecRateProfile,
+    surround_ex: u8,
+) -> Result<(), EncodeRequestError> {
     resolve_encode_request_route(rate, layout)?;
     run_worker_with_object_count(
         input,
@@ -1055,6 +1070,7 @@ pub fn encode_native_object_count(
         &std::sync::atomic::AtomicBool::new(false),
         None,
         object_count,
+        surround_ex,
     )
 }
 
@@ -1078,6 +1094,7 @@ fn run_worker_with_topology(
         cancelled,
         topology,
         JocObjectCount::Fifteen,
+        1,
     )
 }
 
@@ -1091,6 +1108,7 @@ fn run_worker_with_object_count(
     cancelled: &std::sync::atomic::AtomicBool,
     topology: Option<SubstreamPlan>,
     object_count: JocObjectCount,
+    surround_ex: u8,
 ) -> Result<(), EncodeRequestError> {
     thread::scope(|scope| {
         let worker = thread::Builder::new()
@@ -1107,6 +1125,7 @@ fn run_worker_with_object_count(
                     cancelled,
                     topology,
                     object_count,
+                    surround_ex,
                 )
             })
             .map_err(|_| EncodeRequestError::WorkerUnavailable)?;
@@ -1167,8 +1186,25 @@ fn run_inner(
     cancelled: &std::sync::atomic::AtomicBool,
     topology: Option<SubstreamPlan>,
     object_count: JocObjectCount,
+    surround_ex: u8,
 ) -> Result<(), EncodeRequestError> {
     let (joc_layout, signalling) = structure;
+    use jocforge_application::flat7x_pair_source::SurroundExMode;
+    let surround_ex = match surround_ex {
+        1 => SurroundExMode::NotEncoded,
+        0 | 2 if joc_layout != JocReconstructionLayout::Flat7x || topology.is_some() => {
+            return Err(EncodeRequestError::SourcePipeline(
+                "Surround EX requires native flat7x output".into(),
+            ));
+        }
+        0 => SurroundExMode::NotIndicated,
+        2 => SurroundExMode::Encoded,
+        _ => {
+            return Err(EncodeRequestError::SourcePipeline(
+                "Invalid Surround EX mode".into(),
+            ));
+        }
+    };
     validate_signalling(joc_layout, signalling)?;
     if topology
         .as_ref()
@@ -1568,7 +1604,7 @@ fn run_inner(
                     roots.output(),
                     &plan,
                     &mut staging,
-                    carriers.as_ref(), composition.as_mut(),frame_bytes,
+                    carriers.as_ref(), composition.as_mut(),frame_bytes,surround_ex,
                 )
                 .map_err(map_source_frame_stage_error)?;
                 let (next_roots, receipt) = roots

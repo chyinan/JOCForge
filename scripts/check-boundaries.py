@@ -12761,7 +12761,7 @@ def check_f12_flat7x_i0_ac3_bsi_tail_writer(root, d):
         and annex_catalog_entry in annex_catalog
         and "OFFICIAL_DEMO_I0_BSI_TAIL_START_BIT: u32 = 70" in module
         and "OFFICIAL_DEMO_I0_BSI_TAIL_BITS: u32 = 35" in module
-        and "write_flat7x_i0_bsid6_suffix(writer, 1)" in annex_writer
+        and "write_flat7x_i0_bsid6_suffix(writer, 1, SurroundExMode::NotEncoded)" in annex_writer
         and annex_writer.index("writer.preflight_capacity(OFFICIAL_DEMO_I0_BSI_TAIL_BITS)?")
         < min(annex_writer_positions)
         and annex_writer_positions == sorted(annex_writer_positions)

@@ -178,6 +178,7 @@ pub(crate) fn stage_source_frame<'pcm>(
         tempfile::NamedTempFile,
     )>,
     frame_bytes: usize,
+    surround_ex: jocforge_application::flat7x_pair_source::SurroundExMode,
 ) -> Result<SourceFrameAdvance<'pcm>, SourceFrameStageError> {
     let spatial_callback = &callback.spatial;
     if source_for_callback_clock(callback_index) != Some(source_index)
@@ -543,8 +544,9 @@ pub(crate) fn stage_source_frame<'pcm>(
                     "Flat7x D0 BSI controls do not match the pair source role receipt".to_owned(),
                 ));
             }
-            let binding =
-                binding.with_programme_levels(d0_bsi_inputs.dialnorm(), d0_bsi_inputs.compr());
+            let binding = binding
+                .with_programme_levels(d0_bsi_inputs.dialnorm(), d0_bsi_inputs.compr())
+                .with_surround_ex(surround_ex);
             let expected_source_generation_receipt = flat7x_d0_source_generation_receipt
                 .as_ref()
                 .ok_or_else(|| {

@@ -238,12 +238,44 @@ pub fn write_flat7x_i0_ac3_bsi_tail(
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Flat7xI0ObservedBsiTailValues {
     dmixmod: u8,
+    surround_ex: SurroundExMode,
+}
+
+/// Caller declaration for the independent AC-3 stream (metadata only).
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+#[repr(u8)]
+pub enum SurroundExMode {
+    NotIndicated = 0,
+    #[default]
+    NotEncoded = 1,
+    Encoded = 2,
+}
+
+#[cfg(test)]
+#[test]
+fn surround_ex_changes_only_the_two_declared_suffix_bits() {
+    let encode = |mode| {
+        let mut bytes = [0u8; 8];
+        let mut writer = FrameBitWriter::new(&mut bytes, FrameBitCursor::new(0)).unwrap();
+        write_flat7x_i0_bsid6_suffix(&mut writer, 2, mode).unwrap();
+        bytes
+    };
+    let base = encode(SurroundExMode::NotIndicated);
+    assert_eq!(base[2] & 0x0c, 0);
+    for (mode, bits) in [(SurroundExMode::default(), 4), (SurroundExMode::Encoded, 8)] {
+        let mut expected = base;
+        expected[2] |= bits;
+        assert_eq!(encode(mode), expected);
+    }
 }
 
 impl Flat7xI0ObservedBsiTailValues {
     /// BSI-tail values observed in `OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2`.
     pub const fn official_demo_sample() -> Self {
-        Self { dmixmod: 1 }
+        Self {
+            dmixmod: 1,
+            surround_ex: SurroundExMode::NotEncoded,
+        }
     }
 
     pub const fn dmixmod(self) -> u8 {
@@ -267,7 +299,7 @@ impl Flat7xI0ObservedBsiTailValues {
     }
 
     pub const fn dsurexmod(self) -> u8 {
-        1
+        self.surround_ex as u8
     }
 
     pub const fn dheadphonmod(self) -> u8 {
@@ -370,17 +402,21 @@ pub fn write_flat7x_i0_official_demo_bsi_tail(
             actual: start.bit_offset(),
         });
     }
-    write_flat7x_i0_bsid6_suffix(writer, 1)
+    write_flat7x_i0_bsid6_suffix(writer, 1, SurroundExMode::NotEncoded)
 }
 
 pub(crate) fn write_flat7x_i0_bsid6_suffix(
     writer: &mut FrameBitWriter<'_>,
     dmixmod: u8,
+    surround_ex: SurroundExMode,
 ) -> Result<Flat7xI0OfficialDemoBsiTailReceipt, Flat7xI0OfficialDemoBsiTailError> {
     let start = writer.cursor();
     writer.preflight_capacity(OFFICIAL_DEMO_I0_BSI_TAIL_BITS)?;
 
-    let values = Flat7xI0ObservedBsiTailValues { dmixmod };
+    let values = Flat7xI0ObservedBsiTailValues {
+        dmixmod,
+        surround_ex,
+    };
     writer.write_bit(values.langcode_present())?;
     writer.write_bit(values.audprodie_present())?;
     writer.write_bit(values.copyrightb())?;

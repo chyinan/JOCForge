@@ -51,6 +51,9 @@ struct EncodeArgs {
     /// Coded JOC objects; experimental 8/12 support native raw output at all preset bitrates.
     #[arg(long,value_parser=["8","12","15"],default_value="15")]
     joc_objects: String,
+    /// Native flat7x Surround EX metadata: 0 unspecified, 1 not encoded (default), 2 encoded.
+    #[arg(long, value_parser = clap::value_parser!(u8).range(0..=2))]
+    surround_ex: Option<u8>,
     /// Input ADM BWF file.
     #[arg(value_name = "INPUT.adm.wav", required_unless_present = "job_xml")]
     input: Option<PathBuf>,
@@ -258,7 +261,42 @@ fn main() -> ExitCode {
             } else {
                 None
             };
-            if args.joc_objects != "15" {
+            if let Some(mode) = args.surround_ex {
+                if layout != JocReconstructionLayout::Flat7x
+                    || args.job_xml.is_some()
+                    || topology.is_some()
+                {
+                    eprintln!("--surround-ex requires native flat7x file output");
+                    return ExitCode::from(2);
+                }
+                let rate = args
+                    .total_rate
+                    .as_deref()
+                    .map_or_else(
+                        || {
+                            CodecRateProfile::from_xml_token(
+                                args.data_rate.as_deref().unwrap_or("1024"),
+                            )
+                        },
+                        |s| CodecRateProfile::from_kbps(s.parse::<u32>().unwrap() - 640),
+                    )
+                    .expect("validated bitrate");
+                use jocforge::encode_request::{JocObjectCount, encode_native_with_ex};
+                let count = match args.joc_objects.as_str() {
+                    "8" => JocObjectCount::Eight,
+                    "12" => JocObjectCount::Twelve,
+                    _ => JocObjectCount::Fifteen,
+                };
+                encode_native_with_ex(
+                    args.input.as_deref().unwrap(),
+                    args.output.as_deref().unwrap(),
+                    count,
+                    layout,
+                    signalling,
+                    rate,
+                    mode,
+                )
+            } else if args.joc_objects != "15" {
                 if topology.is_some() || args.job_xml.is_some() {
                     eprintln!(
                         "8/12 JOC objects currently require native raw output and file input"

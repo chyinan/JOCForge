@@ -966,6 +966,29 @@ pub fn assemble_flat7x_i0_audio_with_header(
     header_fields: Flat7xI0Ac3FrameHeaderFields,
     dmixmod: u8,
 ) -> Result<Flat7xI0Ac3AudioSeriesFrameCandidate, Flat7xI0FrameAssemblyError> {
+    assemble_flat7x_i0_audio_with_surround_ex(
+        target,
+        expected_source_identity,
+        audio_series,
+        auxdata,
+        crcrsv_seed,
+        header_fields,
+        dmixmod,
+        Default::default(),
+    )
+}
+
+/// Assemble I0 with an explicit Surround EX metadata declaration.
+pub fn assemble_flat7x_i0_audio_with_surround_ex(
+    target: Flat7xI0D0TargetPlan,
+    expected_source_identity: &SharedAnalysisIdentity,
+    audio_series: &I0AudioBlockSeriesCandidate,
+    auxdata: I0AuxDataInput<'_>,
+    crcrsv_seed: CallerOwnedI0CrcrsvSeed,
+    header_fields: Flat7xI0Ac3FrameHeaderFields,
+    dmixmod: u8,
+    surround_ex: super::ac3_bsi_tail::SurroundExMode,
+) -> Result<Flat7xI0Ac3AudioSeriesFrameCandidate, Flat7xI0FrameAssemblyError> {
     validate_target(target)?;
     if audio_series.receipt().source_identity() != expected_source_identity {
         return Err(Flat7xI0FrameAssemblyError::SourceIdentityMismatch);
@@ -1007,7 +1030,7 @@ pub fn assemble_flat7x_i0_audio_with_header(
     let bsi_tail_receipt = {
         let mut bsi_writer =
             FrameBitWriter::new(&mut bsi_scratch, FrameBitCursor::new(header_end))?;
-        super::ac3_bsi_tail::write_flat7x_i0_bsid6_suffix(&mut bsi_writer, dmixmod)?
+        super::ac3_bsi_tail::write_flat7x_i0_bsid6_suffix(&mut bsi_writer, dmixmod, surround_ex)?
     };
     let bsi_tail = OpaqueI0Ac3BitSpan::new(
         &bsi_scratch,
