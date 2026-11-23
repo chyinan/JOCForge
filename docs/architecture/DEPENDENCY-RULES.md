@@ -8,14 +8,19 @@ The atomic output adapter uses the locked `serde_json` dependency to serialize t
 
 Windows output finalization uses the exactly pinned, Windows-only `windows-sys` 0.61.2 dependency in `jocforge-io/src/atomic_output/windows_rename.rs`. After validation and fsync through a separate read/write handle, the shell reopens staging with `GENERIC_READ | DELETE`, holds a read-capable parent-directory handle opened with `FILE_FLAG_BACKUP_SEMANTICS`, and calls `SetFileInformationByHandle` with `FileRenameInfo`, a null root directory, an absolute destination, and a zeroed rename union (`ReplaceIfExists = false`). The path existence check remains advisory; the operating-system rename result decides a concurrent no-replace collision, and `ERROR_ALREADY_EXISTS` or `ERROR_FILE_EXISTS` maps to `FinalPathExistsAtRename`.
 
-The workspace `unsafe_code` lint is `deny`. Its only allowed exceptions are the Windows rename module, `OutputAppendProposal::record_durable_io_success` as the guarded receipt issuer, and the trusted append callsite in `jocforge-io/src/atomic_output/mod.rs`; `scripts/check-boundaries.py` checks the exact source locations and rejects any other unsafe use or allow. Domain, application, CLI and all other I/O code remain denied. The Windows rename behavior was verified in the host's local NTFS workspace test directory, including a destination created by a competing process after preflight. UNC, ReFS, reparse-point or ancestor stability, and crash durability are not established. Non-Windows keeps the prior path-based rename behavior without an atomic cross-process no-replace claim.
+The workspace `unsafe_code` lint is `deny`. Its only allowed exceptions are the Windows rename module, `OutputAppendProposal::record_durable_io_success` as the guarded receipt issuer, the trusted append callsite in `jocforge-io/src/atomic_output/mod.rs`, and the in-memory append callsite in `jocforge-io/src/atomic_output/memory.rs`; `scripts/check-boundaries.py` checks the exact source locations and rejects any other unsafe use or allow. Domain, application, CLI and all other I/O code remain denied. The Windows rename behavior was verified in the host's local NTFS workspace test directory, including a destination created by a competing process after preflight. UNC, ReFS, reparse-point or ancestor stability, and crash durability are not established. Non-Windows keeps the prior path-based rename behavior without an atomic cross-process no-replace claim.
 
 当前实际 crate 依赖图：
 
 ```mermaid
 flowchart TD
-  CLI --> Application
-  CLI --> IO
+  CLI --> Pipeline
+  Pipeline --> Application
+  Pipeline --> IO
+  Wasm --> Pipeline
+  Wasm --> Application
+  Wasm --> IO
+  Wasm --> Domain
   Validation --> Application
   Validation --> IO
   Validation --> Domain
@@ -23,11 +28,15 @@ flowchart TD
   IO --> Domain
 ```
 
-CLI is the selected-input composition root for the reader-to-application meter handoff. It may depend on IO to stage the in-memory PCM cursor and on Application to bind the resulting domain-owned frame values to the meter/OAR stage. Application remains independent of IO; the CLI module performs no codec or DSP arithmetic, and the executable `main` remains process orchestration.
+`jocforge-pipeline` is the encode pipeline layer: it owns input preparation, the meter prepass, the spatial callback loop, source-frame staging and the F15 publication, and it is the only place that combines application owner roots with io adapters. It is a library with no process entry and no argument parser. It also owns the provider-asset embedding build script, because the embedded approved bundles are pipeline runtime inputs rather than process settings. `jocforge-cli` keeps the binary, the argument parser and the exit-code mapping, and re-exports the pipeline modules under their historical names for its integration tests. `jocforge-wasm` is a second composition root over the same library: it depends on the pipeline, application, io and domain crates, accepts only in-memory bytes, and never links the CLI package or its parser.
+
+Domain's `parallel` feature stays on for native builds and off when the pipeline is built for wasm32. The wasm crate then runs the same DSP closures in input order.
+
+CLI is the selected-input composition root for the reader-to-application meter handoff. It reaches io and application only through the pipeline library, so the native and browser entry points share one encode path instead of two. The wasm crate is a second composition root for the same prepared bytes and does not own a separate DSP path. It may depend on IO to stage the in-memory PCM cursor and on Application to bind the resulting domain-owned frame values to the meter/OAR stage. Application remains independent of IO; neither the CLI nor the pipeline performs codec or DSP arithmetic, and the executable `main` remains process orchestration.
 
 Domain 内部只通过批准的类型化契约传值。`integrity` 使用 `timeline` 的 source、dispatch 和 published-AU newtypes，并只依赖已登记的 checksum 与 provider 校验模块。`reader_eof` 和 `integrity` 各自拥有局部 committed state；两者都未接入全局 CallbackTransaction。其他模块的实现状态以 `IMPLEMENTATION-MAP.json` 为准。
 
-Domain 不得依赖 CLI、I/O、进程或环境变量。application 保持纯协调并只依赖 domain；CLI 可通过独立 composition module 连接 IO 与 application 的 typed values，但不得把领域计算放入 main。io 只做文件适配，validation 只做独立检验。外部解码/比较进程只允许出现在 validation shell，不能充当生产编码核心。
+Domain 不得依赖 CLI、I/O、进程或环境变量。application 保持纯协调并只依赖 domain；pipeline 负责把 io 适配器与 application 的 typed values 组合成选定档位的编码链路，CLI 只保留进程入口与参数解析，不得把领域计算放入 main。io 只做文件适配，validation 只做独立检验。外部解码/比较进程只允许出现在 validation shell，不能充当生产编码核心。
 
 `integrity` 在 domain 内解析调用者传入的 keyless provider bytes，并计算 canonical provider digest。它不读取 provider 文件，也不访问认证材料。provider 的文件读取和 manifest 适配仍属于未来 I/O 边界。
 
