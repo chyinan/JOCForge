@@ -102,6 +102,106 @@ impl<'a> SelectedAdmRiffPayloads<'a> {
     }
 }
 
+/// Supplies exact PCM byte ranges for a parsed RIFF whose data chunk is not resident.
+///
+/// An implementation must return exactly `len` bytes starting at `offset` measured from the
+/// first byte of the data-chunk payload. Returning a different length is an input error: the
+/// resident window can never short-read, so a reader that did would quietly change the decoded
+/// blocks.
+pub trait RiffDataReader: Send {
+    fn read_exact_at(&mut self, offset: u64, len: usize) -> Result<Vec<u8>, RiffPcm24Error>;
+}
+
+/// Borrowed or supplied PCM byte window behind one parsed RIFF resource.
+///
+/// The resident variant is the original whole-buffer slice: reads stay zero-copy and every
+/// current caller behaves exactly as before. The streaming variant exists so a window can be
+/// served by a reader instead of a resident buffer; it keeps the same byte semantics, and the
+/// block reader below only ever asks it for exact ranges.
+pub enum RiffDataWindow<'a> {
+    Resident(&'a [u8]),
+    Streamed {
+        reader: &'a std::sync::Mutex<Box<dyn RiffDataReader>>,
+        len: usize,
+    },
+}
+
+impl RiffDataWindow<'_> {
+    fn len(&self) -> usize {
+        match self {
+            Self::Resident(bytes) => bytes.len(),
+            Self::Streamed { len, .. } => *len,
+        }
+    }
+
+    fn read(&self, start: usize, end: usize) -> Result<std::borrow::Cow<'_, [u8]>, RiffPcm24Error> {
+        match self {
+            Self::Resident(bytes) => bytes
+                .get(start..end)
+                .map(std::borrow::Cow::Borrowed)
+                .ok_or(RiffPcm24Error::InvalidInput),
+            Self::Streamed { reader, .. } => {
+                let len = end.checked_sub(start).ok_or(RiffPcm24Error::InvalidInput)?;
+                let bytes = reader
+                    .lock()
+                    .map_err(|_| RiffPcm24Error::InvalidInput)?
+                    .read_exact_at(
+                        u64::try_from(start).map_err(|_| RiffPcm24Error::InvalidInput)?,
+                        len,
+                    )?;
+                if bytes.len() != len {
+                    return Err(RiffPcm24Error::InvalidInput);
+                }
+                Ok(std::borrow::Cow::Owned(bytes))
+            }
+        }
+    }
+}
+
+impl Clone for RiffDataWindow<'_> {
+    /// Cloning a resident window is a pointer copy. A streamed window cannot be cloned: two
+    /// clones would share one reader and interleave reads, so callers that need that must build
+    /// a second window instead.
+    fn clone(&self) -> Self {
+        match self {
+            Self::Resident(bytes) => Self::Resident(bytes),
+            // A streamed window is a borrowed reader plus an extent: copying the reference keeps
+            // both clones reading the same source, which is exactly what the resident variant does
+            // when it copies a slice.
+            Self::Streamed { reader, len } => Self::Streamed { reader, len: *len },
+        }
+    }
+}
+
+impl std::fmt::Debug for RiffDataWindow<'_> {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Resident(bytes) => formatter
+                .debug_tuple("Resident")
+                .field(&format_args!("{} bytes", bytes.len()))
+                .finish(),
+            Self::Streamed { len, .. } => formatter
+                .debug_tuple("Streamed")
+                .field(&format_args!("{len} bytes"))
+                .finish(),
+        }
+    }
+}
+
+impl PartialEq for RiffDataWindow<'_> {
+    /// Two resident windows compare by content. A streamed window compares by extent only: reading
+    /// it to compare would consume the reader and change what the caller observes next.
+    fn eq(&self, other: &Self) -> bool {
+        match (self, other) {
+            (Self::Resident(left), Self::Resident(right)) => left == right,
+            (Self::Streamed { len: left, .. }, Self::Streamed { len: right, .. }) => left == right,
+            _ => false,
+        }
+    }
+}
+
+impl Eq for RiffDataWindow<'_> {}
+
 /// Parsed selected RIFF/PCM24 metadata and a borrowed data payload.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ParsedRiffPcm24<'a> {
@@ -111,7 +211,7 @@ pub struct ParsedRiffPcm24<'a> {
     timeline: jocforge_domain::timeline::RenderTimeline,
     source_sha256: [u8; 32],
     data_offset: u64,
-    data_payload: &'a [u8],
+    data_payload: RiffDataWindow<'a>,
     chunk_ids: Vec<String>,
     metadata_payloads: Vec<RiffMetadataPayload<'a>>,
     selected_metadata_payload: Option<&'a [u8]>,
@@ -147,7 +247,7 @@ impl<'a> ParsedRiffPcm24<'a> {
     }
 
     /// Returns the exact PCM data-chunk payload length observed by the RIFF parser.
-    pub const fn data_payload_bytes(&self) -> usize {
+    pub fn data_payload_bytes(&self) -> usize {
         self.data_payload.len()
     }
 
@@ -251,10 +351,12 @@ impl<'a> ParsedRiffPcm24<'a> {
         let byte_end = byte_start
             .checked_add(bytes as usize)
             .ok_or(RiffPcm24Error::InvalidInput)?;
+        let window = self
+            .data_payload
+            .read(byte_start, byte_end)
+            .map_err(|_| RiffPcm24Error::InvalidInput)?;
         let mut chunk = decode_pcm24_read_chunk_with_layout(
-            self.data_payload
-                .get(byte_start..byte_end)
-                .ok_or(RiffPcm24Error::InvalidInput)?,
+            &window,
             bytes,
             usize::from(self.channels),
             usize::from(self.block_align),
@@ -495,7 +597,7 @@ pub fn parse_selected_riff_pcm24(
         ),
         source_sha256: Sha256::digest(bytes).into(),
         data_offset: u64::try_from(data_offset).map_err(|_| RiffPcm24Error::InvalidInput)?,
-        data_payload,
+        data_payload: RiffDataWindow::Resident(data_payload),
         chunk_ids,
         metadata_payloads,
         selected_metadata_payload,
@@ -541,6 +643,63 @@ fn parse_selected_format(payload: &[u8]) -> Result<SelectedFormat, RiffPcm24Erro
     })
 }
 
+/// Re-serves one parsed resource's PCM window from a reader instead of resident bytes.
+///
+/// The caller must supply the same data extent the parse observed. Nothing else about the parsed
+/// resource changes: metadata payloads, timeline and block alignment stay as parsed, so every
+/// block read below behaves exactly as it did against the resident slice.
+pub fn streamed_window<'a>(
+    parsed: &ParsedRiffPcm24<'a>,
+    reader: &'a std::sync::Mutex<Box<dyn RiffDataReader>>,
+) -> ParsedRiffPcm24<'a> {
+    let mut streamed = parsed.clone();
+    streamed.data_payload = RiffDataWindow::Streamed {
+        reader,
+        len: parsed.data_payload.len(),
+    };
+    streamed
+}
+
+/// Native reader over one already open RIFF file positioned at its data-chunk payload.
+///
+/// It exists to prove the streaming window is byte-equivalent to the resident one before the
+/// browser target grows a reader; it performs ordinary seek+read_exact I/O.
+#[cfg(not(target_arch = "wasm32"))]
+pub struct FileRiffDataReader {
+    file: std::fs::File,
+    base: u64,
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+impl FileRiffDataReader {
+    /// Opens `path` and positions reads at `data_offset` (the data payload's first byte).
+    pub fn open(path: &std::path::Path, data_offset: u64) -> std::io::Result<Self> {
+        Ok(Self {
+            file: std::fs::File::open(path)?,
+            base: data_offset,
+        })
+    }
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+impl RiffDataReader for FileRiffDataReader {
+    fn read_exact_at(&mut self, offset: u64, len: usize) -> Result<Vec<u8>, RiffPcm24Error> {
+        use std::io::{Read, Seek, SeekFrom};
+        let start = self
+            .base
+            .checked_add(offset)
+            .ok_or(RiffPcm24Error::InvalidInput)?;
+        self.file
+            .seek(SeekFrom::Start(start))
+            .map_err(|_| RiffPcm24Error::InvalidInput)?;
+        let mut bytes = vec![0_u8; len];
+        self.file
+            .read_exact(&mut bytes)
+            .map_err(|_| RiffPcm24Error::InvalidInput)?;
+        Ok(bytes)
+    }
+}
+
 fn decode_chunk_id(chunk_id: [u8; 4]) -> String {
     String::from_utf8_lossy(&chunk_id).into_owned()
 }
@@ -553,4 +712,114 @@ fn read_u16_le(bytes: &[u8]) -> Result<u16, RiffPcm24Error> {
 fn read_u32_le(bytes: &[u8]) -> Result<u32, RiffPcm24Error> {
     let word: [u8; 4] = bytes.try_into().map_err(|_| RiffPcm24Error::InvalidInput)?;
     Ok(u32::from_le_bytes(word))
+}
+
+#[cfg(all(test, not(target_arch = "wasm32")))]
+mod streamed_window_tests {
+    use super::*;
+
+    /// Builds one small but structurally valid PCM24 RIFF: JUNK, fmt, data, then a tail chunk.
+    fn synthetic_riff(frames: usize) -> Vec<u8> {
+        let block_align = 3 * 6; // six channels, 24-bit
+        let mut bytes = Vec::new();
+        bytes.extend_from_slice(b"RIFF");
+        bytes.extend_from_slice(&0_u32.to_le_bytes());
+        bytes.extend_from_slice(b"WAVE");
+
+        let junk = [0_u8; 16];
+        bytes.extend_from_slice(b"JUNK");
+        bytes.extend_from_slice(&(junk.len() as u32).to_le_bytes());
+        bytes.extend_from_slice(&junk);
+
+        let mut fmt = Vec::new();
+        fmt.extend_from_slice(&1_u16.to_le_bytes());
+        fmt.extend_from_slice(&6_u16.to_le_bytes());
+        fmt.extend_from_slice(&48_000_u32.to_le_bytes());
+        fmt.extend_from_slice(&(48_000_u32 * block_align as u32).to_le_bytes());
+        fmt.extend_from_slice(&(block_align as u16).to_le_bytes());
+        fmt.extend_from_slice(&24_u16.to_le_bytes());
+        bytes.extend_from_slice(b"fmt ");
+        bytes.extend_from_slice(&(fmt.len() as u32).to_le_bytes());
+        bytes.extend_from_slice(&fmt);
+
+        let mut data = Vec::with_capacity(frames * block_align);
+        for frame in 0..frames {
+            for channel in 0..6 {
+                let value = ((frame * 6 + channel) as u32 & 0x00ff_ffff).to_le_bytes();
+                data.extend_from_slice(&value[..3]);
+            }
+        }
+        bytes.extend_from_slice(b"data");
+        bytes.extend_from_slice(&(data.len() as u32).to_le_bytes());
+        bytes.extend_from_slice(&data);
+
+        let tail = b"tail-metadata";
+        bytes.extend_from_slice(b"bext");
+        bytes.extend_from_slice(&(tail.len() as u32).to_le_bytes());
+        bytes.extend_from_slice(tail);
+
+        let riff_size = (bytes.len() - 8) as u32;
+        bytes[4..8].copy_from_slice(&riff_size.to_le_bytes());
+        bytes
+    }
+
+    fn digest_blocks(parsed: &ParsedRiffPcm24<'_>) -> Vec<u32> {
+        let mut digest = Vec::new();
+        let total = parsed.total_samples();
+        let mut first = 0_u64;
+        while first < total {
+            let chunk = parsed
+                .read_pcm24_chunk(AdmSampleIndex::new(first), 1_536)
+                .expect("block read");
+            for row in chunk.planar_f32_bits() {
+                digest.extend_from_slice(row);
+            }
+            first += chunk.actual_frames().value().max(1);
+        }
+        digest
+    }
+
+    #[test]
+    fn streamed_window_decodes_exactly_the_resident_blocks() {
+        let riff = synthetic_riff(4_096);
+        let resident = parse_selected_riff_pcm24(&riff, None).expect("resident parse");
+        let wanted = digest_blocks(&resident);
+        assert!(!wanted.is_empty());
+
+        let path = std::env::temp_dir().join(format!(
+            "riff-stream-{}-{}.wav",
+            std::process::id(),
+            resident.data_offset()
+        ));
+        std::fs::write(&path, &riff).expect("write fixture");
+        let reader = std::sync::Mutex::new(Box::new(
+            FileRiffDataReader::open(&path, resident.data_offset()).expect("open fixture"),
+        ) as Box<dyn RiffDataReader>);
+        let streamed = streamed_window(&resident, &reader);
+
+        let got = digest_blocks(&streamed);
+        std::fs::remove_file(&path).ok();
+        assert_eq!(got, wanted, "streamed blocks must match resident blocks");
+    }
+
+    /// A reader that always returns fewer bytes than asked for.
+    struct ShortReader;
+
+    impl RiffDataReader for ShortReader {
+        fn read_exact_at(&mut self, _offset: u64, _len: usize) -> Result<Vec<u8>, RiffPcm24Error> {
+            Ok(Vec::new())
+        }
+    }
+
+    #[test]
+    fn streamed_window_rejects_a_short_reader() {
+        let riff = synthetic_riff(64);
+        let resident = parse_selected_riff_pcm24(&riff, None).expect("resident parse");
+        let reader = std::sync::Mutex::new(Box::new(ShortReader) as Box<dyn RiffDataReader>);
+        let streamed = streamed_window(&resident, &reader);
+        assert!(matches!(
+            streamed.read_pcm24_chunk(AdmSampleIndex::new(0), 1_536),
+            Err(RiffPcm24Error::InvalidInput)
+        ));
+    }
 }

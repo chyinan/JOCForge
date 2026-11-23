@@ -541,3 +541,68 @@ Two tests still asserted the superseded memory-sink contract and were failing be
 Gates for this batch: `cargo fmt --all --check` clean, `cargo clippy --workspace --all-targets
 --locked` exit 0 with no warnings inside `jocforge-wasm/src`, `cargo test --workspace --locked` exit
 0 with no failures, `check-boundaries.py` `91 / 104 / 0 / 6`.
+
+### Streaming input, increment 1: byte-identity harness and the data-window seam (2026-11-23)
+
+Goal: the browser must stop holding the whole ADM in wasm memory, **without changing a single
+output byte**. Increment 1 lands the guarantee and the seam; it changes no encoded bytes.
+
+**Golden vectors.** `scripts/golden-vectors.py` runs the release CLI over 16 flag-only cases
+(six 5.1 rates, six flat-7.1 total rates, the three Surround EX declarations, and
+`--dependent-count 1`) and records `{bytes, sha256}` in
+`docs/memory/agents/golden-encode.json`. `--update` rewrites, default verifies and exits non-zero on
+any mismatch. Job-XML cases are deliberately excluded: their XML carries absolute paths, so they are
+not stable across directories. Every case reads the whole PCM, so any block-offset or length
+deviation would change the product sha.
+
+Recorded baseline (all reproduce the anchors already in this file):
+
+| case | bytes | sha256 |
+| --- | --- | --- |
+| 5.1 384 / 448 / 576 / 640 / 768 / 1024 | 12288…32768 | `17411893` / `2bb2bcfc` / `ecf7cd3e` / `89f4a4bc` / `09888000` / `30581464` |
+| flat7x total 1024…1664 | 32768…53248 | `ba07f48e` / `a6bf2da2` / `a770867b` / `96a3985d` / `f8d2a64e` / `4ad19e7d` |
+| flat7x ex 0 / 2 / 1 | 32768 | `e1df9b4f` / `bb17e600` / `ba07f48e` |
+| topology dependent 1 | 32768 | `22daab711d98072b` |
+
+**The seam.** `ParsedRiffPcm24` no longer holds `data_payload: &'a [u8]`; it holds
+`RiffDataWindow<'a>`:
+
+- `Resident(&'a [u8])` — the original slice. Reads stay zero-copy (`Cow::Borrowed`), so every
+  current caller behaves exactly as before.
+- `Streamed { reader: &'a Mutex<Box<dyn RiffDataReader>>, len }` — reads come from a reader and are
+  copied (`Cow::Owned`). `RiffDataReader::read_exact_at(offset, len)` measures `offset` from the
+  first data-chunk payload byte and **must** return exactly `len` bytes; a short read is rejected
+  rather than silently zero-filled.
+
+`read_pcm24_chunk(&self, …)` keeps its signature, so `frontend_pcm_source`, `meter_source_cursor`,
+`meter_prepass` and the rest compile untouched. `streamed_window(&parsed, &reader)` re-serves an
+already parsed extent from a reader; `FileRiffDataReader` (native only) is the seek+read_exact
+implementation used to prove equivalence.
+
+Two decisions worth keeping: the window borrows the reader instead of owning it (owning gave
+`ParsedRiffPcm24` drop glue, which broke NLL at `encode_request.rs:1703` — `prepared` "does not live
+long enough"), and `RiffDataReader: Send` with `Mutex` instead of `RefCell` (the pipeline requires
+`Sync`).
+
+Measured: `streamed_window_decodes_exactly_the_resident_blocks` decodes every block of a synthetic
+4096-frame RIFF twice — once from the resident slice, once through a file reader — and asserts the
+two planar row vectors are identical. `streamed_window_rejects_a_short_reader` proves a reader that
+returns fewer bytes fails with `InvalidInput`. All 16 goldens unchanged after the seam.
+
+**Not done yet, in order:**
+
+1. **Parse from a reader.** `parse_selected_riff_pcm24(bytes: &[u8], …)` still needs the whole file
+   to walk chunks and hash the source (`source_sha256 = Sha256::digest(bytes)`). Streaming needs a
+   chunk walk that reads 8-byte headers and skips the data payload, plus a streaming hash in file
+   order. Metadata payloads (`axml`/`chna`) are currently borrowed slices; they would become owned.
+2. **Wasm pump.** A resume-free synchronous pipeline cannot call JS mid-call, so the reader needs
+   another thread to service it: `SharedArrayBuffer` + `Atomics.wait` in the encoding Worker, with a
+   second Worker (or the main thread) filling the buffer. That requires cross-origin isolation
+   (`Cross-Origin-Opener-Policy: same-origin` + `Cross-Origin-Embedder-Policy: require-corp`) on the
+   nginx site.
+3. **JS driver.** `Encoder` currently accumulates every pushed byte. It must instead accept a
+   `File` handle, stream header + tail + sequential data ranges from `file.slice(...)`, and report
+   progress per range.
+
+Re-run `python scripts/golden-vectors.py` after each of those; anything that moves a sha is a bug in
+the change, not a new baseline.
