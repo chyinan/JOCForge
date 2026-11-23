@@ -819,6 +819,14 @@ pub(crate) fn stage_source_frame<'pcm>(
                     output_owner_proposal,
                 )
                 .map_err(|error| {
+                    #[cfg(target_arch = "wasm32")]
+                    {
+                        let first = staging.first_failure().unwrap_or("none");
+                        return SourceFrameStageError::Pipeline(format!(
+                            "first={first} | Flat7x I0+D0 durable append: {error:?}"
+                        ));
+                    }
+                    #[cfg(not(target_arch = "wasm32"))]
                     SourceFrameStageError::Pipeline(format!(
                         "Flat7x I0+D0 durable append: {error:?}"
                     ))

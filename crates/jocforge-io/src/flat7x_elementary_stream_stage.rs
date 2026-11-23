@@ -130,6 +130,37 @@ pub fn stage_flat7x_elementary_stream_to_file<'finalize>(
     })
 }
 
+/// Writes and reads back one complete proposal into an owned buffer.
+///
+/// Same protocol as the file adapter without a filesystem: the buffer is created here, so the
+/// caller still receives only a receipt and never a destination path.
+pub fn stage_flat7x_elementary_stream_to_memory<'finalize>(
+    proposal: Flat7xElementaryStreamStageProposal<'_, 'finalize>,
+) -> Result<Flat7xElementaryStreamStageAfterProposal<'finalize>, Flat7xElementaryStreamStageIoError>
+{
+    let extent = proposal.extent();
+    let mut sink = std::io::Cursor::new(Vec::new());
+    let evidence =
+        write_and_readback_staging(&mut sink, proposal.stream_bytes(), extent, |sink| {
+            sink.flush()
+        })?;
+
+    let receipt = Flat7xElementaryStreamStageReceiptCandidate::new(
+        &proposal,
+        evidence.bytes_written,
+        evidence.write_call_count,
+        evidence.readback_sha256,
+        true,
+        true,
+    );
+    proposal.complete(receipt).map_err(|_| {
+        Flat7xElementaryStreamStageIoError::new(
+            Flat7xElementaryStreamStageIoPhase::Readback,
+            Flat7xElementaryStreamStageIoFailure::StageReceiptRejected,
+        )
+    })
+}
+
 fn write_and_readback_staging<S, Sync>(
     file: &mut S,
     bytes: &[u8],

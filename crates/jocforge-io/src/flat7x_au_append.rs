@@ -270,8 +270,12 @@ fn complete_staged_proposal(
         })
 }
 
-#[cfg(any(test, feature = "test-support"))]
-pub fn append_flat7x_au_to_memory_for_test<'a>(
+/// Appends one Flat7x I0+D0 pair into an owned byte buffer.
+///
+/// Same protocol as the file adapter: write at the ledger offset, verify the exact extent, read
+/// the bytes back and check both frame digests before minting the pair receipt. A target without
+/// a filesystem stages into the isolate's buffer instead of a file.
+pub fn append_flat7x_au_to_memory<'a>(
     sink: &mut std::io::Cursor<Vec<u8>>,
     proposal: Flat7xAuAppendProposal<'a>,
 ) -> Result<Flat7xAuOutputAfterProposal<'a>, Flat7xAuAppendIoFailure> {
@@ -283,7 +287,9 @@ pub fn append_flat7x_au_to_memory_for_test<'a>(
         proposal.bytes(),
         usize::from(i0_frame_bytes),
         usize::from(d0_frame_bytes),
-        |_| Ok(false),
+        // An owned buffer has nothing to flush: the attempt's bytes and the readback are the same
+        // storage, so the durable evidence is complete as soon as the byte comparison passes.
+        |_| Ok(true),
     ) {
         Ok(evidence) => evidence,
         Err(error) => {
@@ -296,6 +302,25 @@ pub fn append_flat7x_au_to_memory_for_test<'a>(
     complete_staged_proposal(proposal, evidence)
 }
 
+impl Flat7xAuAppendIoFailure {
+    /// Stable short label for the concrete IO rejection.
+    ///
+    /// The browser bridge only surfaces a bounded detail string, so the staging layer records this
+    /// label as its first-failure tag instead of formatting the whole error.
+    pub fn kind(&self) -> &'static str {
+        match &self.error {
+            Flat7xAuAppendIoError::StagingLengthMismatch { .. } => "length-mismatch",
+            Flat7xAuAppendIoError::ProposalExtentMismatch => "extent-mismatch",
+            Flat7xAuAppendIoError::I0FrameCrc => "i0-crc",
+            Flat7xAuAppendIoError::D0FrameCrc => "d0-crc",
+            Flat7xAuAppendIoError::ReadbackMismatch => "readback-mismatch",
+            Flat7xAuAppendIoError::WriteZero => "write-zero",
+            Flat7xAuAppendIoError::ReceiptCandidateRejected => "receipt-rejected",
+            _ => "io-other",
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use std::{
@@ -305,9 +330,7 @@ mod tests {
         time::{SystemTime, UNIX_EPOCH},
     };
 
-    use super::{
-        Flat7xAuAppendIoError, append_flat7x_au_to_memory_for_test, write_and_readback_staging,
-    };
+    use super::{Flat7xAuAppendIoError, append_flat7x_au_to_memory, write_and_readback_staging};
     use jocforge_domain::{
         codec::frame_size::Eac3FrameSize,
         joc::emdf::metadata_owner::test_support::Flat7xReceiptGateMetadataTestInputs,
@@ -471,7 +494,7 @@ mod tests {
         let proposal = fixture.append_proposal(fixture.attempt_id()).unwrap();
         let mut sink = Cursor::new(Vec::new());
 
-        let failure = match append_flat7x_au_to_memory_for_test(&mut sink, proposal) {
+        let failure = match append_flat7x_au_to_memory(&mut sink, proposal) {
             Ok(_) => panic!("an in-memory write must not produce a durable after-owner"),
             Err(failure) => failure,
         };

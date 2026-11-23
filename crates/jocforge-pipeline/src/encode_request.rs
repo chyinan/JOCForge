@@ -234,7 +234,7 @@ pub fn encode_adm_bytes(adm: &[u8]) -> Result<Vec<u8>, EncodeRequestError> {
     }
     #[cfg(target_arch = "wasm32")]
     {
-        encode_adm_resource(std::sync::Arc::from(adm))
+        encode_adm_resource(std::sync::Arc::from(adm), 1024, 15, None, 0, None)
     }
 }
 
@@ -244,20 +244,54 @@ pub fn encode_adm_bytes(adm: &[u8]) -> Result<Vec<u8>, EncodeRequestError> {
 /// copy of the input instead of holding the pushed vector beside a second allocation. Callers
 /// that only borrow bytes use `encode_adm_bytes`.
 #[cfg(target_arch = "wasm32")]
-pub fn encode_adm_resource(resource: std::sync::Arc<[u8]>) -> Result<Vec<u8>, EncodeRequestError> {
+pub fn encode_adm_resource(
+    resource: std::sync::Arc<[u8]>,
+    rate_kbps: u32,
+    object_count: u8,
+    job_xml: Option<Vec<u8>>,
+    layout: u8,
+    dependent_count: Option<u8>,
+) -> Result<Vec<u8>, EncodeRequestError> {
+    let layout = match layout {
+        0 => JocReconstructionLayout::ExistingSelectedFivePointOne,
+        1 => JocReconstructionLayout::Flat7x,
+        _ => return Err(EncodeRequestError::UnsupportedJocLayout),
+    };
+    let rate =
+        CodecRateProfile::from_kbps(rate_kbps).ok_or(EncodeRequestError::UnsupportedDataRate)?;
+    let objects = match object_count {
+        8 => JocObjectCount::Eight,
+        12 => JocObjectCount::Twelve,
+        15 => JocObjectCount::Fifteen,
+        _ => return Err(EncodeRequestError::UnsupportedDataRate),
+    };
+    // A dependent count is the only composition axis the browser needs: the plan itself is built
+    // here from the selected layout, so no topology type crosses the crate boundary.
+    let topology = match dependent_count {
+        Some(count) => Some(
+            jocforge_application::source_frame_bridge::SubstreamPlan::new(
+                layout,
+                count,
+                LfeOwner::Independent,
+            )
+            .and_then(|plan| plan.with_emdf_location(EmdfLocation::SkipField))
+            .map(|plan| plan.with_partition(BlockPartition::Six))
+            .map_err(|error| {
+                EncodeRequestError::SourcePipeline(format!("browser topology rejected: {error}"))
+            })?,
+        ),
+        None => None,
+    };
     let product = run_worker_with_object_count(
         Path::new("/jocforge-browser/input.wav"),
         Path::new("memory://output.ec3"),
-        Some(CodecRateProfile::Kbps1024),
-        None,
-        (
-            JocReconstructionLayout::ExistingSelectedFivePointOne,
-            EmdfCarriageProfile::DeployedCompat,
-        ),
+        Some(rate),
+        job_xml,
+        (layout, EmdfCarriageProfile::DeployedCompat),
         None,
         &std::sync::atomic::AtomicBool::new(false),
-        None,
-        JocObjectCount::Fifteen,
+        topology,
+        objects,
         1,
         Some(resource),
     )?;
@@ -1498,16 +1532,18 @@ fn run_inner(
     }?;
     #[cfg(target_arch = "wasm32")]
     let (carrier_path, mut composition) = {
-        if topology.is_some() {
-            return Err(EncodeRequestError::SourcePipeline(
-                "browser encode accepts the selected programme only".to_owned(),
-            ));
-        }
-        let composition: Option<(
-            jocforge_application::source_frame_bridge::SubstreamPlan,
-            ComposedOutput,
-        )> = None;
-        (output_path.clone(), composition)
+        // A composed programme keeps its intermediate carrier out of the namespace: the sink is an
+        // owned buffer, so the carrier name only has to stay inside the memory namespace.
+        let composition = match topology {
+            Some(plan) => Some((plan, ComposedOutput::new(Vec::new()))),
+            None => None,
+        };
+        let carrier_path = if composition.is_some() {
+            Path::new("memory://audio.candidate.ec3").to_path_buf()
+        } else {
+            output_path.clone()
+        };
+        (carrier_path, composition)
     };
     let final_destination = carrier_path
         .to_str()
@@ -2122,7 +2158,24 @@ fn run_inner(
             flat7x_d0_block2_overflow_receipts,
             candidate.production_allowed(),
         );
-        return Ok(RunProduct::Published);
+        // A browser target has already staged the whole candidate stream in memory, so the run
+        // product is those exact bytes; a file target still reports the published candidate.
+        #[cfg(target_arch = "wasm32")]
+        {
+            return staging
+                .staged_stream_bytes()
+                .map(RunProduct::Bytes)
+                .ok_or_else(|| {
+                    EncodeRequestError::SourcePipeline(
+                        "Flat7x memory candidate has no complete stream".to_owned(),
+                    )
+                });
+        }
+        #[cfg(not(target_arch = "wasm32"))]
+        {
+            let _ = &candidate;
+            return Ok(RunProduct::Published);
+        }
     }
 
     eprintln!("Finalizing and exposing output...");
@@ -2171,7 +2224,14 @@ fn run_inner(
     // The file targets expose the product through their namespace; a target without one hands
     // the assembled buffer back to the caller instead of inventing a path.
     #[cfg(target_arch = "wasm32")]
-    let product = RunProduct::Bytes(staging.into_product_bytes());
+    // A composed programme is published through the composition sink, not the carrier staging.
+    #[cfg(target_arch = "wasm32")]
+    let product = match composition {
+        Some((_, sink)) => RunProduct::Bytes(sink.into_inner()),
+        None => RunProduct::Bytes(staging.into_product_bytes()),
+    };
+    #[cfg(not(target_arch = "wasm32"))]
+    let product = RunProduct::Published;
     #[cfg(not(target_arch = "wasm32"))]
     let product = RunProduct::Published;
     Ok(product)
@@ -2569,6 +2629,13 @@ fn normalize_new_output(path: &Path) -> Result<PathBuf, EncodeRequestError> {
 }
 
 fn validate_flat7x_experimental_candidate_path(path: &Path) -> Result<(), EncodeRequestError> {
+    // A browser target publishes into memory, so there is no candidate file name or attempt
+    // directory to validate. The layout and extent checks still run in the capture path.
+    #[cfg(target_arch = "wasm32")]
+    {
+        let _ = path;
+        return Ok(());
+    }
     let candidate_name = path
         .file_name()
         .and_then(|name| name.to_str())

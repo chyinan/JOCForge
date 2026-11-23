@@ -217,6 +217,49 @@ pub unsafe extern "C" fn jocforge_wasm_encoder_push_bytes(
 }
 
 #[unsafe(no_mangle)]
+pub extern "C" fn jocforge_wasm_encoder_set_dependent_count(handle: u32, dependent_count: u32) {
+    let _ = with_encoder(handle, |encoder| {
+        encoder.set_dependent_count(u8::try_from(dependent_count).unwrap_or(1));
+    });
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn jocforge_wasm_encoder_set_layout(handle: u32, layout: u32) {
+    let _ = with_encoder(handle, |encoder| {
+        encoder.set_layout(u8::try_from(layout).unwrap_or(0));
+    });
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn jocforge_wasm_encoder_set_job_xml(handle: u32, pointer: u32, length: u32) -> i32 {
+    if length == 0 || length > MAX_WASM_ALLOCATION_BYTES as u32 {
+        return STATUS_ERROR;
+    }
+    if pointer == 0 {
+        return STATUS_ERROR;
+    }
+    let bytes = unsafe { slice::from_raw_parts(pointer as usize as *const u8, length as usize) };
+    match with_encoder(handle, |encoder| encoder.set_job_xml(bytes.to_vec())) {
+        Some(()) => 0,
+        None => STATUS_ERROR,
+    }
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn jocforge_wasm_encoder_set_rate(handle: u32, rate_kbps: u32) {
+    let _ = with_encoder(handle, |encoder| {
+        encoder.set_rate_kbps(rate_kbps);
+    });
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn jocforge_wasm_encoder_set_objects(handle: u32, object_count: u32) {
+    let _ = with_encoder(handle, |encoder| {
+        encoder.set_object_count(u8::try_from(object_count).unwrap_or(15));
+    });
+}
+
+#[unsafe(no_mangle)]
 pub extern "C" fn jocforge_wasm_encoder_finish(handle: u32) -> i32 {
     match catch_unwind(AssertUnwindSafe(|| with_encoder(handle, Encoder::finish))) {
         Ok(Some(Ok(status))) => with_encoder(handle, |encoder| {

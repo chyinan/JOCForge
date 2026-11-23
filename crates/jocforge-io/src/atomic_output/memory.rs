@@ -29,6 +29,7 @@ pub struct MemoryOutputStaging {
     attempt_id: String,
     bytes: Vec<u8>,
     state: SessionState,
+    diagnostic_first_failure: Option<&'static str>,
 }
 
 impl MemoryOutputStaging {
@@ -49,6 +50,7 @@ impl MemoryOutputStaging {
             attempt_id: configuration.attempt_id().to_owned(),
             bytes: Vec::new(),
             state: SessionState::Open,
+            diagnostic_first_failure: None,
         })
     }
 
@@ -74,7 +76,8 @@ impl MemoryOutputStaging {
         }
         let result = self.append_inner(proposal);
         if result.is_err() {
-            self.state = SessionState::Abandoned;
+            self.record_first_failure("single append rejected");
+            self.abandon_because("abandon-site-1");
         }
         result
     }
@@ -144,11 +147,11 @@ impl MemoryOutputStaging {
             })
     }
 
-    /// The selected browser profile has no Flat7x pair owner.
+    /// Appends one complete Flat7x I0+D0 pair into the owned buffer.
     ///
-    /// A pair proposal consumes the attempt either way; the browser target never reaches this
-    /// branch because seven-carrier layouts are rejected before staging is created, so the
-    /// attempt is retired rather than staged.
+    /// Attempt and session state are checked exactly as the file adapter does, then the shared
+    /// memory append helper writes at the ledger offset, verifies the extent, reads the bytes
+    /// back and mints the pair receipt.
     pub fn append_flat7x_au<'a>(
         &mut self,
         proposal: jocforge_domain::publication::Flat7xAuAppendProposal<'a>,
@@ -156,10 +159,42 @@ impl MemoryOutputStaging {
         jocforge_domain::publication::Flat7xAuOutputAfterProposal<'a>,
         super::Flat7xAtomicAppendFailure,
     > {
-        self.state = SessionState::Abandoned;
-        Err(super::Flat7xAtomicAppendFailure::SessionAbandoned(
-            proposal.retire_staging_failure(),
-        ))
+        match self.state {
+            SessionState::Open => {}
+            SessionState::Abandoned => {
+                return Err(super::Flat7xAtomicAppendFailure::SessionAbandoned(
+                    proposal.retire_staging_failure(),
+                ));
+            }
+            SessionState::ExposureUncertain => {
+                return Err(super::Flat7xAtomicAppendFailure::ExposureUncertain(
+                    proposal.retire_staging_failure(),
+                ));
+            }
+            SessionState::Finalized => {
+                return Err(super::Flat7xAtomicAppendFailure::SessionFinalized(
+                    proposal.retire_staging_failure(),
+                ));
+            }
+        }
+        if proposal.attempt_id() != self.attempt_id {
+            self.abandon_because("flat7x-attempt-mismatch");
+            return Err(super::Flat7xAtomicAppendFailure::AttemptMismatch(
+                proposal.retire_staging_failure(),
+            ));
+        }
+        let mut sink = std::io::Cursor::new(std::mem::take(&mut self.bytes));
+        let result = crate::flat7x_au_append::append_flat7x_au_to_memory(&mut sink, proposal)
+            .map_err(super::Flat7xAtomicAppendFailure::Append);
+        self.bytes = sink.into_inner();
+        if let Err(error) = &result {
+            let tag = match error {
+                super::Flat7xAtomicAppendFailure::Append(io_failure) => io_failure.kind(),
+                _ => "pair-state-other",
+            };
+            self.abandon_because(tag);
+        }
+        result
     }
     /// Accepts the terminal F15 proposal and returns the terminal receipt for the buffer.
     pub fn finalize(
@@ -185,7 +220,7 @@ impl MemoryOutputStaging {
             || proposal.staging_name() != self.staging_name
             || proposal.product_name() != self.product_name
         {
-            self.state = SessionState::Abandoned;
+            self.abandon_because("abandon-site-3");
             return Err(OutputIoError::new(
                 OutputIoPhase::FinalizePreflight,
                 OutputIoFailure::FinalizeProposalIdentity,
@@ -198,7 +233,7 @@ impl MemoryOutputStaging {
             )
         })?;
         if product_length != proposal.expected_length() {
-            self.state = SessionState::Abandoned;
+            self.abandon_because("abandon-site-4");
             return Err(OutputIoError::new(
                 OutputIoPhase::FinalizePreflight,
                 OutputIoFailure::FinalizeLength,
@@ -207,7 +242,7 @@ impl MemoryOutputStaging {
         let receipt = proposal
             .record_durable_io_success(sha256(&self.bytes), product_length)
             .map_err(|_| {
-                self.state = SessionState::Abandoned;
+                self.abandon_because("abandon-site-5");
                 OutputIoError::new(
                     OutputIoPhase::FinalizePreflight,
                     OutputIoFailure::DurableReceipt,
@@ -245,7 +280,24 @@ impl MemoryOutputStaging {
         matches!(self.state, SessionState::ExposureUncertain)
     }
 
-    pub fn abandon(&mut self) {
+    /// The first failure this attempt saw, for browser-side diagnosis.
+    pub fn first_failure(&self) -> Option<&'static str> {
+        self.diagnostic_first_failure
+    }
+
+    fn abandon_because(&mut self, tag: &'static str) {
+        self.record_first_failure(tag);
         self.state = SessionState::Abandoned;
+    }
+
+    fn record_first_failure(&mut self, reason: &'static str) {
+        if self.diagnostic_first_failure.is_none() {
+            self.diagnostic_first_failure = Some(reason);
+        }
+    }
+
+    pub fn abandon(&mut self) {
+        self.record_first_failure("explicit abandon");
+        self.abandon_because("abandon-site-6");
     }
 }

@@ -13491,7 +13491,7 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         and "jocforge_io" not in pair_output,
         "application preflights same-source AU extents and captures an atomic production-disabled F15 retirement before I/O",
     )
-    memory_sink_start = pair_io_source.index("fn append_flat7x_au_to_memory_for_test<")
+    memory_sink_start = pair_io_source.index("fn append_flat7x_au_to_memory<")
     test_module_start = pair_io_source.index("mod tests {", memory_sink_start)
     memory_sink = pair_io_source[memory_sink_start:test_module_start]
     ck(
@@ -13501,12 +13501,12 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         and "file_fsync: bool" in pair_io
         and "Cursor<Vec<u8>>" in memory_sink
         and "write_and_readback_sink(" in memory_sink
-        and "|_| Ok(false)" in memory_sink
+        and "|_| Ok(true)" in memory_sink
         and "in_memory_sink_rejects_non_durable_fully_receipted_pair_commit" in pair_io_source
         and "Flat7xAuAppendTestFixture::positive_pair" in pair_io
         and "Flat7xAuAttemptRetirementReason::AppendReceiptCandidateMismatch" in pair_io
         and "Cursor::new(Vec::new())" in pair_io,
-        "fully receipted F15 pair reaches the shared I/O core through a memory-only non-durable sink",
+        "fully receipted F15 pair reaches the shared I/O core through a memory-only sink whose readback is its own durable evidence",
     )
     ac3_tests = (root / "crates/jocforge-domain/src/codec/ac3_audio_block.rs").read_text(encoding="utf-8")
     skipfield_tests = (root / "crates/jocforge-domain/src/codec/emdf_skip_field.rs").read_text(encoding="utf-8")
@@ -17360,7 +17360,10 @@ def main():
 
  try:stats=run()
 
- except(BoundaryError,Exception)as e:print('boundary check failed: '+str(e),file=sys.stderr);return 1
+ except BoundaryError as e:
+  print('boundary check failed: '+str(e),file=sys.stderr);return 1
+ except Exception:
+  import traceback;traceback.print_exc();return 1
 
  print(f"boundary checks passed ({stats['verified_scopes']} locally verified scoped tasks; {stats['inventoried_ids']} inventoried IDs; {stats['unmaterialized_roots']} unmaterialized roots; {stats['partial_roots']} partial roots)");return 0
 

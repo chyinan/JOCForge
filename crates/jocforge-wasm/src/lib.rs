@@ -46,6 +46,11 @@ pub struct Encoder {
     output: Option<Vec<u8>>,
     finished: bool,
     last_error: Option<EncoderError>,
+    rate_kbps: u32,
+    object_count: u8,
+    job_xml: Option<Vec<u8>>,
+    layout: u8,
+    dependent_count: Option<u8>,
 }
 
 impl Encoder {
@@ -55,6 +60,11 @@ impl Encoder {
             output: None,
             finished: false,
             last_error: None,
+            rate_kbps: 1024,
+            object_count: 15,
+            job_xml: None,
+            layout: 0,
+            dependent_count: None,
         })
     }
 
@@ -93,6 +103,40 @@ impl Encoder {
         EncoderStatus::NeedMoreInput
     }
 
+    /// Selects the carrier bitrate for the next finish.
+    ///
+    /// Accepted values are the six selected 5.1 rates; anything else is rejected at finish.
+    pub fn set_rate_kbps(&mut self, rate_kbps: u32) {
+        self.rate_kbps = rate_kbps;
+    }
+
+    /// Selects the coded JOC object count (8, 12 or 15).
+    pub fn set_object_count(&mut self, object_count: u8) {
+        self.object_count = object_count;
+    }
+
+    /// Requests a composed (multi-substream) programme with the given dependent-frame count.
+    ///
+    /// The plan is built by the pipeline from this count and the selected layout, so the bridge
+    /// never carries a topology type across the crate boundary.
+    pub fn set_dependent_count(&mut self, dependent_count: u8) {
+        self.dependent_count = Some(dependent_count);
+    }
+
+    /// Selects the reconstruction layout: 0 = selected 5.1, 1 = flat 7.1.
+    pub fn set_layout(&mut self, layout: u8) {
+        self.layout = layout;
+    }
+
+    /// Supplies a caller-authored job XML for the next finish.
+    ///
+    /// The XML carries the sound parameters (DRC, downmix, metering, trims) and timing. Its
+    /// `<data_rate>` must match the selected rate, because the pipeline cross-checks the
+    /// prepared configuration against it.
+    pub fn set_job_xml(&mut self, xml: Vec<u8>) {
+        self.job_xml = Some(xml);
+    }
+
     /// Encodes the pushed ADM bytes and exposes one elementary stream.
     pub fn finish(&mut self) -> Result<EncoderStatus, EncoderError> {
         if self.finished {
@@ -112,9 +156,14 @@ impl Encoder {
         }
         // The browser hands the pushed buffer over; native test builds keep borrowing it.
         #[cfg(target_arch = "wasm32")]
-        let outcome = jocforge_pipeline::encode_request::encode_adm_resource(std::sync::Arc::from(
-            std::mem::take(&mut self.input).into_boxed_slice(),
-        ))
+        let outcome = jocforge_pipeline::encode_request::encode_adm_resource(
+            std::sync::Arc::from(std::mem::take(&mut self.input).into_boxed_slice()),
+            self.rate_kbps,
+            self.object_count,
+            self.job_xml.take(),
+            self.layout,
+            self.dependent_count,
+        )
         .map_err(map_encode_request_error);
         #[cfg(not(target_arch = "wasm32"))]
         let outcome = encode_adm(&self.input);

@@ -265,6 +265,24 @@ impl ProgrammeOutputStaging {
     ///
     /// The proposal type carries F15's validated paired source receipts. The Flat7x CLI source
     /// stage calls this after the same-source I0/D0 and Integrity proposals have been prepared.
+    /// Copies the complete staged stream out of the memory core.
+    ///
+    /// The browser publishes into an owned buffer, and the Flat7x candidate capture needs the bytes
+    /// while still holding the staging handle for retirement afterwards, so this copies instead of
+    /// consuming the staging. One programme is a few megabytes, which the copy budget accepts.
+    #[cfg(target_arch = "wasm32")]
+    pub(crate) fn staged_stream_bytes(&self) -> Option<Vec<u8>> {
+        self.inner
+            .as_ref()
+            .map(|core| core.product_bytes().to_vec())
+    }
+
+    /// Browser-side diagnosis: the first failure this attempt recorded.
+    #[cfg(target_arch = "wasm32")]
+    pub(crate) fn first_failure(&self) -> Option<&'static str> {
+        self.inner.as_ref().and_then(|core| core.first_failure())
+    }
+
     pub(crate) fn append_flat7x_au<'a>(
         &mut self,
         binding: &ProgrammeOutputBinding,
@@ -362,7 +380,7 @@ impl ProgrammeOutputStaging {
             });
         }
 
-        jocforge_io::flat7x_au_append::append_flat7x_au_to_memory_for_test(sink, proposal)
+        jocforge_io::flat7x_au_append::append_flat7x_au_to_memory(sink, proposal)
             .map_err(Flat7xOutputAppendFailure::MemoryAppend)
     }
 
@@ -849,10 +867,19 @@ fn capture_flat7x_candidate_inner(
             "F15 pair ledger and OutputOwner lengths differ".to_owned(),
         ));
     }
+    #[cfg(not(target_arch = "wasm32"))]
     let stream_bytes = std::fs::read(staging.staging_path()).map_err(|error| {
         OutputPublicationError::ExperimentalCandidate(format!(
             "could not read complete F15 staging stream: {error}"
         ))
+    })?;
+    // The browser keeps the staged programme in memory, so the validated extent is read straight
+    // out of the buffer instead of a staging file.
+    #[cfg(target_arch = "wasm32")]
+    let stream_bytes = staging.staged_stream_bytes().ok_or_else(|| {
+        OutputPublicationError::ExperimentalCandidate(
+            "memory staging has no complete stream".to_owned(),
+        )
     })?;
     if u64::try_from(stream_bytes.len()).ok() != Some(expected_length) {
         return Err(OutputPublicationError::ExperimentalCandidate(
@@ -860,27 +887,63 @@ fn capture_flat7x_candidate_inner(
         ));
     }
     let candidate_path = staging.candidate_path();
-    let candidate_name = candidate_path
-        .file_name()
-        .and_then(|name| name.to_str())
-        .ok_or_else(|| {
-            OutputPublicationError::ExperimentalCandidate(
-                "candidate file name is not valid Unicode".to_owned(),
-            )
-        })?;
-    if !candidate_name.ends_with(".candidate.ec3") || candidate_path.exists() {
-        return Err(OutputPublicationError::ExperimentalCandidate(
-            "Flat7x candidate path must be a new `.candidate.ec3` file".to_owned(),
-        ));
-    }
     let proposal = Flat7xElementaryStreamStageProposal::new(target, &stream_bytes, &pair_finalize)
         .map_err(|error| {
             OutputPublicationError::ExperimentalCandidate(format!(
                 "Flat7x stream stage proposal: {error:?}"
             ))
         })?;
-    let receipt = write_flat7x_candidate_stage_file(candidate_path, proposal)?;
-    Ok(receipt)
+
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        let candidate_name = candidate_path
+            .file_name()
+            .and_then(|name| name.to_str())
+            .ok_or_else(|| {
+                OutputPublicationError::ExperimentalCandidate(
+                    "candidate file name is not valid Unicode".to_owned(),
+                )
+            })?;
+        if !candidate_name.ends_with(".candidate.ec3") || candidate_path.exists() {
+            return Err(OutputPublicationError::ExperimentalCandidate(
+                "Flat7x candidate path must be a new `.candidate.ec3` file".to_owned(),
+            ));
+        }
+        return write_flat7x_candidate_stage_file(candidate_path, proposal);
+    }
+
+    #[cfg(target_arch = "wasm32")]
+    {
+        let _ = candidate_path;
+        let stage_after =
+            jocforge_io::flat7x_elementary_stream_stage::stage_flat7x_elementary_stream_to_memory(
+                proposal,
+            )
+            .map_err(|error| {
+                OutputPublicationError::ExperimentalCandidate(format!(
+                    "write/readback candidate stream: {error}"
+                ))
+            })?;
+        if stage_after.production_allowed() || stage_after.final_exposure_allowed() {
+            return Err(OutputPublicationError::ExperimentalCandidate(
+                "Flat7x stream stage unexpectedly enabled production/final exposure".to_owned(),
+            ));
+        }
+        let stage_receipt = stage_after.receipt();
+        if !stage_receipt.file_sync_completed() {
+            return Err(OutputPublicationError::ExperimentalCandidate(
+                "candidate stream receipt is absent".to_owned(),
+            ));
+        }
+        Ok(Flat7xExperimentalCandidateReceipt {
+            attempt_id: binding.output_configuration().attempt_id().to_owned(),
+            candidate_path: std::path::PathBuf::from("memory://output.candidate.ec3"),
+            bytes_written: stage_receipt.bytes_written(),
+            sha256: *stage_receipt.readback_sha256(),
+            file_sync_completed: true,
+            parent_sync_completed: true,
+        })
+    }
 }
 
 fn write_flat7x_candidate_stage_file(
