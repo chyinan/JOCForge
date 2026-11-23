@@ -1,17 +1,19 @@
 // pattern: Imperative Shell
 //! Reads one selected ADM BWF, prepares its input identity, and enters the application encode gate.
 
+#[cfg(not(target_arch = "wasm32"))]
 pub use crate::cmaf::{write_composed_m4a, write_m4a_with_object_count};
 pub use jocforge_application::source_frame_bridge::{
     BlockPartition, EmdfLocation, LfeOwner, SubstreamPlan,
 };
 pub use jocforge_application::{FileRenderTiming, SourceTimeRangeError};
 
+#[cfg(not(target_arch = "wasm32"))]
+use std::time::{SystemTime, UNIX_EPOCH};
 use std::{
     path::{Component, Path, PathBuf},
     sync::Arc,
     thread,
-    time::{SystemTime, UNIX_EPOCH},
 };
 
 use crate::meter_prepass::{SelectedMeterPrepassError, unpack_provider_supplements};
@@ -193,6 +195,77 @@ fn map_source_frame_stage_error(
         crate::source_execution::SourceFrameStageError::Pipeline(message) => {
             EncodeRequestError::SourcePipeline(message)
         }
+    }
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+pub(crate) type ComposedOutput = tempfile::NamedTempFile;
+#[cfg(target_arch = "wasm32")]
+pub(crate) type ComposedOutput = std::io::Cursor<Vec<u8>>;
+
+/// What one finished request published for its caller.
+///
+/// The file targets expose the product through the namespace and report only success. A target
+/// without a namespace hands the assembled bytes back instead of pretending a path exists.
+#[derive(Debug)]
+pub(crate) enum RunProduct {
+    Published,
+    #[cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
+    Bytes(Vec<u8>),
+}
+
+/// Encodes one complete ADM BWF from memory and returns the elementary stream.
+///
+/// Native execution stages the resource in an attempt directory and reuses the file pipeline. The
+/// browser target has no directory: it feeds the caller's bytes straight into the same request and
+/// returns the product the in-isolate publication owner assembled.
+pub fn encode_adm_bytes(adm: &[u8]) -> Result<Vec<u8>, EncodeRequestError> {
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        let directory = tempfile::tempdir()
+            .map_err(|error| EncodeRequestError::SourcePipeline(error.to_string()))?;
+        let input = directory.path().join("input.wav");
+        let output = directory.path().join("output.ec3");
+        std::fs::write(&input, adm)
+            .map_err(|error| EncodeRequestError::SourcePipeline(error.to_string()))?;
+        run(&input, &output)?;
+        return std::fs::read(&output)
+            .map_err(|error| EncodeRequestError::SourcePipeline(error.to_string()));
+    }
+    #[cfg(target_arch = "wasm32")]
+    {
+        encode_adm_resource(std::sync::Arc::from(adm))
+    }
+}
+
+/// Encodes one complete ADM BWF whose bytes the caller already owns.
+///
+/// The browser bridge hands over the buffer it accumulated, so the request keeps one resident
+/// copy of the input instead of holding the pushed vector beside a second allocation. Callers
+/// that only borrow bytes use `encode_adm_bytes`.
+#[cfg(target_arch = "wasm32")]
+pub fn encode_adm_resource(resource: std::sync::Arc<[u8]>) -> Result<Vec<u8>, EncodeRequestError> {
+    let product = run_worker_with_object_count(
+        Path::new("/jocforge-browser/input.wav"),
+        Path::new("memory://output.ec3"),
+        Some(CodecRateProfile::Kbps1024),
+        None,
+        (
+            JocReconstructionLayout::ExistingSelectedFivePointOne,
+            EmdfCarriageProfile::DeployedCompat,
+        ),
+        None,
+        &std::sync::atomic::AtomicBool::new(false),
+        None,
+        JocObjectCount::Fifteen,
+        1,
+        Some(resource),
+    )?;
+    match product {
+        RunProduct::Bytes(bytes) => Ok(bytes),
+        RunProduct::Published => Err(EncodeRequestError::SourcePipeline(
+            "browser request produced no in-memory product".to_owned(),
+        )),
     }
 }
 
@@ -744,25 +817,35 @@ pub fn encode_flat_seven_one_file(
     if output.exists() {
         return Err(EncodeRequestError::OutputAlreadyExists);
     }
-    let stage = tempfile::tempdir_in(output.parent().ok_or(EncodeRequestError::InvalidPath)?)
-        .map_err(|error| EncodeRequestError::SourcePipeline(error.to_string()))?;
-    let candidate = stage.path().join("programme.candidate.ec3");
-    run_worker_with_progress(
-        input,
-        &candidate,
-        Some(CodecRateProfile::Kbps1024),
-        None,
-        (
-            JocReconstructionLayout::Flat7x,
-            EmdfCarriageProfile::DeployedCompat,
-        ),
-        Some(&progress_events(progress)),
-        &std::sync::atomic::AtomicBool::new(false),
-    )?;
-    tempfile::TempPath::try_from_path(candidate)
-        .map_err(|error| EncodeRequestError::SourcePipeline(error.to_string()))?
-        .persist_noclobber(output)
-        .map_err(|error| EncodeRequestError::SourcePipeline(error.to_string()))
+    #[cfg(target_arch = "wasm32")]
+    {
+        let _ = (input, progress);
+        Err(EncodeRequestError::SourcePipeline(
+            "browser encode does not stage a flat7x directory".to_owned(),
+        ))
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        let stage = tempfile::tempdir_in(output.parent().ok_or(EncodeRequestError::InvalidPath)?)
+            .map_err(|error| EncodeRequestError::SourcePipeline(error.to_string()))?;
+        let candidate = stage.path().join("programme.candidate.ec3");
+        run_worker_with_progress(
+            input,
+            &candidate,
+            Some(CodecRateProfile::Kbps1024),
+            None,
+            (
+                JocReconstructionLayout::Flat7x,
+                EmdfCarriageProfile::DeployedCompat,
+            ),
+            Some(&progress_events(progress)),
+            &std::sync::atomic::AtomicBool::new(false),
+        )?;
+        tempfile::TempPath::try_from_path(candidate)
+            .map_err(|error| EncodeRequestError::SourcePipeline(error.to_string()))?
+            .persist_noclobber(output)
+            .map_err(|error| EncodeRequestError::SourcePipeline(error.to_string()))
+    }
 }
 
 /// Runs the selected preset into a caller-owned staging directory.
@@ -928,7 +1011,9 @@ pub fn encode_staged_file_with_structure(
         topology,
         options.joc_objects,
         options.surround_ex,
+        None,
     )
+    .map(|_| ())
 }
 
 fn run_worker_with_progress(
@@ -1071,7 +1156,9 @@ pub fn encode_native_with_ex(
         None,
         object_count,
         surround_ex,
+        None,
     )
+    .map(|_| ())
 }
 
 fn run_worker_with_topology(
@@ -1095,7 +1182,9 @@ fn run_worker_with_topology(
         topology,
         JocObjectCount::Fifteen,
         1,
+        None,
     )
+    .map(|_| ())
 }
 
 fn run_worker_with_object_count(
@@ -1109,7 +1198,25 @@ fn run_worker_with_object_count(
     topology: Option<SubstreamPlan>,
     object_count: JocObjectCount,
     surround_ex: u8,
-) -> Result<(), EncodeRequestError> {
+    resource: Option<std::sync::Arc<[u8]>>,
+) -> Result<RunProduct, EncodeRequestError> {
+    #[cfg(target_arch = "wasm32")]
+    {
+        return run_inner(
+            input_path,
+            output_path,
+            codec_rate,
+            authored_job_xml,
+            structure,
+            progress,
+            cancelled,
+            topology,
+            object_count,
+            surround_ex,
+            resource,
+        );
+    }
+    #[cfg(not(target_arch = "wasm32"))]
     thread::scope(|scope| {
         let worker = thread::Builder::new()
             .name("jocforge-encode-request".to_owned())
@@ -1126,6 +1233,7 @@ fn run_worker_with_object_count(
                     topology,
                     object_count,
                     surround_ex,
+                    resource,
                 )
             })
             .map_err(|_| EncodeRequestError::WorkerUnavailable)?;
@@ -1187,7 +1295,8 @@ fn run_inner(
     topology: Option<SubstreamPlan>,
     object_count: JocObjectCount,
     surround_ex: u8,
-) -> Result<(), EncodeRequestError> {
+    resource: Option<std::sync::Arc<[u8]>>,
+) -> Result<RunProduct, EncodeRequestError> {
     let (joc_layout, signalling) = structure;
     use jocforge_application::flat7x_pair_source::SurroundExMode;
     let surround_ex = match surround_ex {
@@ -1213,8 +1322,15 @@ fn run_inner(
         return Err(EncodeRequestError::UnsupportedJocLayout);
     }
     eprintln!("Preparing selected ADM input and owner plan...");
-    let input_path = normalize_existing_input(input_path)?;
+    // A caller-supplied resource is the authoritative input; only a path request is normalized.
+    let input_path = match resource {
+        Some(_) => input_path.to_path_buf(),
+        None => normalize_existing_input(input_path)?,
+    };
+    #[cfg(not(target_arch = "wasm32"))]
     let output_path = normalize_new_output(output_path)?;
+    #[cfg(target_arch = "wasm32")]
+    let output_path = output_path.to_path_buf();
     if output_path.exists() {
         return Err(EncodeRequestError::OutputAlreadyExists);
     }
@@ -1239,7 +1355,10 @@ fn run_inner(
         selected_full_file_job_xml(&input_reference, &output_reference, rate_kbps).into_bytes()
     };
     let run_identity = fresh_run_identity()?;
-    let resource = read_resource(&input_path).map_err(EncodeRequestError::InputFile)?;
+    let resource = match resource {
+        Some(bytes) => bytes,
+        None => read_resource(&input_path).map_err(EncodeRequestError::InputFile)?,
+    };
     let parsed = parse_selected_riff_pcm24(&resource, None).map_err(EncodeRequestError::Riff)?;
     let adm = parsed
         .selected_adm_payloads()
@@ -1341,49 +1460,81 @@ fn run_inner(
 
     // The existing audio and metadata producers still advance as one transaction.
     // Keep their intermediate elementary stream private when publishing a new topology.
-    let scratch = topology
-        .as_ref()
-        .map(|_| {
-            tempfile::tempdir_in(
+    let native_output = topology.is_none();
+    #[cfg(not(target_arch = "wasm32"))]
+    let (carrier_path, mut composition) = {
+        let scratch = topology
+            .as_ref()
+            .map(|_| {
+                tempfile::tempdir_in(
+                    output_path
+                        .parent()
+                        .ok_or(EncodeRequestError::InvalidPath)?,
+                )
+                .map_err(|e| EncodeRequestError::SourcePipeline(e.to_string()))
+            })
+            .transpose()?;
+        let carrier_path = match &scratch {
+            Some(dir) if cmaf_rate.is_some() => dir.path().join("audio.candidate.ec3"),
+            Some(dir) => dir.path().join(
                 output_path
-                    .parent()
+                    .file_name()
                     .ok_or(EncodeRequestError::InvalidPath)?,
-            )
-            .map_err(|e| EncodeRequestError::SourcePipeline(e.to_string()))
-        })
-        .transpose()?;
-    let carrier_path = match &scratch {
-        Some(dir) if cmaf_rate.is_some() => dir.path().join("audio.candidate.ec3"),
-        Some(dir) => dir.path().join(
-            output_path
-                .file_name()
-                .ok_or(EncodeRequestError::InvalidPath)?,
-        ),
-        None => output_path.clone(),
+            ),
+            None => output_path.clone(),
+        };
+        let composition = topology
+            .map(|plan| {
+                tempfile::NamedTempFile::new_in(
+                    output_path
+                        .parent()
+                        .ok_or(EncodeRequestError::InvalidPath)?,
+                )
+                .map(|file| (plan, file))
+                .map_err(|e| EncodeRequestError::SourcePipeline(e.to_string()))
+            })
+            .transpose()?;
+        Ok::<_, EncodeRequestError>((carrier_path, composition))
+    }?;
+    #[cfg(target_arch = "wasm32")]
+    let (carrier_path, mut composition) = {
+        if topology.is_some() {
+            return Err(EncodeRequestError::SourcePipeline(
+                "browser encode accepts the selected programme only".to_owned(),
+            ));
+        }
+        let composition: Option<(
+            jocforge_application::source_frame_bridge::SubstreamPlan,
+            ComposedOutput,
+        )> = None;
+        (output_path.clone(), composition)
     };
     let final_destination = carrier_path
         .to_str()
         .ok_or(EncodeRequestError::InvalidPath)?;
-    let plan = jocforge_application::output_publication::admit_selected_f15_plan_for_profile(
+    let plan = jocforge_application::encode(
         &prepared,
         resolved_joc_profile,
         run_identity.attempt,
         &run_identity.staging_owner,
         final_destination,
     )
-    .map_err(EncodeRequestError::ProductGate)?;
-    let native_output = topology.is_none();
-    let mut composition = topology
-        .map(|plan| {
-            tempfile::NamedTempFile::new_in(
-                output_path
-                    .parent()
-                    .ok_or(EncodeRequestError::InvalidPath)?,
+    .map_err(|error| {
+        #[cfg(target_arch = "wasm32")]
+        {
+            let detail = jocforge_application::output_publication::admission_rejection_detail(
+                &prepared,
+                resolved_joc_profile,
+                run_identity.attempt,
+                &run_identity.staging_owner,
+                final_destination,
             )
-            .map(|file| (plan, file))
-            .map_err(|e| EncodeRequestError::SourcePipeline(e.to_string()))
-        })
-        .transpose()?;
+            .unwrap_or_else(|| "no detail".to_owned());
+            return EncodeRequestError::SourcePipeline(format!("{error} | admission={detail}"));
+        }
+        #[cfg(not(target_arch = "wasm32"))]
+        EncodeRequestError::ProductGate(error)
+    })?;
     let mut staging = ProgrammeOutputStaging::from_admitted_plan(&plan)
         .map_err(EncodeRequestError::OutputStaging)?;
     let output_binding = plan
@@ -1398,7 +1549,7 @@ fn run_inner(
         &prepared,
         &parsed,
         run_identity.attempt,
-        assets.path(),
+        assets.tree(),
         progress,
         cancelled,
     )?;
@@ -1432,16 +1583,16 @@ fn run_inner(
         metadata_owner.state_reference().generation(),
     );
 
-    let supplements = assets.path();
+    let supplements = assets.tree();
     let spatial_profile = EncodingProfile::selected_with_rate_and_carriage(
         selected_profile.codec_rate(),
         selected_profile.carriage(),
     );
     let main_providers = load_selected_main_spatial_callback_providers_for_profile(
-        &supplements.join("ADM-F03W-APPROVED-PROVIDER-BUNDLE-V1"),
-        &supplements.join("F01B-F03W-COLD-STATE-ASSETS-V1"),
-        &supplements.join("METER-APPROVED-PARAMETER-ASSETS-V1"),
-        &supplements.join("F04-RECEIVER-APPROVED-PARAMETERS-V1"),
+        supplements.child("ADM-F03W-APPROVED-PROVIDER-BUNDLE-V1"),
+        supplements.child("F01B-F03W-COLD-STATE-ASSETS-V1"),
+        supplements.child("METER-APPROVED-PARAMETER-ASSETS-V1"),
+        supplements.child("F04-RECEIVER-APPROVED-PARAMETERS-V1"),
         generate_selected_spatial_math_geometry()
             .map_err(|_| EncodeRequestError::SpatialGeometry)?,
         spatial_profile,
@@ -1534,11 +1685,7 @@ fn run_inner(
             let callback_value_u32 =
                 u32::try_from(callback_value).map_err(|_| EncodeRequestError::ClockMismatch)?;
             let callback_index = FrontendCallbackIndex::new(callback_value_u32);
-            let mut pending = frames.recv().map_err(|_| {
-                if cancelled.load(std::sync::atomic::Ordering::Relaxed) {
-                    EncodeRequestError::Cancelled
-                } else { EncodeRequestError::WorkerPanicked }
-            })??;
+            let mut pending = frames(callback_value)?;
             if pending.callback_index != callback_index {
                 return Err(EncodeRequestError::ClockMismatch);
             }
@@ -1726,11 +1873,22 @@ fn run_inner(
                                 .map(|hash| hex_lower(&hash))
                                 .unwrap_or_default(),
                             receipt.metadata_container_bytes.unwrap_or_default(),
-                            std::fs::metadata(staging.staging_path())
-                                .map_err(|error| EncodeRequestError::SourcePipeline(format!(
-                                    "staged AU metadata: {error}"
-                                )))?
-                                .len(),
+                            {
+                                #[cfg(not(target_arch = "wasm32"))]
+                                {
+                                    std::fs::metadata(staging.staging_path())
+                                        .map_err(|error| {
+                                            EncodeRequestError::SourcePipeline(format!(
+                                                "staged AU metadata: {error}"
+                                            ))
+                                        })?
+                                        .len()
+                                }
+                                #[cfg(target_arch = "wasm32")]
+                                {
+                                    staging.assembled_len()
+                                }
+                            },
                         );
                     }
                     if append.au_index == 0
@@ -1865,6 +2023,7 @@ fn run_inner(
         roots.metadata().state_reference().generation(),
         roots.phase_generation(),
     );
+    #[cfg(not(target_arch = "wasm32"))]
     if let Some((_, mut file)) = composition {
         roots
             .output()
@@ -1926,7 +2085,7 @@ fn run_inner(
             roots.published_aus(),
             output_path.display()
         );
-        return Ok(());
+        return Ok(RunProduct::Published);
     }
     if resolved_joc_profile
         .joc_reconstruction_layout()
@@ -1963,7 +2122,7 @@ fn run_inner(
             flat7x_d0_block2_overflow_receipts,
             candidate.production_allowed(),
         );
-        return Ok(());
+        return Ok(RunProduct::Published);
     }
 
     eprintln!("Finalizing and exposing output...");
@@ -1980,15 +2139,21 @@ fn run_inner(
             "DONE root does not match the durable final exposure receipt".to_owned(),
         ));
     }
-    let final_length = std::fs::metadata(&output_path)
-        .map_err(|error| {
-            EncodeRequestError::SourcePipeline(format!("final output metadata: {error}"))
-        })?
-        .len();
-    if final_length != exposure_receipt.product_length() {
-        return Err(EncodeRequestError::SourcePipeline(
-            "final output length differs from FinalExposureReceipt".to_owned(),
-        ));
+    // The file targets cross-check the terminal receipt against the exposed path. A target
+    // without a namespace has no second copy to stat: its receipt was minted from the assembled
+    // buffer, which is the product.
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        let final_length = std::fs::metadata(&output_path)
+            .map_err(|error| {
+                EncodeRequestError::SourcePipeline(format!("final output metadata: {error}"))
+            })?
+            .len();
+        if final_length != exposure_receipt.product_length() {
+            return Err(EncodeRequestError::SourcePipeline(
+                "final output length differs from FinalExposureReceipt".to_owned(),
+            ));
+        }
     }
     eprintln!(
         "programme complete: status=DONE output={} bytes={} sha256={} callbacks={}/{} sources={}/{} published_aus={} phase_generation={} model_dialnorm={:?} native_dialnorm_parity=UNBOUND render=NOT_RUN playback=NOT_RUN",
@@ -2003,7 +2168,13 @@ fn run_inner(
         roots.phase_generation(),
         model_dialnorm,
     );
-    Ok(())
+    // The file targets expose the product through their namespace; a target without one hands
+    // the assembled buffer back to the caller instead of inventing a path.
+    #[cfg(target_arch = "wasm32")]
+    let product = RunProduct::Bytes(staging.into_product_bytes());
+    #[cfg(not(target_arch = "wasm32"))]
+    let product = RunProduct::Published;
+    Ok(product)
 }
 
 struct SpatialFrameProducer<'a> {
@@ -2024,7 +2195,7 @@ impl SpatialFrameProducer<'_> {
         mut self,
         cancelled: &std::sync::atomic::AtomicBool,
         consume: impl FnOnce(
-            std::sync::mpsc::Receiver<SpatialFrameResult>,
+            &mut dyn FnMut(u64) -> SpatialFrameResult,
             u64,
         ) -> Result<T, EncodeRequestError>,
     ) -> Result<T, EncodeRequestError> {
@@ -2033,32 +2204,49 @@ impl SpatialFrameProducer<'_> {
             .value()
             .checked_add(4)
             .ok_or(EncodeRequestError::ClockMismatch)?;
+        // The browser isolate has no producer thread, so the consumer pulls each frame from this
+        // producer in order. Nothing is buffered ahead, so memory tracks one frame rather than the
+        // whole programme.
+        #[cfg(target_arch = "wasm32")]
+        {
+            let _ = cancelled;
+            let mut take = |index: u64| self.next(index);
+            return consume(&mut take, total);
+        }
         // A single lookahead slot keeps DSP memory bounded; only the consumer publishes and commits.
-        let (ready, frames) = std::sync::mpsc::sync_channel(1);
-        thread::scope(|scope| {
-            let worker = thread::Builder::new()
-                .name("jocforge-spatial-frames".into())
-                .stack_size(ENCODE_REQUEST_STACK_BYTES)
-                .spawn_scoped(scope, move || {
-                    for index in 0..total {
-                        if cancelled.load(std::sync::atomic::Ordering::Relaxed) {
-                            break;
+        #[cfg(not(target_arch = "wasm32"))]
+        {
+            let (ready, frames) = std::sync::mpsc::sync_channel(1);
+            thread::scope(|scope| {
+                let worker = thread::Builder::new()
+                    .name("jocforge-spatial-frames".into())
+                    .stack_size(ENCODE_REQUEST_STACK_BYTES)
+                    .spawn_scoped(scope, move || {
+                        for index in 0..total {
+                            if cancelled.load(std::sync::atomic::Ordering::Relaxed) {
+                                break;
+                            }
+                            let result = self.next(index);
+                            let failed = result.is_err();
+                            if ready.send(result).is_err() || failed {
+                                break;
+                            }
                         }
-                        let result = self.next(index);
-                        let failed = result.is_err();
-                        if ready.send(result).is_err() || failed {
-                            break;
-                        }
-                    }
-                })
-                .map_err(|_| EncodeRequestError::WorkerUnavailable)?;
-            // consume owns the receiver. All exits release a producer waiting on a full slot.
-            let result = consume(frames, total);
-            worker
-                .join()
-                .map_err(|_| EncodeRequestError::WorkerPanicked)?;
-            result
-        })
+                    })
+                    .map_err(|_| EncodeRequestError::WorkerUnavailable)?;
+                let mut take = |_index: u64| {
+                    frames
+                        .recv()
+                        .map_err(|_| EncodeRequestError::WorkerPanicked)
+                        .and_then(|result| result)
+                };
+                let result = consume(&mut take, total);
+                worker
+                    .join()
+                    .map_err(|_| EncodeRequestError::WorkerPanicked)?;
+                result
+            })
+        }
     }
 
     fn next(&mut self, index: u64) -> SpatialFrameResult {
@@ -2486,18 +2674,49 @@ struct CliRunIdentity {
     staging_owner: OutputStagingOwnerId,
 }
 
-fn fresh_run_identity() -> Result<CliRunIdentity, EncodeRequestError> {
-    let nonce = SystemTime::now()
+/// Distinguishes concurrent requests inside one process or isolate.
+///
+/// The native targets read the wall clock. A browser isolate has no clock, so it counts attempts
+/// instead; the nonce never reaches the bitstream, it only separates staging owners.
+#[cfg(not(target_arch = "wasm32"))]
+fn run_nonce() -> Result<u128, EncodeRequestError> {
+    SystemTime::now()
         .duration_since(UNIX_EPOCH)
-        .map_err(|_| EncodeRequestError::ProgrammeIdentity)?
-        .as_nanos();
+        .map(|elapsed| elapsed.as_nanos())
+        .map_err(|_| EncodeRequestError::ProgrammeIdentity)
+}
+
+#[cfg(target_arch = "wasm32")]
+fn run_nonce() -> Result<u128, EncodeRequestError> {
+    static NEXT_ATTEMPT: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(1);
+    Ok(u128::from(
+        NEXT_ATTEMPT.fetch_add(1, std::sync::atomic::Ordering::Relaxed),
+    ))
+}
+
+/// The process identity used only to keep attempt labels distinct.
+///
+/// A browser isolate has no process table, so it reports a fixed owner number; uniqueness there
+/// comes from the attempt counter above.
+#[cfg(not(target_arch = "wasm32"))]
+fn run_process_id() -> u32 {
+    std::process::id()
+}
+
+#[cfg(target_arch = "wasm32")]
+fn run_process_id() -> u32 {
+    0
+}
+
+fn fresh_run_identity() -> Result<CliRunIdentity, EncodeRequestError> {
+    let nonce = run_nonce()?;
     let attempt = u64::try_from(nonce).map_err(|_| EncodeRequestError::ProgrammeIdentity)?;
-    let unique_label = format!("jocforge-cli-{}-{nonce}", std::process::id());
+    let unique_label = format!("jocforge-cli-{}-{nonce}", run_process_id());
     let programme_id =
         ProgrammeId::new(&unique_label).map_err(|_| EncodeRequestError::ProgrammeIdentity)?;
     let staging_owner_id = OutputStagingOwnerId::new(&format!(
         "jocforge-output-owner-{}-{nonce}",
-        std::process::id()
+        run_process_id()
     ))
     .map_err(|_| EncodeRequestError::ProgrammeIdentity)?;
     Ok(CliRunIdentity {

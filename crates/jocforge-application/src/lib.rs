@@ -55,6 +55,8 @@ use sha2::{Digest, Sha256};
 use std::collections::BTreeMap;
 use std::sync::Arc;
 
+mod worker;
+
 pub mod codec_source_bridge;
 pub mod drc_source_bridge;
 pub mod flat7x_pair_integrity;
@@ -928,16 +930,29 @@ fn hex_lower(bytes: &[u8]) -> String {
     output
 }
 
-/// Validates selected owner providers and destination authority before source execution.
+/// Admits one production plan for a prepared input and returns it ready for execution.
 ///
-/// Provider values and the output capability stay private to the application. Source callbacks
-/// and AU publication still need their complete owner proposals before this call can write output.
+/// This is the product encode entry: it validates the embedded selected owner providers, the
+/// caller's destination authority and the selected profile, then hands back the admitted plan.
+/// Executing that plan is the pipeline's job — the encode stages need io adapters, which
+/// application must not reach — so this entry fails closed on admission and never invents a
+/// second, empty execution path.
 pub fn encode(
     prepared: &PreparedJobInput,
-    admitted_plan: &output_publication::AdmittedProductionPlan,
-) -> Result<(), EncodeError> {
-    if !admitted_plan.is_bound_to(prepared) {
+    resolved_profile: jocforge_domain::profile::ResolvedEncodingProfile,
+    attempt_id: jocforge_domain::transaction::AttemptId,
+    staging_owner_id: &output_publication::OutputStagingOwnerId,
+    final_destination: &str,
+) -> Result<output_publication::AdmittedProductionPlan, EncodeError> {
+    let plan = output_publication::admit_selected_f15_plan_for_profile(
+        prepared,
+        resolved_profile,
+        attempt_id,
+        staging_owner_id,
+        final_destination,
+    )?;
+    if !plan.is_bound_to(prepared) {
         return Err(EncodeError::F15AdmissionRejected);
     }
-    Err(EncodeError::SourcePipelineUnavailable)
+    Ok(plan)
 }

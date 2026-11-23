@@ -767,6 +767,13 @@ struct ValidatedF15ProviderAdmissions<
     f14_integrity: OwnerIssuedProviderAdmission<F14IntegrityRole, IntegrityValue>,
 }
 
+/// Reserved destination scheme for a target that publishes into the calling isolate.
+pub const MEMORY_DESTINATION_SCHEME: &str = "memory://";
+
+/// The parent every namespace-free destination reports, so staging and product names stay
+/// distinct without inventing a real directory.
+const MEMORY_DESTINATION_NAMESPACE: &str = "memory://";
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct NormalizedFinalDestinationIdentity(String);
 
@@ -1195,14 +1202,25 @@ pub(super) fn admit_selected_f15_plan_for_profile(
     let context = F15PlanParentContext::from_prepared_input_with_profile(input, resolved_profile)?;
     let admissions = load_selected_owner_admissions(&context)?;
     let final_path = std::path::Path::new(final_destination);
-    if !final_path.is_absolute() {
+    // A target without a file namespace names its product with the reserved `memory://` scheme.
+    // That marker is the only accepted non-absolute destination: every provider and identity
+    // check below still runs, and the file targets keep the strict absolute-path requirement.
+    let namespace_free = final_destination
+        .strip_prefix(MEMORY_DESTINATION_SCHEME)
+        .filter(|product| !product.is_empty() && !product.contains('/') && !product.contains('\\'))
+        .is_some();
+    if !namespace_free && !final_path.is_absolute() {
         return Err(F15PlanAdmissionError::InvalidFinalDestinationIdentity);
     }
-    let parent = final_path
-        .parent()
-        .and_then(std::path::Path::to_str)
-        .filter(|value| !value.is_empty())
-        .ok_or(F15PlanAdmissionError::InvalidFinalDestinationIdentity)?;
+    let parent = if namespace_free {
+        MEMORY_DESTINATION_NAMESPACE
+    } else {
+        final_path
+            .parent()
+            .and_then(std::path::Path::to_str)
+            .filter(|value| !value.is_empty())
+            .ok_or(F15PlanAdmissionError::InvalidFinalDestinationIdentity)?
+    };
     let projection = SelectedOutputProviderProjection::project_selected_f15_output_provider(
         context.resolved_profile,
     )

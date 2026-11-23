@@ -23,7 +23,21 @@ use jocforge_application::{
         stage_codec_owner_after_source_frame, stage_codec_owner_after_source_frame_with_d0_history,
     },
 };
-use jocforge_io::atomic_output::{AtomicOutputStaging, Flat7xAtomicAppendFailure, OutputIoError};
+#[cfg(not(target_arch = "wasm32"))]
+use jocforge_io::atomic_output::AtomicOutputStaging;
+#[cfg(target_arch = "wasm32")]
+use jocforge_io::atomic_output::MemoryOutputStaging;
+use jocforge_io::atomic_output::{Flat7xAtomicAppendFailure, OutputIoError};
+
+/// Attempt-scoped output assembly for this target.
+///
+/// Natively the product is staged in an attempt file and exposed by an atomic rename. The browser
+/// target has no directory to stage into, so the same protocol runs against the isolate's buffer
+/// and the terminal hand-off returns those bytes to the caller.
+#[cfg(not(target_arch = "wasm32"))]
+type OutputStagingCore = AtomicOutputStaging;
+#[cfg(target_arch = "wasm32")]
+type OutputStagingCore = MemoryOutputStaging;
 
 #[cfg(test)]
 mod tests;
@@ -34,7 +48,7 @@ mod tests;
 /// configuration; it is not encoded in a filename or F15 state field.
 pub struct ProgrammeOutputStaging {
     directory: std::path::PathBuf,
-    inner: Option<AtomicOutputStaging>,
+    inner: Option<OutputStagingCore>,
     programme_id: ProgrammeId,
     attempt_id: AttemptId,
     staging_owner_id: OutputStagingOwnerId,
@@ -127,6 +141,17 @@ impl ProgrammeOutputStaging {
     pub fn from_admitted_plan(
         plan: &jocforge_application::output_publication::AdmittedProductionPlan,
     ) -> Result<Self, OutputPublicationError> {
+        // A namespace-free destination is not a directory-shaped identity: the browser target
+        // assembles the product in memory, so only the typed binding is used here.
+        if plan
+            .final_destination()
+            .starts_with(jocforge_application::output_publication::MEMORY_DESTINATION_SCHEME)
+        {
+            return Ok(Self::new(
+                std::path::Path::new("memory:/"),
+                plan.output_binding(),
+            ));
+        }
         let final_path = std::path::Path::new(plan.final_destination());
         let parent = final_path
             .parent()
@@ -176,13 +201,21 @@ impl ProgrammeOutputStaging {
     fn ensure_open(
         &mut self,
         binding: &ProgrammeOutputBinding,
-    ) -> Result<&mut AtomicOutputStaging, OutputPublicationError> {
+    ) -> Result<&mut OutputStagingCore, OutputPublicationError> {
         self.validate_binding(binding)
             .map_err(OutputPublicationError::Binding)?;
         if self.inner.is_none() {
             self.inner = Some(
-                AtomicOutputStaging::create(&self.directory, &self.configuration)
-                    .map_err(OutputPublicationError::Io)?,
+                #[cfg(not(target_arch = "wasm32"))]
+                {
+                    AtomicOutputStaging::create(&self.directory, &self.configuration)
+                        .map_err(OutputPublicationError::Io)?
+                },
+                #[cfg(target_arch = "wasm32")]
+                {
+                    MemoryOutputStaging::create(&self.configuration)
+                        .map_err(OutputPublicationError::Io)?
+                },
             );
         }
         Ok(self.inner.as_mut().expect("staging was opened"))
@@ -199,7 +232,26 @@ impl ProgrammeOutputStaging {
     pub fn is_abandoned(&self) -> bool {
         self.inner
             .as_ref()
-            .is_some_and(AtomicOutputStaging::is_abandoned)
+            .is_some_and(OutputStagingCore::is_abandoned)
+    }
+
+    /// Bytes assembled so far on a target without a namespace.
+    #[cfg(target_arch = "wasm32")]
+    pub fn assembled_len(&self) -> u64 {
+        self.inner.as_ref().map_or(0, |core| {
+            u64::try_from(core.product_bytes().len()).unwrap_or(u64::MAX)
+        })
+    }
+
+    /// Consumes the staging area and returns the assembled product.
+    ///
+    /// Only targets without a file namespace use this: the buffer is the publication target, so
+    /// the caller receives exactly the bytes the terminal receipt was minted over.
+    #[cfg(target_arch = "wasm32")]
+    pub fn into_product_bytes(self) -> Vec<u8> {
+        self.inner
+            .map(MemoryOutputStaging::into_product_bytes)
+            .unwrap_or_default()
     }
 
     /// Marks the whole attempt unusable after a fatal parent-stage failure.

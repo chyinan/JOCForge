@@ -275,10 +275,18 @@ fn selected_main_spatial_callback_provider_inputs()
     let supplements = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
         .join("../../outputs/IMPLEMENTER_SUPPLEMENTS");
     jocforge::selected_spatial_callback_providers::load_selected_main_spatial_callback_providers(
-        &supplements.join("ADM-F03W-APPROVED-PROVIDER-BUNDLE-V1"),
-        &supplements.join("F01B-F03W-COLD-STATE-ASSETS-V1"),
-        &supplements.join("METER-APPROVED-PARAMETER-ASSETS-V1"),
-        &supplements.join("F04-RECEIVER-APPROVED-PARAMETERS-V1"),
+        jocforge_io::provider::ProviderTree::directory(
+            &supplements.join("ADM-F03W-APPROVED-PROVIDER-BUNDLE-V1"),
+        ),
+        jocforge_io::provider::ProviderTree::directory(
+            &supplements.join("F01B-F03W-COLD-STATE-ASSETS-V1"),
+        ),
+        jocforge_io::provider::ProviderTree::directory(
+            &supplements.join("METER-APPROVED-PARAMETER-ASSETS-V1"),
+        ),
+        jocforge_io::provider::ProviderTree::directory(
+            &supplements.join("F04-RECEIVER-APPROVED-PARAMETERS-V1"),
+        ),
         jocforge_application::independent_meter_callback::generate_selected_spatial_math_geometry()
             .expect("selected P11/P15 mathematical geometry is generated"),
     )
@@ -785,9 +793,9 @@ fn authorized_adm_bwf_stages_complete_independent_meter_prepass_receipt() {
     let current_features_root = supplements.join("METER-APPROVED-PARAMETER-ASSETS-V1");
     let callback_providers =
         jocforge::selected_spatial_callback_providers::load_selected_independent_meter_callback_providers(
-            &spatial_provider_root,
-            &cold_state_root,
-            &current_features_root,
+            jocforge_io::provider::ProviderTree::directory(&spatial_provider_root),
+            jocforge_io::provider::ProviderTree::directory(&cold_state_root),
+            jocforge_io::provider::ProviderTree::directory(&current_features_root),
             jocforge_application::independent_meter_callback::
                 generate_selected_spatial_math_geometry()
                 .unwrap(),
@@ -815,7 +823,7 @@ fn authorized_adm_bwf_stages_complete_independent_meter_prepass_receipt() {
             .is_some()
     );
     let metadata_provider_bundle = jocforge_io::provider::load_metadata_owner_provider_bundle(
-        supplements.join("METADATA-OWNER-ROOT-V1"),
+        jocforge_io::provider::ProviderTree::directory(&supplements.join("METADATA-OWNER-ROOT-V1")),
     )
     .unwrap();
     let metadata_owner = prepare_metadata_owner_from_measurement(

@@ -175,7 +175,7 @@ pub(crate) fn stage_source_frame<'pcm>(
     flat7x_carriers: Option<&'pcm Flat7xCarrierFrame>,
     composition: Option<&mut (
         jocforge_application::source_frame_bridge::SubstreamPlan,
-        tempfile::NamedTempFile,
+        crate::encode_request::ComposedOutput,
     )>,
     frame_bytes: usize,
     surround_ex: jocforge_application::flat7x_pair_source::SurroundExMode,

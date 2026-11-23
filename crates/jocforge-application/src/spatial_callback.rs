@@ -1144,16 +1144,19 @@ pub fn stage_main_spatial_cached_callback_on_current_thread(
 fn on_spatial_worker<T: Send>(
     work: impl FnOnce() -> Result<T, MainSpatialCallbackError> + Send,
 ) -> Result<T, MainSpatialCallbackError> {
-    std::thread::scope(|scope| {
-        let worker = std::thread::Builder::new()
-            .name("jocforge-main-spatial-callback".to_owned())
-            .stack_size(MAIN_SPATIAL_CALLBACK_STACK_BYTES)
-            .spawn_scoped(scope, work)
-            .map_err(|_| MainSpatialCallbackError::WorkerUnavailable)?;
-        worker
-            .join()
-            .map_err(|_| MainSpatialCallbackError::WorkerPanicked)?
-    })
+    match crate::worker::run_on_worker(
+        "jocforge-main-spatial-callback",
+        MAIN_SPATIAL_CALLBACK_STACK_BYTES,
+        work,
+    ) {
+        Ok(result) => result,
+        Err(crate::worker::WorkerRunError::Unavailable) => {
+            Err(MainSpatialCallbackError::WorkerUnavailable)
+        }
+        Err(crate::worker::WorkerRunError::Panicked) => {
+            Err(MainSpatialCallbackError::WorkerPanicked)
+        }
+    }
 }
 
 fn stage_main_spatial_callback_inner(

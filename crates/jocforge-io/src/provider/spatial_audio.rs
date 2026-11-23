@@ -1,6 +1,7 @@
 // pattern: Imperative Shell
 //! Loads the caller-selected F04 provider package and validates its approved bytes.
 
+use super::tree::{ProviderReadError, ProviderTree};
 pub use jocforge_domain::spatial::production_callback::selected_audio_provider_bundle::SelectedSpatialAudioProviderBundle;
 use jocforge_domain::{
     frontend::{PackageManifestEvidence, ProviderFileEvidence},
@@ -11,11 +12,7 @@ use jocforge_domain::{
         validate_f04_parameter_package_manifest,
     },
 };
-use std::{
-    fmt, fs, io,
-    path::{Path, PathBuf},
-    sync::Arc,
-};
+use std::{fmt, io, sync::Arc};
 
 const PACKAGE_MANIFEST: &str = "MANIFEST.json";
 const COMPONENT_PARAMETERS: &str = "parameters/component-parameter-mathematical-v1.json";
@@ -79,37 +76,29 @@ impl std::error::Error for SelectedSpatialAudioProviderLoadError {
 /// The validated domain bundle keeps the QMF provider's internal-only distribution
 /// boundary and grants no DSP, state, or commit authority.
 pub fn load_selected_spatial_audio_provider_bundle(
-    package_root: impl AsRef<Path>,
+    tree: ProviderTree<'_>,
 ) -> Result<SelectedSpatialAudioProviderBundle, SelectedSpatialAudioProviderLoadError> {
-    load_selected_spatial_audio_provider_bundle_for_profile(
-        package_root,
-        EncodingProfile::selected(),
-    )
+    load_selected_spatial_audio_provider_bundle_for_profile(tree, EncodingProfile::selected())
 }
 
 pub fn load_selected_spatial_audio_provider_bundle_for_profile(
-    package_root: impl AsRef<Path>,
+    tree: ProviderTree<'_>,
     profile: EncodingProfile,
 ) -> Result<SelectedSpatialAudioProviderBundle, SelectedSpatialAudioProviderLoadError> {
-    let package_root = package_root.as_ref();
-    let canonical_root = package_root
-        .canonicalize()
-        .map_err(SelectedSpatialAudioProviderLoadError::PackageRoot)?;
-
-    let manifest_path = package_file(&canonical_root, PACKAGE_MANIFEST)?;
-    let manifest_bytes = read_package_file(&manifest_path, PACKAGE_MANIFEST)?;
-    let package_manifest =
-        PackageManifestEvidence::new(manifest_bytes, Some(PACKAGE_MANIFEST.to_owned()));
+    let package_manifest = PackageManifestEvidence::new(
+        read_member(tree, PACKAGE_MANIFEST)?,
+        Some(tree.display(PACKAGE_MANIFEST)),
+    );
 
     // Fail the exact package identity before reading any individual provider bytes.
     validate_f04_parameter_package_manifest(&package_manifest)
         .map_err(SelectedSpatialAudioProviderLoadError::Manifest)?;
 
-    let component_parameters = read_provider_evidence(&canonical_root, COMPONENT_PARAMETERS)?;
-    let window_q15 = read_provider_evidence(&canonical_root, WINDOW_Q15)?;
-    let qmf_receiver_functional = read_provider_evidence(&canonical_root, QMF_RECEIVER_FUNCTIONAL)?;
-    let qmf_mathematical_fft = read_provider_evidence(&canonical_root, QMF_MATHEMATICAL_FFT)?;
-    let descriptor_mathematical = read_provider_evidence(&canonical_root, DESCRIPTOR_MATHEMATICAL)?;
+    let component_parameters = read_provider_evidence(tree, COMPONENT_PARAMETERS)?;
+    let window_q15 = read_provider_evidence(tree, WINDOW_Q15)?;
+    let qmf_receiver_functional = read_provider_evidence(tree, QMF_RECEIVER_FUNCTIONAL)?;
+    let qmf_mathematical_fft = read_provider_evidence(tree, QMF_MATHEMATICAL_FFT)?;
+    let descriptor_mathematical = read_provider_evidence(tree, DESCRIPTOR_MATHEMATICAL)?;
     let evidence = SelectedSpatialAudioProviderEvidence::new(
         &package_manifest,
         &component_parameters,
@@ -124,45 +113,27 @@ pub fn load_selected_spatial_audio_provider_bundle_for_profile(
 }
 
 fn read_provider_evidence(
-    package_root: &Path,
+    tree: ProviderTree<'_>,
     relative_path: &'static str,
 ) -> Result<ProviderFileEvidence, SelectedSpatialAudioProviderLoadError> {
-    let path = package_file(package_root, relative_path)?;
-    let bytes = read_package_file(&path, relative_path)?;
     Ok(ProviderFileEvidence::new(
-        bytes,
-        Some(path.display().to_string()),
+        read_member(tree, relative_path)?,
+        Some(tree.display(relative_path)),
     ))
 }
 
-fn package_file(
-    package_root: &Path,
-    relative_path: &'static str,
-) -> Result<PathBuf, SelectedSpatialAudioProviderLoadError> {
-    let candidate = package_root.join(relative_path);
-    let resolved = candidate.canonicalize().map_err(|source| {
-        SelectedSpatialAudioProviderLoadError::FileRead {
-            relative_path,
-            source,
-        }
-    })?;
-    if !resolved.starts_with(package_root) {
-        return Err(
-            SelectedSpatialAudioProviderLoadError::PackagePathEscapesRoot { relative_path },
-        );
-    }
-    Ok(resolved)
-}
-
-fn read_package_file(
-    path: &Path,
+fn read_member(
+    tree: ProviderTree<'_>,
     relative_path: &'static str,
 ) -> Result<Arc<[u8]>, SelectedSpatialAudioProviderLoadError> {
-    fs::read(path).map(Arc::<[u8]>::from).map_err(|source| {
-        SelectedSpatialAudioProviderLoadError::FileRead {
-            relative_path,
-            source,
+    tree.read(relative_path).map_err(|error| match error {
+        ProviderReadError::EscapesRoot => {
+            SelectedSpatialAudioProviderLoadError::PackagePathEscapesRoot { relative_path }
         }
+        error => SelectedSpatialAudioProviderLoadError::FileRead {
+            relative_path,
+            source: error.into_io_error(relative_path),
+        },
     })
 }
 
@@ -172,6 +143,7 @@ mod tests {
         SelectedSpatialAudioProviderLoadError, load_selected_spatial_audio_provider_bundle,
         load_selected_spatial_audio_provider_bundle_for_profile,
     };
+    use crate::provider::tree::ProviderTree;
     use jocforge_domain::profile::{CodecRateProfile, EncodingProfile};
     use std::{
         fs,
@@ -251,8 +223,9 @@ mod tests {
         let package = TemporaryProviderPackage::new();
         package.copy_approved_fixtures();
 
-        let bundle = load_selected_spatial_audio_provider_bundle(package.root())
-            .expect("approved selected provider package validates");
+        let bundle =
+            load_selected_spatial_audio_provider_bundle(ProviderTree::directory(package.root()))
+                .expect("approved selected provider package validates");
 
         assert_eq!(
             bundle.manifest_sha256().to_hex(),
@@ -276,7 +249,7 @@ mod tests {
 
         for codec_rate in rates {
             let bundle = load_selected_spatial_audio_provider_bundle_for_profile(
-                package.root(),
+                ProviderTree::directory(package.root()),
                 EncodingProfile::selected_with_codec_rate(codec_rate),
             )
             .expect("F04 spatial providers are independent of carrier frame extent");
@@ -294,7 +267,7 @@ mod tests {
             .expect("invalid manifest fixture is written");
 
         assert!(matches!(
-            load_selected_spatial_audio_provider_bundle(package.root()),
+            load_selected_spatial_audio_provider_bundle(ProviderTree::directory(package.root())),
             Err(SelectedSpatialAudioProviderLoadError::Manifest(_))
         ));
     }
@@ -310,7 +283,7 @@ mod tests {
         .expect("approved manifest fixture is copied");
 
         assert!(matches!(
-            load_selected_spatial_audio_provider_bundle(package.root()),
+            load_selected_spatial_audio_provider_bundle(ProviderTree::directory(package.root())),
             Err(SelectedSpatialAudioProviderLoadError::FileRead {
                 relative_path: "parameters/component-parameter-mathematical-v1.json",
                 ..

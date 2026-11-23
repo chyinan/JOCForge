@@ -87,23 +87,56 @@ fn error(label: &str, detail: impl fmt::Debug) -> SelectedMeterPrepassError {
 pub(crate) const PROVIDER_ASSETS: &[(&str, &[u8])] =
     include!(concat!(env!("OUT_DIR"), "/provider_assets.rs"));
 
-pub(crate) fn unpack_provider_supplements() -> Result<tempfile::TempDir, SelectedMeterPrepassError>
-{
-    let unpack = || -> std::io::Result<tempfile::TempDir> {
-        let directory = tempfile::Builder::new()
-            .prefix("jocforge-providers-")
-            .tempdir()?;
-        for (name, bytes) in PROVIDER_ASSETS {
-            let file = directory.path().join(name);
-            std::fs::create_dir_all(
-                file.parent()
-                    .expect("embedded asset has a parent directory"),
-            )?;
-            std::fs::write(file, bytes)?;
+pub(crate) struct UnpackedProviderSupplements {
+    #[cfg(not(target_arch = "wasm32"))]
+    directory: tempfile::TempDir,
+}
+
+impl UnpackedProviderSupplements {
+    /// The read-only provider package this attempt encodes against.
+    ///
+    /// Natively the approved bundles were unpacked into an attempt-scoped directory. The browser
+    /// target reads the same members from the bytes embedded in this binary, so the loaders see
+    /// one `ProviderTree` shape on both targets.
+    pub(crate) fn tree(&self) -> jocforge_io::provider::ProviderTree<'_> {
+        #[cfg(not(target_arch = "wasm32"))]
+        {
+            jocforge_io::provider::ProviderTree::directory(self.directory.path())
         }
-        Ok(directory)
-    };
-    unpack().map_err(|source| error("unpacking embedded encoder parameters", source))
+        #[cfg(target_arch = "wasm32")]
+        {
+            let _ = self;
+            jocforge_io::provider::ProviderTree::embedded(PROVIDER_ASSETS)
+        }
+    }
+}
+
+pub(crate) fn unpack_provider_supplements()
+-> Result<UnpackedProviderSupplements, SelectedMeterPrepassError> {
+    #[cfg(target_arch = "wasm32")]
+    {
+        return Ok(UnpackedProviderSupplements {});
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        let unpack = || -> std::io::Result<tempfile::TempDir> {
+            let directory = tempfile::Builder::new()
+                .prefix("jocforge-providers-")
+                .tempdir()?;
+            for (name, bytes) in PROVIDER_ASSETS {
+                let file = directory.path().join(name);
+                std::fs::create_dir_all(
+                    file.parent()
+                        .expect("embedded asset has a parent directory"),
+                )?;
+                std::fs::write(file, bytes)?;
+            }
+            Ok(directory)
+        };
+        unpack()
+            .map(|directory| UnpackedProviderSupplements { directory })
+            .map_err(|source| error("unpacking embedded encoder parameters", source))
+    }
 }
 
 /// Runs the approved full-file Meter source schedule over the parsed ADM BWF bytes.
@@ -134,7 +167,7 @@ where
         prepared,
         &parsed,
         attempt,
-        assets.path(),
+        assets.tree(),
         progress,
         &std::sync::atomic::AtomicBool::new(false),
     )
@@ -144,17 +177,17 @@ pub(crate) fn run_meter_with_providers<F>(
     prepared: &PreparedJobInput,
     parsed_source: &ParsedRiffPcm24<'_>,
     attempt: AttemptId,
-    supplements: &std::path::Path,
+    supplements: jocforge_io::provider::ProviderTree<'_>,
     progress: F,
     cancelled: &std::sync::atomic::AtomicBool,
 ) -> Result<SelectedMeterPrepass, SelectedMeterPrepassError>
 where
     F: FnMut(u64, u64) + Send,
 {
-    let spatial_provider_root = supplements.join("ADM-F03W-APPROVED-PROVIDER-BUNDLE-V1");
-    let cold_state_root = supplements.join("F01B-F03W-COLD-STATE-ASSETS-V1");
-    let direct_meter_root = supplements.join("METER-APPROVED-PARAMETER-ASSETS-V1");
-    let meter_roster_root = supplements.join("METER-PROVIDER-SET-IDENTITY-APPLICATION-V1");
+    let spatial_provider_root = supplements.child("ADM-F03W-APPROVED-PROVIDER-BUNDLE-V1");
+    let cold_state_root = supplements.child("F01B-F03W-COLD-STATE-ASSETS-V1");
+    let direct_meter_root = supplements.child("METER-APPROVED-PARAMETER-ASSETS-V1");
+    let meter_roster_root = supplements.child("METER-PROVIDER-SET-IDENTITY-APPLICATION-V1");
 
     let geometry = generate_selected_spatial_math_geometry()
         .map_err(|failure| error("selected spatial geometry", failure))?;
@@ -164,16 +197,16 @@ where
         selected_profile.carriage(),
     );
     let providers = load_selected_independent_meter_callback_providers_for_profile(
-        &spatial_provider_root,
-        &cold_state_root,
-        &direct_meter_root,
+        spatial_provider_root,
+        cold_state_root,
+        direct_meter_root,
         geometry,
         profile,
     )
     .map_err(|failure: SelectedIndependentMeterProviderLoadError| {
         error("selected Meter callback providers", failure)
     })?;
-    let direct = load_meter_direct_provider_inventory(&direct_meter_root)
+    let direct = load_meter_direct_provider_inventory(direct_meter_root)
         .map_err(|failure| error("selected direct Meter providers", failure))?;
     let selected_profile_id =
         selected_meter_profile_id(selected_profile.codec_rate(), selected_profile.carriage())
@@ -181,7 +214,7 @@ where
                 error("selected Meter profile", failure)
             })?;
     let provider_identity = load_selected_meter_provider_identity(
-        &meter_roster_root,
+        meter_roster_root,
         &providers,
         &direct,
         &selected_profile_id,

@@ -28,9 +28,9 @@ fn combines_approved_math_and_cold_values_without_claiming_runtime_layout_or_cal
         .expect("selected P11/P15 mathematical geometry is available");
 
     let inputs = load_selected_independent_meter_callback_providers(
-        &approved_bundle(SPATIAL_PROVIDER_BUNDLE),
-        &approved_bundle(COLD_STATE_BUNDLE),
-        &approved_bundle(CURRENT_FEATURES_BUNDLE),
+        jocforge_io::provider::ProviderTree::directory(&approved_bundle(SPATIAL_PROVIDER_BUNDLE)),
+        jocforge_io::provider::ProviderTree::directory(&approved_bundle(COLD_STATE_BUNDLE)),
+        jocforge_io::provider::ProviderTree::directory(&approved_bundle(CURRENT_FEATURES_BUNDLE)),
         geometry,
     )
     .expect("approved values bind to the existing callback provider shape");
@@ -76,9 +76,10 @@ fn combines_approved_math_and_cold_values_without_claiming_runtime_layout_or_cal
     assert_eq!(providers.p15_geometry.layout(), 0x159b);
     assert_eq!(providers.p15_geometry.points().len(), 15);
 
-    let meter_direct =
-        load_meter_direct_provider_inventory(approved_bundle(CURRENT_FEATURES_BUNDLE))
-            .expect("the directly inventoried Meter assets load and pass owner validators");
+    let meter_direct = load_meter_direct_provider_inventory(
+        jocforge_io::provider::ProviderTree::directory(&approved_bundle(CURRENT_FEATURES_BUNDLE)),
+    )
+    .expect("the directly inventoried Meter assets load and pass owner validators");
     let profile_id = jocforge_application::meter_source_admission::selected_meter_profile_identity(
         jocforge_application::meter_source_bridge::EmdfCarriageProfile::DeployedCompat,
         jocforge_domain::profile::CodecRateProfile::Kbps1024,
@@ -86,7 +87,9 @@ fn combines_approved_math_and_cold_values_without_claiming_runtime_layout_or_cal
     .unwrap();
     let meter_identity =
         jocforge::selected_meter_provider_identity::load_selected_meter_provider_identity(
-            &approved_bundle("METER-PROVIDER-SET-IDENTITY-APPLICATION-V1"),
+            jocforge_io::provider::ProviderTree::directory(&approved_bundle(
+                "METER-PROVIDER-SET-IDENTITY-APPLICATION-V1",
+            )),
             &inputs,
             &meter_direct,
             &profile_id,
@@ -169,10 +172,10 @@ fn main_callback_composition_loads_the_hash_bound_f04_receiver_bundle() {
     let geometry = generate_selected_spatial_math_geometry()
         .expect("selected P11/P15 mathematical geometry is available");
     let providers = load_selected_main_spatial_callback_providers(
-        &approved_bundle(SPATIAL_PROVIDER_BUNDLE),
-        &approved_bundle(COLD_STATE_BUNDLE),
-        &approved_bundle(CURRENT_FEATURES_BUNDLE),
-        &approved_bundle(F04_RECEIVER_BUNDLE),
+        jocforge_io::provider::ProviderTree::directory(&approved_bundle(SPATIAL_PROVIDER_BUNDLE)),
+        jocforge_io::provider::ProviderTree::directory(&approved_bundle(COLD_STATE_BUNDLE)),
+        jocforge_io::provider::ProviderTree::directory(&approved_bundle(CURRENT_FEATURES_BUNDLE)),
+        jocforge_io::provider::ProviderTree::directory(&approved_bundle(F04_RECEIVER_BUNDLE)),
         geometry,
     )
     .expect("selected callback assets and the Wash-approved F04 bundle validate");

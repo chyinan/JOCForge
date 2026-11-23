@@ -1,12 +1,9 @@
 // pattern: Imperative Shell
 //! Loads the hash-bound selected Meter provider member roster for its parent receipt.
 
-use std::{
-    error::Error,
-    fmt, fs,
-    path::{Component, Path},
-};
+use std::{error::Error, fmt, sync::Arc};
 
+use super::tree::ProviderTree;
 use jocforge_domain::meter::provider_set_identity::{
     ExpectedMeterProviderMember, MeterProviderSetIdentityError, SelectedMeterProviderRoster,
 };
@@ -18,6 +15,12 @@ const PACKAGE_MANIFEST_SHA256: &str =
     "cf402d604138bed23a3328fc29ce3b89ddcfdc5fe5d270431d40f806627f04a7";
 const SOURCE_CLOSURE_MANIFEST_SHA256: &str =
     "67852ad4cc89c757f97bd9102b65415e9187b8ad20bd7dcbe38691721f1251f0";
+/// The three member names declared by the pinned package manifest.
+const PACKAGE_MEMBERS: [&str; 3] = [
+    "EXPECTED-MEMBER-ROSTER.json",
+    "SOURCE-BINDING.json",
+    "WASHED-SUMMARY.md",
+];
 
 #[derive(Debug)]
 pub enum MeterProviderRosterLoadError {
@@ -89,10 +92,9 @@ impl Error for MeterProviderRosterLoadError {
 /// Loads the exact Wash roster. This is expected membership only; it does not create any member
 /// validation receipt or claim that a provider set is complete at runtime.
 pub fn load_selected_meter_provider_roster(
-    package_root: impl AsRef<Path>,
+    tree: ProviderTree<'_>,
 ) -> Result<SelectedMeterProviderRoster, MeterProviderRosterLoadError> {
-    let root = fs::canonicalize(package_root).map_err(MeterProviderRosterLoadError::PackageRoot)?;
-    let manifest_bytes = read_member(&root, "MANIFEST.json")?;
+    let manifest_bytes = read_member(tree, "MANIFEST.json")?;
     let expected_manifest_sha256 = decode_sha256(PACKAGE_MANIFEST_SHA256)
         .ok_or(MeterProviderRosterLoadError::PackageManifestIdentity)?;
     let expected_source_closure_sha256 = decode_sha256(SOURCE_CLOSURE_MANIFEST_SHA256)
@@ -108,7 +110,7 @@ pub fn load_selected_meter_provider_roster(
         return Err(MeterProviderRosterLoadError::PackageManifestShape);
     }
 
-    let sidecar = read_member(&root, "MANIFEST.sha256")?;
+    let sidecar = read_member(tree, "MANIFEST.sha256")?;
     let sidecar = std::str::from_utf8(&sidecar)
         .map_err(|_| MeterProviderRosterLoadError::PackageManifestSidecar)?
         .split_whitespace()
@@ -131,7 +133,9 @@ pub fn load_selected_meter_provider_roster(
         let expected = file["sha256"]
             .as_str()
             .ok_or(MeterProviderRosterLoadError::PackageManifestShape)?;
-        let payload = read_member(&root, path)?;
+        let relative =
+            package_member(path).ok_or(MeterProviderRosterLoadError::PackageManifestShape)?;
+        let payload = read_member(tree, relative)?;
         if payload.len() as u64 != bytes || sha256_hex(&payload) != expected {
             return Err(MeterProviderRosterLoadError::PayloadIdentity(
                 path.to_owned(),
@@ -139,7 +143,7 @@ pub fn load_selected_meter_provider_roster(
         }
     }
 
-    let roster_bytes = read_member(&root, "EXPECTED-MEMBER-ROSTER.json")?;
+    let roster_bytes = read_member(tree, "EXPECTED-MEMBER-ROSTER.json")?;
     let roster: Value = serde_json::from_slice(&roster_bytes)
         .map_err(|_| MeterProviderRosterLoadError::RosterShape)?;
     if roster["schema"] != "expected-selected-meter-provider-roster.v1"
@@ -186,40 +190,23 @@ pub fn load_selected_meter_provider_roster(
     .map_err(MeterProviderRosterLoadError::Domain)
 }
 
-fn read_member(root: &Path, relative: &str) -> Result<Vec<u8>, MeterProviderRosterLoadError> {
-    let relative_path = Path::new(relative);
-    if relative_path.is_absolute()
-        || relative_path
-            .components()
-            .any(|component| !matches!(component, Component::Normal(_)))
-    {
-        return Err(MeterProviderRosterLoadError::FileRead {
+fn read_member(
+    tree: ProviderTree<'_>,
+    relative: &'static str,
+) -> Result<Arc<[u8]>, MeterProviderRosterLoadError> {
+    tree.read(relative)
+        .map_err(|error| MeterProviderRosterLoadError::FileRead {
             path: relative.to_owned(),
-            source: std::io::Error::new(
-                std::io::ErrorKind::InvalidInput,
-                "invalid package member path",
-            ),
-        });
-    }
-    let path = root.join(relative_path);
-    let canonical =
-        fs::canonicalize(&path).map_err(|source| MeterProviderRosterLoadError::FileRead {
-            path: relative.to_owned(),
-            source,
-        })?;
-    if !canonical.starts_with(root) {
-        return Err(MeterProviderRosterLoadError::FileRead {
-            path: relative.to_owned(),
-            source: std::io::Error::new(
-                std::io::ErrorKind::PermissionDenied,
-                "package member escaped root",
-            ),
-        });
-    }
-    fs::read(canonical).map_err(|source| MeterProviderRosterLoadError::FileRead {
-        path: relative.to_owned(),
-        source,
-    })
+            source: error.into_io_error(relative),
+        })
+}
+
+/// Maps one pinned manifest member path to the static name a provider tree can address.
+fn package_member(path: &str) -> Option<&'static str> {
+    PACKAGE_MEMBERS
+        .iter()
+        .copied()
+        .find(|member| *member == path)
 }
 
 fn sha256(bytes: &[u8]) -> [u8; 32] {
@@ -260,6 +247,7 @@ fn decode_nibble(value: u8) -> Option<u8> {
 #[cfg(test)]
 mod tests {
     use super::load_selected_meter_provider_roster;
+    use crate::provider::tree::ProviderTree;
     use std::path::PathBuf;
 
     #[test]
@@ -267,7 +255,7 @@ mod tests {
         let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join(
             "../../outputs/IMPLEMENTER_SUPPLEMENTS/METER-PROVIDER-SET-IDENTITY-APPLICATION-V1",
         );
-        let roster = load_selected_meter_provider_roster(root)
+        let roster = load_selected_meter_provider_roster(ProviderTree::directory(&root))
             .expect("the approved selected-provider roster is hash-bound and well-shaped");
         assert_eq!(roster.members().len(), 19);
         assert_eq!(roster.members()[0].member_id(), "D11-FFTS");

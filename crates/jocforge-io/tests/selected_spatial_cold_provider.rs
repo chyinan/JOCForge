@@ -1,6 +1,6 @@
 use jocforge_domain::{profile::EncodingProfile, spatial::F04ParameterProviderError};
 use jocforge_io::provider::{
-    SelectedSpatialColdProviderLoadError, SelectedSpatialColdProviderRoots,
+    ProviderTree, SelectedSpatialColdProviderLoadError, SelectedSpatialColdProviderRoots,
     load_selected_spatial_cold_provider_candidate,
 };
 use std::{
@@ -37,7 +37,10 @@ fn load_from(
     SelectedSpatialColdProviderLoadError,
 > {
     load_selected_spatial_cold_provider_candidate(
-        SelectedSpatialColdProviderRoots::new(f03w, cold),
+        SelectedSpatialColdProviderRoots::new(
+            ProviderTree::directory(f03w),
+            ProviderTree::directory(cold),
+        ),
         EncodingProfile::selected(),
     )
 }

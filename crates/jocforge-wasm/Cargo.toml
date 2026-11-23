@@ -1,0 +1,19 @@
+[package]
+name = "jocforge-wasm"
+version.workspace = true
+description = "Thin browser-facing WebAssembly bridge for JOCForge encode"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+jocforge-pipeline = { path = "../jocforge-pipeline", default-features = false }
+jocforge-application = { path = "../jocforge-application", default-features = false }
+jocforge-domain = { path = "../jocforge-domain", default-features = false }
+jocforge-io = { path = "../jocforge-io" }
+
+[lints]
+workspace = true

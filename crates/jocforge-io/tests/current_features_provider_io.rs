@@ -1,5 +1,5 @@
 // pattern: Imperative Shell
-use jocforge_io::provider::load_selected_current_features_math_providers;
+use jocforge_io::provider::{ProviderTree, load_selected_current_features_math_providers};
 use std::path::PathBuf;
 
 fn approved_asset_subset_root() -> PathBuf {
@@ -9,8 +9,10 @@ fn approved_asset_subset_root() -> PathBuf {
 
 #[test]
 fn loads_only_the_exact_approved_current_features_math_pair() {
-    let providers = load_selected_current_features_math_providers(approved_asset_subset_root())
-        .expect("approved CurrentFeatures assets load from the non-exhaustive subset");
+    let asset_subset_root = approved_asset_subset_root();
+    let providers =
+        load_selected_current_features_math_providers(ProviderTree::directory(&asset_subset_root))
+            .expect("approved CurrentFeatures assets load from the non-exhaustive subset");
 
     assert_eq!(providers.processor().sample_rate(), 48_000);
     assert_eq!(providers.processor().window_length(), 3_072);

@@ -287,12 +287,9 @@ pub(super) fn produce_current_features(
         .iter()
         .filter(|flags| **flags == [0, 0])
         .count();
-    let rows: Vec<_> = if let Some(workers) = crate::dsp_workers::pool().filter(|_| active >= 3) {
-        use rayon::prelude::*;
-        workers.install(|| sources.par_iter().enumerate().map(compute).collect())
-    } else {
-        sources.iter().enumerate().map(compute).collect()
-    };
+    let rows = crate::dsp_workers::map_enumerated(sources, active >= 3, |index, source| {
+        compute((index, source))
+    });
     let (after_vector, after_scalar): (Vec<_>, Vec<_>) = rows
         .into_iter()
         .collect::<Result<Vec<_>, _>>()?

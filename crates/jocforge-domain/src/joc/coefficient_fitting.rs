@@ -993,20 +993,7 @@ fn fit_independent_cells<const C: usize>(
     ) -> Result<CoefficientFitResult<C>, CoefficientSearchError>
     + Sync,
 ) -> Result<Vec<CoefficientFitResult<C>>, CoefficientFittingError> {
-    use rayon::prelude::*;
-    let Some(pool) = crate::dsp_workers::pool() else {
-        return equations
-            .iter()
-            .map(search)
-            .collect::<Result<_, _>>()
-            .map_err(CoefficientFittingError::Search);
-    };
-    let results: Vec<_> =
-        pool.install(|| equations.par_iter().with_min_len(8).map(&search).collect());
-    results
-        .into_iter()
-        .collect::<Result<_, _>>()
-        .map_err(CoefficientFittingError::Search)
+    crate::dsp_workers::map_slice(equations, 8, search).map_err(CoefficientFittingError::Search)
 }
 
 fn assemble_fit(

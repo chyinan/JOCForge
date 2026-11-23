@@ -11,7 +11,7 @@ use jocforge_application::{
 use jocforge_io::{
     pcm::{meter_source_cursor::MeterPcmSourceCursor, riff_pcm24::ParsedRiffPcm24},
     provider::{
-        F03wProviderEntryLineage, SelectedCurrentFeaturesMathProviderLoadError,
+        F03wProviderEntryLineage, ProviderTree, SelectedCurrentFeaturesMathProviderLoadError,
         SelectedSpatialAudioProviderBundle, SelectedSpatialAudioProviderLoadError,
         SelectedSpatialColdProviderLineage, SelectedSpatialColdProviderLoadError,
         SelectedSpatialColdProviderRoots, load_selected_current_features_math_providers,
@@ -19,7 +19,7 @@ use jocforge_io::{
         load_selected_spatial_cold_provider_candidate_for_profile,
     },
 };
-use std::{error::Error, fmt, path::Path};
+use std::{error::Error, fmt};
 
 use super::independent_meter_callback::{
     IndependentMeterPrepassCandidate, IndependentMeterPrepassError,
@@ -197,6 +197,21 @@ impl SelectedIndependentMeterCallbackProviders {
     where
         F: FnMut(u64, u64) + Send,
     {
+        // The browser isolate has no threads in this phase, so the prepass runs on the caller.
+        #[cfg(target_arch = "wasm32")]
+        {
+            let _ = METER_PREPASS_STACK_BYTES;
+            return stage_independent_meter_prepass_controlled(
+                prepared,
+                source_cursor_before,
+                parsed_source,
+                meter_before,
+                &self.providers,
+                &mut progress,
+                cancelled,
+            );
+        }
+        #[cfg(not(target_arch = "wasm32"))]
         std::thread::scope(|scope| {
             let worker = std::thread::Builder::new()
                 .name("jocforge-independent-meter-prepass".to_owned())
@@ -248,9 +263,9 @@ impl SelectedMainSpatialCallbackProviders {
 /// The two F03W/cold roots and the separate CurrentFeatures asset subset are independently
 /// authenticated. No layout or callback identity is inferred from their manifests.
 pub fn load_selected_independent_meter_callback_providers(
-    f03w_provider_root: &Path,
-    cold_state_root: &Path,
-    current_features_root: &Path,
+    f03w_provider_root: ProviderTree<'_>,
+    cold_state_root: ProviderTree<'_>,
+    current_features_root: ProviderTree<'_>,
     geometry: SelectedSpatialMathGeometry,
 ) -> Result<SelectedIndependentMeterCallbackProviders, SelectedIndependentMeterProviderLoadError> {
     load_selected_independent_meter_callback_providers_for_profile(
@@ -263,9 +278,9 @@ pub fn load_selected_independent_meter_callback_providers(
 }
 
 pub fn load_selected_independent_meter_callback_providers_for_profile(
-    f03w_provider_root: &Path,
-    cold_state_root: &Path,
-    current_features_root: &Path,
+    f03w_provider_root: ProviderTree<'_>,
+    cold_state_root: ProviderTree<'_>,
+    current_features_root: ProviderTree<'_>,
     geometry: SelectedSpatialMathGeometry,
     profile: EncodingProfile,
 ) -> Result<SelectedIndependentMeterCallbackProviders, SelectedIndependentMeterProviderLoadError> {
@@ -315,10 +330,10 @@ pub fn load_selected_independent_meter_callback_providers_for_profile(
 /// Each source root is caller-selected and independently validated; tests/fixtures are not read.
 /// The returned value does not claim exhaustive transitive F03W or CurrentFeatures provider coverage.
 pub fn load_selected_main_spatial_callback_providers(
-    f03w_provider_root: &Path,
-    cold_state_root: &Path,
-    current_features_root: &Path,
-    f04_receiver_provider_root: &Path,
+    f03w_provider_root: ProviderTree<'_>,
+    cold_state_root: ProviderTree<'_>,
+    current_features_root: ProviderTree<'_>,
+    f04_receiver_provider_root: ProviderTree<'_>,
     geometry: SelectedSpatialMathGeometry,
 ) -> Result<SelectedMainSpatialCallbackProviders, SelectedMainSpatialProviderLoadError> {
     load_selected_main_spatial_callback_providers_for_profile(
@@ -332,10 +347,10 @@ pub fn load_selected_main_spatial_callback_providers(
 }
 
 pub fn load_selected_main_spatial_callback_providers_for_profile(
-    f03w_provider_root: &Path,
-    cold_state_root: &Path,
-    current_features_root: &Path,
-    f04_receiver_provider_root: &Path,
+    f03w_provider_root: ProviderTree<'_>,
+    cold_state_root: ProviderTree<'_>,
+    current_features_root: ProviderTree<'_>,
+    f04_receiver_provider_root: ProviderTree<'_>,
     geometry: SelectedSpatialMathGeometry,
     profile: EncodingProfile,
 ) -> Result<SelectedMainSpatialCallbackProviders, SelectedMainSpatialProviderLoadError> {

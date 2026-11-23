@@ -1,8 +1,6 @@
 // pattern: Imperative Shell
 //! Builds the static Meter provider-set receipt from owner-validated selected values.
 
-use std::path::Path;
-
 use jocforge_application::{
     meter_source_admission::{MeterSourceAdmissionError, MeterSourceProviderSetAdmissionReceipt},
     meter_source_bridge::{
@@ -14,7 +12,7 @@ use jocforge_application::{
         ValidatedWindowQ15Provider, validated_value_words_sha256,
     },
 };
-use jocforge_io::provider::load_selected_meter_provider_roster;
+use jocforge_io::provider::{ProviderTree, load_selected_meter_provider_roster};
 
 use crate::selected_spatial_callback_providers::SelectedIndependentMeterCallbackProviders;
 
@@ -32,7 +30,7 @@ pub enum SelectedMeterProviderIdentityError {
 
 /// Loads the exact hash-bound roster, then constructs the selected profile's static identity.
 pub fn load_selected_meter_provider_identity(
-    roster_package_root: &Path,
+    roster_package_root: ProviderTree<'_>,
     providers: &SelectedIndependentMeterCallbackProviders,
     direct: &MeterDirectProviderInventory,
     selected_profile_id: &str,

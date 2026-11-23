@@ -1,0 +1,31 @@
+[package]
+name = "jocforge-pipeline"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+description = "Selected-profile encode pipeline over the application owner roots and io adapters"
+
+[features]
+default = []
+test-support = ["jocforge-application/test-support"]
+
+[dependencies]
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = { version = "=1.0.154", default-features = false, features = ["std"] }
+sha2 = { version = "=0.10.9", default-features = false }
+jocforge-application = { path = "../jocforge-application", default-features = false }
+jocforge-io = { path = "../jocforge-io" }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+fs2 = "=0.4.3"
+tempfile = "=3.27.0"
+jocforge-application = { path = "../jocforge-application", default-features = false, features = ["parallel"] }
+
+[dev-dependencies]
+jocforge-application = { path = "../jocforge-application", features = ["test-support"] }
+jocforge-domain = { path = "../jocforge-domain", features = ["test-support"] }
+jocforge-io = { path = "../jocforge-io", features = ["test-support"] }
+
+[lints]
+workspace = true

@@ -1,0 +1,6 @@
+# The browser bridge runs the selected-profile encode inline, so the DSP stages that native
+# builds place on dedicated 16–32 MiB worker stacks use the module stack instead. The default
+# wasm stack is far too small for the spatial production core and traps with an out-of-bounds
+# memory access. The link flag is target-scoped: native targets are unaffected.
+[target.wasm32-unknown-unknown]
+rustflags = ["-C", "link-arg=-zstack-size=16777216"]

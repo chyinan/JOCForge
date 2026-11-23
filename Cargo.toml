@@ -3,8 +3,10 @@ members = [
     "crates/jocforge-domain",
     "crates/jocforge-io",
     "crates/jocforge-application",
+    "crates/jocforge-pipeline",
     "crates/jocforge-cli",
     "crates/jocforge-validation",
+    "crates/jocforge-wasm",
 ]
 resolver = "3"
 

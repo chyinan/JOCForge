@@ -1,5 +1,6 @@
 // pattern: Imperative Shell
 //! Loads independently rooted selected cold schemas and spatial parameters.
+use super::tree::{ProviderReadError, ProviderTree};
 use jocforge_domain::{
     frontend::{
         F01EProviderError, F03TargetProviderError, F03wAssetManifestError,
@@ -21,11 +22,7 @@ use jocforge_domain::{
         window_q15_provider::validate_window_q15_provider_from_f01b_cold_assets,
     },
 };
-use std::{
-    fmt, fs, io,
-    path::{Path, PathBuf},
-    sync::Arc,
-};
+use std::{fmt, io, sync::Arc};
 
 const MANIFEST: &str = "MANIFEST.json";
 const INSTALLED48_STATE: &str = "parameters/adm-installed48-state-v1.json";
@@ -46,12 +43,15 @@ pub enum SelectedProviderRoot {
 /// Caller-owned locations for the two independently authenticated bundle roots.
 #[derive(Clone, Copy)]
 pub struct SelectedSpatialColdProviderRoots<'a> {
-    f03w_provider_root: &'a Path,
-    cold_state_root: &'a Path,
+    f03w_provider_root: ProviderTree<'a>,
+    cold_state_root: ProviderTree<'a>,
 }
 
 impl<'a> SelectedSpatialColdProviderRoots<'a> {
-    pub const fn new(f03w_provider_root: &'a Path, cold_state_root: &'a Path) -> Self {
+    pub const fn new(
+        f03w_provider_root: ProviderTree<'a>,
+        cold_state_root: ProviderTree<'a>,
+    ) -> Self {
         Self {
             f03w_provider_root,
             cold_state_root,
@@ -260,50 +260,49 @@ pub fn load_selected_spatial_cold_provider_candidate(
     roots: SelectedSpatialColdProviderRoots<'_>,
     profile: EncodingProfile,
 ) -> Result<SelectedSpatialColdProviderCandidate, SelectedSpatialColdProviderLoadError> {
-    let f03w_root = canonical_root(roots.f03w_provider_root, SelectedProviderRoot::F03w)?;
-    let cold_root = canonical_root(roots.cold_state_root, SelectedProviderRoot::ColdState)?;
-    if f03w_root == cold_root {
+    let f03w_root = roots.f03w_provider_root;
+    let cold_root = roots.cold_state_root;
+    // Two bundles may share one package root only when their sub-package prefixes differ, so the
+    // identity is the root plus the prefix rather than the root alone.
+    if f03w_root.root() == cold_root.root() && f03w_root.prefix() == cold_root.prefix() {
         return Err(SelectedSpatialColdProviderLoadError::PackageRootsNotDistinct);
     }
 
-    let f03w_manifest_evidence = read_manifest(&f03w_root, SelectedProviderRoot::F03w)?;
+    let f03w_manifest_evidence = read_manifest(f03w_root, SelectedProviderRoot::F03w)?;
     let f03w_manifest = validate_f03w_provider_manifest(&f03w_manifest_evidence)
         .map_err(SelectedSpatialColdProviderLoadError::F03wManifest)?;
-    let cold_manifest_evidence = read_manifest(&cold_root, SelectedProviderRoot::ColdState)?;
+    let cold_manifest_evidence = read_manifest(cold_root, SelectedProviderRoot::ColdState)?;
     let cold_manifest = validate_f01b_cold_asset_manifest(&cold_manifest_evidence)
         .map_err(SelectedSpatialColdProviderLoadError::ColdManifest)?;
 
     let installed48_schema_evidence = read_provider(
-        &cold_root,
+        cold_root,
         SelectedProviderRoot::ColdState,
         INSTALLED48_STATE,
     )?;
     let installed48_schema =
         validate_installed48_state_schema(&installed48_schema_evidence, &cold_manifest)
             .map_err(SelectedSpatialColdProviderLoadError::Installed48Schema)?;
-    let owner_projection_evidence = read_provider(
-        &cold_root,
-        SelectedProviderRoot::ColdState,
-        OWNER_PROJECTION,
-    )?;
+    let owner_projection_evidence =
+        read_provider(cold_root, SelectedProviderRoot::ColdState, OWNER_PROJECTION)?;
     let owner_projection =
         validate_selected_owner_projection(&owner_projection_evidence, &cold_manifest)
             .map_err(SelectedSpatialColdProviderLoadError::OwnerProjection)?;
     let f03_target_evidence =
-        read_provider(&cold_root, SelectedProviderRoot::ColdState, F03_TARGET_COLD)?;
+        read_provider(cold_root, SelectedProviderRoot::ColdState, F03_TARGET_COLD)?;
     let f03_target_cold =
         validate_f03_target_cold_provider_from_f01b_assets(&f03_target_evidence, &cold_manifest)
             .map_err(SelectedSpatialColdProviderLoadError::F03TargetCold)?;
-    let f01e_evidence = read_provider(&cold_root, SelectedProviderRoot::ColdState, F01E_COLD)?;
+    let f01e_evidence = read_provider(cold_root, SelectedProviderRoot::ColdState, F01E_COLD)?;
     let f01e_cold = validate_f01e_provider_from_f01b_cold_assets(&f01e_evidence, &cold_manifest)
         .map_err(SelectedSpatialColdProviderLoadError::F01eCold)?;
-    let window_evidence = read_provider(&cold_root, SelectedProviderRoot::ColdState, WINDOW_Q15)?;
+    let window_evidence = read_provider(cold_root, SelectedProviderRoot::ColdState, WINDOW_Q15)?;
     let window_q15 =
         validate_window_q15_provider_from_f01b_cold_assets(&window_evidence, &cold_manifest)
             .map_err(SelectedSpatialColdProviderLoadError::WindowQ15)?;
 
     let component_evidence =
-        read_provider(&f03w_root, SelectedProviderRoot::F03w, COMPONENT_PARAMETERS)?;
+        read_provider(f03w_root, SelectedProviderRoot::F03w, COMPONENT_PARAMETERS)?;
     let component_parameters = validate_component_parameter_provider_from_f03w_bundle(
         &component_evidence,
         &f03w_manifest,
@@ -311,12 +310,9 @@ pub fn load_selected_spatial_cold_provider_candidate(
     )
     .map_err(SelectedSpatialColdProviderLoadError::ComponentParameters)?;
     let diffusion_evidence =
-        read_provider(&f03w_root, SelectedProviderRoot::F03w, DIFFUSION_PARAMETERS)?;
-    let diffusion_constructor_evidence = read_provider(
-        &f03w_root,
-        SelectedProviderRoot::F03w,
-        DIFFUSION_CONSTRUCTOR,
-    )?;
+        read_provider(f03w_root, SelectedProviderRoot::F03w, DIFFUSION_PARAMETERS)?;
+    let diffusion_constructor_evidence =
+        read_provider(f03w_root, SelectedProviderRoot::F03w, DIFFUSION_CONSTRUCTOR)?;
     let diffusion_parameters = validate_diffusion_filter_parameters_from_f03w_bundle(
         &diffusion_evidence,
         &diffusion_constructor_evidence,
@@ -355,72 +351,43 @@ pub fn load_selected_spatial_cold_provider_candidate_for_profile(
     load_selected_spatial_cold_provider_candidate(roots, profile)
 }
 
-fn canonical_root(
-    root: &Path,
-    bundle: SelectedProviderRoot,
-) -> Result<PathBuf, SelectedSpatialColdProviderLoadError> {
-    root.canonicalize()
-        .map_err(|source| SelectedSpatialColdProviderLoadError::PackageRoot { bundle, source })
-}
-
 fn read_manifest(
-    root: &Path,
+    tree: ProviderTree<'_>,
     bundle: SelectedProviderRoot,
 ) -> Result<PackageManifestEvidence, SelectedSpatialColdProviderLoadError> {
-    let path = package_file(root, bundle, MANIFEST)?;
-    let bytes = read_file(&path, bundle, MANIFEST)?;
     Ok(PackageManifestEvidence::new(
-        bytes,
-        Some(path.display().to_string()),
+        read_member(tree, bundle, MANIFEST)?,
+        Some(tree.display(MANIFEST)),
     ))
 }
 
 fn read_provider(
-    root: &Path,
+    tree: ProviderTree<'_>,
     bundle: SelectedProviderRoot,
     relative: &'static str,
 ) -> Result<ProviderFileEvidence, SelectedSpatialColdProviderLoadError> {
-    let path = package_file(root, bundle, relative)?;
-    let bytes = read_file(&path, bundle, relative)?;
     Ok(ProviderFileEvidence::new(
-        bytes,
-        Some(path.display().to_string()),
+        read_member(tree, bundle, relative)?,
+        Some(tree.display(relative)),
     ))
 }
 
-fn package_file(
-    root: &Path,
-    bundle: SelectedProviderRoot,
-    relative: &'static str,
-) -> Result<PathBuf, SelectedSpatialColdProviderLoadError> {
-    let path = root.join(relative).canonicalize().map_err(|source| {
-        SelectedSpatialColdProviderLoadError::FileRead {
-            bundle,
-            relative_path: relative,
-            source,
-        }
-    })?;
-    if !path.starts_with(root) {
-        return Err(
-            SelectedSpatialColdProviderLoadError::PackagePathEscapesRoot {
-                bundle,
-                relative_path: relative,
-            },
-        );
-    }
-    Ok(path)
-}
-
-fn read_file(
-    path: &Path,
+fn read_member(
+    tree: ProviderTree<'_>,
     bundle: SelectedProviderRoot,
     relative: &'static str,
 ) -> Result<Arc<[u8]>, SelectedSpatialColdProviderLoadError> {
-    fs::read(path).map(Arc::<[u8]>::from).map_err(|source| {
-        SelectedSpatialColdProviderLoadError::FileRead {
+    tree.read(relative).map_err(|error| match error {
+        ProviderReadError::EscapesRoot => {
+            SelectedSpatialColdProviderLoadError::PackagePathEscapesRoot {
+                bundle,
+                relative_path: relative,
+            }
+        }
+        error => SelectedSpatialColdProviderLoadError::FileRead {
             bundle,
             relative_path: relative,
-            source,
-        }
+            source: error.into_io_error(relative),
+        },
     })
 }

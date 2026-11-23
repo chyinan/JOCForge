@@ -4,6 +4,10 @@
 #[cfg(test)]
 mod tests;
 
+pub mod memory;
+
+pub use memory::MemoryOutputStaging;
+
 #[cfg(windows)]
 mod windows_rename;
 

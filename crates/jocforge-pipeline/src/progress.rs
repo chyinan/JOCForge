@@ -1,11 +1,29 @@
 // pattern: Imperative Shell
 //! Reports long-running CLI work without changing any processing decisions.
 
+#[cfg(not(target_arch = "wasm32"))]
 use std::{
     io::{self, IsTerminal, Write},
     time::Instant,
 };
 
+/// A browser isolate has no terminal and no monotonic clock, so the progress channel is inert
+/// there; the caller still sees the same stages and the same receipts.
+#[cfg(target_arch = "wasm32")]
+pub(crate) struct ProgressBar;
+
+#[cfg(target_arch = "wasm32")]
+impl ProgressBar {
+    pub(crate) const fn new(_label: &'static str) -> Self {
+        Self
+    }
+
+    pub(crate) const fn update(&mut self, _completed: u64, _total: u64) {}
+
+    pub(crate) const fn finish(&mut self) {}
+}
+
+#[cfg(not(target_arch = "wasm32"))]
 pub(crate) struct ProgressBar {
     label: &'static str,
     total: Option<u64>,
@@ -16,6 +34,7 @@ pub(crate) struct ProgressBar {
     started_at: Instant,
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 impl ProgressBar {
     pub(crate) fn new(label: &'static str) -> Self {
         let terminal = io::stderr().is_terminal();
@@ -97,6 +116,7 @@ impl ProgressBar {
     }
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 impl Drop for ProgressBar {
     fn drop(&mut self) {
         if self.terminal && self.line_open {

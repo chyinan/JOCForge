@@ -7,7 +7,7 @@ use jocforge_domain::{
     spatial::F04ParameterProviderError,
 };
 use jocforge_io::provider::{
-    SelectedSpatialColdProviderLoadError, SelectedSpatialColdProviderRoots,
+    ProviderTree, SelectedSpatialColdProviderLoadError, SelectedSpatialColdProviderRoots,
     load_selected_spatial_cold_provider_candidate,
 };
 use std::{
@@ -48,7 +48,10 @@ fn load(
     SelectedSpatialColdProviderLoadError,
 > {
     load_selected_spatial_cold_provider_candidate(
-        SelectedSpatialColdProviderRoots::new(provider_root, cold_root),
+        SelectedSpatialColdProviderRoots::new(
+            ProviderTree::directory(provider_root),
+            ProviderTree::directory(cold_root),
+        ),
         profile,
     )
 }

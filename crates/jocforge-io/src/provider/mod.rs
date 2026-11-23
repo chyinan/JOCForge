@@ -10,6 +10,7 @@ pub mod meter;
 pub mod meter_provider_roster;
 pub mod selected_spatial_cold_inputs;
 pub mod spatial_audio;
+pub mod tree;
 
 pub use current_features::{
     SelectedCurrentFeaturesMathProviderLoadError, SelectedCurrentFeaturesMathProviders,
@@ -37,6 +38,7 @@ pub use spatial_audio::{
     load_selected_spatial_audio_provider_bundle,
     load_selected_spatial_audio_provider_bundle_for_profile,
 };
+pub use tree::{ProviderMember, ProviderReadError, ProviderTree};
 
 pub fn read_provider_file(path: impl AsRef<Path>) -> io::Result<ProviderFileEvidence> {
     let path = path.as_ref();

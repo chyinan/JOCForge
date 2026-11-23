@@ -1,7 +1,7 @@
 // pattern: Imperative Shell
 //! Connects one ready MAIN spatial callback proposal to the existing F07-F10 source stages.
 
-use std::{sync::Arc, thread};
+use std::sync::Arc;
 
 use jocforge_domain::{
     analysis::transient_parameters::{
@@ -84,13 +84,19 @@ pub fn cold_analysis_root_for_prepared_input(
     prepared: &PreparedJobInput,
 ) -> Result<Box<AnalysisOwnerRoot>, SourceAnalysisBridgeError> {
     let identity = prepared.domain_identity_capability();
-    thread::Builder::new()
-        .name("jocforge-main-analysis-cold-root".to_owned())
-        .stack_size(SOURCE_ANALYSIS_STACK_BYTES)
-        .spawn(move || Box::new(AnalysisOwnerRoot::cold_for_prepared_input(identity)))
-        .map_err(|_| SourceAnalysisBridgeError::WorkerUnavailable)?
-        .join()
-        .map_err(|_| SourceAnalysisBridgeError::WorkerPanicked)
+    match crate::worker::run_on_worker(
+        "jocforge-main-analysis-cold-root",
+        SOURCE_ANALYSIS_STACK_BYTES,
+        move || Box::new(AnalysisOwnerRoot::cold_for_prepared_input(identity)),
+    ) {
+        Ok(root) => Ok(root),
+        Err(crate::worker::WorkerRunError::Unavailable) => {
+            Err(SourceAnalysisBridgeError::WorkerUnavailable)
+        }
+        Err(crate::worker::WorkerRunError::Panicked) => {
+            Err(SourceAnalysisBridgeError::WorkerPanicked)
+        }
+    }
 }
 
 /// Failures while binding a ready MAIN spatial proposal to its admitted job and analysis owner.
@@ -135,18 +141,19 @@ pub fn prepare_source_analysis_from_spatial_callback_with_installed_audio(
     input: SpatialSourceAnalysisBridgeInput<'_>,
     installed_audio: Option<&SourcedInstalledAudioFrame>,
 ) -> Result<Box<AnalysisNumericPlanStage>, SourceAnalysisBridgeError> {
-    thread::scope(|scope| {
-        let worker = thread::Builder::new()
-            .name("jocforge-main-source-analysis".to_owned())
-            .stack_size(SOURCE_ANALYSIS_STACK_BYTES)
-            .spawn_scoped(scope, move || {
-                prepare_source_analysis_on_current_thread(input, installed_audio)
-            })
-            .map_err(|_| SourceAnalysisBridgeError::WorkerUnavailable)?;
-        worker
-            .join()
-            .map_err(|_| SourceAnalysisBridgeError::WorkerPanicked)?
-    })
+    match crate::worker::run_on_worker(
+        "jocforge-main-source-analysis",
+        SOURCE_ANALYSIS_STACK_BYTES,
+        move || prepare_source_analysis_on_current_thread(input, installed_audio),
+    ) {
+        Ok(result) => result,
+        Err(crate::worker::WorkerRunError::Unavailable) => {
+            Err(SourceAnalysisBridgeError::WorkerUnavailable)
+        }
+        Err(crate::worker::WorkerRunError::Panicked) => {
+            Err(SourceAnalysisBridgeError::WorkerPanicked)
+        }
+    }
 }
 
 /// Stages the analysis on an encoder worker that already owns a large DSP stack.

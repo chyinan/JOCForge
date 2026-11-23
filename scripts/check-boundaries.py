@@ -175,11 +175,14 @@ def check_unsafe_boundary(root):
 
   'crates/jocforge-domain/src/publication/output_owner.rs',
 
-  'crates/jocforge-cli/src/output_publication.rs',
+  'crates/jocforge-pipeline/src/output_publication.rs',
 
   'crates/jocforge-io/src/atomic_output/mod.rs',
 
+  'crates/jocforge-io/src/atomic_output/memory.rs',
   'crates/jocforge-io/src/atomic_output/windows_rename.rs',
+
+  'crates/jocforge-wasm/src/ffi.rs',
 
  }
 
@@ -205,9 +208,12 @@ def check_unsafe_boundary(root):
 
   ('crates/jocforge-io/src/atomic_output/mod.rs',False),
 
+  ('crates/jocforge-io/src/atomic_output/memory.rs',False),
   ('crates/jocforge-io/src/atomic_output/windows_rename.rs',True),
 
-  ('crates/jocforge-cli/src/output_publication.rs',False),
+  ('crates/jocforge-pipeline/src/output_publication.rs',False),
+
+  ('crates/jocforge-wasm/src/ffi.rs',True),
 
  ]
 
@@ -221,13 +227,13 @@ def check_unsafe_boundary(root):
 
  ck(len(re.findall(r'#\s*\[\s*allow\s*\(\s*unsafe_code\s*\)\s*\]\s*fn\s+append_inner\s*\(',io_code))==1 and len(re.findall(r'\bunsafe\s*\{\s*proposal\s*\.\s*record_durable_io_success\s*\(',io_code))==1,'only the trusted atomic append callsite may invoke the durability issuer')
 
- cli_output_code=code_by_path['crates/jocforge-cli/src/output_publication.rs']
+ cli_output_code=code_by_path['crates/jocforge-pipeline/src/output_publication.rs']
 
  ck(len(re.findall(r'#\s*\[\s*allow\s*\(\s*unsafe_code\s*\)\s*\]\s*pub\s*\(crate\)\s+fn\s+append_flat7x_pair_with_output_proposal\b',cli_output_code))==1 and len(re.findall(r'\bunsafe\s*\{\s*append\s*\.\s*record_flat7x_pair_io_success\s*\(',cli_output_code))==1,'only the trusted pair append callsite may invoke the pair durability issuer')
 
  ck(re.search(r'(?m)^\s*#!\s*\[\s*allow\s*\(\s*unsafe_code\s*\)\s*\]',windows_code) is not None and len(re.findall(r'\bunsafe\s*\{',windows_code))==2,'Windows rename unsafe code stays inside one explicitly allowed module and its two audited Win32 calls')
 
- for crate in ('jocforge-domain','jocforge-application','jocforge-cli'):
+ for crate in ('jocforge-domain','jocforge-application','jocforge-pipeline','jocforge-cli','jocforge-wasm'):
 
   manifest=tomllib.loads((root/f'crates/{crate}/Cargo.toml').read_text(encoding='utf-8'))
 
@@ -4534,7 +4540,7 @@ def check_current_features_provider_mapping(root,d):
 
  cargo=(root/'crates/jocforge-domain/Cargo.toml').read_text(encoding='utf-8');deps=cargo.split('[dependencies]',1)[1].split('\n[',1)[0].strip().splitlines();domain_manifest=tomllib.loads(cargo);application_manifest=tomllib.loads((root/'crates/jocforge-application/Cargo.toml').read_text(encoding='utf-8'));io_manifest=tomllib.loads((root/'crates/jocforge-io/Cargo.toml').read_text(encoding='utf-8'));cli_manifest=tomllib.loads((root/'crates/jocforge-cli/Cargo.toml').read_text(encoding='utf-8'))
 
- ck(deps==['earshot = "=1.2.2"','multiversion = "=0.8.1"','rayon = "=1.11.0"','serde = { version = "=1.0.229", features = ["derive"] }','num-bigint = { version = "=0.4.6", default-features = false, features = ["std"] }','sha2 = { version = "=0.10.9", default-features = false }','serde_json = { version = "=1.0.154", default-features = false, features = ["std"] }','roxmltree = { version = "=0.21.1", default-features = true }']and domain_manifest.get('features',{}).get('default',[])==[] and domain_manifest.get('features',{}).get('test-support')==[] and application_manifest.get('features',{}).get('default',[])==[] and application_manifest.get('features',{}).get('test-support')==['jocforge-domain/test-support'] and 'features' not in io_manifest.get('dependencies',{}).get('jocforge-domain',{}) and io_manifest.get('dev-dependencies',{}).get('jocforge-domain',{}).get('features')==['test-support'] and cli_manifest.get('features',{}).get('default',[])==[] and 'features' not in cli_manifest.get('dependencies',{}).get('jocforge-application',{}),'domain keeps pinned production dependencies and confines the optional fixture feature to test builds')
+ ck(deps==['earshot = "=1.2.2"','multiversion = "=0.8.1"','rayon = { version = "=1.11.0", optional = true }','serde = { version = "=1.0.229", features = ["derive"] }','num-bigint = { version = "=0.4.6", default-features = false, features = ["std"] }','sha2 = { version = "=0.10.9", default-features = false }','serde_json = { version = "=1.0.154", default-features = false, features = ["std"] }','roxmltree = { version = "=0.21.1", default-features = true }']and domain_manifest.get('features',{}).get('default',[])==['parallel'] and domain_manifest.get('features',{}).get('parallel')==['dep:rayon'] and domain_manifest.get('features',{}).get('test-support')==[] and application_manifest.get('features',{}).get('default',[])==['parallel'] and application_manifest.get('features',{}).get('parallel')==['jocforge-domain/parallel'] and application_manifest.get('features',{}).get('test-support')==['jocforge-domain/test-support'] and application_manifest.get('dependencies',{}).get('jocforge-domain',{}).get('default-features') is False and io_manifest.get('dependencies',{}).get('jocforge-domain',{}).get('default-features') is False and 'features' not in io_manifest.get('dependencies',{}).get('jocforge-domain',{}) and io_manifest.get('dev-dependencies',{}).get('jocforge-domain',{}).get('features')==['test-support'] and cli_manifest.get('features',{}).get('default',[])==[] and 'features' not in cli_manifest.get('dependencies',{}).get('jocforge-application',{}),'domain keeps pinned production dependencies and confines the optional fixture feature to test builds')
 
  required_test_terms=('approved_math_providers_yield_exact_typed_words_and_lineage_receipts','package_manifest_identity_rejects_before_json_parsing','observed_manifest_metadata_must_match_actual_bytes','provider_identity_rejects_changed_bytes_before_utf8_or_json_parsing','provider_observation_must_match_actual_bytes','sampled_byte_changes_never_cross_manifest_or_provider_identity_gates','processor_parser_rejects_unknown_and_duplicate_keys','processor_parser_rejects_boolean_float_wrong_dimension_and_counts','processor_parser_rejects_wrong_array_shapes_and_u32_domain','fft_parser_rejects_route_stage_and_root_shape_drift','fft_parser_rejects_boolean_and_out_of_range_root_words','manifest_provider_entries_must_be_unique_and_exact')
 
@@ -7461,7 +7467,7 @@ def check_integrity_owner_root(root,d):
   if identity['file']=='crates/jocforge-domain/src/integrity/programme_owner.rs':
    feature_gate=b'#[cfg(any(test, feature = "test-support"))]'
    domain_manifest=tomllib.loads((root/'crates/jocforge-domain/Cargo.toml').read_text(encoding='utf-8'));application_manifest=tomllib.loads((root/'crates/jocforge-application/Cargo.toml').read_text(encoding='utf-8'));io_manifest=tomllib.loads((root/'crates/jocforge-io/Cargo.toml').read_text(encoding='utf-8'));cli_manifest=tomllib.loads((root/'crates/jocforge-cli/Cargo.toml').read_text(encoding='utf-8'))
-   test_support_graph=domain_manifest.get('features',{}).get('default',[])==[] and 'test-support' in domain_manifest.get('features',{}) and application_manifest.get('features',{}).get('test-support')==['jocforge-domain/test-support'] and application_manifest.get('features',{}).get('default',[])==[] and 'features' not in io_manifest.get('dependencies',{}).get('jocforge-domain',{}) and io_manifest.get('dev-dependencies',{}).get('jocforge-domain',{}).get('features')==['test-support'] and 'jocforge-application' not in io_manifest.get('dependencies',{}) and cli_manifest.get('features',{}).get('default',[])==[] and 'features' not in cli_manifest.get('dependencies',{}).get('jocforge-application',{})
+   test_support_graph=domain_manifest.get('features',{}).get('default',[])==['parallel'] and 'test-support' in domain_manifest.get('features',{}) and 'test-support' not in domain_manifest.get('features',{}).get('default',[]) and application_manifest.get('features',{}).get('test-support')==['jocforge-domain/test-support'] and application_manifest.get('features',{}).get('default',[])==['parallel'] and 'test-support' not in application_manifest.get('features',{}).get('default',[]) and 'features' not in io_manifest.get('dependencies',{}).get('jocforge-domain',{}) and io_manifest.get('dev-dependencies',{}).get('jocforge-domain',{}).get('features')==['test-support'] and 'jocforge-application' not in io_manifest.get('dependencies',{}) and cli_manifest.get('features',{}).get('default',[])==[] and 'features' not in cli_manifest.get('dependencies',{}).get('jocforge-application',{})
    source_identity=raw.count(feature_gate)==1 and b'pub(crate) fn synthetic_f12_receipts_for_flat7x_test' in raw and b'pub fn stage_flat7x_i0_d0_f12_pair_for_callback(' in raw and b'flat7x_i0_640_d0_1024' in raw and b'validate_completed_f12_frame(input.i0_frame, rate_plan.independent_i0_rate())' in raw and b'validate_completed_f12_frame(input.d0_frame, rate_plan.dependent_d0_rate())' in raw and test_support_graph
    ck(source_identity,'integrity source exposes the additive role-rate pair API; test fixtures remain reachable only through non-default test-support dev dependencies')
   else:
@@ -8123,7 +8129,7 @@ def check_latest_wash_lineage(root,d):
 
 def check_selected_adm_riff_preparation(root,d):
 
- entry=next(e for e in d['functional_entries']if e['functional_id']=='F01E');item=next(s for s in entry['direct_slices']if s['slice_id']=='selected-adm-riff-to-prepared-job-input');cli_file='crates/jocforge-cli/src/meter_source_bridge.rs';application_file='crates/jocforge-application/src/lib.rs';test_file='crates/jocforge-cli/tests/meter_source_bridge.rs';real_test_file='crates/jocforge-cli/tests/authorized_adm_callback.rs';real_test=(root/real_test_file).read_text(encoding='utf-8');source=(root/cli_file).read_text(encoding='utf-8');application=(root/application_file).read_text(encoding='utf-8');test=(root/test_file).read_text(encoding='utf-8');inventory=[cli_file,application_file,test_file,real_test_file]
+ entry=next(e for e in d['functional_entries']if e['functional_id']=='F01E');item=next(s for s in entry['direct_slices']if s['slice_id']=='selected-adm-riff-to-prepared-job-input');cli_file='crates/jocforge-pipeline/src/meter_source_bridge.rs';application_file='crates/jocforge-application/src/lib.rs';test_file='crates/jocforge-cli/tests/meter_source_bridge.rs';real_test_file='crates/jocforge-cli/tests/authorized_adm_callback.rs';real_test=(root/real_test_file).read_text(encoding='utf-8');source=(root/cli_file).read_text(encoding='utf-8');application=(root/application_file).read_text(encoding='utf-8');test=(root/test_file).read_text(encoding='utf-8');inventory=[cli_file,application_file,test_file,real_test_file]
 
  ck(item['implementation_status']=='LOCALLY_VERIFIED_SAME_RESOURCE_F01E_PRIMARY_CONTROLS__ENCODER_ENTRY_OPEN'and item['implementation_files']==[cli_file,application_file]and item['test_modules']==[test_file,real_test_file]and [record['path'] for record in item['implementation_inventory']]==inventory[:2]and [record['path'] for record in item['test_inventory']]==inventory[2:]and all((root/name).is_file() for name in inventory)and 'pub fn prepare_selected_adm_bwf_input(' in source and '.selected_adm_payloads()' in source and 'parsed.source_sha256()' in source and 'pub fn bind_primary_control_rows(' in application and 'produce_primary_metadata_control_rows(' in application and 'selected_adm_riff_preparation_binds_metadata_and_pcm_to_one_resource' in test and 'primary_metadata_controls().unwrap()' in test and 'MetadataPayloadBinding' in test and 'authorized_adm_bwf_stages_one_main_output_oar_meter_probe' in real_test and item['not_run']and 'Arc' in item['scope']and any('Callbacks g=1' in value for value in item['not_run'])and 'repository selected-profile job-XML vector' in item['scope'],'selected ADM RIFF preparation is locally verified on one real BWF with fixture job XML; full callbacks and encode remain open')
 
@@ -8311,13 +8317,13 @@ def check_f15_private_plan_admission(root,d):
 
  ck(roles.get('plan_admission_roles_from_f15')==['codec','joc','f13','f14']and {item.get('role')for item in roles.get('roles',[])}=={'codec/F12','joc/F05JL','f13/metadata','f14/integrity'}and len(roles.get('non_receipt_inventory_classes',[]))==6 and inputs.get('execution')=='NOT_RUN','F15 role matrix keeps four distinct roles and mixed dependency items')
 
- code_file='crates/jocforge-application/src/output_publication/plan_admission.rs';app_file='crates/jocforge-application/src/lib.rs';application_output='crates/jocforge-application/src/output_publication.rs';cli_file='crates/jocforge-cli/src/encode_request.rs';cli_output='crates/jocforge-cli/src/output_publication.rs';cli_lib='crates/jocforge-cli/src/lib.rs';
+ code_file='crates/jocforge-application/src/output_publication/plan_admission.rs';app_file='crates/jocforge-application/src/lib.rs';application_output='crates/jocforge-application/src/output_publication.rs';cli_file='crates/jocforge-pipeline/src/encode_request.rs';cli_output='crates/jocforge-pipeline/src/output_publication.rs';cli_lib='crates/jocforge-pipeline/src/lib.rs';
 
  code=rust_code_without_comments((root/code_file).read_text(encoding='utf-8'));app=rust_code_without_comments((root/app_file).read_text(encoding='utf-8'));app_output=rust_code_without_comments((root/application_output).read_text(encoding='utf-8'));cli=rust_code_without_comments((root/cli_file).read_text(encoding='utf-8'));cli_out=rust_code_without_comments((root/cli_output).read_text(encoding='utf-8'));cli_library=(root/cli_lib).read_text(encoding='utf-8')
 
  code_contract=['struct ValidatedEncodingPlan','struct OwnerIssuedProviderAdmission','value: Arc<Value>','struct F15ProviderAdmissionCandidates','struct ParentValidatedDestinationCapability','enum FinalDestinationPolicy','NoOverwrite','Arc::ptr_eq','programme_counts','checked_mul','MissingOwnerAdmission','DestinationCapabilityMissing','DestinationAttemptMismatch','DestinationStagingOwnerMismatch','ProfileDimensionMismatch','DependencyManifestMismatch','F15DependencyManifestIdentity::selected()','validate_codec_f12_provider','load_bap_parameters','validate_joc_f05jl_provider','RepresentationRetryProvider::from_approved_bytes','FitScoreProvider::from_approved_bytes','HuffmanCodebooks::selected','ValidatedMetadataOwnerProvider::from_approved_bytes','validate_keyless_provider','admit_selected_f15_plan','OutputOwner::cold','OutputConfiguration::new']
 
- ck(all(token in code for token in code_contract)and 'mod plan_admission;' in app_output and 'pub fn admit_selected_f15_plan' in app_output and 'pub fn is_bound_to' in app_output and 'SourcePipelineUnavailable' in app and 'pub mod output_publication;' in cli_library and 'ProgrammeOutputStaging::from_admitted_plan' in cli and 'AtomicOutputStaging::create' in cli_out,'F15 owners are validated and destination-bound before the production staging API')
+ ck(all(token in code for token in code_contract)and 'mod plan_admission;' in app_output and 'pub fn admit_selected_f15_plan' in app_output and 'pub fn is_bound_to' in app_output and 'pub fn encode(' in app and 'AdmittedProductionPlan' in app and 'pub mod output_publication;' in cli_library and 'ProgrammeOutputStaging::from_admitted_plan' in cli and 'AtomicOutputStaging::create' in cli_out,'F15 owners are validated and destination-bound before the production staging API')
 
  asset_hashes={
 
@@ -8569,7 +8575,7 @@ def check_selected_adm_graph(root,d):
 
   encode=application[encode_start:]
 
-  ck('parse_selected_adm_graph'in prepare and'parse_selected_dbmd_sections'in prepare and'build_candidate_object_controls'not in prepare and'SourcePipelineUnavailable'in encode and'parse_selected_adm_graph'not in encode,'prepared graph admission remains separate from main encode')
+  ck('parse_selected_adm_graph'in prepare and'parse_selected_dbmd_sections'in prepare and'build_candidate_object_controls'not in prepare and'admit_selected_f15_plan_for_profile'in encode and'parse_selected_adm_graph'not in encode,'prepared graph admission remains separate from main encode')
 
  ck(all((root/path).is_file()for path in selected['implementation_files']+selected['test_modules']+selected['local_mapping_files']),'selected graph mapped files exist')
 
@@ -8643,7 +8649,7 @@ def check_primary_metadata_control(root,d):
 
  ck('validate_source_metadata_identity' in producer and 'unproduced_tail' in producer and 'produce_primary_metadata_control_rows' in test and 'compared_object_words, 364' in test,'R4 producer tests actual-first 38-row output and preserves bed tail boundary')
 
- encode_body=application.split('pub fn encode(',1)[1];ck('produce_primary_metadata_control_rows('in application and 'SourcePipelineUnavailable' in encode_body,'R4 primary metadata/control rows are prepared from admitted input while encode remains unavailable')
+ encode_body=application.split('pub fn encode(',1)[1];ck('produce_primary_metadata_control_rows('in application and 'admit_selected_f15_plan_for_profile(' in encode_body,'R4 primary metadata/control rows are prepared from admitted input and encode admits that plan')
 
 
 
@@ -11602,7 +11608,7 @@ def check_f12_fixed_prefix_slice(root,d):
 
  owner_bridge=writer.get('parameters',{}).get('codec_owner_proposal_bridge',{});ck(owner_bridge.get('application_function')=='stage_codec_owner_after_source_frame'and owner_bridge.get('current_short_flags')=="copied from that candidate's retained NumericPlanReceipt"and owner_bridge.get('result')=='NONCOMMITTING_CODEC_OWNER_PROPOSAL'and owner_bridge.get('parent_install')=='NOT_RUN'and any('parent transaction' in item for item in writer.get('not_run',[])),'F12 codec-owner bridge is proposal-only and leaves installation to parent')
 
- cli_output_raw=(root/'crates/jocforge-cli/src/output_publication.rs').read_text(encoding='utf-8');cli_output_code=rust_code_without_comments(cli_output_raw);cli_output_tests=rust_code_without_comments((root/'crates/jocforge-cli/src/output_publication/tests.rs').read_text(encoding='utf-8'));cli_lib_source=(root/'crates/jocforge-cli/src/lib.rs').read_text(encoding='utf-8');ck('pub fn stage_source_frame_output('in cli_output_code and 'validate_candidate_output_pair('in cli_output_code and 'stage_output_source(staging, binding, output_proposal)'in cli_output_code and 'stage_codec_owner_after_source_frame('in cli_output_code and 'codec_owner.generation().value().checked_add(1)'in cli_output_code and 'candidate_output_pair_requires_the_same_source_and_exact_append_bytes'in cli_output_tests and 'pub mod output_publication;' in cli_lib_source and 'from_admitted_plan' in cli_output_code,'F12 candidate to production output staging API is available after F15 admission')
+ cli_output_raw=(root/'crates/jocforge-pipeline/src/output_publication.rs').read_text(encoding='utf-8');cli_output_code=rust_code_without_comments(cli_output_raw);cli_output_tests=rust_code_without_comments((root/'crates/jocforge-pipeline/src/output_publication/tests.rs').read_text(encoding='utf-8'));cli_lib_source=(root/'crates/jocforge-pipeline/src/lib.rs').read_text(encoding='utf-8');ck('pub fn stage_source_frame_output('in cli_output_code and 'validate_candidate_output_pair('in cli_output_code and 'stage_output_source(staging, binding, output_proposal)'in cli_output_code and 'stage_codec_owner_after_source_frame('in cli_output_code and 'codec_owner.generation().value().checked_add(1)'in cli_output_code and 'candidate_output_pair_requires_the_same_source_and_exact_append_bytes'in cli_output_tests and 'pub mod output_publication;' in cli_lib_source and 'from_admitted_plan' in cli_output_code,'F12 candidate to production output staging API is available after F15 admission')
 
  package=root/'outputs/IMPLEMENTER_SUPPLEMENTS/F12-SELECTED-PREFIX-DIALNORM-V1';manifest=package/'MANIFEST.json';mb=manifest.read_bytes();m=json.loads(mb);payloads={'CONTRACT.md':(2506,'30e3a5e3d1f9e22cd6c8658bc968f6217bd83c4072260192b7aa7328c62cde61'),'FIELD-TABLE.json':(2900,'11e131ad9b31cb65011d5ed23b2ac80a67b684d5aad6758015a2669f4ef51354'),'DIALNORM-STATUS.json':(1478,'da7d0ec8202789443b375489a0f0dbcbfbd874ad551eafd19d0e809eb5c4c7d1'),'INPUT-ONLY-VECTORS.json':(1687,'865ad85dbef724b6896257baa9454db23d0bd82020297330ada4c8a65b816088'),'MINIMUM-RECEIPT.json':(929,'bb0cd73b0792ab7fc1acfc2fb1f6ad364ff346018a383f88fd934efc7c6b46d6'),'EVIDENCE.json':(2169,'81dbc47a27b03e77336c02d7f9eccbf984024172ccadd6ee6f22693bdf720e4a'),'check_package.py':(4272,'ed2cc460c2f01799d49f0278163ad932644bcf827c78ee56e175782421d93810')}
 
@@ -12796,10 +12802,10 @@ def check_f12_flat7x_i0_typed_bsi_frame_assembly(root, d):
     row = rows[0]
     module_path = root / "crates/jocforge-domain/src/codec/i0_frame_assembler.rs"
     pair_source_path = root / "crates/jocforge-application/src/flat7x_pair_source.rs"
-    source_execution_path = root / "crates/jocforge-cli/src/source_execution.rs"
+    source_execution_path = root / "crates/jocforge-pipeline/src/source_execution.rs"
     test_path = root / "crates/jocforge-domain/tests/flat7x_i0_frame_assembler.rs"
     series_test_path = root / "crates/jocforge-domain/src/codec/ac3_audio_block.rs"
-    cli_path = root / "crates/jocforge-cli/src/encode_request.rs"
+    cli_path = root / "crates/jocforge-pipeline/src/encode_request.rs"
     bsi_vectors_path = root / "crates/jocforge-domain/tests/fixtures/i0_bsi_tail/INPUT-ONLY-VECTORS.json"
     module = rust_code_without_comments(module_path.read_text(encoding="utf-8"))
     pair_source = rust_code_without_comments(pair_source_path.read_text(encoding="utf-8"))
@@ -12924,7 +12930,7 @@ def check_f12_flat7x_i0_ac3_audio_block_prototype(root, d):
     implementation = root / "crates/jocforge-domain/src/codec/ac3_audio_block.rs"
     parser = root / "crates/jocforge-validation/src/ac3_audio_block_parser.rs"
     module_export = root / "crates/jocforge-domain/src/codec/mod.rs"
-    cli = root / "crates/jocforge-cli/src/encode_request.rs"
+    cli = root / "crates/jocforge-pipeline/src/encode_request.rs"
     implementation_code = rust_code_without_comments(implementation.read_text(encoding="utf-8"))
     parser_code = rust_code_without_comments(parser.read_text(encoding="utf-8"))
     cli_code = rust_code_without_comments(cli.read_text(encoding="utf-8"))
@@ -12975,7 +12981,7 @@ def check_f12_flat7x_i0_ac3_audio_block_prototype(root, d):
         and "parser_accepts_the_caller_supplied_skip_field_branch" in parser.read_text(encoding="utf-8")
         and "producer_requires_explicit_supported_coupling_and_delta_choices" in parser.read_text(encoding="utf-8")
         and "append_flat7x_pair_with_output_proposal(" in rust_code_without_comments(
-            (root / "crates/jocforge-cli/src/source_execution.rs").read_text(encoding="utf-8")
+            (root / "crates/jocforge-pipeline/src/source_execution.rs").read_text(encoding="utf-8")
         ),
         "AC-3 block-zero prototype stays separate while the CLI composes a D0 frame candidate",
     )
@@ -13087,7 +13093,7 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
     ac3_audio_path = root / "crates/jocforge-domain/src/codec/ac3_audio_block.rs"
     long_mdct_path = root / "crates/jocforge-domain/src/transform/long_mdct.rs"
     skipfield_test_path = root / "crates/jocforge-domain/src/codec/emdf_skip_field.rs"
-    cli_path = root / "crates/jocforge-cli/src/encode_request.rs"
+    cli_path = root / "crates/jocforge-pipeline/src/encode_request.rs"
     app = rust_code_without_comments(app_path.read_text(encoding="utf-8"))
     pair_output = rust_code_without_comments(pair_output_path.read_text(encoding="utf-8"))
     output_owner = rust_code_without_comments(
@@ -13348,12 +13354,12 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         "D0 transform/BAP/D15/mantissa stages feed six audblk spans and a maximum-allocated-bits frame candidate while source owners remain open",
     )
 
-    source_execution_path = root / "crates/jocforge-cli/src/source_execution.rs"
+    source_execution_path = root / "crates/jocforge-pipeline/src/source_execution.rs"
     source_execution = rust_code_without_comments(source_execution_path.read_text(encoding="utf-8"))
-    cli_output_path = root / "crates/jocforge-cli/src/output_publication.rs"
+    cli_output_path = root / "crates/jocforge-pipeline/src/output_publication.rs"
     cli_output_raw = cli_output_path.read_text(encoding="utf-8")
     cli_output = rust_code_without_comments(cli_output_raw)
-    programme_roots_path = root / "crates/jocforge-cli/src/programme_roots.rs"
+    programme_roots_path = root / "crates/jocforge-pipeline/src/programme_roots.rs"
     programme_roots = rust_code_without_comments(programme_roots_path.read_text(encoding="utf-8"))
     flat7x_candidate_branch_start = cli.find(
         "let payload_sequence = flat7x_emdf_payload_sequence"
@@ -13448,7 +13454,7 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         and "pub fn stage_receipted_i0_with_opaque_d0" in pair_output
         and "i0_source_generation: Flat7xSourceGeneration" in pair_output
         and "pub(crate) fn append_flat7x_pair" in rust_code_without_comments(
-            (root / "crates/jocforge-cli/src/output_publication.rs").read_text(encoding="utf-8")
+            (root / "crates/jocforge-pipeline/src/output_publication.rs").read_text(encoding="utf-8")
         )
         and "Flat7xD0PcmRows" in rust_code_without_comments(
             (root / "crates/jocforge-domain/src/profile/flat7x_source_role_map.rs").read_text(encoding="utf-8")
@@ -13699,8 +13705,8 @@ def check_f12_flat7x_cli_selector_slice(root,d):
     if not matches:return
     row=matches[0];params=row.get('parameters',{});selector=params.get('selector',{});profile=params.get('profile_resolution',{});projection=params.get('gtc_owner_projection',{})
     expected_manifest='a212684b565f93ca23ce5dbab458d6ee74cfb8e231b0ce7210db1da4e098aefa'
-    expected_files=['crates/jocforge-cli/src/main.rs','crates/jocforge-cli/src/encode_request.rs','crates/jocforge-cli/src/source_execution.rs','crates/jocforge-application/src/meter_source_bridge.rs','crates/jocforge-application/src/metadata_source_bridge.rs','crates/jocforge-domain/src/profile/production.rs','crates/jocforge-domain/src/profile/mod.rs','crates/jocforge-domain/src/joc/programme_state.rs','crates/jocforge-domain/src/joc/source_stage.rs','crates/jocforge-domain/src/joc/dispatch_state.rs','crates/jocforge-domain/src/joc/coefficient_fitting.rs','crates/jocforge-domain/src/joc/coefficient_representation.rs','crates/jocforge-domain/src/joc/coefficient_payload.rs','crates/jocforge-domain/src/joc/huffman.rs','crates/jocforge-domain/src/joc/huffman/id14_header.rs']
-    expected_tests=['crates/jocforge-cli/tests/joc_layout_selection.rs','crates/jocforge-cli/src/encode_request.rs','crates/jocforge-cli/tests/authorized_adm_callback.rs','crates/jocforge-domain/tests/joc_reconstruction_layout.rs']
+    expected_files=['crates/jocforge-cli/src/main.rs','crates/jocforge-pipeline/src/encode_request.rs','crates/jocforge-pipeline/src/source_execution.rs','crates/jocforge-application/src/meter_source_bridge.rs','crates/jocforge-application/src/metadata_source_bridge.rs','crates/jocforge-domain/src/profile/production.rs','crates/jocforge-domain/src/profile/mod.rs','crates/jocforge-domain/src/joc/programme_state.rs','crates/jocforge-domain/src/joc/source_stage.rs','crates/jocforge-domain/src/joc/dispatch_state.rs','crates/jocforge-domain/src/joc/coefficient_fitting.rs','crates/jocforge-domain/src/joc/coefficient_representation.rs','crates/jocforge-domain/src/joc/coefficient_payload.rs','crates/jocforge-domain/src/joc/huffman.rs','crates/jocforge-domain/src/joc/huffman/id14_header.rs']
+    expected_tests=['crates/jocforge-cli/tests/joc_layout_selection.rs','crates/jocforge-pipeline/src/encode_request.rs','crates/jocforge-cli/tests/authorized_adm_callback.rs','crates/jocforge-domain/tests/joc_reconstruction_layout.rs']
     expected_package='JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1';expected_providers=[f'outputs/IMPLEMENTER_SUPPLEMENTS/{expected_package}/{name}' for name in ('MANIFEST.json','PACKAGE-SEAL.json','CHECK.py','IMPLEMENTATION-SCOPE.md','GTC-OWNER-PROJECTION.json','INPUT-ONLY-VECTORS.json','PROFILE-SELECTOR-DELTA.json','SOURCE-RECEIPTS.json')]
     ck(row.get('implementation_requirement')is True and row.get('implementation_files')==expected_files and row.get('test_modules')==expected_tests and params.get('package_id')=='JOCFORGE-FLAT7X-CLI-SELECTION-PARTIAL-V1' and params.get('supplement_manifest_sha256')==expected_manifest and params.get('provider_files')==expected_providers and all((root/path).is_file() for path in expected_providers),'Flat7x CLI selector slice pins the approved package and all files')
     ck(row.get('implementation_status')=='LOCALLY_VERIFIED_CLI_SELECTOR_TO_JOC_HEADER_PROFILE_PATH__REAL_OUTPUT_WAITING_WASH_TIMELINE' and selector=={'option':'--joc-layout','accepted_value':'flat7x','omitted_behavior':'ExistingSelectedFivePointOne','compatible_rate_kbps':1024,'xml_option_added':False} and profile.get('variant')=='Flat7x' and profile.get('joc_dmx_config_idx')==1 and projection.get('mutable_owner_added') is False and projection.get('commit_stage_added') is False and projection.get('configuration_lifecycle')=='immutable per invocation','Flat7x CLI selection remains optional, immutable, and bound to index 1')
@@ -13719,7 +13725,7 @@ def check_f12_selected_rate_append_guard(root, d):
 
     entry = next(item for item in d['functional_entries'] if item['functional_id'] == 'F12')
     rate_slice = next(item for item in entry['direct_slices'] if item['slice_id'] == 'selected-six-rate-profile-frame-size-through-output')
-    source = rust_code_without_comments((root / 'crates/jocforge-cli/src/programme_roots.rs').read_text(encoding='utf-8'))
+    source = rust_code_without_comments((root / 'crates/jocforge-pipeline/src/programme_roots.rs').read_text(encoding='utf-8'))
     selected_extent_guard = 'append.bytes_written != self.output.output_configuration().frame_bytes()'
     fixed_extent_guard = 'append.bytes_written != 4_096'
     ck(selected_extent_guard in source and fixed_extent_guard not in source, 'F12 durable append extent follows selected F15 output frame bytes')
@@ -14104,7 +14110,7 @@ def check_f06_meter_schedule_candidate_slice(root,d):
 
  s=matches[0]
 
- expected_files=['crates/jocforge-domain/src/meter/standalone_root.rs','crates/jocforge-domain/src/meter/lfe_delay_ring.rs','crates/jocforge-domain/src/meter/programme_measurement.rs','crates/jocforge-domain/src/meter/measurement_receipt.rs','crates/jocforge-domain/src/meter/mod.rs','crates/jocforge-application/src/independent_meter_callback.rs','crates/jocforge-application/src/meter_source_bridge.rs','crates/jocforge-cli/src/independent_meter_callback.rs','crates/jocforge-cli/src/meter_source_bridge.rs','crates/jocforge-io/src/pcm/meter_source_cursor.rs']
+ expected_files=['crates/jocforge-domain/src/meter/standalone_root.rs','crates/jocforge-domain/src/meter/lfe_delay_ring.rs','crates/jocforge-domain/src/meter/programme_measurement.rs','crates/jocforge-domain/src/meter/measurement_receipt.rs','crates/jocforge-domain/src/meter/mod.rs','crates/jocforge-application/src/independent_meter_callback.rs','crates/jocforge-application/src/meter_source_bridge.rs','crates/jocforge-pipeline/src/independent_meter_callback.rs','crates/jocforge-pipeline/src/meter_source_bridge.rs','crates/jocforge-io/src/pcm/meter_source_cursor.rs']
 
  expected_tests=['crates/jocforge-domain/src/meter/standalone_root/tests.rs','crates/jocforge-cli/tests/authorized_adm_callback.rs']
 
@@ -14124,7 +14130,7 @@ def check_f06_meter_schedule_candidate_slice(root,d):
 
 
 
- driver=(root/'crates/jocforge-cli/src/independent_meter_callback.rs').read_text(encoding='utf-8');driver_code=rust_code_without_comments(driver)
+ driver=(root/'crates/jocforge-pipeline/src/independent_meter_callback.rs').read_text(encoding='utf-8');driver_code=rust_code_without_comments(driver)
 
  start=driver_code.index('pub fn stage_independent_meter_prepass(');end=driver_code.index('\nfn meter_binding(',start);schedule_code=driver_code[start:end]
 
@@ -14350,7 +14356,7 @@ def check_f06_provider_identity_application(root, d):
 
     ck("load_selected_meter_provider_roster" in roster_code and "EXPECTED-MEMBER-ROSTER.json" in roster_raw and "receipts.len() != expected.len()" in receipt_code and "receipts.sort_by" in receipt_code and "PAYLOAD_TAG" in receipt_code and "validated_value_words_sha256" in receipt_code and "into_meter_provider_set" in receipt_code, "F06 roster loader and deterministic local provider-set identity aggregator are materialized")
 
-    adapter_raw = (root / "crates/jocforge-cli/src/selected_meter_provider_identity.rs").read_text(encoding="utf-8")
+    adapter_raw = (root / "crates/jocforge-pipeline/src/selected_meter_provider_identity.rs").read_text(encoding="utf-8")
 
     adapter_code = rust_code_without_comments(adapter_raw)
 
@@ -14459,8 +14465,8 @@ def check_f15_flat7x_elementary_stream_stage(root, d):
     io_path = root / "crates/jocforge-io/src/flat7x_elementary_stream_stage.rs"
     test_path = root / "crates/jocforge-io/src/flat7x_elementary_stream_stage/tests.rs"
     fixture_path = root / "crates/jocforge-io/tests/fixtures/flat7x_elementary_stream_stage/INPUT-ONLY-VECTORS.json"
-    cli_output_path = root / "crates/jocforge-cli/src/output_publication.rs"
-    cli_path = root / "crates/jocforge-cli/src/encode_request.rs"
+    cli_output_path = root / "crates/jocforge-pipeline/src/output_publication.rs"
+    cli_path = root / "crates/jocforge-pipeline/src/encode_request.rs"
     domain_source = rust_code_without_comments(domain_path.read_text(encoding="utf-8"))
     io_source = rust_code_without_comments(io_path.read_text(encoding="utf-8"))
     cli_output_raw = cli_output_path.read_text(encoding="utf-8")
@@ -14470,12 +14476,12 @@ def check_f15_flat7x_elementary_stream_stage(root, d):
     test_source = (
         test_path.read_text(encoding="utf-8")
         + owner_test_path.read_text(encoding="utf-8")
-        + (root / "crates/jocforge-cli/src/output_publication/tests.rs").read_text(encoding="utf-8")
+        + (root / "crates/jocforge-pipeline/src/output_publication/tests.rs").read_text(encoding="utf-8")
     )
     vectors = json.loads(fixture_path.read_bytes())
     candidate_callers = [
         path
-        for path in (root / "crates/jocforge-cli/src").rglob("*.rs")
+        for path in (root / "crates/jocforge-pipeline/src").rglob("*.rs")
         if "stage_flat7x_elementary_stream_to_file(" in rust_code_without_comments(
             path.read_text(encoding="utf-8")
         )
@@ -14529,7 +14535,7 @@ def check_f15_flat7x_elementary_stream_stage(root, d):
         and "ExperimentalCandidateRequired" in finalizer_body
         and "return Err(OutputPublicationError::ExperimentalCandidateRequired)" in finalizer_body
         and "capture_flat7x_experimental_candidate(" in candidate_branch
-        and "return Ok(())" in candidate_branch
+        and "return Ok(RunProduct::Published)" in candidate_branch
         and "finalize_output(" not in candidate_branch
         and ".finish(finalized)" not in candidate_branch
         and "validate_flat7x_experimental_candidate_path(&output_path)" in cli
@@ -15181,7 +15187,7 @@ def check_partial_root_and_new_slice_mappings(root, d):
 
     app_cargo = tomllib.loads((root / "crates/jocforge-application/Cargo.toml").read_text(encoding="utf-8"))
 
-    cli_cargo = tomllib.loads((root / "crates/jocforge-cli/Cargo.toml").read_text(encoding="utf-8"))
+    cli_cargo = tomllib.loads((root / "crates/jocforge-pipeline/Cargo.toml").read_text(encoding="utf-8"))
 
     app_default = app_cargo.get("features", {}).get("default", [])
 
@@ -15195,7 +15201,7 @@ def check_partial_root_and_new_slice_mappings(root, d):
 
     cli_test_support_features = cli_cargo.get("features", {}).get("test-support", [])
 
-    cli_lib_source = (root / "crates/jocforge-cli/src/lib.rs").read_text(encoding="utf-8")
+    cli_lib_source = (root / "crates/jocforge-pipeline/src/lib.rs").read_text(encoding="utf-8")
 
     ck("test-support" not in cli_default_features and cli_test_support_features == ["jocforge-application/test-support"] and sum(line.strip() == "pub mod output_publication;" for line in cli_lib_source.splitlines()) == 1, "production output staging module is available without test-support")
 
@@ -15448,7 +15454,7 @@ def check_wash_f04_receiver_bundle(root,d):
 
     io_loader = (root / 'crates/jocforge-io/src/provider/spatial_audio.rs').read_text(encoding='utf-8')
 
-    cli_loader = (root / 'crates/jocforge-cli/src/selected_spatial_callback_providers.rs').read_text(encoding='utf-8')
+    cli_loader = (root / 'crates/jocforge-pipeline/src/selected_spatial_callback_providers.rs').read_text(encoding='utf-8')
 
     application = (root / 'crates/jocforge-application/src/spatial_callback.rs').read_text(encoding='utf-8')
 
@@ -16256,7 +16262,7 @@ def run(root=ROOT):
 
     ck('pub fn stage_meter_pcm_source_frame('in cursor_code and 'selected_resource_identity: MeterPcmSourceIdentity' in cursor_code and 'read_pcm24_chunk(first_sample, actual)' in cursor_code and 'decoded.actual_frames().value()' in cursor_code and 'if read_count != actual' in cursor_code and 'pub fn read_pcm24_chunk(' in riff_code and 'decode_pcm24_read_chunk_with_layout(' in riff_code and 'usize::from(self.channels)' in riff_code and 'usize::from(self.block_align)' in riff_code and 'pub fn decode_pcm24_read_chunk(' in riff_code and 'source bytes enter the cursor state' in cursor_source and 'source_sha256: [u8; 32]' in riff_code and 'source_sha256: Sha256::digest(bytes).into()' in riff_code,'F06OF cursor consumes typed chunk frames from the same borrowed in-memory source with dynamic PCM rows')
 
-    frame_source=(root/'crates/jocforge-domain/src/meter/source_frame.rs').read_text(encoding='utf-8');frame_code=rust_code_without_comments(frame_source);cli_bridge_source=(root/'crates/jocforge-cli/src/meter_source_bridge.rs').read_text(encoding='utf-8');application_bridge_source=(root/'crates/jocforge-application/src/meter_source_bridge.rs').read_text(encoding='utf-8');probe_source=(root/'crates/jocforge-cli/src/meter_callback_stage.rs').read_text(encoding='utf-8');auth_test=(root/'crates/jocforge-cli/tests/authorized_adm_callback.rs').read_text(encoding='utf-8');cursor_read_index_test=(root/'crates/jocforge-cli/tests/meter_source_bridge.rs').read_text(encoding='utf-8')
+    frame_source=(root/'crates/jocforge-domain/src/meter/source_frame.rs').read_text(encoding='utf-8');frame_code=rust_code_without_comments(frame_source);cli_bridge_source=(root/'crates/jocforge-pipeline/src/meter_source_bridge.rs').read_text(encoding='utf-8');application_bridge_source=(root/'crates/jocforge-application/src/meter_source_bridge.rs').read_text(encoding='utf-8');probe_source=(root/'crates/jocforge-pipeline/src/meter_callback_stage.rs').read_text(encoding='utf-8');auth_test=(root/'crates/jocforge-cli/tests/authorized_adm_callback.rs').read_text(encoding='utf-8');cursor_read_index_test=(root/'crates/jocforge-cli/tests/meter_source_bridge.rs').read_text(encoding='utf-8')
 
     expected_read_index_transition = ("    let source_read_index_before = before.read_index;\n"
 
@@ -16282,7 +16288,7 @@ def run(root=ROOT):
 
     ck({item['error_code']for item in cursor['error_outcomes']}=={'METER_SOURCE_EXTENT_INVALID','METER_SOURCE_PROFILE_MISMATCH','METER_SOURCE_EXTENT_MISMATCH','METER_SOURCE_IDENTITY_MISMATCH','METER_SOURCE_CALLBACK_ORDER','METER_SOURCE_READER_ERROR'}and any('SCP16/control16' in item for item in cursor['not_run'])and cursor['delivery_scope']=='PUBLIC_CLEANROOM_NO_PRIVATE_KEY','F06OF source cursor outcomes and remaining producer boundary')
 
-    bridge=direct[2];bridge_files=['crates/jocforge-cli/Cargo.toml','crates/jocforge-cli/src/lib.rs','crates/jocforge-cli/src/meter_source_bridge.rs','crates/jocforge-cli/src/meter_callback_stage.rs','crates/jocforge-application/src/meter_source_bridge.rs','crates/jocforge-application/src/lib.rs','crates/jocforge-domain/src/meter/mod.rs','crates/jocforge-domain/src/meter/source_frame.rs','crates/jocforge-domain/src/meter/lfe_delay_ring.rs','crates/jocforge-domain/src/meter/meter_prepass.rs','crates/jocforge-domain/src/meter/post_render_meter.rs','crates/jocforge-domain/src/meter/standalone_root.rs','crates/jocforge-io/src/pcm/meter_source_cursor.rs','crates/jocforge-io/src/pcm/riff_pcm24.rs','crates/jocforge-domain/src/joc/oamd/reader_target.rs'];bridge_tests=['crates/jocforge-cli/tests/meter_source_bridge.rs','crates/jocforge-domain/src/meter/lfe_delay_ring.rs','crates/jocforge-domain/src/meter/meter_prepass.rs','crates/jocforge-cli/tests/authorized_adm_callback.rs'];bridge_manifest='7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac'
+    bridge=direct[2];bridge_files=['crates/jocforge-cli/Cargo.toml','crates/jocforge-cli/src/lib.rs','crates/jocforge-pipeline/src/meter_source_bridge.rs','crates/jocforge-pipeline/src/meter_callback_stage.rs','crates/jocforge-application/src/meter_source_bridge.rs','crates/jocforge-application/src/lib.rs','crates/jocforge-domain/src/meter/mod.rs','crates/jocforge-domain/src/meter/source_frame.rs','crates/jocforge-domain/src/meter/lfe_delay_ring.rs','crates/jocforge-domain/src/meter/meter_prepass.rs','crates/jocforge-domain/src/meter/post_render_meter.rs','crates/jocforge-domain/src/meter/standalone_root.rs','crates/jocforge-io/src/pcm/meter_source_cursor.rs','crates/jocforge-io/src/pcm/riff_pcm24.rs','crates/jocforge-domain/src/joc/oamd/reader_target.rs'];bridge_tests=['crates/jocforge-cli/tests/meter_source_bridge.rs','crates/jocforge-domain/src/meter/lfe_delay_ring.rs','crates/jocforge-domain/src/meter/meter_prepass.rs','crates/jocforge-cli/tests/authorized_adm_callback.rs'];bridge_manifest='7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac'
 
     ck(bridge['slice_id']=='meter-source-oar-callback-handoff'and bridge['mapping_status']=='MATERIALIZED_DIRECT_BRIDGE_F06OF_ONE_AUTHORIZED_SPATIAL_TO_OAR_CALLBACK__PARENT_COMMIT_OPEN'and bridge['implementation_status']=='IO_TYPED_SOURCE_READ_INDEX_AND_REAL_G0_PROBE_LOCALLY_VERIFIED__INDEPENDENT_METER_PRODUCERS_OPEN'and bridge['owner']=='application'and any('owner/provider/k-exponent admission' in value.lower() for value in bridge['not_run']),'F06OF records the IO-owned source-read clock and g0 probe while independent Meter producers remain open')
 
@@ -16304,7 +16310,7 @@ def run(root=ROOT):
 
     reader_target_code=rust_code_without_comments((root/bridge_files[14]).read_text(encoding='utf-8'));auth_test=(root/bridge_tests[3]).read_text(encoding='utf-8')
 
-    probe_source=(root/'crates/jocforge-cli/src/meter_callback_stage.rs').read_text(encoding='utf-8');probe_code=rust_code_without_comments(probe_source)
+    probe_source=(root/'crates/jocforge-pipeline/src/meter_callback_stage.rs').read_text(encoding='utf-8');probe_code=rust_code_without_comments(probe_source)
 
     cursor_read_index_test=(root/'crates/jocforge-cli/tests/meter_source_bridge.rs').read_text(encoding='utf-8')
 
@@ -16314,11 +16320,11 @@ def run(root=ROOT):
 
     user_identity=bridge['parameters']['user_authorized_resource'];ck(user_identity=={'sha256':'7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1','bytes':743696526,'source_samples':6522906,'pcm_bytes_stored':False,'path_stored':False}and bridge['test_modules'][-1]=='crates/jocforge-cli/tests/authorized_adm_callback.rs'and bridge['test_inventory'][-1]['path']=='crates/jocforge-cli/tests/authorized_adm_callback.rs','F06OF user resource identity is hash/count only and the one-callback probe is inventoried')
 
-    app_manifest=(root/'crates/jocforge-application/Cargo.toml').read_text(encoding='utf-8');cli_manifest=(root/'crates/jocforge-cli/Cargo.toml').read_text(encoding='utf-8');ck('jocforge-io' not in app_manifest and 'jocforge-io = { path = "../jocforge-io" }' in cli_manifest and 'pub struct MeterSourceCallbackFrame<' in frame_source and 'pub struct MeterSourceIdentity' in frame_source,'F06OF preserves application-to-IO prohibition and uses the domain-owned frame adapter')
+    app_manifest=(root/'crates/jocforge-application/Cargo.toml').read_text(encoding='utf-8');cli_manifest=(root/'crates/jocforge-pipeline/Cargo.toml').read_text(encoding='utf-8');ck('jocforge-io' not in app_manifest and 'jocforge-io = { path = "../jocforge-io" }' in cli_manifest and 'pub struct MeterSourceCallbackFrame<' in frame_source and 'pub struct MeterSourceIdentity' in frame_source,'F06OF preserves application-to-IO prohibition and uses the domain-owned frame adapter')
 
     ck('pub fn current_lfe_words(&self)' in lfe_source and 'pub const fn upstream_generation(&self)' in lfe_source and 'pub const fn source_samples(&self)' in prepass_source and 'pub const fn normal_callback_count(&self)' in prepass_source and 'selected_pcm_callback_joins_direct_lfe_and_oar_clock_through_three_drains' in bridge_test and 'source_and_prepass_extents_must_match_before_prepass_staging' in bridge_test and 'source_frame_extent_must_match_the_prepared_adm_job' in bridge_test and 'meter_oar_bridge_accepts_atmos_mezz_adm_bwf_input_and_keeps_its_xml_identity' in bridge_test,'F06OF bridge input accessors and schedule/error tests preserve the authored AtmosMezz branch')
 
-    app_manifest=(root/'crates/jocforge-application/Cargo.toml').read_text(encoding='utf-8');cli_manifest=(root/bridge_files[0]).read_text(encoding='utf-8');ck(all((root/path).is_file()for path in bridge_files+bridge_tests)and 'jocforge-io' not in app_manifest and 'jocforge-io = { path = "../jocforge-io" }' in cli_manifest and 'jocforge-application = { path = "../jocforge-application" }' in cli_manifest,'F06OF CLI composition dependency edge and mapped paths')
+    app_manifest=(root/'crates/jocforge-application/Cargo.toml').read_text(encoding='utf-8');cli_manifest=(root/'crates/jocforge-pipeline/Cargo.toml').read_text(encoding='utf-8');ck(all((root/path).is_file()for path in bridge_files+bridge_tests)and 'jocforge-io' not in app_manifest and 'jocforge-io = { path = "../jocforge-io" }' in cli_manifest and 'jocforge-application = { path = "../jocforge-application", default-features = false }' in cli_manifest,'F06OF pipeline composition dependency edge and mapped paths')
 
     read_chunk=next(item for item in direct if item['slice_id']=='selected-pcm24-read-chunk-decoder');read_chunk_files=['crates/jocforge-io/src/pcm/riff_pcm24.rs'];read_chunk_tests=['crates/jocforge-io/tests/riff_pcm24.rs'];read_vectors=root/'outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json'
 
@@ -16772,7 +16778,7 @@ def run(root=ROOT):
 
  drc_code=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices']if s['slice_id']=='washed-drc-profile-string-code-map');verified_scopes+=(drc_code['implementation_status']=='LOCALLY_VERIFIED_EXPLICIT_TREE_AND_LINE_COMPR_CODES__PRODUCTION_HANDOFF_OPEN');ck(verified_scopes==76,'locally verified scoped-task count including explicit DRC profile-tree, Line DDP_COMPR and conditional U3 maps only')
 
- six_rate=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='selected-six-rate-profile-frame-size-through-output');six_rate_profile=rust_code_without_comments((root/'crates/jocforge-domain/src/profile/production.rs').read_text(encoding='utf-8'));six_rate_job=rust_code_without_comments((root/'crates/jocforge-domain/src/frontend/job_configuration.rs').read_text(encoding='utf-8'));six_rate_trial=rust_code_without_comments((root/'crates/jocforge-domain/src/codec/selected_frame_trial.rs').read_text(encoding='utf-8'));six_rate_output=rust_code_without_comments((root/'crates/jocforge-application/src/output_publication.rs').read_text(encoding='utf-8'));six_rate_owner=rust_code_without_comments((root/'crates/jocforge-domain/src/publication/output_owner.rs').read_text(encoding='utf-8'));six_rate_integrity=rust_code_without_comments((root/'crates/jocforge-domain/src/integrity/programme_owner.rs').read_text(encoding='utf-8'));six_rate_io=rust_code_without_comments((root/'crates/jocforge-io/src/atomic_output/mod.rs').read_text(encoding='utf-8'));six_rate_cli_raw=(root/'crates/jocforge-cli/src/encode_request.rs').read_text(encoding='utf-8');six_rate_cli=rust_code_without_comments(six_rate_cli_raw);six_rate_cli_main_raw=(root/'crates/jocforge-cli/src/main.rs').read_text(encoding='utf-8');six_rate_frame_tests=(root/'crates/jocforge-domain/src/codec/selected_frame_trial.rs').read_text(encoding='utf-8');six_rate_owner_tests=(root/'crates/jocforge-domain/tests/output_owner_rate_profile.rs').read_text(encoding='utf-8');six_rate_integrity_tests=(root/'crates/jocforge-domain/src/integrity/programme_owner/tests.rs').read_text(encoding='utf-8');six_rate_io_tests=(root/'crates/jocforge-io/src/atomic_output/tests.rs').read_text(encoding='utf-8')
+ six_rate=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='selected-six-rate-profile-frame-size-through-output');six_rate_profile=rust_code_without_comments((root/'crates/jocforge-domain/src/profile/production.rs').read_text(encoding='utf-8'));six_rate_job=rust_code_without_comments((root/'crates/jocforge-domain/src/frontend/job_configuration.rs').read_text(encoding='utf-8'));six_rate_trial=rust_code_without_comments((root/'crates/jocforge-domain/src/codec/selected_frame_trial.rs').read_text(encoding='utf-8'));six_rate_output=rust_code_without_comments((root/'crates/jocforge-application/src/output_publication.rs').read_text(encoding='utf-8'));six_rate_owner=rust_code_without_comments((root/'crates/jocforge-domain/src/publication/output_owner.rs').read_text(encoding='utf-8'));six_rate_integrity=rust_code_without_comments((root/'crates/jocforge-domain/src/integrity/programme_owner.rs').read_text(encoding='utf-8'));six_rate_io=rust_code_without_comments((root/'crates/jocforge-io/src/atomic_output/mod.rs').read_text(encoding='utf-8'));six_rate_cli_raw=(root/'crates/jocforge-pipeline/src/encode_request.rs').read_text(encoding='utf-8');six_rate_cli=rust_code_without_comments(six_rate_cli_raw);six_rate_cli_main_raw=(root/'crates/jocforge-cli/src/main.rs').read_text(encoding='utf-8');six_rate_frame_tests=(root/'crates/jocforge-domain/src/codec/selected_frame_trial.rs').read_text(encoding='utf-8');six_rate_owner_tests=(root/'crates/jocforge-domain/tests/output_owner_rate_profile.rs').read_text(encoding='utf-8');six_rate_integrity_tests=(root/'crates/jocforge-domain/src/integrity/programme_owner/tests.rs').read_text(encoding='utf-8');six_rate_io_tests=(root/'crates/jocforge-io/src/atomic_output/tests.rs').read_text(encoding='utf-8')
  six_rate_verified=(six_rate['implementation_status']=='LOCALLY_VERIFIED_SIX_RATE_ADMISSION_F12_F14_F15_IO__ALL_SIX_FULL_FILE_RATE_OUTPUTS_PUBLISHED__DEE_PARITY_PENDING'and len(six_rate['vectors']['case_pointers'])==6 and six_rate['parameters']['package_id']=='DEE-EC3-SIX-BITRATE-FRAME-HEADER-OBSERVATION-V1'and all(pathlib.Path(item).is_file()for item in six_rate['spec_files']+six_rate['implementation_files']+six_rate['test_modules']+six_rate['parameters']['provider_files']+six_rate['vectors']['authoritative_vectors'])and all(rate in six_rate_profile for rate in('Kbps384','Kbps448','Kbps576','Kbps640','Kbps768','Kbps1024'))and 'from_xml_token' in six_rate_job and 'SELECTED_BIT_RATE_KBPS' not in six_rate_job and 'write_selected_eac3_fixed_prefix(writer, plan.frame_size.code())' in six_rate_trial and 'canonical_template' in six_rate_output and '.frame_bytes()' in six_rate_output and 'self.configuration.frame_bytes' in six_rate_owner and 'integrity_profile_id(codec_rate)' in six_rate_integrity and 'proposal.frame_bytes()' in six_rate_io and 'pub fn run_with_data_rate(' in six_rate_cli and '<data_rate>{}</data_rate>' in six_rate_cli_raw and re.search(r'#\[arg\(long\b[^]]*?(?:\[[^]]*\][^]]*)?\)\]\s*data_rate\s*:', six_rate_cli_main_raw) is not None and 'generated_job_xml_preserves_each_explicit_carrier_rate' in six_rate_cli_raw and '135_168' in six_rate_frame_tests and 'output_owner_keeps_each_selected_rate_frame_extent' in six_rate_owner_tests and 'integrity_owner_rate_identity_and_crc_window_follow_each_f12_frame_extent' in six_rate_integrity_tests and 'selected_append_reads_back_and_finalizes_each_supported_frame_extent' in six_rate_io_tests)
  ck(six_rate_verified,'six explicit single-rate rows reach F12/F14/F15 sizing and variable durable output while other dimensions and end-to-end encoding remain open')
  verified_scopes+=six_rate_verified;flat7x=next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F12')['direct_slices']if s['slice_id']=='flat7x-reconstruction-layout-profile-and-header-index');verified_scopes+=(flat7x['implementation_status']=='LOCALLY_VERIFIED_1024_KBPS_PROFILE_RESOLUTION_AND_U3_HEADER_WRITE__FULL_OUTPUT_ACCEPTANCE_NOT_RUN');ck(verified_scopes==78,'locally verified scoped-task count including the Flat7x profile/header field slice')
@@ -16841,7 +16847,7 @@ def run(root=ROOT):
 
  ck(all(name in notices and checksum in notices for name,checksum in [('num-bigint','a5e44f723f1133c9deac646763579fdb3ac745e418f2a7af9cd0c431da1f20b9'),('num-integer','7ce2d95d4b3734dc35aa2f45e1aa22cd416814592a4f9d9205e11affd5b8e10b'),('num-traits','071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841'),('autocfg','f2032f911046de80f0a198e0901378627c33f59ea0ac00e363d481118bd70a53'),('roxmltree','f1964b10c76125c36f8afe190065a4bf9a87bf324842c05701330bba9f1cacbb')]),'third-party and transitive dependency notices')
 
- deps={'domain':{'earshot','num-bigint','sha2','serde_json','roxmltree','serde','rayon','multiversion'},'application':{'jocforge-domain','sha2','serde_json'},'io':{'jocforge-domain','sha2','serde_json'},'cli':{'jocforge-application','jocforge-io','clap','clap_complete','tempfile','fs2','serde','serde_json','sha2'},'validation':{'jocforge-domain','jocforge-application','jocforge-io'}}
+ deps={'domain':{'earshot','num-bigint','sha2','serde_json','roxmltree','serde','rayon','multiversion'},'application':{'jocforge-domain','sha2','serde_json'},'io':{'jocforge-domain','sha2','serde_json'},'pipeline':{'jocforge-application','jocforge-io','fs2','tempfile','serde','serde_json','sha2'},'cli':{'jocforge-application','jocforge-pipeline','clap','clap_complete'},'validation':{'jocforge-domain','jocforge-application','jocforge-io'},'wasm':{'jocforge-domain','jocforge-application','jocforge-io','jocforge-pipeline'}}
 
  approved_fallback_source_files={path for entry in es if entry['functional_id']=='F03S' for direct in entry.get('direct_slices',[]) if direct.get('slice_id')in('outer-energy-fallback','source-geometry-to-compact-outer-matrix') for path in direct.get('implementation_files',[])}
 
@@ -16849,13 +16855,16 @@ def run(root=ROOT):
 
  for n,w in deps.items():
 
-  c=root/'crates'/f'jocforge-{n}';cfg=tomllib.loads((c/'Cargo.toml').read_text(encoding='utf-8'));ck(set(cfg.get('dependencies',{}))==w,'dependency '+n);ck((c/'build.rs').exists()==(n=='cli'),'provider embedding build script belongs to CLI')
+  c=root/'crates'/f'jocforge-{n}';cfg=tomllib.loads((c/'Cargo.toml').read_text(encoding='utf-8'));declared=set(cfg.get('dependencies',{}));
+  if n in ('cli','pipeline'):
+   [declared.update(spec.get('dependencies',{})) for spec in cfg.get('target',{}).values()]
+  ck(declared==w,'dependency '+n);ck((c/'build.rs').exists()==(n=='pipeline'),'provider embedding build script belongs to the pipeline crate')
 
   for p in(c/'src').rglob('*.rs'):
 
    relative_source=p.relative_to(root).as_posix();s=p.read_text(encoding='utf-8').lower();guard=rust_code_without_comments(s).replace('deployed_compat','').replace('deployedcompat','')
 
-   if relative_source=='crates/jocforge-cli/src/meter_prepass.rs':
+   if relative_source=='crates/jocforge-pipeline/src/meter_prepass.rs':
     guard=guard.replace('include!(concat!(env!(', 'embedded_provider_manifest(', 1)
    if relative_source=='crates/jocforge-application/src/output_publication/tests.rs':guard=guard.replace('deployed compatibility provider projection','')
 

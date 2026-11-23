@@ -271,13 +271,11 @@ version = "1.1.0"
 dependencies = [
  "clap",
  "clap_complete",
- "fs2",
  "jocforge-application",
  "jocforge-domain",
  "jocforge-io",
- "serde",
+ "jocforge-pipeline",
  "serde_json",
- "sha2",
  "tempfile",
 ]
 
@@ -316,12 +314,36 @@ dependencies = [
 ]
 
 [[package]]
+name = "jocforge-pipeline"
+version = "1.1.0"
+dependencies = [
+ "fs2",
+ "jocforge-application",
+ "jocforge-domain",
+ "jocforge-io",
+ "serde",
+ "serde_json",
+ "sha2",
+ "tempfile",
+]
+
+[[package]]
 name = "jocforge-validation"
 version = "1.1.0"
 dependencies = [
  "jocforge-application",
  "jocforge-domain",
  "jocforge-io",
+]
+
+[[package]]
+name = "jocforge-wasm"
+version = "1.1.0"
+dependencies = [
+ "jocforge-application",
+ "jocforge-domain",
+ "jocforge-io",
+ "jocforge-pipeline",
 ]
 
 [[package]]

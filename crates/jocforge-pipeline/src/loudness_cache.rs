@@ -6,6 +6,7 @@ use crate::{
     meter_prepass::{PROVIDER_ASSETS, run_meter_with_providers},
     progress::ProgressBar,
 };
+#[cfg(not(target_arch = "wasm32"))]
 use fs2::FileExt;
 use jocforge_application::{
     PreparedJobInput,
@@ -20,14 +21,15 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::{
     env, fs,
-    io::{self, Read, Write},
+    io::{self, Read},
     path::{Path, PathBuf},
     sync::{
         LazyLock,
         atomic::{AtomicBool, Ordering},
     },
-    time::Duration,
 };
+#[cfg(not(target_arch = "wasm32"))]
+use std::{io::Write, time::Duration};
 
 // Bump when a meter DSP change alters any finalized measurement word.
 const METER_REVISION: &str = "adm-loudness-v1";
@@ -133,46 +135,65 @@ fn load(
 }
 
 fn store(path: &Path, result: MeasuredProgramme) -> io::Result<()> {
-    let mut temp = tempfile::NamedTempFile::new_in(path.parent().unwrap_or(Path::new(".")))?;
-    serde_json::to_writer(
-        &mut temp,
-        &CacheFile {
-            checksum: result.checksum(),
-            result,
-        },
-    )?;
-    temp.flush()?;
-    temp.persist(path)?;
-    Ok(())
+    #[cfg(target_arch = "wasm32")]
+    {
+        let _ = (path, result);
+        return Ok(());
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        let mut temp = tempfile::NamedTempFile::new_in(path.parent().unwrap_or(Path::new(".")))?;
+        serde_json::to_writer(
+            &mut temp,
+            &CacheFile {
+                checksum: result.checksum(),
+                result,
+            },
+        )?;
+        temp.flush()?;
+        temp.persist(path)?;
+        Ok(())
+    }
 }
 
 fn lock(path: &Path, cancelled: &AtomicBool, progress: Progress<'_>) -> io::Result<fs::File> {
-    let file = fs::OpenOptions::new()
-        .read(true)
-        .write(true)
-        .create(true)
-        .truncate(false)
-        .open(path)?;
-    let mut waiting = false;
-    loop {
-        if cancelled.load(Ordering::Relaxed) {
-            return Err(io::ErrorKind::Interrupted.into());
-        }
-        match FileExt::try_lock_exclusive(&file) {
-            Ok(()) => return Ok(file),
-            Err(ref error)
-                if error.raw_os_error() == fs2::lock_contended_error().raw_os_error() =>
-            {
-                if !waiting {
-                    eprintln!("Waiting for a matching loudness measurement");
-                    if let Some(report) = progress {
-                        report(EncodeEvent::WaitingForLoudness);
-                    }
-                    waiting = true;
-                }
-                std::thread::sleep(Duration::from_millis(80));
+    #[cfg(target_arch = "wasm32")]
+    {
+        let _ = (path, cancelled, progress);
+        return Err(io::Error::new(
+            io::ErrorKind::Unsupported,
+            "browser encode does not lock a loudness cache",
+        ));
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        let file = fs::OpenOptions::new()
+            .read(true)
+            .write(true)
+            .create(true)
+            .truncate(false)
+            .open(path)?;
+        let mut waiting = false;
+        loop {
+            if cancelled.load(Ordering::Relaxed) {
+                return Err(io::ErrorKind::Interrupted.into());
             }
-            Err(error) => return Err(error),
+            match FileExt::try_lock_exclusive(&file) {
+                Ok(()) => return Ok(file),
+                Err(ref error)
+                    if error.raw_os_error() == fs2::lock_contended_error().raw_os_error() =>
+                {
+                    if !waiting {
+                        eprintln!("Waiting for a matching loudness measurement");
+                        if let Some(report) = progress {
+                            report(EncodeEvent::WaitingForLoudness);
+                        }
+                        waiting = true;
+                    }
+                    std::thread::sleep(Duration::from_millis(80));
+                }
+                Err(error) => return Err(error),
+            }
         }
     }
 }
@@ -181,7 +202,7 @@ pub(crate) fn measure_for_encode(
     prepared: &PreparedJobInput,
     parsed: &ParsedRiffPcm24<'_>,
     attempt: AttemptId,
-    supplements: &Path,
+    supplements: jocforge_io::provider::ProviderTree<'_>,
     progress: Progress<'_>,
     cancelled: &AtomicBool,
 ) -> Result<AcceptedMeasurement, EncodeRequestError> {

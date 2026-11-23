@@ -1,16 +1,12 @@
 // pattern: Imperative Shell
-//! CLI composition helpers for the selected input adapters.
+//! Process entry for the selected-profile encode pipeline.
+//!
+//! The encode pipeline itself lives in the `jocforge-pipeline` library. This crate owns argument
+//! parsing, process exit codes and the binary entry only; it re-exports the pipeline modules under
+//! the names the CLI and its integration tests already use.
 
-mod cmaf;
-pub mod encode_request;
-pub mod independent_meter_callback;
-mod loudness_cache;
-pub mod meter_callback_stage;
-pub mod meter_prepass;
-pub mod meter_source_bridge;
-pub mod output_publication;
-pub(crate) mod programme_roots;
-pub(crate) mod progress;
-pub mod selected_meter_provider_identity;
-pub mod selected_spatial_callback_providers;
-pub mod source_execution;
+pub use jocforge_pipeline::{
+    encode_request, independent_meter_callback, meter_callback_stage, meter_prepass,
+    meter_source_bridge, output_publication, selected_meter_provider_identity,
+    selected_spatial_callback_providers, source_execution,
+};

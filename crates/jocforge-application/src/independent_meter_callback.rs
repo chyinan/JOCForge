@@ -116,17 +116,17 @@ pub enum SpatialCallbackExecutionError {
 pub fn continue_spatial_production_callback_on_worker(
     input: SpatialProductionCallbackInputs<'_>,
 ) -> Result<SpatialProductionCallbackProposal, SpatialCallbackExecutionError> {
-    std::thread::scope(|scope| {
-        let worker = std::thread::Builder::new()
-            .name("jocforge-spatial-callback".to_owned())
-            .stack_size(16 * 1024 * 1024)
-            .spawn_scoped(scope, || continue_spatial_production_callback(input))
-            .map_err(|_| SpatialCallbackExecutionError::WorkerUnavailable)?;
-        worker
-            .join()
-            .map_err(|_| SpatialCallbackExecutionError::WorkerPanicked)?
-            .map_err(SpatialCallbackExecutionError::Spatial)
-    })
+    match crate::worker::run_on_worker("jocforge-spatial-callback", 16 * 1024 * 1024, || {
+        continue_spatial_production_callback(input)
+    }) {
+        Ok(result) => result.map_err(SpatialCallbackExecutionError::Spatial),
+        Err(crate::worker::WorkerRunError::Unavailable) => {
+            Err(SpatialCallbackExecutionError::WorkerUnavailable)
+        }
+        Err(crate::worker::WorkerRunError::Panicked) => {
+            Err(SpatialCallbackExecutionError::WorkerPanicked)
+        }
+    }
 }
 
 /// Selected mathematical P11/P15 values for callback inputs, without runtime layout evidence.

@@ -1,12 +1,10 @@
 // pattern: Imperative Shell
 //! Loads the Wash-approved MetadataOwner provider and wrapper package from a caller-selected root.
 
+use super::tree::{ProviderReadError, ProviderTree};
 use serde_json::Value;
 use sha2::{Digest, Sha256};
-use std::{
-    fmt, fs, io,
-    path::{Path, PathBuf},
-};
+use std::{fmt, io, sync::Arc};
 
 const PACKAGE_MANIFEST: &str = "MANIFEST.json";
 const PACKAGE_IDENTITY: &str = "metadata-owner-root.selected-48k-1536-four-queue.v2";
@@ -84,8 +82,8 @@ struct PackageFileSpec {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct MetadataOwnerProviderBundle {
     manifest_sha256: &'static str,
-    provider_file: Vec<u8>,
-    wrapper_file: Vec<u8>,
+    provider_file: Arc<[u8]>,
+    wrapper_file: Arc<[u8]>,
 }
 
 impl MetadataOwnerProviderBundle {
@@ -168,14 +166,9 @@ impl std::error::Error for MetadataOwnerProviderLoadError {
 /// Reads and verifies the complete Wash-approved MetadataOwner package, then returns its two
 /// runtime provider payloads. No provider is installed and no owner state is created here.
 pub fn load_metadata_owner_provider_bundle(
-    package_root: impl AsRef<Path>,
+    tree: ProviderTree<'_>,
 ) -> Result<MetadataOwnerProviderBundle, MetadataOwnerProviderLoadError> {
-    let package_root = package_root
-        .as_ref()
-        .canonicalize()
-        .map_err(MetadataOwnerProviderLoadError::PackageRoot)?;
-    let manifest_path = package_file(&package_root, PACKAGE_MANIFEST)?;
-    let manifest_bytes = read_package_file(&manifest_path, PACKAGE_MANIFEST)?;
+    let manifest_bytes = read_member(tree, PACKAGE_MANIFEST)?;
     if sha256_hex(&manifest_bytes) != PACKAGE_MANIFEST_SHA256 {
         return Err(MetadataOwnerProviderLoadError::ManifestIdentity);
     }
@@ -210,8 +203,7 @@ pub fn load_metadata_owner_provider_bundle(
             });
         }
 
-        let path = package_file(&package_root, spec.relative_path)?;
-        let payload = read_package_file(&path, spec.relative_path)?;
+        let payload = read_member(tree, spec.relative_path)?;
         if payload.len() != spec.bytes || sha256_hex(&payload) != spec.sha256 {
             return Err(MetadataOwnerProviderLoadError::MemberIdentity {
                 relative_path: spec.relative_path,
@@ -231,30 +223,18 @@ pub fn load_metadata_owner_provider_bundle(
     })
 }
 
-fn package_file(
-    package_root: &Path,
+fn read_member(
+    tree: ProviderTree<'_>,
     relative_path: &'static str,
-) -> Result<PathBuf, MetadataOwnerProviderLoadError> {
-    let resolved = package_root
-        .join(relative_path)
-        .canonicalize()
-        .map_err(|source| MetadataOwnerProviderLoadError::FileRead {
+) -> Result<Arc<[u8]>, MetadataOwnerProviderLoadError> {
+    tree.read(relative_path).map_err(|error| match error {
+        ProviderReadError::EscapesRoot => {
+            MetadataOwnerProviderLoadError::PackagePathEscapesRoot { relative_path }
+        }
+        error => MetadataOwnerProviderLoadError::FileRead {
             relative_path,
-            source,
-        })?;
-    if !resolved.starts_with(package_root) {
-        return Err(MetadataOwnerProviderLoadError::PackagePathEscapesRoot { relative_path });
-    }
-    Ok(resolved)
-}
-
-fn read_package_file(
-    path: &Path,
-    relative_path: &'static str,
-) -> Result<Vec<u8>, MetadataOwnerProviderLoadError> {
-    fs::read(path).map_err(|source| MetadataOwnerProviderLoadError::FileRead {
-        relative_path,
-        source,
+            source: error.into_io_error(relative_path),
+        },
     })
 }
 
@@ -271,6 +251,7 @@ fn sha256_hex(bytes: &[u8]) -> String {
 #[cfg(test)]
 mod tests {
     use super::{MetadataOwnerProviderLoadError, load_metadata_owner_provider_bundle};
+    use crate::provider::tree::ProviderTree;
     use std::{
         fs,
         path::{Path, PathBuf},
@@ -325,7 +306,8 @@ mod tests {
 
     #[test]
     fn loads_the_full_approved_package_and_returns_only_runtime_provider_payloads() {
-        let bundle = load_metadata_owner_provider_bundle(approved_package_root()).unwrap();
+        let root = approved_package_root();
+        let bundle = load_metadata_owner_provider_bundle(ProviderTree::directory(&root)).unwrap();
         assert_eq!(
             bundle.manifest_sha256(),
             "94774c412ce8457f3220d84e4b3386c0b48c21837d4a4943570791bb66f034b3"
@@ -342,7 +324,7 @@ mod tests {
         provider[0] ^= 1;
         fs::write(provider_path, provider).unwrap();
         assert!(matches!(
-            load_metadata_owner_provider_bundle(package.root()),
+            load_metadata_owner_provider_bundle(ProviderTree::directory(package.root())),
             Err(MetadataOwnerProviderLoadError::MemberIdentity {
                 relative_path: "metadata-public-provider.json"
             })

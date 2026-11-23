@@ -1,0 +1,33 @@
+name: WASM
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wasm-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  wasm:
+    name: wasm32
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Install Rust and the WebAssembly target
+        run: |
+          rustup toolchain install stable --profile minimal --target wasm32-unknown-unknown
+          rustup default stable
+      - name: Native bridge tests
+        run: cargo test -p jocforge-wasm --locked
+      - name: Build the single-thread wasm32 bridge
+        run: cargo build -p jocforge-wasm --release --locked --target wasm32-unknown-unknown
+      - name: Instantiate WASM and exercise the exported ABI
+        run: node scripts/test-wasm.mjs target/wasm32-unknown-unknown/release/jocforge_wasm.wasm

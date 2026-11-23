@@ -1,14 +1,12 @@
 // pattern: Imperative Shell
 //! Loads the approved non-exhaustive direct Meter provider inventory from a caller package root.
 
+use super::tree::{ProviderReadError, ProviderTree};
 use jocforge_domain::meter::direct_provider_inventory::{
     MeterDirectProviderInventory, MeterDirectProviderInventoryError, MeterDirectProviderPayloads,
     validate_meter_direct_provider_inventory,
 };
-use std::{
-    fmt, fs, io,
-    path::{Path, PathBuf},
-};
+use std::{fmt, io, sync::Arc};
 
 const PACKAGE_MANIFEST: &str = "MANIFEST.json";
 const TRUE_PEAK: &str = "parameters/meter-truepeak-authorized-v1.json";
@@ -69,22 +67,16 @@ impl std::error::Error for MeterDirectProviderLoadError {
 /// treat that upstream dependency index as a loaded numerical provider. The returned inventory
 /// is intentionally not the complete transitive Meter provider set.
 pub fn load_meter_direct_provider_inventory(
-    package_root: impl AsRef<Path>,
+    tree: ProviderTree<'_>,
 ) -> Result<MeterDirectProviderInventory, MeterDirectProviderLoadError> {
-    let package_root = package_root.as_ref();
-    let canonical_root = package_root
-        .canonicalize()
-        .map_err(MeterDirectProviderLoadError::PackageRoot)?;
-    let manifest_path = package_file(&canonical_root, PACKAGE_MANIFEST)?;
-    let manifest = read_package_file(&manifest_path, PACKAGE_MANIFEST)?;
-    let true_peak = read_provider_file(&canonical_root, TRUE_PEAK)?;
-    let oar_geometry = read_provider_file(&canonical_root, OAR_GEOMETRY)?;
-    let log_constants = read_provider_file(&canonical_root, LOG_CONSTANTS)?;
-    let k_state_bounds = read_provider_file(&canonical_root, K_STATE_BOUNDS)?;
-    let k_matrix = read_provider_file(&canonical_root, K_MATRIX)?;
-    let shared_dv32 = read_provider_file(&canonical_root, SHARED_DV32)?;
-    let installed48_dependency_index =
-        read_provider_file(&canonical_root, INSTALLED48_DEPENDENCY_INDEX)?;
+    let manifest = read_member(tree, PACKAGE_MANIFEST)?;
+    let true_peak = read_member(tree, TRUE_PEAK)?;
+    let oar_geometry = read_member(tree, OAR_GEOMETRY)?;
+    let log_constants = read_member(tree, LOG_CONSTANTS)?;
+    let k_state_bounds = read_member(tree, K_STATE_BOUNDS)?;
+    let k_matrix = read_member(tree, K_MATRIX)?;
+    let shared_dv32 = read_member(tree, SHARED_DV32)?;
+    let installed48_dependency_index = read_member(tree, INSTALLED48_DEPENDENCY_INDEX)?;
 
     validate_meter_direct_provider_inventory(
         &manifest,
@@ -101,44 +93,25 @@ pub fn load_meter_direct_provider_inventory(
     .map_err(MeterDirectProviderLoadError::Inventory)
 }
 
-fn read_provider_file(
-    package_root: &Path,
+fn read_member(
+    tree: ProviderTree<'_>,
     relative_path: &'static str,
-) -> Result<Vec<u8>, MeterDirectProviderLoadError> {
-    let path = package_file(package_root, relative_path)?;
-    read_package_file(&path, relative_path)
-}
-
-fn package_file(
-    package_root: &Path,
-    relative_path: &'static str,
-) -> Result<PathBuf, MeterDirectProviderLoadError> {
-    let resolved = package_root
-        .join(relative_path)
-        .canonicalize()
-        .map_err(|source| MeterDirectProviderLoadError::FileRead {
+) -> Result<Arc<[u8]>, MeterDirectProviderLoadError> {
+    tree.read(relative_path).map_err(|error| match error {
+        ProviderReadError::EscapesRoot => {
+            MeterDirectProviderLoadError::PackagePathEscapesRoot { relative_path }
+        }
+        error => MeterDirectProviderLoadError::FileRead {
             relative_path,
-            source,
-        })?;
-    if !resolved.starts_with(package_root) {
-        return Err(MeterDirectProviderLoadError::PackagePathEscapesRoot { relative_path });
-    }
-    Ok(resolved)
-}
-
-fn read_package_file(
-    path: &Path,
-    relative_path: &'static str,
-) -> Result<Vec<u8>, MeterDirectProviderLoadError> {
-    fs::read(path).map_err(|source| MeterDirectProviderLoadError::FileRead {
-        relative_path,
-        source,
+            source: error.into_io_error(relative_path),
+        },
     })
 }
 
 #[cfg(test)]
 mod tests {
     use super::{MeterDirectProviderLoadError, load_meter_direct_provider_inventory};
+    use crate::provider::tree::ProviderTree;
     use std::{
         fs,
         path::{Path, PathBuf},
@@ -221,8 +194,9 @@ mod tests {
     #[test]
     fn loads_the_actual_approved_direct_assets_from_a_caller_package_root() {
         let package = TemporaryPackage::from_approved_assets();
-        let inventory = load_meter_direct_provider_inventory(package.root())
-            .expect("the approved direct subset loads and validates");
+        let inventory =
+            load_meter_direct_provider_inventory(ProviderTree::directory(package.root()))
+                .expect("the approved direct subset loads and validates");
         assert_eq!(inventory.direct_assets().len(), 7);
         assert_eq!(inventory.k_matrix().complete_words().len(), 72);
         assert_eq!(
@@ -242,7 +216,7 @@ mod tests {
         bytes[0] ^= 1;
         fs::write(changed_path, bytes).unwrap();
         assert!(matches!(
-            load_meter_direct_provider_inventory(package.root()),
+            load_meter_direct_provider_inventory(ProviderTree::directory(package.root())),
             Err(MeterDirectProviderLoadError::Inventory(_))
         ));
     }

@@ -18,6 +18,7 @@ use jocforge_domain::{
         PublishedAuIndex, publication_for_source,
     },
 };
+pub use plan_admission::MEMORY_DESTINATION_SCHEME;
 use sha2::{Digest, Sha256};
 use std::sync::Arc;
 
@@ -229,6 +230,30 @@ pub fn admit_selected_f15_plan_for_profile(
     )
     .map_err(|_| crate::EncodeError::F15AdmissionRejected)?;
     Ok(AdmittedProductionPlan { inner })
+}
+
+/// Browser-target diagnostic: reports which F15 admission factor rejected a plan.
+///
+/// The typed admission error is flattened into `EncodeError::F15AdmissionRejected` for callers, so
+/// a target without a log channel asks for the reason explicitly while the browser encode is
+/// being brought up.
+#[cfg(target_arch = "wasm32")]
+pub fn admission_rejection_detail(
+    input: &crate::PreparedJobInput,
+    profile: ResolvedEncodingProfile,
+    attempt_id: AttemptId,
+    staging_owner_id: &OutputStagingOwnerId,
+    final_destination: &str,
+) -> Option<String> {
+    plan_admission::admit_selected_f15_plan_for_profile(
+        input,
+        profile,
+        attempt_id,
+        staging_owner_id,
+        final_destination,
+    )
+    .err()
+    .map(|error| format!("{error:?}"))
 }
 
 #[cfg(test)]
