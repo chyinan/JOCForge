@@ -13502,9 +13502,9 @@ def check_f12_flat7x_source_bound_i0_d0_au_candidate(root, d):
         and "Cursor<Vec<u8>>" in memory_sink
         and "write_and_readback_sink(" in memory_sink
         and "|_| Ok(true)" in memory_sink
-        and "in_memory_sink_rejects_non_durable_fully_receipted_pair_commit" in pair_io_source
+        and "in_memory_sink_commits_a_receipted_pair_with_complete_evidence" in pair_io_source
         and "Flat7xAuAppendTestFixture::positive_pair" in pair_io
-        and "Flat7xAuAttemptRetirementReason::AppendReceiptCandidateMismatch" in pair_io
+        and "after.receipt().file_fsync()" in pair_io
         and "Cursor::new(Vec::new())" in pair_io,
         "fully receipted F15 pair reaches the shared I/O core through a memory-only sink whose readback is its own durable evidence",
     )

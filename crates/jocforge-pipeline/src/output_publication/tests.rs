@@ -12,10 +12,7 @@ use jocforge_application::{ProgrammeId, SelectedWaveDescriptor};
 use jocforge_domain::{
     joc::emdf::metadata_owner::test_support::Flat7xReceiptGateMetadataTestInputs,
     profile::Flat7xI0D0TargetPlan,
-    publication::{
-        Flat7xAuAppendReceiptCandidate, Flat7xAuAttemptRetirementReason,
-        test_support::Flat7xAuAppendTestFixture,
-    },
+    publication::{Flat7xAuAppendReceiptCandidate, test_support::Flat7xAuAppendTestFixture},
     timeline::CodecSourceIndex,
 };
 use serde_json::Value;
@@ -270,8 +267,14 @@ fn flat7x_staging_rejects_programme_mismatch_before_memory_write_or_file_open() 
     assert!(!staging_path.exists());
 }
 
+/// An owned buffer has no filesystem to sync into: the attempt bytes and the readback are the same
+/// storage, so the memory sink answers durable and the matched pair commits. The browser path
+/// depends on this — a rejection here retires every fully receipted pair.
+///
+/// The shadow staging file must still never appear: routing to memory means the staging path is
+/// untouched, which is the property this test exists to protect now.
 #[test]
-fn flat7x_staging_routes_receipted_pair_to_memory_sink_and_rejects_nondurable_commit() {
+fn flat7x_staging_routes_receipted_pair_to_memory_sink_without_touching_the_filesystem() {
     let fixture = flat7x_receipt_pair_fixture();
     let binding = flat7x_output_binding("wash-synthetic-programme-01", AttemptId::new(7));
     let directory = unused_staging_directory();
@@ -280,27 +283,15 @@ fn flat7x_staging_routes_receipted_pair_to_memory_sink_and_rejects_nondurable_co
     let expected_bytes = fixture.expected_bytes();
     let mut sink = Cursor::new(Vec::new());
 
-    let failure = match staging.append_flat7x_au_to_memory_for_test(
-        &binding,
-        &mut sink,
-        fixture.append_proposal(fixture.attempt_id()).unwrap(),
-    ) {
-        Err(failure) => failure,
-        Ok(_) => panic!("an in-memory sink cannot attest a durable append"),
-    };
+    let after = staging
+        .append_flat7x_au_to_memory_for_test(
+            &binding,
+            &mut sink,
+            fixture.append_proposal(fixture.attempt_id()).unwrap(),
+        )
+        .expect("the matched pair should commit into the owned buffer");
 
-    let Flat7xOutputAppendFailure::MemoryAppend(failure) = failure else {
-        panic!("the matched pair should reach the in-memory IO adapter")
-    };
-    assert!(matches!(
-        failure.error(),
-        jocforge_io::flat7x_au_append::Flat7xAuAppendIoError::ReceiptCandidateRejected
-    ));
-    assert_eq!(
-        failure.retirement().reason(),
-        Flat7xAuAttemptRetirementReason::AppendReceiptCandidateMismatch
-    );
-    assert!(failure.retirement().committed_owner_unchanged());
+    assert!(after.receipt().file_fsync());
     assert_eq!(sink.into_inner(), expected_bytes);
     assert!(!staging_path.exists());
 }

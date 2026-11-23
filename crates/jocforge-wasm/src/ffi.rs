@@ -230,6 +230,15 @@ pub extern "C" fn jocforge_wasm_encoder_set_layout(handle: u32, layout: u32) {
     });
 }
 
+/// Selects the native flat-7.1 Surround EX declaration: 0 = unspecified,
+/// 1 = not encoded, 2 = encoded.
+#[unsafe(no_mangle)]
+pub extern "C" fn jocforge_wasm_encoder_set_surround_ex(handle: u32, surround_ex: u32) {
+    let _ = with_encoder(handle, |encoder| {
+        encoder.set_surround_ex(u8::try_from(surround_ex).unwrap_or(1));
+    });
+}
+
 #[unsafe(no_mangle)]
 pub extern "C" fn jocforge_wasm_encoder_set_job_xml(handle: u32, pointer: u32, length: u32) -> i32 {
     if length == 0 || length > MAX_WASM_ALLOCATION_BYTES as u32 {

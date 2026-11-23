@@ -51,6 +51,7 @@ pub struct Encoder {
     job_xml: Option<Vec<u8>>,
     layout: u8,
     dependent_count: Option<u8>,
+    surround_ex: u8,
 }
 
 impl Encoder {
@@ -65,6 +66,7 @@ impl Encoder {
             job_xml: None,
             layout: 0,
             dependent_count: None,
+            surround_ex: 1,
         })
     }
 
@@ -128,6 +130,15 @@ impl Encoder {
         self.layout = layout;
     }
 
+    /// Selects the native flat-7.1 Surround EX declaration: 0 = unspecified,
+    /// 1 = not encoded (default), 2 = encoded.
+    ///
+    /// Modes 0 and 2 write the two declared BSI suffix bits, so the pipeline only
+    /// accepts them for flat 7.1 output without a composed topology.
+    pub fn set_surround_ex(&mut self, surround_ex: u8) {
+        self.surround_ex = surround_ex;
+    }
+
     /// Supplies a caller-authored job XML for the next finish.
     ///
     /// The XML carries the sound parameters (DRC, downmix, metering, trims) and timing. Its
@@ -163,6 +174,7 @@ impl Encoder {
             self.job_xml.take(),
             self.layout,
             self.dependent_count,
+            self.surround_ex,
         )
         .map_err(map_encode_request_error);
         #[cfg(not(target_arch = "wasm32"))]

@@ -234,7 +234,7 @@ pub fn encode_adm_bytes(adm: &[u8]) -> Result<Vec<u8>, EncodeRequestError> {
     }
     #[cfg(target_arch = "wasm32")]
     {
-        encode_adm_resource(std::sync::Arc::from(adm), 1024, 15, None, 0, None)
+        encode_adm_resource(std::sync::Arc::from(adm), 1024, 15, None, 0, None, 1)
     }
 }
 
@@ -251,6 +251,7 @@ pub fn encode_adm_resource(
     job_xml: Option<Vec<u8>>,
     layout: u8,
     dependent_count: Option<u8>,
+    surround_ex: u8,
 ) -> Result<Vec<u8>, EncodeRequestError> {
     let layout = match layout {
         0 => JocReconstructionLayout::ExistingSelectedFivePointOne,
@@ -292,7 +293,7 @@ pub fn encode_adm_resource(
         &std::sync::atomic::AtomicBool::new(false),
         topology,
         objects,
-        1,
+        surround_ex,
         Some(resource),
     )?;
     match product {

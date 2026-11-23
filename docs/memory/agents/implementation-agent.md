@@ -493,3 +493,51 @@ M crates/jocforge-io/src/atomic_output/memory.rs
 `
 
 Every verified capability in this session lives in these uncommitted files. AtmosLabs (the site) has no repository at all yet.
+
+### Committed and extended (2026-11-23, rounds 34-35)
+
+The inventory above is historical: the bridge work landed as `e079e0ecb`, and AtmosLabs now has its
+own repository (three commits at the time of writing). Two capabilities were added on top.
+
+**Speaker export (OpenJOC side, not this repo).** `openjoc-wasm` hardcoded the speaker layout to
+`2.0` for every non-binaural renderer, so `RenderMode::Speaker` silently downmixed. OpenJOC commit
+`1313141` threads the layout through and adds
+`openjoc_wasm_decoder_create_with_speaker_layout(dialnorm, layout_code)`. Measured there: 5.1 → 6
+channels, 7.1.4 → 12, bit-identical to a native `OpenJocSession` in speaker mode.
+
+**Surround EX over the browser bridge.** The guard in `run_worker_with_object_count` only checks
+`joc_layout != Flat7x || topology.is_some()` — nothing about the target — so flat 7.1 without a
+dependent count was already admissible; the bridge just hardcoded `surround_ex = 1`. Changes:
+
+- `encode_adm_resource` takes `surround_ex: u8` (was the literal `1`).
+- `Encoder::set_surround_ex` + FFI `jocforge_wasm_encoder_set_surround_ex`.
+
+Measured on `.test-tmp/wasm-parity/excerpt.wav`, flat 7.1, codec rate 384 (= total 1024),
+`--emdf-profile deployed`:
+
+| `surround_ex` | wasm bridge | native CLI |
+| --- | --- | --- |
+| 1 not encoded | 32768 B, `ba07f48efad20ed6…` | identical |
+| 0 unspecified | 32768 B, `e1df9b4f8ef9756c…` | identical |
+| 2 encoded | 32768 B, `bb17e600cbe4e611…` | identical |
+
+The default (1) still equals the pre-existing flat7x anchor, so nothing on the default path moved.
+Modes 1 and 2 differ by 80 bits confined to byte offsets `[2, 3, 11]` of every 4096-byte block — the
+I0 BSI suffix, no audio data. 5.1 with `surround_ex = 2` is rejected with
+`Surround EX requires native flat7x output`.
+
+Two tests still asserted the superseded memory-sink contract and were failing before this batch:
+
+- `jocforge-io` `in_memory_sink_rejects_non_durable_fully_receipted_pair_commit` →
+  `in_memory_sink_commits_a_receipted_pair_with_complete_evidence` (asserts `file_fsync = true`,
+  non-zero readback digest, buffer equals the whole pair).
+- `jocforge-pipeline`
+  `flat7x_staging_routes_receipted_pair_to_memory_sink_and_rejects_nondurable_commit` →
+  `…_without_touching_the_filesystem` (the memory route must still never create the staging file).
+
+`check-boundaries.py` pinned the old test name and the old
+`AppendReceiptCandidateMismatch` reason; both pins were updated to the new contract
+
+Gates for this batch: `cargo fmt --all --check` clean, `cargo clippy --workspace --all-targets
+--locked` exit 0 with no warnings inside `jocforge-wasm/src`, `cargo test --workspace --locked` exit
+0 with no failures, `check-boundaries.py` `91 / 104 / 0 / 6`.

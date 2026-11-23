@@ -487,28 +487,23 @@ mod tests {
         fs::remove_file(path).unwrap();
     }
 
+    /// A receipted pair commits into the owned buffer, and the receipt records the sink's
+    /// durability answer. An owned buffer has nothing to flush — the attempt bytes and the readback
+    /// are the same storage — so the memory sink answers `true` and the pair is admitted. The
+    /// browser depends on this: there is no filesystem to sync into, and a `false` here would retire
+    /// every fully receipted pair.
     #[test]
-    fn in_memory_sink_rejects_non_durable_fully_receipted_pair_commit() {
+    fn in_memory_sink_commits_a_receipted_pair_with_complete_evidence() {
         let fixture = source_receipted_pair_fixture();
         let expected_bytes = fixture.expected_bytes();
         let proposal = fixture.append_proposal(fixture.attempt_id()).unwrap();
         let mut sink = Cursor::new(Vec::new());
 
-        let failure = match append_flat7x_au_to_memory(&mut sink, proposal) {
-            Ok(_) => panic!("an in-memory write must not produce a durable after-owner"),
-            Err(failure) => failure,
-        };
+        let after = append_flat7x_au_to_memory(&mut sink, proposal)
+            .expect("an owned buffer is its own durable evidence");
 
-        assert!(matches!(
-            failure.error(),
-            Flat7xAuAppendIoError::ReceiptCandidateRejected
-        ));
-        assert_eq!(
-            failure.retirement().reason(),
-            Flat7xAuAttemptRetirementReason::AppendReceiptCandidateMismatch
-        );
-        assert!(failure.retirement().committed_owner_unchanged());
-        assert!(failure.retirement().fresh_programme_cold_required());
+        assert!(after.receipt().file_fsync());
+        assert_ne!(after.receipt().readback_sha256(), &[0_u8; 32]);
         assert_eq!(sink.into_inner(), expected_bytes);
     }
 }
