@@ -830,3 +830,28 @@ while JS fills a SharedArrayBuffer) requires rebuilding `std` itself: nightly wi
 
 The second option reuses an existing precedent in this codebase and avoids a toolchain fork, so it is
 the better next step unless nightly is acceptable.
+
+### Browser streaming: OPFS sync access removes the atomics wall (2026-11-24)
+
+Measured in a real browser (`AtmosLabs/scripts/check-opfs.mjs`, 4/4): a dedicated worker writes 4 KiB
+into OPFS, opens a `FileSystemSyncAccessHandle`, and performs a **blocking** `read(scratch, {at:
+1000})` while no shared memory, no `SharedArrayBuffer` and no `Atomics` are involved — and it also
+worked *before* cross-origin isolation was enabled, so OPFS sync handles do not even require COOP/COEP.
+
+Why this matters: wasm→JS calls are synchronous. The only reason a streaming `RiffDataReader` looked
+like it needed `memory.atomic.wait32` was the assumption that *another thread* must fetch the bytes
+while the encoder blocks. With a sync access handle the **same** worker reads inside the wasm call, so
+the synchronous pipeline stays exactly as it is.
+
+Concrete shape for the browser half:
+
+1. Worker copies the user's `File` into OPFS once (a disk write, not an RSS cost) and opens a sync
+   handle.
+2. `jocforge-wasm` imports one host function, e.g. `jocforge_host_read(offset: u64, len: u32, dst:
+   *mut u8) -> i32`, implemented with `handle.read(new Uint8Array(memory.buffer, dst, len), {at:
+   offset})`.
+3. A wasm-side `HostRiffDataReader` implements the existing `RiffDataReader` trait on top of that
+   import; `parse_selected_riff_pcm24_streamed` and the block reader are then unchanged.
+
+So the atomics/`-Z build-std` detour is closed: no nightly toolchain, no shared memory, no second
+thread. The remaining browser work is the import, the worker-side copy-and-open, and the page wiring.
