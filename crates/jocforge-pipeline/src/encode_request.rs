@@ -1420,6 +1420,17 @@ fn run_inner(
             parse_selected_riff_pcm24_streamed(&streamed_reader, None)
                 .map_err(EncodeRequestError::Riff)?
         }
+        // The browser has no filesystem: the host worker serves the resource from OPFS through a
+        // synchronous import, so the same streamed walk applies without shared memory.
+        #[cfg(target_arch = "wasm32")]
+        None => {
+            streamed_reader =
+                std::sync::Mutex::new(Box::new(jocforge_io::pcm::riff_pcm24::HostRiffDataReader)
+                    as Box<dyn jocforge_io::pcm::riff_pcm24::RiffDataReader>);
+            parse_selected_riff_pcm24_streamed(&streamed_reader, None)
+                .map_err(EncodeRequestError::Riff)?
+        }
+        #[cfg(not(target_arch = "wasm32"))]
         None => {
             resident_resource =
                 read_resource(&input_path).map_err(EncodeRequestError::InputFile)?;

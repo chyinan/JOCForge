@@ -897,6 +897,53 @@ impl RiffDataReader for SliceRiffDataReader<'_> {
     }
 }
 
+/// Browser reader over a file the host worker keeps in OPFS.
+///
+/// The worker exposes two synchronous imports: `jocforge_host_len()` and
+/// `jocforge_host_read(offset, len, dst)`. A `FileSystemSyncAccessHandle` answers the second one while
+/// this module is on the stack, so the synchronous pipeline never needs shared memory or atomics.
+/// Browser reader over a file the host worker keeps in OPFS.
+///
+/// The worker exposes two synchronous imports: `jocforge_host_len()` and
+/// `jocforge_host_read(offset, len, dst)`. A `FileSystemSyncAccessHandle` answers the second one while
+/// this module is on the stack, so the synchronous pipeline never needs shared memory or atomics.
+/// One module-level `allow(unsafe_code)` covers the whole sanctioned FFI boundary.
+#[cfg(target_arch = "wasm32")]
+#[allow(unsafe_code)]
+mod host_reader {
+    use super::{RiffDataReader, RiffPcm24Error};
+
+    #[link(wasm_import_module = "env")]
+    unsafe extern "C" {
+        fn jocforge_host_read(offset: u64, len: u32, destination: *mut u8) -> i32;
+        fn jocforge_host_len() -> u64;
+    }
+
+    pub struct HostRiffDataReader;
+
+    impl RiffDataReader for HostRiffDataReader {
+        fn read_at(&mut self, offset: u64, len: usize) -> Result<Vec<u8>, RiffPcm24Error> {
+            let len_u32 = u32::try_from(len).map_err(|_| RiffPcm24Error::InvalidInput)?;
+            let mut buffer = vec![0_u8; len];
+            // SAFETY: the host writes at most `len` bytes into a buffer this module owns and reports
+            // failure through the return code.
+            let status = unsafe { jocforge_host_read(offset, len_u32, buffer.as_mut_ptr()) };
+            if status != 0 {
+                return Err(RiffPcm24Error::InvalidInput);
+            }
+            Ok(buffer)
+        }
+
+        fn len(&self) -> u64 {
+            // SAFETY: the host import only reads its own state.
+            unsafe { jocforge_host_len() }
+        }
+    }
+}
+
+#[cfg(target_arch = "wasm32")]
+pub use host_reader::HostRiffDataReader;
+
 fn decode_chunk_id(chunk_id: [u8; 4]) -> String {
     String::from_utf8_lossy(&chunk_id).into_owned()
 }

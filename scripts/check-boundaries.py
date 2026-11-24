@@ -182,6 +182,11 @@ def check_unsafe_boundary(root):
   'crates/jocforge-io/src/atomic_output/memory.rs',
   'crates/jocforge-io/src/atomic_output/windows_rename.rs',
 
+  # Input-side counterpart of the boundaries above: the browser host worker serves the RIFF bytes
+  # from OPFS through a synchronous wasm import, which is the only way a synchronous reader can pull
+  # from the filesystem without shared memory.
+  'crates/jocforge-io/src/pcm/riff_pcm24.rs',
+
   'crates/jocforge-wasm/src/ffi.rs',
 
  }
@@ -198,7 +203,7 @@ def check_unsafe_boundary(root):
 
   for match in allow_pattern.finditer(code):allow_sites.append((relative,match.group('inner')=='!'))
 
- ck(unsafe_paths==exception_paths,'unsafe Rust may appear only in the append receipt issuer, trusted append callsite, and Windows rename module')
+ ck(unsafe_paths==exception_paths,'unsafe Rust may appear only in the append receipt issuer, trusted append callsite, Windows rename module, and the browser OPFS host reader')
 
  expected_allow_sites=[
 
@@ -210,6 +215,8 @@ def check_unsafe_boundary(root):
 
   ('crates/jocforge-io/src/atomic_output/memory.rs',False),
   ('crates/jocforge-io/src/atomic_output/windows_rename.rs',True),
+
+  ('crates/jocforge-io/src/pcm/riff_pcm24.rs',False),
 
   ('crates/jocforge-pipeline/src/output_publication.rs',False),
 
