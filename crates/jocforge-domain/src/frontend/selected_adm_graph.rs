@@ -731,14 +731,10 @@ fn parse_chna(bytes: &[u8]) -> Result<Vec<ChnaRecord>, SelectedAdmGraphError> {
     }
     let track_count = read_u16_le(bytes, 0)?;
     let uid_count = read_u16_le(bytes, 2)?;
-    let expected_length = CHNA_HEADER_BYTES
-        .checked_add(
-            usize::from(uid_count)
-                .checked_mul(CHNA_ENTRY_BYTES)
-                .ok_or(SelectedAdmGraphError::ChnaExtent)?,
-        )
-        .ok_or(SelectedAdmGraphError::ChnaExtent)?;
-    if bytes.len() != expected_length
+    // BS.2088-2 §8.2: the array can reserve more 40-byte records than numUIDs.
+    let payload = &bytes[CHNA_HEADER_BYTES..];
+    if payload.len() % CHNA_ENTRY_BYTES != 0
+        || payload.len() / CHNA_ENTRY_BYTES < usize::from(uid_count)
         || track_count == 0
         || track_count != uid_count
         || usize::from(track_count) > usize::from(u8::MAX) + 1
@@ -748,16 +744,21 @@ fn parse_chna(bytes: &[u8]) -> Result<Vec<ChnaRecord>, SelectedAdmGraphError> {
     let mut records = Vec::with_capacity(usize::from(uid_count));
     let mut seen_indices = BTreeSet::new();
     let mut seen_uids = BTreeSet::new();
-    for ordinal in 0..usize::from(uid_count) {
-        let start = CHNA_HEADER_BYTES + ordinal * CHNA_ENTRY_BYTES;
-        let track_index = ChnaTrackIndex::new(read_u16_le(bytes, start)?);
-        let uid_start = start + CHNA_TRACK_INDEX_BYTES;
+    for entry in payload.chunks_exact(CHNA_ENTRY_BYTES) {
+        if entry.iter().all(|&byte| byte == 0) {
+            continue;
+        }
+        if records.len() == usize::from(uid_count) {
+            return Err(SelectedAdmGraphError::ChnaExtent);
+        }
+        let track_index = ChnaTrackIndex::new(read_u16_le(entry, 0)?);
+        let uid_start = CHNA_TRACK_INDEX_BYTES;
         let track_format_start = uid_start + CHNA_UID_BYTES;
         let pack_format_start = track_format_start + CHNA_TRACK_FORMAT_BYTES;
         let reserved_offset = pack_format_start + CHNA_PACK_FORMAT_BYTES;
-        let uid = fixed_ascii(&bytes[uid_start..track_format_start])?;
-        let track_format = fixed_ascii(&bytes[track_format_start..pack_format_start])?;
-        let pack_format = fixed_ascii(&bytes[pack_format_start..reserved_offset])?;
+        let uid = fixed_ascii(&entry[uid_start..track_format_start])?;
+        let track_format = fixed_ascii(&entry[track_format_start..pack_format_start])?;
+        let pack_format = fixed_ascii(&entry[pack_format_start..reserved_offset])?;
         if track_index.value() == 0
             || !seen_indices.insert(track_index.value())
             || uid.is_empty()
@@ -772,9 +773,14 @@ fn parse_chna(bytes: &[u8]) -> Result<Vec<ChnaRecord>, SelectedAdmGraphError> {
             uid,
             track_format,
             pack_format,
-            reserved: bytes[reserved_offset],
+            reserved: entry[reserved_offset],
         });
     }
+    if records.len() != usize::from(uid_count) {
+        return Err(SelectedAdmGraphError::ChnaExtent);
+    }
+    // trackIndex, not the record's position in CHNA, identifies the interleaved PCM lane.
+    records.sort_unstable_by_key(|record| record.track_index);
     Ok(records)
 }
 
