@@ -19,4 +19,5 @@ jobs:
       - run: cargo test --locked -p jocforge --test meter_source_bridge
       - run: cargo test --locked -p jocforge-application --test prepared_job_input
       - run: cargo test --locked -p jocforge --test migration_boundary
+      - run: cargo test --locked -p jocforge --test one_callback_cue
       - run: cargo test --locked -p jocforge-domain --features test-support --lib supported_track_counts_use_the_same_semantic_row_bindings

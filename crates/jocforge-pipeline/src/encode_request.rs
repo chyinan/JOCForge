@@ -2651,8 +2651,7 @@ fn stage_main_cached_callback_candidate(
     normal_callbacks: jocforge_io::pcm::frontend_pcm_source::NormalCallbackCount,
     providers: &crate::selected_spatial_callback_providers::SelectedMainSpatialCallbackProviders,
 ) -> Result<PendingMainCallback, EncodeRequestError> {
-    let source_index =
-        source_for_callback_clock(callback_index).ok_or(EncodeRequestError::ClockMismatch)?;
+    let source_index = source_for_callback_clock(callback_index);
     let transaction_id = CallbackTransactionId::new(&format!(
         "jocforge-main-callback-g{}",
         callback_index.value()
@@ -2704,7 +2703,7 @@ fn stage_main_cached_callback_candidate(
     }
     Ok(PendingMainCallback {
         callback_index,
-        source_index: Some(source_index),
+        source_index,
         flat7x_mix: None,
         frontend: None,
         spatial,
