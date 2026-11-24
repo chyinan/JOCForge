@@ -906,3 +906,16 @@ This also retires the earlier hypothesis list (rayon pool, loudness lock, `run_o
 backpressure): all were correct eliminations, but the fault was one level below them, in staging setup
 plus teardown ordering. Lesson recorded: an error surfacing through a scoped producer must drop the
 receiver before joining, otherwise every failure looks like a hang.
+
+### Short ADM cues: first Meter read may be padded (2026-11-24)
+
+At 48 kHz a 30 ms cue supplies 1440 real samples and 96 padding samples in its
+only normal callback. On `9cfc41f9`, a generated 11-track PCM24 ADM with matching
+block durations failed the Meter prepass at callback 0 (`PreparedIdentityMismatch`).
+The admitted Meter source view already checks both counts against the actual
+source extent. Reusing that check lets the independent Meter prepass finish;
+the regression checks the real source cursor after one read and three drains.
+
+End-to-end short-cue export also requires the independent single-callback MAIN
+priming/drain fix (#3). With both changes, 768-, 1440- and 1535-sample cues
+exported to native EC-3 and CMAF; this does not establish playback conformance.

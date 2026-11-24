@@ -1375,14 +1375,14 @@ fn validate_callback_identity(
 ) -> Result<(), IndependentMeterG0Error> {
     let input_sha256 = prepared.resource_identity().input_sha256();
     let source_samples = prepared.configuration().source_samples();
+    // The typed source view already validates the actual read and its zero padding.
+    // A single short cue is a normal g=0 read, not a full read or a drain.
     let meter_identity = meter_root.identity();
     if source_view.callback_index() != MeterCallbackIndex::new(0)
         || source_view.phase() != MeterCallbackPhase::NormalSource
         || source_view.source_cursor_before().value() != 0
         || source_view.source_read_index_before().value() != 0
         || source_view.source_read_index_after().value() != 1
-        || source_view.host_input_count().value() != 1_536
-        || source_view.source_padding_count().value() != 0
         || source_view.source_samples().value() != source_samples
         || source_view.source_identity().sha256() != input_sha256
         || parsed_identity_matches(meter_identity, prepared, binding).is_err()
