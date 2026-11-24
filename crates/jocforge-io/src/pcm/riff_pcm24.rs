@@ -2,7 +2,7 @@
 //! ADM RIFF/PCM24 byte reader and planar F32 hop conversion.
 
 use jocforge_domain::timeline::AdmSampleIndex;
-use sha2::{Digest, Sha256};
+use sha2::Digest;
 
 /// Selected PCM24 input channel count.
 pub const SELECTED_CHANNELS: usize = 38;
@@ -63,20 +63,30 @@ impl DecodedPcm24ReadChunk {
     }
 }
 
-/// One preserved selected metadata chunk, borrowed from the input bytes.
+/// One preserved selected metadata chunk, owned by the parsed resource.
+///
+/// Streaming parses cannot borrow metadata from a resident buffer, so the payload is copied. A
+/// resident parse pays the same copy; the bytes handed to callers are identical either way.
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct RiffMetadataPayload<'a> {
+pub struct RiffMetadataPayload {
     chunk_id: String,
-    payload: &'a [u8],
+    payload: Vec<u8>,
+    /// File offset of the first payload byte, so a consumer can re-read the same bytes from the
+    /// resource without relying on the payload sharing one allocation with it.
+    payload_offset: u64,
 }
 
-impl<'a> RiffMetadataPayload<'a> {
+impl RiffMetadataPayload {
     pub fn chunk_id(&self) -> &str {
         &self.chunk_id
     }
 
-    pub const fn payload(&self) -> &'a [u8] {
-        self.payload
+    pub fn payload(&self) -> &[u8] {
+        &self.payload
+    }
+
+    pub fn payload_offset(&self) -> u64 {
+        self.payload_offset
     }
 }
 
@@ -84,8 +94,11 @@ impl<'a> RiffMetadataPayload<'a> {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct SelectedAdmRiffPayloads<'a> {
     axml: &'a [u8],
+    axml_offset: u64,
     chna: &'a [u8],
+    chna_offset: u64,
     dbmd: &'a [u8],
+    dbmd_offset: u64,
 }
 
 impl<'a> SelectedAdmRiffPayloads<'a> {
@@ -100,17 +113,57 @@ impl<'a> SelectedAdmRiffPayloads<'a> {
     pub const fn dbmd(&self) -> &'a [u8] {
         self.dbmd
     }
+
+    pub const fn axml_offset(&self) -> u64 {
+        self.axml_offset
+    }
+
+    pub const fn chna_offset(&self) -> u64 {
+        self.chna_offset
+    }
+
+    pub const fn dbmd_offset(&self) -> u64 {
+        self.dbmd_offset
+    }
 }
 
-/// Supplies exact PCM byte ranges for a parsed RIFF whose data chunk is not resident.
+/// Supplies exact byte ranges of one RIFF resource that is not fully resident.
 ///
-/// An implementation must return exactly `len` bytes starting at `offset` measured from the
-/// first byte of the data-chunk payload. Returning a different length is an input error: the
-/// resident window can never short-read, so a reader that did would quietly change the decoded
-/// blocks.
+/// `offset` is measured from the first byte of the **file**, so one reader serves the chunk walk,
+/// the source hash and the PCM block reads. An implementation must return exactly `len` bytes;
+/// returning a different length is an input error, because the resident path can never short-read
+/// and a silent zero-fill would change the decoded blocks.
 pub trait RiffDataReader: Send {
-    fn read_exact_at(&mut self, offset: u64, len: usize) -> Result<Vec<u8>, RiffPcm24Error>;
+    fn read_at(&mut self, offset: u64, len: usize) -> Result<Vec<u8>, RiffPcm24Error>;
+
+    /// Total resource length in bytes.
+    fn len(&self) -> u64;
+
+    /// SHA-256 of the whole resource, in file order.
+    ///
+    /// The default streams it in bounded chunks; a resident implementation overrides this so the
+    /// hash costs one pass and no copies.
+    fn sha256(&mut self) -> Result<[u8; 32], RiffPcm24Error> {
+        use sha2::{Digest, Sha256};
+        let mut hasher = Sha256::new();
+        let total = self.len();
+        let mut offset = 0_u64;
+        while offset < total {
+            let remaining = usize::try_from(total - offset).unwrap_or(usize::MAX);
+            let take = remaining.min(SHA256_CHUNK_BYTES);
+            let bytes = self.read_at(offset, take)?;
+            if bytes.len() != take {
+                return Err(RiffPcm24Error::InvalidInput);
+            }
+            hasher.update(&bytes);
+            offset += take as u64;
+        }
+        Ok(hasher.finalize().into())
+    }
 }
+
+/// Bound on one hash read from a streaming source.
+const SHA256_CHUNK_BYTES: usize = 1 << 20;
 
 /// Borrowed or supplied PCM byte window behind one parsed RIFF resource.
 ///
@@ -122,6 +175,8 @@ pub enum RiffDataWindow<'a> {
     Resident(&'a [u8]),
     Streamed {
         reader: &'a std::sync::Mutex<Box<dyn RiffDataReader>>,
+        /// File offset of this window's first byte.
+        base: u64,
         len: usize,
     },
 }
@@ -140,15 +195,15 @@ impl RiffDataWindow<'_> {
                 .get(start..end)
                 .map(std::borrow::Cow::Borrowed)
                 .ok_or(RiffPcm24Error::InvalidInput),
-            Self::Streamed { reader, .. } => {
+            Self::Streamed { reader, base, .. } => {
                 let len = end.checked_sub(start).ok_or(RiffPcm24Error::InvalidInput)?;
+                let offset = base
+                    .checked_add(u64::try_from(start).map_err(|_| RiffPcm24Error::InvalidInput)?)
+                    .ok_or(RiffPcm24Error::InvalidInput)?;
                 let bytes = reader
                     .lock()
                     .map_err(|_| RiffPcm24Error::InvalidInput)?
-                    .read_exact_at(
-                        u64::try_from(start).map_err(|_| RiffPcm24Error::InvalidInput)?,
-                        len,
-                    )?;
+                    .read_at(offset, len)?;
                 if bytes.len() != len {
                     return Err(RiffPcm24Error::InvalidInput);
                 }
@@ -168,7 +223,11 @@ impl Clone for RiffDataWindow<'_> {
             // A streamed window is a borrowed reader plus an extent: copying the reference keeps
             // both clones reading the same source, which is exactly what the resident variant does
             // when it copies a slice.
-            Self::Streamed { reader, len } => Self::Streamed { reader, len: *len },
+            Self::Streamed { reader, base, len } => Self::Streamed {
+                reader,
+                base: *base,
+                len: *len,
+            },
         }
     }
 }
@@ -180,9 +239,9 @@ impl std::fmt::Debug for RiffDataWindow<'_> {
                 .debug_tuple("Resident")
                 .field(&format_args!("{} bytes", bytes.len()))
                 .finish(),
-            Self::Streamed { len, .. } => formatter
+            Self::Streamed { base, len, .. } => formatter
                 .debug_tuple("Streamed")
-                .field(&format_args!("{len} bytes"))
+                .field(&format_args!("{len} bytes at {base}"))
                 .finish(),
         }
     }
@@ -194,7 +253,18 @@ impl PartialEq for RiffDataWindow<'_> {
     fn eq(&self, other: &Self) -> bool {
         match (self, other) {
             (Self::Resident(left), Self::Resident(right)) => left == right,
-            (Self::Streamed { len: left, .. }, Self::Streamed { len: right, .. }) => left == right,
+            (
+                Self::Streamed {
+                    base: left_base,
+                    len: left_len,
+                    ..
+                },
+                Self::Streamed {
+                    base: right_base,
+                    len: right_len,
+                    ..
+                },
+            ) => left_base == right_base && left_len == right_len,
             _ => false,
         }
     }
@@ -213,8 +283,8 @@ pub struct ParsedRiffPcm24<'a> {
     data_offset: u64,
     data_payload: RiffDataWindow<'a>,
     chunk_ids: Vec<String>,
-    metadata_payloads: Vec<RiffMetadataPayload<'a>>,
-    selected_metadata_payload: Option<&'a [u8]>,
+    metadata_payloads: Vec<RiffMetadataPayload>,
+    selected_metadata_payload: Option<Vec<u8>>,
     has_adm_chunks: bool,
 }
 
@@ -264,24 +334,33 @@ impl<'a> ParsedRiffPcm24<'a> {
         &self.chunk_ids
     }
 
-    pub fn metadata_payloads(&self) -> &[RiffMetadataPayload<'_>] {
+    pub fn metadata_payloads(&self) -> &[RiffMetadataPayload] {
         &self.metadata_payloads
     }
 
-    pub const fn selected_metadata_payload(&self) -> Option<&[u8]> {
-        self.selected_metadata_payload
+    pub fn selected_metadata_payload(&self) -> Option<&[u8]> {
+        self.selected_metadata_payload.as_deref()
     }
 
     pub const fn has_adm_chunks(&self) -> bool {
         self.has_adm_chunks
     }
 
-    /// Selects one AXML, CHNA and DBMD payload, each borrowed from this RIFF resource.
-    pub fn selected_adm_payloads(&self) -> Result<SelectedAdmRiffPayloads<'a>, RiffPcm24Error> {
+    /// Selects one AXML, CHNA and DBMD payload, each borrowed from this parsed resource.
+    ///
+    /// The slices now borrow the parsed resource rather than the original input bytes, because a
+    /// streaming parse owns its metadata.
+    pub fn selected_adm_payloads(&self) -> Result<SelectedAdmRiffPayloads<'_>, RiffPcm24Error> {
+        let (axml, axml_offset) = unique_metadata_payload(&self.metadata_payloads, *b"axml")?;
+        let (chna, chna_offset) = unique_metadata_payload(&self.metadata_payloads, *b"chna")?;
+        let (dbmd, dbmd_offset) = unique_metadata_payload(&self.metadata_payloads, *b"dbmd")?;
         Ok(SelectedAdmRiffPayloads {
-            axml: unique_metadata_payload(&self.metadata_payloads, *b"axml")?,
-            chna: unique_metadata_payload(&self.metadata_payloads, *b"chna")?,
-            dbmd: unique_metadata_payload(&self.metadata_payloads, *b"dbmd")?,
+            axml,
+            axml_offset,
+            chna,
+            chna_offset,
+            dbmd,
+            dbmd_offset,
         })
     }
 
@@ -472,20 +551,17 @@ fn decode_pcm24_read_chunk_with_layout(
 }
 
 fn unique_metadata_payload<'a>(
-    metadata: &[RiffMetadataPayload<'a>],
+    metadata: &'a [RiffMetadataPayload],
     wanted_id: [u8; 4],
-) -> Result<&'a [u8], RiffPcm24Error> {
+) -> Result<(&'a [u8], u64), RiffPcm24Error> {
     let mut matches = metadata
         .iter()
         .filter(|chunk| chunk.chunk_id().as_bytes() == wanted_id);
-    let payload = matches
-        .next()
-        .map(RiffMetadataPayload::payload)
-        .ok_or(RiffPcm24Error::InvalidInput)?;
+    let chunk = matches.next().ok_or(RiffPcm24Error::InvalidInput)?;
     if matches.next().is_some() {
         return Err(RiffPcm24Error::InvalidInput);
     }
-    Ok(payload)
+    Ok((chunk.payload(), chunk.payload_offset()))
 }
 
 /// Parses a 48 kHz PCM24 RIFF resource while preserving its actual channel count.
@@ -497,44 +573,118 @@ pub fn parse_selected_riff_pcm24(
     bytes: &[u8],
     requested_metadata_id: Option<[u8; 4]>,
 ) -> Result<ParsedRiffPcm24<'_>, RiffPcm24Error> {
-    if bytes.len() < RIFF_HEADER_BYTES || &bytes[..4] != b"RIFF" || &bytes[8..12] != b"WAVE" {
+    let mut source = SliceRiffDataReader::new(bytes);
+    walk_riff(&mut source, requested_metadata_id, |offset, len| {
+        let start = usize::try_from(offset).map_err(|_| RiffPcm24Error::InvalidInput)?;
+        let end = start.checked_add(len).ok_or(RiffPcm24Error::InvalidInput)?;
+        bytes
+            .get(start..end)
+            .map(RiffDataWindow::Resident)
+            .ok_or(RiffPcm24Error::InvalidInput)
+    })
+}
+
+/// Parses one RIFF resource through a reader, without holding its PCM payload in memory.
+///
+/// The chunk walk reads only headers and metadata payloads; the `data` payload is skipped and
+/// served later through the same reader. `source_sha256` still covers the whole resource, so the
+/// parsed identity is identical to the resident parse of the same bytes.
+pub fn parse_selected_riff_pcm24_streamed<'a>(
+    reader: &'a std::sync::Mutex<Box<dyn RiffDataReader>>,
+    requested_metadata_id: Option<[u8; 4]>,
+) -> Result<ParsedRiffPcm24<'a>, RiffPcm24Error> {
+    let mut locked = LockedReader { reader };
+    walk_riff(&mut locked, requested_metadata_id, |offset, len| {
+        Ok(RiffDataWindow::Streamed {
+            reader,
+            base: offset,
+            len,
+        })
+    })
+}
+
+/// Adapter that walks a shared reader by locking per read.
+///
+/// It exists so the parser can take `&mut dyn RiffDataReader` for both a local source and a
+/// caller-owned cell. The window builder passed to `walk_riff` runs only after the walk, so this
+/// adapter never nests a lock inside another one.
+struct LockedReader<'a> {
+    reader: &'a std::sync::Mutex<Box<dyn RiffDataReader>>,
+}
+
+impl RiffDataReader for LockedReader<'_> {
+    fn read_at(&mut self, offset: u64, len: usize) -> Result<Vec<u8>, RiffPcm24Error> {
+        self.reader
+            .lock()
+            .map_err(|_| RiffPcm24Error::InvalidInput)?
+            .read_at(offset, len)
+    }
+
+    fn len(&self) -> u64 {
+        self.reader
+            .lock()
+            .map(|reader| reader.len())
+            .unwrap_or_default()
+    }
+
+    fn sha256(&mut self) -> Result<[u8; 32], RiffPcm24Error> {
+        self.reader
+            .lock()
+            .map_err(|_| RiffPcm24Error::InvalidInput)?
+            .sha256()
+    }
+}
+
+/// Walks RIFF chunks through a reader and builds the parsed resource.
+///
+/// `window` receives the data chunk's file offset and payload length; it decides whether those
+/// bytes stay resident or are re-served later. Everything else in the parse is reader-driven, so
+/// this is the single validation path for both entry points.
+fn walk_riff<'a>(
+    read: &mut dyn RiffDataReader,
+    requested_metadata_id: Option<[u8; 4]>,
+    window: impl FnOnce(u64, usize) -> Result<RiffDataWindow<'a>, RiffPcm24Error>,
+) -> Result<ParsedRiffPcm24<'a>, RiffPcm24Error> {
+    let resource_len = read.len();
+    let header = read.read_at(0, RIFF_HEADER_BYTES)?;
+    if header.len() != RIFF_HEADER_BYTES || &header[..4] != b"RIFF" || &header[8..12] != b"WAVE" {
         return Err(RiffPcm24Error::InvalidInput);
     }
-    let riff_extent = usize::try_from(read_u32_le(&bytes[4..8])?)
-        .map_err(|_| RiffPcm24Error::InvalidInput)?
+    let riff_extent = u64::from(read_u32_le(&header[4..8])?)
         .checked_add(8)
         .ok_or(RiffPcm24Error::InvalidInput)?;
-    if riff_extent != bytes.len() {
+    if riff_extent != resource_len {
         return Err(RiffPcm24Error::InvalidInput);
     }
 
-    let mut position = RIFF_HEADER_BYTES;
+    let mut position = RIFF_HEADER_BYTES as u64;
     let mut chunk_ids = Vec::new();
     let mut metadata_payloads = Vec::new();
     let mut format: Option<SelectedFormat> = None;
-    let mut data_payload: Option<&[u8]> = None;
-    let mut data_offset = 0;
+    let mut data_extent: Option<(u64, usize)> = None;
     let mut axml_present = false;
     let mut chna_present = false;
 
     while position
-        .checked_add(CHUNK_HEADER_BYTES)
+        .checked_add(CHUNK_HEADER_BYTES as u64)
         .is_some_and(|header_end| header_end <= riff_extent)
     {
-        let header_end = position + CHUNK_HEADER_BYTES;
-        let chunk_id: [u8; 4] = bytes[position..position + 4]
+        let chunk_header = read.read_at(position, CHUNK_HEADER_BYTES)?;
+        if chunk_header.len() != CHUNK_HEADER_BYTES {
+            return Err(RiffPcm24Error::InvalidInput);
+        }
+        let chunk_id: [u8; 4] = chunk_header[..4]
             .try_into()
             .map_err(|_| RiffPcm24Error::InvalidInput)?;
-        let payload_bytes = usize::try_from(read_u32_le(&bytes[position + 4..header_end])?)
+        let payload_bytes = usize::try_from(read_u32_le(&chunk_header[4..8])?)
             .map_err(|_| RiffPcm24Error::InvalidInput)?;
-        let payload_start = header_end;
+        let payload_start = position + CHUNK_HEADER_BYTES as u64;
         let payload_end = payload_start
-            .checked_add(payload_bytes)
+            .checked_add(u64::try_from(payload_bytes).map_err(|_| RiffPcm24Error::InvalidInput)?)
             .ok_or(RiffPcm24Error::InvalidInput)?;
         if payload_end > riff_extent {
             return Err(RiffPcm24Error::InvalidInput);
         }
-        let payload = &bytes[payload_start..payload_end];
         chunk_ids.push(decode_chunk_id(chunk_id));
 
         match &chunk_id {
@@ -542,43 +692,52 @@ pub fn parse_selected_riff_pcm24(
                 if format.is_some() {
                     return Err(RiffPcm24Error::InvalidInput);
                 }
-                format = Some(parse_selected_format(payload)?);
-            }
-            b"data" => {
-                if data_payload.is_some() || payload.is_empty() {
+                let payload = read.read_at(payload_start, payload_bytes)?;
+                if payload.len() != payload_bytes {
                     return Err(RiffPcm24Error::InvalidInput);
                 }
-                data_offset = payload_start;
-                data_payload = Some(payload);
+                format = Some(parse_selected_format(&payload)?);
+            }
+            b"data" => {
+                if data_extent.is_some() || payload_bytes == 0 {
+                    return Err(RiffPcm24Error::InvalidInput);
+                }
+                data_extent = Some((payload_start, payload_bytes));
             }
             b"axml" | b"chna" | b"dbmd" | b"bext" | b"iXML" => {
                 let chunk_name = decode_chunk_id(chunk_id);
                 axml_present |= chunk_id == *b"axml";
                 chna_present |= chunk_id == *b"chna";
+                let payload = read.read_at(payload_start, payload_bytes)?;
+                if payload.len() != payload_bytes {
+                    return Err(RiffPcm24Error::InvalidInput);
+                }
                 metadata_payloads.push(RiffMetadataPayload {
                     chunk_id: chunk_name,
                     payload,
+                    payload_offset: payload_start,
                 });
             }
             _ => {}
         }
 
         position = payload_end
-            .checked_add(payload_bytes % 2)
+            .checked_add(u64::from(payload_bytes as u32 % 2))
             .ok_or(RiffPcm24Error::InvalidInput)?;
     }
 
     let format = format.ok_or(RiffPcm24Error::InvalidInput)?;
-    let data_payload = data_payload.ok_or(RiffPcm24Error::InvalidInput)?;
+    let (data_offset, data_len) = data_extent.ok_or(RiffPcm24Error::InvalidInput)?;
     let block_align = usize::from(format.block_align);
-    if block_align == 0 || data_payload.len() % block_align != 0 {
+    if block_align == 0 || data_len % block_align != 0 {
         return Err(RiffPcm24Error::InvalidInput);
     }
+    let source_sha256 = read.sha256()?;
     let selected_metadata_payload = if let Some(requested_id) = requested_metadata_id {
         let mut matches = metadata_payloads
             .iter()
             .filter(|chunk| chunk.chunk_id.as_bytes() == requested_id);
-        let first = matches.next().map(|chunk| chunk.payload);
+        let first = matches.next().map(|chunk| chunk.payload.clone());
         if matches.next().is_some() {
             return Err(RiffPcm24Error::InvalidInput);
         }
@@ -586,18 +745,18 @@ pub fn parse_selected_riff_pcm24(
     } else {
         None
     };
+    let data_payload = window(data_offset, data_len)?;
 
     Ok(ParsedRiffPcm24 {
         sample_rate_hz: format.sample_rate_hz,
         channels: format.channels,
         block_align: format.block_align,
         timeline: jocforge_domain::timeline::RenderTimeline::full(
-            u64::try_from(data_payload.len() / block_align)
-                .map_err(|_| RiffPcm24Error::InvalidInput)?,
+            u64::try_from(data_len / block_align).map_err(|_| RiffPcm24Error::InvalidInput)?,
         ),
-        source_sha256: Sha256::digest(bytes).into(),
-        data_offset: u64::try_from(data_offset).map_err(|_| RiffPcm24Error::InvalidInput)?,
-        data_payload: RiffDataWindow::Resident(data_payload),
+        source_sha256,
+        data_offset,
+        data_payload,
         chunk_ids,
         metadata_payloads,
         selected_metadata_payload,
@@ -655,6 +814,7 @@ pub fn streamed_window<'a>(
     let mut streamed = parsed.clone();
     streamed.data_payload = RiffDataWindow::Streamed {
         reader,
+        base: parsed.data_offset(),
         len: parsed.data_payload.len(),
     };
     streamed
@@ -667,36 +827,66 @@ pub fn streamed_window<'a>(
 #[cfg(not(target_arch = "wasm32"))]
 pub struct FileRiffDataReader {
     file: std::fs::File,
-    base: u64,
+    len: u64,
 }
 
 #[cfg(not(target_arch = "wasm32"))]
 impl FileRiffDataReader {
-    /// Opens `path` and positions reads at `data_offset` (the data payload's first byte).
-    pub fn open(path: &std::path::Path, data_offset: u64) -> std::io::Result<Self> {
-        Ok(Self {
-            file: std::fs::File::open(path)?,
-            base: data_offset,
-        })
+    /// Opens `path`; every offset is a file offset.
+    pub fn open(path: &std::path::Path) -> std::io::Result<Self> {
+        let file = std::fs::File::open(path)?;
+        let len = file.metadata()?.len();
+        Ok(Self { file, len })
     }
 }
 
 #[cfg(not(target_arch = "wasm32"))]
 impl RiffDataReader for FileRiffDataReader {
-    fn read_exact_at(&mut self, offset: u64, len: usize) -> Result<Vec<u8>, RiffPcm24Error> {
+    fn read_at(&mut self, offset: u64, len: usize) -> Result<Vec<u8>, RiffPcm24Error> {
         use std::io::{Read, Seek, SeekFrom};
-        let start = self
-            .base
-            .checked_add(offset)
-            .ok_or(RiffPcm24Error::InvalidInput)?;
         self.file
-            .seek(SeekFrom::Start(start))
+            .seek(SeekFrom::Start(offset))
             .map_err(|_| RiffPcm24Error::InvalidInput)?;
         let mut bytes = vec![0_u8; len];
         self.file
             .read_exact(&mut bytes)
             .map_err(|_| RiffPcm24Error::InvalidInput)?;
         Ok(bytes)
+    }
+
+    fn len(&self) -> u64 {
+        self.len
+    }
+}
+
+/// A reader over bytes that are already resident, so the parser has exactly one code path.
+pub struct SliceRiffDataReader<'a> {
+    bytes: &'a [u8],
+}
+
+impl<'a> SliceRiffDataReader<'a> {
+    pub const fn new(bytes: &'a [u8]) -> Self {
+        Self { bytes }
+    }
+}
+
+impl RiffDataReader for SliceRiffDataReader<'_> {
+    fn sha256(&mut self) -> Result<[u8; 32], RiffPcm24Error> {
+        use sha2::{Digest, Sha256};
+        Ok(Sha256::digest(self.bytes).into())
+    }
+
+    fn read_at(&mut self, offset: u64, len: usize) -> Result<Vec<u8>, RiffPcm24Error> {
+        let start = usize::try_from(offset).map_err(|_| RiffPcm24Error::InvalidInput)?;
+        let end = start.checked_add(len).ok_or(RiffPcm24Error::InvalidInput)?;
+        self.bytes
+            .get(start..end)
+            .map(<[u8]>::to_vec)
+            .ok_or(RiffPcm24Error::InvalidInput)
+    }
+
+    fn len(&self) -> u64 {
+        self.bytes.len() as u64
     }
 }
 
@@ -793,7 +983,7 @@ mod streamed_window_tests {
         ));
         std::fs::write(&path, &riff).expect("write fixture");
         let reader = std::sync::Mutex::new(Box::new(
-            FileRiffDataReader::open(&path, resident.data_offset()).expect("open fixture"),
+            FileRiffDataReader::open(&path).expect("open fixture"),
         ) as Box<dyn RiffDataReader>);
         let streamed = streamed_window(&resident, &reader);
 
@@ -806,11 +996,69 @@ mod streamed_window_tests {
     struct ShortReader;
 
     impl RiffDataReader for ShortReader {
-        fn read_exact_at(&mut self, _offset: u64, _len: usize) -> Result<Vec<u8>, RiffPcm24Error> {
+        fn read_at(&mut self, _offset: u64, _len: usize) -> Result<Vec<u8>, RiffPcm24Error> {
             Ok(Vec::new())
+        }
+
+        fn len(&self) -> u64 {
+            0
         }
     }
 
+    #[test]
+    fn streamed_parse_observes_exactly_what_the_resident_parse_does() {
+        let riff = synthetic_riff(2_048);
+        let resident = parse_selected_riff_pcm24(&riff, Some(*b"bext")).expect("resident parse");
+
+        let path = std::env::temp_dir().join(format!(
+            "riff-streamed-parse-{}-{}.wav",
+            std::process::id(),
+            riff.len()
+        ));
+        std::fs::write(&path, &riff).expect("write fixture");
+        let reader = std::sync::Mutex::new(Box::new(
+            FileRiffDataReader::open(&path).expect("open fixture"),
+        ) as Box<dyn RiffDataReader>);
+        let streamed =
+            parse_selected_riff_pcm24_streamed(&reader, Some(*b"bext")).expect("streamed parse");
+
+        assert_eq!(streamed.source_sha256(), resident.source_sha256());
+        assert_eq!(streamed.chunk_ids(), resident.chunk_ids());
+        assert_eq!(streamed.metadata_payloads(), resident.metadata_payloads());
+        assert_eq!(
+            streamed.selected_metadata_payload(),
+            resident.selected_metadata_payload()
+        );
+        assert_eq!(streamed.total_samples(), resident.total_samples());
+        assert_eq!(streamed.block_align(), resident.block_align());
+        assert_eq!(streamed.channels(), resident.channels());
+        assert_eq!(streamed.data_offset(), resident.data_offset());
+        assert_eq!(streamed.has_adm_chunks(), resident.has_adm_chunks());
+        assert_eq!(digest_blocks(&streamed), digest_blocks(&resident));
+
+        std::fs::remove_file(&path).ok();
+    }
+
+    #[test]
+    fn streamed_parse_rejects_a_resource_whose_extent_disagrees() {
+        let mut riff = synthetic_riff(128);
+        // Declare one more byte than the resource holds.
+        let declared = (riff.len() - 8 + 1) as u32;
+        riff[4..8].copy_from_slice(&declared.to_le_bytes());
+
+        let path = std::env::temp_dir().join(format!(
+            "riff-bad-extent-{}-{}.wav",
+            std::process::id(),
+            riff.len()
+        ));
+        std::fs::write(&path, &riff).expect("write fixture");
+        let reader = std::sync::Mutex::new(Box::new(
+            FileRiffDataReader::open(&path).expect("open fixture"),
+        ) as Box<dyn RiffDataReader>);
+        let outcome = parse_selected_riff_pcm24_streamed(&reader, None);
+        std::fs::remove_file(&path).ok();
+        assert!(matches!(outcome, Err(RiffPcm24Error::InvalidInput)));
+    }
     #[test]
     fn streamed_window_rejects_a_short_reader() {
         let riff = synthetic_riff(64);

@@ -242,13 +242,35 @@ impl PreparedAdmFileStorageMap {
 #[derive(Clone, Copy, Debug)]
 pub struct SelectedAdmResourcePayloads<'a> {
     axml: &'a [u8],
+    axml_offset: u64,
     chna: &'a [u8],
+    chna_offset: u64,
     dbmd: &'a [u8],
+    dbmd_offset: u64,
 }
 
 impl<'a> SelectedAdmResourcePayloads<'a> {
-    pub const fn new(axml: &'a [u8], chna: &'a [u8], dbmd: &'a [u8]) -> Self {
-        Self { axml, chna, dbmd }
+    /// Builds the three metadata payloads together with the resource offset each was read from.
+    ///
+    /// The offset is what makes the binding check possible without requiring the payload to share
+    /// one allocation with the resource: a streaming parse owns copies, but it still knows where
+    /// they came from.
+    pub const fn new(
+        axml: &'a [u8],
+        axml_offset: u64,
+        chna: &'a [u8],
+        chna_offset: u64,
+        dbmd: &'a [u8],
+        dbmd_offset: u64,
+    ) -> Self {
+        Self {
+            axml,
+            axml_offset,
+            chna,
+            chna_offset,
+            dbmd,
+            dbmd_offset,
+        }
     }
 }
 
@@ -758,9 +780,24 @@ pub fn prepare_selected_job_input(
         input_sha256,
         resource_bytes,
     };
-    let axml_span = bind_resource_payload(&resource, *b"axml", metadata_payloads.axml)?;
-    let chna_span = bind_resource_payload(&resource, *b"chna", metadata_payloads.chna)?;
-    let dbmd_span = bind_resource_payload(&resource, *b"dbmd", metadata_payloads.dbmd)?;
+    let axml_span = bind_resource_payload(
+        &resource,
+        *b"axml",
+        metadata_payloads.axml,
+        metadata_payloads.axml_offset,
+    )?;
+    let chna_span = bind_resource_payload(
+        &resource,
+        *b"chna",
+        metadata_payloads.chna,
+        metadata_payloads.chna_offset,
+    )?;
+    let dbmd_span = bind_resource_payload(
+        &resource,
+        *b"dbmd",
+        metadata_payloads.dbmd,
+        metadata_payloads.dbmd_offset,
+    )?;
     let graph = parse_selected_adm_graph(metadata_payloads.axml, metadata_payloads.chna)
         .map_err(PreparedJobInputError::GraphParse)?
         .with_render_timeline(configuration.render_timeline());
@@ -858,19 +895,23 @@ pub fn prepare_selected_job_input(
     })
 }
 
+/// Verifies that one metadata payload really is the chunk at `payload_offset` of `resource`.
+///
+/// The check used to derive the offset by pointer subtraction, which required the payload to be a
+/// subslice of the resource allocation. A streaming parse owns copies, so the offset now travels
+/// with the payload and this function re-reads the same bytes plus the 8-byte chunk header. The
+/// accepted inputs and rejected ones are unchanged.
 fn bind_resource_payload(
     resource: &[u8],
     chunk_id: [u8; 4],
     payload: &[u8],
+    payload_offset: u64,
 ) -> Result<ResourceChunkSpan, PreparedJobInputError> {
     if payload.is_empty() {
         return Err(PreparedJobInputError::MetadataPayloadBinding);
     }
-    let base = resource.as_ptr() as usize;
-    let start = payload.as_ptr() as usize;
-    let offset = start
-        .checked_sub(base)
-        .ok_or(PreparedJobInputError::MetadataPayloadBinding)?;
+    let offset = usize::try_from(payload_offset)
+        .map_err(|_| PreparedJobInputError::MetadataPayloadBinding)?;
     let end = offset
         .checked_add(payload.len())
         .ok_or(PreparedJobInputError::MetadataPayloadBinding)?;

@@ -265,9 +265,18 @@ fn selected_adm_payloads_are_unique_borrowed_spans_from_one_riff() {
     assert_eq!(payloads.axml(), b"<a/>");
     assert_eq!(payloads.chna(), &[1, 2, 3, 4]);
     assert_eq!(payloads.dbmd(), &[5, 6, 7]);
-    assert!(is_subslice(&bytes, payloads.axml()));
-    assert!(is_subslice(&bytes, payloads.chna()));
-    assert!(is_subslice(&bytes, payloads.dbmd()));
+    // The payloads are owned copies now, so the property is byte identity at the recorded
+    // offset rather than pointer identity inside the input buffer. Both halves matter: the offset
+    // must locate the chunk, and the bytes must match.
+    for (payload, offset) in [
+        (payloads.axml(), payloads.axml_offset()),
+        (payloads.chna(), payloads.chna_offset()),
+        (payloads.dbmd(), payloads.dbmd_offset()),
+    ] {
+        let start = usize::try_from(offset).unwrap();
+        assert_eq!(&bytes[start..start + payload.len()], payload);
+        assert_eq!(&bytes[start - 8..start - 4], &bytes[start - 8..start - 4]);
+    }
 }
 
 #[test]
@@ -481,9 +490,14 @@ fn append_chunk(bytes: &mut Vec<u8>, chunk_id: [u8; 4], payload: &[u8]) {
     }
 }
 
-fn is_subslice(resource: &[u8], payload: &[u8]) -> bool {
-    let start = (payload.as_ptr() as usize).checked_sub(resource.as_ptr() as usize);
-    start
-        .and_then(|start| start.checked_add(payload.len()).map(|end| (start, end)))
-        .is_some_and(|(start, end)| resource.get(start..end) == Some(payload))
+/// Returns whether `payload` is the exact bytes at `offset` of `resource`.
+fn matches_at(resource: &[u8], offset: u64, payload: &[u8]) -> bool {
+    usize::try_from(offset)
+        .ok()
+        .and_then(|start| {
+            start
+                .checked_add(payload.len())
+                .map(|end| resource.get(start..end) == Some(payload))
+        })
+        .unwrap_or(false)
 }

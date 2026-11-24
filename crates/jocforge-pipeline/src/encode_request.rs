@@ -568,7 +568,14 @@ fn run_job_xml_preflight(
         wave,
         parsed.total_samples(),
         Arc::clone(&resource),
-        SelectedAdmResourcePayloads::new(adm.axml(), adm.chna(), adm.dbmd()),
+        SelectedAdmResourcePayloads::new(
+            adm.axml(),
+            adm.axml_offset(),
+            adm.chna(),
+            adm.chna_offset(),
+            adm.dbmd(),
+            adm.dbmd_offset(),
+        ),
     )
     .map_err(EncodeRequestError::PreparedInput)?;
     let parsed = parsed
@@ -1405,7 +1412,14 @@ fn run_inner(
         wave,
         parsed.total_samples(),
         Arc::clone(&resource),
-        SelectedAdmResourcePayloads::new(adm.axml(), adm.chna(), adm.dbmd()),
+        SelectedAdmResourcePayloads::new(
+            adm.axml(),
+            adm.axml_offset(),
+            adm.chna(),
+            adm.chna_offset(),
+            adm.dbmd(),
+            adm.dbmd_offset(),
+        ),
     )
     .map_err(EncodeRequestError::PreparedInput)?;
     if is_external_job_xml {

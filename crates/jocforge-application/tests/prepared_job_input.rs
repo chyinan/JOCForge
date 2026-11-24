@@ -528,7 +528,8 @@ fn metadata_from_a_different_resource_allocation_is_rejected() {
     let foreign_axml = AXML.to_vec();
     let foreign_chna = CHNA.to_vec();
     let foreign_dbmd = DBMD.to_vec();
-    let metadata = SelectedAdmResourcePayloads::new(&foreign_axml, &foreign_chna, &foreign_dbmd);
+    let metadata =
+        SelectedAdmResourcePayloads::new(&foreign_axml, 0, &foreign_chna, 0, &foreign_dbmd, 0);
     let accepted_case = &vectors["config_cases"][0];
     let result = prepare_selected_job_input(
         test_programme_id(),
@@ -2766,8 +2767,11 @@ fn metadata_payloads<'a>(
 ) -> SelectedAdmResourcePayloads<'a> {
     SelectedAdmResourcePayloads::new(
         &resource[spans[0].clone()],
+        spans[0].start as u64,
         &resource[spans[1].clone()],
+        spans[1].start as u64,
         &resource[spans[2].clone()],
+        spans[2].start as u64,
     )
 }
 

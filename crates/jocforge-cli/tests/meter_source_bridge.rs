@@ -77,14 +77,37 @@ fn selected_adm_riff_preparation_binds_metadata_and_pcm_to_one_resource() {
         38
     );
 
-    let foreign_resource: Arc<[u8]> = Arc::from(resource.as_ref().to_vec().into_boxed_slice());
-    let foreign_parsed = parse_selected_riff_pcm24(&foreign_resource, None).unwrap();
-    assert_eq!(
+    // The binding is byte identity, not allocation identity: metadata must equal the resource
+    // bytes at the recorded offset. A copy of the same bytes therefore binds, and only a copy
+    // whose bytes differ is rejected. Before streaming this was a pointer-identity check, which a
+    // copied metadata payload could never satisfy.
+    let same_bytes: Arc<[u8]> = Arc::from(resource.as_ref().to_vec().into_boxed_slice());
+    let same_bytes_parsed = parse_selected_riff_pcm24(&same_bytes, None).unwrap();
+    assert!(
         prepare_selected_adm_bwf_input(
-            ProgrammeId::new("foreign-adm-resource-binding").unwrap(),
+            ProgrammeId::new("copied-adm-resource-binding").unwrap(),
             job_xml,
             Arc::clone(&resource),
-            &foreign_parsed,
+            &same_bytes_parsed,
+        )
+        .is_ok(),
+        "identical bytes are still the same metadata"
+    );
+
+    let mut tampered = resource.as_ref().to_vec();
+    let axml_span = same_bytes_parsed
+        .selected_adm_payloads()
+        .unwrap()
+        .axml_offset() as usize;
+    tampered[axml_span] ^= 0x01;
+    let tampered: Arc<[u8]> = Arc::from(tampered.into_boxed_slice());
+    let tampered_parsed = parse_selected_riff_pcm24(&tampered, None).unwrap();
+    assert_eq!(
+        prepare_selected_adm_bwf_input(
+            ProgrammeId::new("tampered-adm-resource-binding").unwrap(),
+            job_xml,
+            Arc::clone(&resource),
+            &tampered_parsed,
         )
         .unwrap_err(),
         jocforge::meter_source_bridge::SelectedAdmPreparationError::PreparedJobInput(
@@ -529,7 +552,10 @@ fn metadata_payloads<'a>(
 ) -> SelectedAdmResourcePayloads<'a> {
     SelectedAdmResourcePayloads::new(
         &resource[spans[0].clone()],
+        spans[0].start as u64,
         &resource[spans[1].clone()],
+        spans[1].start as u64,
         &resource[spans[2].clone()],
+        spans[2].start as u64,
     )
 }

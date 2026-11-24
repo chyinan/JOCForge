@@ -51,7 +51,14 @@ pub fn prepare_selected_adm_bwf_input(
         wave,
         parsed.total_samples(),
         resource,
-        SelectedAdmResourcePayloads::new(metadata.axml(), metadata.chna(), metadata.dbmd()),
+        SelectedAdmResourcePayloads::new(
+            metadata.axml(),
+            metadata.axml_offset(),
+            metadata.chna(),
+            metadata.chna_offset(),
+            metadata.dbmd(),
+            metadata.dbmd_offset(),
+        ),
     )
     .map_err(SelectedAdmPreparationError::PreparedJobInput)?
     .bind_primary_control_rows(data_bytes)

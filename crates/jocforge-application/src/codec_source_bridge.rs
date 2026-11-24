@@ -389,8 +389,11 @@ mod tests {
         let (resource, spans) = selected_resource(channels);
         let metadata = SelectedAdmResourcePayloads::new(
             &resource[spans[0].clone()],
+            spans[0].start as u64,
             &resource[spans[1].clone()],
+            spans[1].start as u64,
             &resource[spans[2].clone()],
+            spans[2].start as u64,
         );
         prepare_selected_job_input(
             ProgrammeId::new("codec-source-bridge-test").unwrap(),

@@ -606,3 +606,58 @@ returns fewer bytes fails with `InvalidInput`. All 16 goldens unchanged after th
 
 Re-run `python scripts/golden-vectors.py` after each of those; anything that moves a sha is a bug in
 the change, not a new baseline.
+
+### Streaming input, increment 2: reader-driven parse and byte-identity binding (2026-11-24)
+
+Increment 2 removes the second resident requirement: the parser no longer needs the whole resource.
+All 16 goldens still match byte for byte.
+
+**One reader, file-absolute.** `RiffDataReader` now exposes `read_at(offset, len)` measured from the
+first byte of the **file** plus `len()`, so a single reader serves the chunk walk, the source hash and
+the PCM block reads. `RiffDataWindow::Streamed` carries the window's `base` and translates a
+window-relative read into a file read. Implementations: `SliceRiffDataReader` (resident bytes, also
+used by the resident entry point so there is one parse path) and `FileRiffDataReader` (seek +
+read_exact, native only).
+
+**Reader-driven walk.** `walk_riff(read, window_builder, requested_metadata_id)` walks 8-byte chunk
+headers through the reader, reads `fmt ` and the metadata payloads, and **skips the `data` payload**
+entirely; the builder then installs either a resident slice or a streamed window. Both public entry
+points are thin wrappers: `parse_selected_riff_pcm24(bytes)` and
+`parse_selected_riff_pcm24_streamed(&Mutex<Box<dyn RiffDataReader>>)`. The hash is still over the
+whole resource (`RiffDataReader::sha256`, 1 MiB chunks; the slice implementation overrides it with a
+single `Sha256::digest` so a resident parse costs no extra copies).
+
+**Metadata became owned, and the binding became byte identity.** A streaming parse cannot borrow
+metadata from a buffer it does not hold, so `RiffMetadataPayload` owns its payload and carries
+`payload_offset`. That forced one honest semantic change: `bind_resource_payload` used to derive the
+chunk offset by pointer subtraction, which required the payload to be a subslice of the resource
+allocation. It now takes the recorded offset and verifies `resource[offset..offset+len] == payload`
+plus the 8-byte chunk header. The accepted inputs are unchanged except for one deliberate case: a
+copy of *identical* bytes now binds, because the property being enforced is "this metadata is the
+metadata of these bytes", not "these two objects share one allocation". `meter_source_bridge`'s test
+proves both halves (identical copy binds, one flipped byte is rejected).
+
+Touched for the offset plumbing: `SelectedAdmResourcePayloads::new` takes three `(payload, offset)`
+pairs; call sites updated in `encode_request.rs`, `meter_source_bridge.rs`, `meter_input_probe.rs`
+and four test helpers.
+
+Assertions updated because the old ones pinned pointer identity or the old hash expression:
+`selected_adm_payloads_are_unique_borrowed_spans_from_one_riff` (now byte identity at the recorded
+offset), the CLI binding test above, and the F06OF audit pin
+(`'source_sha256: Sha256::digest(bytes).into()'` → `'let source_sha256 = read.sha256()?;'` plus
+`'Ok(Sha256::digest(self.bytes).into())'`).
+
+New tests: `streamed_parse_observes_exactly_what_the_resident_parse_does` (sha, chunk ids, metadata
+payloads, selected payload, timeline, block alignment, channels, data offset, ADM-chunk flag and
+every decoded block all equal between the two parses) and
+`streamed_parse_rejects_a_resource_whose_extent_disagrees`.
+
+Gates: goldens 16/16 identical, `cargo test --workspace --locked` exit 0, `cargo fmt --check` clean,
+`cargo clippy --workspace --all-targets --locked` exit 0, `check-boundaries.py` `91 / 104 / 0 / 6`.
+
+**Still not streaming in the browser.** The pipeline and the bridge ABI still hand over one buffer
+(`Encoder::input`), and `prepare_selected_adm_bwf_input` still takes `Arc<[u8]>` for the identity and
+the binding check. Next increments: (3) let the application layer accept a streamed parse without a
+resident `Arc<[u8]>` — the identity hash and the binding both already have reader-friendly forms;
+(4) the wasm pump (`SharedArrayBuffer` + `Atomics.wait` in the encoding Worker, second thread fills,
+`COOP`/`COEP` headers); (5) the JS driver over `file.slice`.

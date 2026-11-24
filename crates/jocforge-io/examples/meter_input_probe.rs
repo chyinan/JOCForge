@@ -114,7 +114,14 @@ fn main() -> Result<(), Box<dyn Error>> {
         SelectedWaveDescriptor::new(parsed.sample_rate_hz(), parsed.channels(), 24),
         parsed.total_samples(),
         Arc::clone(&resource),
-        SelectedAdmResourcePayloads::new(axml, chna, dbmd_payload),
+        SelectedAdmResourcePayloads::new(
+            axml,
+            metadata.axml_offset(),
+            chna,
+            metadata.chna_offset(),
+            dbmd_payload,
+            metadata.dbmd_offset(),
+        ),
     )
     .map_err(|error| io::Error::other(format!("selected F01E input admission failed: {error}")))?;
     if !prepared.configuration().input_kind().is_adm_bwf()
