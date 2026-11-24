@@ -1199,7 +1199,7 @@ mod pair_access_unit_integration_tests {
         produce_flat7x_pair_d0_pcm_frame_candidate,
     };
     use crate::{
-        PreparedJobInput, SelectedAdmResourcePayloads, SelectedWaveDescriptor,
+        PreparedJobInput, ResourceIdentity, SelectedAdmResourcePayloads, SelectedWaveDescriptor,
         flat7x_pair_integrity::{Flat7xPairF12StageInput, stage_flat7x_pair_f12_integrity},
         flat7x_pair_output::{
             Flat7xOpaqueD0FrameInput, Flat7xPairAppendProposalError, Flat7xPairIoStageDisposition,
@@ -1520,7 +1520,7 @@ mod pair_access_unit_integration_tests {
                 u16::try_from(descriptor["pcm_bits"].as_u64().unwrap()).unwrap(),
             ),
             source_samples,
-            Arc::clone(&resource),
+            ResourceIdentity::from_bytes(&resource),
             metadata,
         )
         .unwrap()

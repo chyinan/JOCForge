@@ -2,8 +2,8 @@
 //! CLI composition root joining the in-memory reader cursor to application staging.
 
 use jocforge_application::{
-    PreparedJobInput, PreparedJobInputError, ProgrammeId, SelectedAdmResourcePayloads,
-    SelectedWaveDescriptor,
+    PreparedJobInput, PreparedJobInputError, ProgrammeId, ResourceIdentity,
+    SelectedAdmResourcePayloads, SelectedWaveDescriptor,
     meter_source_bridge::{
         self as application_bridge, IndependentMeterPrepass, MeterCallbackPhase,
         MeterSourceBridgeError, MeterSourceCallbackFrame, MeterSourceCallbackFrameParts,
@@ -34,7 +34,6 @@ pub enum SelectedAdmPreparationError {
 pub fn prepare_selected_adm_bwf_input(
     programme_id: ProgrammeId,
     job_xml: &[u8],
-    resource: Arc<[u8]>,
     parsed: &ParsedRiffPcm24<'_>,
 ) -> Result<PreparedJobInput, SelectedAdmPreparationError> {
     let metadata = parsed
@@ -50,7 +49,7 @@ pub fn prepare_selected_adm_bwf_input(
         job_xml,
         wave,
         parsed.total_samples(),
-        resource,
+        ResourceIdentity::new(parsed.source_sha256(), parsed.resource_bytes()),
         SelectedAdmResourcePayloads::new(
             metadata.axml(),
             metadata.axml_offset(),
@@ -63,8 +62,7 @@ pub fn prepare_selected_adm_bwf_input(
     .map_err(SelectedAdmPreparationError::PreparedJobInput)?
     .bind_primary_control_rows(data_bytes)
     .map_err(SelectedAdmPreparationError::PreparedJobInput)?;
-    let resource_bytes = u64::try_from(prepared.resource().len())
-        .map_err(|_| SelectedAdmPreparationError::SourceIdentityMismatch)?;
+    let resource_bytes = prepared.resource_identity().resource_bytes();
     if prepared.resource_identity().input_sha256() != parsed.source_sha256()
         || prepared.resource_identity().resource_bytes() != resource_bytes
     {

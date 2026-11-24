@@ -8,7 +8,7 @@ use jocforge_application::{
     output_publication::{AttemptId, OutputRootBindingError, OutputStagingOwnerId},
     prepare_selected_job_input,
 };
-use jocforge_application::{ProgrammeId, SelectedWaveDescriptor};
+use jocforge_application::{ProgrammeId, ResourceIdentity, SelectedWaveDescriptor};
 use jocforge_domain::{
     joc::emdf::metadata_owner::test_support::Flat7xReceiptGateMetadataTestInputs,
     profile::Flat7xI0D0TargetPlan,
@@ -95,7 +95,7 @@ fn prepared_job(programme_label: &str) -> PreparedJobInput {
         case["input_xml"].as_str().unwrap().as_bytes(),
         wave,
         descriptor["source_samples"].as_u64().unwrap(),
-        Arc::clone(&resource),
+        ResourceIdentity::from_bytes(&resource),
         metadata_payloads(&resource, &spans),
     )
     .expect("selected input fixture is admissible")

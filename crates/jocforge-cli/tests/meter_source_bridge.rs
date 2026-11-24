@@ -6,7 +6,7 @@ use jocforge::meter_source_bridge::{
     reset_meter_source_and_prepass, stage_meter_source_oar_callback, view_for_source_proposal,
 };
 use jocforge_application::{
-    PreparedJobInput, SelectedAdmResourcePayloads,
+    PreparedJobInput, ResourceIdentity, SelectedAdmResourcePayloads,
     meter_source_bridge::{
         AdmFileStorageTrackSlot, IndependentMeterPrepass, KMatrixMode, KMatrixProfile,
         MeterCallbackCount, MeterCallbackIndex, MeterCallbackPhase, MeterFrontendCallbackInput,
@@ -53,7 +53,6 @@ fn selected_adm_riff_preparation_binds_metadata_and_pcm_to_one_resource() {
     let prepared = prepare_selected_adm_bwf_input(
         ProgrammeId::new("selected-adm-resource-binding").unwrap(),
         job_xml,
-        Arc::clone(&resource),
         &parsed,
     )
     .unwrap();
@@ -87,32 +86,35 @@ fn selected_adm_riff_preparation_binds_metadata_and_pcm_to_one_resource() {
         prepare_selected_adm_bwf_input(
             ProgrammeId::new("copied-adm-resource-binding").unwrap(),
             job_xml,
-            Arc::clone(&resource),
             &same_bytes_parsed,
         )
         .is_ok(),
         "identical bytes are still the same metadata"
     );
 
+    // Flip one byte of PCM, not of the metadata: a tampered AXML would fail the graph parse before
+    // the identity question is even asked.
     let mut tampered = resource.as_ref().to_vec();
-    let axml_span = same_bytes_parsed
-        .selected_adm_payloads()
-        .unwrap()
-        .axml_offset() as usize;
-    tampered[axml_span] ^= 0x01;
+    let pcm_byte = usize::try_from(same_bytes_parsed.data_offset()).unwrap() + 1;
+    tampered[pcm_byte] ^= 0x01;
     let tampered: Arc<[u8]> = Arc::from(tampered.into_boxed_slice());
     let tampered_parsed = parse_selected_riff_pcm24(&tampered, None).unwrap();
-    assert_eq!(
-        prepare_selected_adm_bwf_input(
-            ProgrammeId::new("tampered-adm-resource-binding").unwrap(),
-            job_xml,
-            Arc::clone(&resource),
-            &tampered_parsed,
-        )
-        .unwrap_err(),
-        jocforge::meter_source_bridge::SelectedAdmPreparationError::PreparedJobInput(
-            jocforge_application::PreparedJobInputError::MetadataPayloadBinding
-        )
+
+    // Metadata and identity are now both derived from one parse, so the "identity from resource A
+    // with metadata from B" pairing this test used to exercise cannot be constructed through
+    // `prepare_selected_adm_bwf_input` any more. What is still worth asserting is that the identity
+    // tracks the bytes: one flipped metadata byte yields a different source hash and therefore a
+    // different prepared identity.
+    assert_ne!(tampered_parsed.source_sha256(), parsed.source_sha256());
+    let tampered_prepared = prepare_selected_adm_bwf_input(
+        ProgrammeId::new("tampered-adm-resource-binding").unwrap(),
+        job_xml,
+        &tampered_parsed,
+    )
+    .unwrap();
+    assert_ne!(
+        tampered_prepared.resource_identity().input_sha256(),
+        prepared.resource_identity().input_sha256()
     );
 }
 
@@ -438,7 +440,7 @@ fn prepared_job_input_from_resource(
             descriptor["pcm_bits"].as_u64().unwrap() as u16,
         ),
         source_samples,
-        Arc::clone(resource),
+        ResourceIdentity::from_bytes(resource),
         metadata_payloads(resource, spans),
     )
     .unwrap()

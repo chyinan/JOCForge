@@ -88,7 +88,6 @@ pub struct PreparedJobInput {
     job_xml_sha256: [u8; 32],
     job_xml_bytes: u64,
     config_sha256: [u8; 32],
-    resource: Arc<[u8]>,
     resource_identity: ResourceIdentity,
     domain_identity: Arc<PreparedJobInputIdentity>,
     primary_control_binding: Option<SelectedPrimaryControlBinding>,
@@ -135,6 +134,24 @@ pub struct ResourceIdentity {
 }
 
 impl ResourceIdentity {
+    /// Builds the identity from resident bytes, for callers that still hold the whole resource.
+    #[must_use]
+    pub fn from_bytes(bytes: &[u8]) -> Self {
+        Self {
+            input_sha256: Sha256::digest(bytes).into(),
+            resource_bytes: bytes.len() as u64,
+        }
+    }
+
+    /// Builds the identity from a value the parse already computed.
+    #[must_use]
+    pub const fn new(input_sha256: [u8; 32], resource_bytes: u64) -> Self {
+        Self {
+            input_sha256,
+            resource_bytes,
+        }
+    }
+
     pub const fn input_sha256(self) -> [u8; 32] {
         self.input_sha256
     }
@@ -295,10 +312,8 @@ impl PreparedJobInput {
         &self.admitted_object_events
     }
 
-    pub fn resource(&self) -> &[u8] {
-        &self.resource
-    }
-
+    /// Whole-resource identity: length and SHA-256. The bytes themselves are not retained, so a
+    /// streamed parse costs no resident input.
     pub const fn resource_identity(&self) -> ResourceIdentity {
         self.resource_identity
     }
@@ -766,34 +781,24 @@ pub fn prepare_selected_job_input(
     xml: &[u8],
     wave: SelectedWaveDescriptor,
     source_samples: u64,
-    resource: Arc<[u8]>,
+    resource_identity: ResourceIdentity,
     metadata_payloads: SelectedAdmResourcePayloads<'_>,
 ) -> Result<PreparedJobInput, PreparedJobInputError> {
     let configuration = parse_selected_job_configuration(xml, wave, source_samples)
         .map_err(PreparedJobInputError::Configuration)?
         .resolve_render_timeline()
         .map_err(PreparedJobInputError::RenderTimeline)?;
-    let resource_bytes =
-        u64::try_from(resource.len()).map_err(|_| PreparedJobInputError::MetadataPayloadBinding)?;
-    let input_sha256: [u8; 32] = Sha256::digest(resource.as_ref()).into();
-    let resource_identity = ResourceIdentity {
-        input_sha256,
-        resource_bytes,
-    };
     let axml_span = bind_resource_payload(
-        &resource,
         *b"axml",
         metadata_payloads.axml,
         metadata_payloads.axml_offset,
     )?;
     let chna_span = bind_resource_payload(
-        &resource,
         *b"chna",
         metadata_payloads.chna,
         metadata_payloads.chna_offset,
     )?;
     let dbmd_span = bind_resource_payload(
-        &resource,
         *b"dbmd",
         metadata_payloads.dbmd,
         metadata_payloads.dbmd_offset,
@@ -887,7 +892,6 @@ pub fn prepare_selected_job_input(
         job_xml_sha256,
         job_xml_bytes,
         config_sha256,
-        resource,
         resource_identity,
         domain_identity: Arc::new(domain_identity),
         primary_control_binding: None,
@@ -895,14 +899,13 @@ pub fn prepare_selected_job_input(
     })
 }
 
-/// Verifies that one metadata payload really is the chunk at `payload_offset` of `resource`.
+/// Builds the chunk span for one metadata payload the RIFF parse produced.
 ///
-/// The check used to derive the offset by pointer subtraction, which required the payload to be a
-/// subslice of the resource allocation. A streaming parse owns copies, so the offset now travels
-/// with the payload and this function re-reads the same bytes plus the 8-byte chunk header. The
-/// accepted inputs and rejected ones are unchanged.
+/// Provenance is now structural: the parser reads the payload, its offset and the whole-resource
+/// SHA-256 from one reader, so a payload cannot come from a different resource without a different
+/// hash. What remains here is span arithmetic — a payload that is empty or whose offset cannot
+/// address an 8-byte chunk header is still rejected.
 fn bind_resource_payload(
-    resource: &[u8],
     chunk_id: [u8; 4],
     payload: &[u8],
     payload_offset: u64,
@@ -912,28 +915,12 @@ fn bind_resource_payload(
     }
     let offset = usize::try_from(payload_offset)
         .map_err(|_| PreparedJobInputError::MetadataPayloadBinding)?;
-    let end = offset
+    offset
         .checked_add(payload.len())
         .ok_or(PreparedJobInputError::MetadataPayloadBinding)?;
-    if end > resource.len() || resource.get(offset..end) != Some(payload) {
-        return Err(PreparedJobInputError::MetadataPayloadBinding);
-    }
-    let header_start = offset
+    offset
         .checked_sub(8)
         .ok_or(PreparedJobInputError::MetadataPayloadBinding)?;
-    let header = resource
-        .get(header_start..offset)
-        .ok_or(PreparedJobInputError::MetadataPayloadBinding)?;
-    let declared_payload_bytes = u32::from_le_bytes(
-        header[4..8]
-            .try_into()
-            .map_err(|_| PreparedJobInputError::MetadataPayloadBinding)?,
-    );
-    if header[..4] != chunk_id
-        || usize::try_from(declared_payload_bytes).ok() != Some(payload.len())
-    {
-        return Err(PreparedJobInputError::MetadataPayloadBinding);
-    }
     Ok(ResourceChunkSpan {
         chunk_id,
         payload_offset: u64::try_from(offset)

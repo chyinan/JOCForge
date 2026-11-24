@@ -1,6 +1,6 @@
 // pattern: Functional Core
 use jocforge_application::{
-    PreparedJobInputError, SelectedAdmResourcePayloads,
+    PreparedJobInputError, ResourceIdentity, SelectedAdmResourcePayloads,
     independent_meter_callback::{
         IndependentMeterG0Providers, MeterCallbackGtcBinding,
         stage_independent_meter_fresh_zero_drain_callback, stage_independent_meter_g0_callback,
@@ -317,7 +317,7 @@ fn bound_prepared_input_rejects_unselected_extent_before_f01e_snapshot() {
             descriptor["pcm_bits"].as_u64().unwrap() as u16,
         ),
         1,
-        Arc::clone(&resource),
+        ResourceIdentity::from_bytes(&resource),
         metadata_payloads(&resource, &spans),
     )
     .unwrap()
@@ -332,7 +332,7 @@ fn bound_prepared_input_rejects_unselected_extent_before_f01e_snapshot() {
             descriptor["pcm_bits"].as_u64().unwrap() as u16,
         ),
         1,
-        Arc::clone(&resource),
+        ResourceIdentity::from_bytes(&resource),
         metadata_payloads(&resource, &spans),
     )
     .unwrap();
@@ -397,7 +397,7 @@ fn value_preparation_binds_graph_and_identity_to_one_immutable_resource() {
             case["input_xml"].as_str().unwrap().as_bytes(),
             wave,
             descriptor["source_samples"].as_u64().unwrap(),
-            Arc::clone(&resource),
+            ResourceIdentity::from_bytes(&resource),
             metadata_payloads(&resource, &spans),
         );
         // The original vectors predate 768 kbps encoding and file-position cropping.
@@ -438,8 +438,10 @@ fn value_preparation_binds_graph_and_identity_to_one_immutable_resource() {
                 domain_identity.graph_provenance().parent_resource(),
                 domain_identity.resource()
             );
-            assert_eq!(prepared.resource(), resource.as_ref());
-            assert_eq!(prepared.resource().as_ptr(), resource.as_ptr());
+            assert_eq!(
+                prepared.resource_identity(),
+                ResourceIdentity::from_bytes(&resource)
+            );
             assert_eq!(prepared.programme_id(), &test_programme_id());
             assert_eq!(
                 prepared.configuration().source_samples(),
@@ -511,7 +513,7 @@ fn value_preparation_binds_graph_and_identity_to_one_immutable_resource() {
         accepted_case["input_xml"].as_str().unwrap().as_bytes(),
         SelectedWaveDescriptor::new(48_000, 38, 24),
         13_888_072,
-        Arc::clone(&resource),
+        ResourceIdentity::from_bytes(&resource),
         metadata_payloads(&resource, &spans),
     )
     .unwrap_err();
@@ -538,7 +540,7 @@ fn metadata_from_a_different_resource_allocation_is_rejected() {
         accepted_case["pcm_descriptor"]["source_samples"]
             .as_u64()
             .unwrap(),
-        resource,
+        ResourceIdentity::from_bytes(&resource),
         metadata,
     );
     assert_eq!(
@@ -566,7 +568,7 @@ fn programme_id_is_caller_supplied_and_separate_from_content_identity() {
         case["input_xml"].as_str().unwrap().as_bytes(),
         wave,
         descriptor["source_samples"].as_u64().unwrap(),
-        Arc::clone(&resource),
+        ResourceIdentity::from_bytes(&resource),
         metadata_payloads(&resource, &spans),
     )
     .unwrap();
@@ -575,7 +577,7 @@ fn programme_id_is_caller_supplied_and_separate_from_content_identity() {
         case["input_xml"].as_str().unwrap().as_bytes(),
         wave,
         descriptor["source_samples"].as_u64().unwrap(),
-        Arc::clone(&resource),
+        ResourceIdentity::from_bytes(&resource),
         metadata_payloads(&resource, &spans),
     )
     .unwrap();
@@ -605,7 +607,7 @@ fn meter_source_admission_binds_owner_identity_to_prepared_input_and_attempt() {
             descriptor["pcm_bits"].as_u64().unwrap() as u16,
         ),
         descriptor["source_samples"].as_u64().unwrap(),
-        Arc::clone(&resource),
+        ResourceIdentity::from_bytes(&resource),
         metadata_payloads(&resource, &spans),
     )
     .unwrap();
@@ -652,7 +654,7 @@ fn meter_source_admission_rejects_a_mismatched_typed_extent() {
             descriptor["pcm_bits"].as_u64().unwrap() as u16,
         ),
         descriptor["source_samples"].as_u64().unwrap(),
-        Arc::clone(&resource),
+        ResourceIdentity::from_bytes(&resource),
         metadata_payloads(&resource, &spans),
     )
     .unwrap();
@@ -685,7 +687,7 @@ fn meter_source_admission_carries_dynamic_adm_physical_row_count() {
         case["input_xml"].as_str().unwrap().as_bytes(),
         SelectedWaveDescriptor::new(48_000, 36, 24),
         1,
-        Arc::clone(&resource),
+        ResourceIdentity::from_bytes(&resource),
         metadata_payloads(&resource, &spans),
     )
     .unwrap();
@@ -726,7 +728,7 @@ fn meter_source_map_materializes_the_n_plus_ten_active_axis_without_padding() {
             case["input_xml"].as_str().unwrap().as_bytes(),
             SelectedWaveDescriptor::new(48_000, channels, 24),
             1,
-            Arc::clone(&resource),
+            ResourceIdentity::from_bytes(&resource),
             metadata_payloads(&resource, &spans),
         )
         .unwrap()
@@ -795,7 +797,7 @@ fn meter_source_map_materializes_n_plus_ten_active_rows_without_padding() {
             case["input_xml"].as_str().unwrap().as_bytes(),
             SelectedWaveDescriptor::new(48_000, channels, 24),
             1,
-            Arc::clone(&resource),
+            ResourceIdentity::from_bytes(&resource),
             metadata_payloads(&resource, &spans),
         )
         .unwrap()
@@ -901,7 +903,7 @@ fn f01e_cold_provider_projects_adm_rows_and_selected_drc_profiles() {
             input_xml.as_bytes(),
             SelectedWaveDescriptor::new(48_000, channels, 24),
             1,
-            Arc::clone(&resource),
+            ResourceIdentity::from_bytes(&resource),
             metadata_payloads(&resource, &spans),
         )
         .unwrap();
@@ -1292,7 +1294,7 @@ fn f01e_cold_provider_projects_adm_rows_and_selected_drc_profiles() {
                 case["input_xml"].as_str().unwrap().as_bytes(),
                 SelectedWaveDescriptor::new(48_000, channels, 24),
                 1,
-                Arc::clone(&same_content_resource),
+                ResourceIdentity::from_bytes(&same_content_resource),
                 metadata_payloads(&same_content_resource, &same_content_spans),
             )
             .unwrap()
@@ -1377,7 +1379,7 @@ fn explicit_dialogue_measurement_inputs_reach_meter_admission() {
             xml.as_bytes(),
             SelectedWaveDescriptor::new(48_000, 38, 24),
             1,
-            Arc::clone(&resource),
+            ResourceIdentity::from_bytes(&resource),
             metadata_payloads(&resource, &spans),
         )
         .unwrap()
@@ -1435,7 +1437,7 @@ fn prepared_adm_input_preserves_each_washed_rate_through_profile_and_frame_size(
             xml.as_bytes(),
             SelectedWaveDescriptor::new(48_000, 38, 24),
             1,
-            Arc::clone(&resource),
+            ResourceIdentity::from_bytes(&resource),
             metadata_payloads(&resource, &spans),
         )
         .unwrap();
@@ -1497,7 +1499,7 @@ fn silence_controls_share_the_rendered_extent_with_the_meter_and_output_plan() {
             xml.as_bytes(),
             SelectedWaveDescriptor::new(48_000, 38, 24),
             1,
-            Arc::clone(&resource),
+            ResourceIdentity::from_bytes(&resource),
             metadata_payloads(&resource, &spans),
         )
         .expect("typed configuration remains inspectable before selected product admission");
@@ -1664,7 +1666,7 @@ fn dynamic_f01e_normal_continuation_binds_36_and_38_row_callback_clocks() {
             case["input_xml"].as_str().unwrap().as_bytes(),
             SelectedWaveDescriptor::new(48_000, channels, 24),
             1_537,
-            Arc::clone(&resource),
+            ResourceIdentity::from_bytes(&resource),
             metadata_payloads(&resource, &spans),
         )
         .unwrap()
@@ -1812,7 +1814,7 @@ fn dynamic_f01e_owner_installs_36_and_38_rows_and_keeps_three_meter_drains() {
             case["input_xml"].as_str().unwrap().as_bytes(),
             SelectedWaveDescriptor::new(48_000, channels, 24),
             1_537,
-            Arc::clone(&resource),
+            ResourceIdentity::from_bytes(&resource),
             metadata_payloads(&resource, &spans),
         )
         .unwrap()
@@ -2053,7 +2055,7 @@ fn selected_meter_two_normal_and_three_drain_callbacks_complete_for_36_rows() {
         case["input_xml"].as_str().unwrap().as_bytes(),
         SelectedWaveDescriptor::new(48_000, 36, 24),
         source_samples,
-        Arc::clone(&resource),
+        ResourceIdentity::from_bytes(&resource),
         metadata_payloads(&resource, &spans),
     )
     .unwrap()
@@ -2245,7 +2247,7 @@ fn main_spatial_callback_stages_dynamic_36_row_controls() {
         case["input_xml"].as_str().unwrap().as_bytes(),
         SelectedWaveDescriptor::new(48_000, 36, 24),
         source_samples,
-        Arc::clone(&resource),
+        ResourceIdentity::from_bytes(&resource),
         metadata_payloads(&resource, &spans),
     )
     .unwrap()
@@ -2352,7 +2354,7 @@ fn main_dynamic_schedule_for_channels(channels: u16, source_samples: u64) {
         case["input_xml"].as_str().unwrap().as_bytes(),
         SelectedWaveDescriptor::new(48_000, channels, 24),
         source_samples,
-        Arc::clone(&resource),
+        ResourceIdentity::from_bytes(&resource),
         metadata_payloads(&resource, &spans),
     )
     .unwrap()

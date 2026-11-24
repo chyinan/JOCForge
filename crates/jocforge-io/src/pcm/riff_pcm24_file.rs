@@ -8,6 +8,13 @@ pub struct RiffPcm24FileReadError {
     source: io::Error,
 }
 
+impl RiffPcm24FileReadError {
+    /// Wraps one underlying I/O failure, so a streamed open reports the same error type.
+    pub const fn from_io(source: io::Error) -> Self {
+        Self { source }
+    }
+}
+
 impl std::fmt::Display for RiffPcm24FileReadError {
     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(formatter, "RIFF_PCM24_INPUT_READ: {}", self.source)

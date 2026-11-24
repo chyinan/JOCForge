@@ -1,7 +1,9 @@
 // pattern: Imperative Shell
 //! Read-only in-memory probe for a selected RIFF source and its first meter hops.
 
-use jocforge_application::{SelectedAdmResourcePayloads, prepare_selected_job_input};
+use jocforge_application::{
+    ResourceIdentity, SelectedAdmResourcePayloads, prepare_selected_job_input,
+};
 use jocforge_domain::{
     frontend::{
         PackageManifestEvidence, ProviderFileEvidence,
@@ -113,7 +115,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         job_xml.as_bytes(),
         SelectedWaveDescriptor::new(parsed.sample_rate_hz(), parsed.channels(), 24),
         parsed.total_samples(),
-        Arc::clone(&resource),
+        ResourceIdentity::from_bytes(&resource),
         SelectedAdmResourcePayloads::new(
             axml,
             metadata.axml_offset(),
@@ -125,7 +127,6 @@ fn main() -> Result<(), Box<dyn Error>> {
     )
     .map_err(|error| io::Error::other(format!("selected F01E input admission failed: {error}")))?;
     if !prepared.configuration().input_kind().is_adm_bwf()
-        || prepared.resource().as_ptr() != resource.as_ptr()
         || prepared.resource_identity().input_sha256() != source_identity.sha256()
         || prepared.graph().provenance().parent_resource() != prepared.resource_identity()
     {

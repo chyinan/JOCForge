@@ -58,11 +58,21 @@ def run_case(binary: Path, source: Path, case) -> dict:
             str(source),
             str(output),
         ]
-        completed = subprocess.run(
-            command, capture_output=True, text=True, errors="replace"
-        )
+        try:
+            # stderr is discarded on purpose: the CLI writes a progress bar there, and on Windows
+            # a full pipe that nobody drains blocks the child forever (observed as a 0%-CPU hang).
+            completed = subprocess.run(
+                command,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.DEVNULL,
+                text=True,
+                errors="replace",
+                timeout=180,
+            )
+        except subprocess.TimeoutExpired:
+            raise SystemExit(f"{name}: 编码超时（180 s），多半是流式读取卡住了")
         if completed.returncode != 0 or not output.exists():
-            detail = (completed.stderr or completed.stdout).strip().splitlines()
+            detail = (completed.stdout or "").strip().splitlines()
             raise SystemExit(
                 f"{name}: 编码失败（退出码 {completed.returncode}）\n"
                 + "\n".join(detail[-4:])

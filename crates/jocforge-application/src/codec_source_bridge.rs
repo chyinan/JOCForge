@@ -318,7 +318,10 @@ fn selected_bsi_profile_inputs(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{SelectedAdmResourcePayloads, SelectedWaveDescriptor, prepare_selected_job_input};
+    use crate::{
+        ResourceIdentity, SelectedAdmResourcePayloads, SelectedWaveDescriptor,
+        prepare_selected_job_input,
+    };
     use jocforge_domain::frontend::dbmd_sections::SelectedDbmdSections;
     use jocforge_domain::frontend::job_configuration::{
         SelectedDrcProfile, SelectedHeightTrim, SelectedInputKind, SelectedSurroundTrim,
@@ -404,7 +407,7 @@ mod tests {
                 u16::try_from(descriptor["pcm_bits"].as_u64().unwrap()).unwrap(),
             ),
             1,
-            Arc::clone(&resource),
+            ResourceIdentity::from_bytes(&resource),
             metadata,
         )
         .unwrap()

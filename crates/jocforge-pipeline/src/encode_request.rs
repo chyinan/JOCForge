@@ -6,7 +6,7 @@ pub use crate::cmaf::{write_composed_m4a, write_m4a_with_object_count};
 pub use jocforge_application::source_frame_bridge::{
     BlockPartition, EmdfLocation, LfeOwner, SubstreamPlan,
 };
-pub use jocforge_application::{FileRenderTiming, SourceTimeRangeError};
+pub use jocforge_application::{FileRenderTiming, ResourceIdentity, SourceTimeRangeError};
 
 #[cfg(not(target_arch = "wasm32"))]
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -67,7 +67,7 @@ use jocforge_io::pcm::{
     frontend_pcm_source::{
         CodecSourceIndex, FrontendCallbackIndex, FrontendPcmSourceError, read_frontend_pcm_callback,
     },
-    riff_pcm24::parse_selected_riff_pcm24,
+    riff_pcm24::{parse_selected_riff_pcm24, parse_selected_riff_pcm24_streamed},
     riff_pcm24_file::{RiffPcm24FileReadError, read_resource},
 };
 
@@ -567,7 +567,7 @@ fn run_job_xml_preflight(
         &request.job_xml,
         wave,
         parsed.total_samples(),
-        Arc::clone(&resource),
+        ResourceIdentity::new(parsed.source_sha256(), parsed.resource_bytes()),
         SelectedAdmResourcePayloads::new(
             adm.axml(),
             adm.axml_offset(),
@@ -631,7 +631,7 @@ fn run_job_xml_preflight(
         configuration.input_kind().selected_label(),
         request.input_path.display(),
         hex_lower(&parsed.source_sha256()),
-        resource.len(),
+        parsed.resource_bytes(),
         parsed.sample_rate_hz(),
         parsed.channels(),
         24,
@@ -1411,7 +1411,7 @@ fn run_inner(
         &job_xml,
         wave,
         parsed.total_samples(),
-        Arc::clone(&resource),
+        ResourceIdentity::from_bytes(&resource),
         SelectedAdmResourcePayloads::new(
             adm.axml(),
             adm.axml_offset(),

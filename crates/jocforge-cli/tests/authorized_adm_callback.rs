@@ -368,13 +368,7 @@ fn authorized_adm_bwf_stages_one_main_output_oar_meter_probe() {
         .unwrap()
         .as_bytes();
     let programme_id = ProgrammeId::new("authorized-adm-normal-callback").unwrap();
-    let prepared = prepare_selected_adm_bwf_input(
-        programme_id.clone(),
-        job_xml,
-        Arc::clone(&resource),
-        &parsed,
-    )
-    .unwrap();
+    let prepared = prepare_selected_adm_bwf_input(programme_id.clone(), job_xml, &parsed).unwrap();
     assert_eq!(
         prepared.primary_metadata_controls().unwrap().rows().len(),
         38
@@ -544,13 +538,7 @@ fn authorized_adm_bwf_stages_independent_meter_g0_and_g1_oar_candidates_inner() 
         .unwrap()
         .as_bytes();
     let programme_id = ProgrammeId::new("authorized-independent-meter-g0").unwrap();
-    let prepared = prepare_selected_adm_bwf_input(
-        programme_id.clone(),
-        job_xml,
-        Arc::clone(&resource),
-        &parsed,
-    )
-    .unwrap();
+    let prepared = prepare_selected_adm_bwf_input(programme_id.clone(), job_xml, &parsed).unwrap();
     // This probe invokes only the independent Meter entry point. Its programme identity is
     // deliberately separate from the MAIN-output probe's identity above.
     assert_eq!(
@@ -775,9 +763,7 @@ fn authorized_adm_bwf_stages_complete_independent_meter_prepass_receipt() {
         .unwrap()
         .as_bytes();
     let programme_id = ProgrammeId::new("authorized-independent-meter-prepass").unwrap();
-    let prepared =
-        prepare_selected_adm_bwf_input(programme_id, job_xml, Arc::clone(&resource), &parsed)
-            .unwrap();
+    let prepared = prepare_selected_adm_bwf_input(programme_id, job_xml, &parsed).unwrap();
     let source_samples = MeterSourceSampleCount::new(parsed.total_samples()).unwrap();
     let source_identity = MeterPcmSourceIdentity::from_selected_resource_sha256(
         prepared.resource_identity().input_sha256(),
@@ -1323,7 +1309,6 @@ fn stage_authorized_main_g2_receiver_candidate(
     let alternate_prepared = prepare_selected_adm_bwf_input(
         prepared.programme_id().clone(),
         alternate_job_xml.as_bytes(),
-        Arc::clone(resource),
         parsed,
     )
     .unwrap();
