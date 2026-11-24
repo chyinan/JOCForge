@@ -268,6 +268,15 @@ pub extern "C" fn jocforge_wasm_encoder_set_objects(handle: u32, object_count: u
     });
 }
 
+/// Encodes the host-streamed ADM; the input is served from the worker's OPFS handle.
+#[unsafe(no_mangle)]
+pub extern "C" fn jocforge_wasm_encoder_finish_streamed(handle: u32) -> i32 {
+    guarded_status(handle, |encoder| match encoder.finish_streamed() {
+        Ok(status) => status,
+        Err(_) => EncoderStatus::Error,
+    })
+}
+
 #[unsafe(no_mangle)]
 pub extern "C" fn jocforge_wasm_encoder_finish(handle: u32) -> i32 {
     match catch_unwind(AssertUnwindSafe(|| with_encoder(handle, Encoder::finish))) {

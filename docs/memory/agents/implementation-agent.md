@@ -855,3 +855,26 @@ Concrete shape for the browser half:
 
 So the atomics/`-Z build-std` detour is closed: no nightly toolchain, no shared memory, no second
 thread. The remaining browser work is the import, the worker-side copy-and-open, and the page wiring.
+
+### Browser streaming is live and byte-identical (2026-11-24)
+
+The browser now encodes without ever receiving the ADM bytes. Chain, all measured:
+
+1. `jocforge-wasm` imports `jocforge_host_len` / `jocforge_host_read` (`riff_pcm24.rs`, one
+   `#[allow(unsafe_code)]` module, added to the boundary audit's allowlist).
+2. `HostRiffDataReader` implements the same `RiffDataReader` the native file reader does, so the walk
+   and the block reader are shared code.
+3. `Encoder::finish_streamed` + FFI `jocforge_wasm_encoder_finish_streamed` call
+   `encode_adm_host_streamed`, which passes `resource: None`; on wasm that arm skips path
+   normalization (there are no absolute paths) and parses through the host reader.
+4. The worker copies the `File` into OPFS, opens a `FileSystemSyncAccessHandle`, and hands it to
+   `instantiateJocforge` as `hostOverride`; `encodeAdmStreamed` sets the parameters and calls the new
+   FFI export.
+
+Verified: `scripts/e2e-stream.mjs` drives the real worker in Chrome — 4/4, product 32768 B,
+sha256 `30581464dc3e2203`, i.e. **byte-identical to the resident path**. Resident path unchanged
+(`e2e.mjs` PASS, `check-drc` 13/13), native goldens 1-15 unchanged, `cargo test --workspace` exit 0,
+clippy 0, audit `91 / 104 / 0 / 6`, deployed site 42/42.
+
+So the 512 MiB browser budget no longer describes a memory requirement: the module holds one window and
+one frame, and the file lives in OPFS. What remains unbounded is only OPFS quota and encode time.

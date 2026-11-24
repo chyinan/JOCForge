@@ -243,6 +243,53 @@ pub fn encode_adm_bytes(adm: &[u8]) -> Result<Vec<u8>, EncodeRequestError> {
 /// The browser bridge hands over the buffer it accumulated, so the request keeps one resident
 /// copy of the input instead of holding the pushed vector beside a second allocation. Callers
 /// that only borrow bytes use `encode_adm_bytes`.
+
+/// Encodes one ADM BWF the browser streams from OPFS instead of handing over resident bytes.
+///
+/// The host worker serves the resource through `HostRiffDataReader`, so this entry never receives
+/// the file itself and the pipeline walks it exactly as the native streamed path does.
+#[cfg(target_arch = "wasm32")]
+pub fn encode_adm_host_streamed(
+    rate_kbps: u32,
+    object_count: u8,
+    job_xml: Option<Vec<u8>>,
+    layout: u8,
+    surround_ex: u8,
+) -> Result<Vec<u8>, EncodeRequestError> {
+    let layout = match layout {
+        0 => JocReconstructionLayout::ExistingSelectedFivePointOne,
+        1 => JocReconstructionLayout::Flat7x,
+        _ => return Err(EncodeRequestError::UnsupportedJocLayout),
+    };
+    let rate =
+        CodecRateProfile::from_kbps(rate_kbps).ok_or(EncodeRequestError::UnsupportedDataRate)?;
+    let objects = match object_count {
+        8 => JocObjectCount::Eight,
+        12 => JocObjectCount::Twelve,
+        15 => JocObjectCount::Fifteen,
+        _ => return Err(EncodeRequestError::UnsupportedDataRate),
+    };
+    let product = run_worker_with_object_count(
+        Path::new("/jocforge-browser/input.wav"),
+        Path::new("memory://output.ec3"),
+        Some(rate),
+        job_xml,
+        (layout, EmdfCarriageProfile::DeployedCompat),
+        None,
+        &std::sync::atomic::AtomicBool::new(false),
+        None,
+        objects,
+        surround_ex,
+        None,
+    )?;
+    match product {
+        RunProduct::Bytes(bytes) => Ok(bytes),
+        RunProduct::Published => Err(EncodeRequestError::SourcePipeline(
+            "browser streamed request produced no in-memory product".to_owned(),
+        )),
+    }
+}
+
 #[cfg(target_arch = "wasm32")]
 pub fn encode_adm_resource(
     resource: std::sync::Arc<[u8]>,
@@ -1367,6 +1414,11 @@ fn run_inner(
     // A caller-supplied resource is the authoritative input; only a path request is normalized.
     let input_path = match resource {
         Some(_) => input_path.to_path_buf(),
+        // The browser has no absolute filesystem paths: a resource-less wasm request is served by the
+        // host OPFS reader, so the placeholder path is never resolved against a directory.
+        #[cfg(target_arch = "wasm32")]
+        None => input_path.to_path_buf(),
+        #[cfg(not(target_arch = "wasm32"))]
         None => normalize_existing_input(input_path)?,
     };
     #[cfg(not(target_arch = "wasm32"))]

@@ -192,6 +192,42 @@ impl Encoder {
         }
     }
 
+    /// Encodes an ADM the host worker streams from OPFS, without any pushed input.
+    pub fn finish_streamed(&mut self) -> Result<EncoderStatus, EncoderError> {
+        if self.finished {
+            return Ok(if self.output.is_some() {
+                EncoderStatus::BitstreamAvailable
+            } else {
+                EncoderStatus::EndOfStream
+            });
+        }
+        #[cfg(target_arch = "wasm32")]
+        let outcome = jocforge_pipeline::encode_request::encode_adm_host_streamed(
+            self.rate_kbps,
+            self.object_count,
+            self.job_xml.take(),
+            self.layout,
+            self.surround_ex,
+        )
+        .map_err(map_encode_request_error);
+        #[cfg(not(target_arch = "wasm32"))]
+        let outcome: Result<Vec<u8>, EncoderError> = Err(EncoderError {
+            category: FailureCategory::InvalidInput,
+            detail: "host streaming is only available on the browser target".to_owned(),
+        });
+        match outcome {
+            Ok(bytes) => {
+                self.output = Some(bytes);
+                self.finished = true;
+                Ok(EncoderStatus::BitstreamAvailable)
+            }
+            Err(error) => {
+                self.fail(error.clone());
+                Err(error)
+            }
+        }
+    }
+
     /// Returns the owned elementary stream once.
     pub fn receive_bitstream(&mut self) -> Option<Vec<u8>> {
         self.output.take()
