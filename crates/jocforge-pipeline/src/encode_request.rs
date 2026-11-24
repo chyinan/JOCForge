@@ -1598,7 +1598,9 @@ fn run_inner(
     // Keep their intermediate elementary stream private when publishing a new topology.
     let native_output = topology.is_none();
     #[cfg(not(target_arch = "wasm32"))]
-    let (carrier_path, mut composition) = {
+    // The scratch guard must outlive the encode: dropping it here deletes the directory that the
+    // output staging later writes into, which made every composed run fail before its first append.
+    let (carrier_path, mut composition, _scratch_guard) = {
         let scratch = topology
             .as_ref()
             .map(|_| {
@@ -1630,7 +1632,7 @@ fn run_inner(
                 .map_err(|e| EncodeRequestError::SourcePipeline(e.to_string()))
             })
             .transpose()?;
-        Ok::<_, EncodeRequestError>((carrier_path, composition))
+        Ok::<_, EncodeRequestError>((carrier_path, composition, scratch))
     }?;
     #[cfg(target_arch = "wasm32")]
     let (carrier_path, mut composition) = {
@@ -2403,6 +2405,10 @@ impl SpatialFrameProducer<'_> {
                         .and_then(|result| result)
                 };
                 let result = consume(&mut take, total);
+                // Release the receiver before joining: a producer blocked in `send` only wakes when
+                // the channel disconnects, and joining first deadlocked every failed composed run.
+                drop(take);
+                drop(frames);
                 worker
                     .join()
                     .map_err(|_| EncodeRequestError::WorkerPanicked)?;
