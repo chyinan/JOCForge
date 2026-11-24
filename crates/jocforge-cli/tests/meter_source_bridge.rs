@@ -38,6 +38,34 @@ const ZERO_METER_FIXTURE: &[u8] =
     include_bytes!("../../jocforge-domain/tests/fixtures/post_render_meter/zero_programme.json");
 
 #[test]
+fn meter_prepass_accepts_a_padded_first_and_final_source_read() {
+    let (resource, _) = selected_resource_with_row_markers();
+    let parsed = parse_selected_riff_pcm24(&resource, None).unwrap();
+    let vectors: Value = serde_json::from_slice(include_bytes!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    ))
+    .unwrap();
+    let job_xml = vectors["config_cases"][0]["input_xml"].as_str().unwrap();
+    let prepared = prepare_selected_adm_bwf_input(
+        ProgrammeId::new("short-meter-source").unwrap(),
+        job_xml.as_bytes(),
+        &parsed,
+    )
+    .unwrap();
+    let prepass = jocforge::meter_prepass::run_selected_meter_prepass(
+        &prepared,
+        &parsed,
+        jocforge_application::output_publication::AttemptId::new(0),
+    )
+    .unwrap();
+    let end = prepass.terminal_meter_root();
+    assert_eq!(end.normal_callback_count().value(), 1);
+    assert_eq!(end.source_read_index().value(), 1);
+    assert_eq!(end.source_cursor().value(), 1); // Padding must not advance the source cursor.
+    assert_eq!(end.meter_callback_index().value(), 4); // One read and three Meter drains.
+}
+
+#[test]
 fn selected_adm_riff_preparation_binds_metadata_and_pcm_to_one_resource() {
     let (resource, _) = selected_resource();
     let parsed = parse_selected_riff_pcm24(&resource, None).unwrap();
