@@ -2,13 +2,14 @@
 // Drive the built wasm32 module over the exported byte ABI and compare its bitstream with the
 // native product produced from the same excerpt.
 import { readFile, writeFile } from 'node:fs/promises';
+import { residentImports } from './wasm-resident-imports.mjs';
 
 const [wasmPath, excerptPath, nativePath, outPath] = process.argv.slice(2);
 if (!wasmPath || !excerptPath || !nativePath || !outPath) {
   throw new Error('usage: node scripts/compare-wasm-encode.mjs MODULE.wasm EXCERPT.wav NATIVE.ec3 OUT.ec3');
 }
 
-const { instance } = await WebAssembly.instantiate(await readFile(wasmPath), {});
+const { instance } = await WebAssembly.instantiate(await readFile(wasmPath), residentImports);
 const api = instance.exports;
 const input = await readFile(excerptPath);
 

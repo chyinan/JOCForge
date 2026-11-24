@@ -27,6 +27,13 @@ io            内存 provider 树与内存发布适配器
 `Encoder::finish` 在浏览器目标把已积累的输入 `mem::take` 后直接交给
 `encode_adm_resource`，因此输入只驻留一份；native 测试构建仍借用同一缓冲区。
 
+模块实例化时必须提供 `env.jocforge_host_len` 和 `env.jocforge_host_read`，即使只用
+`push_bytes` 也不能传空的 imports 对象。仓库内的 Node 脚本共用
+[`residentImports`](../../scripts/wasm-resident-imports.mjs)：没有宿主文件时，长度返回
+`0n`（WASM `i64`），读取返回 `-1`；这不会影响已推入内存的输入。使用
+`jocforge_wasm_encoder_finish_streamed` 进行实际编码时，需由宿主提供真实文件的长度，
+并按偏移将所请求的字节完整写入模块内存后返回 `0`。无文件的占位实现不能用于流式编码。
+
 ## 3. 没有命名空间时的发布
 
 `wasm32-unknown-unknown` 上 `Path::is_absolute()` 恒为假，F15 的"目的地必须是绝对路径"无法满足。
