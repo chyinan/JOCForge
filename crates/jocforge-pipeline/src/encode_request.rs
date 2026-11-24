@@ -2253,10 +2253,18 @@ fn run_inner(
             flat7x_d0_block2_overflow_receipts,
             candidate.production_allowed(),
         );
-        // A browser target has already staged the whole candidate stream in memory, so the run
-        // product is those exact bytes; a file target still reports the published candidate.
+        // The captured native carrier is the product only when no composition was requested.
         #[cfg(target_arch = "wasm32")]
         {
+            if let Some((_, sink)) = composition {
+                let bytes = sink.into_inner();
+                if bytes.len() as u64 != roots.durable_bytes() {
+                    return Err(EncodeRequestError::SourcePipeline(
+                        "composed output length mismatch".into(),
+                    ));
+                }
+                return Ok(RunProduct::Bytes(bytes));
+            }
             return staging
                 .staged_stream_bytes()
                 .map(RunProduct::Bytes)

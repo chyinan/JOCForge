@@ -919,3 +919,12 @@ the regression checks the real source cursor after one read and three drains.
 End-to-end short-cue export also requires the independent single-callback MAIN
 priming/drain fix (#3). With both changes, 768-, 1440- and 1535-sample cues
 exported to native EC-3 and CMAF; this does not establish playback conformance.
+
+### Browser Flat7x composition output (2026-11-24)
+
+On `4b67fdeb`, requesting two or six dependent substreams from the generated
+six-AU ADM returned the same native AC-3 I0 / E-AC-3 D0 carrier in both WASM
+input modes. Returning the completed composition instead gives 18 or 42 E-AC-3
+syncframes respectively, byte-identical to the matching native CLI outputs
+(1024 kbps D0 rate, deployed EMDF). Unset Flat7x still returns the native pair.
+This was exercised with Node host reads, not browser OPFS or playback hardware.
