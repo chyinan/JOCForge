@@ -79,3 +79,5 @@ crates/jocforge-domain/tests/fixtures/long_transform_refresh/FFT-CANARY-*.json t
 crates/jocforge-domain/tests/fixtures/f13c_carrier_pipeline/*.json text eol=crlf whitespace=cr-at-eol
 crates/jocforge-domain/tests/fixtures/f13c_carrier_pipeline/CARRIER-ADDENDUM.md text eol=crlf whitespace=cr-at-eol
 crates/jocforge-domain/tests/fixtures/f13c_carrier_pipeline/PROVENANCE.json text eol=lf
+crates/jocforge-io/tests/fixtures/riff_pcm24/unit-vectors.json text eol=crlf whitespace=cr-at-eol
+crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json text eol=crlf whitespace=cr-at-eol
