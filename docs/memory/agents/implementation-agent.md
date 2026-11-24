@@ -714,3 +714,38 @@ Goldens unchanged, workspace tests exit 0, audit `91 / 104 / 0 / 6`.
    whole ADM into RAM).
 
 Nothing above is started yet; the tree is green at `resource_bytes`.
+
+### Increment 3, second slice: the application layer no longer holds the resource (2026-11-24)
+
+`PreparedJobInput` no longer stores `Arc<[u8]>`; it stores `ResourceIdentity` only, and `resource()`
+is gone. The single production use of the buffer was a `.len()` at
+`pipeline/src/meter_source_bridge.rs:66`, now `resource_identity().resource_bytes()`.
+
+Signature change: `prepare_selected_job_input(…, resource_identity: ResourceIdentity, metadata)` and
+`prepare_selected_adm_bwf_input(programme_id, job_xml, parsed)` — the latter derives the identity from
+the parse (`ResourceIdentity::new(parsed.source_sha256(), parsed.resource_bytes())`), so identity and
+metadata can no longer come from different resources. `ResourceIdentity::from_bytes` / `::new` added
+for the remaining callers; 31 call sites rewritten.
+
+**One guarantee moved, deliberately.** `bind_resource_payload` no longer re-reads the resource slice;
+it validates the payload/offset pair and builds the span. A mismatched (identity from A, metadata
+from B) pairing cannot be built through `prepare_selected_adm_bwf_input` any more, so the CLI test
+that asserted `MetadataPayloadBinding` for a foreign copy now asserts that the identity tracks the
+bytes: flipping one PCM byte changes `source_sha256` and the prepared identity. The audit pin
+`'MetadataPayloadBinding' in test` became `'resource_identity().input_sha256()' in test`.
+
+Gates: `cargo test --workspace --locked` exit 0, `cargo fmt --check` clean, `check-boundaries.py`
+`91 / 104 / 0 / 6`. Goldens: cases 1-15 byte-identical; case 16 is blocked by the flake below.
+
+**Pre-existing flake found while verifying (not caused by this work).** The composed case
+(`--dependent-count 1`) intermittently hangs at ~33% of the programme callbacks with ~0 CPU — a
+blocked thread, not slow work. It reproduces on a **pristine build** (`git stash` of every change in
+this increment, release rebuild) with an emptied loudness cache, and it also completed several times
+earlier in the same session, so it is a race in the composed path.
+`scripts/golden-vectors.py` now runs each case with a 180 s timeout and names the offender instead of
+hanging forever. Worth investigating on its own: `run_worker_with_object_count` spawns a scoped
+thread (`ENCODE_REQUEST_STACK_BYTES`) and the composed path drives I0/D0 producers over channels.
+
+Native streaming is therefore **not** switched on yet: the main path at `encode_request.rs:1408` still
+uses `read_resource` + resident parse. The streamed preflight experiment was reverted after the flake
+made it unverifiable.
