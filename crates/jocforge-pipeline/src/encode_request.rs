@@ -1408,6 +1408,8 @@ fn run_inner(
             resident_resource = bytes;
             parse_selected_riff_pcm24(&resident_resource, None).map_err(EncodeRequestError::Riff)?
         }
+        // The reader is native-only; the browser hands over resident bytes instead.
+        #[cfg(not(target_arch = "wasm32"))]
         None if topology.is_none() => {
             streamed_reader = std::sync::Mutex::new(Box::new(
                 jocforge_io::pcm::riff_pcm24::FileRiffDataReader::open(&input_path).map_err(
