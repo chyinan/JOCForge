@@ -661,3 +661,29 @@ the binding check. Next increments: (3) let the application layer accept a strea
 resident `Arc<[u8]>` — the identity hash and the binding both already have reader-friendly forms;
 (4) the wasm pump (`SharedArrayBuffer` + `Atomics.wait` in the encoding Worker, second thread fills,
 `COOP`/`COEP` headers); (5) the JS driver over `file.slice`.
+
+### Increment 3 scoping (measured 2026-11-24)
+
+The remaining resident requirement is exactly two places, both measured:
+
+1. **Native input is fully resident too.** `encode_request.rs:557`
+   `let resource = read_resource(&request.input_path)?;` followed by
+   `parse_selected_riff_pcm24(&resource, None)` at `:558`. So the CLI today reads the whole ADM into
+   RAM — a 743 MB file costs 743 MB in the desktop tool as well, not just in the browser. Swapping
+   these two lines for `FileRiffDataReader::open` + `parse_selected_riff_pcm24_streamed` is the whole
+   native win, and it can be verified against the 16 goldens.
+2. **`PreparedJobInput` stores the buffer.** `application/src/lib.rs:91` `resource: Arc<[u8]>`, with
+   `resource() -> &[u8]` at `:298`. Every production consumer turned out to use
+   `domain_identity().resource()` — that is `ResourceIdentity { input_sha256, resource_bytes }`, not
+   the bytes — except one length read at `pipeline/src/meter_source_bridge.rs:66`
+   (`u64::try_from(prepared.resource().len())`). PCM reads never touch it: they go through
+   `ParsedRiffPcm24::read_pcm24_chunk`.
+
+So increment 3 is smaller than it looked: drop `resource: Arc<[u8]>` from `PreparedJobInput`, keep
+`resource_bytes` in the identity (the streamed walk already knows the file length), and pass
+`&ParsedRiffPcm24` straight through to preparation instead of an `Arc`. The pointer-identity
+assertions in tests (`prepared.resource().as_ptr() == resource.as_ptr()`) become byte-identity
+assertions, matching the binding change in increment 2.
+
+Then the ordering that keeps the byte promise checkable at every step: native streamed encode against
+the goldens → wasm pump → JS driver.
