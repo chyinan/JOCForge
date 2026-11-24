@@ -33,6 +33,7 @@ io            内存 provider 树与内存发布适配器
 `0n`（WASM `i64`），读取返回 `-1`；这不会影响已推入内存的输入。使用
 `jocforge_wasm_encoder_finish_streamed` 进行实际编码时，需由宿主提供真实文件的长度，
 并按偏移将所请求的字节完整写入模块内存后返回 `0`。无文件的占位实现不能用于流式编码。
+两种输入模式都支持通过 `jocforge_wasm_encoder_set_dependent_count` 选择依赖子流数。
 
 ## 3. 没有命名空间时的发布
 
@@ -71,6 +72,11 @@ cargo build -p jocforge-wasm --release --locked --target wasm32-unknown-unknown
 
 # ABI 冒烟（分配上限、句柄生命周期、截断输入拒绝）
 node scripts/test-wasm.mjs target/wasm32-unknown-unknown/release/jocforge_wasm.wasm
+
+# 使用合成 ADM 验证流式和驻留两种输入的依赖子流与产物逐字节一致
+rustc --edition 2024 scripts/generate-wasm-test-adm.rs -o target/generate-wasm-test-adm.exe
+./target/generate-wasm-test-adm.exe target/wasm-test-adm.wav
+node scripts/test-wasm-streamed-topology.mjs target/wasm32-unknown-unknown/release/jocforge_wasm.wasm target/wasm-test-adm.wav
 
 # 与 native 的逐字节对照（需要 JOCFORGE_ADM_PARITY 指向真实 ADM）
 cargo test -p jocforge-wasm dumps_excerpt_and_native_bitstream -- --nocapture
