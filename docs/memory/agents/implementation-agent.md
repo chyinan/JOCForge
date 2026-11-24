@@ -749,3 +749,19 @@ thread (`ENCODE_REQUEST_STACK_BYTES`) and the composed path drives I0/D0 produce
 Native streaming is therefore **not** switched on yet: the main path at `encode_request.rs:1408` still
 uses `read_resource` + resident parse. The streamed preflight experiment was reverted after the flake
 made it unverifiable.
+
+**Hang triage so far (2026-11-24, all on the pristine build too):**
+
+- Not the DSP pool: with a temporary `JOCFORGE_NO_DSP_POOL` kill switch forcing the sequential
+  fallback, the composed case still hung (reverted afterwards; `dsp_workers.rs` builds the only rayon
+  pool and it was the first suspect because the blocked process showed ~14 threads).
+- Not the loudness cache lock: `loudness_cache::lock` spins on `try_lock_exclusive` every 80 ms, so a
+  bounded wait (20 s, then measure unlocked) was tried. The case still hung well past that bound, so
+  the block is not there either (also reverted; the unbounded spin is still a footgun worth bounding
+  later).
+- With the pool off the blocked process still shows 6 threads, ~0 CPU, wait reasons `UserRequest` /
+  `Unknown` — a synchronization wait, not I/O latency.
+
+Next step needs a real stack, not more hypothesis: capture the hung process with `procdump -ma` or
+WinDbg and read the wait chain, or add a `std::backtrace::Backtrace::force_capture()` watchdog thread
+that prints every N seconds. Both are native-side work.
