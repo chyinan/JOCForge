@@ -2,10 +2,11 @@
 // Exercise the wasm32 encode ABI: allocation ownership and rejected input.
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { residentImports } from './wasm-resident-imports.mjs';
 
 const [wasmPath] = process.argv.slice(2);
 assert(wasmPath, 'usage: node scripts/test-wasm.mjs MODULE.wasm');
-const { instance } = await WebAssembly.instantiate(await readFile(wasmPath), {});
+const { instance } = await WebAssembly.instantiate(await readFile(wasmPath), residentImports);
 const api = instance.exports;
 
 function withBytes(bytes, action) {
@@ -31,4 +32,10 @@ assert.equal(api.jocforge_wasm_encoder_finish(handle), -1, 'truncated RIFF is re
 assert.equal(api.jocforge_wasm_encoder_error_category(handle), 0);
 api.jocforge_wasm_encoder_destroy(handle);
 assert.equal(api.jocforge_wasm_encoder_finish(handle), -1, 'destroyed handle rejected');
+// A host with no OPFS file can instantiate the same module; streaming fails as input, not linkage.
+const noFile = api.jocforge_wasm_encoder_create();
+assert.notEqual(noFile, 0);
+assert.equal(api.jocforge_wasm_encoder_finish_streamed(noFile), -1);
+assert.equal(api.jocforge_wasm_encoder_error_category(noFile), 0);
+api.jocforge_wasm_encoder_destroy(noFile);
 console.log('wasm abi: PASS');
