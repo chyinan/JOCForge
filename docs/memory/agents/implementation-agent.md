@@ -687,3 +687,30 @@ assertions, matching the binding change in increment 2.
 
 Then the ordering that keeps the byte promise checkable at every step: native streamed encode against
 the goldens → wasm pump → JS driver.
+
+### Increment 3, first slice: `resource_bytes` on the parsed source (2026-11-24)
+
+`ParsedRiffPcm24` now records `resource_bytes` (the whole-resource length the walk observed) and
+exposes it. That is the value `prepare_selected_job_input` needs to build `ResourceIdentity` once the
+`Arc<[u8]>` parameter goes away, and the streamed walk already knew it. Asserted in
+`streamed_parse_observes_exactly_what_the_resident_parse_does` (both parses report the file length).
+Goldens unchanged, workspace tests exit 0, audit `91 / 104 / 0 / 6`.
+
+**Exact remaining diff for increment 3** (measured, mechanical):
+
+1. `application/src/lib.rs`: change `prepare_selected_job_input(…, resource: Arc<[u8]>, metadata)` to
+   take `resource_identity: ResourceIdentity`; add `ResourceIdentity::from_bytes(&[u8])` for callers
+   that still hold the bytes; drop `resource: Arc<[u8]>` from `PreparedJobInput` and delete
+   `resource()` (its only production use is a `.len()` at `pipeline/src/meter_source_bridge.rs:66`).
+2. `bind_resource_payload` loses the resource-slice re-read; it keeps offset + payload and computes
+   the span. `MetadataPayloadBinding` then only reports an empty payload or an offset overflow. The
+   provenance guarantee moves to the parse: `selected_adm_payloads()` returns payloads read from the
+   same reader that produced `source_sha256`.
+3. Call sites: 31 `prepare_selected_job_input(` (22 of them in `application/tests/prepared_job_input.rs`,
+   all passing `Arc::clone(&resource)`) and 6 `prepared.resource()` reads — both are single-token
+   rewrites.
+4. `encode_request.rs:557` becomes `FileRiffDataReader::open(&request.input_path)` +
+   `parse_selected_riff_pcm24_streamed`, which is the actual native win (the CLI currently reads the
+   whole ADM into RAM).
+
+Nothing above is started yet; the tree is green at `resource_bytes`.

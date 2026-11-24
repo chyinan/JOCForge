@@ -280,6 +280,7 @@ pub struct ParsedRiffPcm24<'a> {
     block_align: u16,
     timeline: jocforge_domain::timeline::RenderTimeline,
     source_sha256: [u8; 32],
+    resource_bytes: u64,
     data_offset: u64,
     data_payload: RiffDataWindow<'a>,
     chunk_ids: Vec<String>,
@@ -324,6 +325,11 @@ impl<'a> ParsedRiffPcm24<'a> {
     /// Returns the SHA-256 identity of the complete immutable RIFF byte slice.
     pub const fn source_sha256(&self) -> [u8; 32] {
         self.source_sha256
+    }
+
+    /// Whole-resource length, so a caller can rebuild the resource identity without the bytes.
+    pub const fn resource_bytes(&self) -> u64 {
+        self.resource_bytes
     }
 
     pub const fn data_offset(&self) -> u64 {
@@ -755,6 +761,7 @@ fn walk_riff<'a>(
             u64::try_from(data_len / block_align).map_err(|_| RiffPcm24Error::InvalidInput)?,
         ),
         source_sha256,
+        resource_bytes: resource_len,
         data_offset,
         data_payload,
         chunk_ids,
@@ -1033,6 +1040,8 @@ mod streamed_window_tests {
         assert_eq!(streamed.block_align(), resident.block_align());
         assert_eq!(streamed.channels(), resident.channels());
         assert_eq!(streamed.data_offset(), resident.data_offset());
+        assert_eq!(streamed.resource_bytes(), riff.len() as u64);
+        assert_eq!(streamed.resource_bytes(), resident.resource_bytes());
         assert_eq!(streamed.has_adm_chunks(), resident.has_adm_chunks());
         assert_eq!(digest_blocks(&streamed), digest_blocks(&resident));
 
