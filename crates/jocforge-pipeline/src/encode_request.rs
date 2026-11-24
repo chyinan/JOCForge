@@ -1397,11 +1397,33 @@ fn run_inner(
         selected_full_file_job_xml(&input_reference, &output_reference, rate_kbps).into_bytes()
     };
     let run_identity = fresh_run_identity()?;
-    let resource = match resource {
-        Some(bytes) => bytes,
-        None => read_resource(&input_path).map_err(EncodeRequestError::InputFile)?,
+    // A native, non-composed run streams the resource from disk: the walk reads headers and
+    // metadata, and the PCM payload is served block by block from the same handle, so the whole ADM
+    // is never resident. The composed path still reads it whole: it currently hangs for an
+    // unresolved, pre-existing reason documented in docs/memory/agents/implementation-agent.md.
+    let resident_resource: std::sync::Arc<[u8]>;
+    let streamed_reader: std::sync::Mutex<Box<dyn jocforge_io::pcm::riff_pcm24::RiffDataReader>>;
+    let parsed = match resource {
+        Some(bytes) => {
+            resident_resource = bytes;
+            parse_selected_riff_pcm24(&resident_resource, None).map_err(EncodeRequestError::Riff)?
+        }
+        None if topology.is_none() => {
+            streamed_reader = std::sync::Mutex::new(Box::new(
+                jocforge_io::pcm::riff_pcm24::FileRiffDataReader::open(&input_path).map_err(
+                    |error| EncodeRequestError::InputFile(RiffPcm24FileReadError::from_io(error)),
+                )?,
+            )
+                as Box<dyn jocforge_io::pcm::riff_pcm24::RiffDataReader>);
+            parse_selected_riff_pcm24_streamed(&streamed_reader, None)
+                .map_err(EncodeRequestError::Riff)?
+        }
+        None => {
+            resident_resource =
+                read_resource(&input_path).map_err(EncodeRequestError::InputFile)?;
+            parse_selected_riff_pcm24(&resident_resource, None).map_err(EncodeRequestError::Riff)?
+        }
     };
-    let parsed = parse_selected_riff_pcm24(&resource, None).map_err(EncodeRequestError::Riff)?;
     let adm = parsed
         .selected_adm_payloads()
         .map_err(EncodeRequestError::Riff)?;
@@ -1411,7 +1433,7 @@ fn run_inner(
         &job_xml,
         wave,
         parsed.total_samples(),
-        ResourceIdentity::from_bytes(&resource),
+        ResourceIdentity::new(parsed.source_sha256(), parsed.resource_bytes()),
         SelectedAdmResourcePayloads::new(
             adm.axml(),
             adm.axml_offset(),
@@ -1493,7 +1515,7 @@ fn run_inner(
         run_identity.attempt.value(),
         run_identity.programme.as_str(),
         hex_lower(&parsed.source_sha256()),
-        resource.len(),
+        parsed.resource_bytes(),
         parsed.sample_rate_hz(),
         parsed.channels(),
         parsed.total_samples(),
