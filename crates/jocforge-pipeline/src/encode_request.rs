@@ -238,16 +238,7 @@ pub fn encode_adm_bytes(adm: &[u8]) -> Result<Vec<u8>, EncodeRequestError> {
     }
 }
 
-/// Encodes one complete ADM BWF whose bytes the caller already owns.
-///
-/// The browser bridge hands over the buffer it accumulated, so the request keeps one resident
-/// copy of the input instead of holding the pushed vector beside a second allocation. Callers
-/// that only borrow bytes use `encode_adm_bytes`.
-
-/// Encodes one ADM BWF the browser streams from OPFS instead of handing over resident bytes.
-///
-/// The host worker serves the resource through `HostRiffDataReader`, so this entry never receives
-/// the file itself and the pipeline walks it exactly as the native streamed path does.
+/// Encodes one ADM BWF the host streams with no composed topology.
 #[cfg(target_arch = "wasm32")]
 pub fn encode_adm_host_streamed(
     rate_kbps: u32,
@@ -256,43 +247,43 @@ pub fn encode_adm_host_streamed(
     layout: u8,
     surround_ex: u8,
 ) -> Result<Vec<u8>, EncodeRequestError> {
-    let layout = match layout {
-        0 => JocReconstructionLayout::ExistingSelectedFivePointOne,
-        1 => JocReconstructionLayout::Flat7x,
-        _ => return Err(EncodeRequestError::UnsupportedJocLayout),
-    };
-    let rate =
-        CodecRateProfile::from_kbps(rate_kbps).ok_or(EncodeRequestError::UnsupportedDataRate)?;
-    let objects = match object_count {
-        8 => JocObjectCount::Eight,
-        12 => JocObjectCount::Twelve,
-        15 => JocObjectCount::Fifteen,
-        _ => return Err(EncodeRequestError::UnsupportedDataRate),
-    };
-    let product = run_worker_with_object_count(
-        Path::new("/jocforge-browser/input.wav"),
-        Path::new("memory://output.ec3"),
-        Some(rate),
+    encode_browser_request(
+        None,
+        rate_kbps,
+        object_count,
         job_xml,
-        (layout, EmdfCarriageProfile::DeployedCompat),
+        layout,
         None,
-        &std::sync::atomic::AtomicBool::new(false),
-        None,
-        objects,
         surround_ex,
-        None,
-    )?;
-    match product {
-        RunProduct::Bytes(bytes) => Ok(bytes),
-        RunProduct::Published => Err(EncodeRequestError::SourcePipeline(
-            "browser streamed request produced no in-memory product".to_owned(),
-        )),
-    }
+    )
 }
 
+/// Encodes a complete ADM BWF whose bytes the caller already owns.
 #[cfg(target_arch = "wasm32")]
 pub fn encode_adm_resource(
     resource: std::sync::Arc<[u8]>,
+    rate_kbps: u32,
+    object_count: u8,
+    job_xml: Option<Vec<u8>>,
+    layout: u8,
+    dependent_count: Option<u8>,
+    surround_ex: u8,
+) -> Result<Vec<u8>, EncodeRequestError> {
+    encode_browser_request(
+        Some(resource),
+        rate_kbps,
+        object_count,
+        job_xml,
+        layout,
+        dependent_count,
+        surround_ex,
+    )
+}
+
+/// Encodes from resident bytes or the host reader using the same requested signalling.
+#[cfg(target_arch = "wasm32")]
+pub fn encode_browser_request(
+    resource: Option<Arc<[u8]>>,
     rate_kbps: u32,
     object_count: u8,
     job_xml: Option<Vec<u8>>,
@@ -341,7 +332,7 @@ pub fn encode_adm_resource(
         topology,
         objects,
         surround_ex,
-        Some(resource),
+        resource,
     )?;
     match product {
         RunProduct::Bytes(bytes) => Ok(bytes),

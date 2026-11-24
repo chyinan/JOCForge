@@ -31,3 +31,8 @@ jobs:
         run: cargo build -p jocforge-wasm --release --locked --target wasm32-unknown-unknown
       - name: Instantiate WASM and exercise the exported ABI
         run: node scripts/test-wasm.mjs target/wasm32-unknown-unknown/release/jocforge_wasm.wasm
+      - name: Check composed output on both WASM input paths
+        run: |
+          rustc --edition 2024 scripts/generate-wasm-test-adm.rs -o target/generate-wasm-test-adm
+          target/generate-wasm-test-adm target/wasm-test-adm.wav
+          node scripts/test-wasm-streamed-topology.mjs target/wasm32-unknown-unknown/release/jocforge_wasm.wasm target/wasm-test-adm.wav

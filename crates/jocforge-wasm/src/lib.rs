@@ -202,11 +202,13 @@ impl Encoder {
             });
         }
         #[cfg(target_arch = "wasm32")]
-        let outcome = jocforge_pipeline::encode_request::encode_adm_host_streamed(
+        let outcome = jocforge_pipeline::encode_request::encode_browser_request(
+            None,
             self.rate_kbps,
             self.object_count,
             self.job_xml.take(),
             self.layout,
+            self.dependent_count,
             self.surround_ex,
         )
         .map_err(map_encode_request_error);
