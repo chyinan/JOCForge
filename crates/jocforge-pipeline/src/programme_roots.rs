@@ -363,6 +363,14 @@ impl<'a> ProgrammeOwnerRoots<'a> {
             .value()
             .checked_add(1)
             .ok_or_else(|| "callback clock overflow".to_owned())?;
+        // A one-callback programme begins cached draining at g=1, while the
+        // codec is still priming. Only the normal-input frontend stays held.
+        let cached_drain = u64::from(callback_index.value()) >= self.normal_callbacks.value();
+        let expected_frontend_callback = if cached_drain {
+            callback_index.value()
+        } else {
+            next_callback
+        };
         if reader_eof.committed().callback_index().value() != next_callback
             || main_roots
                 .spatial_control()
@@ -381,7 +389,7 @@ impl<'a> ProgrammeOwnerRoots<'a> {
                 .committed()
                 .callback_index()
                 .value()
-                != next_callback
+                != expected_frontend_callback
         {
             return Err("callback-only after roots do not match g+1".to_owned());
         }
@@ -438,7 +446,10 @@ impl<'a> ProgrammeOwnerRoots<'a> {
                 .gtc_unchanged_callback_receipt(callback_index, transaction_id.clone())
                 .map_err(|error| format!("Output unchanged receipt: {error}"))?,
         );
-        let expected_changed = |owner: GtcOwnerId| CALLBACK_OWNERS.contains(&owner);
+        let expected_changed = |owner: GtcOwnerId| {
+            CALLBACK_OWNERS.contains(&owner)
+                && !(cached_drain && owner == GtcOwnerId::FrontendControl)
+        };
         let owner_receipts = validate_receipts(receipts, &transaction_id, expected_changed)?;
 
         let phase_generation_after = self
