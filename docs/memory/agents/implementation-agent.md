@@ -878,3 +878,31 @@ clippy 0, audit `91 / 104 / 0 / 6`, deployed site 42/42.
 
 So the 512 MiB browser budget no longer describes a memory requirement: the module holds one window and
 one frame, and the file lives in OPFS. What remains unbounded is only OPFS quota and encode time.
+
+### Composed-path hang: root cause found and fixed (2026-11-24)
+
+The hang was never a race. Instrumenting the consumer callback body with stage markers walked the
+block down to `staging.ensure_open`, and inside it to `AtomicOutputStaging::create`, whose first call
+is `fs::metadata(directory)`. A probe on that path printed `directory.exists() == false`: the staging
+directory **did not exist at all**.
+
+Cause: the composed path created its scratch directory with `tempfile::tempdir_in(...)` inside a block
+that returned only `(carrier_path, composition)`. The `TempDir` guard was therefore dropped at the end
+of that block, which **deletes the directory**, and the output staging then tried to write inside a
+directory that no longer existed. Fix: return the guard from the block and bind it
+(`_scratch_guard`) for the lifetime of the encode.
+
+Why it presented as a 0%-CPU hang instead of an error: after `consume(...)` returned, `run()` joined
+the producer thread **while the channel receiver was still alive**. A producer parked in
+`send()` only wakes when the channel disconnects, so `join()` waited forever. Fix: `drop(take)` and
+`drop(frames)` before `worker.join()`.
+
+Measured after the fix: `--dependent-count 1` completes in seconds, 32768 B, sha256
+`22daab711d98072b` — the anchor recorded for `topology-dependent-1` before any streaming work — and
+`scripts/golden-vectors.py` now reports **16/16** byte-identical (it was 15/16 with this case hanging).
+`cargo test --workspace` exit 0, clippy 0, audit `91 / 104 / 0 / 6`.
+
+This also retires the earlier hypothesis list (rayon pool, loudness lock, `run_on_worker`, channel
+backpressure): all were correct eliminations, but the fault was one level below them, in staging setup
+plus teardown ordering. Lesson recorded: an error surfacing through a scoped producer must drop the
+receiver before joining, otherwise every failure looks like a hang.
