@@ -778,3 +778,24 @@ not `run_on_worker`. The next probe belongs inside `SpatialFrameProducer::run`'s
 Also measured: every composed run (`--dependent-count 1` and `2`) hangs deterministically right now,
 while `--data-rate 384/1024` complete in about a second. So the composed path is now a hard blocker
 rather than an intermittent flake, which makes it much easier to bisect with a debugger attached.
+
+**Channel handoff traced (2026-11-24, tracer since reverted).** `SpatialFrameProducer::run` on native
+runs a producer thread over `mpsc::sync_channel(1)` and the consumer pulls frames. With `eprintln!` on
+`produce`/`send`/`take`, a hung run shows:
+
+```
+[t] take 3 recv / [t] sending 3 / [t] produced 4
+Programme callbacks 33% (4/12)
+[t] take 4 recv / [t] sending 4 / [t] produced 5 / [t] sending 5 ... (producer runs ahead)
+```
+
+So the producer keeps going and the **consumer blocks inside the callback-4 body**, after receiving
+frame 4 and before asking for frame 5. Callbacks 0-3 all logged
+`disposition=suppressed`; callback 4 is the first one whose path continues past suppression, so the
+block is in the commit/publish half of the loop rather than in frame production.
+
+Raising the lookahead to `sync_channel(4)` did **not** change the stall point, so it is not channel
+backpressure: the consumer waits for something the producer cannot provide at any buffer depth.
+There are no `Mutex`/`Condvar`/`RwLock` on this path (checked across the workspace outside tests), so
+the wait is itself a `recv`/`join` — the next probe should be a stack capture with a debugger
+attached to the hung process, since tracing has now ruled out every cheap hypothesis.
