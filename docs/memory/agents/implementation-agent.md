@@ -799,3 +799,34 @@ backpressure: the consumer waits for something the producer cannot provide at an
 There are no `Mutex`/`Condvar`/`RwLock` on this path (checked across the workspace outside tests), so
 the wait is itself a `recv`/`join` — the next probe should be a stack capture with a debugger
 attached to the hung process, since tracing has now ruled out every cheap hypothesis.
+
+### Browser streaming: isolation is live, atomics build is blocked (2026-11-24)
+
+The site now serves `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy:
+require-corp` on every nginx location, and the online check asserts `crossOriginIsolated === true` plus
+`SharedArrayBuffer` availability (42/42 with every pinned sha still matching). So the browser side of a
+streaming pump has its prerequisite.
+
+The pump itself hits a build wall, measured here:
+
+- `cargo build -p jocforge-wasm --target wasm32-unknown-unknown` with
+  `RUSTFLAGS="-C target-feature=+atomics,+bulk-memory,+mutable-globals"` **succeeds** (with the usual
+  "unstable target feature" warning).
+- Adding `-C link-arg=--shared-memory -C link-arg=--max-memory=...` **fails at link time**:
+  `rust-lld: error: --shared-memory is disallowed by std-<hash>.rcgu.o because it was not compiled with
+  'atomics' or 'bulk-memory' features`.
+
+So `memory.atomic.wait32` inside the module (what a synchronous `RiffDataReader` would need to block on
+while JS fills a SharedArrayBuffer) requires rebuilding `std` itself: nightly with
+`-Z build-std=std,panic_abort`, or a prebuilt atomics-enabled std. Two consequences for the plan:
+
+1. Atomics route: nightly toolchain + `-Z build-std`, shared-memory module (imported memory, fixed
+   max), JS keeps a second thread to fill the buffer. Byte identity still holds (same encoder), but the
+   build pipeline changes materially and `wasm32` module memory becomes shared.
+2. No-threads route: make the encode a **resumable pull state machine** (`need_bytes(offset,len)` /
+   `supply(bytes)` driven by JS) instead of a blocking pipeline. No nightly, no shared memory, and it
+   is the same shape the wasm32 target already uses for `SpatialFrameProducer` (the browser pulls each
+   frame in order rather than owning a producer thread).
+
+The second option reuses an existing precedent in this codebase and avoids a toolchain fork, so it is
+the better next step unless nightly is acceptable.
