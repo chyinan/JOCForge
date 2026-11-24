@@ -765,3 +765,16 @@ made it unverifiable.
 Next step needs a real stack, not more hypothesis: capture the hung process with `procdump -ma` or
 WinDbg and read the wait chain, or add a `std::backtrace::Backtrace::force_capture()` watchdog thread
 that prints every N seconds. Both are native-side work.
+
+**Localized further (2026-11-24, tracer since reverted).** With `eprintln!` around
+`run_on_worker`'s spawn/join in `application/worker.rs`, a hung composed run printed exactly one
+worker pair (`jocforge-main-analysis-cold-root`, spawned and joined) and then the programme callback
+progress stalled at 33%. So the block is **not** in the large-stack worker at all: it is inside the
+producer call `frames(callback_value)` that `encode_request.rs:1737` performs for callback 4, before
+any further worker is spawned. Combined with the earlier results, the stalk is now:
+not rayon (`JOCFORGE_NO_DSP_POOL` still hung), not the loudness cache lock (20 s bound exceeded),
+not `run_on_worker`. The next probe belongs inside `SpatialFrameProducer::run`'s per-callback path.
+
+Also measured: every composed run (`--dependent-count 1` and `2`) hangs deterministically right now,
+while `--data-rate 384/1024` complete in about a second. So the composed path is now a hard blocker
+rather than an intermittent flake, which makes it much easier to bisect with a debugger attached.
