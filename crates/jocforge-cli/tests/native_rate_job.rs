@@ -116,3 +116,43 @@ fn desktop_equivalent_custom_job_matches_explicit_native_cli_at_384() {
         assert_eq!(frame[5] >> 3, 16);
     }
 }
+
+#[test]
+fn missing_output_directory_is_not_reported_as_a_relative_path() {
+    let dir = tempfile::tempdir().unwrap();
+    let input = dir.path().join("input.wav");
+    fs::write(&input, short_adm()).unwrap();
+    let parent = dir.path().join("not-yet-created");
+    let output = parent.join("mix.ec3");
+    let run = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .arg("encode")
+        .arg(&input)
+        .arg(&output)
+        .output()
+        .unwrap();
+    let stderr = String::from_utf8(run.stderr).unwrap();
+    assert_eq!(run.status.code(), Some(2), "{stderr}");
+    assert!(
+        stderr.contains(&format!(
+            "could not resolve output directory {}:",
+            parent.display()
+        )),
+        "{stderr}"
+    );
+    assert!(!parent.exists());
+
+    let relative = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .current_dir(dir.path())
+        .arg("encode")
+        .arg(input)
+        .arg("relative.ec3")
+        .output()
+        .unwrap();
+    assert_eq!(relative.status.code(), Some(2));
+    assert!(
+        String::from_utf8(relative.stderr)
+            .unwrap()
+            .contains("requires absolute input and output file paths")
+    );
+    assert!(!dir.path().join("relative.ec3").exists());
+}

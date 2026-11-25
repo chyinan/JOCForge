@@ -2729,8 +2729,12 @@ fn normalize_new_output(path: &Path) -> Result<PathBuf, EncodeRequestError> {
     }
     let file_name = path.file_name().ok_or(EncodeRequestError::InvalidPath)?;
     let parent = path.parent().ok_or(EncodeRequestError::InvalidPath)?;
-    let normalized_parent =
-        std::fs::canonicalize(parent).map_err(|_| EncodeRequestError::InvalidPath)?;
+    let normalized_parent = std::fs::canonicalize(parent).map_err(|error| {
+        EncodeRequestError::SourcePipeline(format!(
+            "could not resolve output directory {}: {error}",
+            parent.display()
+        ))
+    })?;
     Ok(normalized_parent.join(file_name))
 }
 
