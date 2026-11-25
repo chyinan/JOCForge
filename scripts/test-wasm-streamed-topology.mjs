@@ -9,7 +9,7 @@ if (!wasmPath || !admPath) throw new Error('usage: node scripts/test-wasm-stream
 const module = await WebAssembly.compile(await readFile(wasmPath));
 const adm = await readFile(admPath);
 
-async function encode(streamed, composed) {
+async function encode(streamed, layout, dependentCount) {
   let api;
   const imports = streamed ? { env: {
     jocforge_host_len: () => BigInt(adm.length),
@@ -24,7 +24,8 @@ async function encode(streamed, composed) {
   const handle = api.jocforge_wasm_encoder_create();
   assert.notEqual(handle, 0);
   try {
-    if (composed) api.jocforge_wasm_encoder_set_dependent_count(handle, 1);
+    api.jocforge_wasm_encoder_set_layout(handle, layout);
+    if (dependentCount !== null) api.jocforge_wasm_encoder_set_dependent_count(handle, dependentCount);
     if (!streamed) {
       for (let start = 0; start < adm.length; start += 65536) {
         const part = adm.subarray(start, start + 65536);
@@ -49,21 +50,34 @@ function frameTypes(bytes) {
   const types = [];
   for (let offset = 0; offset < bytes.length;) {
     assert.equal(bytes.readUInt16BE(offset), 0x0b77);
-    const header = bytes.readUInt16BE(offset + 2);
-    types.push(header >>> 14);
-    offset += 2 * ((header & 0x7ff) + 1);
-    assert.ok(offset <= bytes.length, 'truncated E-AC-3 syncframe');
+    const bsid = bytes[offset + 5] >>> 3;
+    if (bsid === 6) {
+      // The native Flat7x core uses 48 kHz / 640 kbps (2560 bytes for 1536 samples).
+      assert.equal(bytes[offset + 4] >>> 1, 18);
+      types.push('AC-3 I0');
+      offset += 2560;
+    } else {
+      assert.equal(bsid, 16, 'expected an E-AC-3 syncframe');
+      const header = bytes.readUInt16BE(offset + 2);
+      types.push([header >>> 14, (header >>> 11) & 7]);
+      offset += 2 * ((header & 0x7ff) + 1);
+    }
+    assert.ok(offset <= bytes.length, 'truncated syncframe');
   }
   return types;
 }
 
-for (const composed of [false, true]) {
-  const resident = await encode(false, composed);
+// A non-default Flat7x composition must expose I0/D0/D1, not the intermediate AC-3 I0/D0 pair.
+for (const [layout, dependentCount] of [[0, null], [0, 1], [1, null], [1, 2]]) {
+  const resident = await encode(false, layout, dependentCount);
   const types = frameTypes(resident);
-  const count = types.filter(type => type === 0).length;
+  const count = types.filter(frame => frame === 'AC-3 I0' || frame[0] === 0).length;
   assert.ok(count >= 2, 'provide at least two access units');
-  assert.deepEqual(types, Array.from({ length: count }, () => composed ? [0, 1] : [0]).flat());
-  const streamed = await encode(true, composed);
-  assert.ok(streamed.equals(resident), 'streamed bytes differ from resident output (dependent count: ' + (composed ? 1 : 'unset') + ')');
+  const expected = layout === 1 && dependentCount === null
+    ? ['AC-3 I0', [1, 0]]
+    : [[0, 0], ...Array.from({ length: dependentCount ?? 0 }, (_, id) => [1, id])];
+  assert.deepEqual(types, Array.from({ length: count }, () => expected).flat());
+  const streamed = await encode(true, layout, dependentCount);
+  assert.ok(streamed.equals(resident), `streamed bytes differ from resident output (layout=${layout}, dependent count=${dependentCount})`);
 }
 console.log('wasm host/resident topology: PASS');

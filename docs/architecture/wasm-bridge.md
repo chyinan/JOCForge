@@ -34,6 +34,7 @@ io            内存 provider 树与内存发布适配器
 `jocforge_wasm_encoder_finish_streamed` 进行实际编码时，需由宿主提供真实文件的长度，
 并按偏移将所请求的字节完整写入模块内存后返回 `0`。无文件的占位实现不能用于流式编码。
 两种输入模式都支持通过 `jocforge_wasm_encoder_set_dependent_count` 选择依赖子流数。
+Flat7x 未设置此项时保留原生 AC-3 I0 + E-AC-3 D0；显式设置 1–6 时返回所选的全 E-AC-3 组合，而不是中间载体。
 
 ## 3. 没有命名空间时的发布
 
