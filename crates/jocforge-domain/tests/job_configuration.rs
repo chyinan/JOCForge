@@ -652,6 +652,17 @@ fn authored_silence_seconds_truncate_to_sample_counts_and_keep_append_presence()
     assert_eq!(configuration.append_silence_samples().value(), 0);
     assert!(configuration.append_silence_duration_explicit());
 
+    // Nine milliseconds is exactly 432 samples; only actual sub-samples are dropped.
+    for (seconds, expected) in [
+        ("0.009", 432),
+        ("0.008999999999999999999", 431),
+        ("1.009", 48_432),
+    ] {
+        let xml = authored.replace("0.00390625", seconds);
+        let job = parse_selected_job_configuration(xml.as_bytes(), wave, source_samples).unwrap();
+        assert_eq!(job.prepend_silence_samples().value(), expected, "{seconds}");
+    }
+
     let omitted_append = case["input_xml"]
         .as_str()
         .unwrap()

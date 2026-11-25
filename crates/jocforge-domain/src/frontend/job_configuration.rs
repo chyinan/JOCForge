@@ -2002,21 +2002,23 @@ fn silence_duration_samples(
         return Err(JobConfigurationError::TimeDomain);
     }
 
-    let seconds = value
-        .parse::<f64>()
-        .map_err(|_| JobConfigurationError::TimeDomain)?;
-    if !seconds.is_finite() || seconds < 0.0 {
-        return Err(JobConfigurationError::TimeDomain);
-    }
-    let scaled_samples = seconds * f64::from(sample_rate_hz);
-    if !scaled_samples.is_finite() || scaled_samples >= i64::MAX as f64 {
-        return Err(JobConfigurationError::TimeDomain);
-    }
-    let signed_samples = scaled_samples.trunc() as i64;
-    if signed_samples < 0 {
-        return Err(JobConfigurationError::TimeDomain);
-    }
-    let samples = u64::try_from(signed_samples).map_err(|_| JobConfigurationError::TimeDomain)?;
+    let rate = u64::from(sample_rate_hz);
+    // Long multiplication from the least significant decimal digit: the carry
+    // into the whole-seconds column is exactly floor(fraction * rate).
+    let subsecond_samples = fraction
+        .unwrap_or("")
+        .bytes()
+        .rev()
+        .fold(0, |carry, digit| {
+            (u64::from(digit - b'0') * rate + carry) / 10
+        });
+    let samples = whole
+        .parse::<u64>()
+        .ok()
+        .and_then(|seconds| seconds.checked_mul(rate))
+        .and_then(|samples| samples.checked_add(subsecond_samples))
+        .filter(|&samples| samples < i64::MAX as u64)
+        .ok_or(JobConfigurationError::TimeDomain)?;
     Ok(SelectedSilenceSampleCount(samples))
 }
 
