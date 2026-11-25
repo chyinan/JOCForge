@@ -4,6 +4,8 @@
 
 `adm` 和 `atmos_mezz` 都读取 ADM BWF。解析后仍保留 XML 里声明的输入类型。默认编码是 5.1 EC-3。
 
+内嵌 ADM XML 中，对象坐标、扩散范围、漫射量和跳变插值时长的数值前后可以有空格、制表符或换行，不影响编码结果。
+
 编码 Flat 7.1 时加上 `--joc-layout flat7x`。这时 `data_rate` 是 D0 码率，`640` 表示总码率 1280 kbps。输出路径仍须是新空目录中的 `.candidate.ec3`。使用 CMAF 时，在命令行选择容器和总码率，把 `data_rate` 填为 640，并把 `.mp4` 文件名写在 `output/ec3` 下。详见[输出封装](containers.md)。
 
 ## 时间范围

@@ -6,6 +6,60 @@ use std::{fs, process::Command};
 mod synthetic_adm;
 
 #[test]
+fn object_numeric_xml_whitespace_preserves_the_bitstream() {
+    fn cue_with_numbers(pad: &str) -> Vec<u8> {
+        let cue = synthetic_adm::synthetic_cue(64);
+        let mut wave = cue[..12].to_vec();
+        let mut chunks = &cue[12..];
+        while !chunks.is_empty() {
+            let size = u32::from_le_bytes(chunks[4..8].try_into().unwrap()) as usize;
+            let end = 8 + size + size % 2;
+            if &chunks[..4] == b"axml" {
+                let xml = std::str::from_utf8(&chunks[8..8 + size]).unwrap()
+                    .replace(r#"<position coordinate="X">0</position>"#, &format!(r#"<position coordinate="X">{pad}0{pad}</position>"#))
+                    .replace(r#"<jumpPosition interpolationLength="0">"#, &format!(r#"<width>{pad}0.125{pad}</width><depth>{pad}0.125{pad}</depth><height>{pad}0.125{pad}</height><diffuse>{pad}0{pad}</diffuse><jumpPosition interpolationLength="{pad}0{pad}">"#));
+                wave.extend(b"axml");
+                wave.extend(u32::try_from(xml.len()).unwrap().to_le_bytes());
+                wave.extend(xml.as_bytes());
+                if !xml.len().is_multiple_of(2) {
+                    wave.push(0);
+                }
+            } else {
+                wave.extend(&chunks[..end]);
+            }
+            chunks = &chunks[end..];
+        }
+        let riff_size = u32::try_from(wave.len() - 8).unwrap();
+        wave[4..8].copy_from_slice(&riff_size.to_le_bytes());
+        wave
+    }
+
+    let encode = |pad| {
+        let dir = tempfile::tempdir().unwrap();
+        let input = dir.path().join("cue.wav");
+        let output = dir.path().join("cue.ec3");
+        fs::write(&input, cue_with_numbers(pad)).unwrap();
+        let run = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+            .arg("encode")
+            .arg(input)
+            .arg(&output)
+            .args(["--data-rate", "384"])
+            .env("JOCFORGE_CACHE_DIR", dir.path().join("cache"))
+            .output()
+            .unwrap();
+        assert!(
+            run.status.success(),
+            "{}",
+            String::from_utf8_lossy(&run.stderr)
+        );
+        fs::read(output).unwrap()
+    };
+    let compact = encode("");
+    assert_eq!(compact.len(), 3072);
+    assert_eq!(encode("\r\n \t"), compact);
+}
+
+#[test]
 fn first_cached_drain_may_still_be_a_priming_callback() {
     let dir = tempfile::tempdir().unwrap();
     let input = dir.path().join("cue.wav");

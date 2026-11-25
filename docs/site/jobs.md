@@ -4,6 +4,8 @@
 
 `adm` and `atmos_mezz` both read an ADM BWF. The parsed input keeps the type declared in the XML. The default encode is 5.1 EC-3.
 
+In the embedded ADM XML, surrounding spaces, tabs or line breaks on object coordinates, spread, diffuse and jump interpolation length do not change their numeric values.
+
 For Flat 7.1, add `--joc-layout flat7x`. In that job, `data_rate` is the D0 rate: `640` means a 1280 kbps total. The output path still has to be a `.candidate.ec3` in a new empty directory. For CMAF, select the container and the total rate on the CLI, set `data_rate` to 640, and put the `.mp4` name under `output/ec3`. See [Output containers](containers.md).
 
 ## Timing

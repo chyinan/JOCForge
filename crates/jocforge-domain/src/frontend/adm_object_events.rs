@@ -212,7 +212,7 @@ fn interpolation_samples(
         None | Some("0") => Ok(duration),
         Some("1") => {
             let seconds = raw.interpolation_length.as_deref().unwrap_or("0");
-            let value = seconds
+            let value = trim_xml_number(seconds)
                 .parse::<f64>()
                 .map_err(|_| SelectedAdmObjectEventError::InvalidInterpolationLength)?;
             if !value.is_finite() || value < 0.0 {
@@ -449,6 +449,11 @@ fn first_direct_child_text(
         .map(str::to_owned)
 }
 
+// XML Schema numeric tokens collapse XML whitespace, not arbitrary Unicode spaces.
+fn trim_xml_number(text: &str) -> &str {
+    text.trim_matches([' ', '\t', '\r', '\n'])
+}
+
 fn optional_binary64_child(
     parent: Node<'_, '_>,
     name: &str,
@@ -461,7 +466,8 @@ fn optional_binary64_child(
     if text.is_empty() {
         return Ok(Some(0.0));
     }
-    text.parse::<f64>()
+    trim_xml_number(text)
+        .parse::<f64>()
         .map(Some)
         .map_err(|_| SelectedAdmObjectEventError::MissingBlockField)
 }
@@ -490,7 +496,8 @@ fn read_coordinates(
         let value = if text.is_empty() {
             0.0
         } else {
-            text.parse::<f64>()
+            trim_xml_number(text)
+                .parse::<f64>()
                 .map_err(|_| SelectedAdmObjectEventError::MissingBlockField)?
         };
         coordinates[index] = Some(value);
