@@ -2091,6 +2091,10 @@ fn run_inner(
                 "callback/source/AU clocks did not reach the selected EOF boundary".to_owned(),
             ));
         }
+        // Completing the callbacks is not publication: the last progress observer can cancel.
+        if cancelled.load(std::sync::atomic::Ordering::Relaxed) {
+            return Err(EncodeRequestError::Cancelled);
+        }
         Ok((roots, committed_callbacks))
     });
     let (mut roots, committed_callbacks) = match callback_result {
