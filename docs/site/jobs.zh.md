@@ -35,4 +35,4 @@ Line 和 RF 的 DRC 互相独立。每一边可以是 `film_light`、`film_stand
 
 第一次编码会完整测量 ADM。同一内容再次编码时，只要修剪、首尾静音和测量设置相同，就可以跨码率、跨 5.1 和 Flat 7.1 复用。命中时 CLI 打印 `Loudness cache hit`。测量算法或它的内置参数变了，会重新测量。
 
-缓存保存响度、峰值和门控方式的精确数值，以及校验信息。Windows 默认目录是 `%LOCALAPPDATA%\JOCForge\adm-loudness-v1`。macOS 默认目录是 `~/Library/Caches/JOCForge/adm-loudness-v1`。`JOCFORGE_CACHE_DIR` 用来换掉这个根目录。删掉该目录会强制重新测量。目录不可写时，当前这次导出仍会完成。
+缓存保存响度、峰值和门控方式的精确数值，以及校验信息。Windows 默认目录是 `%LOCALAPPDATA%\JOCForge\adm-loudness-v1`。macOS 默认目录是 `~/Library/Caches/JOCForge/adm-loudness-v1`。设置 `JOCFORGE_CACHE_DIR` 后，测量结果保存在 `<指定目录>/adm-loudness-v1`。相对路径以进程的工作目录为准，不以 ADM 或 XML 文件所在目录为准。删掉该目录会强制重新测量。目录不可写时，当前这次导出仍会完成。

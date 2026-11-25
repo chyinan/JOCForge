@@ -65,3 +65,44 @@ fn cancelling_from_the_last_encoding_update_does_not_publish() {
     );
     assert!(!output.exists());
 }
+
+#[test]
+fn relative_loudness_cache_override_stays_under_the_working_directory() {
+    let dir = tempfile::tempdir().unwrap();
+    let input = dir.path().join("cue.wav");
+    fs::write(&input, synthetic_adm::synthetic_cue(32)).unwrap();
+    let fallback = dir.path().join("default-cache");
+    let run = |name| {
+        let output = dir.path().join(name);
+        let result = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+            .current_dir(dir.path())
+            .arg("encode")
+            .arg(&input)
+            .arg(&output)
+            .args(["--data-rate", "384"])
+            .env("JOCFORGE_CACHE_DIR", "./project-cache")
+            .env("LOCALAPPDATA", &fallback)
+            .env("HOME", &fallback)
+            .env("XDG_CACHE_HOME", &fallback)
+            .output()
+            .unwrap();
+        let log = String::from_utf8_lossy(&result.stderr).into_owned();
+        assert!(result.status.success(), "{log}");
+        (fs::read(output).unwrap(), log)
+    };
+
+    let (cold, _) = run("cold.ec3");
+    let requested = dir.path().join("project-cache/adm-loudness-v1");
+    assert!(
+        requested.is_dir(),
+        "explicit cache root was not used: {}",
+        requested.display()
+    );
+    let (warm, log) = run("warm.ec3");
+    assert!(log.contains("Loudness cache hit"), "{log}");
+    assert_eq!(cold, warm);
+    assert!(
+        !fallback.exists(),
+        "the default cache must remain untouched"
+    );
+}
