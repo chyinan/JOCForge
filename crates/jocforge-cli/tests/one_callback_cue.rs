@@ -34,6 +34,34 @@ fn first_cached_drain_may_still_be_a_priming_callback() {
 }
 
 #[test]
+fn classic_and_extensible_pcm24_encode_the_same_adm() {
+    let encode = |wav: Vec<u8>| {
+        let dir = tempfile::tempdir().unwrap();
+        let input = dir.path().join("cue.wav");
+        let output = dir.path().join("cue.ec3");
+        fs::write(&input, wav).unwrap();
+        let run = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+            .arg("encode")
+            .arg(input)
+            .arg(&output)
+            .args(["--data-rate", "384", "--joc-layout", "idx3"])
+            .env("JOCFORGE_CACHE_DIR", dir.path().join("cache"))
+            .output()
+            .unwrap();
+        assert!(
+            run.status.success(),
+            "{}",
+            String::from_utf8_lossy(&run.stderr)
+        );
+        fs::read(output).unwrap()
+    };
+    let classic = encode(synthetic_adm::synthetic_cue(96));
+    let extensible = encode(synthetic_adm::synthetic_cue_with_extensible_fmt(96, true));
+    assert_eq!(classic.len(), 3 * 1536);
+    assert_eq!(extensible, classic);
+}
+
+#[test]
 fn cancelling_from_the_last_encoding_update_does_not_publish() {
     use jocforge::encode_request::{EncodePhase, EncodeRequestError, encode_staged_file};
     use jocforge_application::meter_source_bridge::{CodecRateProfile, JocReconstructionLayout};
