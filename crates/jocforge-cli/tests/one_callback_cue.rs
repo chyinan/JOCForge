@@ -32,3 +32,36 @@ fn first_cached_drain_may_still_be_a_priming_callback() {
         au.len() / 2
     );
 }
+
+#[test]
+fn cancelling_from_the_last_encoding_update_does_not_publish() {
+    use jocforge::encode_request::{EncodePhase, EncodeRequestError, encode_staged_file};
+    use jocforge_application::meter_source_bridge::{CodecRateProfile, JocReconstructionLayout};
+    use std::sync::atomic::{AtomicBool, Ordering};
+
+    let dir = tempfile::tempdir().unwrap();
+    let input = dir.path().join("cue.wav");
+    let output = dir.path().join("cue.ec3");
+    fs::write(&input, synthetic_adm::synthetic_cue(32)).unwrap();
+    let cancelled = AtomicBool::new(false);
+
+    let result = encode_staged_file(
+        &input,
+        &output,
+        CodecRateProfile::Kbps384,
+        JocReconstructionLayout::ExistingSelectedFivePointOne,
+        &|phase, done, total| {
+            if matches!(phase, EncodePhase::Encoding) && done == total {
+                cancelled.store(true, Ordering::Relaxed);
+            }
+        },
+        &cancelled,
+    );
+
+    assert!(cancelled.load(Ordering::Relaxed));
+    assert!(
+        matches!(result, Err(EncodeRequestError::Cancelled)),
+        "{result:?}"
+    );
+    assert!(!output.exists());
+}
