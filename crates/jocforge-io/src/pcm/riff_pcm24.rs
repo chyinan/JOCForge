@@ -722,7 +722,7 @@ fn walk_riff<'a>(
     let declared_size = read_u32_le(&header[4..8])?;
     let (riff_size, rf64_data_size) = match &header[..4] {
         b"RIFF" => (u64::from(declared_size), None),
-        b"RF64" if declared_size == u32::MAX => {
+        b"RF64" => {
             // The mandatory ds64 prefix carries both extents. Reserved bytes may follow.
             let ds64 = read.read_at(12, 36)?;
             if ds64.len() != 36
@@ -738,7 +738,14 @@ fn walk_riff<'a>(
                     .map(u64::from_le_bytes)
                     .map_err(|_| RiffPcm24Error::InvalidInput)
             };
-            (size(&ds64[8..16])?, Some(size(&ds64[16..24])?))
+            // EBU Tech 3306 §3.4: RIFF and data each select their own
+            // 64-bit extent only when their 32-bit field is the sentinel.
+            let riff_size = if declared_size == u32::MAX {
+                size(&ds64[8..16])?
+            } else {
+                u64::from(declared_size)
+            };
+            (riff_size, Some(size(&ds64[16..24])?))
         }
         _ => return Err(RiffPcm24Error::InvalidInput),
     };
@@ -771,7 +778,7 @@ fn walk_riff<'a>(
         let declared_bytes = read_u32_le(&chunk_header[4..8])?;
         let length = match (rf64_data_size, &chunk_id, declared_bytes) {
             (Some(size), b"data", u32::MAX) => size,
-            (Some(_), b"data", _) | (Some(_), _, u32::MAX) => {
+            (Some(_), _, u32::MAX) => {
                 return Err(RiffPcm24Error::InvalidInput);
             }
             _ => u64::from(declared_bytes),
@@ -1159,6 +1166,42 @@ mod streamed_window_tests {
         );
         bytes[28..36].copy_from_slice(&u64::MAX.to_le_bytes());
         assert!(parse_selected_riff_pcm24(&bytes, None).is_err());
+    }
+
+    #[test]
+    fn rf64_sizes_select_their_32_or_64_bit_fields_independently() {
+        let riff = synthetic_riff(2);
+        let baseline = parse_selected_riff_pcm24(&riff, Some(*b"bext")).unwrap();
+        let pcm = digest_blocks(&baseline);
+        let data_header = baseline.data_offset() as usize - CHUNK_HEADER_BYTES;
+        let riff_len = u32::try_from(riff.len() + 36 - 8).unwrap();
+        let data_len = u32::try_from(baseline.data_payload_bytes()).unwrap();
+
+        for use_riff64 in [false, true] {
+            for use_data64 in [false, true] {
+                let mut bytes = riff.clone();
+                bytes[..4].copy_from_slice(b"RF64");
+                bytes[4..8]
+                    .copy_from_slice(&if use_riff64 { u32::MAX } else { riff_len }.to_le_bytes());
+                bytes[data_header + 4..data_header + 8]
+                    .copy_from_slice(&if use_data64 { u32::MAX } else { data_len }.to_le_bytes());
+                let mut ds64 = Vec::from(*b"ds64");
+                ds64.extend(28u32.to_le_bytes());
+                ds64.extend(u64::from(if use_riff64 { riff_len } else { 0 }).to_le_bytes());
+                ds64.extend(u64::from(if use_data64 { data_len } else { 0 }).to_le_bytes());
+                ds64.extend(2u64.to_le_bytes());
+                ds64.extend(0u32.to_le_bytes());
+                bytes.splice(12..12, ds64);
+
+                let parsed = parse_selected_riff_pcm24(&bytes, Some(*b"bext")).unwrap();
+                assert_eq!(parsed.total_samples(), baseline.total_samples());
+                assert_eq!(digest_blocks(&parsed), pcm);
+                assert_eq!(
+                    parsed.selected_metadata_payload(),
+                    baseline.selected_metadata_payload()
+                );
+            }
+        }
     }
 
     fn digest_blocks(parsed: &ParsedRiffPcm24<'_>) -> Vec<u32> {
