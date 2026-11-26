@@ -29,6 +29,7 @@ pub enum DbmdSectionError {
     Section10Length,
     Section10Magic,
     TrackTableInvalid,
+    BedFieldMismatch,
 }
 
 impl DbmdSectionError {
@@ -43,6 +44,7 @@ impl DbmdSectionError {
             Self::RequiredSectionMissing => "DBMD_SECTION_REQUIRED",
             Self::Section9Length | Self::AuthoredModeUnsupported => "DBMD_AUTHORED_MODE",
             Self::Section10Length | Self::TrackTableInvalid => "DBMD_TRACK_TABLE",
+            Self::BedFieldMismatch => "DBMD_BED_MIX_FIELDS",
             Self::Section10Magic => "DBMD_SECTION10_MAGIC",
         }
     }
@@ -97,6 +99,37 @@ pub struct SelectedDbmdSections {
 }
 
 impl SelectedDbmdSections {
+    /// Bind rendered rows to the original DBMD track of each source.
+    pub fn project_bed_mix(&mut self, sources: &[Vec<u8>]) -> Result<(), DbmdSectionError> {
+        if sources.is_empty() {
+            return Ok(());
+        }
+        self.track_fields = sources
+            .iter()
+            .enumerate()
+            .map(|(host, inputs)| {
+                let mut fields = self
+                    .fields_for_physical_host(u16::from(
+                        *inputs.first().ok_or(DbmdSectionError::TrackTableInvalid)?,
+                    ))
+                    .ok_or(DbmdSectionError::TrackTableInvalid)?;
+                for source in &inputs[1..] {
+                    let other = self
+                        .fields_for_physical_host(u16::from(*source))
+                        .ok_or(DbmdSectionError::TrackTableInvalid)?;
+                    if fields.raw_packed != other.raw_packed
+                        || fields.raw_flag_low2 != other.raw_flag_low2
+                    {
+                        return Err(DbmdSectionError::BedFieldMismatch);
+                    }
+                }
+                fields.track_index = host as u16;
+                Ok(fields)
+            })
+            .collect::<Result<_, _>>()?;
+        Ok(())
+    }
+
     pub const fn warm_trim_mode(&self) -> u8 {
         self.warm_trim_mode
     }

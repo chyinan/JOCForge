@@ -22,12 +22,14 @@ const PCM24_INT32_SCALE: f32 = 1.0 / 2_147_483_648.0;
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum RiffPcm24Error {
     InvalidInput,
+    BedMixExceedsPcm24Range,
 }
 
 impl RiffPcm24Error {
     pub const fn code(self) -> &'static str {
         match self {
             Self::InvalidInput => "INVALID_INPUT",
+            Self::BedMixExceedsPcm24Range => "BED_MIX_EXCEEDS_PCM24_RANGE",
         }
     }
 }
@@ -283,6 +285,7 @@ pub struct ParsedRiffPcm24<'a> {
     resource_bytes: u64,
     data_offset: u64,
     data_payload: RiffDataWindow<'a>,
+    bed_mix_sources: Vec<Vec<u8>>,
     chunk_ids: Vec<String>,
     metadata_payloads: Vec<RiffMetadataPayload>,
     selected_metadata_payload: Option<Vec<u8>>,
@@ -294,12 +297,40 @@ impl<'a> ParsedRiffPcm24<'a> {
         self.sample_rate_hz
     }
 
+    pub fn with_bed_mix(mut self, sources: &[Vec<u8>]) -> Result<Self, RiffPcm24Error> {
+        if !sources.is_empty() {
+            let mut used = vec![false; usize::from(self.channels)];
+            for inputs in sources {
+                if inputs.is_empty() {
+                    return Err(RiffPcm24Error::InvalidInput);
+                }
+                for &host in inputs {
+                    let slot = used
+                        .get_mut(usize::from(host))
+                        .ok_or(RiffPcm24Error::InvalidInput)?;
+                    if std::mem::replace(slot, true) {
+                        return Err(RiffPcm24Error::InvalidInput);
+                    }
+                }
+            }
+            if used.contains(&false) {
+                return Err(RiffPcm24Error::InvalidInput);
+            }
+        }
+        self.bed_mix_sources = sources.to_vec();
+        Ok(self)
+    }
+
     pub const fn channels(&self) -> u16 {
-        self.channels
+        if self.bed_mix_sources.is_empty() {
+            self.channels
+        } else {
+            self.bed_mix_sources.len() as u16
+        }
     }
 
     pub const fn block_align(&self) -> u16 {
-        self.block_align
+        self.channels() * 3
     }
 
     pub const fn total_samples(&self) -> u64 {
@@ -401,8 +432,8 @@ impl<'a> ParsedRiffPcm24<'a> {
             return decode_pcm24_read_chunk_with_layout(
                 &[],
                 0,
-                usize::from(self.channels),
-                usize::from(self.block_align),
+                usize::from(self.channels()),
+                usize::from(self.block_align()),
             );
         };
         let capped_frames = requested_frames.min(remaining_frames);
@@ -410,8 +441,8 @@ impl<'a> ParsedRiffPcm24<'a> {
             return decode_pcm24_read_chunk_with_layout(
                 &[],
                 0,
-                usize::from(self.channels),
-                usize::from(self.block_align),
+                usize::from(self.channels()),
+                usize::from(self.block_align()),
             );
         }
 
@@ -446,6 +477,9 @@ impl<'a> ParsedRiffPcm24<'a> {
             usize::from(self.channels),
             usize::from(self.block_align),
         )?;
+        if !self.bed_mix_sources.is_empty() {
+            chunk.planar_f32_bits = mix_bed_channels(chunk.planar_f32_bits, &self.bed_mix_sources)?;
+        }
         if file_count != capped_frames {
             let frames =
                 usize::try_from(capped_frames).map_err(|_| RiffPcm24Error::InvalidInput)?;
@@ -462,6 +496,35 @@ impl<'a> ParsedRiffPcm24<'a> {
         }
         Ok(chunk)
     }
+}
+
+// Functional Core: PCM24 maps exactly into binary32. Widen before addition
+// so cancellation is exact even if intermediate sums exceed 24 bits.
+fn mix_bed_channels(
+    mut rows: Vec<Vec<u32>>,
+    sources: &[Vec<u8>],
+) -> Result<Vec<Vec<u32>>, RiffPcm24Error> {
+    sources
+        .iter()
+        .map(|inputs| {
+            let (first, others) = inputs.split_first().ok_or(RiffPcm24Error::InvalidInput)?;
+            let mut row = std::mem::take(&mut rows[usize::from(*first)]);
+            if !others.is_empty() {
+                for (sample, bits) in row.iter_mut().enumerate() {
+                    let sum = others
+                        .iter()
+                        .fold(f64::from(f32::from_bits(*bits)), |sum, &host| {
+                            sum + f64::from(f32::from_bits(rows[usize::from(host)][sample]))
+                        });
+                    if !(-1.0..1.0).contains(&sum) {
+                        return Err(RiffPcm24Error::BedMixExceedsPcm24Range);
+                    }
+                    *bits = (sum as f32).to_bits();
+                }
+            }
+            Ok(row)
+        })
+        .collect()
 }
 
 /// Functional Core: decode the complete PCM24 frames from one successful byte read.
@@ -573,7 +636,7 @@ fn unique_metadata_payload<'a>(
 /// Parses a 48 kHz PCM24 RIFF resource while preserving its actual channel count.
 ///
 /// This function accepts complete bytes and performs no filesystem I/O. It does not
-/// validate ADM/XML link semantics, RF64/BW64, extensible format, or native malformed-
+/// validate ADM/XML link semantics, extensible format, or native malformed-
 /// input behavior beyond the explicitly delivered model-reader cases.
 pub fn parse_selected_riff_pcm24(
     bytes: &[u8],
@@ -653,10 +716,33 @@ fn walk_riff<'a>(
 ) -> Result<ParsedRiffPcm24<'a>, RiffPcm24Error> {
     let resource_len = read.len();
     let header = read.read_at(0, RIFF_HEADER_BYTES)?;
-    if header.len() != RIFF_HEADER_BYTES || &header[..4] != b"RIFF" || &header[8..12] != b"WAVE" {
+    if header.len() != RIFF_HEADER_BYTES || &header[8..12] != b"WAVE" {
         return Err(RiffPcm24Error::InvalidInput);
     }
-    let riff_extent = u64::from(read_u32_le(&header[4..8])?)
+    let declared_size = read_u32_le(&header[4..8])?;
+    let (riff_size, rf64_data_size) = match &header[..4] {
+        b"RIFF" => (u64::from(declared_size), None),
+        b"RF64" if declared_size == u32::MAX => {
+            // The mandatory ds64 prefix carries both extents. Reserved bytes may follow.
+            let ds64 = read.read_at(12, 36)?;
+            if ds64.len() != 36
+                || &ds64[..4] != b"ds64"
+                || read_u32_le(&ds64[4..8])? < 28
+                || read_u32_le(&ds64[32..36])? != 0
+            {
+                return Err(RiffPcm24Error::InvalidInput);
+            }
+            let size = |field: &[u8]| {
+                field
+                    .try_into()
+                    .map(u64::from_le_bytes)
+                    .map_err(|_| RiffPcm24Error::InvalidInput)
+            };
+            (size(&ds64[8..16])?, Some(size(&ds64[16..24])?))
+        }
+        _ => return Err(RiffPcm24Error::InvalidInput),
+    };
+    let riff_extent = riff_size
         .checked_add(8)
         .ok_or(RiffPcm24Error::InvalidInput)?;
     if riff_extent != resource_len {
@@ -682,11 +768,18 @@ fn walk_riff<'a>(
         let chunk_id: [u8; 4] = chunk_header[..4]
             .try_into()
             .map_err(|_| RiffPcm24Error::InvalidInput)?;
-        let payload_bytes = usize::try_from(read_u32_le(&chunk_header[4..8])?)
-            .map_err(|_| RiffPcm24Error::InvalidInput)?;
+        let declared_bytes = read_u32_le(&chunk_header[4..8])?;
+        let length = match (rf64_data_size, &chunk_id, declared_bytes) {
+            (Some(size), b"data", u32::MAX) => size,
+            (Some(_), b"data", _) | (Some(_), _, u32::MAX) => {
+                return Err(RiffPcm24Error::InvalidInput);
+            }
+            _ => u64::from(declared_bytes),
+        };
+        let payload_bytes = usize::try_from(length).map_err(|_| RiffPcm24Error::InvalidInput)?;
         let payload_start = position + CHUNK_HEADER_BYTES as u64;
         let payload_end = payload_start
-            .checked_add(u64::try_from(payload_bytes).map_err(|_| RiffPcm24Error::InvalidInput)?)
+            .checked_add(length)
             .ok_or(RiffPcm24Error::InvalidInput)?;
         if payload_end > riff_extent {
             return Err(RiffPcm24Error::InvalidInput);
@@ -728,7 +821,7 @@ fn walk_riff<'a>(
         }
 
         position = payload_end
-            .checked_add(u64::from(payload_bytes as u32 % 2))
+            .checked_add(length % 2)
             .ok_or(RiffPcm24Error::InvalidInput)?;
     }
 
@@ -764,6 +857,7 @@ fn walk_riff<'a>(
         resource_bytes: resource_len,
         data_offset,
         data_payload,
+        bed_mix_sources: Vec::new(),
         chunk_ids,
         metadata_payloads,
         selected_metadata_payload,
@@ -1005,6 +1099,66 @@ mod streamed_window_tests {
         let riff_size = (bytes.len() - 8) as u32;
         bytes[4..8].copy_from_slice(&riff_size.to_le_bytes());
         bytes
+    }
+
+    #[test]
+    fn bed_mix_matches_each_single_group_and_preserves_object_samples() {
+        let sources = [vec![0, 4, 2], vec![3, 1, 6], vec![5]];
+        let bits = |samples: &[i32]| {
+            samples
+                .iter()
+                .map(|v| (*v as f32 / 8388608.0).to_bits())
+                .collect::<Vec<_>>()
+        };
+        let rows = [5, -2, 9, 12, -6, 35, 7].map(|v| bits(&[v, -v]));
+        let expected = vec![bits(&[8, -8]), bits(&[17, -17]), bits(&[35, -35])];
+        assert_eq!(mix_bed_channels(rows.to_vec(), &sources).unwrap(), expected);
+        for group in 0..3 {
+            let mut rows = vec![bits(&[0, 0]); 7];
+            for role in 0..2 {
+                rows[usize::from(sources[role][group])] = expected[role].clone();
+            }
+            rows[5] = expected[2].clone();
+            assert_eq!(mix_bed_channels(rows.clone(), &sources).unwrap(), expected);
+            rows.swap(
+                usize::from(sources[0][group]),
+                usize::from(sources[1][group]),
+            );
+            assert_ne!(mix_bed_channels(rows.clone(), &sources).unwrap(), expected);
+            rows.swap(
+                usize::from(sources[0][group]),
+                usize::from(sources[1][group]),
+            );
+            rows[5].fill(0);
+            assert_ne!(mix_bed_channels(rows, &sources).unwrap(), expected);
+        }
+        assert_eq!(
+            mix_bed_channels(vec![bits(&[8388607]), bits(&[1])], &[vec![0, 1]]),
+            Err(RiffPcm24Error::BedMixExceedsPcm24Range)
+        );
+    }
+
+    #[test]
+    fn rf64_resolves_data_and_reads_trailing_metadata() {
+        let mut bytes = synthetic_riff(2);
+        bytes[..8].copy_from_slice(b"RF64\xff\xff\xff\xff");
+        let data = bytes.windows(4).position(|id| id == b"data").unwrap();
+        bytes[data + 4..data + 8].copy_from_slice(&u32::MAX.to_le_bytes());
+        let mut ds64 = Vec::from(*b"ds64");
+        ds64.extend(28u32.to_le_bytes());
+        ds64.extend(((bytes.len() + 36 - 8) as u64).to_le_bytes());
+        ds64.extend(36u64.to_le_bytes());
+        ds64.extend(2u64.to_le_bytes());
+        ds64.extend(0u32.to_le_bytes());
+        bytes.splice(12..12, ds64);
+        let parsed = parse_selected_riff_pcm24(&bytes, Some(*b"bext")).unwrap();
+        assert_eq!(parsed.total_samples(), 2);
+        assert_eq!(
+            parsed.selected_metadata_payload.as_deref(),
+            Some(b"tail-metadata".as_slice())
+        );
+        bytes[28..36].copy_from_slice(&u64::MAX.to_le_bytes());
+        assert!(parse_selected_riff_pcm24(&bytes, None).is_err());
     }
 
     fn digest_blocks(parsed: &ParsedRiffPcm24<'_>) -> Vec<u32> {

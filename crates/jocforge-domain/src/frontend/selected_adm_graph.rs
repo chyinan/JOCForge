@@ -8,7 +8,7 @@ use sha2::{Digest, Sha256};
 
 use crate::frontend::adm_object_events::{
     AdmittedSelectedObjectEvents, RawAdmObjectEvent, SelectedAdmObjectEventError,
-    admit_selected_object_events,
+    admit_selected_object_events, timestamp_to_sample_index,
 };
 use crate::frontend::bed_channel_join::{
     BedChannelJoinError, PhysicalBedTrack, SelectedBedChannelJoin, join_selected_bed_channels,
@@ -250,6 +250,8 @@ pub struct SelectedAdmGraph {
     object_sampler_owner_bindings: Vec<ObjectSamplerOwnerBinding>,
     bed_pack_channel_format_ids: [String; SELECTED_BED_COUNT],
     bed_join: SelectedBedChannelJoin,
+    bed_mix_sources: Vec<Vec<u8>>,
+    bed_mix_duration: Option<u64>,
     regular_source_bindings: Vec<RegularSourceBinding>,
     uid_to_track_index: BTreeMap<String, ChnaTrackIndex>,
     receipt: SelectedAdmGraphReceipt,
@@ -260,6 +262,11 @@ impl SelectedAdmGraph {
     pub fn with_render_timeline(mut self, timeline: crate::timeline::RenderTimeline) -> Self {
         self.render_timeline = timeline.is_edited().then_some(timeline);
         self
+    }
+
+    /// Physical PCM inputs for each rendered channel. Empty for a single bed.
+    pub fn bed_mix_sources(&self) -> &[Vec<u8>] {
+        &self.bed_mix_sources
     }
 
     pub fn tracks(&self) -> &[SelectedPhysicalTrack] {
@@ -309,6 +316,15 @@ impl SelectedAdmGraph {
             return Err(SelectedAdmGraphError::ObjectEvent(
                 SelectedAdmObjectEventError::DurationMismatch,
             ));
+        }
+        let file_samples = self
+            .render_timeline
+            .map_or(source_samples.value(), |timeline| timeline.file_samples());
+        if self
+            .bed_mix_duration
+            .is_some_and(|duration| duration < file_samples)
+        {
+            return Err(SelectedAdmGraphError::BedMixTiming);
         }
         admit_selected_object_events(&self.object_events, source_samples, self.render_timeline)
             .map_err(SelectedAdmGraphError::ObjectEvent)
@@ -542,6 +558,126 @@ pub fn parse_selected_adm_graph(
         });
     }
 
+    let mut bed_groups = BTreeMap::<&str, Vec<&SelectedPhysicalTrack>>::new();
+    for row in &rows {
+        if matches!(row.kind, SelectedTrackKind::DirectSpeakersBed { .. }) {
+            bed_groups.entry(&row.object_id).or_default().push(row);
+        }
+    }
+    let mut bed_mix_sources = Vec::new();
+    let mut bed_mix_duration = None;
+    if bed_groups.len() > 1 {
+        let mut roles = vec![Vec::new(); SELECTED_BED_COUNT];
+        for (owner, group) in &bed_groups {
+            let object = single_object_by_id(&document, namespace, owner)?;
+            let time = |value: &str| {
+                timestamp_to_sample_index(value, 48_000)
+                    .map(|index| index.value())
+                    .map_err(SelectedAdmGraphError::ObjectEvent)
+            };
+            let start = time(object.attribute("start").unwrap_or("00:00:00"))?;
+            let duration = time(&required_attribute(object, "duration")?)?;
+            if start != 0
+                || duration == 0
+                || bed_mix_duration
+                    .replace(duration)
+                    .is_some_and(|previous| previous != duration)
+            {
+                return Err(SelectedAdmGraphError::BedMixTiming);
+            }
+            let has_gain = |node: Node<'_, '_>| {
+                node.descendants().any(|child| {
+                    child.is_element()
+                        && (child.tag_name().name() == "gain" || child.attribute("gain").is_some())
+                })
+            };
+            let pack_id = first_child_text(object, "audioPackFormatIDRef", namespace)?;
+            let pack = lookup(&pack_format_nodes, &pack_id)?;
+            let channels = direct_child_texts(pack, "audioChannelFormatIDRef", namespace);
+            if group.len() != SELECTED_BED_COUNT || channels.len() != SELECTED_BED_COUNT {
+                return Err(SelectedAdmGraphError::BedDomain);
+            }
+            if has_gain(object) || has_gain(pack) {
+                return Err(SelectedAdmGraphError::BedMixGain);
+            }
+            let mut seen = [false; SELECTED_BED_COUNT];
+            for row in group {
+                let SelectedTrackKind::DirectSpeakersBed { bed_id, .. } = row.kind else {
+                    unreachable!()
+                };
+                let channel = lookup(&channel_format_nodes, &row.channel_format)?;
+                let block = single_direct_block(channel, namespace)?;
+                if has_gain(channel) {
+                    return Err(SelectedAdmGraphError::BedMixGain);
+                }
+                if block
+                    .attribute("rtime")
+                    .map(time)
+                    .transpose()?
+                    .is_some_and(|start| start != 0)
+                    || block
+                        .attribute("duration")
+                        .map(time)
+                        .transpose()?
+                        .is_some_and(|length| length != duration)
+                {
+                    return Err(SelectedAdmGraphError::BedMixTiming);
+                }
+                if row.pack_format != pack_id
+                    || !channels.contains(&row.channel_format)
+                    || std::mem::replace(&mut seen[usize::from(bed_id)], true)
+                {
+                    return Err(SelectedAdmGraphError::BedDomain);
+                }
+                roles[usize::from(bed_id)].push(row.physical_host.value());
+            }
+        }
+        // Select one complete bed, then append every object in physical order.
+        let primary = bed_groups
+            .values()
+            .min_by_key(|group| group[0].physical_host.value())
+            .unwrap();
+        let mut selected = Vec::with_capacity(SELECTED_BED_COUNT + object_events.len());
+        for (ordinal, row) in primary.iter().enumerate() {
+            let mut row = (*row).clone();
+            let SelectedTrackKind::DirectSpeakersBed {
+                bed_id,
+                ref mut bed_pack_ordinal,
+                ref mut bed_input_id,
+                ..
+            } = row.kind
+            else {
+                unreachable!()
+            };
+            *bed_pack_ordinal = ordinal as u8;
+            *bed_input_id = parse_selected_object_semantic_key(&row.object_id)? + ordinal as u32;
+            row.descriptor_semantic_key = *bed_input_id;
+            let mut sources = roles[usize::from(bed_id)].clone();
+            let representative = sources
+                .iter()
+                .position(|host| *host == row.physical_host.value())
+                .unwrap();
+            sources.swap(0, representative);
+            bed_mix_sources.push(sources);
+            selected.push(row);
+        }
+        for (row, events) in rows
+            .iter()
+            .filter(|row| matches!(row.kind, SelectedTrackKind::Object { .. }))
+            .zip(&mut object_events)
+        {
+            for event in events {
+                event.physical_host = selected.len() as u8;
+            }
+            bed_mix_sources.push(vec![row.physical_host.value()]);
+            selected.push(row.clone());
+        }
+        for (host, row) in selected.iter_mut().enumerate() {
+            row.physical_host = PhysicalHostIndex(host as u8);
+            row.track_index = ChnaTrackIndex(host as u16 + 1);
+        }
+        rows = selected;
+    }
     let bed_rows = rows
         .iter()
         .filter_map(|row| match row.kind {
@@ -553,7 +689,7 @@ pub fn parse_selected_adm_graph(
         .iter()
         .filter(|row| matches!(row.kind, SelectedTrackKind::Object { .. }))
         .collect::<Vec<_>>();
-    if bed_rows.len() != SELECTED_BED_COUNT || bed_rows.len() + object_rows.len() != records.len() {
+    if bed_rows.len() != SELECTED_BED_COUNT || bed_rows.len() + object_rows.len() != rows.len() {
         return Err(SelectedAdmGraphError::SelectedTrackDomain);
     }
 
@@ -605,7 +741,7 @@ pub fn parse_selected_adm_graph(
 
     let direct_lfe_host = bed_join.lfe_host();
     let regular_hosts = bed_join.regular_control_order();
-    if regular_hosts.len() != records.len() - 1 {
+    if regular_hosts.len() != rows.len() - 1 {
         return Err(SelectedAdmGraphError::SourceBindingDomain);
     }
     let regular_source_bindings = regular_hosts
@@ -623,7 +759,7 @@ pub fn parse_selected_adm_graph(
         .iter()
         .map(|row| (row.uid.clone(), row.track_index))
         .collect::<BTreeMap<_, _>>();
-    if uid_to_track_index.len() != records.len() {
+    if uid_to_track_index.len() != rows.len() {
         return Err(SelectedAdmGraphError::DuplicateUid);
     }
     let object_sampler_owner_bindings = build_object_sampler_owner_bindings(&object_rows)?;
@@ -633,7 +769,7 @@ pub fn parse_selected_adm_graph(
     let receipt = SelectedAdmGraphReceipt {
         axml_sha256: Sha256::digest(axml).into(),
         chna_sha256: Sha256::digest(chna).into(),
-        physical_track_count: u16::try_from(records.len())
+        physical_track_count: u16::try_from(rows.len())
             .map_err(|_| SelectedAdmGraphError::SelectedTrackDomain)?,
         bed_track_count: u16::try_from(bed_rows.len())
             .map_err(|_| SelectedAdmGraphError::SelectedTrackDomain)?,
@@ -652,6 +788,8 @@ pub fn parse_selected_adm_graph(
         object_sampler_owner_bindings,
         bed_pack_channel_format_ids: pack_channel_format_ids,
         bed_join,
+        bed_mix_sources,
+        bed_mix_duration,
         regular_source_bindings,
         uid_to_track_index,
         receipt,
@@ -677,6 +815,8 @@ pub enum SelectedAdmGraphError {
     SelectedTrackKind,
     BedDomain,
     BedPackDomain,
+    BedMixTiming,
+    BedMixGain,
     BedLabel,
     LfeHost,
     SourceBindingDomain,
@@ -706,6 +846,8 @@ impl SelectedAdmGraphError {
             Self::SelectedTrackKind => "ADM_SELECTED_TRACK_KIND",
             Self::BedDomain => "ADM_BED_DOMAIN",
             Self::BedPackDomain => "ADM_BED_PACK_DOMAIN",
+            Self::BedMixTiming => "ADM_BED_MIX_TIMING",
+            Self::BedMixGain => "ADM_BED_MIX_EXPLICIT_GAIN",
             Self::BedLabel => "ADM_BED_LABEL",
             Self::LfeHost => "ADM_LFE_HOST",
             Self::SourceBindingDomain => "ADM_SOURCE_BINDING",
@@ -993,8 +1135,11 @@ fn single_speaker_label(
 }
 
 fn route_bed_speaker_label(label: &str) -> Result<(&'static str, u8), SelectedAdmGraphError> {
-    let suffix = label.chars().skip(3).collect::<String>();
-    match suffix.as_str() {
+    let suffix = label
+        .get(3..)
+        .filter(|_| label.as_bytes().get(2) == Some(&b'_'))
+        .unwrap_or(label);
+    match suffix {
         "L" => Ok(("front_left", 0)),
         "R" => Ok(("front_right", 1)),
         "C" => Ok(("front_center", 2)),

@@ -14,6 +14,8 @@ tags:
 
 ## 当前状态
 
+- 2026-11-25：原生 CLI 支持以 ds64 描述 PCM 长度的 RF64，以及同时间、等增益、同构的多组十声道声床。按 CHNA 和扬声器标签求和，保留独立对象。2 秒 41 轨三床输入及三种等效重分配均生成相同的 63 帧，交换左右或静音对象均改变输出。
+
 - 2026-11-23 整曲问题定案（owner 授权自行决定）：**不做分段编码、不做流式 PCM 改造**，改为显式输入预算。理由：分段编码会改变输出（dialnorm 是全节目测量、AU 连续性与比特分配都跨段），直接毁掉刚建立的逐字节一致性；流式 PCM 要重写 domain 的整份驻留假设（`Arc<[u8]>`、哈希、ADM payload），成本远超收益且同样改变契约。落地：wasm 桥接新增 `MAX_RESIDENT_INPUT_BYTES = 512 MiB`，`push_bytes` 一旦超预算立即返回 `InvalidInput` 并附可读 detail，避免编码中途 OOM 把模块打废（wasm 陷阱是不可恢复的）。`docs/architecture/wasm-bridge.md` 记录该预算与取舍。度量：`cargo check --workspace --all-targets --locked`、`cargo check -p jocforge-wasm --target wasm32-unknown-unknown --locked`（0 告警）、`cargo clippy --workspace --all-targets --locked`（无 error）、`cargo test --workspace --locked`（全绿）、`cargo fmt --all --check`、`scripts/check-boundaries.py`（91/104/0/6）通过；`test-wasm.mjs` → `wasm abi: PASS`；`compare-wasm-encode.mjs` → `bit_exact=true`。剩余不确定：receipt 语义仍沿用 domain 唯一构造函数（决定不改契约，理由见 wasm-bridge.md）。
 
 - 2026-11-23 桥接收敛为薄壳 + 单份输入：`jocforge-wasm/src/lib.rs` 删掉了自带的整段输入准备（parse → `prepare_selected_job_input` → `bind_primary_control_rows`，`let _ = prepared;` 后丢弃），改为直接调用管线入口并只做错误分类——此前浏览器每次编码会解析并准备 ADM **两遍**，且存在两条准备路径漂移的风险。新增 `encode_adm_resource(Arc<[u8]>)`（wasm-only），`Encoder::finish` 用 `mem::take` 把已积累的输入交给它，输入只驻留一份。错误分类按 `EncodeRequestError` 变体分到 `InvalidInput`/`Encode` 两类，ABI 冒烟测试的 `error_category()==0` 契约保持。新增 `docs/architecture/wasm-bridge.md` 记录 ABI、内存模型、`memory://` 例外、栈参数、执行模型、验证命令与已知限制。度量：`cargo check --workspace --all-targets --locked`、`cargo check -p jocforge-wasm --target wasm32-unknown-unknown --locked`（0 告警）、`cargo clippy --workspace --all-targets --locked`（无 error）、`cargo test --workspace --locked`（全绿，wasm crate 5 项）、`cargo fmt --all`、`scripts/check-boundaries.py`（91/104/0/6）通过；重建 release wasm 后 `compare-wasm-encode.mjs` 仍 `bit_exact=true`，`test-wasm.mjs` 仍 `wasm abi: PASS`。剩余不确定：整曲浏览器编码未实测（4 GB 地址空间 vs 单份 PCM）；`admission_rejection_detail` 诊断仍留在代码里。
@@ -928,3 +930,7 @@ input modes. Returning the completed composition instead gives 18 or 42 E-AC-3
 syncframes respectively, byte-identical to the matching native CLI outputs
 (1024 kbps D0 rate, deployed EMDF). Unset Flat7x still returns the native pair.
 This was exercised with Node host reads, not browser OPFS or playback hardware.
+
+### 2026-11-25 — Homogeneous DirectSpeakers beds
+
+The native encode path now joins complete ten-role beds by AXML/CHNA identity, sums corresponding PCM24 samples, and rebinds each object and its DBMD fields to the rendered row. The ADM graph and PCM reader tests exercise reordered tracks, three equivalent placements, changed stereo routing, object muting, overflow, gain, timing and differing DBMD fields. Single-bed sources use the original PCM path.

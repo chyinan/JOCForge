@@ -342,6 +342,16 @@ impl PreparedJobInput {
         data_bytes: u64,
     ) -> Result<Self, PreparedJobInputError> {
         let graph = self.graph.graph();
+        let data_bytes = if graph.bed_mix_sources().is_empty() {
+            data_bytes
+        } else {
+            let physical_channels: usize = graph.bed_mix_sources().iter().map(Vec::len).sum();
+            let physical_stride = physical_channels as u64 * 3;
+            if data_bytes % physical_stride != 0 {
+                return Err(PreparedJobInputError::WaveTrackCountMismatch);
+            }
+            (data_bytes / physical_stride) * u64::from(graph.receipt().physical_track_count()) * 3
+        };
         let binding = bind_admitted_selected_input(
             &self.configuration,
             SelectedPrimaryRuntimeIdentity {
@@ -784,10 +794,6 @@ pub fn prepare_selected_job_input(
     resource_identity: ResourceIdentity,
     metadata_payloads: SelectedAdmResourcePayloads<'_>,
 ) -> Result<PreparedJobInput, PreparedJobInputError> {
-    let configuration = parse_selected_job_configuration(xml, wave, source_samples)
-        .map_err(PreparedJobInputError::Configuration)?
-        .resolve_render_timeline()
-        .map_err(PreparedJobInputError::RenderTimeline)?;
     let axml_span = bind_resource_payload(
         *b"axml",
         metadata_payloads.axml,
@@ -804,17 +810,31 @@ pub fn prepare_selected_job_input(
         metadata_payloads.dbmd_offset,
     )?;
     let graph = parse_selected_adm_graph(metadata_payloads.axml, metadata_payloads.chna)
-        .map_err(PreparedJobInputError::GraphParse)?
-        .with_render_timeline(configuration.render_timeline());
-    if wave.channels() != graph.receipt().physical_track_count() {
+        .map_err(PreparedJobInputError::GraphParse)?;
+    let logical_channels = graph.receipt().physical_track_count();
+    let source_channels = if graph.bed_mix_sources().is_empty() {
+        usize::from(logical_channels)
+    } else {
+        graph.bed_mix_sources().iter().map(Vec::len).sum()
+    };
+    if usize::from(wave.channels()) != source_channels {
         return Err(PreparedJobInputError::WaveTrackCountMismatch);
     }
+    let wave =
+        SelectedWaveDescriptor::new(wave.sample_rate_hz(), logical_channels, wave.pcm_bits());
+    let configuration = parse_selected_job_configuration(xml, wave, source_samples)
+        .map_err(PreparedJobInputError::Configuration)?
+        .resolve_render_timeline()
+        .map_err(PreparedJobInputError::RenderTimeline)?;
+    let graph = graph.with_render_timeline(configuration.render_timeline());
     if graph.receipt().axml_sha256() != &axml_span.payload_sha256()
         || graph.receipt().chna_sha256() != &chna_span.payload_sha256()
     {
         return Err(PreparedJobInputError::MetadataPayloadBinding);
     }
-    let dbmd = parse_selected_dbmd_sections(metadata_payloads.dbmd)
+    let mut dbmd = parse_selected_dbmd_sections(metadata_payloads.dbmd)
+        .map_err(PreparedJobInputError::DbmdParse)?;
+    dbmd.project_bed_mix(graph.bed_mix_sources())
         .map_err(PreparedJobInputError::DbmdParse)?;
     let admitted_sample_count = AdmSampleCount::new(configuration.source_samples())
         .map_err(PreparedJobInputError::SampleCount)?;

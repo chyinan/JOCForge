@@ -498,3 +498,117 @@ fn assert_bound_fixture_hashes() {
         F01E_VALIDATION_PROFILE_SHA256
     );
 }
+
+#[test]
+fn repeated_beds_follow_chna_hosts_and_validate_mix_metadata() {
+    use jocforge_domain::frontend::selected_adm_graph::SelectedAdmGraphError;
+    use std::fmt::Write;
+
+    let mut axml = String::from("<ebuCoreMain>");
+    let mut records = Vec::new();
+    let mut pack_channels = String::new();
+    let roles = [
+        "L", "R", "C", "LFE", "Lss", "Rss", "Lrs", "Rrs", "Lts", "Rts",
+    ];
+    for (role, label) in roles.iter().enumerate() {
+        let channel = format!("AC_{role:08X}");
+        write!(
+            pack_channels,
+            "<audioChannelFormatIDRef>{channel}</audioChannelFormatIDRef>"
+        )
+        .unwrap();
+        write!(axml, r#"<audioChannelFormat audioChannelFormatID="{channel}" typeDefinition="DirectSpeakers"><audioBlockFormat><speakerLabel>{label}</speakerLabel></audioBlockFormat></audioChannelFormat>"#).unwrap();
+    }
+    write!(axml, r#"<audioPackFormat audioPackFormatID="AP_00011001" typeDefinition="DirectSpeakers">{pack_channels}</audioPackFormat>"#).unwrap();
+    for group in 0_u16..3 {
+        let mut refs = String::new();
+        for ordinal in 0_u16..10 {
+            let host = 1 + group * 10 + ordinal;
+            let role = (ordinal + group) % 10;
+            let uid = format!("ATU_{host:08X}");
+            let track = format!("AT_{host:08X}_01");
+            let stream = format!("AS_{host:08X}");
+            write!(axml, r#"<audioTrackUID UID="{uid}"><audioTrackFormatIDRef>{track}</audioTrackFormatIDRef><audioPackFormatIDRef>AP_00011001</audioPackFormatIDRef></audioTrackUID><audioTrackFormat audioTrackFormatID="{track}"><audioStreamFormatIDRef>{stream}</audioStreamFormatIDRef></audioTrackFormat><audioStreamFormat audioStreamFormatID="{stream}"><audioChannelFormatIDRef>AC_{role:08X}</audioChannelFormatIDRef></audioStreamFormat>"#).unwrap();
+            write!(refs, "<audioTrackUIDRef>{uid}</audioTrackUIDRef>").unwrap();
+            let mut entry = host.to_le_bytes().to_vec();
+            entry.extend_from_slice(uid.as_bytes());
+            entry.extend_from_slice(track.as_bytes());
+            entry.extend_from_slice(b"AP_00011001\0");
+            records.push(entry);
+        }
+        write!(axml,r#"<audioObject audioObjectID="AO_{:04X}" start="00:00:00" duration="00:00:01"><audioPackFormatIDRef>AP_00011001</audioPackFormatIDRef>{refs}</audioObject>"#,0x1001+group*10).unwrap();
+    }
+    axml.push_str("</ebuCoreMain>");
+    let mut chna = vec![30, 0, 30, 0];
+    for record in records.iter().rev() {
+        chna.extend_from_slice(record);
+    }
+    let parse = |xml: &str| parse_selected_adm_graph(xml.as_bytes(), &chna);
+    let graph = parse(&axml).unwrap();
+    assert_eq!(graph.bed_mix_sources()[0], [0, 19, 28]);
+    assert_eq!(graph.bed_mix_sources()[3], [3, 12, 21]);
+    assert_eq!(graph.bed_mix_sources().len(), 10);
+    assert_eq!(
+        parse(&axml.replacen("<speakerLabel>", "<gain>0.5</gain><speakerLabel>", 1)).unwrap_err(),
+        SelectedAdmGraphError::BedMixGain
+    );
+    assert_eq!(
+        parse(&axml.replacen("00:00:01", "00:00:02", 1)).unwrap_err(),
+        SelectedAdmGraphError::BedMixTiming
+    );
+    assert_eq!(
+        parse(&axml.replacen(">L</speakerLabel>", ">R</speakerLabel>", 1)).unwrap_err(),
+        SelectedAdmGraphError::BedDomain
+    );
+    assert_eq!(
+        graph
+            .admit_object_events(AdmSampleCount::new(48001).unwrap())
+            .unwrap_err(),
+        SelectedAdmGraphError::BedMixTiming
+    );
+}
+
+#[test]
+fn bed_mix_preserves_object_dbmd_and_rejects_disagreeing_bed_fields() {
+    use jocforge_domain::frontend::dbmd_sections::DbmdSectionError;
+
+    let original = parse_selected_dbmd_sections(DBMD).unwrap();
+    let first = original.track_fields()[0];
+    let matching = original
+        .track_fields()
+        .iter()
+        .copied()
+        .find(|field| {
+            field.track_index() != first.track_index()
+                && field.raw_packed() == first.raw_packed()
+                && field.raw_flag_low2() == first.raw_flag_low2()
+        })
+        .unwrap();
+    let object = original
+        .track_fields()
+        .iter()
+        .copied()
+        .find(|field| {
+            field.raw_packed() != first.raw_packed()
+                || field.raw_flag_low2() != first.raw_flag_low2()
+        })
+        .unwrap();
+    let mut projected = original.clone();
+    projected
+        .project_bed_mix(&[
+            vec![first.track_index() as u8, matching.track_index() as u8],
+            vec![object.track_index() as u8],
+        ])
+        .unwrap();
+    let mapped = projected.fields_for_physical_host(1).unwrap();
+    assert_eq!(
+        (mapped.raw_packed(), mapped.raw_flag_low2()),
+        (object.raw_packed(), object.raw_flag_low2())
+    );
+    assert_eq!(
+        original
+            .clone()
+            .project_bed_mix(&[vec![first.track_index() as u8, object.track_index() as u8]]),
+        Err(DbmdSectionError::BedFieldMismatch)
+    );
+}
