@@ -70,7 +70,9 @@ fn directory() -> Option<PathBuf> {
             .map(PathBuf::from)
             .filter(|p| p.is_absolute())
     };
-    let base = variable("JOCFORGE_CACHE_DIR").or_else(|| {
+    let base = if let Some(root) = env::var_os("JOCFORGE_CACHE_DIR").filter(|v| !v.is_empty()) {
+        std::path::absolute(root).ok()?
+    } else {
         let user_cache = if cfg!(windows) {
             variable("LOCALAPPDATA")
         } else if cfg!(target_os = "macos") {
@@ -78,8 +80,8 @@ fn directory() -> Option<PathBuf> {
         } else {
             variable("XDG_CACHE_HOME").or_else(|| variable("HOME").map(|p| p.join(".cache")))
         };
-        user_cache.map(|p| p.join("JOCForge"))
-    })?;
+        user_cache?.join("JOCForge")
+    };
     Some(base.join(METER_REVISION))
 }
 
