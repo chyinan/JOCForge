@@ -8,6 +8,8 @@ cd JOCForge
 cargo install --path crates/jocforge-cli --locked
 ```
 
+For RIFF/WAVE input, use packed 24-bit integer PCM (48 kHz). Both classic PCM and `WAVE_FORMAT_EXTENSIBLE` with the PCM subtype and 24 valid bits in a 24-bit container are supported; track associations come from ADM metadata.
+
 Encode a 48 kHz ADM BWF to 5.1 at the default 1024 kbps. JOCForge requires absolute paths; `$PWD` works in PowerShell and POSIX shells:
 
 ```sh

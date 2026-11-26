@@ -12,6 +12,9 @@ pub const SELECTED_SAMPLE_RATE_HZ: u32 = 48_000;
 pub const SELECTED_BITS_PER_SAMPLE: u16 = 24;
 /// Selected interleaved bytes per sample frame.
 pub const SELECTED_BLOCK_ALIGN: usize = 114;
+const PCM_SUBTYPE: [u8; 16] = [
+    1, 0, 0, 0, 0, 0, 0x10, 0, 0x80, 0, 0, 0xaa, 0, 0x38, 0x9b, 0x71,
+];
 const RIFF_HEADER_BYTES: usize = 12;
 const CHUNK_HEADER_BYTES: usize = 8;
 const PCM24_SIGN_BIT: i32 = 0x0080_0000;
@@ -894,7 +897,21 @@ fn parse_selected_format(payload: &[u8]) -> Result<SelectedFormat, RiffPcm24Erro
     let expected_byte_rate = sample_rate_hz
         .checked_mul(expected_block_align)
         .ok_or(RiffPcm24Error::InvalidInput)?;
-    if format_tag != 1
+    // WAVE_FORMAT_EXTENSIBLE describes the same packed samples when its subtype is
+    // KSDATAFORMAT_SUBTYPE_PCM (GUID fields in RIFF byte order). ADM CHNA/AXML, not the
+    // optional speaker mask, provide the association between physical tracks and ADM roles.
+    let packed_pcm = match format_tag {
+        1 => true,
+        0xfffe if payload.len() >= 40 => {
+            let extension_len = usize::from(read_u16_le(&payload[16..18])?);
+            extension_len >= 22
+                && extension_len <= payload.len() - 18
+                && read_u16_le(&payload[18..20])? == SELECTED_BITS_PER_SAMPLE
+                && payload[24..40] == PCM_SUBTYPE
+        }
+        _ => false,
+    };
+    if !packed_pcm
         || channels == 0
         || sample_rate_hz != SELECTED_SAMPLE_RATE_HZ
         || bits_per_sample != SELECTED_BITS_PER_SAMPLE
@@ -1218,6 +1235,29 @@ mod streamed_window_tests {
             first += chunk.actual_frames().value().max(1);
         }
         digest
+    }
+
+    #[test]
+    fn extensible_input_requires_packed_pcm24() {
+        // fmt payload written by FFmpeg for 11 channels of 48 kHz packed s24le.
+        let mut fmt = [
+            0xfe, 0xff, 11, 0, 0x80, 0xbb, 0, 0, 0x80, 0x2b, 0x18, 0, 33, 0, 24, 0, 22, 0, 24, 0,
+            0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0x10, 0, 0x80, 0, 0, 0xaa, 0, 0x38, 0x9b, 0x71,
+        ];
+        let parsed = parse_selected_format(&fmt).expect("ordinary extensible PCM24");
+        assert_eq!(
+            (parsed.channels, parsed.sample_rate_hz, parsed.block_align),
+            (11, 48_000, 33)
+        );
+
+        fmt[18] = 20; // 20 valid bits in 24 is not the selected format.
+        assert!(parse_selected_format(&fmt).is_err());
+        fmt[18] = 24;
+        // Ambisonic B-format PCM shares the first four bytes, not the full subtype GUID.
+        fmt[24..40].copy_from_slice(&[
+            1, 0, 0, 0, 0x21, 0x07, 0xd3, 0x11, 0x86, 0x44, 0xc8, 0xc1, 0xca, 0, 0, 0,
+        ]);
+        assert!(parse_selected_format(&fmt).is_err());
     }
 
     #[test]
