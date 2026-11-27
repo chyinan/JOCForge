@@ -2361,6 +2361,27 @@ struct SpatialFrameProducer<'a> {
 
 type SpatialFrameResult = Result<SpatialFrameAdvance, EncodeRequestError>;
 
+#[cfg(not(target_arch = "wasm32"))]
+fn send_spatial_frames(
+    ready: std::sync::mpsc::SyncSender<SpatialFrameResult>,
+    total: u64,
+    cancelled: &std::sync::atomic::AtomicBool,
+    mut next: impl FnMut(u64) -> SpatialFrameResult,
+) {
+    for index in 0..total {
+        // A consumer can already be waiting in recv when cancellation becomes visible here.
+        let result = if cancelled.load(std::sync::atomic::Ordering::Relaxed) {
+            Err(EncodeRequestError::Cancelled)
+        } else {
+            next(index)
+        };
+        let failed = result.is_err();
+        if ready.send(result).is_err() || failed {
+            break;
+        }
+    }
+}
+
 impl SpatialFrameProducer<'_> {
     fn run<T>(
         mut self,
@@ -2393,16 +2414,7 @@ impl SpatialFrameProducer<'_> {
                     .name("jocforge-spatial-frames".into())
                     .stack_size(ENCODE_REQUEST_STACK_BYTES)
                     .spawn_scoped(scope, move || {
-                        for index in 0..total {
-                            if cancelled.load(std::sync::atomic::Ordering::Relaxed) {
-                                break;
-                            }
-                            let result = self.next(index);
-                            let failed = result.is_err();
-                            if ready.send(result).is_err() || failed {
-                                break;
-                            }
-                        }
+                        send_spatial_frames(ready, total, cancelled, |index| self.next(index));
                     })
                     .map_err(|_| EncodeRequestError::WorkerUnavailable)?;
                 let mut take = |_index: u64| {
@@ -2932,6 +2944,25 @@ mod tests {
     use jocforge_application::meter_source_bridge::CodecRateProfile;
     use jocforge_application::meter_source_bridge::JocReconstructionLayout;
     use std::path::Path;
+
+    #[cfg(not(target_arch = "wasm32"))]
+    #[test]
+    fn cancelled_spatial_producer_sends_a_terminal_result() {
+        use std::sync::{atomic::AtomicBool, mpsc::sync_channel};
+
+        let (ready, frames) = sync_channel(1);
+        let worker = std::thread::spawn(move || {
+            super::send_spatial_frames(ready, 2, &AtomicBool::new(true), |_| {
+                panic!("a cancelled producer must not start another spatial frame")
+            });
+        });
+        assert!(matches!(
+            frames.recv(),
+            Ok(Err(EncodeRequestError::Cancelled))
+        ));
+        assert!(frames.recv().is_err());
+        worker.join().unwrap();
+    }
 
     #[test]
     fn generated_job_xml_preserves_each_explicit_carrier_rate() {
