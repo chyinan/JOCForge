@@ -2,6 +2,7 @@
 //! Bounded Flat7x I0 AC-3 BSI-tail serialization from caller-owned values.
 
 use super::bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError};
+use super::frame_builder::Flat7xD0MixingMetadataValues;
 
 pub(crate) const I0_BSI_TAIL_MINIMUM_BITS: u32 = 7;
 
@@ -234,10 +235,10 @@ pub fn write_flat7x_i0_ac3_bsi_tail(
     })
 }
 
-/// Sample-observed I0 BSI-tail fields after the official sample header ending at bit 70.
+/// I0 BSI-tail fields for the independent AC-3 core, including its Annex D downmix metadata.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Flat7xI0ObservedBsiTailValues {
-    dmixmod: u8,
+    mixing: Flat7xD0MixingMetadataValues,
     surround_ex: SurroundExMode,
 }
 
@@ -257,7 +258,14 @@ fn surround_ex_changes_only_the_two_declared_suffix_bits() {
     let encode = |mode| {
         let mut bytes = [0u8; 8];
         let mut writer = FrameBitWriter::new(&mut bytes, FrameBitCursor::new(0)).unwrap();
-        write_flat7x_i0_bsid6_suffix(&mut writer, 2, mode).unwrap();
+        write_flat7x_i0_bsid6_suffix(
+            &mut writer,
+            Flat7xI0ObservedBsiTailValues::new(
+                Flat7xD0MixingMetadataValues::minus_three_db(2),
+                mode,
+            ),
+        )
+        .unwrap();
         bytes
     };
     let base = encode(SurroundExMode::NotIndicated);
@@ -270,32 +278,39 @@ fn surround_ex_changes_only_the_two_declared_suffix_bits() {
 }
 
 impl Flat7xI0ObservedBsiTailValues {
+    pub const fn new(mixing: Flat7xD0MixingMetadataValues, surround_ex: SurroundExMode) -> Self {
+        Self {
+            mixing,
+            surround_ex,
+        }
+    }
+
     /// BSI-tail values observed in `OFFICIAL-DEMO-I0-ANNEX-D-BSI-CONTINUATION-V2`.
     pub const fn official_demo_sample() -> Self {
         Self {
-            dmixmod: 1,
+            mixing: Flat7xD0MixingMetadataValues::minus_three_db(1),
             surround_ex: SurroundExMode::NotEncoded,
         }
     }
 
     pub const fn dmixmod(self) -> u8 {
-        self.dmixmod
+        self.mixing.mixmdo
     }
 
     pub const fn ltrtcmixlev(self) -> u8 {
-        4
+        self.mixing.ltrtcmixlev
     }
 
     pub const fn ltrtsurmixlev(self) -> u8 {
-        4
+        self.mixing.ltrtsurmixlev
     }
 
     pub const fn lorocmixlev(self) -> u8 {
-        4
+        self.mixing.lorocmixlev
     }
 
     pub const fn lorosurmixlev(self) -> u8 {
-        4
+        self.mixing.lorosurmixlev
     }
 
     pub const fn dsurexmod(self) -> u8 {
@@ -402,21 +417,19 @@ pub fn write_flat7x_i0_official_demo_bsi_tail(
             actual: start.bit_offset(),
         });
     }
-    write_flat7x_i0_bsid6_suffix(writer, 1, SurroundExMode::NotEncoded)
+    write_flat7x_i0_bsid6_suffix(
+        writer,
+        Flat7xI0ObservedBsiTailValues::official_demo_sample(),
+    )
 }
 
 pub(crate) fn write_flat7x_i0_bsid6_suffix(
     writer: &mut FrameBitWriter<'_>,
-    dmixmod: u8,
-    surround_ex: SurroundExMode,
+    values: Flat7xI0ObservedBsiTailValues,
 ) -> Result<Flat7xI0OfficialDemoBsiTailReceipt, Flat7xI0OfficialDemoBsiTailError> {
     let start = writer.cursor();
     writer.preflight_capacity(OFFICIAL_DEMO_I0_BSI_TAIL_BITS)?;
 
-    let values = Flat7xI0ObservedBsiTailValues {
-        dmixmod,
-        surround_ex,
-    };
     writer.write_bit(values.langcode_present())?;
     writer.write_bit(values.audprodie_present())?;
     writer.write_bit(values.copyrightb())?;

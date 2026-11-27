@@ -27,7 +27,7 @@ Inside `filter/audio/encode_to_atmos_ddp`, the encoder can trim the ADM and add 
 
 ## Audio metadata
 
-Line and RF DRC are independent. Each accepts `film_light`, `film_standard`, `music_standard`, `music_light` or `none`. The default pair keeps the encoder's existing output. Four downmix levels and the preferred downmix mode are written into the stream.
+Line and RF DRC are independent. Each accepts `film_light`, `film_standard`, `music_standard`, `music_light` or `none`. The default pair keeps the encoder's existing output. Four downmix levels and the preferred downmix mode are written into the stream. For Flat 7.1 and legacy AC-3 carriage, the independently playable AC-3 core carries these settings as well.
 
 Loudness metering can use ungated BS.1770-1, gated BS.1770-2, BS.1770-3, BS.1770-4 or LeqA. The current 5.1 meter shares one gating algorithm for BS.1770-2, -3 and -4. With dialogue detection on, Earshot marks speech. At or above the speech-ratio threshold the meter reports dialogue loudness. Below it, the meter reports programme loudness.
 

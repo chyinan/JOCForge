@@ -7,11 +7,13 @@ use super::{
     },
     ac3_bsi_tail::{
         Flat7xI0Ac3BsiTailError, Flat7xI0Ac3BsiTailInput, Flat7xI0Ac3BsiTailReceipt,
-        Flat7xI0OfficialDemoBsiTailError, Flat7xI0OfficialDemoBsiTailReceipt,
-        I0_BSI_TAIL_MINIMUM_BITS, write_flat7x_i0_ac3_bsi_tail,
+        Flat7xI0ObservedBsiTailValues, Flat7xI0OfficialDemoBsiTailError,
+        Flat7xI0OfficialDemoBsiTailReceipt, I0_BSI_TAIL_MINIMUM_BITS, write_flat7x_i0_ac3_bsi_tail,
     },
     bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError},
-    frame_builder::{Flat7xI0Ac3HeaderSegmentError, Flat7xI0Ac3HeaderValues},
+    frame_builder::{
+        Flat7xD0MixingMetadataValues, Flat7xI0Ac3HeaderSegmentError, Flat7xI0Ac3HeaderValues,
+    },
 };
 use crate::{
     analysis::source_frame::SharedAnalysisIdentity,
@@ -989,6 +991,30 @@ pub fn assemble_flat7x_i0_audio_with_surround_ex(
     dmixmod: u8,
     surround_ex: super::ac3_bsi_tail::SurroundExMode,
 ) -> Result<Flat7xI0Ac3AudioSeriesFrameCandidate, Flat7xI0FrameAssemblyError> {
+    assemble_flat7x_i0_audio_with_bsi(
+        target,
+        expected_source_identity,
+        audio_series,
+        auxdata,
+        crcrsv_seed,
+        header_fields,
+        Flat7xI0ObservedBsiTailValues::new(
+            Flat7xD0MixingMetadataValues::minus_three_db(dmixmod),
+            surround_ex,
+        ),
+    )
+}
+
+/// Assemble I0 using the programme's downmix and Surround EX declarations.
+pub fn assemble_flat7x_i0_audio_with_bsi(
+    target: Flat7xI0D0TargetPlan,
+    expected_source_identity: &SharedAnalysisIdentity,
+    audio_series: &I0AudioBlockSeriesCandidate,
+    auxdata: I0AuxDataInput<'_>,
+    crcrsv_seed: CallerOwnedI0CrcrsvSeed,
+    header_fields: Flat7xI0Ac3FrameHeaderFields,
+    bsi: Flat7xI0ObservedBsiTailValues,
+) -> Result<Flat7xI0Ac3AudioSeriesFrameCandidate, Flat7xI0FrameAssemblyError> {
     validate_target(target)?;
     if audio_series.receipt().source_identity() != expected_source_identity {
         return Err(Flat7xI0FrameAssemblyError::SourceIdentityMismatch);
@@ -1030,7 +1056,7 @@ pub fn assemble_flat7x_i0_audio_with_surround_ex(
     let bsi_tail_receipt = {
         let mut bsi_writer =
             FrameBitWriter::new(&mut bsi_scratch, FrameBitCursor::new(header_end))?;
-        super::ac3_bsi_tail::write_flat7x_i0_bsid6_suffix(&mut bsi_writer, dmixmod, surround_ex)?
+        super::ac3_bsi_tail::write_flat7x_i0_bsid6_suffix(&mut bsi_writer, bsi)?
     };
     let bsi_tail = OpaqueI0Ac3BitSpan::new(
         &bsi_scratch,

@@ -318,6 +318,19 @@ pub struct Flat7xD0MixingMetadataValues {
     pub lorosurmixlev: u8,
 }
 
+impl Flat7xD0MixingMetadataValues {
+    /// Historical mix levels for callers that only select the preferred downmix mode.
+    pub const fn minus_three_db(mixmdo: u8) -> Self {
+        Self {
+            mixmdo,
+            ltrtcmixlev: 4,
+            lorocmixlev: 4,
+            ltrtsurmixlev: 4,
+            lorosurmixlev: 4,
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Flat7xD0MixingMetadataError {
     ParentSegmentCursorMismatch { actual: u32 },
