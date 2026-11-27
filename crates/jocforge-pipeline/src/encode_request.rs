@@ -2740,7 +2740,12 @@ fn normalize_existing_input(path: &Path) -> Result<PathBuf, EncodeRequestError> 
     if !path.is_absolute() {
         return Err(EncodeRequestError::InvalidPath);
     }
-    std::fs::canonicalize(path).map_err(|_| EncodeRequestError::InvalidPath)
+    std::fs::canonicalize(path).map_err(|error| {
+        EncodeRequestError::SourcePipeline(format!(
+            "could not resolve input file {}: {error}",
+            path.display()
+        ))
+    })
 }
 
 fn normalize_new_output(path: &Path) -> Result<PathBuf, EncodeRequestError> {

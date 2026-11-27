@@ -156,3 +156,58 @@ fn missing_output_directory_is_not_reported_as_a_relative_path() {
     );
     assert!(!dir.path().join("relative.ec3").exists());
 }
+
+#[test]
+fn missing_absolute_adm_reports_the_referenced_file_and_io_error() {
+    let dir = tempfile::tempdir().unwrap();
+    let input = dir.path().join("input.wav");
+    let output = dir.path().join("out.ec3");
+    let job = dir.path().join("job.xml");
+    let vectors: serde_json::Value = serde_json::from_slice(include_bytes!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    ))
+    .unwrap();
+    let local_path = dir
+        .path()
+        .to_str()
+        .unwrap()
+        .replace('&', "&amp;")
+        .replace('<', "&lt;");
+    let xml = vectors["config_cases"][0]["input_xml"]
+        .as_str()
+        .unwrap()
+        .replace(
+            "<path>fixture</path>",
+            &format!("<path>{local_path}</path>"),
+        );
+    fs::write(&job, xml).unwrap();
+
+    let error = fs::canonicalize(&input).unwrap_err();
+    let expected = format!("could not resolve input file {}: {error}", input.display());
+    for preflight_only in [true, false] {
+        let mut command = Command::new(env!("CARGO_BIN_EXE_jocforge"));
+        command.args(["encode", "--job-xml"]).arg(&job);
+        if preflight_only {
+            command.arg("--preflight-only");
+        }
+        let run = command.output().unwrap();
+        assert_eq!(run.status.code(), Some(2));
+        let stderr = String::from_utf8(run.stderr).unwrap();
+        assert!(stderr.contains(&expected), "{stderr}");
+        assert!(!output.exists());
+    }
+
+    let relative = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .current_dir(dir.path())
+        .args(["encode", "input.wav"])
+        .arg(&output)
+        .output()
+        .unwrap();
+    assert_eq!(relative.status.code(), Some(2));
+    assert!(
+        String::from_utf8(relative.stderr)
+            .unwrap()
+            .contains("requires absolute input and output file paths")
+    );
+    assert!(!output.exists());
+}

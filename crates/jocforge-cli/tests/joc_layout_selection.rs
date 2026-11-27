@@ -83,23 +83,24 @@ fn wash_cli_vectors_select_or_reject_layout_before_source_admission() {
         assert_eq!(result.status.code(), Some(2), "args {argv:?}: {stderr}");
         assert!(!output.exists(), "args {argv:?} created an output");
 
+        let missing_input = format!("could not resolve input file {}:", input.display());
         match (
             vector.get("expected_profile").and_then(Value::as_str),
             vector.get("expected_result").and_then(Value::as_str),
         ) {
             (Some("existing_selected_1024_5_1"), None) => {
-                assert!(stderr.contains("encode requires absolute input and output file paths"));
+                assert!(stderr.contains(&missing_input));
             }
             (Some("flat7x_1024_5_1_core"), None) => {
                 // The fixture supplies no source file, so CLI path admission stops first.
-                assert!(stderr.contains("encode requires absolute input and output file paths"));
+                assert!(stderr.contains(&missing_input));
             }
             (None, Some("reject before encoder execution")) => {
                 assert!(stderr.contains("possible values: flat7x"));
             }
             (None, Some("reject as incompatible with approved profile row")) => {
                 // This frozen vector preceded the additional D0 rate presets.
-                assert!(stderr.contains("encode requires absolute input and output file paths"));
+                assert!(stderr.contains(&missing_input));
             }
             disposition => panic!("unexpected Wash CLI selector vector: {disposition:?}"),
         }
