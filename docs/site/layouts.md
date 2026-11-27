@@ -18,7 +18,7 @@ idx0, idx2 and idx4 default to strict ETSI signalling. `--etsi-strict` also forc
 
 ## Objects
 
-JOCForge reads Cartesian positions every 1536 samples, which is 32 ms at 48 kHz. An object may contain several `audioBlockFormat` blocks. Transitions follow `jumpPosition` and `interpolationLength`. Bed channels keep their speaker positions.
+JOCForge reads Cartesian positions every 1536 samples, which is 32 ms at 48 kHz. An object may contain several `audioBlockFormat` blocks. Transitions follow `jumpPosition` and `interpolationLength`. Contiguous decimal block times are mapped to the 48 kHz sample grid at their boundaries, so fractional video-frame intervals do not accumulate rounding errors. Bed channels keep their speaker positions.
 
 On native EC-3, `--joc-objects` accepts `8` and `12` at every rate of every profile. The default is 15. LFE is not included in that count. The reduced modes merge neighbouring object slots before fitting coefficients, and they write the merged positions. Older OpenJOC builds use a different stereo render path for the reduced counts than for the default 15.
 
