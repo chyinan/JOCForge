@@ -588,11 +588,6 @@ mod tests {
 
     #[test]
     fn admits_contiguous_fractional_blocks_without_accumulating_rounding() {
-        let xml = r#"<audioObject start="00:00:00" duration="00:00:00.100100">
-            <audioBlockFormat rtime="00:00:00" duration="00:00:00.033367"><cartesian>1</cartesian></audioBlockFormat>
-            <audioBlockFormat rtime="00:00:00.033367" duration="00:00:00.033366"><cartesian>1</cartesian></audioBlockFormat>
-            <audioBlockFormat rtime="00:00:00.066733" duration="00:00:00.033367"><cartesian>1</cartesian></audioBlockFormat>
-        </audioObject>"#;
         fn timeline(xml: &str) -> Result<Vec<(u64, u64)>, super::SelectedAdmObjectEventError> {
             let document = roxmltree::Document::parse(xml).unwrap();
             let object = document.root_element();
@@ -617,6 +612,11 @@ mod tests {
             blocks.extend(event.timeline.iter().map(|b| (b.start, b.ramp_samples)));
             Ok(blocks)
         }
+        let xml = r#"<audioObject start="00:00:00" duration="00:00:00.100100">
+            <audioBlockFormat rtime="00:00:00" duration="00:00:00.033367"><cartesian>1</cartesian></audioBlockFormat>
+            <audioBlockFormat rtime="00:00:00.033367" duration="00:00:00.033366"><cartesian>1</cartesian></audioBlockFormat>
+            <audioBlockFormat rtime="00:00:00.066733" duration="00:00:00.033367"><cartesian>1</cartesian></audioBlockFormat>
+        </audioObject>"#;
         assert_eq!(
             timeline(xml).unwrap(),
             [(0, 1602), (1602, 1601), (3203, 1602)]
