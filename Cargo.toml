@@ -1,4 +1,5 @@
 [workspace]
+exclude = ["vendor/silero-vad-pure"]
 members = [
     "crates/jocforge-domain",
     "crates/jocforge-io",

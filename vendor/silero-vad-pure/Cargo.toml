@@ -1,0 +1,42 @@
+[package]
+name = "silero-vad-pure"
+version = "0.1.1"
+edition = "2024"
+description = "Pure-Rust silero-vad (v6.2) inference engine, no inference frameworks"
+license = "MIT"
+repository = "https://github.com/huanglizhuo/silero-vad-rust"
+homepage = "https://github.com/huanglizhuo/silero-vad-rust"
+readme = "README.md"
+keywords = ["silero", "vad", "voice-activity", "speech", "audio"]
+categories = ["multimedia::audio", "artificial-intelligence"]
+# Ship only what the library needs: sources, embedded weights, license/readme.
+# tests/ and the large golden/wav/onnx assets stay in the git repo only.
+include = [
+    "src/**/*",
+    "assets/silero_vad.bin",
+    "examples/*.rs",
+    "Cargo.toml",
+    "README.md",
+    "LICENSE",
+]
+
+[features]
+default = ["accelerate"]
+accelerate = ["dep:accelerate-src"]
+# Stage-level timing instrumentation (examples/bench_stages.rs). Off by
+# default: zero cost in the hot path when disabled.
+profile = []
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+
+[dependencies]
+matrixmultiply = "0.3"
+
+[target.'cfg(target_os = "macos")'.dependencies]
+accelerate-src = { version = "0.3", optional = true }
+
+[dev-dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

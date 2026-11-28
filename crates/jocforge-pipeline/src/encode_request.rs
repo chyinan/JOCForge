@@ -2989,6 +2989,22 @@ mod tests {
     }
 
     #[test]
+    fn generated_job_uses_dialogue_defaults_and_honours_saved_options() {
+        use super::{FileEncodeOptions, FileRenderTiming, file_job_xml};
+        let path = FileReferenceParts {
+            file_name: "test.wav".into(),
+            local_path: ".".into(),
+        };
+        let default_xml = selected_full_file_job_xml(&path, &path, 768);
+        assert!(default_xml.contains("<dialogue_intelligence>true</dialogue_intelligence><speech_threshold>15</speech_threshold>"));
+        let saved: FileEncodeOptions =
+            serde_json::from_str(r#"{"dialogue_intelligence":false,"speech_threshold":72}"#)
+                .unwrap();
+        let xml = file_job_xml(&path, &path, 768, &FileRenderTiming::default(), &saved);
+        assert!(xml.contains("<dialogue_intelligence>false</dialogue_intelligence><speech_threshold>72</speech_threshold>"));
+    }
+
+    #[test]
     fn generated_job_xml_preserves_each_explicit_carrier_rate() {
         let input = FileReferenceParts {
             file_name: "input.wav".to_owned(),

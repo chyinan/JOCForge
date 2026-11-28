@@ -3,7 +3,7 @@ status: partial-implementation-locally-verified
 topic: implementation-agent-status
 spec: JOCForge
 confidence: repository-status
-last_updated: 2026-11-23
+last_updated: 2026-11-27
 tags:
   - implementation
   - handoff
@@ -11,6 +11,36 @@ tags:
 ---
 
 # 实现 Agent 状态
+
+## 2026-11-27 — Physical-channel dialogue classification
+
+The regular file encoder classifies each physical front channel from 48 kHz render samples. A causal 16 kHz signal provides seven acoustic features at 2.048 seconds and every 0.512 seconds thereafter. The classifier averages two independently trained sparse heads, calibrates one common bias on synthetic scenes, and uses the sign of the last four single-window scores per channel. K- and A-weighted integration use the physical level of the selected channels. The measurement-cache revision is `adm-loudness-physical-speech-averaged-b679c342`.
+
+The approved 27-scene synthetic corpus comprises 3,249 training and 1,503 validation rows. The latter served for model selection and prevalence calibration. Retraining both heads with `scripts/train_dialogue_classifier.py` and calibrating with `scripts/calibrate_speech_prevalence.py` reproduced the distributed model JSON byte for byte, SHA-256 `b679c34252a0863e2956cb73c545e0eb45327a290ee6f92bd497c661007e2b9a`. The seven-feature frontend agreed with the independent waveform reference to 2.27e-11 absolute error over all 4,752 channel windows.
+
+Eight independently referenced synthetic ADM controls selected the same branch as the reference. Maximum observed report differences were 0.00458 percentage points and 0.01301 LU. A separate 0.125 s burst crossed the 15% branch threshold at 16.0714% against a reference 10.71%, and a 0 dB speech-to-masker scene measured 61.5282% against 64.75%. The normal CLI regression exercises both LeqA and BS.1770-4, explicit dialogue disablement, access-unit padding and the terminal report clock.
+
+## 2026-11-27 — Dialogue selection at a rise in masking power
+
+The file meter candidate tracks the mean smoothed speech probability and physical K-weighted power for each front channel in 512 ms intervals. Two speech-supported intervals in the preceding four provide the reference power. When the power rises by at least 6 dB above the strongest reference and speech probability drops below 0.5, acceptance requires support in the current interval. The last selection also requires speech evidence in the remaining physical input. File measurement caches use `adm-loudness-silero-8k-masking-transition-v9`.
+
+The 10 dialogue unit tests passed, including the 6 dB boundary, sustained louder speech, the last selection and identical reports under different input chunk sizes. The release CLI regression passed for the first mature decision, the loudness selection and every output frame’s dialnorm. Whole-programme and independent excerpt comparisons use the release executable with its own cache namespace.
+
+## 2026-11-27 — Dialogue input level and short-event discrimination
+
+The file encoder now estimates a local peak independently on each 8 kHz front channel. Each 32 ms frame uses the maximum peak from 32 preceding frames through 31 following frames, including the current frame. The detector targets −1 dBFS with gain limited to −18 through +30 dB. A single inference pass produces a posterior for each frame. A centred three-frame mean of at least 0.5 triggers a candidate event, followed by same-channel stationary-interference suppression. The 20 ms K-weighted programme activity test and the selected channels’ K- or A-weighted integration use the physical render level. Cached measurements use `adm-loudness-silero-8k-peak30-mean3-v7`.
+
+The full programme measured 89.875% and −24.639 LUFS against 91.47% and −24.72 LUFS. Both round to dialnorm −25. Nine independently started excerpts had mean absolute errors of 1.887 percentage points and 0.202 LU. In the last eight seconds the detector measured 39.344% and −25.935 LUFS against 53.63% and −26.04 LUFS. The measured coverage of low-level activity in this excerpt remains the largest time-selection discrepancy.
+
+The public ONNX model and independent Flite controls compared 96 short syllables across three voices, two input levels and two frame alignments. The selected rule detected 92, with zero detections in 12 tone/noise controls. The second inference phase detected 88 of those 96 syllables. A separate 12-input check through the regular encoder retained the original selection on all four brief voiced examples and eight tone/noise controls. On the 98,304-sample centre-speech/surround-tone fixture, native CLI and WASM returned identical 262,144-byte streams, SHA-256 `0748da63865bf2299f326b04928c590999e0ae9fabe8a90b9c77e2792a16c935`. All 64 frames carried dialnorm −17. The native report measured 35.811% and −16.901 LUFS.
+
+## 2026-11-27 自动对白与母版 5.1 trim
+
+文件编码的缺省测量启用对白，门限为有效语音时长的 15%。左右和中置独立运行离线 Silero v6.2，并累计检出声道的加权能量及其时间并集。每个声道的前 64 个输入样本及 LSTM 的两组状态随测量事务提交。默认分段采用上游 0.50/0.35 滞回、250 ms 最短语音、100 ms 静音和 30 ms 边缘扩展，以 32 ms 帧为单位。模型另对持续稳定干扰作独立判定。
+
+使用 Flite 合成语音、等功率反相虚中置及独立双音验证。2.275 秒 ADM 经 1024 kbps 默认文件入口编码后，每组检查 72 帧。单中置、虚中置和独立双音配中置均为 −16.709 LUFS，检出 84.72%，dialnorm 为 17；单独双音检出 0%，同中置加入强双音亦回退到节目响度。语音减半及全幅复制分别产生 −6.0206/+3.0103 LU。分叉后丢弃测量的单元测试用官方 ONNX 在同一合成语音上的概率核对分类器状态。
+
+另用四个分时激励验证 5.1 源 DBMD 记录。Manual 且全部字段中性（包含平衡值负零）时，位置 trim 为单位增益。Automatic 相对该基准的前、侧、后和高床幅度差为 0、−2.498、−3.000、−3.000 dB，两个文件编码入口的解码值一致。其他手动增益、对象级响应及跨节目分类差异保留为后续验证项。
 
 ## 当前状态
 
@@ -936,3 +966,35 @@ This was exercised with Node host reads, not browser OPFS or playback hardware.
 ### 2026-11-25 — Homogeneous DirectSpeakers beds
 
 The native encode path now joins complete ten-role beds by AXML/CHNA identity, sums corresponding PCM24 samples, and rebinds each object and its DBMD fields to the rendered row. The ADM graph and PCM reader tests exercise reordered tracks, three equivalent placements, changed stereo routing, object muting, overflow, gain, timing and differing DBMD fields. Single-bed sources use the original PCM path.
+
+### 2026-11-26 — 16-bit integer PCM input
+
+The 48 kHz native ADM path carries the WAVE PCM width through CHNA/AXML admission, meter and primary control row extents. An exhaustive signed 16-bit sample regression matched left-aligned 24-bit values word-for-word. A synthetic 25-track, 9,216-sample ADM produced identical elementary streams across RIFF/24, RIFF/16 and RF64/16 for both 5.1 (24,576 bytes) and Flat7x (39,936 bytes). XML preflight reported 16 bits, and a mismatched track declaration was rejected at admission.
+
+### 2026-11-27 — Film Light programme-level calibration
+
+The 5.1 spatial receiver passes half-amplitude PCM to F07. Line and RF Film Light now evaluate their independently selected profiles in programme full-scale-sine RMS units. The receiver's amplitude scale accounts for a power ratio of four, and the full-scale sine reference accounts for a further power ratio of two. The seven-carrier path supplies its analysis rows separately.
+
+Three original 48-second ADM inputs were encoded with every Line/RF selection on the Studio engine. DRC-off decoded samples matched across each group. Line decode matched for the two enabled-Line settings, and per-frame RF codes matched for the two enabled-RF settings. The noise staircase at dialnorm −25 produced Line gains of +0.014, −0.983, −1.837, −6.021, −8.341, −2.598, −0.599 and 0.000 dB in seconds 4–5 of each segment. At 80 Hz and 1 kHz, equal-amplitude tones gave −2.868 and −8.165 dB. The none/none staircase bitstream matched the earlier executable byte-for-byte. These figures apply to the independently generated speech and noise. Whole-programme and Audition results require measurements on the original programme.
+
+### 2026-11-27 — 5.1 LFE signed harmonics
+
+The seven-bin LFE transform uses FFT128 harmonics 0 through 3 for the even MDCT bins and −3 through −1 for the odd bins. The FFT8 gather slot is periodic modulo eight. Passing its positive slot number directly to the FFT128 recurrence attenuated the odd bins before quantization. A 105 Hz synthetic tone exposed a primary coefficient of 0.00000208 where the ordinary long transform and double-scaled scalar MDCT gave 0.0486083. The recurrence now looks up the magnitude of the signed harmonic and applies its sine sign.
+
+Two 48 kHz PCM24 synthetic ADMs each contain 15 successive 0.85-second LFE tones. The second shifts initial phases by 1.43 radians and changes amplitude from 0.1 to 0.03125. The 1024 kbps selected CLI encoder and FFmpeg 8.1 decoder (DRC scale 0, LFE only) reproduced the input frequency as the strongest output for all 30 segments. For amplitude 0.1, the 25–115 Hz passband probes measured −0.272 to −0.142 dB; the 125/140/155 Hz gains were −3.500/−24.105/−40.446 dB. Weighted joint fits to the fundamental and mirror gave −99.63/−102.53 dBc for 105/115 Hz, previously +1.24/+1.93 dBc. New 91/109/121 Hz probes gave −0.243/−0.245/−0.532 dB. Codec quantization and receiver filtering use their existing paths. These measurements cover the probed frequencies, input levels, and 5.1 profile.
+
+### 2026-11-27 — Film Light input history and RF limiter recovery
+
+For the selected 48 kHz 5.1 receiver, each Film Light control tracks its own normalized input level and smoothed gain across 256-sample blocks. The first block seeds the input history. Each RF block carries its limited gain into the next update.
+
+An independently generated 12-second stereo sine with three amplitude drops and short peaks produced 375 frames at dialnorm -9. Across all four Line/RF settings the DRC-off decoded PCM matched sample for sample. For each fixed Line selection the Line decode matched, and for each fixed RF selection the RF codes matched. Enabling RF changed 211 frames. Both engine builds matched the previous none/none stream byte for byte. Their two-enabled streams also matched the independently built normalization comparison candidate. The programme comparison and the numeric floor depend on the selected normalized input representation.
+
+### 2026-11-27 — Dialogue measurement on rendered front channels
+
+The default estimator runs the embedded Silero v6.2 weights at 8 kHz on L, R and C. A centred 121-tap Kaiser filter converts each 48 kHz render channel independently. The 32 ms classifier keeps 32 input samples of context and both recurrent vectors per channel. Each completed 2.048 s observation updates a 512 ms selection interval. The speech maximum is centred on the physical energy interval leaving the 102-block history. A stable same-channel interferer suppresses isolated triggers before interval expansion.
+
+The 20 ms programme activity gate uses K-weighted L/R/C power and 1.41 times the two surround powers. Selected front channels contribute power simultaneously and share one integration duration. The speech-percentage clock samples every 1024 rendered samples and flushes according to its phase against the 960-sample energy blocks. The CLI regression covers 96,768 input samples (63 AUs, 0%) and 96,769 (64 AUs, 53/148 or 35.81081%), checks every output dialnorm, and exercises disabled detection. The cached measurement revision is `adm-loudness-silero-8k-v6`.
+
+On the original full programme, the selected candidate measured −24.790 LUFS and 80.888% against −24.72 LUFS and 91.47%. Across nine independently started excerpts, mean absolute errors were 0.538 LU and 5.27 percentage points. The complete programme and excerpt comparisons are external checks on the independent classifier. Additional programmes are needed to establish how it generalizes.
+
+The native CLI and the release WASM resident ABI under Node produced identical 262,144-byte streams on a synthetic 2.048 s centre-voice and surround-tone ADM. All 64 access units carried dialnorm 17. Output SHA-256 was `0748da63865bf2299f326b04928c590999e0ae9fabe8a90b9c77e2792a16c935`.
