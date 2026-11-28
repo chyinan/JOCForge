@@ -898,7 +898,8 @@ pub fn prepare_selected_job_input(
             config_sha256,
             job_xml_sha256,
             configuration.input_kind(),
-        ),
+        )
+        .with_custom_dialnorm(configuration.custom_dialnorm()),
         domain_graph,
     )
     .map_err(PreparedJobInputError::IdentityProjection)?;

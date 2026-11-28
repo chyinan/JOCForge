@@ -1003,6 +1003,7 @@ pub struct FileEncodeOptions {
     pub metering_mode: String,
     pub dialogue_intelligence: bool,
     pub speech_threshold: u32,
+    pub custom_dialnorm: Option<i8>,
     pub line_mode_drc_profile: String,
     pub rf_mode_drc_profile: String,
     pub preferred_downmix_mode: String,
@@ -1022,6 +1023,7 @@ impl Default for FileEncodeOptions {
             metering_mode: "1770-4".into(),
             dialogue_intelligence: false,
             speech_threshold: 100,
+            custom_dialnorm: None,
             line_mode_drc_profile: "film_light".into(),
             rf_mode_drc_profile: "film_light".into(),
             preferred_downmix_mode: "loro".into(),
@@ -2845,6 +2847,9 @@ fn file_job_xml(
     let append = field(&timing.append_silence, "0.0");
     let dialogue_intelligence = options.dialogue_intelligence;
     let speech_threshold = options.speech_threshold;
+    let custom_dialnorm = options.custom_dialnorm.map_or_else(String::new, |level| {
+        format!("<custom_dialnorm>{level}</custom_dialnorm>")
+    });
     let height_trim_5_1 = xml_escape(&options.height_trim_5_1);
     let surround_trim_5_1 = xml_escape(&options.surround_trim_5_1);
     let metering_mode = xml_escape(&options.metering_mode);
@@ -2856,7 +2861,7 @@ fn file_job_xml(
     let ltrt_center_mix_level = xml_escape(&options.ltrt_center_mix_level);
     let ltrt_surround_mix_level = xml_escape(&options.ltrt_surround_mix_level);
     format!(
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><job_config><input><audio><adm><file_name>{}</file_name><storage><local><path>{}</path></local></storage><timecode_frame_rate>not_indicated</timecode_frame_rate><offset>auto</offset><ffoa>auto</ffoa></adm></audio></input><filter><audio><encode_to_atmos_ddp><loudness><measure_only><metering_mode>{metering_mode}</metering_mode><dialogue_intelligence>{dialogue_intelligence}</dialogue_intelligence><speech_threshold>{speech_threshold}</speech_threshold></measure_only></loudness><data_rate>{}</data_rate><timecode_frame_rate>{rate}</timecode_frame_rate><start>{start}</start><end>{end}</end><time_base>file_position</time_base><prepend_silence_duration>{prepend}</prepend_silence_duration><append_silence_duration>{append}</append_silence_duration><drc><line_mode_drc_profile>{line_mode_drc_profile}</line_mode_drc_profile><rf_mode_drc_profile>{rf_mode_drc_profile}</rf_mode_drc_profile></drc><downmix><loro_center_mix_level>{loro_center_mix_level}</loro_center_mix_level><loro_surround_mix_level>{loro_surround_mix_level}</loro_surround_mix_level><ltrt_center_mix_level>{ltrt_center_mix_level}</ltrt_center_mix_level><ltrt_surround_mix_level>{ltrt_surround_mix_level}</ltrt_surround_mix_level><preferred_downmix_mode>{preferred_downmix_mode}</preferred_downmix_mode></downmix><custom_trims><surround_trim_5_1>{surround_trim_5_1}</surround_trim_5_1><height_trim_5_1>{height_trim_5_1}</height_trim_5_1></custom_trims></encode_to_atmos_ddp></audio></filter><output><ec3><file_name>{}</file_name><storage><local><path>{}</path></local></storage></ec3></output></job_config>",
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><job_config><input><audio><adm><file_name>{}</file_name><storage><local><path>{}</path></local></storage><timecode_frame_rate>not_indicated</timecode_frame_rate><offset>auto</offset><ffoa>auto</ffoa></adm></audio></input><filter><audio><encode_to_atmos_ddp><loudness><measure_only><metering_mode>{metering_mode}</metering_mode><dialogue_intelligence>{dialogue_intelligence}</dialogue_intelligence><speech_threshold>{speech_threshold}</speech_threshold></measure_only></loudness><data_rate>{}</data_rate><timecode_frame_rate>{rate}</timecode_frame_rate><start>{start}</start><end>{end}</end><time_base>file_position</time_base><prepend_silence_duration>{prepend}</prepend_silence_duration><append_silence_duration>{append}</append_silence_duration><drc><line_mode_drc_profile>{line_mode_drc_profile}</line_mode_drc_profile><rf_mode_drc_profile>{rf_mode_drc_profile}</rf_mode_drc_profile></drc><downmix><loro_center_mix_level>{loro_center_mix_level}</loro_center_mix_level><loro_surround_mix_level>{loro_surround_mix_level}</loro_surround_mix_level><ltrt_center_mix_level>{ltrt_center_mix_level}</ltrt_center_mix_level><ltrt_surround_mix_level>{ltrt_surround_mix_level}</ltrt_surround_mix_level><preferred_downmix_mode>{preferred_downmix_mode}</preferred_downmix_mode></downmix><custom_trims><surround_trim_5_1>{surround_trim_5_1}</surround_trim_5_1><height_trim_5_1>{height_trim_5_1}</height_trim_5_1></custom_trims>{custom_dialnorm}</encode_to_atmos_ddp></audio></filter><output><ec3><file_name>{}</file_name><storage><local><path>{}</path></local></storage></ec3></output></job_config>",
         input.file_name, input.local_path, data_rate_kbps, output.file_name, output.local_path
     )
 }

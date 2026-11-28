@@ -128,6 +128,12 @@ impl NoneDrcMeasurementBinding {
             return Err(NoneDrcOwnerError::PreparedJobInputIdentityMismatch);
         }
         let mut binding = Self::from_receipt(receipt)?;
+        if let Some(level) = prepared_job_input_identity
+            .normalized_configuration()
+            .custom_dialnorm()
+        {
+            binding.programme_dialnorm = level.code();
+        }
         binding.prepared_job_input_identity = Some(prepared_job_input_identity);
         Ok(binding)
     }

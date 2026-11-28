@@ -1,7 +1,7 @@
 // pattern: Functional Core
 //! Pure identity projection for one admitted prepared job input.
 
-use crate::frontend::job_configuration::SelectedInputKind;
+use crate::frontend::job_configuration::{CustomDialnorm, SelectedInputKind};
 
 /// Identity of the complete validated resource snapshot shared by meter and main.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -115,6 +115,7 @@ pub struct NormalizedJobConfigurationIdentity {
     config_sha256: [u8; 32],
     job_xml_sha256: [u8; 32],
     selected_input_kind: SelectedInputKind,
+    custom_dialnorm: Option<CustomDialnorm>,
 }
 
 impl NormalizedJobConfigurationIdentity {
@@ -127,6 +128,7 @@ impl NormalizedJobConfigurationIdentity {
             config_sha256,
             job_xml_sha256,
             selected_input_kind,
+            custom_dialnorm: None,
         }
     }
 
@@ -136,6 +138,15 @@ impl NormalizedJobConfigurationIdentity {
 
     pub const fn job_xml_sha256(self) -> [u8; 32] {
         self.job_xml_sha256
+    }
+
+    pub const fn with_custom_dialnorm(mut self, level: Option<CustomDialnorm>) -> Self {
+        self.custom_dialnorm = level;
+        self
+    }
+
+    pub const fn custom_dialnorm(self) -> Option<CustomDialnorm> {
+        self.custom_dialnorm
     }
 
     pub const fn selected_input_kind(self) -> SelectedInputKind {

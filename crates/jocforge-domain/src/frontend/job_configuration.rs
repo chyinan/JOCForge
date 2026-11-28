@@ -468,6 +468,7 @@ pub struct SelectedJobConfiguration {
     dispatch_mode: u8,
     route_virtual_prefix_count: u8,
     loudness: SelectedLoudnessConfiguration,
+    custom_dialnorm: Option<CustomDialnorm>,
     line_drc_profile: SelectedDrcProfile,
     rf_drc_profile: SelectedDrcProfile,
     downmix: SelectedDownmixConfiguration,
@@ -487,7 +488,29 @@ pub struct SelectedJobConfiguration {
     append_silence_duration_explicit: bool,
 }
 
+/// A validated manual dialogue normalization level in its unsigned bitstream representation.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct CustomDialnorm(u8);
+
+impl CustomDialnorm {
+    fn parse(text: &str) -> Result<Option<Self>, JobConfigurationError> {
+        match text.trim().parse::<i8>() {
+            Ok(0) => Ok(None),
+            Ok(value @ -31..=-1) => Ok(Some(Self(value.unsigned_abs()))),
+            _ => Err(JobConfigurationError::UnsupportedFieldValue),
+        }
+    }
+
+    pub const fn code(self) -> u8 {
+        self.0
+    }
+}
+
 impl SelectedJobConfiguration {
+    pub const fn custom_dialnorm(&self) -> Option<CustomDialnorm> {
+        self.custom_dialnorm
+    }
+
     /// Values consumed when rendering the input and measuring its loudness. File identity
     /// and meter revision are supplied separately by the persistent cache.
     pub fn measurement_settings_identity(&self) -> Value {
@@ -575,6 +598,9 @@ impl SelectedJobConfiguration {
             "append_silence_samples": self.append_silence_samples.value(),
             "append_silence_duration_explicit": self.append_silence_duration_explicit
         });
+        if let Some(level) = self.custom_dialnorm {
+            identity["custom_dialnorm"] = json!(-i16::from(level.code()));
+        }
         if let Some(temp_directory) = &self.temp_directory {
             identity["temp_directory"] = json!({
                 "clean_temp": temp_directory.clean_temp(),
@@ -1421,6 +1447,10 @@ pub fn parse_selected_job_configuration(
         return Err(JobConfigurationError::TimeDomain);
     }
 
+    let custom_dialnorm = optional_element_text(encoder, &["custom_dialnorm"])?
+        .map(|text| CustomDialnorm::parse(&text))
+        .transpose()?
+        .flatten();
     let loudness_node = path_node(encoder, &["loudness", "measure_only"])?
         .ok_or(JobConfigurationError::MissingField)?;
     let dialogue_intelligence_text = required_text(loudness_node, &["dialogue_intelligence"])?;
@@ -1534,6 +1564,7 @@ pub fn parse_selected_job_configuration(
         dispatch_mode: SELECTED_DISPATCH_MODE,
         route_virtual_prefix_count: SELECTED_ROUTE_VIRTUAL_PREFIX_COUNT,
         loudness,
+        custom_dialnorm,
         line_drc_profile,
         rf_drc_profile,
         downmix,
@@ -1693,6 +1724,7 @@ fn external_job_xml_element_is_supported(path: &str) -> bool {
             | "/job_config/filter/audio/encode_to_atmos_ddp/loudness/measure_only/metering_mode"
             | "/job_config/filter/audio/encode_to_atmos_ddp/loudness/measure_only/dialogue_intelligence"
             | "/job_config/filter/audio/encode_to_atmos_ddp/loudness/measure_only/speech_threshold"
+            | "/job_config/filter/audio/encode_to_atmos_ddp/custom_dialnorm"
             | "/job_config/filter/audio/encode_to_atmos_ddp/data_rate"
             | "/job_config/filter/audio/encode_to_atmos_ddp/timecode_frame_rate"
             | "/job_config/filter/audio/encode_to_atmos_ddp/start"
