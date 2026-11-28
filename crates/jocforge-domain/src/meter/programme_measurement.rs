@@ -55,6 +55,9 @@ pub struct ProgrammeMeasurementProposal {
 #[derive(Clone, Debug, Eq, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct ProgrammeMeasurementValue {
     dialogue_word: u32,
+    // The public floor shares its wire value with the absence sentinel.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    measured_at_dialogue_floor: bool,
     speech_percentage_word: u32,
     itu_word: u32,
     ungated_word: u32,
@@ -99,7 +102,7 @@ impl ProgrammeMeasurementProposal {
 impl ProgrammeMeasurementValue {
     #[allow(clippy::too_many_arguments)]
     fn from_words(
-        dialogue_word: u32,
+        dialogue: Option<u32>,
         speech_percentage_word: u32,
         itu_word: u32,
         ungated_word: u32,
@@ -109,6 +112,8 @@ impl ProgrammeMeasurementValue {
         gating_kind: ProgrammeGatingKind,
         dialnorm: u8,
     ) -> Result<Self, ProgrammeMeasurementError> {
+        let dialogue_word = dialogue.unwrap_or(NEGATIVE_ONE_TWENTY_WORD);
+        let measured_at_dialogue_floor = dialogue == Some(NEGATIVE_ONE_TWENTY_WORD);
         if [
             dialogue_word,
             speech_percentage_word,
@@ -126,6 +131,7 @@ impl ProgrammeMeasurementValue {
         }
         let canonical_bytes = canonical_measurement_bytes(
             dialogue_word,
+            measured_at_dialogue_floor,
             speech_percentage_word,
             itu_word,
             ungated_word,
@@ -137,6 +143,7 @@ impl ProgrammeMeasurementValue {
         )?;
         Ok(Self {
             dialogue_word,
+            measured_at_dialogue_floor,
             speech_percentage_word,
             itu_word,
             ungated_word,
@@ -152,7 +159,7 @@ impl ProgrammeMeasurementValue {
     /// Check the exact stored float words against the original finalized measurement.
     pub(crate) fn validate_cached(&self) -> Result<(), ProgrammeMeasurementError> {
         let checked = Self::from_words(
-            self.dialogue_word,
+            self.measured_dialogue_word(),
             self.speech_percentage_word,
             self.itu_word,
             self.ungated_word,
@@ -168,8 +175,25 @@ impl ProgrammeMeasurementValue {
         Ok(())
     }
 
+    /// Percentage of report ticks accepted by the dialogue and programme activity gates.
+    pub fn speech_percentage(&self) -> Option<f32> {
+        let percent = f32::from_bits(self.speech_percentage_word);
+        (percent >= 0.0).then_some(percent)
+    }
+
     pub const fn dialogue_word(&self) -> u32 {
         self.dialogue_word
+    }
+
+    /// Candidate integrated level when accepted audio contributed energy.
+    pub fn dialogue_loudness(&self) -> Option<f32> {
+        self.measured_dialogue_word()
+            .map(|word| f32::from_bits(word).max(-120.0))
+    }
+
+    fn measured_dialogue_word(&self) -> Option<u32> {
+        (self.measured_at_dialogue_floor || self.dialogue_word != NEGATIVE_ONE_TWENTY_WORD)
+            .then_some(self.dialogue_word)
     }
 
     pub const fn itu_word(&self) -> u32 {
@@ -238,7 +262,7 @@ pub(crate) fn compute_programme_measurement_values(
     ungated: &UngatedMeanState,
     use_ungated_loudness: bool,
     a_weighted_level: Option<f32>,
-    speech: Option<(f32, f32, u32)>,
+    speech: Option<(f64, Option<f64>, u32)>,
 ) -> Result<ProgrammeMeasurementValue, ProgrammeMeasurementError> {
     let true_peak_word = true_peak
         .final_true_peak_host_word()
@@ -266,18 +290,25 @@ pub(crate) fn compute_programme_measurement_values(
     };
     let mut selected_word = a_weighted_level.map_or(getter.selected_host_word(), f32::to_bits);
     let mut speech_percentage_word = getter.speech_percentage_word();
-    let mut dialogue_word = getter.dialogue_word();
+    let mut dialogue =
+        (getter.dialogue_word() != NEGATIVE_ONE_TWENTY_WORD).then_some(getter.dialogue_word());
     if let Some((percentage, level, threshold)) = speech {
-        speech_percentage_word = percentage.to_bits();
-        dialogue_word = level.to_bits();
-        if percentage > 0.0 && percentage >= threshold as f32 {
-            selected_word = dialogue_word;
-            gating_kind = ProgrammeGatingKind::Dialogue;
+        speech_percentage_word = (percentage as f32).to_bits();
+        if let Some(level) = level {
+            if !level.is_finite() {
+                return Err(ProgrammeMeasurementError::Numeric);
+            }
+            let dialogue_word = (level as f32).max(-120.0).to_bits();
+            dialogue = Some(dialogue_word);
+            if percentage > f64::from(threshold) && level > -60.0 {
+                selected_word = dialogue_word;
+                gating_kind = ProgrammeGatingKind::Dialogue;
+            }
         }
     }
     let dialnorm = dialnorm_from_selected_lufs(selected_word)?;
     let measurement = ProgrammeMeasurementValue::from_words(
-        dialogue_word,
+        dialogue,
         speech_percentage_word,
         itu_word,
         ungated_word,
@@ -293,6 +324,7 @@ pub(crate) fn compute_programme_measurement_values(
 #[allow(clippy::too_many_arguments)]
 fn canonical_measurement_bytes(
     dialogue_word: u32,
+    measured_at_dialogue_floor: bool,
     speech_percentage_word: u32,
     itu_word: u32,
     ungated_word: u32,
@@ -303,6 +335,9 @@ fn canonical_measurement_bytes(
     dialnorm: u8,
 ) -> Result<Vec<u8>, ProgrammeMeasurementError> {
     let mut fields = BTreeMap::<String, Value>::new();
+    if measured_at_dialogue_floor {
+        fields.insert("measured_at_dialogue_floor".to_owned(), Value::Bool(true));
+    }
     for (name, word) in [
         ("dialogue_host", dialogue_word),
         ("itu_host", itu_word),
@@ -379,6 +414,95 @@ mod tests {
         include_bytes!("../../tests/fixtures/f04_component/unit-vectors.json");
 
     #[test]
+    fn dialogue_selection_uses_the_enabled_branch_and_a_valid_measurement() {
+        for (programme, dialogue) in [(-18.2, -26.8), (-26.8, -18.2)] {
+            for (speech, expected, selected_dialogue) in [
+                (None, programme, false),
+                (Some((80.0, Some(f64::from(dialogue)), 15)), dialogue, true),
+                (Some((4.0, Some(f64::from(dialogue)), 15)), programme, false),
+                (Some((0.0, None, 0)), programme, false),
+            ] {
+                let measured = compute_programme_measurement_values(
+                    &TruePeakState::cold(),
+                    &IntegratedMeterState::cold(),
+                    &UngatedMeanState::cold(),
+                    false,
+                    Some(programme),
+                    speech,
+                )
+                .unwrap();
+                assert_eq!(f32::from_bits(measured.selected_word()), expected);
+                assert_eq!(measured.gating_kind().is_dialogue(), selected_dialogue);
+                assert_eq!(measured.dialnorm, (-expected).round() as u8);
+            }
+        }
+    }
+
+    #[test]
+    fn dialogue_gates_compare_unrounded_percentage_and_loudness_strictly() {
+        let programme = -21.92;
+        for (accepted, percent_passes) in [(71, false), (72, false), (73, true)] {
+            let percent = 100.0 * f64::from(accepted) / 480.0;
+            for (level, loudness_passes) in [
+                (-60.01, false),
+                (-60.0, false),
+                (-59.999_999_9, true),
+                (-59.99, true),
+            ] {
+                let measurement = compute_programme_measurement_values(
+                    &TruePeakState::cold(),
+                    &IntegratedMeterState::cold(),
+                    &UngatedMeanState::cold(),
+                    false,
+                    Some(programme),
+                    Some((percent, Some(level), 15)),
+                )
+                .unwrap();
+                let dialogue = percent_passes && loudness_passes;
+                assert_eq!(
+                    measurement.gating_kind().is_dialogue(),
+                    dialogue,
+                    "{percent}% {level}"
+                );
+                assert_eq!(measurement.dialogue_loudness(), Some(level as f32));
+                assert_eq!(measurement.speech_percentage(), Some(percent as f32));
+                assert_eq!(
+                    measurement.selected_word(),
+                    if dialogue { level as f32 } else { programme }.to_bits()
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn finite_dialogue_at_the_report_floor_remains_distinct_from_absence() {
+        for (input, expected) in [
+            (None, None),
+            (Some((0.0, None, 0)), None),
+            (Some((5.0, None, 0)), None),
+            (Some((5.0, Some(-160.0), 0)), Some(-120.0)),
+            (Some((5.0, Some(-120.0), 0)), Some(-120.0)),
+            (Some((5.0, Some(-119.0), 0)), Some(-119.0)),
+        ] {
+            let measurement = compute_programme_measurement_values(
+                &TruePeakState::cold(),
+                &IntegratedMeterState::cold(),
+                &UngatedMeanState::cold(),
+                false,
+                Some(-21.92),
+                input,
+            )
+            .unwrap();
+            assert_eq!(measurement.dialogue_loudness(), expected, "{input:?}");
+            assert_eq!(f32::from_bits(measurement.selected_word()), -21.92);
+            let cached: ProgrammeMeasurementValue =
+                serde_json::from_value(serde_json::to_value(&measurement).unwrap()).unwrap();
+            assert_eq!(cached.dialogue_loudness(), expected);
+            assert_eq!(cached.validate_cached(), Ok(()));
+        }
+    }
+
+    #[test]
     fn approved_dialnorm_vectors_match() {
         let document: Value = serde_json::from_slice(UNIT_VECTORS).unwrap();
         let cases = document["cases"]
@@ -443,7 +567,7 @@ mod tests {
     #[test]
     fn approved_frozen_measurement_value_matches_its_canonical_digest() {
         let value = ProgrammeMeasurementValue::from_words(
-            (-120.0_f32).to_bits(),
+            None,
             (-1.0_f32).to_bits(),
             (-23.5_f32).to_bits(),
             (-22.75_f32).to_bits(),

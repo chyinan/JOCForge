@@ -2,6 +2,7 @@
 //! Production composition of one selected MAIN F03W/F04 callback from admitted input values.
 
 use crate::PreparedJobInput;
+use jocforge_domain::frontend::dbmd_sections::FiveOneSourceTrim;
 pub use jocforge_domain::joc::JocObjectCount;
 use jocforge_domain::meter::prepared_job_identity::PreparedJobInputIdentity;
 use jocforge_domain::{
@@ -136,7 +137,11 @@ impl MainSpatialColdRoots {
         )
         .map_err(MainSpatialColdRootsError::SpatialControl)?;
         let spatial_control =
-            spatial_control.with_main_job_trim(prepared.configuration(), native_output);
+            if prepared.dbmd().five_one_trim() == Some(FiveOneSourceTrim::ManualNeutral) {
+                spatial_control.with_manual_trim(prepared.configuration().manual_trim())
+            } else {
+                spatial_control.with_main_job_trim(prepared.configuration(), native_output)
+            };
         let frontend_control = cold_owner.into_machine();
         let spatial_audio = SpatialAudioMachine::new_cold(profile)
             .map_err(MainSpatialColdRootsError::SpatialAudio)?;

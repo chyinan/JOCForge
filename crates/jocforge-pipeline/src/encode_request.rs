@@ -1021,8 +1021,8 @@ impl Default for FileEncodeOptions {
             height_trim_5_1: "auto".into(),
             surround_trim_5_1: "auto".into(),
             metering_mode: "1770-4".into(),
-            dialogue_intelligence: false,
-            speech_threshold: 100,
+            dialogue_intelligence: true,
+            speech_threshold: 15,
             custom_dialnorm: None,
             line_mode_drc_profile: "film_light".into(),
             rf_mode_drc_profile: "film_light".into(),
@@ -1694,6 +1694,11 @@ fn run_inner(
     let selected_lufs = f32::from_bits(selected_lufs_word);
     let drc_root = cold_drc_owner_after_measurement(&prepared, measurement.receipt())
         .map_err(EncodeRequestError::DrcRoot)?;
+    let drc_root = if joc_layout.uses_seven_carriers() {
+        drc_root
+    } else {
+        drc_root.with_spatial_receiver_input()
+    };
     let source_providers = plan.source_providers();
     let metadata_profile = resolve_selected_profile(
         &EncodingProfile::selected_with_rate_and_carriage_and_joc_reconstruction_layout(

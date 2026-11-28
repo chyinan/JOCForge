@@ -122,44 +122,32 @@ fn math_generated_fbw_and_lfe_spectra_feed_selected_f09_power_and_primary_rows()
     }
 
     let lfe_blocks = inputs["lfe_continuous"]["blocks"].as_array().unwrap();
-    let lfe_traces = result["lfe_continuous"]["traces"].as_array().unwrap();
     assert_eq!(lfe_blocks.len(), 3);
-    assert_eq!(lfe_traces.len(), lfe_blocks.len());
     primary_history = [0_u32; 128];
     companion_history = [0_u32; 128];
-    for (recipe, trace) in lfe_blocks.iter().zip(lfe_traces) {
+    for recipe in lfe_blocks {
         let input = block_from_recipe(recipe);
         let fold = f08_window_fold_block(&input, &primary_history, &companion_history, &parameters)
             .unwrap();
         let spectra = f08_lfe_transform_block(&fold, &parameters).unwrap();
         let exponents = f08_lfe_exponent_inputs(&spectra).unwrap();
 
+        let long = f08_fbw_transform_block(&fold, 0, &parameters).unwrap();
+        let reference = f08_full_band_exponent_inputs(&long).unwrap();
+        let bins = exponents.power_f32_bits().len();
         assert_eq!(
-            sha256_words(exponents.power_f32_bits()),
-            trace["power_sha256"].as_str().unwrap(),
-            "{} LFE POWER row",
-            recipe["id"]
-        );
-        assert_eq!(
-            sha256_exponents(exponents.power_raw_exponents_i16()),
-            trace["power_raw_sha256"].as_str().unwrap(),
-            "{} LFE POWER raw exponent row",
-            recipe["id"]
-        );
-        assert_eq!(
-            sha256_exponents(exponents.primary_raw_exponents_i16()),
-            trace["primary_raw_sha256"].as_str().unwrap(),
-            "{} LFE PRIMARY raw exponent row",
-            recipe["id"]
-        );
-        assert_prefix(
             exponents.power_raw_exponents_i16(),
-            &trace["power_raw_preview"],
+            &reference.power_raw_exponents_i16()[..bins]
         );
-        assert_prefix(
+        assert_eq!(
             exponents.primary_raw_exponents_i16(),
-            &trace["primary_raw_preview"],
+            &reference.primary_raw_exponents_i16()[..bins]
         );
+        for (bin, &word) in exponents.power_f32_bits().iter().enumerate() {
+            let power = f32::from_bits(word);
+            let expected = f32::from_bits(reference.power_f32_bits()[bin]);
+            assert!((power - expected).abs() < 1e-6, "LFE power bin {bin}");
+        }
         primary_history = *fold.primary_history_after();
         companion_history = *fold.companion_history_after();
     }

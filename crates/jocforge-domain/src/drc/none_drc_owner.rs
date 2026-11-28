@@ -494,15 +494,19 @@ impl NoneDrcOwnerRoot {
         })
     }
 
+    /// Selects the half-amplitude PCM rows emitted by the spatial receiver.
+    #[must_use]
+    pub fn with_spatial_receiver_input(mut self) -> Self {
+        self.state.scheduler.spatial_receiver_input = true;
+        self
+    }
+
+    #[must_use]
     pub fn with_profiles(
         mut self,
         profiles: [crate::frontend::job_configuration::SelectedDrcProfile; 2],
     ) -> Self {
-        use crate::frontend::job_configuration::SelectedDrcProfile::FilmLight;
-        // Preserve the historical file-encode default exactly.
-        if profiles != [FilmLight; 2] {
-            self.state.scheduler.profiles = profiles;
-        }
+        self.state.scheduler.profiles = profiles;
         self
     }
 
@@ -1021,6 +1025,23 @@ mod tests {
     const OPTION_COLD_VECTORS: &[u8] = include_bytes!(
         "../../../../outputs/IMPLEMENTER_SUPPLEMENTS/DRC-STANDALONE-OWNER-OPTIONAL-DIALNORM-V1/INPUT-ONLY-OPTION-COLD-VECTOR.json"
     );
+
+    #[test]
+    fn line_and_rf_profile_choices_reach_the_scheduler_independently() {
+        use crate::frontend::job_configuration::SelectedDrcProfile::{FilmLight, None};
+
+        for profiles in [
+            [FilmLight, FilmLight],
+            [FilmLight, None],
+            [None, FilmLight],
+            [None, None],
+        ] {
+            let root = NoneDrcOwnerRoot::cold_after_meter_finalize(&measurement_receipt())
+                .unwrap()
+                .with_profiles(profiles);
+            assert_eq!(root.state().scheduler().profiles, profiles);
+        }
+    }
 
     fn measurement_receipt() -> ProgrammeMeasurementReceipt {
         measurement_receipt_with_selected_lufs(-23.0)

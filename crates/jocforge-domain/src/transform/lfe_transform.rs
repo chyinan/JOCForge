@@ -524,7 +524,9 @@ fn f08_lfe_recurrence(
     for frequency in 0..8 {
         let index = usize::try_from(parameters.lfe_permutation()[frequency])
             .map_err(|_| F08LfeTransformError::NumericFailure)?;
-        let recurrence = f32::from_bits(parameters.lfe_recurrence_f32_bits()[frequency]);
+        // The last FFT8 slots supply negative FFT128 harmonics for the odd MDCT bins.
+        let harmonic = frequency.min(8 - frequency);
+        let recurrence = f32::from_bits(parameters.lfe_recurrence_f32_bits()[harmonic]);
         let mut prior = [POSITIVE_ZERO_F32; 2];
         let mut current = [groups[15][2 * index], groups[15][2 * index + 1]];
 
@@ -538,8 +540,9 @@ fn f08_lfe_recurrence(
             prior = old_current;
         }
 
-        let cosine = f32::from_bits(parameters.lfe_cosine_f32_bits()[frequency]);
-        let sine = f32::from_bits(parameters.lfe_sine_f32_bits()[frequency]);
+        let cosine = f32::from_bits(parameters.lfe_cosine_f32_bits()[harmonic]);
+        let sine = f32::from_bits(parameters.lfe_sine_f32_bits()[harmonic]);
+        let sine = if frequency > harmonic { -sine } else { sine };
         let real_prior_cosine = f08_lfe_multiply(prior[0], cosine)?;
         let real_prior_sine = f08_lfe_multiply(prior[1], sine)?;
         let real = f08_lfe_multiply(

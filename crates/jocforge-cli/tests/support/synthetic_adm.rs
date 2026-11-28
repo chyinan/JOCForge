@@ -11,14 +11,19 @@ fn chunk(dst: &mut Vec<u8>, name: [u8; 4], payload: &[u8]) {
     }
 }
 
-/// Generates the team's original 11-track test cue, up to 999 ms at 48 kHz.
+/// Generates the team's original 11-track test cue at 48 kHz.
 pub fn synthetic_cue(duration_ms: usize) -> Vec<u8> {
-    synthetic_cue_with_extensible_fmt(duration_ms, false)
+    synthetic_cue_samples(duration_ms * 48)
 }
 
-pub fn synthetic_cue_with_extensible_fmt(duration_ms: usize, extensible: bool) -> Vec<u8> {
-    assert!(duration_ms < 1000);
-    let duration = format!("00:00:00.{duration_ms:03}00");
+pub fn synthetic_cue_samples(samples: usize) -> Vec<u8> {
+    assert!(samples < 60 * 48_000);
+    // Five ADM decimal places give 25 time units for every 12 PCM samples.
+    let duration = format!(
+        "00:00:{:02}.{:05}",
+        samples / 48_000,
+        (samples % 48_000 * 25 + 6) / 12
+    );
     let mut formats = String::new();
     let mut chna = [11u16.to_le_bytes(); 2].concat();
     for (kind, labels) in [
@@ -102,9 +107,8 @@ pub fn synthetic_cue_with_extensible_fmt(duration_ms: usize, extensible: bool) -
     }
     dbmd.push(0);
     let mut wav = b"RIFF\0\0\0\0WAVE".to_vec();
-    let tag: u16 = if extensible { 0xfffe } else { 1 };
-    let mut fmt = [
-        &tag.to_le_bytes()[..],
+    let fmt = [
+        &1u16.to_le_bytes()[..],
         &11u16.to_le_bytes(),
         &48000u32.to_le_bytes(),
         &(48000u32 * 33).to_le_bytes(),
@@ -112,19 +116,11 @@ pub fn synthetic_cue_with_extensible_fmt(duration_ms: usize, extensible: bool) -
         &24u16.to_le_bytes(),
     ]
     .concat();
-    if extensible {
-        fmt.extend(22u16.to_le_bytes()); // cbSize
-        fmt.extend(24u16.to_le_bytes()); // valid bits
-        fmt.extend(0u32.to_le_bytes()); // no speaker mask
-        fmt.extend([
-            1, 0, 0, 0, 0, 0, 0x10, 0, 0x80, 0, 0, 0xaa, 0, 0x38, 0x9b, 0x71,
-        ]);
-    }
     chunk(&mut wav, *b"fmt ", &fmt);
     chunk(&mut wav, *b"axml", axml.as_bytes());
     chunk(&mut wav, *b"chna", &chna);
     chunk(&mut wav, *b"dbmd", &dbmd);
-    let mut pcm = vec![0; duration_ms * 48 * 33];
+    let mut pcm = vec![0; samples * 33];
     for (i, sample) in pcm.chunks_exact_mut(33).enumerate() {
         sample[32] = if i % 48 < 24 { 8 } else { 248 };
     }

@@ -203,22 +203,19 @@ impl PostRenderMeterState {
     pub(super) fn dialogue_result(
         &self,
         settings: &PostRenderMeterParameters,
-    ) -> Option<(f32, f32, u32)> {
-        let (percent, level) = self.dialogue.as_ref()?.result(settings.use_a_weighting);
+    ) -> Option<(f64, Option<f64>, u32)> {
+        let mut dialogue = self.dialogue.as_deref()?.clone();
+        // Odd AU counts leave 512 published render samples in the 1024-sample queue.
+        dialogue.accumulate(
+            self.sample_queue.pending_lanes(),
+            settings.use_a_weighting,
+            &mut self.dialogue_filter.clone(),
+        );
+        let (percent, level) = dialogue.result(settings.use_a_weighting);
         Some((percent, level, settings.speech_threshold?))
     }
-    pub(super) fn a_weighted_level(&self, enabled: bool) -> Option<f32> {
-        if !enabled {
-            return None;
-        }
-        // Programme Leq(A) is a sample mean, not a full-block statistic.
-        let mut meter = self.a_weighted.clone();
-        meter.accumulate_programme(
-            self.sample_queue.pending_lanes(),
-            self.sample_queue.pcm_consumed_samples().value(),
-            self.sample_queue.source_samples().value(),
-        );
-        meter.level()
+    pub(super) fn a_weighted_level(&self) -> Option<f32> {
+        self.a_weighted.level()
     }
 
     pub const fn ungated_mean(&self) -> &UngatedMeanState {
@@ -515,11 +512,7 @@ fn stage_post_render_numeric(
             );
         }
         if parameters.use_a_weighting {
-            a_weighted.accumulate_programme(
-                block_views,
-                block.logical_begin().value(),
-                before.sample_queue.source_samples().value(),
-            );
+            a_weighted.accumulate(block_views);
         }
         advance_true_peak_block(
             &mut true_peak_after,

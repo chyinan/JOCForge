@@ -20,14 +20,7 @@ const SECTIONS: [[f64; 5]; 3] = [
 ];
 
 impl AWeightedLoudness {
-    /// Queue offsets are post-render programme positions; the final 1536-sample
-    /// callback can extend past the input with scheduler padding.
-    pub(super) fn accumulate_programme(&mut self, lanes: [&[u32]; 6], begin: u64, end: u64) {
-        let count = end.saturating_sub(begin).min(lanes[0].len() as u64) as usize;
-        self.accumulate(lanes.map(|lane| &lane[..count]));
-    }
-
-    fn accumulate(&mut self, lanes: [&[u32]; 6]) {
+    pub(super) fn accumulate(&mut self, lanes: [&[u32]; 6]) {
         for (lane, ch) in [0, 1, 2, 4, 5].into_iter().enumerate() {
             for &word in lanes[ch] {
                 let x = self.filter_channel(lane, f64::from(f32::from_bits(word)));

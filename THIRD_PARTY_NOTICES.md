@@ -8,7 +8,6 @@ JOCForge uses `num-bigint` 0.4.6 only for the F05R56 selected panner's exact-rat
 
 JOCForge uses `roxmltree` 0.21.1 only to parse caller-supplied F01E.1 UTF-8 job XML into a read-only DOM. The selected license is Apache-2.0 from its `MIT OR Apache-2.0` offer; repository: https://github.com/RazrFalcon/roxmltree. The parser does not open files or perform network access; F01E rejects `DOCTYPE` and `ENTITY` declarations before DOM parsing. It is not used for general ADM graph parsing.
 
-Dialogue detection uses Earshot 1.2.2 by Carson M (https://github.com/pykeio/earshot) under Apache-2.0 from its MIT OR Apache-2.0 license offer. The Apache-2.0 text is included in LICENSE.
 
 Locked transitive Rust packages are listed below. Checksums are the crates.io checksums recorded by Cargo.lock.
 
@@ -57,3 +56,29 @@ Locked transitive Rust packages are listed below. Checksums are the crates.io ch
 JOCForge vendors and distributes no FFmpeg, ffprobe, OpenJOC or other external executable. JOCForge source is Apache-2.0; see LICENSE. External validation tools, if later provisioned, retain their own licenses and remain outside production encoding.
 
 Previous notices and distribution provenance are preserved in the external recovery archive. This baseline makes no patent clearance claim and does not change third-party licenses.
+
+## Silero VAD
+
+The retained source copy in vendor/silero-vad-pure contains Silero VAD v6.2 model weights (Copyright (c) 2020-present Silero Team) and the silero-vad-pure 0.1.1 inference library. The following MIT terms apply when redistributing that source copy.
+
+MIT License
+
+Copyright (c) 2026 huanglizhuo
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

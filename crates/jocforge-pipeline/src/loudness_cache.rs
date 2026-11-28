@@ -32,7 +32,7 @@ use std::{
 use std::{io::Write, time::Duration};
 
 // Bump when a meter DSP change alters any finalized measurement word.
-const METER_REVISION: &str = "adm-loudness-v1";
+const METER_REVISION: &str = "adm-loudness-physical-speech-adbb1cff-floor";
 type AcceptedMeasurement = (MeterOwnerStateReference, MeasurementDependentOwnerInputs);
 type Progress<'a> = Option<EventObserver<'a>>;
 
@@ -50,14 +50,8 @@ static PARAMETER_HASH: LazyLock<[u8; 32]> = LazyLock::new(|| {
 });
 
 fn cache_key(prepared: &PreparedJobInput) -> [u8; 32] {
-    // Old LeqA records can omit a terminal half block. Other profiles are unchanged.
-    let revision = if prepared.configuration().loudness().metering_mode() == "LeqA" {
-        "adm-loudness-v1-leqa-programme-span-v2"
-    } else {
-        METER_REVISION
-    };
     let identity = (
-        revision,
+        METER_REVISION,
         env!("CARGO_PKG_VERSION"),
         env::consts::ARCH,
         env::consts::OS,
@@ -76,9 +70,7 @@ fn directory() -> Option<PathBuf> {
             .map(PathBuf::from)
             .filter(|p| p.is_absolute())
     };
-    let base = if let Some(root) = env::var_os("JOCFORGE_CACHE_DIR").filter(|v| !v.is_empty()) {
-        std::path::absolute(root).ok()?
-    } else {
+    let base = variable("JOCFORGE_CACHE_DIR").or_else(|| {
         let user_cache = if cfg!(windows) {
             variable("LOCALAPPDATA")
         } else if cfg!(target_os = "macos") {
@@ -86,8 +78,8 @@ fn directory() -> Option<PathBuf> {
         } else {
             variable("XDG_CACHE_HOME").or_else(|| variable("HOME").map(|p| p.join(".cache")))
         };
-        user_cache?.join("JOCForge")
-    };
+        user_cache.map(|p| p.join("JOCForge"))
+    })?;
     Some(base.join(METER_REVISION))
 }
 
@@ -131,7 +123,7 @@ fn load(
     if result.key != key || result.checksum() != checksum {
         return None;
     }
-    reuse_programme_measurement(
+    let accepted = reuse_programme_measurement(
         prepared,
         attempt,
         key,
@@ -139,7 +131,26 @@ fn load(
         result.cold,
         &result.measurement,
     )
-    .ok()
+    .ok()?;
+    report_loudness(&result.measurement);
+    Some(accepted)
+}
+
+fn report_loudness(value: &ProgrammeMeasurementValue) {
+    let percent = value.speech_percentage();
+    let dialogue = value.dialogue_loudness();
+    let reason = match percent {
+        None => "dialogue_disabled",
+        Some(0.0) => "no_speech",
+        Some(_) if dialogue.is_none() => "no_dialogue_energy",
+        Some(_) if value.gating_kind().is_dialogue() => "dialogue_threshold_met",
+        Some(_) => "below_dialogue_threshold",
+    };
+    eprintln!(
+        "programme_integrated={:.3} dialogue_loudness={dialogue:?} speech_percent={percent:?} gating={} selection_reason={reason}",
+        f32::from_bits(value.itu_word()),
+        value.gating_kind().as_str()
+    );
 }
 
 fn store(path: &Path, result: MeasuredProgramme) -> io::Result<()> {
@@ -275,6 +286,7 @@ pub(crate) fn measure_for_encode(
         }
     })?;
     bar.finish();
+    report_loudness(pass.candidate().terminal_measurement().measurement());
     if cancelled.load(Ordering::Relaxed) {
         return Err(EncodeRequestError::Cancelled);
     }

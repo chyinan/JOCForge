@@ -87,10 +87,40 @@ impl DbmdTrackFields {
     }
 }
 
+/// Authored trim policy for the 5.1 layout in DBMD section 10.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum FiveOneSourceTrim {
+    Automatic,
+    ManualNeutral,
+    OtherManual,
+}
+
+fn five_one_source_trim(section: &[u8]) -> Option<FiveOneSourceTrim> {
+    // Seven-byte segment header, then nine 15-byte trim records. 5.1 is second.
+    let record = section.get(22..37)?;
+    if record[0] & 1 != 0 {
+        return Some(FiveOneSourceTrim::Automatic);
+    }
+    let mut neutral = record[13] & 0x7f == 0 && record[14] & 0x7f == 0;
+    for field in record[1..13].chunks_exact(4) {
+        let gain = f32::from_le_bytes(field.try_into().ok()?);
+        if !gain.is_finite() {
+            return None;
+        }
+        neutral &= gain == 0.0;
+    }
+    Some(if neutral {
+        FiveOneSourceTrim::ManualNeutral
+    } else {
+        FiveOneSourceTrim::OtherManual
+    })
+}
+
 /// Selected decoded DBMD values. Track order is physical track index order;
 /// downstream graph installation must join by the physical host identity.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct SelectedDbmdSections {
+    five_one_trim: Option<FiveOneSourceTrim>,
     warm_trim_mode: u8,
     authored_source_mode_byte: u8,
     surround_ex_mode: u8,
@@ -99,6 +129,10 @@ pub struct SelectedDbmdSections {
 }
 
 impl SelectedDbmdSections {
+    pub const fn five_one_trim(&self) -> Option<FiveOneSourceTrim> {
+        self.five_one_trim
+    }
+
     /// Bind rendered rows to the original DBMD track of each source.
     pub fn project_bed_mix(&mut self, sources: &[Vec<u8>]) -> Result<(), DbmdSectionError> {
         if sources.is_empty() {
@@ -301,6 +335,7 @@ pub fn parse_selected_dbmd_sections(
         .collect();
 
     Ok(SelectedDbmdSections {
+        five_one_trim: five_one_source_trim(section10),
         warm_trim_mode,
         authored_source_mode_byte,
         surround_ex_mode,
@@ -338,4 +373,34 @@ fn read_u32_le(bytes: &[u8], offset: usize) -> Result<u32, DbmdSectionError> {
         .try_into()
         .map_err(|_| DbmdSectionError::Section10Length)?;
     Ok(u32::from_le_bytes(array))
+}
+
+#[cfg(test)]
+mod trim_tests {
+    use super::{FiveOneSourceTrim::*, five_one_source_trim};
+    #[test]
+    fn selects_the_five_one_record_and_checks_all_manual_fields() {
+        let mut data = [0u8; 142];
+        data[7] = 1;
+        data[37] = 1;
+        data[22] = 0xfe;
+        data[35..37].fill(0x80);
+        data[23..27].copy_from_slice(&(-0.0f32).to_le_bytes());
+        assert_eq!(five_one_source_trim(&data), Some(ManualNeutral));
+        for field in [23, 27, 31] {
+            let mut manual = data;
+            manual[field..field + 4].copy_from_slice(&(-3.0f32).to_le_bytes());
+            assert_eq!(five_one_source_trim(&manual), Some(OtherManual));
+            manual[field..field + 4].copy_from_slice(&f32::NAN.to_le_bytes());
+            assert_eq!(five_one_source_trim(&manual), None);
+            manual[22] |= 1;
+            assert_eq!(five_one_source_trim(&manual), Some(Automatic));
+        }
+        for field in [35, 36] {
+            let mut balanced = data;
+            balanced[field] |= 1;
+            assert_eq!(five_one_source_trim(&balanced), Some(OtherManual));
+        }
+        assert_eq!(five_one_source_trim(&data[..36]), None);
+    }
 }

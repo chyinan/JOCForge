@@ -38,7 +38,7 @@ const SELECTED_ENERGY_SAMPLES: u64 = 6_522_240;
 const SELECTED_ENERGY_WINDOW_REMAINDER: u64 = 640;
 const METER_BLOCK_SAMPLES: u64 = 1_024;
 const METER_ENERGY_WINDOW_SAMPLES: u64 = 960;
-const SELECTED_PCM_BITS: u64 = 24;
+
 const SELECTED_SAMPLE_RATE_HZ: u64 = 48_000;
 const SELECTED_CALLBACK_SAMPLES: u64 = 1_536;
 const ROOT_SCHEMA: &str = "standalone-meter-root-materialization.v3";
@@ -220,6 +220,7 @@ pub struct StandaloneMeterIdentity {
     input_sha256: [u8; 32],
     config_sha256: [u8; 32],
     source_channels: MeterSourceChannelCount,
+    pcm_bits: u16,
 }
 
 impl StandaloneMeterIdentity {
@@ -236,7 +237,14 @@ impl StandaloneMeterIdentity {
             input_sha256,
             config_sha256,
             source_channels,
+            pcm_bits: 24,
         }
+    }
+
+    #[must_use]
+    pub const fn with_pcm_bits(mut self, bits: u16) -> Self {
+        self.pcm_bits = bits;
+        self
     }
 
     pub fn programme_id(&self) -> &ProgrammeId {
@@ -517,7 +525,9 @@ impl StandaloneMeterRoot {
         k_matrix: KMatrixProvider,
         prepass: IndependentMeterPrepass,
     ) -> Result<Self, StandaloneMeterRootError> {
-        if !identity.source_channels().is_selected_profile_supported() {
+        if !matches!(identity.pcm_bits, 16 | 24)
+            || !identity.source_channels().is_selected_profile_supported()
+        {
             return Err(StandaloneMeterRootError::UnsupportedSourceChannels);
         }
         let schedule = StandaloneMeterSchedule::for_source_samples(source_samples)?;
@@ -589,8 +599,9 @@ impl StandaloneMeterRoot {
     /// mint a GTC owner receipt or `MeasurementReceipt`.
     pub fn canonical_preimage(&self) -> Result<Vec<u8>, StandaloneMeterRootError> {
         let source_channels = u64::from(self.identity.source_channels().value());
+        let pcm_bits = u64::from(self.identity.pcm_bits);
         let pcm_frame_bytes = source_channels
-            .checked_mul(SELECTED_PCM_BITS / 8)
+            .checked_mul(pcm_bits / 8)
             .ok_or(StandaloneMeterRootError::CanonicalState)?;
         let data_length_bytes = self
             .source_samples
@@ -705,7 +716,7 @@ impl StandaloneMeterRoot {
                 "expected_published_samples": (expected_published_samples),
                 "input_sha256": [hex self.identity.input_sha256()],
                 "normal_callbacks": (self.schedule.normal_callbacks().value()),
-                "pcm_bits": (SELECTED_PCM_BITS),
+                "pcm_bits": (pcm_bits),
                 "programme_id": (self.identity.programme_id().as_str()),
                 "provider_ids_hash_sorted": (provider_rows),
                 "provider_set_sha256": [hex self.provider_set.sha256()],
@@ -725,7 +736,7 @@ impl StandaloneMeterRoot {
                 "data_length_bytes": (data_length_bytes),
                 "duration_frames": (self.source_samples.value()),
                 "model_owner_key": (self.source_owner_id.as_str()),
-                "pcm_bits": (SELECTED_PCM_BITS),
+                "pcm_bits": (pcm_bits),
                 "read_index": (self.source_cursor.read_index.value()),
                 "source_cursor": (self.source_cursor.source_cursor.value()),
                 "source_identity_sha256": [hex self.identity.input_sha256()],
@@ -987,7 +998,7 @@ impl StandaloneMeterRoot {
             post_render.integrated_meter(),
             post_render.ungated_mean(),
             self.prepass.post_render_parameters().use_ungated_loudness,
-            post_render.a_weighted_level(self.prepass.post_render_parameters().use_a_weighting),
+            post_render.a_weighted_level(),
             post_render.dialogue_result(self.prepass.post_render_parameters()),
         )
         .map_err(StandaloneMeterRootError::Measurement)?;
@@ -1012,7 +1023,7 @@ impl StandaloneMeterRoot {
             post_render.integrated_meter(),
             post_render.ungated_mean(),
             self.prepass.post_render_parameters().use_ungated_loudness,
-            post_render.a_weighted_level(self.prepass.post_render_parameters().use_a_weighting),
+            post_render.a_weighted_level(),
             post_render.dialogue_result(self.prepass.post_render_parameters()),
         )
         .map_err(StandaloneMeterRootError::Measurement)?;

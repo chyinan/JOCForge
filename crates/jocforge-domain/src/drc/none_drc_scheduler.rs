@@ -22,6 +22,7 @@ struct NoneDynamicsState {
     level: f32,
     hold: u16,
     log_gain: f32,
+    film_light_input_history_db: Option<f32>,
 }
 
 impl NoneDynamicsState {
@@ -30,6 +31,7 @@ impl NoneDynamicsState {
             level: ONE,
             hold: 0,
             log_gain: POSITIVE_ZERO,
+            film_light_input_history_db: None,
         }
     }
 
@@ -38,13 +40,15 @@ impl NoneDynamicsState {
             level: ONE,
             hold: 0,
             log_gain: POSITIVE_ZERO.min(limiter_gain),
+            film_light_input_history_db: None,
         }
     }
 
     fn advance_profile(
         self,
         profile: SelectedDrcProfile,
-        normalized_power: f32,
+        level: f32,
+        spatial_receiver_input: bool,
         limit: f32,
     ) -> Self {
         // ETSI TS 103 190-1, E-AC-3 compressor profiles. Level is relative
@@ -56,7 +60,6 @@ impl NoneDynamicsState {
             SelectedDrcProfile::FilmLight => (6.0, -10.0, 10.0, 20.0, 24.0, 3000.0),
             _ => return Self::advance(limit),
         };
-        let level = 31.0 - 144.0 * normalized_power;
         let target = if level < unity_low {
             ((unity_low - level) * 0.5).min(boost)
         } else {
@@ -65,26 +68,46 @@ impl NoneDynamicsState {
         };
         let previous = self.level - 1.0;
         let delta = target - previous;
-        let time_ms = if delta < -15.0 {
-            10.0
-        } else if delta < 0.0 {
-            100.0
-        } else if delta > 20.0 {
-            1000.0
-        } else {
-            release_ms
-        };
-        let gain = previous + delta * -(-256000.0_f32 / (48000.0 * time_ms)).exp_m1();
+        let (film_light_input_history_db, time_ms) =
+            if spatial_receiver_input && profile == SelectedDrcProfile::FilmLight {
+                // Both response times use the same difference at the start of the block.
+                let history = self.film_light_input_history_db.unwrap_or(level);
+                let change = level - history;
+                let attack_ms = if change > 15.0 { 10.0 } else { 100.0 };
+                let recovery_ms = if change < -20.0 { 1000.0 } else { 3000.0 };
+                let history_ms = if change > 0.0 { attack_ms } else { recovery_ms };
+                (
+                    Some(smooth_db(history, level, history_ms)),
+                    if delta < 0.0 { attack_ms } else { recovery_ms },
+                )
+            } else {
+                let time_ms = if delta < -15.0 {
+                    10.0
+                } else if delta < 0.0 {
+                    100.0
+                } else if delta > 20.0 {
+                    1000.0
+                } else {
+                    release_ms
+                };
+                (None, time_ms)
+            };
+        let gain = smooth_db(previous, target, time_ms);
         Self {
             level: gain + 1.0,
             hold: 0,
             log_gain: (gain / 48.0).min(limit),
+            film_light_input_history_db,
         }
     }
 
     fn words(self) -> (u32, u16, u32) {
         (self.level.to_bits(), self.hold, self.log_gain.to_bits())
     }
+}
+
+fn smooth_db(previous: f32, target: f32, time_ms: f32) -> f32 {
+    previous + (target - previous) * -(-256000.0_f32 / (48000.0 * time_ms)).exp_m1()
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -110,6 +133,7 @@ impl LimiterState {
 #[derive(Debug, PartialEq)]
 pub struct NoneDrcSchedulerState {
     pub(crate) profiles: [SelectedDrcProfile; 2],
+    pub(crate) spatial_receiver_input: bool,
     rf: NoneDynamicsState,
     line: NoneDynamicsState,
     rf_limiter: LimiterState,
@@ -122,6 +146,7 @@ impl NoneDrcSchedulerState {
     pub const fn cold() -> Self {
         Self {
             profiles: [SelectedDrcProfile::None; 2],
+            spatial_receiver_input: false,
             rf: NoneDynamicsState::cold(),
             line: NoneDynamicsState::cold(),
             rf_limiter: LimiterState::cold(),
@@ -155,9 +180,21 @@ impl NoneDrcSchedulerState {
         self.generation
     }
 
+    fn profile_level_db(&self, profile: SelectedDrcProfile, normalized_power: f32) -> f32 {
+        let level = 31.0 - 144.0 * normalized_power;
+        if self.spatial_receiver_input && profile == SelectedDrcProfile::FilmLight {
+            // Receiver PCM has half the programme amplitude (power ratio 4).
+            // Full-scale sine RMS has half the unit-peak power (ratio 2).
+            level + 30.0 * std::f32::consts::LOG10_2
+        } else {
+            level
+        }
+    }
+
     fn staged_next_state(&self) -> Self {
         Self {
             profiles: self.profiles,
+            spatial_receiver_input: self.spatial_receiver_input,
             rf: self.rf,
             line: self.line,
             rf_limiter: self.rf_limiter,
@@ -168,8 +205,7 @@ impl NoneDrcSchedulerState {
     }
 }
 
-/// One scheduler input row. RMS levels are included as validated peer output;
-/// the selected scheduler consumes peak inputs and dialnorm only.
+/// One frame of dialnorm-adjusted RMS levels and peak limiter inputs.
 pub struct NoneDrcSchedulerFrameInput {
     pub dialnorm: i32,
     pub rms_levels_six: [FiniteF32; BLOCK_COUNT],
@@ -255,8 +291,6 @@ pub fn transition_none_drc_scheduler_frame(
     state: &NoneDrcSchedulerState,
     input: &NoneDrcSchedulerFrameInput,
 ) -> Result<NoneDrcSchedulerFrameTransition, NoneDrcSchedulerError> {
-    // Statistics supplies one dialnorm-adjusted power level per audio block.
-
     let dialnorm_offset = f32::from_bits(none_drc_dialnorm_offset_word(input.dialnorm)?);
     let half_offset = r32_mul_values(dialnorm_offset, HALF)?;
     let mut peak_logs_six = [POSITIVE_ZERO; BLOCK_COUNT];
@@ -287,7 +321,8 @@ pub fn transition_none_drc_scheduler_frame(
         )?;
         next_state.line = next_state.line.advance_profile(
             state.profiles[0],
-            input.rms_levels_six[block].value(),
+            state.profile_level_db(state.profiles[0], input.rms_levels_six[block].value()),
+            state.spatial_receiver_input,
             next_state.line_limiter.gain,
         );
         let line_gain = next_state.line.log_gain;
@@ -306,9 +341,17 @@ pub fn transition_none_drc_scheduler_frame(
     for rms in &input.rms_levels_six {
         next_state.rf = next_state.rf.advance_profile(
             state.profiles[1],
-            rms.value(),
+            state.profile_level_db(state.profiles[1], rms.value()),
+            state.spatial_receiver_input,
             next_state.rf_limiter.gain,
         );
+        if state.spatial_receiver_input && state.profiles[1] == SelectedDrcProfile::FilmLight {
+            // The next RF block starts from the gain allowed by this frame's limiter.
+            next_state.rf.level = next_state
+                .rf
+                .level
+                .min(1.0 + 48.0 * next_state.rf_limiter.gain);
+        }
         rf_log_gain_minimum = rf_log_gain_minimum.min(next_state.rf.log_gain);
     }
 
@@ -445,6 +488,125 @@ fn r32_div_values(left: f32, right: f32) -> Result<f32, R32Error> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn receiver_film_light_starts_at_the_first_input_and_processes_it() {
+        let level = 25.0;
+        let first = NoneDynamicsState::cold().advance_profile(
+            SelectedDrcProfile::FilmLight,
+            level,
+            true,
+            1.0,
+        );
+        assert_eq!(first.film_light_input_history_db, Some(level));
+        assert!((48.0 * first.log_gain + 0.505).abs() < 0.005);
+    }
+
+    #[test]
+    fn film_light_release_speeds_distinguish_tails_with_equal_target_gain() {
+        let advance = |state: NoneDynamicsState, level| {
+            state.advance_profile(SelectedDrcProfile::FilmLight, level, true, 1.0)
+        };
+        let mut loud = NoneDynamicsState::cold();
+        for _ in 0..938 {
+            loud = advance(loud, 24.0);
+        }
+        let gain_after_tail = |level| {
+            let mut state = loud;
+            for _ in 0..281 {
+                state = advance(state, level);
+            }
+            48.0 * state.log_gain
+        };
+        let mut receiver = NoneDrcSchedulerState::cold();
+        receiver.spatial_receiver_input = true;
+        let silent = gain_after_tail(receiver.profile_level_db(SelectedDrcProfile::FilmLight, 1.0));
+        let quiet = gain_after_tail(-26.0);
+        assert!(silent - quiet > 1.5, "silent {silent}, quiet {quiet}");
+    }
+
+    #[test]
+    fn film_light_attack_uses_the_input_change_at_block_start() {
+        let advance = |state: NoneDynamicsState, level| {
+            state.advance_profile(SelectedDrcProfile::FilmLight, level, true, 1.0)
+        };
+        let unity = advance(NoneDynamicsState::cold(), 0.0);
+        let gradual = advance(unity, 15.0);
+        let transient = advance(unity, 16.0);
+        assert!((48.0 * gradual.log_gain + 0.130).abs() < 0.002);
+        assert!((48.0 * transient.log_gain + 1.240).abs() < 0.002);
+    }
+
+    #[test]
+    fn receiver_rf_retains_limited_gain_independently_of_line() {
+        use SelectedDrcProfile::{FilmLight, None};
+        let mut state = NoneDrcSchedulerState::cold();
+        state.spatial_receiver_input = true;
+        state.profiles = [FilmLight, FilmLight];
+        let input = NoneDrcSchedulerFrameInput {
+            dialnorm: 25,
+            rms_levels_six: [FiniteF32::new(1.0).unwrap(); BLOCK_COUNT],
+            peak_inputs_six: [FiniteF32::new(0.75).unwrap(); BLOCK_COUNT],
+        };
+        let both = transition_none_drc_scheduler_frame(&state, &input).unwrap();
+        let limited_gain_db = 48.0 * both.next_state.rf_limiter.gain;
+        assert!(limited_gain_db < -1.0);
+        assert_eq!(both.next_state.rf.level, 1.0 + limited_gain_db);
+        assert!(both.next_state.line.level > 1.0);
+
+        state.profiles[0] = None;
+        let rf_only = transition_none_drc_scheduler_frame(&state, &input).unwrap();
+        assert_eq!(both.next_state.rf, rf_only.next_state.rf);
+        assert_eq!(
+            both.output.rf_packed_word_u16,
+            rf_only.output.rf_packed_word_u16
+        );
+    }
+
+    #[test]
+    fn rf_attenuation_carries_between_the_six_blocks_of_a_frame() {
+        let mut state = NoneDrcSchedulerState::cold();
+        state.spatial_receiver_input = true;
+        state.profiles[1] = SelectedDrcProfile::FilmLight;
+        let power = [0.0, 1.0, 1.0, 1.0, 1.0, 1.0];
+        let input = NoneDrcSchedulerFrameInput {
+            dialnorm: 25,
+            rms_levels_six: power.map(|p| {
+                let normalized = normalize_none_drc_metric(p).unwrap() + 6.0 / 144.0;
+                FiniteF32::new(normalized.min(1.0)).unwrap()
+            }),
+            peak_inputs_six: [FiniteF32::new(0.012).unwrap(); BLOCK_COUNT],
+        };
+        let result = transition_none_drc_scheduler_frame(&state, &input).unwrap();
+        let rf_db = 48.0 * result.next_state.rf.log_gain;
+        // The first block hits the -9.10 dB limiter. The five loud blocks
+        // that follow carry its attenuation into the attack of the same frame.
+        assert!((rf_db + 17.69).abs() < 0.03, "last RF gain {rf_db}");
+    }
+
+    #[test]
+    fn receiver_film_light_uses_full_scale_sine_as_its_rms_reference() {
+        let programme_sine_peak = 0.5_f32;
+        let receiver_peak = programme_sine_peak * 0.5;
+        let mean_square = receiver_peak.powi(2) / 2.0;
+        for dialnorm in [20, 25, 31] {
+            let normalized = normalize_none_drc_metric(mean_square).unwrap()
+                + f32::from_bits(none_drc_dialnorm_offset_word(dialnorm).unwrap());
+            let mut state = NoneDrcSchedulerState::cold();
+            let original_level = state.profile_level_db(SelectedDrcProfile::FilmLight, normalized);
+            state.spatial_receiver_input = true;
+            let expected = dialnorm as f32 + 20.0 * programme_sine_peak.log10();
+            let level = state.profile_level_db(SelectedDrcProfile::FilmLight, normalized);
+            assert!((level - expected).abs() < 0.1);
+
+            assert_eq!(
+                state
+                    .profile_level_db(SelectedDrcProfile::None, normalized)
+                    .to_bits(),
+                original_level.to_bits()
+            );
+        }
+    }
 
     #[test]
     fn generation_overflow_is_rejected_without_returning_a_transition() {

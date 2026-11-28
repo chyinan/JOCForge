@@ -1,4 +1,6 @@
+use jocforge_domain::transform::fbw_transform::f08_fbw_transform_block;
 use jocforge_domain::transform::lfe_transform::f08_lfe_transform_block;
+use jocforge_domain::transform::long_mdct::forward_long_mdct_512;
 use jocforge_domain::transform::math_generated_parameters::MathGeneratedTransformParameters;
 use jocforge_domain::transform::window_fold::f08_window_fold_block;
 use serde_json::Value;
@@ -12,14 +14,6 @@ const RESULT: &str = include_str!("fixtures/window_fold/RESULT.json");
 
 fn sha256(bytes: &[u8]) -> String {
     format!("{:x}", Sha256::digest(bytes))
-}
-
-fn sha256_words(words: &[u32]) -> String {
-    let bytes = words
-        .iter()
-        .flat_map(|word| word.to_le_bytes())
-        .collect::<Vec<_>>();
-    sha256(&bytes)
 }
 
 fn block_from_recipe(recipe: &Value) -> [u32; 256] {
@@ -57,6 +51,7 @@ fn math_generated_lfe_transform_matches_three_continuous_nonzero_traces() {
 
     let mut primary_history = [0_u32; 128];
     let mut companion_history = [0_u32; 128];
+    let mut previous = [0.0_f32; 256];
     for (recipe, trace) in blocks.iter().zip(traces) {
         let input = block_from_recipe(recipe);
         let fold = f08_window_fold_block(&input, &primary_history, &companion_history, &parameters)
@@ -65,18 +60,25 @@ fn math_generated_lfe_transform_matches_three_continuous_nonzero_traces() {
 
         assert_eq!(trace["case_id"], recipe["id"]);
         assert_eq!(trace["branch"], "LFE_RECURSIVE");
-        assert_eq!(
-            sha256_words(output.primary_spectrum_bits()),
-            trace["primary_spectrum_sha256"].as_str().unwrap(),
-            "{} primary spectrum",
-            recipe["id"]
-        );
-        assert_eq!(
-            sha256_words(output.companion_spectrum_bits()),
-            trace["companion_spectrum_sha256"].as_str().unwrap(),
-            "{} companion spectrum",
-            recipe["id"]
-        );
+        let current = input.map(f32::from_bits);
+        let mdct =
+            forward_long_mdct_512(&previous, &current, parameters.window_f32_bits()).unwrap();
+        let long = f08_fbw_transform_block(&fold, 0, &parameters).unwrap();
+        for (bin, reference) in mdct.iter().take(7).enumerate() {
+            // F08 scales the MDCT by 2 relative to the scalar forward transform.
+            let primary = f32::from_bits(output.primary_spectrum_bits()[bin]);
+            let companion = f32::from_bits(output.companion_spectrum_bits()[bin]);
+            let expected_companion = f32::from_bits(long.companion_spectrum_bits()[bin]);
+            assert!(
+                (primary - 2.0 * reference).abs() < 1e-6,
+                "primary bin {bin}"
+            );
+            assert!(
+                (companion - expected_companion).abs() < 1e-6,
+                "companion bin {bin}"
+            );
+        }
+        previous = current;
         assert_eq!(
             output
                 .primary_spectrum_bits()
