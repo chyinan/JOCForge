@@ -70,16 +70,19 @@ fn directory() -> Option<PathBuf> {
             .map(PathBuf::from)
             .filter(|p| p.is_absolute())
     };
-    let base = variable("JOCFORGE_CACHE_DIR").or_else(|| {
-        let user_cache = if cfg!(windows) {
-            variable("LOCALAPPDATA")
-        } else if cfg!(target_os = "macos") {
-            variable("HOME").map(|p| p.join("Library/Caches"))
-        } else {
-            variable("XDG_CACHE_HOME").or_else(|| variable("HOME").map(|p| p.join(".cache")))
-        };
-        user_cache.map(|p| p.join("JOCForge"))
-    })?;
+    let base = env::var_os("JOCFORGE_CACHE_DIR")
+        .filter(|value| !value.is_empty())
+        .map(PathBuf::from)
+        .or_else(|| {
+            let user_cache = if cfg!(windows) {
+                variable("LOCALAPPDATA")
+            } else if cfg!(target_os = "macos") {
+                variable("HOME").map(|p| p.join("Library/Caches"))
+            } else {
+                variable("XDG_CACHE_HOME").or_else(|| variable("HOME").map(|p| p.join(".cache")))
+            };
+            user_cache.map(|p| p.join("JOCForge"))
+        })?;
     Some(base.join(METER_REVISION))
 }
 

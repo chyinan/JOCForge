@@ -174,9 +174,15 @@ fn relative_loudness_cache_override_stays_under_the_working_directory() {
     };
 
     let (cold, _) = run("cold.ec3");
-    let requested = dir.path().join("project-cache/adm-loudness-v1");
+    let requested = dir.path().join("project-cache");
     assert!(
-        requested.is_dir(),
+        fs::read_dir(&requested).is_ok_and(|entries| entries.flatten().any(|entry| entry
+            .path()
+            .is_dir()
+            && entry
+                .file_name()
+                .to_string_lossy()
+                .starts_with("adm-loudness-"))),
         "explicit cache root was not used: {}",
         requested.display()
     );
