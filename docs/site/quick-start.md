@@ -10,6 +10,8 @@ cargo install --path crates/jocforge-cli --locked
 
 The CLI reads 48 kHz ADM BWF with 16-bit or 24-bit integer PCM. If an audioTrackUID declares bitDepth, it must match the WAV sample width.
 
+If the WAV contains spare physical tracks, its CHNA must explicitly mark those tracks with `AT_00000000_00`. The encoder skips those tracks, not tracks merely containing silence. Missing CHNA rows do not mark tracks as unused.
+
 Encode the ADM BWF to 5.1 at the default 1024 kbps. JOCForge requires absolute paths; `$PWD` works in PowerShell and POSIX shells:
 
 ```sh

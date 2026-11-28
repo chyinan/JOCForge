@@ -250,6 +250,8 @@ pub struct SelectedAdmGraph {
     object_sampler_owner_bindings: Vec<ObjectSamplerOwnerBinding>,
     bed_pack_channel_format_ids: [String; SELECTED_BED_COUNT],
     bed_join: SelectedBedChannelJoin,
+    file_channel_count: u16,
+    unused_file_channels: Vec<u8>,
     bed_mix_sources: Vec<Vec<u8>>,
     bed_mix_duration: Option<u64>,
     regular_source_bindings: Vec<RegularSourceBinding>,
@@ -264,7 +266,17 @@ impl SelectedAdmGraph {
         self
     }
 
-    /// Physical PCM inputs for each rendered channel. Empty for a single bed.
+    /// Number of interleaved channels in the original WAVE, before projection.
+    pub const fn file_channel_count(&self) -> u16 {
+        self.file_channel_count
+    }
+
+    /// Zero-based file channels whose CHNA explicitly marks them unused.
+    pub fn unused_file_channels(&self) -> &[u8] {
+        &self.unused_file_channels
+    }
+
+    /// File PCM inputs for each rendered channel. Empty for an identity projection.
     pub fn bed_mix_sources(&self) -> &[Vec<u8>] {
         &self.bed_mix_sources
     }
@@ -459,9 +471,22 @@ pub fn parse_selected_adm_graph_for_pcm(
         return Err(SelectedAdmGraphError::SelectedTrackDomain);
     }
 
+    let file_channel_count =
+        u16::try_from(records.len()).map_err(|_| SelectedAdmGraphError::SelectedTrackDomain)?;
+    let mut unused_file_channels = Vec::new();
+    let mut unused_uids = BTreeSet::new();
     let mut rows = Vec::with_capacity(records.len());
     let mut object_events = Vec::with_capacity(records.len().saturating_sub(SELECTED_BED_COUNT));
     for record in &records {
+        let physical_host = u8::try_from(record.track_index.value() - 1)
+            .map_err(|_| SelectedAdmGraphError::SelectedTrackDomain)?;
+        // BS.2076-3 reserves this CHNA track format for unused file channels.
+        // Do not infer unused channels from missing records or silent samples.
+        if record.track_format == "AT_00000000_00" {
+            unused_file_channels.push(physical_host);
+            unused_uids.insert(record.uid.as_str());
+            continue;
+        }
         let uid_node = lookup(&track_uid_nodes, &record.uid)?;
         let direct_track_format = first_child_text(uid_node, "audioTrackFormatIDRef", namespace)?;
         let direct_pack_format = first_child_text(uid_node, "audioPackFormatIDRef", namespace)?;
@@ -482,8 +507,6 @@ pub fn parse_selected_adm_graph_for_pcm(
 
         let channel_type = required_attribute(channel_node, "typeDefinition")?;
         let pack_type = required_attribute(pack_node, "typeDefinition")?;
-        let physical_host = u8::try_from(record.track_index.value() - 1)
-            .map_err(|_| SelectedAdmGraphError::SelectedTrackDomain)?;
         let mut block_count = 1;
         let (kind, descriptor_semantic_key) = match (channel_type.as_str(), pack_type.as_str()) {
             ("DirectSpeakers", "DirectSpeakers") => {
@@ -565,6 +588,19 @@ pub fn parse_selected_adm_graph_for_pcm(
             block_count,
             chna_reserved: record.reserved,
         });
+    }
+
+    if !unused_uids.is_empty()
+        && document.descendants().any(|node| {
+            node.is_element()
+                && node.tag_name().namespace() == namespace
+                && node.tag_name().name() == "audioTrackUIDRef"
+                && node
+                    .text()
+                    .is_some_and(|value| unused_uids.contains(value.trim()))
+        })
+    {
+        return Err(SelectedAdmGraphError::ObjectAssociation);
     }
 
     let mut bed_groups = BTreeMap::<&str, Vec<&SelectedPhysicalTrack>>::new();
@@ -681,11 +717,26 @@ pub fn parse_selected_adm_graph_for_pcm(
             bed_mix_sources.push(vec![row.physical_host.value()]);
             selected.push(row.clone());
         }
-        for (host, row) in selected.iter_mut().enumerate() {
+        rows = selected;
+    } else if !unused_file_channels.is_empty() {
+        bed_mix_sources = rows
+            .iter()
+            .map(|row| vec![row.physical_host.value()])
+            .collect();
+        let object_hosts = rows.iter().enumerate().filter_map(|(host, row)| {
+            matches!(row.kind, SelectedTrackKind::Object { .. }).then_some(host as u8)
+        });
+        for (events, host) in object_events.iter_mut().zip(object_hosts) {
+            for event in events {
+                event.physical_host = host;
+            }
+        }
+    }
+    if !bed_mix_sources.is_empty() {
+        for (host, row) in rows.iter_mut().enumerate() {
             row.physical_host = PhysicalHostIndex(host as u8);
             row.track_index = ChnaTrackIndex(host as u16 + 1);
         }
-        rows = selected;
     }
     let bed_rows = rows
         .iter()
@@ -797,6 +848,8 @@ pub fn parse_selected_adm_graph_for_pcm(
         object_sampler_owner_bindings,
         bed_pack_channel_format_ids: pack_channel_format_ids,
         bed_join,
+        file_channel_count,
+        unused_file_channels,
         bed_mix_sources,
         bed_mix_duration,
         regular_source_bindings,

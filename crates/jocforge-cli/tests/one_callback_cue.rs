@@ -342,3 +342,138 @@ fn leqa_measures_a_burst_in_the_last_half_block() {
     // Adding an equal duration of digital silence halves the mean energy.
     assert_eq!(dialnorm(64, 1024), late + 3);
 }
+
+#[test]
+fn explicitly_unused_adm_tracks_preserve_the_bitstream() {
+    fn chunk(out: &mut Vec<u8>, name: &[u8], payload: &[u8]) {
+        out.extend_from_slice(name);
+        out.extend_from_slice(&(payload.len() as u32).to_le_bytes());
+        out.extend_from_slice(payload);
+        if payload.len() % 2 != 0 {
+            out.push(0);
+        }
+    }
+
+    fn spread(cue: &[u8], channels: u16, active_slots: &[u16; 11], mark_unused: bool) -> Vec<u8> {
+        let mut wave = cue[..12].to_vec();
+        let mut chunks = &cue[12..];
+        while !chunks.is_empty() {
+            let size = u32::from_le_bytes(chunks[4..8].try_into().unwrap()) as usize;
+            let name = &chunks[..4];
+            let payload = &chunks[8..8 + size];
+            let mut updated = payload.to_vec();
+            match name {
+                b"fmt " => {
+                    updated[2..4].copy_from_slice(&channels.to_le_bytes());
+                    updated[4..8].copy_from_slice(&48_000_u32.to_le_bytes());
+                    updated[8..12].copy_from_slice(&(144_000 * u32::from(channels)).to_le_bytes());
+                    updated[12..14].copy_from_slice(&(3 * channels).to_le_bytes());
+                }
+                b"chna" => {
+                    for (entry, slot) in updated[4..].chunks_exact_mut(40).zip(active_slots) {
+                        entry[..2].copy_from_slice(&slot.to_le_bytes());
+                    }
+                    if mark_unused {
+                        updated[..2].copy_from_slice(&channels.to_le_bytes());
+                        updated[2..4].copy_from_slice(&channels.to_le_bytes());
+                        for slot in (1..=channels).filter(|slot| !active_slots.contains(slot)) {
+                            updated.extend_from_slice(&slot.to_le_bytes());
+                            updated
+                                .extend_from_slice(format!("ATU_{:08X}", 4096 + slot).as_bytes());
+                            updated.extend_from_slice(b"AT_00000000_00AP_00000000\0");
+                        }
+                    }
+                }
+                b"dbmd" => {
+                    // The stock fixture has one dialogue section then the PCM
+                    // track table. Give the object track and unused lane
+                    // different flags so projecting by compact index is wrong.
+                    const TABLE: usize = 4 + 3 + 248 + 1;
+                    assert_eq!(updated[TABLE], 10);
+                    let size = 142 + 2 * channels;
+                    updated[TABLE + 1..TABLE + 3].copy_from_slice(&size.to_le_bytes());
+                    let start = TABLE + 3;
+                    updated.resize(start + usize::from(size) + 2, 0);
+                    updated[start + 4..start + 6].copy_from_slice(&channels.to_le_bytes());
+                    let rows = start + 142;
+                    updated[rows..].fill(0);
+                    for slot in 1..=channels {
+                        let i = usize::from(slot - 1);
+                        if slot == active_slots[10] {
+                            updated[rows + i] = 1;
+                        } else if !active_slots.contains(&slot) {
+                            updated[rows + usize::from(channels) + i] = 2;
+                        }
+                    }
+                    let check = start + usize::from(size);
+                    updated[check] = updated[start..check]
+                        .iter()
+                        .copied()
+                        .fold(size.to_le_bytes()[0], u8::wrapping_add)
+                        .wrapping_neg();
+                    updated[check + 1] = 0;
+                }
+                b"data" => {
+                    updated.clear();
+                    for frame in payload.chunks_exact(33) {
+                        for slot in 1..=channels {
+                            let sample = active_slots
+                                .iter()
+                                .position(|n| *n == slot)
+                                .map_or(&[0, 0, 16][..], |i| &frame[i * 3..][..3]);
+                            updated.extend_from_slice(sample);
+                        }
+                    }
+                }
+                _ => {}
+            }
+            chunk(&mut wave, name, &updated);
+            chunks = &chunks[8 + size + size % 2..];
+        }
+        let riff_size = (wave.len() - 8) as u32;
+        wave[4..8].copy_from_slice(&riff_size.to_le_bytes());
+        wave
+    }
+
+    let encode = |cue: &[u8]| {
+        let dir = tempfile::tempdir().unwrap();
+        let input = dir.path().join("cue.wav");
+        let output = dir.path().join("cue.ec3");
+        fs::write(&input, cue).unwrap();
+        let run = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+            .arg("encode")
+            .arg(input)
+            .arg(&output)
+            .args(["--data-rate", "384"])
+            .env("JOCFORGE_CACHE_DIR", dir.path().join("cache"))
+            .output()
+            .unwrap();
+        if run.status.success() {
+            Ok(fs::read(output).unwrap())
+        } else {
+            assert!(!output.exists());
+            Err(String::from_utf8_lossy(&run.stderr).into_owned())
+        }
+    };
+
+    let cue = synthetic_adm::synthetic_cue_with_extensible_fmt(96, true);
+    let baseline = encode(&spread(
+        &cue,
+        11,
+        &[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        true,
+    ))
+    .unwrap();
+    assert_eq!(baseline.len(), 4608);
+    for (channels, slots) in [
+        (12, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]),
+        (12, [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
+        (55, [1, 4, 7, 10, 13, 16, 19, 22, 25, 32, 55]),
+    ] {
+        assert_eq!(
+            encode(&spread(&cue, channels, &slots, true)).unwrap(),
+            baseline
+        );
+        assert!(encode(&spread(&cue, channels, &slots, false)).is_err());
+    }
+}

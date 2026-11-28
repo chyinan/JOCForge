@@ -10,6 +10,8 @@ cargo install --path crates/jocforge-cli --locked
 
 CLI 支持 48 kHz、16 位或 24 位整数 PCM 的 ADM BWF。如果 audioTrackUID 声明了 bitDepth，其值须与 WAV 的实际位深一致。
 
+如果 WAV 保留了未使用的物理轨，CHNA 必须用 `AT_00000000_00` 明确标记这些轨道。编码器只跳过明确标记的轨道，不会根据静音或缺少 CHNA 记录推断轨道未使用。
+
 将 ADM BWF 编码为默认 1024 kbps 的 5.1 音轨。JOCForge 要求绝对路径；`$PWD` 在 PowerShell 和 POSIX shell 中均可用：
 
 ```sh

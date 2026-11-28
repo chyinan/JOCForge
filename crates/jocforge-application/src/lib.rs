@@ -347,9 +347,9 @@ impl PreparedJobInput {
         let data_bytes = if graph.bed_mix_sources().is_empty() {
             data_bytes
         } else {
-            let physical_channels: usize = graph.bed_mix_sources().iter().map(Vec::len).sum();
+            let physical_channels = u64::from(graph.file_channel_count());
             let bytes_per_sample = u64::from(self.configuration.wave().pcm_bits() / 8);
-            let physical_stride = physical_channels as u64 * bytes_per_sample;
+            let physical_stride = physical_channels * bytes_per_sample;
             if data_bytes % physical_stride != 0 {
                 return Err(PreparedJobInputError::WaveTrackCountMismatch);
             }
@@ -823,12 +823,7 @@ pub fn prepare_selected_job_input(
     )
     .map_err(PreparedJobInputError::GraphParse)?;
     let logical_channels = graph.receipt().physical_track_count();
-    let source_channels = if graph.bed_mix_sources().is_empty() {
-        usize::from(logical_channels)
-    } else {
-        graph.bed_mix_sources().iter().map(Vec::len).sum()
-    };
-    if usize::from(wave.channels()) != source_channels {
+    if wave.channels() != graph.file_channel_count() {
         return Err(PreparedJobInputError::WaveTrackCountMismatch);
     }
     let wave =
