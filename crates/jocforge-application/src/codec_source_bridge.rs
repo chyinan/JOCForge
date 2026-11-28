@@ -258,7 +258,7 @@ fn selected_bsi_profile_inputs(
         || physical_channel_count == 0
         || physical_channel_count > usize::from(u8::MAX) + 1
         || physical_channel_count != admitted_track_count
-        || wave.pcm_bits() != 24
+        || !wave.has_supported_pcm_width()
         || selected_profile.codec_rate().kbps() != Some(configuration.bit_rate_kbps())
         || selected_profile.codec_rate().selector_code() != Some(configuration.bit_rate_enum())
         // F01E's selected layout enum is 8; the resolved E-AC-3 profile carries acmod=7.

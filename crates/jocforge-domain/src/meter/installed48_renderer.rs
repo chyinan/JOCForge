@@ -446,7 +446,9 @@ fn validate_input(
     }
     let block_align = before
         .physical_row_count
-        .checked_mul(3)
+        .checked_mul(usize::from(
+            input.source_map.source_binding().wave().pcm_bits() / 8,
+        ))
         .ok_or(MeterInstalled48Error::ArithmeticOverflow)?;
     if before.source_samples.value() != input.source_map.source_binding().source_samples().value()
         || input.source_map.source_binding().data_bytes()

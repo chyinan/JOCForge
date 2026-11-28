@@ -140,7 +140,7 @@ impl std::fmt::Display for EncodeRequestError {
             Self::ExperimentalCandidateDirectoryNotEmpty => formatter
                 .write_str("Flat7x candidate output requires a new empty attempt directory"),
             Self::InputFile(error) => write!(formatter, "{error}"),
-            Self::Riff(error) => write!(formatter, "selected RIFF input rejected: {error:?}"),
+            Self::Riff(error) => write!(formatter, "WAVE input rejected: {error}"),
             Self::PreparedInput(error) => write!(formatter, "selected ADM input rejected: {error}"),
             Self::InputExtent => formatter.write_str("RIFF data extent is out of range"),
             Self::ProgrammeIdentity => {
@@ -597,7 +597,11 @@ fn run_job_xml_preflight(
     let adm = parsed
         .selected_adm_payloads()
         .map_err(EncodeRequestError::Riff)?;
-    let wave = SelectedWaveDescriptor::new(parsed.sample_rate_hz(), parsed.channels(), 24);
+    let wave = SelectedWaveDescriptor::new(
+        parsed.sample_rate_hz(),
+        parsed.channels(),
+        parsed.pcm_bits(),
+    );
     let programme = ProgrammeId::new("jocforge-xml-preflight")
         .map_err(|_| EncodeRequestError::ProgrammeIdentity)?;
     let prepared = prepare_selected_job_input(
@@ -674,7 +678,7 @@ fn run_job_xml_preflight(
         parsed.resource_bytes(),
         parsed.sample_rate_hz(),
         parsed.channels(),
-        24,
+        parsed.pcm_bits(),
         configuration.render_timeline().file_samples(),
         parsed.total_samples(),
         configuration.bit_rate_kbps(),
@@ -1487,7 +1491,11 @@ fn run_inner(
     let adm = parsed
         .selected_adm_payloads()
         .map_err(EncodeRequestError::Riff)?;
-    let wave = SelectedWaveDescriptor::new(parsed.sample_rate_hz(), parsed.channels(), 24);
+    let wave = SelectedWaveDescriptor::new(
+        parsed.sample_rate_hz(),
+        parsed.channels(),
+        parsed.pcm_bits(),
+    );
     let prepared = prepare_selected_job_input(
         run_identity.programme.clone(),
         &job_xml,
@@ -1573,13 +1581,14 @@ fn run_inner(
     let config_sha256 = prepared.config_sha256();
 
     eprintln!(
-        "prepared input: attempt={} programme={} sha256={} bytes={} sample_rate_hz={} channels={} pcm_bits=24 samples_per_channel={} data_rate_kbps={} aggregate_rate_kbps={} frame_bytes={} joc_reconstruction_layout={:?} joc_dmx_config_idx={:?} config_sha256={} output={}",
+        "prepared input: attempt={} programme={} sha256={} bytes={} sample_rate_hz={} channels={} pcm_bits={} samples_per_channel={} data_rate_kbps={} aggregate_rate_kbps={} frame_bytes={} joc_reconstruction_layout={:?} joc_dmx_config_idx={:?} config_sha256={} output={}",
         run_identity.attempt.value(),
         run_identity.programme.as_str(),
         hex_lower(&parsed.source_sha256()),
         parsed.resource_bytes(),
         parsed.sample_rate_hz(),
         parsed.channels(),
+        parsed.pcm_bits(),
         parsed.total_samples(),
         data_rate_kbps,
         cmaf_rate.unwrap_or(if ac3_core { 1280 } else { aggregate_rate_kbps }),

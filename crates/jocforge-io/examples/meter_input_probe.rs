@@ -13,7 +13,7 @@ use jocforge_domain::{
             bind_admitted_selected_input,
         },
         primary_metadata_control::{PrimaryControl38Fields, produce_primary_metadata_control_rows},
-        selected_adm_graph::parse_selected_adm_graph,
+        selected_adm_graph::parse_selected_adm_graph_for_pcm,
     },
     meter::{
         installed48_renderer::{
@@ -85,7 +85,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let axml = metadata.axml();
     let chna = metadata.chna();
     let dbmd_payload = metadata.dbmd();
-    let graph = parse_selected_adm_graph(axml, chna)
+    let graph = parse_selected_adm_graph_for_pcm(axml, chna, parsed.pcm_bits())
         .map_err(|_| io::Error::other("selected ADM graph parse failed"))?;
     let dbmd = parse_selected_dbmd_sections(dbmd_payload)
         .map_err(|_| io::Error::other("selected DBMD parse failed"))?;
@@ -113,7 +113,11 @@ fn main() -> Result<(), Box<dyn Error>> {
     let prepared = prepare_selected_job_input(
         diagnostic_programme_id(),
         job_xml.as_bytes(),
-        SelectedWaveDescriptor::new(parsed.sample_rate_hz(), parsed.channels(), 24),
+        SelectedWaveDescriptor::new(
+            parsed.sample_rate_hz(),
+            parsed.channels(),
+            parsed.pcm_bits(),
+        ),
         parsed.total_samples(),
         ResourceIdentity::from_bytes(&resource),
         SelectedAdmResourcePayloads::new(
@@ -139,7 +143,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     );
     let data_bytes = parsed
         .total_samples()
-        .checked_mul(114)
+        .checked_mul(u64::from(parsed.block_align()))
         .ok_or_else(|| io::Error::other("selected PCM data length overflow"))?;
     let primary_binding = bind_admitted_selected_input(
         prepared.configuration(),

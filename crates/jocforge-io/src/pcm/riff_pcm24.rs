@@ -1,5 +1,5 @@
 // pattern: Functional Core
-//! ADM RIFF/PCM24 byte reader and planar F32 hop conversion.
+//! ADM RIFF/RF64 signed PCM16/PCM24 byte reader and planar F32 hop conversion.
 
 use jocforge_domain::timeline::AdmSampleIndex;
 use sha2::Digest;
@@ -17,27 +17,59 @@ const PCM_SUBTYPE: [u8; 16] = [
 ];
 const RIFF_HEADER_BYTES: usize = 12;
 const CHUNK_HEADER_BYTES: usize = 8;
-const PCM24_SIGN_BIT: i32 = 0x0080_0000;
-const PCM24_MODULUS: i32 = 0x0100_0000;
-const PCM24_INT32_SCALE: f32 = 1.0 / 2_147_483_648.0;
+const SIGNED_INT32_SCALE: f32 = 1.0 / 2_147_483_648.0;
 
 /// The selected model-reader failure projection.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum RiffPcm24Error {
     InvalidInput,
     BedMixExceedsPcm24Range,
+    UnsupportedBw64Container,
+    UnsupportedFormatTag(u16),
+    UnsupportedSampleRate(u32),
+    UnsupportedPcmBits(u16),
+    InvalidPcmFrameLayout,
 }
 
 impl RiffPcm24Error {
     pub const fn code(self) -> &'static str {
         match self {
+            Self::UnsupportedBw64Container => "UNSUPPORTED_BW64_CONTAINER",
+            Self::UnsupportedFormatTag(_) => "UNSUPPORTED_WAVE_FORMAT_TAG",
+            Self::UnsupportedSampleRate(_) => "UNSUPPORTED_SAMPLE_RATE",
+            Self::UnsupportedPcmBits(_) => "UNSUPPORTED_PCM_WIDTH",
+            Self::InvalidPcmFrameLayout => "INVALID_PCM_FRAME_LAYOUT",
             Self::InvalidInput => "INVALID_INPUT",
             Self::BedMixExceedsPcm24Range => "BED_MIX_EXCEEDS_PCM24_RANGE",
         }
     }
 }
 
-/// Number of complete interleaved frames returned by one PCM24 read.
+impl std::fmt::Display for RiffPcm24Error {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::UnsupportedBw64Container => formatter
+                .write_str("BW64 input detected. Supported WAVE containers are RIFF and RF64"),
+            Self::UnsupportedFormatTag(tag) => write!(
+                formatter,
+                "WAVE format tag {tag:#06x}. Expected signed integer PCM (0x0001)"
+            ),
+            Self::UnsupportedSampleRate(rate) => {
+                write!(formatter, "WAVE sample rate {rate} Hz. Expected 48000 Hz")
+            }
+            Self::UnsupportedPcmBits(bits) => write!(
+                formatter,
+                "WAVE PCM width {bits} bits. Supported widths are 16 and 24 bits"
+            ),
+            Self::InvalidPcmFrameLayout => formatter.write_str(
+                "WAVE channels, block alignment and byte rate must agree with the PCM width",
+            ),
+            error => formatter.write_str(error.code()),
+        }
+    }
+}
+
+/// Number of complete interleaved frames returned by one integer PCM read.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Pcm24FrameCount(u64);
 
@@ -277,7 +309,7 @@ impl PartialEq for RiffDataWindow<'_> {
 
 impl Eq for RiffDataWindow<'_> {}
 
-/// Parsed selected RIFF/PCM24 metadata and a borrowed data payload.
+/// Parsed selected integer PCM WAVE metadata and a borrowed data payload.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ParsedRiffPcm24<'a> {
     sample_rate_hz: u32,
@@ -333,7 +365,11 @@ impl<'a> ParsedRiffPcm24<'a> {
     }
 
     pub const fn block_align(&self) -> u16 {
-        self.channels() * 3
+        self.channels() * (self.pcm_bits() / 8)
+    }
+
+    pub const fn pcm_bits(&self) -> u16 {
+        (self.block_align / self.channels) * 8
     }
 
     pub const fn total_samples(&self) -> u64 {
@@ -404,7 +440,7 @@ impl<'a> ParsedRiffPcm24<'a> {
         })
     }
 
-    /// Converts one validated sample hop to 38 planar binary32 bit rows.
+    /// Converts one validated sample hop into planar binary32 samples.
     pub fn read_pcm24_hop(
         &self,
         first_sample: AdmSampleIndex,
@@ -570,47 +606,25 @@ fn decode_pcm24_read_chunk_with_layout(
     block_align: usize,
 ) -> Result<DecodedPcm24ReadChunk, RiffPcm24Error> {
     let actual_bytes = u32::try_from(read_bytes.len()).map_err(|_| RiffPcm24Error::InvalidInput)?;
-    if channels == 0 || block_align != channels.saturating_mul(3) || actual_bytes > requested_bytes
-    {
+    if channels == 0 || actual_bytes > requested_bytes || block_align % channels != 0 {
         return Err(RiffPcm24Error::InvalidInput);
     }
-
-    let actual_byte_count =
-        usize::try_from(actual_bytes).map_err(|_| RiffPcm24Error::InvalidInput)?;
-    let frame_count = actual_byte_count / block_align;
-    let complete_bytes = frame_count
-        .checked_mul(block_align)
-        .ok_or(RiffPcm24Error::InvalidInput)?;
+    let width = block_align / channels;
+    if !matches!(width, 2 | 3) {
+        return Err(RiffPcm24Error::InvalidPcmFrameLayout);
+    }
+    let frame_count = read_bytes.len() / block_align;
     let mut planar_f32_bits = (0..channels)
         .map(|_| Vec::with_capacity(frame_count))
         .collect::<Vec<_>>();
-
-    for frame in 0..frame_count {
-        let frame_offset = frame
-            .checked_mul(block_align)
-            .ok_or(RiffPcm24Error::InvalidInput)?;
-        for (channel, row) in planar_f32_bits.iter_mut().enumerate() {
-            let offset = frame_offset
-                .checked_add(channel * 3)
-                .ok_or(RiffPcm24Error::InvalidInput)?;
-            let sample_end = offset.checked_add(3).ok_or(RiffPcm24Error::InvalidInput)?;
-            if sample_end > complete_bytes {
-                return Err(RiffPcm24Error::InvalidInput);
-            }
-            let packed = &read_bytes[offset..sample_end];
-            let unsigned =
-                i32::from(packed[0]) | (i32::from(packed[1]) << 8) | (i32::from(packed[2]) << 16);
-            let signed = if unsigned & PCM24_SIGN_BIT != 0 {
-                unsigned - PCM24_MODULUS
+    for frame in read_bytes.chunks_exact(block_align) {
+        for (sample, row) in frame.chunks_exact(width).zip(&mut planar_f32_bits) {
+            let aligned = if width == 2 {
+                i32::from_le_bytes([0, 0, sample[0], sample[1]])
             } else {
-                unsigned
+                i32::from_le_bytes([0, sample[0], sample[1], sample[2]])
             };
-            let shifted = signed << 8;
-            let normalized = (shifted as f32) * PCM24_INT32_SCALE;
-            if !normalized.is_finite() {
-                return Err(RiffPcm24Error::InvalidInput);
-            }
-            row.push(normalized.to_bits());
+            row.push(((aligned as f32) * SIGNED_INT32_SCALE).to_bits());
         }
     }
 
@@ -636,7 +650,7 @@ fn unique_metadata_payload<'a>(
     Ok((chunk.payload(), chunk.payload_offset()))
 }
 
-/// Parses a 48 kHz PCM24 RIFF resource while preserving its actual channel count.
+/// Parses a 48 kHz PCM16 or PCM24 WAVE resource while preserving its actual channel count.
 ///
 /// This function accepts complete bytes and performs no filesystem I/O. It does not
 /// validate ADM/XML link semantics, extensible format, or native malformed-
@@ -724,6 +738,7 @@ fn walk_riff<'a>(
     }
     let declared_size = read_u32_le(&header[4..8])?;
     let (riff_size, rf64_data_size) = match &header[..4] {
+        b"BW64" => return Err(RiffPcm24Error::UnsupportedBw64Container),
         b"RIFF" => (u64::from(declared_size), None),
         b"RF64" => {
             // The mandatory ds64 prefix carries both extents. Reserved bytes may follow.
@@ -891,12 +906,6 @@ fn parse_selected_format(payload: &[u8]) -> Result<SelectedFormat, RiffPcm24Erro
     let byte_rate = read_u32_le(&payload[8..12])?;
     let block_align = read_u16_le(&payload[12..14])?;
     let bits_per_sample = read_u16_le(&payload[14..16])?;
-    let expected_block_align = u32::from(channels)
-        .checked_mul(u32::from(bits_per_sample / 8))
-        .ok_or(RiffPcm24Error::InvalidInput)?;
-    let expected_byte_rate = sample_rate_hz
-        .checked_mul(expected_block_align)
-        .ok_or(RiffPcm24Error::InvalidInput)?;
     // WAVE_FORMAT_EXTENSIBLE describes the same packed samples when its subtype is
     // KSDATAFORMAT_SUBTYPE_PCM (GUID fields in RIFF byte order). ADM CHNA/AXML, not the
     // optional speaker mask, provide the association between physical tracks and ADM roles.
@@ -906,19 +915,31 @@ fn parse_selected_format(payload: &[u8]) -> Result<SelectedFormat, RiffPcm24Erro
             let extension_len = usize::from(read_u16_le(&payload[16..18])?);
             extension_len >= 22
                 && extension_len <= payload.len() - 18
-                && read_u16_le(&payload[18..20])? == SELECTED_BITS_PER_SAMPLE
+                && read_u16_le(&payload[18..20])? == bits_per_sample
                 && payload[24..40] == PCM_SUBTYPE
         }
         _ => false,
     };
-    if !packed_pcm
-        || channels == 0
-        || sample_rate_hz != SELECTED_SAMPLE_RATE_HZ
-        || bits_per_sample != SELECTED_BITS_PER_SAMPLE
+    if !packed_pcm {
+        return Err(RiffPcm24Error::UnsupportedFormatTag(format_tag));
+    }
+    if !matches!(bits_per_sample, 16 | 24) {
+        return Err(RiffPcm24Error::UnsupportedPcmBits(bits_per_sample));
+    }
+    if sample_rate_hz != SELECTED_SAMPLE_RATE_HZ {
+        return Err(RiffPcm24Error::UnsupportedSampleRate(sample_rate_hz));
+    }
+    let expected_block_align = u32::from(channels)
+        .checked_mul(u32::from(bits_per_sample / 8))
+        .ok_or(RiffPcm24Error::InvalidInput)?;
+    let expected_byte_rate = sample_rate_hz
+        .checked_mul(expected_block_align)
+        .ok_or(RiffPcm24Error::InvalidInput)?;
+    if channels == 0
         || expected_block_align != u32::from(block_align)
         || expected_byte_rate != byte_rate
     {
-        return Err(RiffPcm24Error::InvalidInput);
+        return Err(RiffPcm24Error::InvalidPcmFrameLayout);
     }
     Ok(SelectedFormat {
         channels,

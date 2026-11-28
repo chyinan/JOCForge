@@ -84,7 +84,8 @@ pub fn read_frontend_pcm_callback(
     let physical_channel_count = usize::from(parsed_source.channels());
     if parsed_source.sample_rate_hz() != SELECTED_SAMPLE_RATE_HZ
         || physical_channel_count == 0
-        || usize::from(parsed_source.block_align()) != physical_channel_count * 3
+        || usize::from(parsed_source.block_align())
+            != physical_channel_count * usize::from(parsed_source.pcm_bits() / 8)
     {
         return Err(FrontendPcmSourceError::SelectedProfileMismatch);
     }

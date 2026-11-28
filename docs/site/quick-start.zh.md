@@ -8,9 +8,9 @@ cd JOCForge
 cargo install --path crates/jocforge-cli --locked
 ```
 
-RIFF/WAVE 输入使用 48 kHz、每个采样占 3 字节的 24 位整数 PCM。既支持普通 PCM，也支持 PCM 子类型的 `WAVE_FORMAT_EXTENSIBLE`（24 位容器、24 个有效位）；轨道关联仍以 ADM 元数据为准。
+CLI 支持 48 kHz、16 位或 24 位整数 PCM 的 ADM BWF。如果 audioTrackUID 声明了 bitDepth，其值须与 WAV 的实际位深一致。
 
-将 48 kHz ADM BWF 编码为默认 1024 kbps 的 5.1 音轨。JOCForge 要求绝对路径；`$PWD` 在 PowerShell 和 POSIX shell 中均可用：
+将 ADM BWF 编码为默认 1024 kbps 的 5.1 音轨。JOCForge 要求绝对路径；`$PWD` 在 PowerShell 和 POSIX shell 中均可用：
 
 ```sh
 jocforge encode "$PWD/input.adm.wav" "$PWD/output.ec3"

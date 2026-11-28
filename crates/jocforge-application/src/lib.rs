@@ -29,7 +29,9 @@ use jocforge_domain::frontend::{
         PrimaryMetadataControlError, PrimaryMetadataControlRows,
         produce_primary_metadata_control_rows,
     },
-    selected_adm_graph::{SelectedAdmGraph, SelectedAdmGraphError, parse_selected_adm_graph},
+    selected_adm_graph::{
+        SelectedAdmGraph, SelectedAdmGraphError, parse_selected_adm_graph_for_pcm,
+    },
 };
 pub use jocforge_domain::join_dsp_tasks;
 use jocforge_domain::meter::prepared_job_identity::{
@@ -346,11 +348,14 @@ impl PreparedJobInput {
             data_bytes
         } else {
             let physical_channels: usize = graph.bed_mix_sources().iter().map(Vec::len).sum();
-            let physical_stride = physical_channels as u64 * 3;
+            let bytes_per_sample = u64::from(self.configuration.wave().pcm_bits() / 8);
+            let physical_stride = physical_channels as u64 * bytes_per_sample;
             if data_bytes % physical_stride != 0 {
                 return Err(PreparedJobInputError::WaveTrackCountMismatch);
             }
-            (data_bytes / physical_stride) * u64::from(graph.receipt().physical_track_count()) * 3
+            (data_bytes / physical_stride)
+                * u64::from(graph.receipt().physical_track_count())
+                * bytes_per_sample
         };
         let binding = bind_admitted_selected_input(
             &self.configuration,
@@ -719,6 +724,8 @@ impl std::fmt::Display for PreparedJobInputError {
             Self::Configuration(error) => write!(formatter, "job configuration: {error:?}"),
             Self::SampleCount(error) => write!(formatter, "source sample count: {error:?}"),
             Self::GraphAdmission(error) => write!(formatter, "ADM graph admission: {error:?}"),
+            Self::GraphParse(SelectedAdmGraphError::UidBitDepthMismatch { track_index, xml_bits, wave_bits }) => write!(formatter,
+                "ADM physical track {track_index} declares XML bitDepth={xml_bits}, but WAVE PCM={wave_bits} bits. Re-export the ADM or correct the track UID bitDepth to match the stored PCM."),
             Self::GraphParse(error) => write!(formatter, "ADM graph parse: {error:?}"),
             Self::ConverterStorageMap(error) => {
                 write!(formatter, "ADM converter storage map: {error:?}")
@@ -809,8 +816,12 @@ pub fn prepare_selected_job_input(
         metadata_payloads.dbmd,
         metadata_payloads.dbmd_offset,
     )?;
-    let graph = parse_selected_adm_graph(metadata_payloads.axml, metadata_payloads.chna)
-        .map_err(PreparedJobInputError::GraphParse)?;
+    let graph = parse_selected_adm_graph_for_pcm(
+        metadata_payloads.axml,
+        metadata_payloads.chna,
+        wave.pcm_bits(),
+    )
+    .map_err(PreparedJobInputError::GraphParse)?;
     let logical_channels = graph.receipt().physical_track_count();
     let source_channels = if graph.bed_mix_sources().is_empty() {
         usize::from(logical_channels)

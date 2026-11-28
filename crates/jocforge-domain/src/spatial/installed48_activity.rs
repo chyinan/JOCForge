@@ -268,7 +268,7 @@ impl PrimaryInstalled48ActivityProducer {
         let binding = source_map.source_binding();
         let source_samples = binding.source_samples().value();
         let block_align = u64::from(binding.wave().channels())
-            .checked_mul(3)
+            .checked_mul(u64::from(binding.wave().pcm_bits() / 8))
             .ok_or(PrimaryActivityError::SourceExtent)?;
         if source_samples == 0
             || block_align == 0

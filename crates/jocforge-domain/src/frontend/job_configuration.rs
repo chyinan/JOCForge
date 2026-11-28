@@ -69,6 +69,10 @@ impl SelectedWaveDescriptor {
         self.channels
     }
 
+    pub const fn has_supported_pcm_width(self) -> bool {
+        matches!(self.pcm_bits, 16 | 24)
+    }
+
     pub const fn pcm_bits(self) -> u16 {
         self.pcm_bits
     }
@@ -541,7 +545,7 @@ impl SelectedJobConfiguration {
         let downmix = self.downmix;
         let mut identity = json!({
             "profile_dimensions": {
-                "authored_input": "selected_adm_bwf_pcm24_48khz",
+                "authored_input": if self.wave.pcm_bits() == 16 { "selected_adm_bwf_pcm16_48khz" } else { "selected_adm_bwf_pcm24_48khz" },
                 "core_carrier": "selected_5_1_six_carriers",
                 "joc_downmix": "mode0_phase1_index3",
                 "substream_topology": "single_independent_zero_dependent",
@@ -1255,7 +1259,7 @@ pub fn bind_admitted_selected_input(
     if wave.sample_rate_hz() != SELECTED_SAMPLE_RATE_HZ
         || wave.channels() == 0
         || wave.channels() > MAX_SELECTED_INPUT_CHANNELS
-        || wave.pcm_bits() != SELECTED_PCM_BITS
+        || !wave.has_supported_pcm_width()
         || identity.source_file_bytes == 0
         || identity.data_bytes != expected_data_bytes
         || identity.data_bytes > identity.source_file_bytes
@@ -1420,7 +1424,7 @@ pub fn parse_selected_job_configuration(
     let channel_count_supported = (1..=MAX_SELECTED_INPUT_CHANNELS).contains(&wave.channels);
     if wave.sample_rate_hz != SELECTED_SAMPLE_RATE_HZ
         || !channel_count_supported
-        || wave.pcm_bits != SELECTED_PCM_BITS
+        || !wave.has_supported_pcm_width()
     {
         return Err(JobConfigurationError::PcmProfile);
     }

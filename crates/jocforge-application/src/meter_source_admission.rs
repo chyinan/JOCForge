@@ -18,7 +18,6 @@ use jocforge_domain::{
 use crate::{PreparedJobInput, ResourceIdentity};
 
 const SELECTED_SAMPLE_RATE_HZ: u32 = 48_000;
-const SELECTED_PCM_BITS: u16 = 24;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum MeterSourceAdmissionError {
@@ -114,6 +113,7 @@ impl MeterSourceAdmissionReceipt {
             self.config_sha256,
             MeterSourceChannelCount::new(self.wave.channels()),
         )
+        .with_pcm_bits(self.wave.pcm_bits())
     }
 
     /// Confirms the receipt still names this exact prepared input and attempt.
@@ -225,7 +225,7 @@ pub fn admit_meter_source_owner(
     let physical_rows = usize::from(wave.channels());
     let source_channels = MeterSourceChannelCount::new(wave.channels());
     if wave.sample_rate_hz() != SELECTED_SAMPLE_RATE_HZ
-        || wave.pcm_bits() != SELECTED_PCM_BITS
+        || !wave.has_supported_pcm_width()
         || !source_channels.is_selected_profile_supported()
         || physical_rows != prepared.graph().graph().tracks().len()
     {

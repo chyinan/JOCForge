@@ -529,13 +529,13 @@ impl NormalControlAdmInputSnapshot {
         if !source_identity.input_kind.is_adm_bwf()
             || source_identity.source_samples == 0
             || wave.sample_rate_hz() != SELECTED_SAMPLE_RATE_HZ
-            || wave.pcm_bits() != SELECTED_PCM_BITS as u16
+            || !wave.has_supported_pcm_width()
             || wave.channels() == 0
             || usize::from(wave.channels()) > usize::from(u8::MAX) + 1
             || usize::from(wave.channels()) != physical_track_count
             || profile.sample_rate_hz != SELECTED_SAMPLE_RATE_HZ
             || profile.channels != u32::from(wave.channels())
-            || profile.pcm_bits != SELECTED_PCM_BITS
+            || profile.pcm_bits != u32::from(wave.pcm_bits())
             || profile.source_samples != source_identity.source_samples
             || profile.frame_samples != u32::try_from(NORMAL_CALLBACK_SAMPLES).unwrap_or(u32::MAX)
             || profile.bed_count != u32::try_from(BED_TRACK_COUNT).unwrap_or(u32::MAX)

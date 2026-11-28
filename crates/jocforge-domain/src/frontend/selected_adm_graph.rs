@@ -407,6 +407,15 @@ pub fn parse_selected_adm_graph(
     axml: &[u8],
     chna: &[u8],
 ) -> Result<SelectedAdmGraph, SelectedAdmGraphError> {
+    parse_selected_adm_graph_for_pcm(axml, chna, 24)
+}
+
+/// Parses the graph and checks declared UID sample widths against the WAVE format.
+pub fn parse_selected_adm_graph_for_pcm(
+    axml: &[u8],
+    chna: &[u8],
+    pcm_bits: u16,
+) -> Result<SelectedAdmGraph, SelectedAdmGraphError> {
     if contains_forbidden_xml_declaration(axml) {
         return Err(SelectedAdmGraphError::ForbiddenXmlDeclaration);
     }
@@ -459,7 +468,7 @@ pub fn parse_selected_adm_graph(
         if direct_track_format != record.track_format || direct_pack_format != record.pack_format {
             return Err(SelectedAdmGraphError::ChnaReferenceMismatch);
         }
-        validate_optional_uid_profile(uid_node)?;
+        validate_optional_uid_profile(uid_node, record.track_index, pcm_bits)?;
 
         let track_node = lookup(&track_format_nodes, &record.track_format)?;
         let stream_id = first_child_text(track_node, "audioStreamFormatIDRef", namespace)?;
@@ -817,6 +826,11 @@ pub enum SelectedAdmGraphError {
     BedPackDomain,
     BedMixTiming,
     BedMixGain,
+    UidBitDepthMismatch {
+        track_index: u16,
+        xml_bits: u32,
+        wave_bits: u16,
+    },
     BedLabel,
     LfeHost,
     SourceBindingDomain,
@@ -847,6 +861,7 @@ impl SelectedAdmGraphError {
             Self::BedDomain => "ADM_BED_DOMAIN",
             Self::BedPackDomain => "ADM_BED_PACK_DOMAIN",
             Self::BedMixTiming => "ADM_BED_MIX_TIMING",
+            Self::UidBitDepthMismatch { .. } => "ADM_UID_BIT_DEPTH_MISMATCH",
             Self::BedMixGain => "ADM_BED_MIX_EXPLICIT_GAIN",
             Self::BedLabel => "ADM_BED_LABEL",
             Self::LfeHost => "ADM_LFE_HOST",
@@ -1079,14 +1094,29 @@ fn single_object_by_id<'document, 'input>(
         .ok_or(SelectedAdmGraphError::ObjectAssociation)
 }
 
-fn validate_optional_uid_profile(uid: Node<'_, '_>) -> Result<(), SelectedAdmGraphError> {
-    for (attribute, expected) in [("sampleRate", 48_000_u32), ("bitDepth", 24_u32)] {
+fn validate_optional_uid_profile(
+    uid: Node<'_, '_>,
+    track_index: ChnaTrackIndex,
+    pcm_bits: u16,
+) -> Result<(), SelectedAdmGraphError> {
+    for (attribute, expected) in [
+        ("sampleRate", 48_000_u32),
+        ("bitDepth", u32::from(pcm_bits)),
+    ] {
         if let Some(value) = uid.attribute(attribute) {
             let parsed = value
                 .parse::<u32>()
                 .map_err(|_| SelectedAdmGraphError::SelectedTrackDomain)?;
             if parsed != expected {
-                return Err(SelectedAdmGraphError::SelectedTrackDomain);
+                return Err(if attribute == "bitDepth" {
+                    SelectedAdmGraphError::UidBitDepthMismatch {
+                        track_index: track_index.value(),
+                        xml_bits: parsed,
+                        wave_bits: pcm_bits,
+                    }
+                } else {
+                    SelectedAdmGraphError::SelectedTrackDomain
+                });
             }
         }
     }

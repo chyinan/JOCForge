@@ -188,7 +188,11 @@ fn riff_pcm24_cases_match_the_ten_selected_unit_vectors() {
                     "{}",
                     case["id"]
                 );
-                assert_eq!(expected["error_class"], error.code(), "{}", case["id"]);
+                if case["id"] == "U-RIFF-BAD-FMT" {
+                    assert!(matches!(error, RiffPcm24Error::UnsupportedFormatTag(_)));
+                } else {
+                    assert_eq!(expected["error_class"], error.code(), "{}", case["id"]);
+                }
             }
             ActualProjection::Accepted(actual) => {
                 assert_eq!(
@@ -500,4 +504,81 @@ fn matches_at(resource: &[u8], offset: u64, payload: &[u8]) -> bool {
                 .map(|end| resource.get(start..end) == Some(payload))
         })
         .unwrap_or(false)
+}
+
+#[test]
+fn pcm16_matches_left_aligned_pcm24_across_the_signed_sample_domain() {
+    fn wave(bits: u16) -> Vec<u8> {
+        let mut bytes = b"RIFF\0\0\0\0WAVE".to_vec();
+        let mut fmt = selected_format_payload();
+        let stride = bits / 8;
+        fmt[2..4].copy_from_slice(&1_u16.to_le_bytes());
+        fmt[8..12].copy_from_slice(&(48_000 * u32::from(stride)).to_le_bytes());
+        fmt[12..14].copy_from_slice(&stride.to_le_bytes());
+        fmt[14..16].copy_from_slice(&bits.to_le_bytes());
+        append_chunk(&mut bytes, *b"fmt ", &fmt);
+        let mut data = Vec::new();
+        for value in i16::MIN..=i16::MAX {
+            if bits == 24 {
+                data.push(0);
+            }
+            data.extend_from_slice(&value.to_le_bytes());
+        }
+        append_chunk(&mut bytes, *b"data", &data);
+        let size = (bytes.len() - 8) as u32;
+        bytes[4..8].copy_from_slice(&size.to_le_bytes());
+        bytes
+    }
+    let pcm16 = wave(16);
+    let pcm24 = wave(24);
+    let source16 = parse_selected_riff_pcm24(&pcm16, None).unwrap();
+    let source24 = parse_selected_riff_pcm24(&pcm24, None).unwrap();
+    assert_eq!(
+        (
+            source16.pcm_bits(),
+            source16.block_align(),
+            source16.total_samples()
+        ),
+        (16, 2, 65536)
+    );
+    let samples = source16
+        .read_pcm24_hop(AdmSampleIndex::new(0), 65536)
+        .unwrap();
+    assert_eq!(
+        samples,
+        source24
+            .read_pcm24_hop(AdmSampleIndex::new(0), 65536)
+            .unwrap()
+    );
+    for (value, bits) in (i16::MIN..=i16::MAX).zip(&samples[0]) {
+        assert_eq!(*bits, (f32::from(value) / 32768.0).to_bits());
+    }
+}
+
+#[test]
+fn wave_format_errors_identify_the_failed_field() {
+    let riff = selected_riff_with_metadata(false, false);
+    for (offset, replacement, expected) in [
+        (
+            0,
+            b"BW64".as_slice(),
+            RiffPcm24Error::UnsupportedBw64Container,
+        ),
+        (20, &[3, 0], RiffPcm24Error::UnsupportedFormatTag(3)),
+        (
+            24,
+            &44100_u32.to_le_bytes(),
+            RiffPcm24Error::UnsupportedSampleRate(44100),
+        ),
+        (34, &[32, 0], RiffPcm24Error::UnsupportedPcmBits(32)),
+        (32, &[2, 0], RiffPcm24Error::InvalidPcmFrameLayout),
+        (28, &[0, 0, 0, 0], RiffPcm24Error::InvalidPcmFrameLayout),
+    ] {
+        let mut invalid = riff.clone();
+        invalid[offset..offset + replacement.len()].copy_from_slice(replacement);
+        assert_eq!(
+            parse_selected_riff_pcm24(&invalid, None).unwrap_err(),
+            expected
+        );
+    }
 }

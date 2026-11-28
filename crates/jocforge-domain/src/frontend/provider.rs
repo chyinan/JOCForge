@@ -423,7 +423,7 @@ impl ValidatedF01EColdProvider {
         let config = &base.config;
         let codec_rate = configuration.selected_profile().codec_rate();
         if wave.sample_rate_hz() != config.sample_rate_hz
-            || wave.pcm_bits() != config.pcm_bits as u16
+            || !wave.has_supported_pcm_width()
             || codec_rate.kbps() != Some(configuration.bit_rate_kbps())
             || codec_rate.selector_code() != Some(configuration.bit_rate_enum())
             || u32::from(configuration.layout_enum()) != config.layout_enum
@@ -446,6 +446,7 @@ impl ValidatedF01EColdProvider {
         value.schema = "F01E_ADM_INPUT_COLD_PROJECTION_V1";
         value.callback_index = 0;
         value.config.channels = u32::from(wave.channels());
+        value.config.pcm_bits = u32::from(wave.pcm_bits());
         value.config.source_samples = configuration.source_samples();
         value.config.bit_rate_kbps = configuration.bit_rate_kbps();
         value.config.bit_rate_enum = u32::from(configuration.bit_rate_enum());

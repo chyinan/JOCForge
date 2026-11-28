@@ -867,7 +867,7 @@ fn atmos_mezz_configuration_accepts_authorized_36_and_38_row_metadata_dimensions
         (48_000, 0, 24),
         (48_000, 257, 24),
         (44_100, 36, 24),
-        (48_000, 36, 16),
+        (48_000, 36, 32),
     ] {
         let descriptor = &atmos_mezz_case["pcm_descriptor"];
         let result = parse_selected_job_configuration(

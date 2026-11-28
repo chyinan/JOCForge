@@ -39,7 +39,11 @@ pub fn prepare_selected_adm_bwf_input(
     let metadata = parsed
         .selected_adm_payloads()
         .map_err(SelectedAdmPreparationError::MetadataSelection)?;
-    let wave = SelectedWaveDescriptor::new(parsed.sample_rate_hz(), parsed.channels(), 24);
+    let wave = SelectedWaveDescriptor::new(
+        parsed.sample_rate_hz(),
+        parsed.channels(),
+        parsed.pcm_bits(),
+    );
     let data_bytes = parsed
         .total_samples()
         .checked_mul(u64::from(parsed.block_align()))

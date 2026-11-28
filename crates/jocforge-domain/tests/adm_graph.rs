@@ -612,3 +612,32 @@ fn bed_mix_preserves_object_dbmd_and_rejects_disagreeing_bed_fields() {
         Err(DbmdSectionError::BedFieldMismatch)
     );
 }
+
+#[test]
+fn optional_uid_depth_matches_the_wave_format() {
+    use jocforge_domain::frontend::selected_adm_graph::{
+        SelectedAdmGraphError, parse_selected_adm_graph_for_pcm,
+    };
+    let xml = std::str::from_utf8(AXML).unwrap();
+    let declared16 = xml.replace(r#"bitDepth="24""#, r#"bitDepth="16""#);
+    let omitted = xml.replace(r#"bitDepth="24""#, "");
+    assert!(parse_selected_adm_graph_for_pcm(declared16.as_bytes(), CHNA, 16).is_ok());
+    assert!(parse_selected_adm_graph_for_pcm(omitted.as_bytes(), CHNA, 16).is_ok());
+    assert!(parse_selected_adm_graph_for_pcm(omitted.as_bytes(), CHNA, 24).is_ok());
+    assert_eq!(
+        parse_selected_adm_graph_for_pcm(AXML, CHNA, 16).unwrap_err(),
+        SelectedAdmGraphError::UidBitDepthMismatch {
+            track_index: 1,
+            xml_bits: 24,
+            wave_bits: 16
+        }
+    );
+    assert_eq!(
+        parse_selected_adm_graph_for_pcm(declared16.as_bytes(), CHNA, 24).unwrap_err(),
+        SelectedAdmGraphError::UidBitDepthMismatch {
+            track_index: 1,
+            xml_bits: 16,
+            wave_bits: 24
+        }
+    );
+}

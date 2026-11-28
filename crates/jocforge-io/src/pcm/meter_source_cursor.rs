@@ -24,7 +24,7 @@ fn source_channel_count_from_selected_source(
     let channels = source.channels();
     if source.sample_rate_hz() != 48_000
         || !MeterSourceChannelCount::new(channels).is_selected_profile_supported()
-        || channels.checked_mul(3) != Some(source.block_align())
+        || channels.checked_mul(source.pcm_bits() / 8) != Some(source.block_align())
     {
         return Err(MeterSourceCursorError::SourceProfileMismatch);
     }

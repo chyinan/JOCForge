@@ -987,18 +987,16 @@ fn validate_selected_source_binding(
     if !(MIN_PROFILE_PHYSICAL_HOST_COUNT..=MAX_PROFILE_PHYSICAL_HOST_COUNT).contains(&channels) {
         return Err(Installed48SourceMapError::SourceExtent);
     }
-    let block_align = u64::try_from(
-        channels
-            .checked_mul(3)
-            .ok_or(Installed48SourceMapError::SourceExtent)?,
-    )
-    .map_err(|_| Installed48SourceMapError::SourceExtent)?;
+    if !binding.wave().has_supported_pcm_width() {
+        return Err(Installed48SourceMapError::SourceExtent);
+    }
+    let block_align =
+        u64::from(binding.wave().channels()) * u64::from(binding.wave().pcm_bits() / 8);
     let sample_count = binding.data_bytes() / block_align;
     if binding.data_bytes() % block_align != 0
         || binding.data_bytes() > binding.source_file_bytes()
         || sample_count != binding.file_samples()
         || binding.wave().sample_rate_hz() != 48_000
-        || binding.wave().pcm_bits() != 24
     {
         return Err(Installed48SourceMapError::SourceExtent);
     }
