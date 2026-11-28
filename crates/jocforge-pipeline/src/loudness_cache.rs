@@ -50,8 +50,14 @@ static PARAMETER_HASH: LazyLock<[u8; 32]> = LazyLock::new(|| {
 });
 
 fn cache_key(prepared: &PreparedJobInput) -> [u8; 32] {
+    // Old LeqA records can omit a terminal half block. Other profiles are unchanged.
+    let revision = if prepared.configuration().loudness().metering_mode() == "LeqA" {
+        "adm-loudness-v1-leqa-programme-span-v2"
+    } else {
+        METER_REVISION
+    };
     let identity = (
-        METER_REVISION,
+        revision,
         env!("CARGO_PKG_VERSION"),
         env::consts::ARCH,
         env::consts::OS,

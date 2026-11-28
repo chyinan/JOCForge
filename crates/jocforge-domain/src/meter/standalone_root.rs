@@ -987,7 +987,7 @@ impl StandaloneMeterRoot {
             post_render.integrated_meter(),
             post_render.ungated_mean(),
             self.prepass.post_render_parameters().use_ungated_loudness,
-            post_render.a_weighted_level(),
+            post_render.a_weighted_level(self.prepass.post_render_parameters().use_a_weighting),
             post_render.dialogue_result(self.prepass.post_render_parameters()),
         )
         .map_err(StandaloneMeterRootError::Measurement)?;
@@ -1012,7 +1012,7 @@ impl StandaloneMeterRoot {
             post_render.integrated_meter(),
             post_render.ungated_mean(),
             self.prepass.post_render_parameters().use_ungated_loudness,
-            post_render.a_weighted_level(),
+            post_render.a_weighted_level(self.prepass.post_render_parameters().use_a_weighting),
             post_render.dialogue_result(self.prepass.post_render_parameters()),
         )
         .map_err(StandaloneMeterRootError::Measurement)?;

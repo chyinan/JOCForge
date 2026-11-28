@@ -276,3 +276,63 @@ fn xml_downmix_reaches_both_ac3_core_paths() {
         }
     }
 }
+
+#[test]
+fn leqa_measures_a_burst_in_the_last_half_block() {
+    let dir = tempfile::tempdir().unwrap();
+    let path = dir.path();
+    let xml: serde_json::Value = serde_json::from_str(include_str!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    ))
+    .unwrap();
+    let xml = xml["config_cases"][0]["input_xml"]
+        .as_str()
+        .unwrap()
+        .replace(
+            "<path>fixture</path>",
+            &format!("<path>{}</path>", path.display()),
+        )
+        .replace(">1770-4<", ">LeqA<")
+        .replace(">1024<", ">384<");
+    let job = path.join("job.xml");
+    let dialnorm = |ms: usize, source_start: usize| {
+        let output = format!("out-{ms}-{source_start}.ec3");
+        fs::write(&job, xml.replace("out.ec3", &output)).unwrap();
+        let mut cue = synthetic_adm::synthetic_cue(ms);
+        // The original fixture's final chunk is interleaved PCM24, 11 channels.
+        let data_offset = cue.len() - ms * 48 * 33;
+        assert_eq!(&cue[data_offset - 8..data_offset - 4], b"data");
+        let pcm = &mut cue[data_offset..];
+        pcm.fill(0);
+        for sample in 0..512 {
+            let pos = (source_start + sample) * 33;
+            let pulse =
+                (3_100_000.0 * (std::f64::consts::TAU * sample as f64 / 48.0).sin()).round() as i32;
+            pcm[pos..pos + 3].copy_from_slice(&pulse.to_le_bytes()[..3]);
+        }
+        fs::write(path.join("input.wav"), cue).unwrap();
+        let out = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+            .arg("encode")
+            .arg("--job-xml")
+            .arg(&job)
+            .env("JOCFORGE_CACHE_DIR", path.join("cache"))
+            .output()
+            .unwrap();
+        assert!(
+            out.status.success(),
+            "{}",
+            String::from_utf8_lossy(&out.stderr)
+        );
+        let ec3 = fs::read(path.join(output)).unwrap();
+        assert_eq!(&ec3[..2], &[0x0b, 0x77]);
+        ((ec3[5] & 7) << 2) | (ec3[6] >> 6)
+    };
+    let early = dialnorm(32, 0);
+    let late = dialnorm(32, 1024);
+    assert!(late < 31, "terminal tone was measured as silence");
+    assert_eq!(early, late);
+    // The extra millisecond is programme silence; the rest of its callback is not.
+    assert_eq!(dialnorm(33, 1024), late);
+    // Adding an equal duration of digital silence halves the mean energy.
+    assert_eq!(dialnorm(64, 1024), late + 3);
+}
