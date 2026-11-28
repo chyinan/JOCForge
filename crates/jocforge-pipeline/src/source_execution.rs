@@ -546,6 +546,7 @@ pub(crate) fn stage_source_frame<'pcm>(
             }
             let binding = binding
                 .with_programme_levels(d0_bsi_inputs.dialnorm(), d0_bsi_inputs.compr())
+                .with_downmix(d0_bsi_inputs.mixing())
                 .with_surround_ex(surround_ex);
             let expected_source_generation_receipt = flat7x_d0_source_generation_receipt
                 .as_ref()

@@ -6,6 +6,7 @@ use jocforge_domain::{
         ac3_audio_block::{
             I0AudioBlockSeriesCandidate, I0AudioBlockSeriesError, produce_i0_audio_block_series,
         },
+        ac3_bsi_tail::Flat7xI0ObservedBsiTailValues,
         access_unit_composer::{
             Flat7xI0D0AuCandidate, Flat7xI0D0AuCandidateError,
             assemble_flat7x_i0_d0_au_candidate_with_tail_policy,
@@ -17,9 +18,10 @@ use jocforge_domain::{
             Flat7xD0PcmFrameInput, Flat7xD0PcmSourceError, produce_flat7x_d0_frame_from_pcm_source,
             stage_d0_blocks_with_strategy,
         },
+        frame_builder::Flat7xD0MixingMetadataValues,
         i0_frame_assembler::{
             Flat7xI0Ac3AudioSeriesFrameCandidate, Flat7xI0Ac3FrameHeaderFields,
-            assemble_flat7x_i0_audio_with_header,
+            assemble_flat7x_i0_audio_with_bsi,
         },
         selected_frame_trial::SelectedSourceNumericPlan,
     },
@@ -87,14 +89,14 @@ pub fn encode_ac3_core(
                 Err(I0AudioBlockSeriesError::AudioBlockBudgetExceeded { .. }) => continue,
                 Err(e) => return Err(format!("AC-3 audio blocks: {e:?}")),
             };
-        match assemble_flat7x_i0_audio_with_header(
+        match assemble_flat7x_i0_audio_with_bsi(
             Flat7xI0D0TargetPlan::approved_contract(),
             numeric.identity(),
             &series,
             I0AuxDataInput::PadToFrame,
             CallerOwnedI0CrcrsvSeed { value: false },
             header,
-            bsi.mixing().mixmdo,
+            Flat7xI0ObservedBsiTailValues::new(bsi.mixing(), SurroundExMode::default()),
         ) {
             Ok(frame) => return Ok(*frame.frame_bytes()),
             Err(Flat7xI0FrameAssemblyError::FrameSpanMismatch {
@@ -392,6 +394,7 @@ pub fn require_flat7x_d0_frame_input<'a>(
 #[must_use]
 #[derive(Clone)]
 pub struct Flat7xPairSourceBinding<'pcm> {
+    i0_mixing: Flat7xD0MixingMetadataValues,
     surround_ex: SurroundExMode,
     i0_header: Flat7xI0Ac3FrameHeaderFields,
     resolved_profile: ResolvedEncodingProfile,
@@ -405,6 +408,11 @@ pub struct Flat7xPairSourceBinding<'pcm> {
 }
 
 impl Flat7xPairSourceBinding<'_> {
+    pub fn with_downmix(mut self, mixing: Flat7xD0MixingMetadataValues) -> Self {
+        self.i0_mixing = mixing;
+        self
+    }
+
     pub fn with_surround_ex(mut self, mode: SurroundExMode) -> Self {
         self.surround_ex = mode;
         self
@@ -843,18 +851,16 @@ fn assemble_flat7x_i0_frame_candidate_from_series(
         return Err(Flat7xPairSourceError::D0Block2SourceIdentityMismatch);
     }
 
-    let i0_frame =
-        jocforge_domain::codec::i0_frame_assembler::assemble_flat7x_i0_audio_with_surround_ex(
-            binding.target,
-            binding.role_map_receipt.shared_analysis_identity(),
-            i0_audio_blocks,
-            auxdata,
-            crcrsv_seed,
-            binding.i0_header,
-            2, // Lo/Ro for the horizontal programme mix.
-            binding.surround_ex,
-        )
-        .map_err(Flat7xPairSourceError::I0FrameAssembly)?;
+    let i0_frame = assemble_flat7x_i0_audio_with_bsi(
+        binding.target,
+        binding.role_map_receipt.shared_analysis_identity(),
+        i0_audio_blocks,
+        auxdata,
+        crcrsv_seed,
+        binding.i0_header,
+        Flat7xI0ObservedBsiTailValues::new(binding.i0_mixing, binding.surround_ex),
+    )
+    .map_err(Flat7xPairSourceError::I0FrameAssembly)?;
 
     Ok(Flat7xPairI0FrameCandidate {
         resolved_profile: binding.resolved_profile,
@@ -1015,6 +1021,7 @@ pub fn bind_flat7x_pair_source<'pcm>(
         return Err(Flat7xPairSourceError::SourceIdentityMismatch);
     }
     Ok(Flat7xPairSourceBinding {
+        i0_mixing: Flat7xD0MixingMetadataValues::minus_three_db(2),
         surround_ex: SurroundExMode::default(),
         i0_header: Flat7xI0Ac3FrameHeaderFields::official_demo_sample_non_crc_fields(),
         resolved_profile: profile,
