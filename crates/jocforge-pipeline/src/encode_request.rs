@@ -621,7 +621,10 @@ fn run_job_xml_preflight(
     )
     .map_err(EncodeRequestError::PreparedInput)?;
     let parsed = parsed
-        .with_bed_mix(prepared.graph().graph().bed_mix_sources())
+        .with_adm_channel_projection(
+            prepared.graph().graph().bed_mix_sources(),
+            prepared.graph().graph().unused_file_channels(),
+        )
         .map_err(EncodeRequestError::Riff)?
         .with_render_timeline(prepared.configuration().render_timeline())
         .map_err(EncodeRequestError::Riff)?;
@@ -1522,7 +1525,10 @@ fn run_inner(
     }
     let data_rate_kbps = prepared.configuration().bit_rate_kbps();
     let parsed = parsed
-        .with_bed_mix(prepared.graph().graph().bed_mix_sources())
+        .with_adm_channel_projection(
+            prepared.graph().graph().bed_mix_sources(),
+            prepared.graph().graph().unused_file_channels(),
+        )
         .map_err(EncodeRequestError::Riff)?
         .with_render_timeline(prepared.configuration().render_timeline())
         .map_err(EncodeRequestError::Riff)?;

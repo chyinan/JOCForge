@@ -332,9 +332,30 @@ impl<'a> ParsedRiffPcm24<'a> {
         self.sample_rate_hz
     }
 
-    pub fn with_bed_mix(mut self, sources: &[Vec<u8>]) -> Result<Self, RiffPcm24Error> {
-        if !sources.is_empty() {
+    pub fn with_bed_mix(self, sources: &[Vec<u8>]) -> Result<Self, RiffPcm24Error> {
+        self.with_adm_channel_projection(sources, &[])
+    }
+
+    /// Maps original WAVE channels to rendered lanes and accounts for explicit
+    /// unused CHNA channels without changing the physical read stride.
+    pub fn with_adm_channel_projection(
+        mut self,
+        sources: &[Vec<u8>],
+        unused: &[u8],
+    ) -> Result<Self, RiffPcm24Error> {
+        if !sources.is_empty() || !unused.is_empty() {
+            if sources.is_empty() {
+                return Err(RiffPcm24Error::InvalidInput);
+            }
             let mut used = vec![false; usize::from(self.channels)];
+            for &host in unused {
+                let slot = used
+                    .get_mut(usize::from(host))
+                    .ok_or(RiffPcm24Error::InvalidInput)?;
+                if std::mem::replace(slot, true) {
+                    return Err(RiffPcm24Error::InvalidInput);
+                }
+            }
             for inputs in sources {
                 if inputs.is_empty() {
                     return Err(RiffPcm24Error::InvalidInput);
