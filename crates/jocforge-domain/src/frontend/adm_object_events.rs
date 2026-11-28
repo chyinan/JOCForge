@@ -238,7 +238,8 @@ pub(crate) fn admit_selected_object_events(
             .first()
             .ok_or(SelectedAdmObjectEventError::MissingBlockField)?;
         let object_start = timestamp_to_sample_index(&first.object_start, SAMPLE_RATE_HZ)?;
-        let object_duration = timestamp_to_sample_index(&first.object_duration, SAMPLE_RATE_HZ)?;
+        let object_end = parse_timestamp(&first.object_duration, SAMPLE_RATE_HZ)?;
+        let object_duration = object_end.sample;
         if object_start.value() != 0 {
             return Err(SelectedAdmObjectEventError::InvalidTimestamp);
         }
@@ -251,17 +252,33 @@ pub(crate) fn admit_selected_object_events(
             return Err(SelectedAdmObjectEventError::ProgrammeNotCovered);
         }
         let mut timeline = Vec::with_capacity(blocks.len());
-        let mut end = 0;
-        for block in blocks {
-            let start = timestamp_to_sample_index(&block.block_rtime, SAMPLE_RATE_HZ)?.value();
-            let duration =
-                timestamp_to_sample_index(&block.block_duration, SAMPLE_RATE_HZ)?.value();
-            if start != end || duration == 0 {
+        let mut start_time = parse_timestamp(&first.block_rtime, SAMPLE_RATE_HZ)?;
+        let boundaries = blocks
+            .iter()
+            .skip(1)
+            .map(|b| parse_timestamp(&b.block_rtime, SAMPLE_RATE_HZ))
+            .chain(std::iter::once(Ok(object_end)));
+        // Preserve timelines already contiguous in samples. For decimal video-frame
+        // times, rounding each duration separately can lose/gain a sample: accept
+        // those only when the entire authored timeline meets exactly in microseconds.
+        let mut sample_contiguous = start_time.sample.value() == 0;
+        let mut authored_contiguous = start_time.micros == 0;
+        for (block, next) in blocks.iter().zip(boundaries) {
+            let next = next?;
+            let length = parse_timestamp(&block.block_duration, SAMPLE_RATE_HZ)?;
+            let start = start_time.sample.value();
+            let duration = next
+                .sample
+                .value()
+                .checked_sub(start)
+                .filter(|&width| width != 0)
+                .ok_or(SelectedAdmObjectEventError::DurationMismatch)?;
+            sample_contiguous &= duration == length.sample.value();
+            authored_contiguous &= start_time.micros + length.micros == next.micros;
+            start_time = next;
+            if !sample_contiguous && !authored_contiguous {
                 return Err(SelectedAdmObjectEventError::DurationMismatch);
             }
-            end = start
-                .checked_add(duration)
-                .ok_or(SelectedAdmObjectEventError::TimestampOutOfRange)?;
             if block.cartesian.as_deref() != Some("1") {
                 return Err(SelectedAdmObjectEventError::InvalidCartesianMode);
             }
@@ -293,9 +310,6 @@ pub(crate) fn admit_selected_object_events(
                 target,
             });
         }
-        if end != object_duration.value() {
-            return Err(SelectedAdmObjectEventError::DurationMismatch);
-        }
         let initial = timeline[0];
         let control = if let Some(mapping) = edit {
             sample_object_blocks(initial.target, &timeline, mapping.object_sample(0))
@@ -321,11 +335,24 @@ pub(crate) fn admit_selected_object_events(
     Ok(AdmittedSelectedObjectEvents(admitted))
 }
 
+#[derive(Clone, Copy)]
+struct AdmTimestamp {
+    sample: AdmSampleIndex,
+    micros: u128,
+}
+
 /// Implements F01G.4's binary64 operation sequence and returns an ADM sample index.
 pub fn timestamp_to_sample_index(
     timestamp: &str,
     sample_rate: u32,
 ) -> Result<AdmSampleIndex, SelectedAdmObjectEventError> {
+    Ok(parse_timestamp(timestamp, sample_rate)?.sample)
+}
+
+fn parse_timestamp(
+    timestamp: &str,
+    sample_rate: u32,
+) -> Result<AdmTimestamp, SelectedAdmObjectEventError> {
     if sample_rate == 0 {
         return Err(SelectedAdmObjectEventError::TimestampOutOfRange);
     }
@@ -401,7 +428,11 @@ pub fn timestamp_to_sample_index(
     }
     #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
     let sample = rounded_samples.trunc() as u64;
-    Ok(AdmSampleIndex::new(sample))
+    Ok(AdmTimestamp {
+        sample: AdmSampleIndex::new(sample),
+        micros: (u128::from(whole_seconds) + u128::from(seconds)) * 1_000_000
+            + u128::from(fractional_microseconds),
+    })
 }
 
 fn is_ascii_digits(value: &str) -> bool {
@@ -553,6 +584,57 @@ mod tests {
             admit_selected_object_events(&tracks, samples, None).unwrap_err(),
             super::SelectedAdmObjectEventError::DurationMismatch
         );
+    }
+
+    #[test]
+    fn admits_contiguous_fractional_blocks_without_accumulating_rounding() {
+        fn timeline(xml: &str) -> Result<Vec<(u64, u64)>, super::SelectedAdmObjectEventError> {
+            let document = roxmltree::Document::parse(xml).unwrap();
+            let object = document.root_element();
+            let blocks = object
+                .children()
+                .filter(roxmltree::Node::is_element)
+                .map(|block| {
+                    RawAdmObjectEvent::from_xml(
+                        10,
+                        "track".into(),
+                        "object".into(),
+                        object,
+                        block,
+                        None,
+                    )
+                })
+                .collect::<Result<Vec<_>, _>>()?;
+            let result =
+                admit_selected_object_events(&[blocks], AdmSampleCount::new(4805).unwrap(), None)?;
+            let event = &result.events()[0];
+            let mut blocks = vec![(0, event.block_duration().value())];
+            blocks.extend(event.timeline.iter().map(|b| (b.start, b.ramp_samples)));
+            Ok(blocks)
+        }
+        let xml = r#"<audioObject start="00:00:00" duration="00:00:00.100100">
+            <audioBlockFormat rtime="00:00:00" duration="00:00:00.033367"><cartesian>1</cartesian></audioBlockFormat>
+            <audioBlockFormat rtime="00:00:00.033367" duration="00:00:00.033366"><cartesian>1</cartesian></audioBlockFormat>
+            <audioBlockFormat rtime="00:00:00.066733" duration="00:00:00.033367"><cartesian>1</cartesian></audioBlockFormat>
+        </audioObject>"#;
+        assert_eq!(
+            timeline(xml).unwrap(),
+            [(0, 1602), (1602, 1601), (3203, 1602)]
+        );
+        // Preserve an existing sample-contiguous timeline even when the lexical
+        // endpoints disagree by a microsecond.
+        let legacy = xml
+            .replace(".033367", ".033375")
+            .replace(".033366", ".033353")
+            .replace(".066733", ".066729");
+        assert_eq!(timeline(&legacy).unwrap(), timeline(xml).unwrap());
+        // A real authored gap/overlap is not a rounding fix.
+        for duration in [".033365", ".033368"] {
+            assert_eq!(
+                timeline(&xml.replace(".033366", duration)),
+                Err(super::SelectedAdmObjectEventError::DurationMismatch)
+            );
+        }
     }
 
     #[test]

@@ -27,7 +27,7 @@
 
 ## 音频元数据
 
-Line 和 RF 的 DRC 互相独立。每一边可以是 `film_light`、`film_standard`、`music_standard`、`music_light` 或 `none`。默认组合保持编码器原有的输出。四个下混电平和优先下混模式会写入码流。
+Line 和 RF 的 DRC 互相独立。每一边可以是 `film_light`、`film_standard`、`music_standard`、`music_light` 或 `none`。默认组合保持编码器原有的输出。四个下混电平和优先下混模式会写入码流。对于 Flat 7.1 和 legacy AC-3 封装，单独播放的 AC-3 核心流也会携带这些设置。
 
 响度测量可以选用无门限的 BS.1770-1，有门限的 BS.1770-2、BS.1770-3、BS.1770-4，或 LeqA。当前 5.1 测量里，BS.1770-2、-3 和 -4 共用同一套门限算法。打开对白检测后，Earshot 标出语音。语音占比达到阈值时报告对白响度，低于阈值时报告节目响度。LeqA 会计入末尾不足一个测量块的节目采样，显式要求添加的静音属于节目，内部回调补齐的静音不属于节目。
 

@@ -190,6 +190,94 @@ fn relative_loudness_cache_override_stays_under_the_working_directory() {
 }
 
 #[test]
+fn xml_downmix_reaches_both_ac3_core_paths() {
+    let vectors: serde_json::Value = serde_json::from_slice(include_bytes!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    ))
+    .unwrap();
+    for args in [
+        &["--joc-layout", "flat7x"][..],
+        &["--joc-layout", "idx0", "--carriage", "legacy-ac3"][..],
+    ] {
+        let dir = tempfile::tempdir().unwrap();
+        let out = dir.path().join("out");
+        fs::create_dir(&out).unwrap();
+        fs::write(
+            dir.path().join("input.wav"),
+            synthetic_adm::synthetic_cue(64),
+        )
+        .unwrap();
+        let xml_path = |p: &std::path::Path| {
+            p.to_str()
+                .unwrap()
+                .replace('&', "&amp;")
+                .replace('<', "&lt;")
+        };
+        let job = dir.path().join("job.xml");
+        let xml = vectors["config_cases"][0]["input_xml"]
+            .as_str()
+            .unwrap()
+            .replacen(
+                "<path>fixture</path>",
+                &format!("<path>{}</path>", xml_path(dir.path())),
+                1,
+            )
+            .replace(
+                "<path>fixture</path>",
+                &format!("<path>{}</path>", xml_path(&out)),
+            )
+            .replace("out.ec3", "mix.candidate.ec3")
+            .replace("<data_rate>1024", "<data_rate>640")
+            .replace(
+                "<preferred_downmix_mode>loro",
+                "<preferred_downmix_mode>ltrt-pl2",
+            )
+            .replace("<ltrt_center_mix_level>-3", "<ltrt_center_mix_level>+3")
+            .replace(
+                "<ltrt_surround_mix_level>-3",
+                "<ltrt_surround_mix_level>-4.5",
+            )
+            .replace("<loro_center_mix_level>-3", "<loro_center_mix_level>-1.5")
+            .replace(
+                "<loro_surround_mix_level>-3",
+                "<loro_surround_mix_level>-inf",
+            );
+        fs::write(&job, xml).unwrap();
+        let result = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+            .args(["encode", "--job-xml"])
+            .arg(job)
+            .args(args)
+            .env("JOCFORGE_CACHE_DIR", dir.path().join("cache"))
+            .output()
+            .unwrap();
+        assert!(
+            result.status.success(),
+            "{}",
+            String::from_utf8_lossy(&result.stderr)
+        );
+        let stream = fs::read(out.join("mix.candidate.ec3")).unwrap();
+        assert_eq!(stream.len(), 2 * 5120);
+        for au in stream.chunks_exact(5120) {
+            assert_eq!(&au[..2], &[0x0b, 0x77]);
+            assert_eq!(au[5] >> 3, 6); // alternate AC-3 BSI
+            let mut pos = if au[7] & 4 == 0 { 62 } else { 70 }; // after optional compr
+            let mut bits = |n: usize| -> u8 {
+                let value =
+                    (pos..pos + n).fold(0, |v, i| (v << 1) | ((au[i / 8] >> (7 - i % 8)) & 1));
+                pos += n;
+                value
+            };
+            assert_eq!(bits(5), 0b00111); // no langcode/audprod; copyright, original, xbsi1
+            // Annex D order: dmixmod, Lt/Rt center and surround, Lo/Ro center and surround.
+            assert_eq!(
+                [bits(2), bits(3), bits(3), bits(3), bits(3)],
+                [3, 0, 5, 3, 7]
+            );
+        }
+    }
+}
+
+#[test]
 fn leqa_measures_a_burst_in_the_last_half_block() {
     let dir = tempfile::tempdir().unwrap();
     let path = dir.path();
