@@ -70,7 +70,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          "./target/${{ matrix.target }}/release/${{ matrix.bin }}" --version
+          version_line=$("./target/${{ matrix.target }}/release/${{ matrix.bin }}" --version)
+          printf '%s\n' "$version_line"
+          test "${version_line%$'\r'}" = "jocforge $VERSION"
 
       - name: Package (unix)
         if: matrix.archive == 'tar.gz'
@@ -87,9 +89,10 @@ jobs:
           ==========================================
           jocforge.exe / jocforge: selected ADM BWF -> E-AC-3 JOC encoder
           Quick start
-            jocforge --help
-            jocforge encode INPUT.adm.wav OUTPUT.candidate.ec3 --data-rate 1024
-            jocforge encode INPUT.adm.wav OUTPUT.candidate.ec3 --joc-layout flat7x
+            ./jocforge --help
+            ./jocforge encode "\$PWD/INPUT.adm.wav" "\$PWD/OUTPUT.candidate.ec3" --data-rate 1024
+            mkdir "\$PWD/flat7x-output"
+            ./jocforge encode "\$PWD/INPUT.adm.wav" "\$PWD/flat7x-output/OUTPUT.candidate.ec3" --joc-layout flat7x
           EOF
           tar -C dist -czf "dist/${name}.tar.gz" "${name}"
           rm -rf "$stage"
@@ -109,9 +112,10 @@ jobs:
           ==========================================
           jocforge.exe: selected ADM BWF -> E-AC-3 JOC encoder
           Quick start
-            jocforge.exe --help
-            jocforge.exe encode INPUT.adm.wav OUTPUT.candidate.ec3 --data-rate 1024
-            jocforge.exe encode INPUT.adm.wav OUTPUT.candidate.ec3 --joc-layout flat7x
+            .\jocforge.exe --help
+            .\jocforge.exe encode "`$PWD/INPUT.adm.wav" "`$PWD/OUTPUT.candidate.ec3" --data-rate 1024
+            mkdir "`$PWD/flat7x-output"
+            .\jocforge.exe encode "`$PWD/INPUT.adm.wav" "`$PWD/flat7x-output/OUTPUT.candidate.ec3" --joc-layout flat7x
           "@ | Set-Content "$stage/USAGE.txt" -Encoding utf8
           Compress-Archive -Path "$stage/*" -DestinationPath "dist/$name.zip"
           Remove-Item -Recurse -Force $stage
@@ -130,6 +134,12 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Check out the release notes at the tagged revision
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+          persist-credentials: false
+
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
@@ -142,8 +152,16 @@ jobs:
           TAG: ${{ inputs.tag || github.ref_name }}
         run: |
           set -euo pipefail
-          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 \
-            || gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --generate-notes --title "$TAG"
-          ls -l dist
-          gh release upload "$TAG" dist/*.zip dist/*.tar.gz dist/*.sha256 --repo "$GITHUB_REPOSITORY" --clobber
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" dist/*.zip dist/*.tar.gz dist/*.sha256 --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            notes="docs/releases/$TAG.md"
+            if [[ -s "$notes" ]]; then
+              note_args=(--notes-file "$notes")
+            else
+              note_args=(--generate-notes)
+            fi
+            gh release create "$TAG" dist/*.zip dist/*.tar.gz dist/*.sha256 \
+              --repo "$GITHUB_REPOSITORY" --verify-tag --title "$TAG" "${note_args[@]}"
+          fi
           gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[] | "\(.name)  \(.size) bytes"'

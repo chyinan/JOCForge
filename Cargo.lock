@@ -261,7 +261,7 @@ checksum = "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682"
 
 [[package]]
 name = "jocforge"
-version = "1.1.0"
+version = "1.2.0"
 dependencies = [
  "clap",
  "clap_complete",
@@ -275,7 +275,7 @@ dependencies = [
 
 [[package]]
 name = "jocforge-application"
-version = "1.1.0"
+version = "1.2.0"
 dependencies = [
  "jocforge-domain",
  "serde_json",
@@ -284,7 +284,7 @@ dependencies = [
 
 [[package]]
 name = "jocforge-domain"
-version = "1.1.0"
+version = "1.2.0"
 dependencies = [
  "multiversion",
  "num-bigint",
@@ -297,7 +297,7 @@ dependencies = [
 
 [[package]]
 name = "jocforge-io"
-version = "1.1.0"
+version = "1.2.0"
 dependencies = [
  "jocforge-application",
  "jocforge-domain",
@@ -308,7 +308,7 @@ dependencies = [
 
 [[package]]
 name = "jocforge-pipeline"
-version = "1.1.0"
+version = "1.2.0"
 dependencies = [
  "fs2",
  "jocforge-application",
@@ -322,7 +322,7 @@ dependencies = [
 
 [[package]]
 name = "jocforge-validation"
-version = "1.1.0"
+version = "1.2.0"
 dependencies = [
  "jocforge-application",
  "jocforge-domain",
@@ -331,7 +331,7 @@ dependencies = [
 
 [[package]]
 name = "jocforge-wasm"
-version = "1.1.0"
+version = "1.2.0"
 dependencies = [
  "jocforge-application",
  "jocforge-domain",
