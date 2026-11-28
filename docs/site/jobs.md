@@ -29,7 +29,7 @@ Inside `filter/audio/encode_to_atmos_ddp`, the encoder can trim the ADM and add 
 
 Line and RF DRC are independent. Each accepts `film_light`, `film_standard`, `music_standard`, `music_light` or `none`. The default pair keeps the encoder's existing output. Four downmix levels and the preferred downmix mode are written into the stream.
 
-Loudness metering can use ungated BS.1770-1, gated BS.1770-2, BS.1770-3, BS.1770-4 or LeqA. The current 5.1 meter shares one gating algorithm for BS.1770-2, -3 and -4. With dialogue detection on, Earshot marks speech. At or above the speech-ratio threshold the meter reports dialogue loudness. Below it, the meter reports programme loudness.
+Loudness metering can use ungated BS.1770-1, gated BS.1770-2, BS.1770-3, BS.1770-4 or LeqA. The current 5.1 meter shares one gating algorithm for BS.1770-2, -3 and -4. With dialogue detection on, Earshot marks speech. At or above the speech-ratio threshold the meter reports dialogue loudness. Below it, the meter reports programme loudness. LeqA includes the final partial meter block and measures only the programme samples, including explicitly requested silence but not internal callback padding.
 
 Surround trim and height trim are independent. Each can use a preset from the XML. A manual value attenuates by position. When a preset and a manual value are both set, the combined attenuation is limited by the larger of the two ceilings.
 

@@ -207,8 +207,18 @@ impl PostRenderMeterState {
         let (percent, level) = self.dialogue.as_ref()?.result(settings.use_a_weighting);
         Some((percent, level, settings.speech_threshold?))
     }
-    pub(super) fn a_weighted_level(&self) -> Option<f32> {
-        self.a_weighted.level()
+    pub(super) fn a_weighted_level(&self, enabled: bool) -> Option<f32> {
+        if !enabled {
+            return None;
+        }
+        // Programme Leq(A) is a sample mean, not a full-block statistic.
+        let mut meter = self.a_weighted.clone();
+        meter.accumulate_programme(
+            self.sample_queue.pending_lanes(),
+            self.sample_queue.pcm_consumed_samples().value(),
+            self.sample_queue.source_samples().value(),
+        );
+        meter.level()
     }
 
     pub const fn ungated_mean(&self) -> &UngatedMeanState {
@@ -505,7 +515,11 @@ fn stage_post_render_numeric(
             );
         }
         if parameters.use_a_weighting {
-            a_weighted.accumulate(block_views);
+            a_weighted.accumulate_programme(
+                block_views,
+                block.logical_begin().value(),
+                before.sample_queue.source_samples().value(),
+            );
         }
         advance_true_peak_block(
             &mut true_peak_after,
